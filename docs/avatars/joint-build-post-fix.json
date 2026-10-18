@@ -1,0 +1,13 @@
+{
+  "success": true,
+  "scope": "VRChat SDK preprocess callback chain, no upload",
+  "avatar": "Assets/MorphForge/FullFT/Avatar.prefab",
+  "completedAtUtc": "2026-10-18T22:30:41.7550728Z",
+  "prefabSha256": "669DD8FE902C60055DCC616D26EDBEADA8C98A114B900F399D7D2CBB7329E328",
+  "finalBits": 256,
+  "preCompression": "Docs/FullFT/pre-compression.json",
+  "finalBudget": "Docs/FullFT/final-budget.json",
+  "finalBudgetSha256": "B57BA6EA37C114D38743C729566ED3FA4DAFD90485CFB9BF1C1B796745058B3F",
+  "activeSceneWritten": false,
+  "sourcePrefabWritten": false
+}

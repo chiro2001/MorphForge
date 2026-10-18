@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using BlackStartX.GestureManager;
 using Newtonsoft.Json.Linq;
 using UnityEditor;
+using UnityEditor.Animations;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -26,6 +28,10 @@ namespace MorphForge.Editor
         public const string MixExpressionsPath =
             "Assets/MoeWhite/VRCFT/Prefab/Optional/MixExpressions.prefab";
         public const string FtMeshPath = "Assets/MoeWhite/VRCFT/FBX/Nemesis_FT.fbx";
+        public const string OriginalLocomotionPath =
+            "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller";
+        public const string NoSleepLocomotionPath =
+            FullFTRoot + "/Nemesis_Locomotion_NoSleep.controller";
         private const string JointBuildReportPath = "Docs/FullFT/joint-build.json";
         private const string FinalBudgetReportPath = "Docs/FullFT/final-budget.json";
 
@@ -157,6 +163,7 @@ namespace MorphForge.Editor
 
             EnsureFolder(FullFTRoot);
             var contents = PrefabUtility.LoadPrefabContents(BaseAvatarPath);
+            Dictionary<string, object> noSleepCleanup = null;
             try
             {
                 contents.name = "MorphForge_FullFT_Avatar";
@@ -175,6 +182,7 @@ namespace MorphForge.Editor
                 InstantiateChild(VrcftPrefabPath, contents.transform, "VRCFT_UE_Nemesis_VRCFur");
                 InstantiateChild(MixExpressionsPath, contents.transform, "MixExpressions");
                 InstantiateChild(PlacementPath, contents.transform, "MorphForgePlacement");
+                noSleepCleanup = FullFTNoSleepController.Apply(contents);
 
                 var ftRenderer = contents.GetComponentsInChildren<SkinnedMeshRenderer>(true)
                     .FirstOrDefault(renderer => renderer.sharedMesh &&
@@ -209,7 +217,14 @@ namespace MorphForge.Editor
                 baseAvatar = BaseAvatarPath,
                 injections = new[] { VrcftPrefabPath, MixExpressionsPath, PlacementPath },
                 ftMesh = FtMeshPath,
-                excluded = new[] { "outfits", "sleep", "Supine", "VRCFury generated build directory" },
+                derivedLocomotion = NoSleepLocomotionPath,
+                noSleepCleanup,
+                excluded = new[]
+                {
+                    "outfits",
+                    "sleep/Supine plugin states, clips and parameters",
+                    "VRCFury generated build directory",
+                },
                 missingScripts = 0,
                 activeSceneWritten = false,
                 sourcePrefabWritten = false,
@@ -231,6 +246,7 @@ namespace MorphForge.Editor
                     "FullFT joint build requires idle Edit Mode. Exit the long Play test first.");
             EnsureProfile();
             var prefab = RequireAsset<GameObject>(TestAvatarPath, "FullFT test avatar");
+            ValidateNoSleepAvatar(prefab);
             DeleteReport(JointBuildReportPath);
             var clone = UnityEngine.Object.Instantiate(prefab);
             clone.name = "MorphForge_FullFT_Avatar_Build";
@@ -837,6 +853,29 @@ namespace MorphForge.Editor
             instance.transform.localScale = Vector3.one;
         }
 
+        private static void ValidateNoSleepAvatar(GameObject prefab)
+        {
+            var descriptor = prefab.GetComponent<VRCAvatarDescriptor>();
+            if (!descriptor)
+                throw new InvalidOperationException(
+                    "FullFT test avatar has no VRCAvatarDescriptor.");
+            if (!descriptor.baseAnimationLayers.Any(layer =>
+                    AssetDatabase.GetAssetPath(layer.animatorController) ==
+                    NoSleepLocomotionPath))
+                throw new InvalidOperationException(
+                    "FullFT test avatar does not use the generated NoSleep locomotion. " +
+                    "Run BuildTestAvatar before JointBuild.");
+            var forbidden = AssetDatabase.GetDependencies(TestAvatarPath, true)
+                .Where(path => path.StartsWith(
+                    "Packages/minminmean.supine/", StringComparison.OrdinalIgnoreCase))
+                .ToArray();
+            if (forbidden.Length != 0)
+                throw new InvalidOperationException(
+                    "FullFT test avatar still depends on minminmean.supine: " +
+                    string.Join(", ", forbidden) +
+                    ". Run BuildTestAvatar before JointBuild.");
+        }
+
         private static T RequireAsset<T>(string path, string description) where T : UnityEngine.Object
         {
             var asset = AssetDatabase.LoadAssetAtPath<T>(path);
@@ -869,6 +908,309 @@ namespace MorphForge.Editor
                     AssetDatabase.CreateFolder(current, part);
                 current = next;
             }
+        }
+    }
+}
+
+namespace MorphForge.Editor
+{
+    /// <summary>
+    /// Produces the FullFT-only locomotion variant. The source Nemesis controller
+    /// remains untouched for historical scenes; only the generated FullFT prefab
+    /// references the cleaned copy.
+    /// </summary>
+    internal static class FullFTNoSleepController
+    {
+        private const string ForbiddenPackage = "Packages/minminmean.supine/";
+        private const string TemporaryPath =
+            FullFTBuild.FullFTRoot + "/Nemesis_Locomotion_NoSleep.__building.controller";
+        private static readonly HashSet<string> RemoveStateNames =
+            new HashSet<string>(new[] { "Supine", "Prepare Supine" }, StringComparer.Ordinal);
+        private static readonly HashSet<string> RemoveParameters =
+            new HashSet<string>(
+                new[] { "Supine", "VRCSupine", "VRCSupinePoseAdjust" },
+                StringComparer.Ordinal);
+
+        internal static Dictionary<string, object> Apply(GameObject avatar)
+        {
+            var original = AssetDatabase.LoadAssetAtPath<AnimatorController>(
+                FullFTBuild.OriginalLocomotionPath);
+            if (!original)
+                throw new InvalidOperationException(
+                    $"Missing source locomotion controller at {FullFTBuild.OriginalLocomotionPath}.");
+            var descriptor = avatar.GetComponent<VRCAvatarDescriptor>();
+            if (!descriptor)
+                throw new InvalidOperationException(
+                    "FullFT avatar clone has no VRCAvatarDescriptor.");
+
+            var baseIndex = Array.FindIndex(
+                descriptor.baseAnimationLayers,
+                layer => layer.animatorController == original);
+            if (baseIndex < 0)
+                throw new InvalidOperationException(
+                    "The FullFT base avatar does not reference the expected locomotion controller.");
+
+            if (AssetDatabase.LoadAssetAtPath<AnimatorController>(TemporaryPath))
+                AssetDatabase.DeleteAsset(TemporaryPath);
+            if (!AssetDatabase.CopyAsset(FullFTBuild.OriginalLocomotionPath, TemporaryPath))
+                throw new InvalidOperationException(
+                    $"Unable to create temporary NoSleep controller at {TemporaryPath}.");
+            AssetDatabase.ImportAsset(TemporaryPath, ImportAssetOptions.ForceSynchronousImport);
+
+            var generated = AssetDatabase.LoadAssetAtPath<AnimatorController>(TemporaryPath);
+            if (!generated)
+                throw new InvalidOperationException(
+                    $"Temporary NoSleep controller failed to load at {TemporaryPath}.");
+            var cleanup = Clean(generated);
+            EditorUtility.SetDirty(generated);
+            AssetDatabase.SaveAssetIfDirty(generated);
+            AssetDatabase.ImportAsset(TemporaryPath, ImportAssetOptions.ForceSynchronousImport);
+            var remaining = AssetDatabase.GetDependencies(TemporaryPath, true)
+                .Where(path => path.StartsWith(
+                    ForbiddenPackage, StringComparison.OrdinalIgnoreCase))
+                .ToArray();
+            if (remaining.Length != 0)
+                throw new InvalidOperationException(
+                    "Generated NoSleep controller still depends on minminmean.supine: " +
+                    string.Join(", ", remaining));
+
+            if (AssetDatabase.LoadAssetAtPath<AnimatorController>(
+                    FullFTBuild.NoSleepLocomotionPath))
+                AssetDatabase.DeleteAsset(FullFTBuild.NoSleepLocomotionPath);
+            var moveError = AssetDatabase.MoveAsset(
+                TemporaryPath, FullFTBuild.NoSleepLocomotionPath);
+            if (!string.IsNullOrEmpty(moveError))
+                throw new InvalidOperationException(
+                    $"Unable to publish generated NoSleep controller: {moveError}");
+            AssetDatabase.ImportAsset(
+                FullFTBuild.NoSleepLocomotionPath,
+                ImportAssetOptions.ForceSynchronousImport);
+            var derived = AssetDatabase.LoadAssetAtPath<AnimatorController>(
+                FullFTBuild.NoSleepLocomotionPath);
+            if (!derived)
+                throw new InvalidOperationException(
+                    $"Generated NoSleep controller failed to load at " +
+                    $"{FullFTBuild.NoSleepLocomotionPath}.");
+
+            var layers = descriptor.baseAnimationLayers;
+            layers[baseIndex].animatorController = derived;
+            descriptor.baseAnimationLayers = layers;
+            EditorUtility.SetDirty(descriptor);
+
+            remaining = AssetDatabase.GetDependencies(
+                FullFTBuild.NoSleepLocomotionPath, true)
+                .Where(path => path.StartsWith(
+                    ForbiddenPackage, StringComparison.OrdinalIgnoreCase))
+                .ToArray();
+            if (remaining.Length != 0)
+                throw new InvalidOperationException(
+                    "Published NoSleep controller still depends on minminmean.supine: " +
+                    string.Join(", ", remaining));
+
+            cleanup["derivedController"] = FullFTBuild.NoSleepLocomotionPath;
+            cleanup["derivedControllerGuid"] =
+                AssetDatabase.AssetPathToGUID(FullFTBuild.NoSleepLocomotionPath);
+            cleanup["baseLayerIndex"] = baseIndex;
+            cleanup["sourceController"] = FullFTBuild.OriginalLocomotionPath;
+            cleanup["sourceControllerGuid"] =
+                AssetDatabase.AssetPathToGUID(FullFTBuild.OriginalLocomotionPath);
+            cleanup["remainingMinMinmeanSupineDependencies"] = remaining;
+            return cleanup;
+        }
+
+        private static Dictionary<string, object> Clean(AnimatorController controller)
+        {
+            var removedStates = new List<object>();
+            var removedTransitions = new List<object>();
+            var removedParameters = new List<string>();
+            var layers = controller.layers;
+            foreach (var layer in layers)
+            {
+                if (layer.stateMachine == null) continue;
+                var machines = new List<AnimatorStateMachine>();
+                var owners = new Dictionary<AnimatorState, AnimatorStateMachine>();
+                CollectMachines(layer.stateMachine, machines, owners);
+                var doomed = owners.Keys
+                    .Where(state =>
+                        RemoveStateNames.Contains(state.name) ||
+                        MotionUsesForbiddenPackage(state.motion))
+                    .ToArray();
+                var doomedSet = new HashSet<AnimatorState>(doomed);
+
+                foreach (var state in owners.Keys)
+                {
+                    foreach (var transition in state.transitions.ToArray())
+                    {
+                        var sleepCondition = UsesSleepParameter(transition.conditions);
+                        if (sleepCondition ||
+                            doomedSet.Contains(state) ||
+                            (transition.destinationState != null &&
+                             doomedSet.Contains(transition.destinationState)))
+                        {
+                            removedTransitions.Add(new
+                            {
+                                layer = layer.name,
+                                source = state.name,
+                                destination = transition.destinationState?.name,
+                                reason = sleepCondition ? "sleep-condition" :
+                                    doomedSet.Contains(state) ? "source-state" : "destination-state"
+                            });
+                            state.RemoveTransition(transition);
+                        }
+                    }
+                }
+
+                foreach (var machine in machines)
+                {
+                    foreach (var transition in machine.anyStateTransitions.ToArray())
+                    {
+                        var sleepCondition = UsesSleepParameter(transition.conditions);
+                        if (sleepCondition ||
+                            (transition.destinationState != null &&
+                             doomedSet.Contains(transition.destinationState)))
+                        {
+                            removedTransitions.Add(new
+                            {
+                                layer = layer.name,
+                                source = "<Any State>",
+                                destination = transition.destinationState?.name,
+                                reason = sleepCondition ? "sleep-condition" : "destination-state"
+                            });
+                            machine.RemoveAnyStateTransition(transition);
+                        }
+                    }
+                    foreach (var transition in machine.entryTransitions.ToArray())
+                    {
+                        var sleepCondition = UsesSleepParameter(transition.conditions);
+                        if (sleepCondition ||
+                            (transition.destinationState != null &&
+                             doomedSet.Contains(transition.destinationState)))
+                        {
+                            removedTransitions.Add(new
+                            {
+                                layer = layer.name,
+                                source = "<Entry>",
+                                destination = transition.destinationState?.name,
+                                reason = sleepCondition ? "sleep-condition" : "destination-state"
+                            });
+                            machine.RemoveEntryTransition(transition);
+                        }
+                    }
+                }
+
+                foreach (var state in doomed)
+                {
+                    removedStates.Add(new
+                    {
+                        layer = layer.name,
+                        name = state.name,
+                        motion = DescribeMotion(state.motion),
+                        reason = RemoveStateNames.Contains(state.name)
+                            ? "sleep-state-name"
+                            : "forbidden-package-motion"
+                    });
+                    owners[state].RemoveState(state);
+                }
+            }
+            controller.layers = layers;
+
+            foreach (var parameter in controller.parameters.ToArray())
+            {
+                if (!RemoveParameters.Contains(parameter.name)) continue;
+                if (ParameterStillReferenced(controller, parameter.name))
+                    throw new InvalidOperationException(
+                        $"Sleep parameter '{parameter.name}' is still referenced after state cleanup.");
+                controller.RemoveParameter(parameter);
+                removedParameters.Add(parameter.name);
+            }
+
+            return new Dictionary<string, object>
+            {
+                ["removedStates"] = removedStates,
+                ["removedTransitionCount"] = removedTransitions.Count,
+                ["removedTransitions"] = removedTransitions,
+                ["removedParameters"] = removedParameters,
+                ["remainingParameters"] =
+                    controller.parameters.Select(parameter => parameter.name).ToArray(),
+            };
+        }
+
+        private static void CollectMachines(
+            AnimatorStateMachine machine,
+            List<AnimatorStateMachine> machines,
+            Dictionary<AnimatorState, AnimatorStateMachine> owners)
+        {
+            if (machine == null) return;
+            machines.Add(machine);
+            foreach (var child in machine.states)
+                if (child.state)
+                    owners[child.state] = machine;
+            foreach (var child in machine.stateMachines)
+                CollectMachines(child.stateMachine, machines, owners);
+        }
+
+        private static bool UsesSleepParameter(AnimatorCondition[] conditions)
+        {
+            return conditions != null &&
+                   conditions.Any(condition => RemoveParameters.Contains(condition.parameter));
+        }
+
+        private static bool ParameterStillReferenced(
+            AnimatorController controller,
+            string name)
+        {
+            foreach (var layer in controller.layers)
+            {
+                if (layer.stateMachine == null) continue;
+                var machines = new List<AnimatorStateMachine>();
+                var owners = new Dictionary<AnimatorState, AnimatorStateMachine>();
+                CollectMachines(layer.stateMachine, machines, owners);
+                foreach (var state in owners.Keys)
+                {
+                    if (state.speedParameterActive && state.speedParameter == name) return true;
+                    if (state.cycleOffsetParameterActive && state.cycleOffsetParameter == name)
+                        return true;
+                    if (state.mirrorParameterActive && state.mirrorParameter == name) return true;
+                    if (state.timeParameterActive && state.timeParameter == name) return true;
+                    if (state.motion is BlendTree tree && BlendTreeUsesParameter(tree, name))
+                        return true;
+                    if (state.transitions.Any(transition =>
+                            transition.conditions.Any(condition => condition.parameter == name)))
+                        return true;
+                }
+                foreach (var machine in machines)
+                {
+                    if (machine.anyStateTransitions.Any(transition =>
+                            transition.conditions.Any(condition => condition.parameter == name)))
+                        return true;
+                    if (machine.entryTransitions.Any(transition =>
+                            transition.conditions.Any(condition => condition.parameter == name)))
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        private static bool BlendTreeUsesParameter(BlendTree tree, string name)
+        {
+            if (tree.blendParameter == name || tree.blendParameterY == name) return true;
+            return tree.children.Any(child =>
+                child.motion is BlendTree nested && BlendTreeUsesParameter(nested, name));
+        }
+
+        private static bool MotionUsesForbiddenPackage(Motion motion)
+        {
+            if (motion == null) return false;
+            if (motion is BlendTree tree)
+                return tree.children.Any(child => MotionUsesForbiddenPackage(child.motion));
+            var path = AssetDatabase.GetAssetPath(motion) ?? "";
+            return path.StartsWith(ForbiddenPackage, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static string DescribeMotion(Motion motion)
+        {
+            if (motion == null) return "";
+            return motion.name + " @ " + (AssetDatabase.GetAssetPath(motion) ?? "");
         }
     }
 }

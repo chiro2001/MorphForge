@@ -1,0 +1,578 @@
+{
+  "success": false,
+  "verdict": "FAIL_MINIMAL_MODEL_STILL_REFERENCES_SUPINE_PACKAGE",
+  "summary": "No Supine MonoBehaviour/generator and no sleep expression parameters are present, but the final Avatar prefab still references four animation clips from Packages/minminmean.supine through Nemesis_Locomotion.controller. The uploaded bundle therefore can still depend on the installed Supine package.",
+  "scope": "read-only Unity audit; no asset, prefab, scene, play mode, build, or VRChat action",
+  "generatedAtUtc": "2026-10-18T22:14:12.2897194Z",
+  "inputs": {
+    "prefab": "Assets/MorphForge/FullFT/Avatar.prefab",
+    "prefabGuid": "ebbdec8ebe6c9dc438ca91015d71355a",
+    "prefabSha256": "a0c1c4446e8e0c313e030416b5a501675364505395b8a31b2c49848bbd4c21f6",
+    "jointBuildReportSha256": "8307a851e237782ba26b441041e07dd95b7710f8cdff41fdaea302c25d7c5169",
+    "finalBudgetReportSha256": "b57ba6ea37c114d38743c729566ed3fa4dafd90485cfb9bf1c1b796745058b3f",
+    "profileReportSha256": "a69b10633efb909032474df5458312b759b12283290756124be9c5beeaee3418"
+  },
+  "crossChecks": [
+    {
+      "name": "Audited prefab hash equals the hash recorded by the 256-bit JointBuild",
+      "pass": true,
+      "expected": "A0C1C4446E8E0C313E030416B5A501675364505395B8A31B2C49848BBD4C21F6",
+      "actual": "A0C1C4446E8E0C313E030416B5A501675364505395B8A31B2C49848BBD4C21F6"
+    },
+    {
+      "name": "final-budget.json hash equals the hash recorded by JointBuild",
+      "pass": true,
+      "expected": "B57BA6EA37C114D38743C729566ED3FA4DAFD90485CFB9BF1C1B796745058B3F",
+      "actual": "B57BA6EA37C114D38743C729566ED3FA4DAFD90485CFB9BF1C1B796745058B3F"
+    },
+    {
+      "name": "FullFT avatar was built without pre-importing the sleep/Supine injection set",
+      "pass": true,
+      "excluded": [
+        "outfits",
+        "sleep",
+        "Supine",
+        "VRCFury generated build directory"
+      ]
+    },
+    {
+      "name": "Sleep/Supine expression-parameter group is absent in the final 256-bit avatar",
+      "pass": true,
+      "disabledGroupPresent": [],
+      "matchingExpressionParameters": []
+    },
+    {
+      "name": "256-bit budget checks all pass without counting absent sleep parameters",
+      "pass": true,
+      "finalBits": 256,
+      "remainingBits": 0,
+      "failedChecks": []
+    },
+    {
+      "name": "No Supine/minminmean components, generators, GameObjects, or serialized property references in the final prefab tree",
+      "pass": true,
+      "componentHits": [],
+      "gameObjectHits": [],
+      "serializedPropertyHits": []
+    },
+    {
+      "name": "Final prefab has no recursive dependency on Packages/minminmean.supine",
+      "pass": false,
+      "packageMatches": [
+        "Packages/minminmean.supine/Runtime/Supine/Animations/寝/あおむけ.anim",
+        "Packages/minminmean.supine/Runtime/Supine/Animations/寝/よこむき.anim",
+        "Packages/minminmean.supine/Runtime/Supine/Animations/座り/たてひざ（女）.anim",
+        "Packages/minminmean.supine/Runtime/Supine/Animations/座り/ぺたん.anim"
+      ]
+    },
+    {
+      "name": "Open source Scene remained loaded and dirty in the same state",
+      "pass": true,
+      "before": [
+        {
+          "path": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+          "name": "MorphForge_Stage3",
+          "isLoaded": true,
+          "isDirty": true,
+          "isActive": true
+        },
+        {
+          "path": "Packages/nadena.dev.ndmf/Runtime/___NDMF Preview___.unity",
+          "name": "___NDMF Preview___",
+          "isLoaded": true,
+          "isDirty": false,
+          "isActive": false
+        }
+      ],
+      "after": [
+        {
+          "path": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+          "name": "MorphForge_Stage3",
+          "isLoaded": true,
+          "isDirty": true,
+          "isActive": true
+        },
+        {
+          "path": "Packages/nadena.dev.ndmf/Runtime/___NDMF Preview___.unity",
+          "name": "___NDMF Preview___",
+          "isLoaded": true,
+          "isDirty": false,
+          "isActive": false
+        }
+      ]
+    }
+  ],
+  "budgetCrossCheck": {
+    "profile": "fullft-sync-v2",
+    "stage": "Max-50, after VRCFury Parameter Compressor",
+    "finalBits": 256,
+    "remainingBits": 0,
+    "ftBits": 161,
+    "vrcftControlBits": 8,
+    "geometryBits": 56,
+    "placementBits": 14,
+    "sleepGroupPresent": [],
+    "sleepGroupStillRepresented": [],
+    "sleepExpressionParameters": [],
+    "allChecksPass": true,
+    "interpretation": "The final cost is the SDK/VRCFury result (256) and the sleep group is absent, so the budget does not claim or consume a 35-bit saving for parameters that do not exist."
+  },
+  "actualResidual": {
+    "installedPackage": [
+      {
+        "name": "minminmean.supine",
+        "displayName": "Gorone System (Supine)",
+        "version": "5.1.0",
+        "source": "Embedded",
+        "resolvedPath": "D:\\Projects\\VRChatProjects2\\MorphForge\\Packages\\minminmean.supine"
+      }
+    ],
+    "description": "The final prefab still serializes base/action controller references that transitively pull in minminmean.supine animation clips. VRChat SDK animation-clip collection walks controllers referenced by avatar layers, so this is a real package dependency even though no Supine generator component or synced sleep expression parameter remains.",
+    "descriptorLayerReferences": {
+      "found": true,
+      "customizeAnimationLayers": true,
+      "expressionParameters": "Assets/Nemesis/Nemesis_Avatar/ExMenu&Param/Nemesis_Parameters_v_1_1_0.asset",
+      "expressionsMenu": "Assets/Nemesis/Nemesis_Avatar/ExMenu&Param/Nemesis_MainMenu.asset",
+      "baseAnimationLayers": [
+        {
+          "index": 0,
+          "type": "Base",
+          "enabled": false,
+          "isDefault": false,
+          "controllerPath": "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller",
+          "controllerName": "Nemesis_Locomotion",
+          "layers": [
+            "Locomotion",
+            "Foot Anchor",
+            "Desktop Mode",
+            "Pose Observer",
+            "Foot Anchor Switch"
+          ],
+          "matchingLayers": []
+        },
+        {
+          "index": 1,
+          "type": "Additive",
+          "enabled": false,
+          "isDefault": true,
+          "controllerPath": "",
+          "controllerName": ""
+        },
+        {
+          "index": 2,
+          "type": "Gesture",
+          "enabled": false,
+          "isDefault": true,
+          "controllerPath": "",
+          "controllerName": ""
+        },
+        {
+          "index": 3,
+          "type": "Action",
+          "enabled": false,
+          "isDefault": false,
+          "controllerPath": "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Action.controller",
+          "controllerName": "Nemesis_Action",
+          "layers": [
+            "Action"
+          ],
+          "matchingLayers": []
+        },
+        {
+          "index": 4,
+          "type": "FX",
+          "enabled": false,
+          "isDefault": false,
+          "controllerPath": "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_FX_v_1_1_0.controller",
+          "controllerName": "Nemesis_FX_v_1_1_0",
+          "layers": [
+            "FasialSet1",
+            "FasialSet0",
+            "Fasial",
+            "GestureNumLocal",
+            "CopyFaceSetNum",
+            "LipSyncBlocker",
+            "Tail",
+            "Ear",
+            "Wing",
+            "KneeSox",
+            "Shoes",
+            "Tops",
+            "Beret",
+            "EyeLight",
+            "ColliderJump",
+            "TailCollider",
+            "AFK",
+            "Toe",
+            "ToeR",
+            "ToeL",
+            "ToeBoth"
+          ],
+          "matchingLayers": []
+        }
+      ],
+      "specialAnimationLayers": [
+        {
+          "index": 0,
+          "type": "Sitting",
+          "enabled": false,
+          "isDefault": true,
+          "controllerPath": "",
+          "controllerName": ""
+        },
+        {
+          "index": 1,
+          "type": "TPose",
+          "enabled": false,
+          "isDefault": true,
+          "controllerPath": "",
+          "controllerName": ""
+        },
+        {
+          "index": 2,
+          "type": "IKPose",
+          "enabled": false,
+          "isDefault": true,
+          "controllerPath": "",
+          "controllerName": ""
+        }
+      ]
+    },
+    "matchingControllerParameters": [
+      "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Supine",
+      "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: VRCSupine",
+      "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: VRCLockPose",
+      "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: VRCFootAnchor",
+      "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: VRCFootAnchorHandSwitchable"
+    ],
+    "matchingControllerStates": [
+      "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Action.controller :: Action/motion:proxy_supine_getup @ Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_supine_getup.anim",
+      "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Locomotion/state:Crouching",
+      "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Locomotion/motion:nemesis_CrouchingLocomotion @ Assets/Nemesis/Nemesis_Avatar/OtherAnimation/nemesis_CrouchingLocomotion.asset",
+      "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Locomotion/state:Supine",
+      "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Locomotion/motion:あおむけ @ Packages/minminmean.supine/Runtime/Supine/Animations/寝/あおむけ.anim",
+      "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Locomotion/motion:よこむき @ Packages/minminmean.supine/Runtime/Supine/Animations/寝/よこむき.anim",
+      "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Locomotion/motion:よこむき @ Packages/minminmean.supine/Runtime/Supine/Animations/寝/よこむき.anim",
+      "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Locomotion/motion:ぺたん @ Packages/minminmean.supine/Runtime/Supine/Animations/座り/ぺたん.anim",
+      "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Locomotion/motion:たてひざ（女） @ Packages/minminmean.supine/Runtime/Supine/Animations/座り/たてひざ（女）.anim",
+      "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Foot Anchor/state:LockPose Disabling",
+      "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Desktop Mode/state:Prepare Supine",
+      "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/Controllers/vrc_AvatarV3LocomotionLayer.controller :: Locomotion/state:Crouching",
+      "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/Controllers/vrc_AvatarV3LocomotionLayer.controller :: Locomotion/motion:vrc_CrouchingLocomotion @ Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/BlendTrees/vrc_CrouchingLocomotion.asset"
+    ],
+    "packageAssetDependencies": [
+      "Packages/minminmean.supine/Runtime/Supine/Animations/寝/あおむけ.anim",
+      "Packages/minminmean.supine/Runtime/Supine/Animations/寝/よこむき.anim",
+      "Packages/minminmean.supine/Runtime/Supine/Animations/座り/たてひざ（女）.anim",
+      "Packages/minminmean.supine/Runtime/Supine/Animations/座り/ぺたん.anim"
+    ]
+  },
+  "minimalRecommendedFix": [
+    "Keep Packages/minminmean.supine installed for legacy Stage1-3 scenes; do not remove it project-wide.",
+    "Create a derived FullFT-only copy of Nemesis_Locomotion.controller under Assets/MorphForge/FullFT and point only Avatar.prefab base layer 0 at that copy.",
+    "In the derived copy remove only the Supine state/transitions and motions whose asset path is under Packages/minminmean.supine; retain crouch, foot-anchor, AFK, eye/blink and other ordinary states until separately validated.",
+    "Remove local controller parameters Supine and VRCSupine only if no retained state uses them. Keep VRChat-standard CrouchPose, VRCFootAnchor, VRCLockPose unless a separate behavior decision justifies removal.",
+    "Regenerate Avatar.prefab, rerun JointBuild, then rerun this audit. Acceptance requires packageMatches=[], no Supine/minminmean components, 256-bit budget still passing, and unchanged VRCFT/MorphForge behavior."
+  ],
+  "nonActions": [
+    "No Unity asset was created, modified, deleted, imported, or saved.",
+    "No scene was closed, saved, or marked clean; the dirty Stage3 scene stayed dirty.",
+    "No Play Mode, build, upload, VRChat launch, or OSC send occurred."
+  ],
+  "unityAudit": {
+    "success": false,
+    "scope": "read-only Unity audit; no asset, prefab, scene, play mode, build, or VRChat action",
+    "generatedAtUtc": "2026-10-18T22:14:12.2897194Z",
+    "prefabPath": "Assets/MorphForge/FullFT/Avatar.prefab",
+    "prefabGuid": "ebbdec8ebe6c9dc438ca91015d71355a",
+    "activeScenesBefore": [
+      {
+        "path": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+        "name": "MorphForge_Stage3",
+        "isLoaded": true,
+        "isDirty": true,
+        "isActive": true
+      },
+      {
+        "path": "Packages/nadena.dev.ndmf/Runtime/___NDMF Preview___.unity",
+        "name": "___NDMF Preview___",
+        "isLoaded": true,
+        "isDirty": false,
+        "isActive": false
+      }
+    ],
+    "installedMatchingPackages": [
+      {
+        "name": "minminmean.supine",
+        "displayName": "Gorone System (Supine)",
+        "version": "5.1.0",
+        "source": "Embedded",
+        "resolvedPath": "D:\\Projects\\VRChatProjects2\\MorphForge\\Packages\\minminmean.supine"
+      }
+    ],
+    "prefab": {
+      "root": "Avatar",
+      "sha256": "a0c1c4446e8e0c313e030416b5a501675364505395b8a31b2c49848bbd4c21f6",
+      "prefabAssetType": "Regular",
+      "gameObjectCount": 665,
+      "componentCount": 1183,
+      "missingScriptCount": 0,
+      "missingScripts": []
+    },
+    "keywordComponentHits": [],
+    "keywordGameObjectHits": [],
+    "serializedPropertyHits": [],
+    "dependencyAudit": {
+      "directCount": 29,
+      "recursiveCount": 1027,
+      "sortedPathsSha256": "390ba6377996cbbb256057cb0d21647ba71a74813d9957ba5037eb69d961f935",
+      "keywordMatches": [
+        "Assets/Nemesis/Nemesis_Avatar/OtherAnimation/nemesis_CrouchingLocomotion.asset",
+        "Assets/Nemesis/Nemesis_Avatar/OtherAnimation/nemesys_crouch_still.anim",
+        "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/BlendTrees/vrc_CrouchingLocomotion.asset",
+        "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_crouch_still.anim",
+        "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_crouch_walk_forward.anim",
+        "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_crouch_walk_right.anim",
+        "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_crouch_walk_right_135.anim",
+        "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_crouch_walk_right_45.anim",
+        "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_supine_getup.anim",
+        "Packages/minminmean.supine/Runtime/Supine/Animations/寝/あおむけ.anim",
+        "Packages/minminmean.supine/Runtime/Supine/Animations/寝/よこむき.anim",
+        "Packages/minminmean.supine/Runtime/Supine/Animations/座り/たてひざ（女）.anim",
+        "Packages/minminmean.supine/Runtime/Supine/Animations/座り/ぺたん.anim"
+      ],
+      "definitiveSupineMatches": [
+        "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_supine_getup.anim",
+        "Packages/minminmean.supine/Runtime/Supine/Animations/寝/あおむけ.anim",
+        "Packages/minminmean.supine/Runtime/Supine/Animations/寝/よこむき.anim",
+        "Packages/minminmean.supine/Runtime/Supine/Animations/座り/たてひざ（女）.anim",
+        "Packages/minminmean.supine/Runtime/Supine/Animations/座り/ぺたん.anim"
+      ],
+      "packageMatches": [
+        "Packages/minminmean.supine/Runtime/Supine/Animations/寝/あおむけ.anim",
+        "Packages/minminmean.supine/Runtime/Supine/Animations/寝/よこむき.anim",
+        "Packages/minminmean.supine/Runtime/Supine/Animations/座り/たてひざ（女）.anim",
+        "Packages/minminmean.supine/Runtime/Supine/Animations/座り/ぺたん.anim"
+      ]
+    },
+    "controllerAudit": {
+      "controllersInspected": 20,
+      "matchingParameters": [
+        "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Supine",
+        "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: VRCSupine",
+        "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: VRCLockPose",
+        "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: VRCFootAnchor",
+        "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: VRCFootAnchorHandSwitchable"
+      ],
+      "matchingStates": [
+        "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Action.controller :: Action/motion:proxy_supine_getup @ Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_supine_getup.anim",
+        "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Locomotion/state:Crouching",
+        "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Locomotion/motion:nemesis_CrouchingLocomotion @ Assets/Nemesis/Nemesis_Avatar/OtherAnimation/nemesis_CrouchingLocomotion.asset",
+        "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Locomotion/state:Supine",
+        "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Locomotion/motion:あおむけ @ Packages/minminmean.supine/Runtime/Supine/Animations/寝/あおむけ.anim",
+        "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Locomotion/motion:よこむき @ Packages/minminmean.supine/Runtime/Supine/Animations/寝/よこむき.anim",
+        "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Locomotion/motion:よこむき @ Packages/minminmean.supine/Runtime/Supine/Animations/寝/よこむき.anim",
+        "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Locomotion/motion:ぺたん @ Packages/minminmean.supine/Runtime/Supine/Animations/座り/ぺたん.anim",
+        "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Locomotion/motion:たてひざ（女） @ Packages/minminmean.supine/Runtime/Supine/Animations/座り/たてひざ（女）.anim",
+        "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Foot Anchor/state:LockPose Disabling",
+        "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller :: Desktop Mode/state:Prepare Supine",
+        "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/Controllers/vrc_AvatarV3LocomotionLayer.controller :: Locomotion/state:Crouching",
+        "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/Controllers/vrc_AvatarV3LocomotionLayer.controller :: Locomotion/motion:vrc_CrouchingLocomotion @ Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/BlendTrees/vrc_CrouchingLocomotion.asset"
+      ],
+      "relevantControllers": [
+        {
+          "path": "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Action.controller",
+          "loaded": true,
+          "parameterCount": 9,
+          "matchingParameters": [],
+          "matchingStates": [
+            "Action/motion:proxy_supine_getup @ Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_supine_getup.anim"
+          ]
+        },
+        {
+          "path": "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller",
+          "loaded": true,
+          "parameterCount": 23,
+          "matchingParameters": [
+            "Supine",
+            "VRCSupine",
+            "VRCLockPose",
+            "VRCFootAnchor",
+            "VRCFootAnchorHandSwitchable"
+          ],
+          "matchingStates": [
+            "Locomotion/state:Crouching",
+            "Locomotion/motion:nemesis_CrouchingLocomotion @ Assets/Nemesis/Nemesis_Avatar/OtherAnimation/nemesis_CrouchingLocomotion.asset",
+            "Locomotion/state:Supine",
+            "Locomotion/motion:あおむけ @ Packages/minminmean.supine/Runtime/Supine/Animations/寝/あおむけ.anim",
+            "Locomotion/motion:よこむき @ Packages/minminmean.supine/Runtime/Supine/Animations/寝/よこむき.anim",
+            "Locomotion/motion:よこむき @ Packages/minminmean.supine/Runtime/Supine/Animations/寝/よこむき.anim",
+            "Locomotion/motion:ぺたん @ Packages/minminmean.supine/Runtime/Supine/Animations/座り/ぺたん.anim",
+            "Locomotion/motion:たてひざ（女） @ Packages/minminmean.supine/Runtime/Supine/Animations/座り/たてひざ（女）.anim",
+            "Foot Anchor/state:LockPose Disabling",
+            "Desktop Mode/state:Prepare Supine"
+          ]
+        },
+        {
+          "path": "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/Controllers/vrc_AvatarV3LocomotionLayer.controller",
+          "loaded": true,
+          "parameterCount": 9,
+          "matchingParameters": [],
+          "matchingStates": [
+            "Locomotion/state:Crouching",
+            "Locomotion/motion:vrc_CrouchingLocomotion @ Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/BlendTrees/vrc_CrouchingLocomotion.asset"
+          ]
+        }
+      ]
+    },
+    "expressionParameterAudit": {
+      "parameters": [],
+      "assets": [],
+      "propertyHits": []
+    },
+    "avatarDescriptor": {
+      "found": true,
+      "customizeAnimationLayers": true,
+      "expressionParameters": "Assets/Nemesis/Nemesis_Avatar/ExMenu&Param/Nemesis_Parameters_v_1_1_0.asset",
+      "expressionsMenu": "Assets/Nemesis/Nemesis_Avatar/ExMenu&Param/Nemesis_MainMenu.asset",
+      "baseAnimationLayers": [
+        {
+          "index": 0,
+          "type": "Base",
+          "enabled": false,
+          "isDefault": false,
+          "controllerPath": "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller",
+          "controllerName": "Nemesis_Locomotion",
+          "layers": [
+            "Locomotion",
+            "Foot Anchor",
+            "Desktop Mode",
+            "Pose Observer",
+            "Foot Anchor Switch"
+          ],
+          "matchingLayers": []
+        },
+        {
+          "index": 1,
+          "type": "Additive",
+          "enabled": false,
+          "isDefault": true,
+          "controllerPath": "",
+          "controllerName": ""
+        },
+        {
+          "index": 2,
+          "type": "Gesture",
+          "enabled": false,
+          "isDefault": true,
+          "controllerPath": "",
+          "controllerName": ""
+        },
+        {
+          "index": 3,
+          "type": "Action",
+          "enabled": false,
+          "isDefault": false,
+          "controllerPath": "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Action.controller",
+          "controllerName": "Nemesis_Action",
+          "layers": [
+            "Action"
+          ],
+          "matchingLayers": []
+        },
+        {
+          "index": 4,
+          "type": "FX",
+          "enabled": false,
+          "isDefault": false,
+          "controllerPath": "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_FX_v_1_1_0.controller",
+          "controllerName": "Nemesis_FX_v_1_1_0",
+          "layers": [
+            "FasialSet1",
+            "FasialSet0",
+            "Fasial",
+            "GestureNumLocal",
+            "CopyFaceSetNum",
+            "LipSyncBlocker",
+            "Tail",
+            "Ear",
+            "Wing",
+            "KneeSox",
+            "Shoes",
+            "Tops",
+            "Beret",
+            "EyeLight",
+            "ColliderJump",
+            "TailCollider",
+            "AFK",
+            "Toe",
+            "ToeR",
+            "ToeL",
+            "ToeBoth"
+          ],
+          "matchingLayers": []
+        }
+      ],
+      "specialAnimationLayers": [
+        {
+          "index": 0,
+          "type": "Sitting",
+          "enabled": false,
+          "isDefault": true,
+          "controllerPath": "",
+          "controllerName": ""
+        },
+        {
+          "index": 1,
+          "type": "TPose",
+          "enabled": false,
+          "isDefault": true,
+          "controllerPath": "",
+          "controllerName": ""
+        },
+        {
+          "index": 2,
+          "type": "IKPose",
+          "enabled": false,
+          "isDefault": true,
+          "controllerPath": "",
+          "controllerName": ""
+        }
+      ]
+    },
+    "verdict": {
+      "dependsOnSleepOrSupinePlugin": true,
+      "dependsOnMinminmeanSupinePackage": true,
+      "hasSupineComponent": false,
+      "hasSupineGenerator": false,
+      "hasKnownSleepSupineParameters": true,
+      "findings": [
+        "Final prefab recursively depends on the minminmean.supine package.",
+        "Controller or expression-parameter assets contain the known sleep/Supine parameter group."
+      ]
+    },
+    "activeScenesAfter": [
+      {
+        "path": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+        "name": "MorphForge_Stage3",
+        "isLoaded": true,
+        "isDirty": true,
+        "isActive": true
+      },
+      {
+        "path": "Packages/nadena.dev.ndmf/Runtime/___NDMF Preview___.unity",
+        "name": "___NDMF Preview___",
+        "isLoaded": true,
+        "isDirty": false,
+        "isActive": false
+      }
+    ],
+    "sceneStateChanged": false
+  },
+  "sdkSourceEvidence": {
+    "path": "Packages/com.vrchat.avatars/Editor/VRCSDK/SDK3A/AvatarDynamicsSetup.cs",
+    "symbol": "GetAnimationClipsFromAvatarLayers",
+    "line": 1115,
+    "interpretation": "The VRChat SDK collects animation clips from every controller referenced by avatar animation layers; unreachable states do not exempt a controller from the asset dependency chain."
+  }
+}

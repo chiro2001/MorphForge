@@ -1,0 +1,419 @@
+{
+  "success": true,
+  "avatar": "Assets/MorphForge/FullFT/Avatar.prefab",
+  "derivedLocomotion": "Assets/MorphForge/FullFT/Nemesis_Locomotion_NoSleep.controller",
+  "noSleepCleanup": {
+    "removedStates": [
+      {
+        "layer": "Locomotion",
+        "name": "Supine",
+        "motion": "あおむけ @ Packages/minminmean.supine/Runtime/Supine/Animations/寝/あおむけ.anim",
+        "reason": "sleep-state-name"
+      },
+      {
+        "layer": "Locomotion",
+        "name": "Left Side",
+        "motion": "よこむき @ Packages/minminmean.supine/Runtime/Supine/Animations/寝/よこむき.anim",
+        "reason": "forbidden-package-motion"
+      },
+      {
+        "layer": "Locomotion",
+        "name": "Right Side",
+        "motion": "よこむき @ Packages/minminmean.supine/Runtime/Supine/Animations/寝/よこむき.anim",
+        "reason": "forbidden-package-motion"
+      },
+      {
+        "layer": "Locomotion",
+        "name": "Sit 1",
+        "motion": "ぺたん @ Packages/minminmean.supine/Runtime/Supine/Animations/座り/ぺたん.anim",
+        "reason": "forbidden-package-motion"
+      },
+      {
+        "layer": "Locomotion",
+        "name": "Sit 2",
+        "motion": "たてひざ（女） @ Packages/minminmean.supine/Runtime/Supine/Animations/座り/たてひざ（女）.anim",
+        "reason": "forbidden-package-motion"
+      },
+      {
+        "layer": "Desktop Mode",
+        "name": "Prepare Supine",
+        "motion": "",
+        "reason": "sleep-state-name"
+      }
+    ],
+    "removedTransitionCount": 56,
+    "removedTransitions": [
+      {
+        "layer": "Locomotion",
+        "source": "Crouching",
+        "destination": "Prone",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Crouching",
+        "destination": "Supine",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Crouching",
+        "destination": "Right Side",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Crouching",
+        "destination": "Left Side",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Crouching",
+        "destination": "Sit 1",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Crouching",
+        "destination": "Sit 2",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Supine",
+        "destination": "Crouching",
+        "reason": "source-state"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Supine",
+        "destination": "Pose Change",
+        "reason": "source-state"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Left Side",
+        "destination": "Crouching",
+        "reason": "source-state"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Left Side",
+        "destination": "Pose Change",
+        "reason": "source-state"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Right Side",
+        "destination": "Crouching",
+        "reason": "source-state"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Right Side",
+        "destination": "Pose Change",
+        "reason": "source-state"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Sit 1",
+        "destination": "Crouching",
+        "reason": "source-state"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Sit 1",
+        "destination": "Pose Change",
+        "reason": "source-state"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Pose Change",
+        "destination": "Prone",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Pose Change",
+        "destination": "Supine",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Pose Change",
+        "destination": "Right Side",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Pose Change",
+        "destination": "Left Side",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Pose Change",
+        "destination": "Sit 1",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Pose Change",
+        "destination": "Sit 2",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Sit 2",
+        "destination": "Crouching",
+        "reason": "source-state"
+      },
+      {
+        "layer": "Locomotion",
+        "source": "Sit 2",
+        "destination": "Pose Change",
+        "reason": "source-state"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Prepare Supine",
+        "destination": "Normal Behavior",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Prepare Supine",
+        "destination": "Prepare Animation",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Prepare Supine",
+        "destination": "Prepare Animation",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Prepare Supine",
+        "destination": "Prepare Animation",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Prepare Supine",
+        "destination": "Prepare Tracking",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Prepare Supine",
+        "destination": "Prepare Tracking",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Prepare Supine",
+        "destination": "Prepare Animation",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Prepare Supine",
+        "destination": "Prepare Tracking",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Prepare Supine",
+        "destination": "Prepare Tracking",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Prepare Supine",
+        "destination": "Prepare Animation",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Normal Behavior",
+        "destination": "Prepare Supine",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Observing",
+        "destination": "Normal Behavior",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Observing",
+        "destination": "Prepare Animation",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Observing",
+        "destination": "Prepare Animation",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Observing",
+        "destination": "Prepare Animation",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Observing",
+        "destination": "Prepare Tracking",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Observing",
+        "destination": "Prepare Tracking",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Observing",
+        "destination": "Prepare Animation",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Observing",
+        "destination": "Prepare Tracking",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Observing",
+        "destination": "Prepare Tracking",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Desktop Mode",
+        "source": "Observing",
+        "destination": "Prepare Animation",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Pose Observer",
+        "source": "Observing",
+        "destination": "Set Current Pose",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Pose Observer",
+        "source": "Observing",
+        "destination": "Set Current Pose",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Pose Observer",
+        "source": "Observing",
+        "destination": "Set Current Pose",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Pose Observer",
+        "source": "Observing",
+        "destination": "Set Current Pose",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Pose Observer",
+        "source": "Observing",
+        "destination": "Set Current Pose",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Pose Observer",
+        "source": "Observing",
+        "destination": "Set Current Pose",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Pose Observer",
+        "source": "Observing",
+        "destination": "Set Current Pose",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Pose Observer",
+        "source": "Observing",
+        "destination": "Set Current Pose",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Pose Observer",
+        "source": "Observing",
+        "destination": "Set Current Pose",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Pose Observer",
+        "source": "Observing",
+        "destination": "Set Current Pose",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Pose Observer",
+        "source": "Observing",
+        "destination": "Set Current Pose",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Pose Observer",
+        "source": "Observing",
+        "destination": "Set Current Pose",
+        "reason": "sleep-condition"
+      },
+      {
+        "layer": "Pose Observer",
+        "source": "Observing",
+        "destination": "Set Current Pose",
+        "reason": "sleep-condition"
+      }
+    ],
+    "removedParameters": [
+      "Supine",
+      "VRCSupine"
+    ],
+    "remainingParameters": [
+      "VelocityX",
+      "VelocityY",
+      "VelocityZ",
+      "AngularY",
+      "Grounded",
+      "GroundProximity",
+      "Upright",
+      "LocomotionMode",
+      "FootstepDisable",
+      "Seated",
+      "AFK",
+      "VRCLockPose",
+      "VRCFootAnchor",
+      "ProcessingAnchorEnable",
+      "ProcessingAnchorDisable",
+      "VRMode",
+      "GestureRight",
+      "GestureLeft",
+      "CurrentPose",
+      "PoseChanged",
+      "VRCFootAnchorHandSwitchable"
+    ],
+    "derivedController": "Assets/MorphForge/FullFT/Nemesis_Locomotion_NoSleep.controller",
+    "derivedControllerGuid": "cc9d4768eb604ee4b90c59e0bddddff3",
+    "baseLayerIndex": 0,
+    "sourceController": "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller",
+    "sourceControllerGuid": "f076f0ea1d85fa146813fa93fc12f722",
+    "remainingMinMinmeanSupineDependencies": []
+  },
+  "activeSceneWritten": false,
+  "sourcePrefabWritten": false
+}
