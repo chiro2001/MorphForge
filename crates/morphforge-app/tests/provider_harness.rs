@@ -220,6 +220,26 @@ fn workspace(dir: &TempDir) -> Arc<Mutex<Workspace>> {
     ))
 }
 
+fn seed_capture(workspace: &Arc<Mutex<Workspace>>) -> String {
+    let mut workspace = workspace.lock().unwrap();
+    let artifact = workspace
+        .artifact(b"\x89PNG\r\n\x1a\nfixture", "png")
+        .unwrap();
+    let revision = workspace.project.scene.revision;
+    workspace
+        .event(
+            "capture.completed",
+            None,
+            json!({
+                "ok":true,
+                "revision":revision,
+                "images":[{"view":"hero","artifact":artifact}],
+            }),
+        )
+        .unwrap();
+    artifact
+}
+
 fn inert_transport() -> Transport {
     Transport {
         inner: Arc::new(Mutex::new(TransportState {
@@ -270,6 +290,47 @@ async fn terminal_run(harness: &Harness) -> Run {
     })
     .await
     .expect("harness run should reach a terminal state")
+}
+
+#[tokio::test]
+async fn token_budget_uses_provider_usage_and_allows_one_input_overrun() {
+    let fake = FakeResponses::start(vec![sse([json!({
+        "type":"response.completed",
+        "response":{
+            "id":"overrun-response",
+            "status":"completed",
+            "output":[{"type":"message","content":[{"type":"output_text","text":"先保存当前进度。"}]}],
+            "usage":{"input_tokens":1800,"output_tokens":20,"total_tokens":1820}
+        }
+    })])])
+    .await;
+    let dir = tempfile::tempdir().unwrap();
+    let workspace = workspace(&dir);
+    let harness = harness(workspace.clone(), &fake.base);
+    {
+        let mut state = harness.inner.lock().unwrap();
+        state.settings.max_run_tokens = 1000;
+        state.settings.max_output_tokens = 4096;
+        state.settings.auto_compact = false;
+    }
+
+    harness.start("检查当前作品并收尾").unwrap();
+    let run = terminal_run(&harness).await;
+
+    assert_eq!(run.status, "completed");
+    assert_eq!(run.tokens, 1820);
+    assert_eq!(fake.request_count(), 1);
+    assert_eq!(fake.requests()[0]["max_output_tokens"], 1000);
+    let prepared = workspace
+        .lock()
+        .unwrap()
+        .events
+        .iter()
+        .find(|event| event.kind == "harness.request.prepared")
+        .unwrap()
+        .data
+        .clone();
+    assert!(prepared["estimatedInputTokens"].as_u64().unwrap() > 1000);
 }
 
 #[tokio::test]
@@ -936,6 +997,214 @@ async fn artworks_save_resolves_latest_current_capture_images() {
         .await
         .unwrap_err();
     assert!(missing_artifact.to_string().contains("artifact不存在"));
+}
+
+#[tokio::test]
+async fn finish_artwork_commits_saves_summary_and_skips_a_followup_request() {
+    let summary = "作品已完成并保存。";
+    let fake = FakeResponses::start(vec![sse([json!({
+        "type":"response.completed",
+        "response":{
+            "id":"finish-response",
+            "status":"completed",
+            "output":[function_call("finish-call", "finish_artwork", json!({
+                "title":"收尾作品",
+                "summary":summary,
+                "tags":["finish-test"]
+            }))],
+            "usage":{"input_tokens":1200,"output_tokens":80,"total_tokens":1280}
+        }
+    })])])
+    .await;
+    let dir = tempfile::tempdir().unwrap();
+    let workspace = workspace(&dir);
+    let hero = seed_capture(&workspace);
+    let harness = harness(workspace.clone(), &fake.base);
+    {
+        let mut state = harness.inner.lock().unwrap();
+        state.settings.max_run_tokens = 1000;
+        state.settings.max_output_tokens = 4096;
+        state.settings.auto_compact = false;
+    }
+
+    harness.start("检查并完成作品").unwrap();
+    let run = terminal_run(&harness).await;
+
+    assert_eq!(run.status, "completed");
+    assert_eq!(run.message, summary);
+    assert_eq!(run.tokens, 1280);
+    assert_eq!(fake.request_count(), 1);
+    assert_eq!(fake.requests()[0]["max_output_tokens"], 1000);
+    let workspace = workspace.lock().unwrap();
+    assert_eq!(workspace.project.commits.len(), 1);
+    let artwork = workspace.library().unwrap().remove(0);
+    assert_eq!(artwork.title, "收尾作品");
+    assert_eq!(artwork.thumbnail.as_deref(), Some(hero.as_str()));
+    assert_eq!(artwork.views, vec![hero.clone()]);
+    let finish_request = workspace
+        .events
+        .iter()
+        .find(|event| event.kind == "tool.request" && event.data["callId"] == "finish-call")
+        .unwrap();
+    assert_eq!(finish_request.data["name"], "finish_artwork");
+    let finish_result = workspace
+        .events
+        .iter()
+        .find(|event| event.kind == "tool.result" && event.data["callId"] == "finish-call")
+        .unwrap();
+    assert_eq!(finish_result.data["result"]["finished"], true);
+    let terminal = workspace
+        .events
+        .iter()
+        .find(|event| event.kind == "harness.finished")
+        .unwrap();
+    assert_eq!(terminal.data["status"], "completed");
+    assert_eq!(terminal.data["message"], summary);
+}
+
+#[tokio::test]
+async fn failed_finish_artwork_stays_active_and_can_be_retried_after_capture() {
+    let title = "可恢复收尾";
+    let summary = "作品已经保存。";
+    let failed_finish = json!({
+        "type":"response.completed",
+        "response":{
+            "id":"finish-failed-response",
+            "status":"completed",
+            "output":[function_call("finish-failed", "finish_artwork", json!({
+                "title":title,
+                "summary":summary
+            }))],
+            "usage":{"input_tokens":100,"output_tokens":20,"total_tokens":120}
+        }
+    });
+    let retry_finish = Reply::Delay(
+        Duration::from_millis(250),
+        Box::new(sse([json!({
+            "type":"response.completed",
+            "response":{
+                "id":"finish-retry-response",
+                "status":"completed",
+                "output":[function_call("finish-retry", "finish_artwork", json!({
+                    "title":title,
+                    "summary":summary
+                }))],
+                "usage":{"input_tokens":100,"output_tokens":20,"total_tokens":120}
+            }
+        })])),
+    );
+    let fake = FakeResponses::start(vec![sse([failed_finish]), retry_finish]).await;
+    let dir = tempfile::tempdir().unwrap();
+    let workspace = workspace(&dir);
+    let harness = harness(workspace.clone(), &fake.base);
+
+    harness.start("检查后保存作品").unwrap();
+    tokio::time::timeout(Duration::from_secs(3), async {
+        loop {
+            if fake.request_count() >= 2 {
+                return;
+            }
+            tokio::time::sleep(Duration::from_millis(5)).await;
+        }
+    })
+    .await
+    .expect("finish failure should allow a recovery request");
+    assert_eq!(
+        harness.inner.lock().unwrap().run.as_ref().unwrap().status,
+        "running"
+    );
+    {
+        let workspace = workspace.lock().unwrap();
+        let failed = workspace
+            .events
+            .iter()
+            .find(|event| event.kind == "tool.result" && event.data["callId"] == "finish-failed")
+            .unwrap();
+        assert_eq!(failed.data["result"]["ok"], false);
+        assert_eq!(failed.data["result"]["error"]["code"], "TOOL_ERROR");
+        assert!(workspace.project.commits.is_empty());
+        assert!(workspace.library().unwrap().is_empty());
+    }
+
+    seed_capture(&workspace);
+    let run = terminal_run(&harness).await;
+
+    assert_eq!(run.status, "completed");
+    assert_eq!(run.message, summary);
+    assert_eq!(fake.request_count(), 2);
+    assert_eq!(workspace.lock().unwrap().project.commits.len(), 1);
+}
+
+#[tokio::test]
+async fn queue_and_steer_messages_continue_after_finish_artwork() {
+    for mode in ["queue", "steer"] {
+        let title = format!("{mode}续作");
+        let summary = "当前作品已保存。";
+        let first_response = Reply::Delay(
+            Duration::from_millis(150),
+            Box::new(sse([json!({
+                "type":"response.completed",
+                "response":{
+                    "id":"finish-before-inbox",
+                    "status":"completed",
+                    "output":[function_call("finish-before-inbox", "finish_artwork", json!({
+                        "title":title,
+                        "summary":summary
+                    }))],
+                    "usage":{"input_tokens":100,"output_tokens":20,"total_tokens":120}
+                }
+            })])),
+        );
+        let fake = FakeResponses::start(vec![
+            first_response,
+            completed(vec![json!({
+                "type":"message",
+                "content":[{"type":"output_text","text":"补充要求已处理。"}]
+            })]),
+        ])
+        .await;
+        let dir = tempfile::tempdir().unwrap();
+        let workspace = workspace(&dir);
+        seed_capture(&workspace);
+        let harness = harness(workspace.clone(), &fake.base);
+
+        harness.start("完成并保存当前作品").unwrap();
+        tokio::time::timeout(Duration::from_secs(2), async {
+            while fake.request_count() == 0 {
+                tokio::time::sleep(Duration::from_millis(5)).await;
+            }
+        })
+        .await
+        .expect("finish request should start");
+        let run_id = harness
+            .inner
+            .lock()
+            .unwrap()
+            .run
+            .as_ref()
+            .unwrap()
+            .id
+            .clone();
+        let request_id = format!("{mode}-after-finish");
+        harness
+            .message(&json!({
+                "prompt":"再检查入口灯是否清楚",
+                "mode":mode,
+                "requestId":request_id,
+                "runId":run_id,
+            }))
+            .unwrap();
+        let run = terminal_run(&harness).await;
+
+        assert_eq!(run.status, "completed");
+        assert_eq!(fake.request_count(), 2);
+        assert!(fake.requests()[1]["input"]
+            .to_string()
+            .contains("再检查入口灯是否清楚"));
+        assert!(workspace.lock().unwrap().events.iter().any(|event| {
+            event.kind == "harness.message.applied" && event.data["requestId"] == request_id
+        }));
+    }
 }
 
 #[tokio::test]

@@ -3,7 +3,7 @@ use crate::{
     fonts::FontCatalog,
     provider::{Cancellation, Provider, ProviderRequestTrace, ProviderSettings},
     recipe::{self, RecipeRequest},
-    store::{now, write_json, Workspace},
+    store::{now, write_json, Artwork, Workspace},
     transport::Transport,
 };
 use anyhow::{bail, Context, Result};
@@ -15,8 +15,8 @@ use std::{
     time::Duration,
 };
 mod prompts;
-pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/2.2";
-pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/2.2";
+pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/2.3";
+pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/2.3";
 
 #[derive(Clone, Debug)]
 struct PendingPrompt {
@@ -893,8 +893,13 @@ impl Harness {
                 bail!("RUN_BUDGET：达到步骤或Token预算，已提交版本仍保留")
             }
 
-            let estimated = estimate(&self.inner.lock().unwrap().conversation.input);
-            if force_compact || (settings.auto_compact && estimated > settings.compact_tokens) {
+            let previous_input_tokens =
+                latest_provider_input_tokens(&self.workspace.lock().unwrap(), &guard.id);
+            if force_compact
+                || (settings.auto_compact
+                    && previous_input_tokens
+                        .is_some_and(|tokens| tokens > settings.compact_tokens as u64))
+            {
                 self.compact_with_guard(&guard, force_compact).await?;
                 let mut state = self.inner.lock().unwrap();
                 if state
@@ -906,6 +911,10 @@ impl Harness {
                 }
                 if manual_compact {
                     return Ok(());
+                }
+                let run = state.run.as_ref().context("没有活动run")?;
+                if run.steps >= settings.max_steps || run.tokens >= settings.max_run_tokens {
+                    bail!("RUN_BUDGET：Provider实际用量已达到步骤或Token预算，停止发起新请求")
                 }
             }
 
@@ -942,8 +951,8 @@ impl Harness {
             let tool_schemas = tools_for_language(&settings.language);
             let remaining_steps = settings.max_steps.saturating_sub(steps_used);
             let remaining_tokens = settings.max_run_tokens.saturating_sub(tokens_used);
-            // The serialized request and context are conservative local estimates;
-            // reserve room for them before setting the per-response output ceiling.
+            // Request estimates guide early completion only. Provider-reported usage
+            // is the source of truth for the cumulative run-token budget.
             let estimated_input_tokens = estimate(&input)
                 .saturating_add(estimate(std::slice::from_ref(&context)))
                 .saturating_add(estimate(std::slice::from_ref(&tool_schemas)))
@@ -952,17 +961,12 @@ impl Harness {
                 .saturating_add(2048);
             let estimated_input_tokens_u64 =
                 u64::try_from(estimated_input_tokens).unwrap_or(u64::MAX);
-            if remaining_tokens <= estimated_input_tokens_u64 {
-                bail!("RUN_BUDGET：剩余Token不足以安全发起下一请求；请保留当前已提交检查点")
+            if remaining_tokens == 0 {
+                bail!("RUN_BUDGET：Provider实际用量已达到Token预算，停止发起新请求")
             }
-            let effective_output_tokens = settings.max_output_tokens.min(
-                remaining_tokens
-                    .saturating_sub(estimated_input_tokens_u64)
-                    .min(u32::MAX as u64) as u32,
-            );
-            if effective_output_tokens < 512 {
-                bail!("RUN_BUDGET：剩余Token不足以发起最小模型请求；请保留当前已提交检查点")
-            }
+            let effective_output_tokens = settings
+                .max_output_tokens
+                .min(remaining_tokens.min(u32::MAX as u64) as u32);
             let remaining_seconds = guard
                 .deadline
                 .saturating_duration_since(tokio::time::Instant::now())
@@ -975,18 +979,18 @@ impl Harness {
                 || remaining_seconds <= 120.0;
             let budget_note = if settings.language == "en" {
                 format!(
-                    "\nCurrent run budget: {remaining_steps} steps, about {remaining_tokens} total tokens, and {remaining_seconds:.0} active seconds remain. Effective output cap for this request: {effective_output_tokens}; the configured cap is not increased.{}",
+                    "\nCurrent run budget: {remaining_steps} steps, {remaining_tokens} provider-reported total tokens, and {remaining_seconds:.0} active seconds remain. Effective output cap for this request: {effective_output_tokens}; it never exceeds the configured cap or remaining token budget. Local input estimates are advisory only. Provider input usage can exceed the remaining budget unexpectedly; at most one complete response may cross it, and no later model request will start.{}",
                     if near_budget {
-                        " Budget is close: stop adding detail, inspect the current result, then use this response to commit the checkpoint and save the artwork if possible. If there is room for only one operation, commit the checkpoint and stop; do not spend the remaining budget on polish."
+                        " Budget is close: stop adding detail, inspect the current result, and use this response's final tool call for finish_artwork so commit and library save happen together. Do not spend the remaining budget on polish."
                     } else {
                         ""
                     }
                 )
             } else {
                 format!(
-                    "\n当前run预算：剩余{remaining_steps}步、约{remaining_tokens}个总Token和{remaining_seconds:.0}秒活动时间。本请求有效输出上限{effective_output_tokens}；不会提高已配置的Token上限。{}",
+                    "\n当前run预算：剩余{remaining_steps}步、Provider实际统计的总Token余量{remaining_tokens}和{remaining_seconds:.0}秒活动时间。本请求有效输出上限{effective_output_tokens}，不会超过配置上限或实际剩余预算。输入估算仅作提前收尾提示。Provider实际输入用量可能不可预测地超过余量；最多允许一个完整响应越过预算，之后不再发起模型请求。{}",
                     if near_budget {
-                        "预算已接近上限：停止增加细节，检查当前结果；如果预算允许，请在本轮用一次紧凑响应完成commit检查点与作品库保存。若只够一个操作，优先commit检查点并停止，不要把余量花在润色上。"
+                        "预算已接近上限：停止增加细节并检查当前结果；本响应最后一个工具调用用finish_artwork一次完成commit和作品库保存，不要再把余量花在润色上。"
                     } else {
                         ""
                     }
@@ -1131,6 +1135,7 @@ impl Harness {
             let mut tool_outputs = Vec::new();
             let mut budget_expired = false;
             let mut cancel_remaining = false;
+            let mut finish_succeeded = false;
             for item in &output {
                 if item["type"] != "function_call" {
                     continue;
@@ -1201,6 +1206,9 @@ impl Harness {
                         "error":{"code":"TOOL_ERROR","message":self.provider.redact(&error.to_string())}
                     }),
                 };
+                if name == "finish_artwork" && !cancelled && value["finished"] == true {
+                    finish_succeeded = true;
+                }
                 if cancelled {
                     cancel_remaining = true;
                 }
@@ -1263,12 +1271,20 @@ impl Harness {
                     "output":parts,
                 }));
             }
-            self.append_response_history(&guard, &output, tool_outputs, !called)?;
+            self.append_response_history(
+                &guard,
+                &output,
+                tool_outputs,
+                !called || finish_succeeded,
+            )?;
             if budget_expired {
                 bail!("RUN_TIME_BUDGET：run超过配置时长，已保存已提交内容")
             }
             if !self.guard_is_current(&guard) {
                 bail!("RUN_CANCELLED")
+            }
+            if finish_succeeded {
+                return Ok(());
             }
             if !called {
                 let state = self.inner.lock().unwrap();
@@ -1454,7 +1470,7 @@ impl Harness {
             "pinnedNotes":workspace.project.pinned_notes,
             "sync":self.transport.state(),
             "sdkVersion":recipe::SDK_VERSION,
-            "sdk":"mf.box(min,[w,h,d],{style:'wood',tint:0,motion:0}); mf.erase(min,size); mf.paint(min,size,{style}); mf.clear(); mf.group(name,()=>{}); mf.repeat(n,(i)=>{}); mf.mirror('x',()=>{}); mf.translate([x,y,z],()=>{}); mf.line(a,b,{thickness:1,style}); mf.stairs(origin,n,{width:3,depth:1,rise:1,style}); mf.wall(origin,w,h,{thickness:1,style}); mf.roof(origin,w,d,h,{style}); Math.random()/mf.random() deterministic by seed. All coordinates integer signed grid. Y is height. VRC target requires X/Z[-128,128),Y[0,256). Styles are catalog IDs/UID names. mode apply preserves current geometry; replace starts from empty."
+            "sdk":"mf.box(min,[w,h,d],{style:'wood',tint:0,motion:0}); mf.erase(min,size); mf.paint(min,size,{style}) recolors existing voxels only and never creates them; use mf.box to add voxels. mf.clear(); mf.group(name,()=>{}); mf.repeat(n,(i)=>{}); mf.mirror('x',()=>{}); mf.translate([x,y,z],()=>{}); mf.line(a,b,{thickness:1,style}); mf.stairs(origin,n,{width:3,depth:1,rise:1,style}); mf.wall(origin,w,h,{thickness:1,style}); mf.roof(origin,w,d,h,{style}); Math.random()/mf.random() deterministic by seed. All coordinates integer signed grid. Y is height. VRC target requires X/Z[-128,128),Y[0,256). Styles are catalog IDs/UID names. mode apply preserves current geometry; replace starts from empty."
         })
     }
     pub async fn tool(&self, name: &str, args: &Value, run: Option<&str>) -> Result<Value> {
@@ -1563,68 +1579,13 @@ impl Harness {
                         Ok(json!({"ok":true,"artworks":workspace.library()?.into_iter().filter(|artwork|artwork.title.to_lowercase().contains(&query)||artwork.tags.iter().any(|tag|tag.to_lowercase().contains(&query))).collect::<Vec<_>>()}))
                     }
                     "save" => {
-                        let capture_images = latest_capture_images(workspace);
-                        let requested_views = args["views"]
-                            .as_array()
-                            .map(|values| {
-                                values
-                                    .iter()
-                                    .map(|value| {
-                                        value
-                                            .as_str()
-                                            .map(str::to_owned)
-                                            .context("作品视角必须是字符串")
-                                    })
-                                    .collect::<Result<Vec<_>>>()
-                            })
-                            .transpose()?
-                            .unwrap_or_default();
-                        let views = if requested_views.is_empty() {
-                            capture_images
-                                .as_deref()
-                                .unwrap_or_default()
-                                .iter()
-                                .map(|(_, artifact)| artifact.clone())
-                                .collect()
-                        } else {
-                            requested_views
-                                .iter()
-                                .map(|view| resolve_artwork_image(view, capture_images.as_deref()))
-                                .collect::<Result<Vec<_>>>()?
-                        };
-                        let thumbnail = match args["thumbnail"].as_str() {
-                            Some(value) => {
-                                Some(resolve_artwork_image(value, capture_images.as_deref())?)
-                            }
-                            None => capture_images.as_deref().and_then(|images| {
-                                images
-                                    .iter()
-                                    .find(|(view, _)| view == "hero")
-                                    .or_else(|| images.first())
-                                    .map(|(_, artifact)| artifact.clone())
-                            }),
-                        };
-                        let artwork = workspace.save_artwork_views(
-                            args["title"].as_str().unwrap_or("新作品"),
-                            args["tags"]
-                                .as_array()
-                                .map(|array| {
-                                    array
-                                        .iter()
-                                        .filter_map(|item| item.as_str().map(str::to_owned))
-                                        .collect()
-                                })
-                                .unwrap_or_default(),
-                            thumbnail,
-                            views,
-                            run,
-                        )?;
+                        let artwork = save_artwork_from_args(workspace, args, run)?;
                         Ok(json!({"ok":true,"artwork":artwork}))
                     }
-                    "load" | "fork" => workspace.load_artwork(args["id"].as_str().context("缺少作品ID")?),
                     _ => bail!("未知作品库操作"),
                 }
             }),
+            "finish_artwork" => self.finish_artwork(args, run, guard.as_ref()),
             "compact_context" => {
                 let mut state = self.inner.lock().unwrap();
                 if let Some(ref guard) = guard {
@@ -1653,6 +1614,46 @@ impl Harness {
             operation(&mut workspace)
         } else {
             operation(&mut self.workspace.lock().unwrap())
+        }
+    }
+
+    fn finish_artwork(
+        &self,
+        args: &Value,
+        run: Option<&str>,
+        guard: Option<&RunGuard>,
+    ) -> Result<Value> {
+        let title = args["title"]
+            .as_str()
+            .filter(|value| !value.trim().is_empty() && value.len() <= 1024)
+            .context("finish_artwork需要不超过1024字节的title")?;
+        let summary = args["summary"]
+            .as_str()
+            .filter(|value| !value.trim().is_empty() && value.len() <= 16_000)
+            .context("finish_artwork需要不超过16000字节的summary")?;
+
+        if let Some(guard) = guard {
+            let mut state = self.inner.lock().unwrap();
+            if !guard_matches_locked(&state, guard) {
+                bail!("RUN_CANCELLED")
+            }
+            let mut workspace = self.workspace.lock().unwrap();
+            let result = finish_artwork_in_workspace(&mut workspace, args, title, summary, run)?;
+            let run_state = state
+                .run
+                .as_mut()
+                .filter(|run_state| run_state.id == guard.id && run_state.epoch == guard.epoch)
+                .context("RUN_CANCELLED")?;
+            run_state.message = summary.to_owned();
+            Ok(result)
+        } else {
+            finish_artwork_in_workspace(
+                &mut self.workspace.lock().unwrap(),
+                args,
+                title,
+                summary,
+                run,
+            )
         }
     }
 
@@ -1947,7 +1948,8 @@ impl Harness {
             state.compact_requested = false;
             (state.conversation.clone(), state.settings.clone())
         };
-        let before = estimate(&conversation.input);
+        let before = latest_provider_input_tokens(&self.workspace.lock().unwrap(), &guard.id)
+            .unwrap_or_default() as usize;
         if before < 500 && !force {
             return Ok(());
         }
@@ -2236,7 +2238,11 @@ fn assistant_text(output: &[Value]) -> Option<String> {
 
 fn validate_completed_output(output: &[Value]) -> Result<()> {
     let mut ids = HashSet::new();
-    for item in output.iter().filter(|item| item["type"] == "function_call") {
+    let calls = output
+        .iter()
+        .filter(|item| item["type"] == "function_call")
+        .collect::<Vec<_>>();
+    for item in &calls {
         let call_id = item["call_id"]
             .as_str()
             .filter(|id| !id.trim().is_empty())
@@ -2246,6 +2252,19 @@ fn validate_completed_output(output: &[Value]) -> Result<()> {
         }
         if !ids.insert(call_id.to_owned()) {
             bail!("完整响应包含重复call_id；未执行任何工具")
+        }
+    }
+    let finish_calls = calls
+        .iter()
+        .enumerate()
+        .filter(|(_, item)| item["name"] == "finish_artwork")
+        .collect::<Vec<_>>();
+    if finish_calls.len() > 1 {
+        bail!("完整响应包含多个finish_artwork；未执行任何工具")
+    }
+    if let Some((index, _)) = finish_calls.first() {
+        if *index + 1 != calls.len() {
+            bail!("finish_artwork必须是完整工具批次最后一个工具调用；未执行任何工具")
         }
     }
     Ok(())
@@ -2280,6 +2299,15 @@ fn latest_capture_images(workspace: &Workspace) -> Option<Vec<(String, String)>>
     )
 }
 
+fn latest_provider_input_tokens(workspace: &Workspace, run_id: &str) -> Option<u64> {
+    workspace
+        .events
+        .iter()
+        .rev()
+        .find(|event| event.kind == "provider.response" && event.run_id.as_deref() == Some(run_id))
+        .and_then(|event| event.data["body"]["usage"]["input_tokens"].as_u64())
+}
+
 fn resolve_artwork_image(
     value: &str,
     capture_images: Option<&[(String, String)]>,
@@ -2297,6 +2325,96 @@ fn resolve_artwork_image(
             });
     }
     Ok(value.to_owned())
+}
+
+fn save_artwork_from_args(
+    workspace: &mut Workspace,
+    args: &Value,
+    run: Option<&str>,
+) -> Result<Artwork> {
+    let capture_images = latest_capture_images(workspace);
+    let requested_views = match args.get("views") {
+        Some(Value::Array(values)) => values
+            .iter()
+            .map(|value| {
+                value
+                    .as_str()
+                    .map(str::to_owned)
+                    .context("作品视角必须是字符串")
+            })
+            .collect::<Result<Vec<_>>>()?,
+        None | Some(Value::Null) => Vec::new(),
+        _ => bail!("作品views必须是字符串数组"),
+    };
+    let views = if requested_views.is_empty() {
+        capture_images
+            .as_deref()
+            .unwrap_or_default()
+            .iter()
+            .map(|(_, artifact)| artifact.clone())
+            .collect()
+    } else {
+        requested_views
+            .iter()
+            .map(|view| resolve_artwork_image(view, capture_images.as_deref()))
+            .collect::<Result<Vec<_>>>()?
+    };
+    let thumbnail = match args.get("thumbnail") {
+        Some(Value::String(value)) => {
+            Some(resolve_artwork_image(value, capture_images.as_deref())?)
+        }
+        None | Some(Value::Null) => capture_images.as_deref().and_then(|images| {
+            images
+                .iter()
+                .find(|(view, _)| view == "hero")
+                .or_else(|| images.first())
+                .map(|(_, artifact)| artifact.clone())
+        }),
+        _ => bail!("作品thumbnail必须是字符串"),
+    };
+    let tags = match args.get("tags") {
+        Some(Value::Array(values)) => values
+            .iter()
+            .map(|value| {
+                value
+                    .as_str()
+                    .map(str::to_owned)
+                    .context("作品tag必须是字符串")
+            })
+            .collect::<Result<Vec<_>>>()?,
+        None | Some(Value::Null) => Vec::new(),
+        _ => bail!("作品tags必须是字符串数组"),
+    };
+    workspace.save_artwork_views(
+        args["title"].as_str().unwrap_or("新作品"),
+        tags,
+        thumbnail,
+        views,
+        run,
+    )
+}
+
+fn finish_artwork_in_workspace(
+    workspace: &mut Workspace,
+    args: &Value,
+    title: &str,
+    summary: &str,
+    run: Option<&str>,
+) -> Result<Value> {
+    let revision = workspace.project.scene.revision;
+    if latest_capture_images(workspace).is_none_or(|images| images.is_empty()) {
+        bail!("FINISH_CAPTURE_REQUIRED：请先为当前revision完成至少一个真实截图")
+    }
+    let commit = workspace.commit(Some(revision), title, run)?;
+    let artwork = save_artwork_from_args(workspace, args, run)?;
+    Ok(json!({
+        "ok":true,
+        "finished":true,
+        "revision":revision,
+        "commit":commit,
+        "artwork":artwork,
+        "summary":summary,
+    }))
 }
 
 fn record_run_tokens(state: &mut State, id: &str, tokens: u64) {
@@ -2336,6 +2454,7 @@ pub fn tools_for_language(language: &str) -> Value {
             "Search, save, load, or fork an artwork. Save defaults to the latest capture of the current revision; views accepts captured view names such as hero/front/top or real artifact filenames, and thumbnail defaults to the captured hero or first image.",
             "Compact model context after a complete tool batch; keep raw logs, source artifacts, and artwork.",
             "List fonts, preview voxel text, or apply the exact preview at a guarded baseRevision. Preview returns a complete applyTemplate; reuse it without changing text layout fields. requestId is optional because the tool call ID is injected automatically. Use a material ID from get_context.",
+            "Finish a reviewed artwork by committing the current revision and saving it with the latest real capture. Call this as the last function_call in the batch. Its summary becomes the user-facing completion message, so no follow-up response is needed.",
         ]
     } else {
         [
@@ -2350,6 +2469,7 @@ pub fn tools_for_language(language: &str) -> Value {
             "搜索、保存、载入或分支作品。save 默认使用当前 revision 最新截图的真实图片；views 可传 hero/front/top 等截图视角名或真实 artifact 文件名，thumbnail 默认选 hero 或第一张截图。",
             "在完整工具批次后整理模型上下文；保留原始日志、源 artifact 和作品。",
             "列字体、预览或应用体素文字。preview 会返回完整 applyTemplate；apply 时原样复用，不要改文字布局字段。requestId 可省略，工具会自动注入 tool_call_id。材质使用 get_context 返回的 ID。",
+            "完成已检查的作品：提交当前 revision 并用最新真实截图保存到作品库。必须作为本批次最后一个 function_call；summary 会直接展示给用户，不需要再调用模型生成结束语。",
         ]
     };
     let text_properties = json!({
@@ -2460,6 +2580,18 @@ pub fn tools_for_language(language: &str) -> Value {
             text_properties,
             vec!["mode"]
         ),
+        tool(
+            "finish_artwork",
+            descriptions[11],
+            json!({
+                "title":{"type":"string","minLength":1,"maxLength":1024},
+                "summary":{"type":"string","minLength":1,"maxLength":16000},
+                "tags":{"type":"array","items":{"type":"string","maxLength":128},"maxItems":64},
+                "views":{"type":"array","items":{"type":"string"},"maxItems":5},
+                "thumbnail":{"type":"string"}
+            }),
+            vec!["title", "summary"]
+        ),
     ])
 }
 
@@ -2527,6 +2659,7 @@ mod tests {
             .collect::<Vec<_>>();
         assert!(names.contains(&"run_recipe"));
         assert!(names.contains(&"voxel_text"));
+        assert!(names.contains(&"finish_artwork"));
         assert!(!names
             .iter()
             .any(|name| ["shell", "bash", "browser", "edit_file"].contains(name)));
@@ -2564,6 +2697,28 @@ mod tests {
             json!({"type":"function_call","call_id":"call-1","name":"commit","arguments":"{}"}),
         ];
         assert!(validate_completed_output(&duplicate).is_err());
+    }
+
+    #[test]
+    fn finish_artwork_must_be_the_last_function_call_in_its_batch() {
+        let finish_only = vec![function_call_for_test("finish-1", "finish_artwork")];
+        assert!(validate_completed_output(&finish_only).is_ok());
+
+        let finish_before_other_call = vec![
+            function_call_for_test("finish-1", "finish_artwork"),
+            function_call_for_test("commit-1", "commit"),
+        ];
+        assert!(validate_completed_output(&finish_before_other_call).is_err());
+
+        let duplicate_finish = vec![
+            function_call_for_test("finish-1", "finish_artwork"),
+            function_call_for_test("finish-2", "finish_artwork"),
+        ];
+        assert!(validate_completed_output(&duplicate_finish).is_err());
+    }
+
+    fn function_call_for_test(call_id: &str, name: &str) -> Value {
+        json!({"type":"function_call","call_id":call_id,"name":name,"arguments":"{}"})
     }
 
     #[test]
