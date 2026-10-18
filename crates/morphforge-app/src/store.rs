@@ -6,9 +6,9 @@ use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use sha2::{Digest, Sha256};
 use std::{
-    collections::{BTreeMap, HashMap},
+    collections::{BTreeMap, BTreeSet, HashMap, VecDeque},
     fs,
-    io::Write,
+    io::{BufRead, BufReader, Write},
     path::{Path, PathBuf},
 };
 use uuid::Uuid;
@@ -102,6 +102,16 @@ pub struct Commit {
     pub created_at: String,
     pub scene_hash: String,
 }
+#[derive(Clone, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
+pub struct TextReceipt {
+    pub revision: u64,
+    pub stats: Value,
+    pub layout: Value,
+    pub font: Value,
+    pub request_id: String,
+    pub request_fingerprint: String,
+}
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Project {
@@ -114,6 +124,10 @@ pub struct Project {
     pub commits: Vec<Commit>,
     #[serde(default)]
     pub pinned_notes: String,
+    #[serde(default)]
+    pub text_receipts: BTreeMap<String, TextReceipt>,
+    #[serde(default)]
+    pub protected_groups: BTreeSet<String>,
 }
 impl Default for Project {
     fn default() -> Self {
@@ -125,6 +139,8 @@ impl Default for Project {
             materials: builtins(),
             commits: vec![],
             pinned_notes: String::new(),
+            text_receipts: BTreeMap::new(),
+            protected_groups: BTreeSet::new(),
         }
     }
 }
@@ -182,17 +198,22 @@ impl Workspace {
             Project::default()
         };
         project.scene.validate(&project.limits)?;
-        let mut events = vec![];
+        let mut events = VecDeque::with_capacity(5000);
+        let mut last_seq = 0u64;
         let log = root.join("events/events.jsonl");
         if log.exists() {
-            let text = fs::read_to_string(log)?;
-            for line in text.lines() {
-                if let Ok(e) = serde_json::from_str::<Event>(line) {
-                    events.push(e)
+            for line in BufReader::new(fs::File::open(log)?).lines() {
+                let Ok(line) = line else { continue };
+                if let Ok(event) = serde_json::from_str::<Event>(&line) {
+                    last_seq = event.seq;
+                    if events.len() == 5000 {
+                        events.pop_front();
+                    }
+                    events.push_back(event);
                 }
             }
         }
-        let next_seq = events.last().map_or(1, |e| e.seq + 1);
+        let next_seq = last_seq.saturating_add(1).max(1);
         let mut revisions = load_snapshots(&root, &project.id)?;
         revisions.entry(project.scene.revision).or_insert(());
         let mut undo: Vec<u64> = revisions
@@ -206,14 +227,7 @@ impl Workspace {
         let mut w = Self {
             root,
             project,
-            events: events
-                .into_iter()
-                .rev()
-                .take(5000)
-                .collect::<Vec<_>>()
-                .into_iter()
-                .rev()
-                .collect(),
+            events: events.into_iter().collect(),
             next_seq,
             revisions,
             undo,
@@ -330,6 +344,9 @@ impl Workspace {
         run: Option<&str>,
     ) -> Result<Value> {
         if let Some(id) = request {
+            if self.project.text_receipts.contains_key(id) {
+                bail!("REQUEST_ID_CONFLICT：该requestId已经用于文字编辑")
+            }
             if let Some(v) = self.requests.get(id) {
                 return Ok(v.clone());
             }
@@ -340,6 +357,7 @@ impl Workspace {
         let before = self.project.scene.clone();
         let start = std::time::Instant::now();
         let next = before.apply(ops, &self.project.limits)?;
+        self.ensure_protected_groups_unchanged(&before, &next)?;
         self.undo.push(before.revision);
         self.undo = self
             .undo
@@ -362,6 +380,136 @@ impl Workspace {
         }
         Ok(value)
     }
+    pub fn text_receipt(&self, id: &str, fingerprint: &str) -> Result<Option<Value>> {
+        validate_text_receipt_key(id, fingerprint)?;
+        let Some(receipt) = self.project.text_receipts.get(id) else {
+            return Ok(None);
+        };
+        if receipt.request_id != id || receipt.request_fingerprint != fingerprint {
+            bail!("REQUEST_ID_CONFLICT：同一requestId不能用于不同文字设置")
+        }
+        Ok(Some(serde_json::to_value(receipt)?))
+    }
+    #[allow(clippy::too_many_arguments)]
+    pub fn apply_text(
+        &mut self,
+        ops: &[Operation],
+        base: u64,
+        id: &str,
+        fingerprint: &str,
+        font: &Value,
+        layout: &Value,
+        run: Option<&str>,
+    ) -> Result<Value> {
+        validate_text_receipt_key(id, fingerprint)?;
+        if let Some(receipt) = self.text_receipt(id, fingerprint)? {
+            self.requests.insert(id.to_owned(), receipt.clone());
+            return Ok(receipt);
+        }
+        if self.requests.contains_key(id)
+            || self.events.iter().any(|event| {
+                matches!(event.kind.as_str(), "geometry.applied" | "text.applied")
+                    && event.data["requestId"].as_str() == Some(id)
+            })
+        {
+            bail!("REQUEST_ID_CONFLICT：该requestId已经用于其他编辑")
+        }
+        if base != self.project.scene.revision {
+            bail!("REVISION_CONFLICT：工程已被修改，请重新读取上下文")
+        }
+
+        let before = self.project.scene.clone();
+        let start = std::time::Instant::now();
+        let next = before.apply(ops, &self.project.limits)?;
+        self.ensure_protected_groups_unchanged(&before, &next)?;
+        let stats = serde_json::to_value(next.stats(&self.project.limits))?;
+        let receipt = TextReceipt {
+            revision: next.revision,
+            stats: stats.clone(),
+            layout: layout.clone(),
+            font: font.clone(),
+            request_id: id.to_owned(),
+            request_fingerprint: fingerprint.to_owned(),
+        };
+
+        let previous_undo = self.undo.clone();
+        let previous_redo = self.redo.clone();
+        let previous_revisions = self.revisions.clone();
+        let attempted_revision = next.revision;
+        let material_snapshot = self.material_snapshot_path(attempted_revision);
+        let scene_snapshot = self.snapshot_path(attempted_revision);
+        let material_snapshot_existed = material_snapshot.exists();
+        let scene_snapshot_existed = scene_snapshot.exists();
+        self.undo.push(before.revision);
+        self.undo = self
+            .undo
+            .iter()
+            .rev()
+            .take(128)
+            .copied()
+            .collect::<Vec<_>>()
+            .into_iter()
+            .rev()
+            .collect();
+        self.redo.clear();
+        self.revisions.insert(next.revision, ());
+        self.project.scene = next;
+        self.project
+            .text_receipts
+            .insert(id.to_owned(), receipt.clone());
+        if let Err(error) = self.persist() {
+            self.project.scene = before;
+            self.project.text_receipts.remove(id);
+            self.undo = previous_undo;
+            self.redo = previous_redo;
+            self.revisions = previous_revisions;
+            if attempted_revision != self.project.scene.revision {
+                if !material_snapshot_existed {
+                    let _ = fs::remove_file(material_snapshot);
+                }
+                if !scene_snapshot_existed {
+                    let _ = fs::remove_file(scene_snapshot);
+                }
+            }
+            return Err(error);
+        }
+
+        let receipt_value = serde_json::to_value(&receipt)?;
+        self.requests.insert(id.to_owned(), receipt_value.clone());
+        let geometry_result = json!({
+            "ok":true,
+            "revision":receipt.revision,
+            "stats":stats,
+            "changed":{
+                "before":before.boxes.len(),
+                "after":self.project.scene.boxes.len(),
+            },
+            "generationMs":start.elapsed().as_secs_f64()*1000.,
+        });
+        self.event(
+            "geometry.applied",
+            run,
+            json!({
+                "baseRevision":before.revision,
+                "requestId":id,
+                "operations":ops,
+                "result":geometry_result,
+            }),
+        )?;
+        self.event(
+            "text.applied",
+            run,
+            json!({
+                "requestId":id,
+                "requestFingerprint":fingerprint,
+                "font":font,
+                "layout":layout,
+                "result":receipt_value,
+                "baseRevision":base,
+            }),
+        )?;
+        Ok(receipt_value)
+    }
     pub fn replace(
         &mut self,
         mut scene: Scene,
@@ -372,6 +520,7 @@ impl Workspace {
             bail!("REVISION_CONFLICT")
         }
         scene.validate(&self.project.limits)?;
+        self.ensure_protected_groups_unchanged(&self.project.scene, &scene)?;
         let before = self.project.scene.revision;
         scene.revision = before + 1;
         self.undo.push(before);
@@ -388,13 +537,19 @@ impl Workspace {
         let target = if let Some(v) = to {
             v
         } else if redo {
-            self.redo.pop().context("没有可重做版本")?
+            *self.redo.last().context("没有可重做版本")?
         } else {
-            self.undo.pop().context("没有可撤销版本")?
+            *self.undo.last().context("没有可撤销版本")?
         };
         let scene = self.scene_at(target)?;
+        self.ensure_protected_groups_unchanged(&self.project.scene, &scene)?;
         let current = self.project.scene.revision;
         let restored_materials = self.materials_at(target)?;
+        if redo {
+            self.redo.pop();
+        } else {
+            self.undo.pop();
+        }
         self.project.materials = restored_materials;
         if redo {
             self.undo.push(current)
@@ -516,6 +671,7 @@ impl Workspace {
         let mut scene = p.scene;
         scene.revision = self.project.scene.revision + 1;
         scene.validate(&self.project.limits)?;
+        self.ensure_protected_groups_unchanged(&self.project.scene, &scene)?;
         self.undo.push(self.project.scene.revision);
         self.redo.clear();
         self.project.scene = scene.clone();
@@ -530,9 +686,117 @@ impl Workspace {
         )?;
         Ok(json!({"ok":true,"revision":self.project.scene.revision}))
     }
-    pub fn state(&self) -> Value {
-        json!({"project":{"id":self.project.id,"name":self.project.name,"cellSize":self.project.scene.cell_size,"size":self.project.scene.size,"pinnedNotes":self.project.pinned_notes},"revision":self.project.scene.revision,"stats":self.project.scene.stats(&self.project.limits),"canUndo":!self.undo.is_empty(),"canRedo":!self.redo.is_empty(),"commits":self.project.commits,"eventSeq":self.next_seq-1})
+    pub fn set_protected_groups(&mut self, groups: Vec<String>) -> Result<()> {
+        if groups.len() > 256 {
+            bail!("受保护分组不得超过256个")
+        }
+        for group in &groups {
+            if group.is_empty() || group.len() > 128 {
+                bail!("受保护分组名称须为1..128字节")
+            }
+        }
+        let next: BTreeSet<String> = groups.into_iter().collect();
+        if next == self.project.protected_groups {
+            return Ok(());
+        }
+
+        let previous_groups = self.project.protected_groups.clone();
+        let previous_revision = self.project.scene.revision;
+        let next_revision = previous_revision
+            .checked_add(1)
+            .context("场景revision溢出")?;
+        let revision_was_present = self.revisions.contains_key(&next_revision);
+        let material_snapshot = self.material_snapshot_path(next_revision);
+        let scene_snapshot = self.snapshot_path(next_revision);
+        let material_snapshot_existed = material_snapshot.exists();
+        let scene_snapshot_existed = scene_snapshot.exists();
+
+        self.project.protected_groups = next;
+        self.project.scene.revision = next_revision;
+        self.revisions.insert(next_revision, ());
+        if let Err(error) = self.persist() {
+            self.project.protected_groups = previous_groups;
+            self.project.scene.revision = previous_revision;
+            if !revision_was_present {
+                self.revisions.remove(&next_revision);
+            }
+            if !material_snapshot_existed {
+                let _ = fs::remove_file(material_snapshot);
+            }
+            if !scene_snapshot_existed {
+                let _ = fs::remove_file(scene_snapshot);
+            }
+            return Err(error);
+        }
+        self.event(
+            "project.protected_groups",
+            None,
+            json!({
+                "protectedGroups":self.project.protected_groups,
+                "revision":self.project.scene.revision,
+            }),
+        )?;
+        Ok(())
     }
+    pub fn state(&self) -> Value {
+        json!({"project":{"id":self.project.id,"name":self.project.name,"cellSize":self.project.scene.cell_size,"size":self.project.scene.size,"pinnedNotes":self.project.pinned_notes,"protectedGroups":self.project.protected_groups},"revision":self.project.scene.revision,"stats":self.project.scene.stats(&self.project.limits),"canUndo":!self.undo.is_empty(),"canRedo":!self.redo.is_empty(),"commits":self.project.commits,"eventSeq":self.next_seq-1})
+    }
+    fn ensure_protected_groups_unchanged(&self, before: &Scene, after: &Scene) -> Result<()> {
+        if self.project.protected_groups.is_empty() {
+            return Ok(());
+        }
+        let changed: Vec<_> = self
+            .project
+            .protected_groups
+            .iter()
+            .filter(|group| protected_boxes(before, group) != protected_boxes(after, group))
+            .cloned()
+            .collect();
+        if !changed.is_empty() {
+            bail!(
+                "PROTECTED_GROUP_CONFLICT：受保护分组内容发生变化：{}",
+                changed.join(", ")
+            )
+        }
+        Ok(())
+    }
+}
+#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
+struct ProtectedBox {
+    id: u64,
+    min: [i32; 3],
+    size: [u32; 3],
+    style_id: u32,
+    tint_id: u8,
+    motion_phase: u8,
+    group: String,
+}
+fn protected_boxes(scene: &Scene, group: &str) -> Vec<ProtectedBox> {
+    let mut boxes: Vec<_> = scene
+        .boxes
+        .iter()
+        .filter(|item| item.group == group)
+        .map(|item| ProtectedBox {
+            id: item.id,
+            min: item.min,
+            size: item.size,
+            style_id: item.style_id,
+            tint_id: item.tint_id,
+            motion_phase: item.motion_phase,
+            group: item.group.clone(),
+        })
+        .collect();
+    boxes.sort();
+    boxes
+}
+fn validate_text_receipt_key(id: &str, fingerprint: &str) -> Result<()> {
+    if id.is_empty() || id.len() > 256 {
+        bail!("文字requestId须为1..256字节")
+    }
+    if fingerprint.is_empty() || fingerprint.len() > 256 {
+        bail!("文字请求指纹须为1..256字节")
+    }
+    Ok(())
 }
 pub fn validate_id(id: &str) -> Result<()> {
     if id.is_empty()

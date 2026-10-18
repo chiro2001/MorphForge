@@ -8,6 +8,7 @@ use axum::{
 };
 use morphforge_app::{
     capture::CaptureBroker,
+    fonts::FontCatalog,
     harness::{Conversation, Harness, Run},
     provider::{Cancellation, Provider, ProviderSettings},
     store::{write_json, Workspace},
@@ -141,6 +142,62 @@ fn completed(output: Vec<Value>) -> Reply {
     })])
 }
 
+fn function_call(call_id: &str, name: &str, arguments: Value) -> Value {
+    json!({
+        "type":"function_call",
+        "call_id":call_id,
+        "name":name,
+        "arguments":serde_json::to_string(&arguments).unwrap(),
+    })
+}
+
+async fn wait_for_event(workspace: &Arc<Mutex<Workspace>>, kind: &str) {
+    tokio::time::timeout(Duration::from_secs(5), async {
+        loop {
+            if workspace
+                .lock()
+                .unwrap()
+                .events
+                .iter()
+                .any(|event| event.kind == kind)
+            {
+                return;
+            }
+            tokio::time::sleep(Duration::from_millis(5)).await;
+        }
+    })
+    .await
+    .unwrap_or_else(|_| panic!("timed out waiting for {kind}"));
+}
+
+async fn complete_pending_capture(broker: CaptureBroker, workspace: Arc<Mutex<Workspace>>) {
+    use base64::Engine;
+    tokio::time::timeout(Duration::from_secs(5), async {
+        loop {
+            let job = broker.claim();
+            if !job.is_null() {
+                let bytes = b"\x89PNG\r\n\x1a\nfixture";
+                let image = format!(
+                    "data:image/png;base64,{}",
+                    base64::engine::general_purpose::STANDARD.encode(bytes)
+                );
+                let result = json!({
+                    "id":job["id"],
+                    "revision":job["revision"],
+                    "images":[{"view":"hero","data":image}],
+                });
+                broker
+                    .complete(&mut workspace.lock().unwrap(), &result)
+                    .unwrap();
+                return;
+            }
+            tokio::time::sleep(Duration::from_millis(5)).await;
+        }
+    })
+    .await
+    .expect("capture job should be claimed and completed")
+}
+
 fn incomplete_tool_response() -> Reply {
     sse([
         json!({
@@ -196,7 +253,15 @@ async fn terminal_run(harness: &Harness) -> Run {
     tokio::time::timeout(Duration::from_secs(8), async {
         loop {
             if let Some(run) = harness.inner.lock().unwrap().run.clone() {
-                if !["running", "compacting"].contains(&run.status.as_str()) {
+                if ![
+                    "running",
+                    "compacting",
+                    "interrupting",
+                    "pausing",
+                    "stopping",
+                ]
+                .contains(&run.status.as_str())
+                {
                     return run;
                 }
             }
@@ -229,6 +294,70 @@ async fn incomplete_sse_tool_call_never_reaches_tool_executor() {
         .iter()
         .any(|event| event.kind == "provider.incomplete"));
     assert_eq!(fake.request_count(), 1);
+}
+
+#[tokio::test]
+async fn max_output_incomplete_retries_compactly_without_dispatching_partial_tools() {
+    let partial = Reply::Sse(format!(
+        "data: {}\n\n",
+        json!({
+            "type":"response.incomplete",
+            "response":{
+                "id":"truncated-response",
+                "status":"incomplete",
+                "incomplete_details":{"reason":"max_output_tokens"},
+                "usage":{"input_tokens":100,"output_tokens":16384,"reasoning_tokens":16000,"total_tokens":16484},
+                "output":[{
+                    "type":"function_call",
+                    "call_id":"partial-recipe",
+                    "name":"run_recipe",
+                    "arguments":"{\"code\":\"mf.box([0,0,0],[1,1,1]);"
+                }]
+            }
+        })
+    ));
+    let fake = FakeResponses::start(vec![
+        partial,
+        completed(vec![json!({
+            "type":"message",
+            "content":[{"type":"output_text","text":"已用较短请求完成。"}]
+        })]),
+    ])
+    .await;
+    let dir = tempfile::tempdir().unwrap();
+    let workspace = workspace(&dir);
+    let harness = harness(workspace.clone(), &fake.base);
+
+    harness.start("先画一个大厅，然后检查视图").unwrap();
+    let run = terminal_run(&harness).await;
+
+    assert_eq!(run.status, "completed");
+    assert_eq!(run.steps, 2, "incomplete responses spend a step");
+    assert_eq!(
+        run.tokens, 16_500,
+        "incomplete usage counts toward the run budget"
+    );
+    assert_eq!(fake.request_count(), 2);
+    assert_eq!(workspace.lock().unwrap().project.scene.revision, 0);
+    assert!(!workspace
+        .lock()
+        .unwrap()
+        .events
+        .iter()
+        .any(|event| event.kind == "tool.request"));
+    let requests = fake.requests();
+    assert!(requests[1]["instructions"]
+        .as_str()
+        .unwrap()
+        .contains("max_output_tokens"));
+    assert!(requests[1]["input"].to_string().contains("先画一个大厅"));
+    assert!(!requests[1]["input"].to_string().contains("partial-recipe"));
+    assert!(workspace
+        .lock()
+        .unwrap()
+        .events
+        .iter()
+        .any(|event| event.kind == "provider.incomplete"));
 }
 
 #[tokio::test]
@@ -349,6 +478,467 @@ async fn duplicate_recipe_request_id_returns_cached_result_before_validation() {
 }
 
 #[tokio::test]
+async fn steer_applies_after_tool_batch_while_queue_waits_for_turn_end() {
+    let first_call = function_call(
+        "capture-call",
+        "capture_views",
+        json!({"revision":0,"views":["hero"]}),
+    );
+    let fake = FakeResponses::start(vec![
+        Reply::Delay(
+            Duration::from_millis(120),
+            Box::new(completed(vec![first_call])),
+        ),
+        completed(vec![json!({
+            "type":"message",
+            "content":[{"type":"output_text","text":"当前阶段完成"}]
+        })]),
+        completed(vec![json!({
+            "type":"message",
+            "content":[{"type":"output_text","text":"排队请求完成"}]
+        })]),
+    ])
+    .await;
+    let dir = tempfile::tempdir().unwrap();
+    let workspace = workspace(&dir);
+    let harness = harness(workspace.clone(), &fake.base);
+    harness.inner.lock().unwrap().settings.model = "deepseek-v4-pro".into();
+    harness.start("搭建大厅").unwrap();
+    tokio::time::timeout(Duration::from_secs(2), async {
+        while fake.request_count() == 0 {
+            tokio::time::sleep(Duration::from_millis(5)).await;
+        }
+    })
+    .await
+    .expect("first request should start");
+    let run_id = harness
+        .inner
+        .lock()
+        .unwrap()
+        .run
+        .as_ref()
+        .unwrap()
+        .id
+        .clone();
+
+    let steer = harness
+        .message(&json!({
+            "prompt":"把门廊向左扩一格",
+            "mode":"steer",
+            "requestId":"steer-1",
+            "runId":run_id
+        }))
+        .unwrap();
+    let queued = harness
+        .message(&json!({
+            "prompt":"再加一个钟面",
+            "mode":"queue",
+            "requestId":"queue-1",
+            "runId":run_id
+        }))
+        .unwrap();
+    assert_eq!(steer["accepted"], true);
+    assert_eq!(queued["accepted"], true);
+    assert_eq!(
+        harness
+            .message(&json!({
+                "prompt":"把门廊向左扩一格",
+                "mode":"steer",
+                "requestId":"steer-1",
+                "runId":run_id,
+            }))
+            .unwrap(),
+        steer
+    );
+    assert!(harness
+        .message(&json!({
+            "prompt":"不同内容",
+            "mode":"steer",
+            "requestId":"steer-1",
+            "runId":run_id,
+        }))
+        .unwrap_err()
+        .to_string()
+        .starts_with("REQUEST_ID_CONFLICT"));
+    assert!(harness
+        .message(&json!({
+            "prompt":"过期run",
+            "mode":"steer",
+            "requestId":"stale-run",
+            "runId":"stale-run-id",
+        }))
+        .unwrap_err()
+        .to_string()
+        .starts_with("RUN_CONFLICT"));
+
+    let broker = harness.capture.clone();
+    let capture_workspace = workspace.clone();
+    let capture_worker = tokio::spawn(async move {
+        complete_pending_capture(broker, capture_workspace).await;
+    });
+
+    let run = terminal_run(&harness).await;
+    assert_eq!(run.status, "completed");
+    capture_worker.await.unwrap();
+    assert_eq!(workspace.lock().unwrap().project.scene.revision, 0);
+    let requests = fake.requests();
+    assert_eq!(requests.len(), 3);
+    assert!(requests[1]["input"]
+        .to_string()
+        .contains("把门廊向左扩一格"));
+    assert!(!requests[1]["input"].to_string().contains("再加一个钟面"));
+    assert!(requests[1]["input"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .any(|item| item["type"] == "function_call_output" && item["call_id"] == "capture-call"));
+    assert!(requests[2]["input"].to_string().contains("再加一个钟面"));
+    let workspace = workspace.lock().unwrap();
+    assert!(workspace.events.iter().any(|event| {
+        event.kind == "harness.message.applied" && event.data["requestId"] == "steer-1"
+    }));
+    assert!(workspace.events.iter().any(|event| {
+        event.kind == "harness.message.applied" && event.data["requestId"] == "queue-1"
+    }));
+}
+
+#[tokio::test]
+async fn interrupt_cancels_inflight_provider_request_and_continues_same_run() {
+    let partial_call = function_call(
+        "never-dispatch",
+        "run_recipe",
+        json!({"code":"mf.box([0,0,0],[1,1,1]);","mode":"apply","baseRevision":0,"seed":1}),
+    );
+    let fake = FakeResponses::start(vec![
+        Reply::Delay(
+            Duration::from_secs(2),
+            Box::new(completed(vec![partial_call])),
+        ),
+        completed(vec![json!({
+            "type":"message",
+            "content":[{"type":"output_text","text":"根据插话完成"}]
+        })]),
+    ])
+    .await;
+    let dir = tempfile::tempdir().unwrap();
+    let workspace = workspace(&dir);
+    let harness = harness(workspace.clone(), &fake.base);
+    harness.start("建一个盒子").unwrap();
+    tokio::time::timeout(Duration::from_secs(2), async {
+        while fake.request_count() == 0 {
+            tokio::time::sleep(Duration::from_millis(5)).await;
+        }
+    })
+    .await
+    .expect("first request should start");
+    let (run_id, old_epoch) = {
+        let state = harness.inner.lock().unwrap();
+        let run = state.run.as_ref().unwrap();
+        (run.id.clone(), run.epoch)
+    };
+    let ack = harness
+        .message(&json!({
+            "prompt":"先不要建盒子，改看一下大门比例",
+            "mode":"interrupt",
+            "requestId":"interrupt-request",
+            "runId":run_id,
+        }))
+        .unwrap();
+    assert_eq!(ack["phase"], "interrupting");
+    assert!(ack["epoch"].as_u64().unwrap() > old_epoch);
+
+    let run = terminal_run(&harness).await;
+    assert_eq!(run.status, "completed");
+    assert_eq!(run.id, run_id);
+    assert!(run.epoch > old_epoch);
+    assert_eq!(workspace.lock().unwrap().project.scene.revision, 0);
+    assert_eq!(fake.request_count(), 2);
+    let requests = fake.requests();
+    assert!(requests[1]["input"].to_string().contains("先不要建盒子"));
+    assert!(!requests[1]["input"].to_string().contains("never-dispatch"));
+    let workspace = workspace.lock().unwrap();
+    assert!(!workspace
+        .events
+        .iter()
+        .any(|event| event.kind == "tool.request"));
+    assert!(workspace
+        .events
+        .iter()
+        .any(|event| event.kind == "provider.cancelled"));
+    assert!(workspace.events.iter().any(|event| {
+        event.kind == "harness.message.applied"
+            && event.data["requestId"] == "interrupt-request"
+            && event.data["epoch"].as_u64().unwrap() > old_epoch
+    }));
+}
+
+#[tokio::test]
+async fn interrupt_during_tool_batch_records_cancelled_result_before_continuation() {
+    let capture_call = function_call(
+        "capture-call",
+        "capture_views",
+        json!({"revision":0,"views":["hero"]}),
+    );
+    let fake = FakeResponses::start(vec![
+        completed(vec![capture_call]),
+        completed(vec![json!({
+            "type":"message",
+            "content":[{"type":"output_text","text":"已按新要求继续"}]
+        })]),
+    ])
+    .await;
+    let dir = tempfile::tempdir().unwrap();
+    let workspace = workspace(&dir);
+    let harness = harness(workspace.clone(), &fake.base);
+    harness.start("先截图").unwrap();
+    wait_for_event(&workspace, "tool.request").await;
+    let run_id = harness
+        .inner
+        .lock()
+        .unwrap()
+        .run
+        .as_ref()
+        .unwrap()
+        .id
+        .clone();
+    harness
+        .message(&json!({
+            "prompt":"截图先停，先调整门廊",
+            "mode":"interrupt",
+            "requestId":"interrupt-tool",
+            "runId":run_id,
+        }))
+        .unwrap();
+
+    let run = terminal_run(&harness).await;
+    assert_eq!(run.status, "completed");
+    assert_eq!(workspace.lock().unwrap().project.scene.revision, 0);
+    let requests = fake.requests();
+    assert_eq!(requests.len(), 2);
+    assert!(requests[1]["input"].to_string().contains("截图先停"));
+    let outputs = requests[1]["input"].as_array().unwrap();
+    assert!(outputs
+        .iter()
+        .any(|item| item["type"] == "function_call" && item["call_id"] == "capture-call"));
+    assert!(outputs.iter().any(|item| {
+        item["type"] == "function_call_output"
+            && item["call_id"] == "capture-call"
+            && item["output"].to_string().contains("CANCELLED")
+    }));
+    let workspace = workspace.lock().unwrap();
+    assert!(workspace.events.iter().any(|event| {
+        event.kind == "tool.result"
+            && event.data["callId"] == "capture-call"
+            && event.data["cancelled"] == true
+    }));
+    assert!(!workspace
+        .events
+        .iter()
+        .any(|event| event.kind == "capture.completed"));
+}
+
+#[tokio::test]
+async fn stop_during_tool_call_keeps_logs_and_pairs_the_call_without_late_geometry() {
+    let capture_call = function_call(
+        "stop-capture",
+        "capture_views",
+        json!({"revision":0,"views":["hero"]}),
+    );
+    let fake = FakeResponses::start(vec![completed(vec![capture_call])]).await;
+    let dir = tempfile::tempdir().unwrap();
+    let workspace = workspace(&dir);
+    let harness = harness(workspace.clone(), &fake.base);
+    harness.start("捕获视图").unwrap();
+    wait_for_event(&workspace, "tool.request").await;
+    harness.control("stop").unwrap();
+    let run = terminal_run(&harness).await;
+
+    assert_eq!(run.status, "stopped");
+    assert_eq!(workspace.lock().unwrap().project.scene.revision, 0);
+    let requests = fake.requests();
+    assert_eq!(requests.len(), 1);
+    let events = workspace.lock().unwrap();
+    assert!(events.events.iter().any(|event| {
+        event.kind == "tool.result"
+            && event.data["callId"] == "stop-capture"
+            && event.data["cancelled"] == true
+    }));
+    assert!(events
+        .events
+        .iter()
+        .any(|event| event.kind == "harness.finished"));
+    assert!(!events
+        .events
+        .iter()
+        .any(|event| event.kind == "capture.completed"));
+}
+
+#[tokio::test]
+async fn voxel_text_tool_previews_compactly_and_applies_with_durable_receipt() {
+    let dir = tempfile::tempdir().unwrap();
+    let workspace = workspace(&dir);
+    let root = workspace.lock().unwrap().root.clone();
+    let provider = Provider::new_for_loopback_test(&root, "http://127.0.0.1:1").unwrap();
+    let harness = Harness::new_with_fonts(
+        workspace.clone(),
+        provider,
+        CaptureBroker::new(),
+        inert_transport(),
+        Arc::new(FontCatalog::load_builtin().unwrap()),
+    );
+    let request = json!({
+        "text":"A",
+        "fontId":"builtin:noto-sans-sc",
+        "fontSize":12,
+        "depth":1,
+        "origin":[0,0,0],
+        "plane":"xy",
+        "facing":"positive",
+        "align":"left",
+        "styleId":1,
+        "group":"title",
+    });
+    let mut preview_args = request.clone();
+    preview_args["mode"] = json!("preview");
+    let preview = harness
+        .tool("voxel_text", &preview_args, None)
+        .await
+        .unwrap();
+    assert_eq!(preview["ok"], true);
+    assert!(preview["previewFingerprint"].as_str().unwrap().len() == 64);
+    assert!(preview["stats"]["boxCount"].as_u64().unwrap() > 0);
+    assert!(preview["preview"].get("operations").is_none());
+    let apply_template = preview["applyTemplate"].clone();
+    assert_eq!(apply_template["mode"], "apply");
+    assert_eq!(apply_template["baseRevision"], 0);
+    assert_eq!(
+        apply_template["previewFingerprint"],
+        preview["previewFingerprint"]
+    );
+    assert_eq!(apply_template["origin"], json!([0, 0, 0]));
+    assert_eq!(apply_template["align"], "left");
+    assert_eq!(apply_template["group"], "title");
+    assert!(apply_template.get("requestId").is_none());
+
+    let mut apply_args = apply_template;
+    apply_args["requestId"] = json!("text-apply-1");
+    let applied = harness.tool("voxel_text", &apply_args, None).await.unwrap();
+    assert_eq!(applied["ok"], true);
+    assert_eq!(applied["result"]["revision"], 1);
+    assert_eq!(applied["result"]["requestId"], "text-apply-1");
+    assert_eq!(
+        applied["result"]["requestFingerprint"],
+        preview["previewFingerprint"]
+    );
+    assert!(applied["result"].get("scene").is_none());
+
+    let replay = harness.tool("voxel_text", &apply_args, None).await.unwrap();
+    assert_eq!(replay["replayed"], true);
+    assert_eq!(workspace.lock().unwrap().project.scene.revision, 1);
+    let mut changed_args = apply_args.clone();
+    changed_args["text"] = json!("B");
+    let mut changed_request = changed_args.clone();
+    for key in ["mode", "baseRevision", "requestId", "previewFingerprint"] {
+        changed_request.as_object_mut().unwrap().remove(key);
+    }
+    let changed_request: morphforge_core::text::VoxelTextRequest =
+        serde_json::from_value(changed_request).unwrap();
+    changed_args["previewFingerprint"] =
+        json!(morphforge_app::fonts::request_fingerprint(&changed_request).unwrap());
+    let conflict = harness
+        .tool("voxel_text", &changed_args, None)
+        .await
+        .unwrap_err();
+    assert!(conflict.to_string().starts_with("REQUEST_ID_CONFLICT"));
+}
+
+#[tokio::test]
+async fn artworks_save_resolves_latest_current_capture_images() {
+    let dir = tempfile::tempdir().unwrap();
+    let workspace = workspace(&dir);
+    let (hero, front, top) = {
+        let mut workspace = workspace.lock().unwrap();
+        let old_hero = workspace.artifact(b"old-hero", "png").unwrap();
+        workspace
+            .event(
+                "capture.completed",
+                None,
+                json!({
+                    "ok":true,
+                    "revision":0,
+                    "images":[{"view":"hero","artifact":old_hero}]
+                }),
+            )
+            .unwrap();
+        let hero = workspace.artifact(b"hero", "png").unwrap();
+        let front = workspace.artifact(b"front", "png").unwrap();
+        let top = workspace.artifact(b"top", "png").unwrap();
+        workspace
+            .event(
+                "capture.completed",
+                None,
+                json!({
+                    "ok":true,
+                    "revision":0,
+                    "images":[
+                        {"view":"hero","artifact":hero},
+                        {"view":"front","artifact":front},
+                        {"view":"top","artifact":top}
+                    ]
+                }),
+            )
+            .unwrap();
+        (hero, front, top)
+    };
+    let harness = harness(workspace.clone(), "http://127.0.0.1:1");
+
+    let explicit = harness
+        .tool(
+            "artworks",
+            &json!({"action":"save","title":"视角解析","views":["hero","front","top"]}),
+            None,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        explicit["artwork"]["views"],
+        json!([hero.clone(), front.clone(), top.clone()])
+    );
+    assert_eq!(explicit["artwork"]["thumbnail"], hero);
+
+    let defaulted = harness
+        .tool(
+            "artworks",
+            &json!({"action":"save","title":"默认截图"}),
+            None,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        defaulted["artwork"]["views"],
+        json!([hero.clone(), front, top])
+    );
+    assert_eq!(defaulted["artwork"]["thumbnail"], hero);
+
+    let missing_view = harness
+        .tool("artworks", &json!({"action":"save","views":["side"]}), None)
+        .await
+        .unwrap_err();
+    assert!(missing_view
+        .to_string()
+        .starts_with("ARTWORK_CAPTURE_MISSING"));
+    let missing_artifact = harness
+        .tool(
+            "artworks",
+            &json!({"action":"save","views":["does-not-exist.png"]}),
+            None,
+        )
+        .await
+        .unwrap_err();
+    assert!(missing_artifact.to_string().contains("artifact不存在"));
+}
+
+#[tokio::test]
 async fn failed_compact_keeps_old_context_and_records_failure() {
     let fake = FakeResponses::start(vec![sse([json!({
         "type":"response.incomplete",
@@ -413,14 +1003,22 @@ async fn reset_context_is_rejected_while_manual_compact_is_running() {
         let mut state = harness.inner.lock().unwrap();
         state.conversation.input.push(original.clone());
         state.run_deadline = Some(tokio::time::Instant::now() + Duration::from_secs(900));
+        state.phase = "compacting".into();
+        state.epoch = 1;
+        state.worker_epoch = Some(1);
         state.run = Some(Run {
             id: "compact-run".into(),
+            epoch: 1,
             status: "compacting".into(),
             prompt: "手动compact".into(),
             started_at: "test".into(),
             finished_at: None,
             steps: 0,
             tokens: 0,
+            active_request_id: None,
+            prompt_version: "test".into(),
+            tools_version: "test".into(),
+            language: "zh-CN".into(),
             message: String::new(),
             error: String::new(),
         });
@@ -434,24 +1032,48 @@ async fn reset_context_is_rejected_while_manual_compact_is_running() {
 }
 
 #[tokio::test]
-async fn run_deadline_includes_paused_time() {
-    let fake = FakeResponses::start(vec![]).await;
+async fn pause_freezes_active_budget_and_resume_continues_the_same_run() {
+    let fake = FakeResponses::start(vec![
+        Reply::Delay(Duration::from_millis(1500), Box::new(completed(vec![]))),
+        completed(vec![]),
+    ])
+    .await;
     let dir = tempfile::tempdir().unwrap();
     let workspace = workspace(&dir);
     let harness = harness(workspace, &fake.base);
     harness.inner.lock().unwrap().settings.max_run_seconds = 1;
 
-    harness.start("等待暂停预算结束").unwrap();
+    harness.start("暂停期间冻结预算并在恢复后继续").unwrap();
+    tokio::time::timeout(Duration::from_secs(2), async {
+        while fake.request_count() == 0 {
+            tokio::time::sleep(Duration::from_millis(5)).await;
+        }
+    })
+    .await
+    .expect("provider request should start");
     harness.control("pause").unwrap();
+    tokio::time::timeout(Duration::from_secs(2), async {
+        loop {
+            if harness.state()["interaction"]["phase"] == "paused" {
+                break;
+            }
+            tokio::time::sleep(Duration::from_millis(5)).await;
+        }
+    })
+    .await
+    .expect("cancelled request should settle into paused phase");
+    tokio::time::sleep(Duration::from_millis(1100)).await;
+    let paused = harness.state();
+    assert_eq!(paused["interaction"]["phase"], "paused");
+    assert_eq!(paused["run"]["status"], "paused");
+    assert_eq!(fake.request_count(), 1);
+
+    harness.control("resume").unwrap();
     let run = terminal_run(&harness).await;
 
-    assert_eq!(run.status, "failed");
-    assert!(run.error.starts_with("RUN_TIME_BUDGET"));
-    assert_eq!(
-        fake.request_count(),
-        0,
-        "paused run should expire without a provider call"
-    );
+    assert_eq!(run.status, "completed");
+    assert_eq!(run.epoch, 3, "pause and resume each advance the run epoch");
+    assert_eq!(fake.request_count(), 2);
 }
 
 #[tokio::test]

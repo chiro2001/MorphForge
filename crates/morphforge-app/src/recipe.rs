@@ -45,6 +45,7 @@ struct WorkerText {
     mirrors: [i32; 3],
 }
 const SDK: &str = include_str!("recipe_sdk.js");
+pub const SDK_VERSION: &str = "morphforge-recipe/2";
 pub fn worker(input: WorkerInput) -> Result<Value> {
     if input.request.code.len() > 1_000_000 || input.request.max_ops > 100000 {
         bail!("recipe资源预算越界")
@@ -293,6 +294,36 @@ mod tests {
     use super::*;
     use morphforge_core::text::VoxelTextRequest;
     use std::collections::BTreeSet;
+
+    #[test]
+    fn invalid_computed_dimensions_identify_the_failed_geometry() {
+        let error = worker(WorkerInput {
+            request: RecipeRequest {
+                code: "mf.group('tower',()=>mf.box([4,20,-3],[2,0,5]));".into(),
+                seed: 1,
+                mode: "apply".into(),
+                base_revision: Some(0),
+                request_id: None,
+                max_ops: 10,
+                dry_run: true,
+            },
+            styles: BTreeMap::new(),
+        })
+        .unwrap_err()
+        .to_string();
+        for detail in [
+            "size must be positive",
+            "op=box",
+            "min=[4,20,-3]",
+            "size=[2,0,5]",
+            "group=tower",
+        ] {
+            assert!(
+                error.contains(detail),
+                "missing actionable detail {detail}: {error}"
+            );
+        }
+    }
 
     fn worker_items(code: &str, max_ops: usize) -> Vec<Value> {
         let output = worker(WorkerInput {

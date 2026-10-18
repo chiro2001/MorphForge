@@ -16,7 +16,7 @@ use morphforge_core::{Limits, Operation};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::borrow::Cow;
-use std::collections::{BTreeMap, HashSet};
+use std::collections::{BTreeMap, HashSet, VecDeque};
 use std::fmt;
 use std::io::Read;
 use std::path::{Path, PathBuf};
@@ -28,6 +28,39 @@ const BUILTIN_FONT: &[u8] = include_bytes!("../../../fonts/NotoSansSC-Regular.ot
 const BUILTIN_SHA256: &str = "faa6c9df652116dde789d351359f3d7e5d2285a2b2a1f04a2d7244df706d5ea9";
 const MAX_FONT_FILE_BYTES: u64 = 64 * 1024 * 1024;
 const MAX_SYSTEM_FONTS: usize = 1024;
+const MAX_CACHED_FONTS: usize = 8;
+
+struct ParsedFonts {
+    entries: BTreeMap<String, Arc<Font>>,
+    recent: VecDeque<String>,
+}
+
+impl ParsedFonts {
+    fn get(&mut self, id: &str) -> Option<Arc<Font>> {
+        let font = self.entries.get(id)?.clone();
+        self.recent.retain(|key| key != id);
+        self.recent.push_back(id.to_owned());
+        Some(font)
+    }
+
+    fn insert(&mut self, id: String, font: Arc<Font>) {
+        self.recent.retain(|key| key != &id);
+        self.recent.push_back(id.clone());
+        self.entries.insert(id, font);
+        // Keep the built-in Chinese font hot; system-font browsing must not
+        // retain the parsed outlines of up to 1024 catalog entries forever.
+        while self.entries.len() > MAX_CACHED_FONTS {
+            let Some(oldest) = self.recent.pop_front() else {
+                break;
+            };
+            if oldest == BUILTIN_ID {
+                self.recent.push_back(oldest);
+            } else {
+                self.entries.remove(&oldest);
+            }
+        }
+    }
+}
 
 static SHARED: OnceLock<std::result::Result<Arc<FontCatalog>, String>> = OnceLock::new();
 
@@ -79,7 +112,7 @@ struct FontEntry {
 pub struct FontCatalog {
     entries: Vec<FontEntry>,
     by_id: BTreeMap<String, usize>,
-    fonts: Mutex<BTreeMap<String, Arc<Font>>>,
+    fonts: Mutex<ParsedFonts>,
 }
 
 /// Load the process-wide read-only catalog once.
@@ -133,7 +166,10 @@ impl FontCatalog {
         Ok(Self {
             entries: vec![entry],
             by_id: BTreeMap::from([(BUILTIN_ID.into(), 0)]),
-            fonts: Mutex::new(BTreeMap::from([(BUILTIN_ID.into(), Arc::new(font))])),
+            fonts: Mutex::new(ParsedFonts {
+                entries: BTreeMap::from([(BUILTIN_ID.into(), Arc::new(font))]),
+                recent: VecDeque::from([BUILTIN_ID.into()]),
+            }),
         })
     }
 
@@ -255,7 +291,6 @@ impl FontCatalog {
             .lock()
             .map_err(|_| anyhow::anyhow!("字体缓存锁已损坏"))?
             .get(&entry.descriptor.id)
-            .cloned()
         {
             return Ok(font);
         }
@@ -263,6 +298,9 @@ impl FontCatalog {
             .source
             .bytes()
             .with_context(|| format!("读取字体失败：{}", entry.descriptor.id))?;
+        if hex_sha256(bytes.as_ref()) != entry.descriptor.sha256 {
+            bail!("FONT_CHANGED：系统字体文件已改变，请重启工作台刷新字体目录")
+        }
         let font = Arc::new(
             Font::from_bytes(
                 bytes.as_ref(),
@@ -340,7 +378,9 @@ fn face_name(face: &Face<'_>, id: u16) -> Option<String> {
         .filter(|name| !name.trim().is_empty())
 }
 
-fn request_fingerprint(request: &VoxelTextRequest) -> Result<String> {
+/// Hash the normalized request without resolving a font or current material.
+/// Successful retries must remain replayable after either dependency changes.
+pub fn request_fingerprint(request: &VoxelTextRequest) -> Result<String> {
     Ok(hex_sha256(&serde_json::to_vec(request)?))
 }
 

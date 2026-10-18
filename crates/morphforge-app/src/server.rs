@@ -1,5 +1,6 @@
 use crate::{
     capture::CaptureBroker,
+    fonts::{self, FontCatalog, MissingGlyphsError},
     harness::Harness,
     provider::Provider,
     store::{validate_id, Workspace},
@@ -16,6 +17,7 @@ use axum::{
     Json, Router,
 };
 use include_dir::{include_dir, Dir};
+use morphforge_core::text::VoxelTextRequest;
 use morphforge_core::{Box3, Operation, Scene};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
@@ -31,6 +33,8 @@ pub struct App {
     pub capture: CaptureBroker,
     pub harness: Harness,
     pub browser: Arc<Mutex<Option<u32>>>,
+    pub fonts: Arc<FontCatalog>,
+    text_jobs: Arc<tokio::sync::Semaphore>,
 }
 pub struct ApiError(anyhow::Error);
 impl<E: Into<anyhow::Error>> From<E> for ApiError {
@@ -41,12 +45,30 @@ impl<E: Into<anyhow::Error>> From<E> for ApiError {
 impl IntoResponse for ApiError {
     fn into_response(self) -> Response {
         let message = self.0.to_string();
-        let status = if message.contains("REVISION_CONFLICT") {
+        let status = if [
+            "REVISION_CONFLICT",
+            "RUN_CONFLICT",
+            "REQUEST_ID_CONFLICT",
+            "PREVIEW_CONFLICT",
+            "PROTECTED_GROUP_CONFLICT",
+        ]
+        .iter()
+        .any(|code| message.starts_with(code))
+        {
             StatusCode::CONFLICT
         } else {
             StatusCode::BAD_REQUEST
         };
-        (status, Json(json!({"ok":false,"error":message}))).into_response()
+        let mut body = json!({"ok":false,"error":message});
+        if let Some(error) = self.0.downcast_ref::<MissingGlyphsError>() {
+            body["code"] = json!("FONT_MISSING_GLYPHS");
+            body["missingGlyphs"] = json!(error
+                .characters
+                .iter()
+                .map(char::to_string)
+                .collect::<Vec<_>>());
+        }
+        (status, Json(body)).into_response()
     }
 }
 type ApiResult = std::result::Result<Json<Value>, ApiError>;
@@ -56,17 +78,23 @@ pub struct Revision {
     after: Option<u64>,
     run: Option<String>,
 }
+#[derive(Default, Deserialize)]
+pub struct ToolQuery {
+    language: Option<String>,
+}
 impl App {
     pub fn open(root: PathBuf, env: Option<PathBuf>) -> Result<Self> {
         let workspace = Arc::new(Mutex::new(Workspace::open(root.clone())?));
         let transport = Transport::new(workspace.clone());
         let capture = CaptureBroker::new();
         let provider = Provider::new(&root, env.as_deref())?;
-        let harness = Harness::new(
+        let fonts = fonts::shared_default()?;
+        let harness = Harness::new_with_fonts(
             workspace.clone(),
             provider,
             capture.clone(),
             transport.clone(),
+            fonts.clone(),
         );
         Ok(Self {
             workspace,
@@ -74,6 +102,8 @@ impl App {
             capture,
             harness,
             browser: Arc::new(Mutex::new(None)),
+            fonts,
+            text_jobs: Arc::new(tokio::sync::Semaphore::new(2)),
         })
     }
     pub fn router(&self) -> Router {
@@ -94,6 +124,9 @@ impl App {
             .route("/api/publish", post(publish))
             .route("/api/placement", post(placement))
             .route("/api/styles", get(styles))
+            .route("/api/fonts", get(font_list))
+            .route("/api/text/preview", post(text_preview))
+            .route("/api/text/apply", post(text_apply))
             .route("/api/events", get(events))
             .route("/api/artworks", get(artworks).post(artwork_action))
             .route("/api/artworks/{id}", get(artwork_get))
@@ -102,6 +135,7 @@ impl App {
             .route("/api/harness/state", get(harness_state))
             .route("/api/harness/config", post(harness_config))
             .route("/api/harness/start", post(harness_start))
+            .route("/api/harness/message", post(harness_message))
             .route("/api/harness/control", post(harness_control))
             .route("/api/harness/tool", post(harness_tool))
             .route("/api/provider/models", get(models))
@@ -133,6 +167,11 @@ async fn origin_guard(request: Request, next: Next) -> Response {
 }
 async fn state(State(a): State<App>) -> ApiResult {
     let mut value = a.workspace.lock().unwrap().state();
+    value["software"] = json!({
+        "name": "MorphForge",
+        "version": env!("CARGO_PKG_VERSION"),
+        "apiVersion": "mf-http/2"
+    });
     value["connection"] = a.transport.state();
     value["harness"] = a.harness.state();
     value["capture"] = json!({"browserPid":*a.browser.lock().unwrap()});
@@ -153,6 +192,25 @@ async fn export(State(a): State<App>) -> ApiResult {
 }
 async fn project(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     let mut w = a.workspace.lock().unwrap();
+    if let Some(groups) = v.get("protectedGroups") {
+        if v.as_object().is_none_or(|fields| {
+            fields
+                .keys()
+                .any(|key| !["protectedGroups", "baseRevision"].contains(&key.as_str()))
+        }) {
+            bail_api("保护分组须作为独立设置提交")?;
+        }
+        let base = v["baseRevision"]
+            .as_u64()
+            .context("设置保护分组必须提供baseRevision")?;
+        if base != w.project.scene.revision {
+            bail_api("REVISION_CONFLICT：工程已改变，请刷新后重试保护设置")?;
+        }
+        let groups: Vec<String> = serde_json::from_value(groups.clone())?;
+        w.set_protected_groups(groups)?;
+        w.event("project.settings", None, v)?;
+        return Ok(Json(w.state()));
+    }
     let name = v
         .get("name")
         .map(|x| x.as_str().context("名称须为文本"))
@@ -389,12 +447,15 @@ async fn harness_control(State(a): State<App>, Json(v): Json<Value>) -> ApiResul
             .control(v["action"].as_str().context("缺少action")?)?,
     ))
 }
+async fn harness_message(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    Ok(Json(a.harness.message(&v)?))
+}
 async fn harness_tool(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     let name = v["name"].as_str().context("缺少工具名")?;
     let arguments = v.get("arguments").cloned().unwrap_or_else(|| json!({}));
     let id = uuid::Uuid::new_v4().to_string();
     let start = std::time::Instant::now();
-    a.workspace.lock().unwrap().event("tool.request",None,json!({"callId":id,"name":name,"arguments":arguments,"toolVersion":"mf-tools/1","source":"manual"}))?;
+    a.workspace.lock().unwrap().event("tool.request",None,json!({"callId":id,"name":name,"arguments":arguments,"toolVersion":crate::harness::TOOL_SCHEMA_VERSION,"source":"manual"}))?;
     let result = a.harness.tool(name, &arguments, None).await;
     let value = match &result {
         Ok(value) => value.clone(),
@@ -661,6 +722,164 @@ async fn packs(State(a): State<App>) -> ApiResult {
     Ok(Json(json!({"packs":values})))
 }
 
-async fn harness_tools() -> Json<Value> {
-    Json(json!({"version":"mf-tools/1","tools":crate::harness::tools()}))
+async fn font_list(State(a): State<App>) -> ApiResult {
+    Ok(Json(json!({
+        "ok": true,
+        "version": "mf-fonts/1",
+        "defaultFontId": "builtin:noto-sans-sc",
+        "fonts": a.fonts.list()
+    })))
+}
+
+fn parse_text_request(value: &Value) -> Result<VoxelTextRequest> {
+    let mut fields = value.as_object().context("文字请求须为对象")?.clone();
+    for key in [
+        "requestId",
+        "baseRevision",
+        "previewRequestId",
+        "previewFingerprint",
+    ] {
+        fields.remove(key);
+    }
+    const TEXT_FIELDS: &[&str] = &[
+        "text",
+        "fontId",
+        "fontSize",
+        "depth",
+        "origin",
+        "plane",
+        "facing",
+        "align",
+        "letterSpacing",
+        "lineSpacing",
+        "maxWidth",
+        "styleId",
+        "tintId",
+        "motionPhase",
+        "group",
+    ];
+    if let Some(unknown) = fields
+        .keys()
+        .find(|key| !TEXT_FIELDS.contains(&key.as_str()))
+    {
+        bail!("未知文字字段：{unknown}")
+    }
+    Ok(serde_json::from_value(Value::Object(fields))?)
+}
+
+async fn prepare_text(a: &App, value: &Value) -> Result<fonts::TextPreview> {
+    let request = parse_text_request(value)?;
+    if !a
+        .workspace
+        .lock()
+        .unwrap()
+        .project
+        .materials
+        .iter()
+        .any(|style| style.id == request.style_id)
+    {
+        bail!("未知材质编号{}，请从材质目录选择", request.style_id)
+    }
+    let permit = a.text_jobs.clone().acquire_owned().await?;
+    let catalog = a.fonts.clone();
+    tokio::task::spawn_blocking(move || {
+        let _permit = permit;
+        catalog.preview(&request)
+    })
+    .await
+    .context("文字排版任务异常")?
+}
+
+async fn text_preview(State(a): State<App>, Json(value): Json<Value>) -> ApiResult {
+    let preview = prepare_text(&a, &value).await?;
+    let mut response = serde_json::to_value(preview)?;
+    response["requestId"] = value.get("requestId").cloned().unwrap_or(Value::Null);
+    response["revision"] = json!(a.workspace.lock().unwrap().project.scene.revision);
+    Ok(Json(response))
+}
+
+async fn text_apply(State(a): State<App>, Json(value): Json<Value>) -> ApiResult {
+    let base = value["baseRevision"]
+        .as_u64()
+        .context("应用文字必须提供baseRevision")?;
+    let request_id = value["requestId"]
+        .as_str()
+        .filter(|id| !id.is_empty() && id.len() <= 256)
+        .context("应用文字必须提供不超过256字节的requestId")?;
+    let request = parse_text_request(&value)?;
+    let fingerprint = fonts::request_fingerprint(&request)?;
+    if let Some(expected) = value.get("previewFingerprint") {
+        if expected.as_str() != Some(fingerprint.as_str()) {
+            bail_api("PREVIEW_CONFLICT：文字设置已改变，请重新预览")?;
+        }
+    }
+    {
+        let mut workspace = a.workspace.lock().unwrap();
+        if let Some(mut replay) = workspace.text_receipt(request_id, &fingerprint)? {
+            replay["ok"] = json!(true);
+            let revision = replay["revision"]
+                .as_u64()
+                .context("文字请求回执缺少revision")?;
+            replay["scene"] = serde_json::to_value(workspace.scene_at(revision)?)?;
+            return Ok(Json(replay));
+        }
+        workspace.event(
+            "text.request",
+            None,
+            json!({
+                "requestId": request_id,
+                "requestFingerprint": fingerprint,
+                "request": request,
+                "baseRevision": base
+            }),
+        )?;
+    }
+    let preview = prepare_text(&a, &value).await?;
+    let mut workspace = a.workspace.lock().unwrap();
+    let mut result = workspace.apply_text(
+        &preview.operations,
+        base,
+        request_id,
+        &fingerprint,
+        &serde_json::to_value(&preview.font)?,
+        &serde_json::to_value(&preview.layout)?,
+        None,
+    )?;
+    result["ok"] = json!(true);
+    if a.transport.config().enabled && a.transport.config().auto {
+        let publish = workspace
+            .commit(None, "体素文字自动发布", None)
+            .and_then(|_| a.transport.publish(&workspace.project.scene, false));
+        if let Err(error) = publish {
+            let _ = workspace.event("publish.rejected", None, json!({"error":error.to_string()}));
+            result["warning"] = json!(error.to_string());
+            result["draftSaved"] = json!(true);
+        }
+    }
+    result["scene"] = serde_json::to_value(
+        workspace.scene_at(
+            result["revision"]
+                .as_u64()
+                .context("文字回执缺少revision")?,
+        )?,
+    )?;
+    Ok(Json(result))
+}
+
+async fn harness_tools(State(a): State<App>, Query(query): Query<ToolQuery>) -> ApiResult {
+    let language = query.language.unwrap_or_else(|| {
+        a.harness.state()["settings"]["language"]
+            .as_str()
+            .unwrap_or("zh-CN")
+            .to_owned()
+    });
+    if !["zh-CN", "en"].contains(&language.as_str()) {
+        bail_api("工具说明语言只支持zh-CN或en")?;
+    }
+    Ok(Json(json!({
+        "version":crate::harness::TOOL_SCHEMA_VERSION,
+        "promptVersion":crate::harness::SYSTEM_PROMPT_VERSION,
+        "language":language,
+        "tools":crate::harness::tools_for_language(&language)
+    })))
 }

@@ -11,8 +11,12 @@ use std::{
         Arc, Mutex,
     },
 };
+use tokio::sync::Notify;
 fn default_max_run_seconds() -> u64 {
     900
+}
+fn default_language() -> String {
+    "zh-CN".into()
 }
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -27,6 +31,8 @@ pub struct ProviderSettings {
     pub compact_tokens: usize,
     pub auto_compact: bool,
     pub upload_images: bool,
+    #[serde(default = "default_language")]
+    pub language: String,
 }
 impl Default for ProviderSettings {
     fn default() -> Self {
@@ -40,6 +46,7 @@ impl Default for ProviderSettings {
             compact_tokens: 60000,
             auto_compact: true,
             upload_images: true,
+            language: default_language(),
         }
     }
 }
@@ -51,21 +58,39 @@ pub struct Provider {
     files: Arc<Mutex<BTreeMap<String, (String, i64)>>>,
     file_path: PathBuf,
 }
+struct CancellationInner {
+    stopped: AtomicBool,
+    notify: Notify,
+}
+
 #[derive(Clone)]
-pub struct Cancellation(pub Arc<AtomicBool>);
+pub struct Cancellation(Arc<CancellationInner>);
 impl Cancellation {
     pub fn new() -> Self {
-        Self(Arc::new(AtomicBool::new(false)))
+        Self(Arc::new(CancellationInner {
+            stopped: AtomicBool::new(false),
+            notify: Notify::new(),
+        }))
     }
     pub fn stop(&self) {
-        self.0.store(true, Ordering::SeqCst)
+        self.0.stopped.store(true, Ordering::SeqCst);
+        self.0.notify.notify_waiters();
     }
     pub fn stopped(&self) -> bool {
-        self.0.load(Ordering::SeqCst)
+        self.0.stopped.load(Ordering::SeqCst)
     }
     pub async fn wait(&self) {
-        while !self.stopped() {
-            tokio::time::sleep(std::time::Duration::from_millis(100)).await
+        loop {
+            if self.stopped() {
+                return;
+            }
+            let notified = self.0.notify.notified();
+            tokio::pin!(notified);
+            notified.as_mut().enable();
+            if self.stopped() {
+                return;
+            }
+            notified.await;
         }
     }
 }
@@ -73,6 +98,34 @@ impl Cancellation {
 impl Default for Cancellation {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+#[derive(Clone, Default)]
+pub struct ProviderRequestTrace {
+    pub request_id: Option<String>,
+    pub prompt_version: Option<String>,
+    pub tools_version: Option<String>,
+    pub language: Option<String>,
+    pub epoch: Option<u64>,
+}
+
+impl ProviderRequestTrace {
+    fn event_fields(&self) -> Value {
+        let mut fields = serde_json::Map::new();
+        if let Some(value) = &self.prompt_version {
+            fields.insert("promptVersion".into(), json!(value));
+        }
+        if let Some(value) = &self.tools_version {
+            fields.insert("toolsVersion".into(), json!(value));
+        }
+        if let Some(value) = &self.language {
+            fields.insert("language".into(), json!(value));
+        }
+        if let Some(value) = self.epoch {
+            fields.insert("epoch".into(), json!(value));
+        }
+        Value::Object(fields)
     }
 }
 impl Provider {
@@ -251,25 +304,61 @@ impl Provider {
         run: &str,
         cancel: &Cancellation,
     ) -> Result<Value> {
+        self.response_with_trace(
+            payload,
+            workspace,
+            run,
+            cancel,
+            ProviderRequestTrace::default(),
+        )
+        .await
+    }
+
+    pub async fn response_with_trace(
+        &self,
+        payload: Value,
+        workspace: Arc<Mutex<Workspace>>,
+        run: &str,
+        cancel: &Cancellation,
+        trace: ProviderRequestTrace,
+    ) -> Result<Value> {
         if !self.configured() {
             bail!("未配置DEEPSEEK_API_KEY；Windows请配置本机provider.env")
         };
         let start = std::time::Instant::now();
-        let request_id = uuid::Uuid::new_v4().to_string();
+        let request_id = trace
+            .request_id
+            .clone()
+            .unwrap_or_else(|| uuid::Uuid::new_v4().to_string());
         workspace.lock().unwrap().event(
             "provider.request",
             Some(run),
-            json!({"requestId":request_id,"time":now(),"body":payload}),
+            json!({"requestId":request_id,"time":now(),"body":payload,"trace":trace.event_fields()}),
         )?;
         for attempt in 0..4u32 {
             if cancel.stopped() {
+                workspace.lock().unwrap().event(
+                    "provider.cancelled",
+                    Some(run),
+                    json!({"requestId":request_id,"epoch":trace.epoch,"phase":"before_send"}),
+                )?;
                 bail!("RUN_CANCELLED")
             }
             let request = self
                 .auth(self.client.post(format!("{}/responses", self.base)))
                 .json(&payload);
-            let response =
-                tokio::select! {r=request.send()=>r?,_=cancel.wait()=>bail!("RUN_CANCELLED")};
+            let response = tokio::select! {
+                biased;
+                r=request.send()=>r?,
+                _=cancel.wait()=>{
+                    workspace.lock().unwrap().event(
+                        "provider.cancelled",
+                        Some(run),
+                        json!({"requestId":request_id,"epoch":trace.epoch,"phase":"sending"}),
+                    )?;
+                    bail!("RUN_CANCELLED")
+                }
+            };
             let status = response.status();
             if !status.is_success() {
                 let value = response.text().await.unwrap_or_default();
@@ -298,6 +387,14 @@ impl Provider {
                     &value,
                     start.elapsed().as_secs_f64(),
                 )?;
+                if value["status"] == "incomplete" {
+                    workspace.lock().unwrap().event(
+                        "provider.incomplete",
+                        Some(run),
+                        json!({"requestId":request_id,"trace":trace.event_fields(),"response":value}),
+                    )?;
+                    return Ok(value);
+                }
                 if value["status"] != "completed" {
                     bail!("响应未完成：{}", value["status"])
                 }
@@ -305,11 +402,28 @@ impl Provider {
             }
             let mut stream = response.bytes_stream();
             let mut buffer = Vec::<u8>::new();
+            let mut stream_frames = Vec::<Value>::new();
             let mut first = true;
             let mut bytes_total = 0usize;
             loop {
-                let chunk =
-                    tokio::select! {r=stream.next()=>r,_=cancel.wait()=>bail!("RUN_CANCELLED")};
+                let chunk = tokio::select! {
+                    biased;
+                    r=stream.next()=>r,
+                    _=cancel.wait()=>{
+                        workspace.lock().unwrap().event(
+                            "provider.cancelled",
+                            Some(run),
+                            json!({
+                                "requestId":request_id,
+                                "epoch":trace.epoch,
+                                "phase":"streaming",
+                                "receivedBytes":bytes_total,
+                                "frames":stream_frames,
+                            }),
+                        )?;
+                        bail!("RUN_CANCELLED")
+                    }
+                };
                 let Some(chunk) = chunk else { break };
                 let chunk = chunk?;
                 bytes_total += chunk.len();
@@ -367,12 +481,31 @@ impl Provider {
                         workspace.lock().unwrap().event(
                             "provider.incomplete",
                             Some(run),
-                            event.clone(),
+                            json!({
+                                "requestId":request_id,
+                                "trace":trace.event_fields(),
+                                "frames":stream_frames,
+                                "terminal":event,
+                            }),
                         )?;
+                        if kind == "response.incomplete" {
+                            return Ok(event["response"].clone());
+                        }
                         bail!("Provider响应未完成，未执行部分工具：{}", kind)
                     }
+                    stream_frames.push(event);
                 }
             }
+            workspace.lock().unwrap().event(
+                "provider.incomplete",
+                Some(run),
+                json!({
+                    "requestId":request_id,
+                    "trace":trace.event_fields(),
+                    "reason":"stream_ended_without_response.completed",
+                    "frames":stream_frames,
+                }),
+            )?;
             bail!("SSE_STREAM_INTERRUPTED：没有收到response.completed，未执行部分工具")
         }
         bail!("Provider重试耗尽")
