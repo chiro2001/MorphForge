@@ -1,0 +1,41 @@
+{
+  "schema": "MorphForgeGroupProtectionUI/1",
+  "success": true,
+  "scope": "Real Chromium UI + contract-compatible mock API; not real Rust hard-constraint evidence",
+  "sourceReport": "docs/ui-v2/ui-v2-mock-validation.json",
+  "screenshot": "docs/ui-v2/ui-v2-mock-protected-group.png",
+  "checks": [
+    "protection state is independent from visibility",
+    "POST /api/project carries protectedGroups and baseRevision",
+    "locking creates a new revision in the mock backend",
+    "drawing into a protected group returns 409 and shows Chinese guidance",
+    "erasing inside a protected group returns 409",
+    "transform involving a protected group returns 409",
+    "the unsent prompt is preserved after all conflicts",
+    "unlocking the group permits the next edit"
+  ],
+  "backendContract": {
+    "setProtection": {
+      "method": "POST",
+      "path": "/api/project",
+      "body": {
+        "protectedGroups": ["main"],
+        "baseRevision": "current project revision"
+      }
+    },
+    "statePath": "project.protectedGroups",
+    "conflict": {
+      "status": 409,
+      "errorPrefix": "PROTECTED_GROUP_CONFLICT"
+    }
+  },
+  "realBackendValidation": {
+    "passed": true,
+    "report": "docs/ui-v2/group-protection-real-validation.json",
+    "backend": "morphforge-v0.2-r2b",
+    "toolsVersion": "morphforge-tools/2.2",
+    "frontend": "current web/ served by same-origin test proxy",
+    "checks": 25,
+    "note": "The final frozen application bundle must still be rebuilt with this frontend and smoke-tested."
+  }
+}

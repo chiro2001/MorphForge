@@ -1,0 +1,104 @@
+{
+  "schema": "MorphForgeGroupProtectionReal/1",
+  "success": false,
+  "error": "no unexpected JavaScript or WebGL errors",
+  "checks": [
+    {
+      "name": "R2 tool contract is loaded",
+      "pass": true,
+      "detail": "morphforge-tools/2.2"
+    },
+    {
+      "name": "provider is local mock and OSC is disabled before test",
+      "pass": true
+    },
+    {
+      "name": "protected groups begin empty before isolation reset",
+      "pass": true
+    },
+    {
+      "name": "locking persists protectedGroups and creates a revision",
+      "pass": true,
+      "detail": {
+        "beforeRevision": 29,
+        "lockedRevision": 30
+      }
+    },
+    {
+      "name": "OSC remains disabled after locking",
+      "pass": true
+    },
+    {
+      "name": "real draw conflict shows Chinese guidance and preserves draft",
+      "pass": true,
+      "detail": {
+        "revision": 30,
+        "boxes": 1
+      }
+    },
+    {
+      "name": "real erase conflict leaves geometry unchanged",
+      "pass": true,
+      "detail": {
+        "revision": 30,
+        "boxes": 1
+      }
+    },
+    {
+      "name": "real transform conflict leaves geometry unchanged",
+      "pass": true,
+      "detail": {
+        "revision": 30,
+        "boxes": 1
+      }
+    },
+    {
+      "name": "all conflict paths preserve the unsent prompt",
+      "pass": true
+    },
+    {
+      "name": "OSC remains disabled through all conflicts",
+      "pass": true
+    },
+    {
+      "name": "unlock persists an empty protectedGroups list",
+      "pass": true,
+      "detail": {
+        "revision": 31
+      }
+    },
+    {
+      "name": "after unlocking the next real draw succeeds",
+      "pass": true,
+      "detail": {
+        "revision": 32
+      }
+    },
+    {
+      "name": "no provider or Harness message requests were sent",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "protection test cleans its geometry and leaves OSC disabled",
+      "pass": true,
+      "detail": {
+        "revision": 33,
+        "protectedGroups": []
+      }
+    },
+    {
+      "name": "no unexpected JavaScript or WebGL errors",
+      "pass": false,
+      "detail": [
+        {
+          "level": "SEVERE",
+          "message": "http://127.0.0.1:8781/studio.js 135:10 Error: 分组保护未保存，当前服务端可能尚未启用该设置\n    at saveGroupProtection (http://127.0.0.1:8781/studio.js:748:13)",
+          "source": "console-api",
+          "timestamp": 1792365474540
+        }
+      ]
+    }
+  ],
+  "browserLogs": []
+}

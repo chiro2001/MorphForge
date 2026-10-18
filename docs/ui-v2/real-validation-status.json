@@ -1,0 +1,81 @@
+{
+  "success": true,
+  "date": "2026-10-19",
+  "server": "http://127.0.0.1:8781",
+  "provider": "mock-local-only",
+  "providerBaseUrl": "http://127.0.0.1:8799",
+  "text": {
+    "report": "docs/ui-v2/text-real-text-rust-validation.json",
+    "checks": 26,
+    "failures": 0,
+    "planes": ["xy", "xz", "yz"],
+    "positiveAsymmetricGlyph": "L",
+    "asymmetricRegionChecks": true,
+    "displayText": "FL\n云港",
+    "displayFontSize": 24,
+    "contentScreenshots": [
+      "docs/ui-v2/text-real-text-rust-content-xy.png",
+      "docs/ui-v2/text-real-text-rust-content-xz.png",
+      "docs/ui-v2/text-real-text-rust-content-yz.png"
+    ],
+    "missingGlyph": {
+      "httpStatus": 400,
+      "code": "FONT_MISSING_GLYPHS",
+      "characters": ["😀"]
+    },
+    "applyUndo": true,
+    "modelRequest": false
+  },
+  "ui": {
+    "report": "docs/ui-v2/ui-v2-real-validation.json",
+    "checks": 17,
+    "failures": 0,
+    "screenshots": [
+      "docs/ui-v2/ui-v2-real-chat.png",
+      "docs/ui-v2/ui-v2-real-workbench.png"
+    ],
+    "realHarnessMessageApi": true,
+    "mockProviderOnly": true
+  },
+  "mock": {
+    "interactionReport": "docs/ui-v2/ui-v2-mock-validation.json",
+    "interactionChecks": 31,
+    "textReport": "docs/ui-v2/text-real-text-mock-validation.json",
+    "textChecks": 24,
+    "groupProtection": {
+      "passed": true,
+      "screenshot": "docs/ui-v2/ui-v2-mock-protected-group.png",
+      "realBackendPending": false,
+      "realReport": "docs/ui-v2/group-protection-real-validation.json",
+      "realChecks": 25,
+      "realScreenshots": [
+        "docs/ui-v2/group-protection-real-locked.png",
+        "docs/ui-v2/group-protection-real-unlocked.png"
+      ]
+    },
+    "completedSummary": {
+      "passed": true,
+      "source": "harness.finished status=completed message",
+      "preservesPriorFragments": true,
+      "deduplicatesRepeatedEventAndRefresh": true,
+      "screenshot": "docs/ui-v2/ui-v2-mock-complete-summary.png"
+    }
+  },
+  "nodeTests": {
+    "passed": 24,
+    "failed": 0
+  },
+  "finalWorkspace": {
+    "revision": 96,
+    "boxCount": 0,
+    "protectedGroups": [],
+    "oscEnabled": false,
+    "harnessPhase": "idle",
+    "activeRun": false
+  },
+  "limitations": [
+    "The 8781 binary was built before one final user-facing empty-interrupt note wording change; final packaging should rebuild and may rerun tools/check_ui_v2.py --url.",
+    "No real DeepSeek request was made; the provider was the local mock-only endpoint.",
+    "The server restart durability test and durable receipt repair are owned by the backend worker."
+  ]
+}

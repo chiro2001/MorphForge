@@ -1,0 +1,83 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "four clear workbench tabs",
+      "pass": true
+    },
+    {
+      "name": "idle primary action is explicit",
+      "pass": true
+    },
+    {
+      "name": "accepted start clears exactly the submitted prompt",
+      "pass": true
+    },
+    {
+      "name": "double click and rapid interjections do not duplicate requestIds",
+      "pass": true
+    },
+    {
+      "name": "interrupted assistant fragment remains labelled",
+      "pass": true
+    },
+    {
+      "name": "pause uses the empty interrupt and is visible in the conversation",
+      "pass": true
+    },
+    {
+      "name": "pause and resume expose distinct states",
+      "pass": true
+    },
+    {
+      "name": "pause exposes fast cancel semantics without a duplicate interrupt button",
+      "pass": true
+    },
+    {
+      "name": "draft survives browser refresh",
+      "pass": true
+    },
+    {
+      "name": "chat and pending state do not duplicate after refresh",
+      "pass": true
+    },
+    {
+      "name": "text preview is an independent translucent overlay",
+      "pass": true
+    },
+    {
+      "name": "text preview does not change the draft revision",
+      "pass": true
+    },
+    {
+      "name": "apply is enabled only after a current preview",
+      "pass": true
+    },
+    {
+      "name": "text apply clears preview and creates one revision",
+      "pass": true
+    },
+    {
+      "name": "text apply is undoable through the shared edit API",
+      "pass": true
+    },
+    {
+      "name": "missing glyph error is listed and apply stays disabled",
+      "pass": true
+    },
+    {
+      "name": "no browser JavaScript or WebGL errors",
+      "pass": true
+    }
+  ],
+  "scope": "Real Chromium UI flow against the running MorphForge app",
+  "mock": null,
+  "browserLogs": [
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:8781/api/text/preview - Failed to load resource: the server responded with a status of 400 (Bad Request)",
+      "source": "network",
+      "timestamp": 1792363169147
+    }
+  ]
+}

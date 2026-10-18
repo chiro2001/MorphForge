@@ -1,0 +1,579 @@
+{
+  "success": true,
+  "scope": "Contract-compatible mock text API + real Chromium renderer; no model or provider request",
+  "url": "http://127.0.0.1:46009",
+  "font": {
+    "id": "builtin:noto-sans-sc",
+    "family": "Noto Sans SC",
+    "style": "Regular",
+    "source": "builtin",
+    "sha256": "mock",
+    "faceIndex": 0,
+    "license": "OFL-1.1"
+  },
+  "styleId": 1,
+  "revisionBefore": 7,
+  "directPreview": {
+    "xy": {
+      "requestId": "text-real-preview-b7b2a4a53ae34f84b32cb21b5f091c95",
+      "requestFingerprint": "948def5d92076d0b65b4214c577e4ab33cf633a792eefb52ae9b717be4e97080",
+      "layout": {
+        "width": 6,
+        "height": 5,
+        "depth": 1,
+        "voxelCount": 9,
+        "boxCount": 2,
+        "bounds": {
+          "min": [
+            0,
+            0,
+            0
+          ],
+          "max": [
+            6,
+            5,
+            1
+          ]
+        },
+        "missingGlyphs": []
+      }
+    },
+    "xz": {
+      "requestId": "text-real-preview-4dfebef75ab84f0da237a9756f0d9385",
+      "requestFingerprint": "8fbdb9bf1bd0ac5b7d392fb79d9f2e23ed7081e37f989a4d1929af96d932e108",
+      "layout": {
+        "width": 6,
+        "height": 5,
+        "depth": 1,
+        "voxelCount": 9,
+        "boxCount": 2,
+        "bounds": {
+          "min": [
+            0,
+            0,
+            0
+          ],
+          "max": [
+            6,
+            1,
+            5
+          ]
+        },
+        "missingGlyphs": []
+      }
+    },
+    "yz": {
+      "requestId": "text-real-preview-2d264d7d73d14702843bd70528a647d4",
+      "requestFingerprint": "eaf9bf5439a486f6db6117ac09204d52aa956ebb5352c291a2aa4aff0d14cb2e",
+      "layout": {
+        "width": 6,
+        "height": 5,
+        "depth": 1,
+        "voxelCount": 9,
+        "boxCount": 2,
+        "bounds": {
+          "min": [
+            0,
+            0,
+            0
+          ],
+          "max": [
+            1,
+            5,
+            6
+          ]
+        },
+        "missingGlyphs": []
+      }
+    }
+  },
+  "missingGlyph": {
+    "ok": false,
+    "code": "FONT_MISSING_GLYPHS",
+    "error": "FONT_MISSING_GLYPHS: U+1F600",
+    "missingGlyphs": [
+      "U+1F600"
+    ]
+  },
+  "pixels": {
+    "xy": {
+      "actual": {
+        "height": 313,
+        "width": 380,
+        "x0": 258,
+        "x1": 638,
+        "y0": 224,
+        "y1": 537
+      },
+      "bboxCoverage": 0.9964856631198047,
+      "bl": {
+        "x": 276.47715154684147,
+        "y": 520.4341511329355
+      },
+      "bounds": {
+        "max": [
+          6,
+          5,
+          1
+        ],
+        "min": [
+          0,
+          0,
+          0
+        ]
+      },
+      "boxCount": 2,
+      "changed": 40868,
+      "expected": {
+        "height": 312.50725808597565,
+        "width": 379.26160658598945,
+        "x0": 258.4807257502595,
+        "x1": 637.742332336249,
+        "y0": 224.03301826323184,
+        "y1": 536.5402763492075
+      },
+      "plane": "xy",
+      "readingDown": 294.17112994926447,
+      "readingRight": 361.72580040047103,
+      "regions": {
+        "bottomLeft": {
+          "area": 13037,
+          "ink": 6927,
+          "occupancy": 0.5313338958349314
+        },
+        "bottomRight": {
+          "area": 13034,
+          "ink": 6202,
+          "occupancy": 0.4758324382384533
+        },
+        "topLeft": {
+          "area": 14441,
+          "ink": 2680,
+          "occupancy": 0.18558271587840178
+        },
+        "topRight": {
+          "area": 14436,
+          "ink": 0,
+          "occupancy": 0
+        }
+      },
+      "tl": {
+        "x": 270.1370997997644,
+        "y": 226.26302118367107
+      },
+      "tr": {
+        "x": 631.8629002002355,
+        "y": 226.26302118367107
+      }
+    },
+    "xz": {
+      "actual": {
+        "height": 315,
+        "width": 378,
+        "x0": 262,
+        "x1": 640,
+        "y0": 222,
+        "y1": 537
+      },
+      "bboxCoverage": 0.9990652159692267,
+      "bl": {
+        "x": 273.3989041394209,
+        "y": 527.5038724953964
+      },
+      "bounds": {
+        "max": [
+          6,
+          1,
+          5
+        ],
+        "min": [
+          0,
+          0,
+          0
+        ]
+      },
+      "boxCount": 2,
+      "changed": 39513,
+      "expected": {
+        "height": 314.8507308555867,
+        "width": 377.82569201028434,
+        "x0": 262.08775563578695,
+        "x1": 639.9134476460713,
+        "y0": 222.0739928382194,
+        "y1": 536.9247236938061
+      },
+      "plane": "xz",
+      "readingDown": 295.99739394421925,
+      "readingRight": 355.191557084244,
+      "regions": {
+        "bottomLeft": {
+          "area": 12875,
+          "ink": 6903,
+          "occupancy": 0.5361553398058252
+        },
+        "bottomRight": {
+          "area": 12875,
+          "ink": 6375,
+          "occupancy": 0.49514563106796117
+        },
+        "topLeft": {
+          "area": 14375,
+          "ink": 2760,
+          "occupancy": 0.192
+        },
+        "topRight": {
+          "area": 14375,
+          "ink": 0,
+          "occupancy": 0
+        }
+      },
+      "tl": {
+        "x": 273.40422145787807,
+        "y": 231.50647855117717
+      },
+      "tr": {
+        "x": 628.595778542122,
+        "y": 231.50647855117717
+      }
+    },
+    "yz": {
+      "actual": {
+        "height": 314,
+        "width": 379,
+        "x0": 259,
+        "x1": 638,
+        "y0": 223,
+        "y1": 537
+      },
+      "bboxCoverage": 0.99730178078236,
+      "bl": {
+        "x": 275.9825761774532,
+        "y": 521.7215572711785
+      },
+      "bounds": {
+        "max": [
+          1,
+          5,
+          6
+        ],
+        "min": [
+          0,
+          0,
+          0
+        ]
+      },
+      "boxCount": 2,
+      "changed": 40690,
+      "expected": {
+        "height": 313.218042033221,
+        "width": 379.0231456771849,
+        "x0": 259.0789935555584,
+        "x1": 638.1021392327433,
+        "y0": 223.54235982095378,
+        "y1": 536.7604018541748
+      },
+      "plane": "yz",
+      "readingDown": 294.72537093649356,
+      "readingRight": 360.6222021371792,
+      "regions": {
+        "bottomLeft": {
+          "area": 12995,
+          "ink": 6891,
+          "occupancy": 0.5302808772604848
+        },
+        "bottomRight": {
+          "area": 13002,
+          "ink": 6186,
+          "occupancy": 0.4757729580064605
+        },
+        "topLeft": {
+          "area": 14517,
+          "ink": 2707,
+          "occupancy": 0.1864710339601846
+        },
+        "topRight": {
+          "area": 14514,
+          "ink": 0,
+          "occupancy": 0
+        }
+      },
+      "tl": {
+        "x": 270.68889893141045,
+        "y": 226.99618633468498
+      },
+      "tr": {
+        "x": 631.3111010685897,
+        "y": 226.99618633468498
+      }
+    }
+  },
+  "checks": [
+    {
+      "name": "real backend state",
+      "pass": true
+    },
+    {
+      "name": "builtin Chinese font is advertised",
+      "pass": true
+    },
+    {
+      "name": "real material catalog is available",
+      "pass": true
+    },
+    {
+      "name": "xy preview HTTP shape and requestId echo",
+      "pass": true,
+      "detail": {
+        "requestId": "text-real-preview-b7b2a4a53ae34f84b32cb21b5f091c95",
+        "revision": 7,
+        "boxCount": 2
+      }
+    },
+    {
+      "name": "xz preview HTTP shape and requestId echo",
+      "pass": true,
+      "detail": {
+        "requestId": "text-real-preview-4dfebef75ab84f0da237a9756f0d9385",
+        "revision": 7,
+        "boxCount": 2
+      }
+    },
+    {
+      "name": "yz preview HTTP shape and requestId echo",
+      "pass": true,
+      "detail": {
+        "requestId": "text-real-preview-2d264d7d73d14702843bd70528a647d4",
+        "revision": 7,
+        "boxCount": 2
+      }
+    },
+    {
+      "name": "real missing glyph returns typed top-level error",
+      "pass": true,
+      "detail": {
+        "status": 400,
+        "code": "FONT_MISSING_GLYPHS",
+        "missingGlyphs": [
+          "U+1F600"
+        ]
+      }
+    },
+    {
+      "name": "xy UI preview did not change draft revision",
+      "pass": true
+    },
+    {
+      "name": "xy positive text advances right and down on rendered canvas",
+      "pass": true,
+      "detail": {
+        "readingRightPx": 361.72580040047103,
+        "readingDownPx": 294.17112994926447
+      }
+    },
+    {
+      "name": "xy rendered pixel bbox matches projected canonical Boxes",
+      "pass": true,
+      "detail": {
+        "actual": {
+          "height": 313,
+          "width": 380,
+          "x0": 258,
+          "x1": 638,
+          "y0": 224,
+          "y1": 537
+        },
+        "expected": {
+          "height": 312.50725808597565,
+          "width": 379.26160658598945,
+          "x0": 258.4807257502595,
+          "x1": 637.742332336249,
+          "y0": 224.03301826323184,
+          "y1": 536.5402763492075
+        },
+        "bboxCoverage": 0.9964856631198047
+      }
+    },
+    {
+      "name": "xy asymmetric L glyph rejects horizontal and vertical mirrors",
+      "pass": true,
+      "detail": {
+        "bottomLeft": {
+          "area": 13037,
+          "ink": 6927,
+          "occupancy": 0.5313338958349314
+        },
+        "bottomRight": {
+          "area": 13034,
+          "ink": 6202,
+          "occupancy": 0.4758324382384533
+        },
+        "topLeft": {
+          "area": 14441,
+          "ink": 2680,
+          "occupancy": 0.18558271587840178
+        },
+        "topRight": {
+          "area": 14436,
+          "ink": 0,
+          "occupancy": 0
+        }
+      }
+    },
+    {
+      "name": "xy preview overlay is visible",
+      "pass": true,
+      "detail": {
+        "changedPixels": 40868,
+        "boxCount": 2
+      }
+    },
+    {
+      "name": "xz UI preview did not change draft revision",
+      "pass": true
+    },
+    {
+      "name": "xz positive text advances right and down on rendered canvas",
+      "pass": true,
+      "detail": {
+        "readingRightPx": 355.191557084244,
+        "readingDownPx": 295.99739394421925
+      }
+    },
+    {
+      "name": "xz rendered pixel bbox matches projected canonical Boxes",
+      "pass": true,
+      "detail": {
+        "actual": {
+          "height": 315,
+          "width": 378,
+          "x0": 262,
+          "x1": 640,
+          "y0": 222,
+          "y1": 537
+        },
+        "expected": {
+          "height": 314.8507308555867,
+          "width": 377.82569201028434,
+          "x0": 262.08775563578695,
+          "x1": 639.9134476460713,
+          "y0": 222.0739928382194,
+          "y1": 536.9247236938061
+        },
+        "bboxCoverage": 0.9990652159692267
+      }
+    },
+    {
+      "name": "xz asymmetric L glyph rejects horizontal and vertical mirrors",
+      "pass": true,
+      "detail": {
+        "bottomLeft": {
+          "area": 12875,
+          "ink": 6903,
+          "occupancy": 0.5361553398058252
+        },
+        "bottomRight": {
+          "area": 12875,
+          "ink": 6375,
+          "occupancy": 0.49514563106796117
+        },
+        "topLeft": {
+          "area": 14375,
+          "ink": 2760,
+          "occupancy": 0.192
+        },
+        "topRight": {
+          "area": 14375,
+          "ink": 0,
+          "occupancy": 0
+        }
+      }
+    },
+    {
+      "name": "xz preview overlay is visible",
+      "pass": true,
+      "detail": {
+        "changedPixels": 39513,
+        "boxCount": 2
+      }
+    },
+    {
+      "name": "yz UI preview did not change draft revision",
+      "pass": true
+    },
+    {
+      "name": "yz positive text advances right and down on rendered canvas",
+      "pass": true,
+      "detail": {
+        "readingRightPx": 360.6222021371792,
+        "readingDownPx": 294.72537093649356
+      }
+    },
+    {
+      "name": "yz rendered pixel bbox matches projected canonical Boxes",
+      "pass": true,
+      "detail": {
+        "actual": {
+          "height": 314,
+          "width": 379,
+          "x0": 259,
+          "x1": 638,
+          "y0": 223,
+          "y1": 537
+        },
+        "expected": {
+          "height": 313.218042033221,
+          "width": 379.0231456771849,
+          "x0": 259.0789935555584,
+          "x1": 638.1021392327433,
+          "y0": 223.54235982095378,
+          "y1": 536.7604018541748
+        },
+        "bboxCoverage": 0.99730178078236
+      }
+    },
+    {
+      "name": "yz asymmetric L glyph rejects horizontal and vertical mirrors",
+      "pass": true,
+      "detail": {
+        "bottomLeft": {
+          "area": 12995,
+          "ink": 6891,
+          "occupancy": 0.5302808772604848
+        },
+        "bottomRight": {
+          "area": 13002,
+          "ink": 6186,
+          "occupancy": 0.4757729580064605
+        },
+        "topLeft": {
+          "area": 14517,
+          "ink": 2707,
+          "occupancy": 0.1864710339601846
+        },
+        "topRight": {
+          "area": 14514,
+          "ink": 0,
+          "occupancy": 0
+        }
+      }
+    },
+    {
+      "name": "yz preview overlay is visible",
+      "pass": true,
+      "detail": {
+        "changedPixels": 40690,
+        "boxCount": 2
+      }
+    },
+    {
+      "name": "FL and Chinese content screenshots saved for all planes",
+      "pass": true
+    },
+    {
+      "name": "no JavaScript or WebGL runtime errors",
+      "pass": true,
+      "detail": []
+    }
+  ],
+  "browserLogs": []
+}

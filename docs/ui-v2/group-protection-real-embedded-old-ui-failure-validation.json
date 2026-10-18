@@ -1,0 +1,76 @@
+{
+  "schema": "MorphForgeGroupProtectionReal/1",
+  "success": false,
+  "error": "Timed out: return [...document.querySelectorAll('.group-row')].some(row=>row.dataset.group==='future-protected-empty'&&row.classList.contains('empty'))",
+  "checks": [
+    {
+      "name": "R2 tool contract is loaded",
+      "pass": true,
+      "detail": "morphforge-tools/2.2"
+    },
+    {
+      "name": "provider is local mock and OSC is disabled before test",
+      "pass": true
+    },
+    {
+      "name": "isolated test starts with an empty scene and protection list",
+      "pass": true
+    },
+    {
+      "name": "locking persists protectedGroups and creates a revision",
+      "pass": true,
+      "detail": {
+        "beforeRevision": 46,
+        "lockedRevision": 47
+      }
+    },
+    {
+      "name": "OSC remains disabled after locking",
+      "pass": true
+    },
+    {
+      "name": "backend returns 409 PROTECTED_GROUP_CONFLICT for draw",
+      "pass": true,
+      "detail": {
+        "status": 409,
+        "error": "PROTECTED_GROUP_CONFLICT：受保护分组内容发生变化：protected-demo"
+      }
+    },
+    {
+      "name": "backend returns 409 PROTECTED_GROUP_CONFLICT for erase",
+      "pass": true,
+      "detail": {
+        "status": 409,
+        "error": "PROTECTED_GROUP_CONFLICT：受保护分组内容发生变化：protected-demo"
+      }
+    },
+    {
+      "name": "backend returns 409 PROTECTED_GROUP_CONFLICT for transform",
+      "pass": true,
+      "detail": {
+        "status": 409,
+        "error": "PROTECTED_GROUP_CONFLICT：受保护分组内容发生变化：protected-demo"
+      }
+    },
+    {
+      "name": "direct backend conflicts leave geometry and revision unchanged",
+      "pass": true
+    },
+    {
+      "name": "backend accepts a future empty protected group",
+      "pass": true,
+      "detail": {
+        "revision": 48
+      }
+    },
+    {
+      "name": "backend rejects the first draw into a future protected group",
+      "pass": true,
+      "detail": {
+        "status": 409,
+        "error": "PROTECTED_GROUP_CONFLICT：受保护分组内容发生变化：future-protected-empty"
+      }
+    }
+  ],
+  "browserLogs": []
+}

@@ -1,74 +1,1960 @@
-import {VoxelRenderer} from '/renderer.js';
-const $=id=>document.getElementById(id),captureMode=new URLSearchParams(location.search).has('capture');
-const renderer=new VoxelRenderer($('viewport'),{interactive:!captureMode});
-let state=null,sceneData=null,loadedRevision=-1,selectedStyle=2,tool='box',busy=false,polling=false,edits=Promise.resolve(),lastSeq=0,eventRows=[],toastTimer,pointerStart=null,lastRunId='',lastAssistant='',loading=false,lastMaterials='',selected=new Set();
-window.__morphforge={ready:false,state:null,renderer,projectPoint:p=>renderer.projectPoint(p)};
-async function api(path,body){const response=await fetch('/api/'+path,body===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const v=await response.json();if(!response.ok)throw new Error(typeof v.error==='string'?v.error:JSON.stringify(v.error)||'请求失败');return v;}
-function toast(text){$('toast').textContent=text;$('toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('visible'),4500);}
-function error(e){toast(e.message||String(e));console.error(e);}
-function fmt(n){return Number(n||0).toLocaleString();}function time(seconds){if(!seconds)return'0秒';if(seconds<60)return Math.ceil(seconds)+'秒';if(seconds<3600)return Math.floor(seconds/60)+'分'+Math.ceil(seconds%60)+'秒';return Math.floor(seconds/3600)+'时'+Math.ceil(seconds%3600/60)+'分';}
-function setValue(id,value){const e=$(id);if(document.activeElement!==e)e.value=value;}function setChecked(id,value){const e=$(id);if(document.activeElement!==e)e.checked=value;}
-function values(ids){return ids.map(id=>Math.floor(Number($(id).value)||0));}function brush(){return values(['brushX','brushY','brushZ']).map(v=>Math.max(1,v));}function coord(){return values(['coordX','coordY','coordZ']);}
-function operation(min,erase=false){return{op:erase?'erase':tool==='erase'?'erase':'box',min,size:brush(),styleId:selectedStyle,tintId:Number($('tintId').value)||0,group:$('groupName').value||'main'};}
-async function refresh(force=false){if(polling)return;polling=true;try{const next=await api('state');state=next;window.__morphforge.state=next;updateState();if((next.revision!==loadedRevision||force)&&!loading){loading=true;try{sceneData=await api('scene');if(!sceneData.materials.some(m=>m.id===selectedStyle))selectedStyle=sceneData.materials[0]?.id??1;await renderer.load(sceneData.scene,sceneData.materials,{mode:$('renderMode').value,scale:$('renderMode').value==='vrc'?state.connection.placement.scale:1});loadedRevision=sceneData.scene.revision;selected=new Set([...selected].filter(id=>sceneData.scene.boxes.some(b=>b.id===id)));renderer.selection=selected;renderer.updateSelection();drawPalette();drawGroups();selectionInfo();}finally{loading=false}}window.__morphforge.ready=true;}catch(e){$('saveState').textContent='后端暂时不可用';if(!state)error(e);}finally{polling=false}}
-function updateState(){const s=state,c=s.connection,h=s.harness,r=h.run;
- setValue('projectName',s.project.name);$('saveState').textContent='已保存 · v'+s.revision;$('boxCount').textContent=fmt(s.stats.boxCount)+' Box / 目标 '+fmt(s.stats.targetBoxes);$('voxelCount').textContent=fmt(s.stats.voxelCount)+' 格';$('bounds').textContent=s.stats.bounds?'范围 '+s.stats.bounds.min.join(',')+' → '+s.stats.bounds.max.join(','):'范围为空';$('emptyHint').hidden=s.stats.boxCount>0;$('undo').disabled=!s.canUndo;$('redo').disabled=!s.canRedo;
- setValue('profile',c.profile);setValue('targetPort',c.port);setValue('interval',c.interval);setValue('targetCapacity',c.capacity);setValue('refreshSeconds',c.refreshSeconds);setChecked('autoPublish',c.auto);$('connect').textContent=c.enabled?'停止发送':'开启发送';$('connect').classList.toggle('selected',c.enabled);$('connectionBadge').textContent=c.enabled?'OSC '+c.port+' · '+c.pending+'项':'独立创作';$('connectionBadge').classList.toggle('live',c.enabled);$('syncStatus').textContent=c.error||(!c.enabled?'发送已关闭；可继续独立创作。':`本机发包中 · 无远端ACK\n目标 v${c.desiredRevision} / 已发送 v${c.sentRevision??'—'}\n待发 ${fmt(c.pending)} 批 · 预计 ${time(c.etaSeconds)}\n累计 ${fmt(c.sentCommands)} 批`);
- setChecked('world',c.placement.world);setChecked('visible',c.placement.visible);setChecked('level',c.placement.level);setValue('scale',c.placement.scale);$('scaleValue').value=Number(c.placement.scale).toFixed(2)+'×';
- setValue('model',h.settings.model);setValue('reasoning',h.settings.reasoning);setValue('maxSteps',h.settings.maxSteps);setValue('maxRunSeconds',h.settings.maxRunSeconds);setValue('maxRunTokens',h.settings.maxRunTokens);setValue('maxOutputTokens',h.settings.maxOutputTokens);setValue('compactTokens',h.settings.compactTokens);setChecked('autoCompact',h.settings.autoCompact);setValue('pinnedNotes',s.project.pinnedNotes);$('providerState').textContent=h.provider.configured?'Key已配置':'需要Key';$('providerState').classList.toggle('live',h.provider.configured);
- $('contextStats').textContent=`上下文约 ${fmt(h.context.estimatedTokens)} Token\n${h.context.messages} 条消息 · compact ${h.context.compactCount} 次`;$('contextSummary').textContent=h.context.summary||'暂无';
- if(r){$('runStatus').textContent=`${{running:'运行中',compacting:'整理上下文',completed:'已完成',failed:'运行中断',stopped:'已停止'}[r.status]||r.status}${h.paused?' · 已暂停':''}\n${r.steps} 步 · ${fmt(r.tokens)} Token${r.error?'\n'+r.error:''}`;
-  if(r.id!==lastRunId){lastRunId=r.id;lastAssistant='';chatEntry('user',r.prompt);}
-  if(r.message&&r.message!==lastAssistant){let el=$('chat').querySelector('[data-run="'+r.id+'"]');if(!el){el=chatEntry('assistant','');el.dataset.run=r.id}el.querySelector('span').textContent=r.message;lastAssistant=r.message;}
- }
- $('renderInfo').textContent=`v${loadedRevision<0?s.revision:loadedRevision} · ${renderer.renderer.info.render.calls} 绘制调用 · 底部中心 / +Z前`;
+import { VoxelRenderer } from "/renderer.js";
+import {
+  groupRows,
+  isGroupProtected,
+  normalizeProtectedGroups,
+  protectionSavePayload,
+  setProtectedGroup,
+} from "/group-ui.js";
+import {
+  conflictFromError,
+  completedRunSummary,
+  dedupeMessages,
+  eventMessageState,
+  findExactAssistantMessage,
+  friendlyError,
+  mergeAck,
+  messageModeHint,
+  normalizeHarness,
+  phaseLabel,
+  primaryAction,
+  requestIdFromEvent,
+  statusLabel,
+} from "/harness-ui.js";
+import {
+  buildTextRequest,
+  formatPreviewError,
+  normalizeApplyResult,
+  previewBoxes,
+  previewCanApply,
+  previewMetrics,
+  textRequestFingerprint,
+} from "/text-ui.js";
+
+const $ = (id) => document.getElementById(id);
+const captureMode = new URLSearchParams(location.search).has("capture");
+const renderer = new VoxelRenderer($("viewport"), {
+  interactive: !captureMode,
+});
+
+let state = null;
+let sceneData = null;
+let loadedRevision = -1;
+let selectedStyle = 2;
+let tool = "box";
+let polling = false;
+let edits = Promise.resolve();
+let lastSeq = 0;
+let eventRows = [];
+let toastTimer;
+let pointerStart = null;
+let loading = false;
+let selected = new Set();
+let uiScope = "";
+let pendingMessages = [];
+let chatEntries = [];
+let previousHarness = null;
+let messageInFlight = false;
+let retryPayload = null;
+let fontsLoaded = false;
+let fontCatalog = [];
+let previewSequence = 0;
+let previewTimer = 0;
+let currentTextPreview = null;
+let currentPreviewSentJSON = "";
+let currentPreviewServerFingerprint = "";
+let currentPreviewRequestId = "";
+let currentPreviewRequest = null;
+let textApplyBusy = false;
+let groupSettingsBusy = false;
+
+window.__morphforge = {
+  ready: false,
+  state: null,
+  renderer,
+  projectPoint: (point) => renderer.projectPoint(point),
+  harnessUi: {
+    pending: () => structuredClone(pendingMessages),
+    chat: () => structuredClone(chatEntries),
+    send: (message) => postHarnessMessage(message),
+  },
+  text: {
+    preview: () => currentTextPreview,
+    fingerprint: () => currentPreviewServerFingerprint,
+    previewRequestId: () => currentPreviewRequestId,
+    request: () =>
+      currentPreviewRequest ? structuredClone(currentPreviewRequest) : null,
+    refresh: () => requestTextPreview(true),
+  },
+};
+
+async function api(path, body) {
+  const response = await fetch(
+    "/api/" + path,
+    body === undefined
+      ? {}
+      : {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        },
+  );
+  const text = await response.text();
+  let value;
+  try {
+    value = text ? JSON.parse(text) : {};
+  } catch {
+    value = {
+      ok: false,
+      error: response.ok
+        ? "本机服务返回了无法识别的响应"
+        : `本机服务暂时不可用（${response.status}）`,
+    };
+  }
+  if (!response.ok) {
+    const detail =
+      typeof value.error === "string"
+        ? value.error
+        : value.error
+          ? JSON.stringify(value.error)
+          : `请求失败（${response.status}）`;
+    const error = new Error(detail);
+    error.status = response.status;
+    error.payload = value;
+    error.code = value.code || value.error?.code || "";
+    throw error;
+  }
+  return value;
 }
-function chatEntry(role,text){const el=document.createElement('div');el.className='chat-entry '+role;const small=document.createElement('small');small.textContent=role==='user'?'你':'MorphForge';const span=document.createElement('span');span.textContent=text;el.append(small,span);$('chat').append(el);$('chat').scrollTop=$('chat').scrollHeight;return el;}
-function edit(value){edits=edits.then(async()=>{try{const result=await api('edit',{...value,baseRevision:state?.revision,requestId:crypto.randomUUID()});if(result.warning)toast(result.warning);await refresh();}catch(e){error(e);await refresh();}});return edits;}
-function drawPalette(){const query=$('styleSearch').value.toLowerCase();$('palette').replaceChildren();for(const m of sceneData.materials){if(query&&!`${m.name} ${m.uid} ${m.family}`.toLowerCase().includes(query))continue;const b=document.createElement('button');b.className='swatch'+(m.id===selectedStyle?' selected':'');b.style.background=`rgb(${m.color.map(v=>Math.round(v*255)).join(',')})`;b.title=m.name+' · '+m.family+(m.pack?' · Avatar需预打包':'');if(m.textures?.length)b.style.backgroundImage=`url("${m.textures[0]}")`;b.onclick=()=>{selectedStyle=m.id;drawPalette();};$('palette').append(b)}$('styleName').textContent=sceneData.materials.find(m=>m.id===selectedStyle)?.name||'未知材质';}
-function drawGroups(){$('groups').replaceChildren();for(const [name,count]of Object.entries(state.stats.groups)){const row=document.createElement('div');row.className='group-row';const check=document.createElement('input');check.type='checkbox';check.checked=!renderer.groupsHidden.has(name);check.onchange=async()=>{if(check.checked)renderer.groupsHidden.delete(name);else renderer.groupsHidden.add(name);await renderer.load(sceneData.scene,sceneData.materials,{mode:$('renderMode').value});};const label=document.createElement('span');label.textContent=name;label.onclick=()=>{selected=new Set(sceneData.scene.boxes.filter(b=>b.group===name).map(b=>b.id));renderer.selection=selected;renderer.updateSelection();selectionInfo();};const number=document.createElement('small');number.textContent=count;row.append(check,label,number);$('groups').append(row)}}
-function selectionInfo(){$('selectionInfo').textContent=selected.size?`已选 ${selected.size} Box · 移动/复制读取精确位置XYZ作为偏移`:'选择工具点击，Shift多选；拖动框选';}
-function setTool(next){tool=next;for(const [id,name]of [['addTool','box'],['eraseTool','erase'],['selectTool','select']])$(id).classList.toggle('selected',next===name);renderer.ghost.visible=false;}
-$('addTool').onclick=()=>setTool('box');$('eraseTool').onclick=()=>setTool('erase');$('selectTool').onclick=()=>setTool('select');$('styleSearch').oninput=drawPalette;
-let hoverFrame=0,lastPointer;renderer.renderer.domElement.addEventListener('pointermove',e=>{lastPointer=e;if(hoverFrame)return;hoverFrame=requestAnimationFrame(()=>{hoverFrame=0;if(!state||loading)return;const hit=renderer.pick(lastPointer,{erase:tool==='erase'||lastPointer.shiftKey,layer:Number($('layer').value)});if(tool!=='select')renderer.hover(hit,brush(),tool==='erase'||lastPointer.shiftKey);if(hit)$('cursorPosition').textContent=`X ${hit.pos[0]} · Y ${hit.pos[1]} · Z ${hit.pos[2]}`;});});
-renderer.renderer.domElement.addEventListener('pointerleave',()=>{renderer.ghost.visible=false});renderer.renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());renderer.renderer.domElement.addEventListener('pointerdown',e=>{if(e.button===0)pointerStart=[e.clientX,e.clientY]});
-renderer.renderer.domElement.addEventListener('pointerup',e=>{if(e.button!==0||!pointerStart||loading)return;const start=pointerStart;pointerStart=null;const distance=Math.hypot(e.clientX-start[0],e.clientY-start[1]);if(tool==='select'){
- if(!e.shiftKey)selected.clear();if(distance>5){const c=sceneData.scene.cellSize;for(const b of sceneData.scene.boxes){const p=renderer.projectPoint(b.min.map((v,i)=>(v+b.size[i]/2)*c));if(p.x>=Math.min(start[0],e.clientX)&&p.x<=Math.max(start[0],e.clientX)&&p.y>=Math.min(start[1],e.clientY)&&p.y<=Math.max(start[1],e.clientY))selected.add(b.id);}}else{const hit=renderer.pick(e,{erase:true});if(hit?.box){if(e.shiftKey&&selected.has(hit.box.id))selected.delete(hit.box.id);else selected.add(hit.box.id);}}renderer.selection=selected;renderer.updateSelection();selectionInfo();return;}
- if(distance>5)return;const hit=renderer.pick(e,{erase:tool==='erase'||e.shiftKey,layer:Number($('layer').value)});if(hit)edit(operation(hit.pos,e.shiftKey));});
-$('applyPosition').onclick=()=>edit(operation(coord()));$('layer').oninput=()=>{$('layerValue').value=$('layer').value;renderer.setLayer(Number($('layer').value))};
-for(const [id,name]of [['houseDemo','house'],['stairsDemo','stairs'],['directionsDemo','directions'],['stress5k','stress5k'],['stress16k','stress16k']])$(id).onclick=()=>edit({op:'demo',name}).then(()=>renderer.view());
-$('clearScene').onclick=()=>edit({op:'clear'});$('undo').onclick=()=>edit({op:'undo'});$('redo').onclick=()=>edit({op:'redo'});
-for(const [id,copy,turns,mirror]of [['moveSelection',false,0,null],['copySelection',true,0,null],['rotateSelection',false,1,null],['mirrorSelection',false,0,'x']])$(id).onclick=()=>{if(!selected.size)return toast('请先选择内容');edit({op:'transform',ids:[...selected],offset:turns||mirror?[0,0,0]:coord(),turns,mirror,copy});};
-$('paintSelection').onclick=()=>{if(!selected.size)return toast('请先选择内容');const operations=sceneData.scene.boxes.filter(b=>selected.has(b.id)).map(b=>({op:'paint',min:b.min,size:b.size,styleId:selectedStyle,tintId:Number($('tintId').value)||0}));edit({operations});};
-$('fitView').onclick=()=>renderer.view();document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>renderer.view(b.dataset.view));$('renderMode').onchange=()=>refresh(true);$('projectName').onchange=async()=>{try{await api('project',{name:$('projectName').value});await refresh()}catch(e){error(e)}};
-window.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName))return;if((e.ctrlKey||e.metaKey)&&['z','y'].includes(e.key.toLowerCase())){e.preventDefault();edit({op:e.key.toLowerCase()==='y'||e.shiftKey?'redo':'undo'})}});
-$('exportProject').onclick=async()=>{try{const value=await api('export'),blob=new Blob([JSON.stringify(value,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=(state.project.name||'morphforge')+'.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}catch(e){error(e)}};
-$('importProject').onclick=()=>$('projectFile').click();$('projectFile').onchange=async e=>{try{const file=e.target.files[0];if(!file)return;await api('import',JSON.parse(await file.text()));await refresh(true);renderer.view()}catch(e){error(e)}e.target.value='';};
-$('packReportClose').onclick=()=>$('packReportDialog').close();
-$('catalogExport').onclick=()=>{const link=document.createElement('a');link.href='/api/vrc/catalog';link.download='morphforge-materials.zip';link.click()};
-$('packImport').onclick=()=>$('packFile').click();$('packFile').onchange=async e=>{try{const file=e.target.files[0];if(!file)return;const data=new FormData();data.append('file',file);const response=await fetch('/api/packs/import',{method:'POST',body:data});const value=await response.json();if(!response.ok)throw new Error(value.error);toast(`已导入 ${value.materialsAdded} 种材质；Avatar使用需预打包`);$('packReportContent').textContent=JSON.stringify(value,null,2);$('packReportDialog').showModal();await refresh(true);}catch(e){error(e)}e.target.value='';};
-function connection(enabled=state.connection.enabled){return{enabled,port:Number($('targetPort').value),profile:$('profile').value,interval:Number($('interval').value),capacity:Number($('targetCapacity').value),refreshSeconds:Number($('refreshSeconds').value),auto:$('autoPublish').checked};}
-async function configure(enabled){try{await api('connect',connection(enabled));await refresh()}catch(e){error(e);await refresh()}}
-$('connect').onclick=()=>configure(!state.connection.enabled);for(const id of ['targetPort','profile','interval','targetCapacity','refreshSeconds','autoPublish'])$(id).onchange=()=>configure(state.connection.enabled);$('unityPort').onclick=()=>{$('targetPort').value=9012;configure(state.connection.enabled)};$('vrcPort').onclick=()=>{$('targetPort').value=9000;configure(state.connection.enabled)};
-$('publish').onclick=async()=>{try{await api('publish',{});await refresh();toast(state.connection.enabled?'版本已进入发送队列':'版本已准备；开启发送后执行')}catch(e){error(e)}};$('resync').onclick=async()=>{try{await api('publish',{resync:true});await refresh()}catch(e){error(e)}};
-async function placement(value){try{await api('placement',value);await refresh();if($('renderMode').value==='vrc')renderer.setScale(state.connection.placement.scale)}catch(e){error(e)}}
-for(const id of ['world','visible','level'])$(id).onchange=()=>placement({[id]:$(id).checked});$('scale').oninput=()=>{$('scaleValue').value=Number($('scale').value).toFixed(2)+'×';if($('renderMode').value==='vrc')renderer.setScale(Number($('scale').value))};$('scale').onchange=()=>placement({scale:Number($('scale').value)});$('resetAnchor').onclick=()=>placement({reset:true});
-document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('selected',x===b));for(const name of ['ai','sync','context'])$('tab-'+name).hidden=name!==b.dataset.tab});
-async function configHarness(value){try{await api('harness/config',value);await refresh()}catch(e){error(e)}}
-for(const [id,key]of [['model','model'],['reasoning','reasoning'],['maxSteps','maxSteps'],['compactTokens','compactTokens'],['maxRunSeconds','maxRunSeconds'],['maxRunTokens','maxRunTokens'],['maxOutputTokens','maxOutputTokens']])$(id).onchange=()=>configHarness({[key]:['maxSteps','compactTokens','maxRunSeconds','maxRunTokens','maxOutputTokens'].includes(key)?Number($(id).value):$(id).value});$('autoCompact').onchange=()=>configHarness({autoCompact:$('autoCompact').checked});
-$('generate').onclick=async()=>{const prompt=$('prompt').value.trim();if(!prompt)return;try{await api('harness/start',{prompt});$('prompt').value='';await refresh()}catch(e){error(e)}};$('prompt').onkeydown=e=>{if(e.ctrlKey&&e.key==='Enter')$('generate').click()};
-for(const [id,action]of [['pauseAI','pause'],['resumeAI','resume'],['stopAI','stop'],['compact','compact']])$(id).onclick=async()=>{try{await api('harness/control',{action});await refresh()}catch(e){error(e)}};
-$('saveNotes').onclick=async()=>{try{await api('project',{pinnedNotes:$('pinnedNotes').value});await refresh();toast('固定要求已保存')}catch(e){error(e)}};
-async function runRecipe(dryRun){try{const value=await api('harness/tool',{name:'run_recipe',arguments:{code:$('recipeCode').value,mode:'apply',seed:1,baseRevision:state.revision,requestId:crypto.randomUUID(),dryRun}});if(dryRun)toast(`预计 ${value.stats.boxCount} Box / ${fmt(value.stats.voxelCount)} 格`);else{await refresh();renderer.view();}}catch(e){error(e)}}$('runRecipe').onclick=()=>runRecipe(false);$('dryRecipe').onclick=()=>runRecipe(true);
-async function capture(){const result=await api('harness/tool',{name:'capture_views',arguments:{revision:state.revision,views:['hero','front','top']}});window.__morphforge.lastCapture=result;$('captureRevision').textContent='v'+result.revision;$('captureImages').replaceChildren();for(const image of result.images){const wrap=document.createElement('div'),im=document.createElement('img'),caption=document.createElement('p');im.src=image.url;caption.textContent=image.view;wrap.append(im,caption);$('captureImages').append(wrap)}return result;}
-$('capture').onclick=async()=>{try{toast('正在生成独立三视图…');await capture();$('captureDialog').showModal()}catch(e){error(e)}};$('captureClose').onclick=()=>$('captureDialog').close();
-$('saveArtwork').onclick=async()=>{try{const images=await capture();await api('artworks',{action:'save',title:state.project.name,tags:[],thumbnail:images.images[0]?.artifact,views:images.images.map(x=>x.artifact)});toast('作品和三视图已保存')}catch(e){error(e)}};
-async function library(){const value=await api('artworks'),query=$('librarySearch').value.toLowerCase();$('libraryGrid').replaceChildren();for(const a of value.artworks){if(query&&!`${a.title} ${a.tags.join(' ')}`.toLowerCase().includes(query))continue;const card=document.createElement('article');card.className='artwork';const img=document.createElement('img');if(a.thumbnail)img.src='/artifacts/'+encodeURIComponent(a.thumbnail);const body=document.createElement('div'),name=document.createElement('h3'),info=document.createElement('p'),load=document.createElement('button');name.textContent=a.title;info.textContent=`${fmt(a.boxCount)} Box · ${fmt(a.voxelCount)} 格`;load.textContent='载入并继续';if(a.views?.length){const preview=document.createElement('button');preview.textContent='多视图';preview.onclick=()=>{$('captureRevision').textContent=a.title;$('captureImages').replaceChildren();for(const name of a.views){const im=document.createElement('img');im.src='/artifacts/'+encodeURIComponent(name);$('captureImages').append(im)}$('captureDialog').showModal()};body.append(preview)}load.onclick=async()=>{try{await api('artworks',{action:'fork',id:a.id});await refresh(true);renderer.view();$('libraryDialog').close()}catch(e){error(e)}};body.append(name,info,load);card.append(img,body);$('libraryGrid').append(card)}}
-$('libraryOpen').onclick=async()=>{try{await library();$('libraryDialog').showModal()}catch(e){error(e)}};$('libraryClose').onclick=()=>$('libraryDialog').close();$('librarySearch').oninput=()=>library().catch(error);
-$('diagnosticsExport').onclick=()=>{const link=document.createElement('a');link.href='/api/diagnostics';link.download='morphforge-diagnostics.zip';link.click()};
-$('timelineToggle').onclick=()=>{$('timeline').hidden=!$('timeline').hidden;setTimeout(()=>renderer.resize(),30)};$('eventFilter').onchange=drawEvents;$('eventRunFilter').oninput=drawEvents;$('eventRevisionFilter').oninput=drawEvents;
-function drawEvents(){$('events').replaceChildren();const filter=$('eventFilter').value,run=$('eventRunFilter').value.trim(),revision=$('eventRevisionFilter').value;for(const ev of eventRows.filter(e=>(!filter||e.kind.startsWith(filter))&&(!run||e.runId?.includes(run))&&(revision===''||e.revision===Number(revision))).slice(-250).reverse()){const row=document.createElement('div');row.className='event'+(ev.kind.includes('error')?' kind-error':'');const time=document.createElement('time');time.textContent=ev.time.slice(11,23);const kind=document.createElement('span');kind.textContent=ev.kind;const detail=document.createElement('details'),summary=document.createElement('summary'),pre=document.createElement('pre');summary.textContent=`#${ev.seq} · v${ev.revision}`+(ev.runId?' · '+ev.runId.slice(0,8):'');pre.textContent=JSON.stringify(ev.data,null,2);detail.append(summary,pre);row.append(time,kind,detail);$('events').append(row)}}
-async function pollEvents(){try{const v=await api('events?after='+lastSeq);if(v.events.length){lastSeq=v.events.at(-1).seq;eventRows.push(...v.events);eventRows=eventRows.slice(-1500);drawEvents();}}catch{}}
-$('historyOpen').onclick=async()=>{try{const h=await api('history');$('historyList').replaceChildren();for(const revision of h.revisions.slice().reverse()){const row=document.createElement('div');row.className='history-row';const label=document.createElement('span');label.textContent='v'+revision;const commit=h.commits.find(c=>c.revision===revision);const title=document.createElement('span');title.className='grow';title.textContent=commit?.title||'草稿';const restore=document.createElement('button');restore.textContent='从此版本继续';restore.onclick=async()=>{try{await api('undo',{revision});await refresh();$('historyDialog').close()}catch(e){error(e)}};row.append(label,title,restore);$('historyList').append(row)}$('historyDialog').showModal()}catch(e){error(e)}};$('historyClose').onclick=()=>$('historyDialog').close();
-if(captureMode){document.body.classList.add('capture-mode');renderer.renderer.setAnimationLoop(null);window.__morphforge.ready=true;let capturing=false;setInterval(async()=>{if(capturing)return;capturing=true;let job;try{job=await api('capture/jobs');if(job){await renderer.load(job.scene,job.materials,{mode:job.mode,scale:1});const images=await renderer.capture(job.views,job.width,job.height);await api('capture/result',{id:job.id,revision:renderer.renderRevision,images});}}catch(e){if(job)await api('capture/result',{id:job.id,revision:job.revision,error:e.message}).catch(()=>{});console.error(e)}finally{capturing=false}},200);
-}else{await refresh();renderer.view();setInterval(()=>refresh(),700);setInterval(pollEvents,700);}
+
+function toast(text) {
+  $("toast").textContent = text;
+  $("toast").classList.add("visible");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => $("toast").classList.remove("visible"), 4500);
+}
+
+function error(value) {
+  toast(friendlyError(value));
+  console.error(value);
+}
+
+function fmt(number) {
+  return Number(number || 0).toLocaleString();
+}
+
+function time(seconds) {
+  if (!seconds) return "0秒";
+  if (seconds < 60) return Math.ceil(seconds) + "秒";
+  if (seconds < 3600)
+    return Math.floor(seconds / 60) + "分" + Math.ceil(seconds % 60) + "秒";
+  return (
+    Math.floor(seconds / 3600) + "时" + Math.ceil((seconds % 3600) / 60) + "分"
+  );
+}
+
+function setValue(id, value) {
+  const element = $(id);
+  if (element && document.activeElement !== element) element.value = value;
+}
+
+function setChecked(id, value) {
+  const element = $(id);
+  if (element && document.activeElement !== element) element.checked = value;
+}
+
+function values(ids) {
+  return ids.map((id) => Math.floor(Number($(id).value) || 0));
+}
+
+function brush() {
+  return values(["brushX", "brushY", "brushZ"]).map((value) =>
+    Math.max(1, value),
+  );
+}
+
+function coord() {
+  return values(["coordX", "coordY", "coordZ"]);
+}
+
+function operation(min, erase = false) {
+  return {
+    op: erase ? "erase" : tool === "erase" ? "erase" : "box",
+    min,
+    size: brush(),
+    styleId: selectedStyle,
+    tintId: Number($("tintId").value) || 0,
+    group: $("groupName").value || "main",
+  };
+}
+
+function safeStorageGet(key, fallback) {
+  try {
+    const value = localStorage.getItem(key);
+    return value == null ? fallback : JSON.parse(value);
+  } catch {
+    return fallback;
+  }
+}
+
+function safeStorageSet(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // The app remains usable when storage is unavailable or full.
+  }
+}
+
+function switchUiScope(projectId) {
+  const next = projectId || "default";
+  if (uiScope === next) return;
+  uiScope = next;
+  pendingMessages = dedupeMessages(
+    safeStorageGet(`morphforge.pending.${uiScope}`, []),
+  );
+  chatEntries = safeStorageGet(`morphforge.chat.${uiScope}`, []);
+  if (!Array.isArray(chatEntries)) chatEntries = [];
+  renderPending();
+  renderChat();
+}
+
+function savePending() {
+  const keep = pendingMessages
+    .filter((message) => !["applied", "cancelled"].includes(message.status))
+    .slice(-50);
+  const terminal = pendingMessages
+    .filter((message) =>
+      ["applied", "cancelled", "rejected", "failed"].includes(message.status),
+    )
+    .slice(-20);
+  pendingMessages = dedupeMessages([...keep, ...terminal]).slice(-70);
+  safeStorageSet(`morphforge.pending.${uiScope}`, pendingMessages);
+}
+
+function saveChat() {
+  chatEntries = chatEntries.slice(-500);
+  safeStorageSet(`morphforge.chat.${uiScope}`, chatEntries);
+}
+
+function upsertChat(entry) {
+  if (!entry?.id) return false;
+  const existing = chatEntries.find((item) => item.id === entry.id);
+  if (existing) {
+    const changed =
+      existing.text !== entry.text ||
+      existing.interrupted !== entry.interrupted ||
+      existing.note !== entry.note;
+    Object.assign(existing, entry);
+    if (changed) {
+      saveChat();
+      renderChat();
+    }
+    return false;
+  }
+  chatEntries.push(entry);
+  saveChat();
+  renderChat();
+  return true;
+}
+
+function renderChat() {
+  const chat = $("chat");
+  const nearBottom =
+    chat.scrollHeight - chat.scrollTop - chat.clientHeight < 44;
+  chat.querySelector(".chat-placeholder")?.remove();
+  const existing = new Map(
+    [...chat.querySelectorAll("[data-chat-id]")].map((element) => [
+      element.dataset.chatId,
+      element,
+    ]),
+  );
+  for (const entry of chatEntries) {
+    let element = existing.get(entry.id);
+    if (!element) {
+      element = document.createElement("div");
+      element.dataset.chatId = entry.id;
+      const label = document.createElement("small");
+      const body = document.createElement("span");
+      const note = document.createElement("span");
+      note.className = "entry-note";
+      element.append(label, body, note);
+      chat.append(element);
+    }
+    element.className = `chat-entry ${entry.role || "assistant"}${
+      entry.interrupted ? " interrupted" : ""
+    }`;
+    element.dataset.run = entry.runId || "";
+    element.dataset.epoch = String(entry.epoch ?? 0);
+    element.querySelector("small").textContent =
+      entry.role === "user" ? entry.label || "你" : "MorphForge";
+    const body = element.querySelector("span:not(.entry-note)");
+    if (body.textContent !== (entry.text || ""))
+      body.textContent = entry.text || "";
+    const note = element.querySelector(".entry-note");
+    note.textContent = entry.note || "";
+    note.hidden = !entry.note;
+  }
+  const valid = new Set(chatEntries.map((entry) => entry.id));
+  for (const [id, element] of existing) if (!valid.has(id)) element.remove();
+  if (nearBottom) chat.scrollTop = chat.scrollHeight;
+}
+
+function addUserChat(entry) {
+  if (chatEntries.some((item) => item.id === entry.id)) return false;
+  return upsertChat({
+    role: "user",
+    label:
+      entry.mode === "queue"
+        ? "你 · 排队"
+        : entry.mode === "interrupt"
+          ? "你 · 打断后"
+          : "你",
+    ...entry,
+  });
+}
+
+function markAssistantInterrupted(runId, epoch) {
+  const key = `assistant:${runId}:${epoch}`;
+  let entry = chatEntries.find((item) => item.id === key);
+  if (!entry) {
+    entry = {
+      id: key,
+      role: "assistant",
+      text: "",
+      runId,
+      epoch,
+      interrupted: true,
+      note: "当前请求尚未产生可见文本，已在生成前被取消。",
+    };
+    chatEntries.push(entry);
+    saveChat();
+    renderChat();
+    return;
+  }
+  entry.interrupted = true;
+  entry.note = entry.text
+    ? "该段输出在安全边界前被取消。"
+    : "当前请求尚未产生可见文本。";
+  saveChat();
+  renderChat();
+}
+
+function addCompletedSummary(summary) {
+  if (!summary?.message?.trim() || !summary.runId) return false;
+  const exact = findExactAssistantMessage(chatEntries, summary);
+  if (exact) {
+    if (!exact.final) {
+      exact.final = true;
+      exact.note = exact.note || "完成总结";
+      saveChat();
+      renderChat();
+    }
+    return false;
+  }
+  const id = `final:${summary.runId}:${summary.epoch}`;
+  const existing = chatEntries.find((entry) => entry.id === id);
+  if (existing) {
+    upsertChat({
+      ...existing,
+      text: summary.message,
+      final: true,
+      note: "完成总结",
+    });
+    return false;
+  }
+  return upsertChat({
+    id,
+    role: "assistant",
+    text: summary.message,
+    runId: summary.runId,
+    epoch: summary.epoch,
+    final: true,
+    interrupted: false,
+    note: "完成总结",
+  });
+}
+
+function renderPending() {
+  pendingMessages = dedupeMessages(pendingMessages);
+  $("pendingCount").textContent = String(pendingMessages.length);
+  $("pendingCount").classList.toggle(
+    "pending",
+    pendingMessages.some((message) =>
+      ["sending", "accepted"].includes(message.status),
+    ),
+  );
+  const list = $("pendingMessages");
+  list.replaceChildren();
+  if (!pendingMessages.length) {
+    const empty = document.createElement("div");
+    empty.className = "pending-empty";
+    empty.textContent = "没有待处理消息";
+    list.append(empty);
+    return;
+  }
+  for (const message of pendingMessages.slice().reverse()) {
+    const row = document.createElement("div");
+    row.className = `pending-item ${message.status}`;
+    row.dataset.requestId = message.requestId;
+    const prompt = document.createElement("span");
+    prompt.className = "pending-prompt";
+    prompt.textContent = message.prompt || "暂停并取消当前请求";
+    prompt.title = message.prompt || "";
+    const detail = document.createElement("span");
+    detail.className = "pending-detail";
+    const mode = document.createElement("span");
+    mode.className = "caption";
+    mode.textContent =
+      { start: "开始", steer: "插话", interrupt: "打断", queue: "排队" }[
+        message.mode
+      ] || message.mode;
+    const status = document.createElement("span");
+    status.className = `message-state ${message.status}`;
+    status.textContent =
+      statusLabel(message.status) +
+      (message.status === "accepted" && message.queuePosition
+        ? ` · #${message.queuePosition}`
+        : "");
+    detail.append(mode, status);
+    row.append(prompt, detail);
+    if (message.error) {
+      const failure = document.createElement("span");
+      failure.className = "pending-detail caption";
+      failure.textContent = message.error;
+      row.append(failure);
+    }
+    list.append(row);
+  }
+}
+
+function updatePending(requestId, patch) {
+  const index = pendingMessages.findIndex(
+    (message) => message.requestId === requestId,
+  );
+  if (index < 0) return null;
+  const currentStatus = pendingMessages[index].status;
+  if (
+    (currentStatus === "applied" && patch.status !== "applied") ||
+    (currentStatus === "cancelled" && patch.status !== "cancelled")
+  ) {
+    return pendingMessages[index];
+  }
+  pendingMessages[index] = { ...pendingMessages[index], ...patch };
+  savePending();
+  renderPending();
+  return pendingMessages[index];
+}
+
+function applyHarnessEvents(events) {
+  for (const event of events || []) {
+    const completed = completedRunSummary(event);
+    if (completed) {
+      addCompletedSummary(completed);
+      continue;
+    }
+    const requestId = requestIdFromEvent(event);
+    const next = eventMessageState(event.kind);
+    if (!requestId || !next) continue;
+    const previous = pendingMessages.find(
+      (message) => message.requestId === requestId,
+    );
+    if (
+      previous?.mode === "interrupt" &&
+      Number(event.data?.epoch || 0) > Number(previous.epoch || 0)
+    ) {
+      markAssistantInterrupted(previous.runId, previous.epoch);
+    }
+    const pending = updatePending(requestId, {
+      status: next,
+      runId:
+        event.data?.runId ??
+        pendingMessages.find((x) => x.requestId === requestId)?.runId,
+      epoch:
+        event.data?.epoch ??
+        pendingMessages.find((x) => x.requestId === requestId)?.epoch,
+      error: event.data?.error || "",
+    });
+    if (
+      pending?.prompt &&
+      !["applied", "cancelled"].includes(previous?.status) &&
+      ["accepted", "applied"].includes(next) &&
+      pending.mode !== "start"
+    ) {
+      addUserChat({
+        id: `message:${pending.requestId}`,
+        text: pending.prompt,
+        runId: pending.runId,
+        epoch: pending.epoch,
+        mode: pending.mode,
+        note: next === "applied" ? "已应用到当前运行" : "已接收，等待安全点",
+      });
+    }
+  }
+}
+
+function syncHarness(h) {
+  const snapshot = normalizeHarness(h);
+  const run = snapshot.run;
+  if (run) {
+    upsertChat({
+      id: `initial:${run.id}`,
+      role: "user",
+      text: run.prompt || "",
+      runId: run.id,
+      epoch: 0,
+      note: "",
+    });
+    const key = `assistant:${run.id}:${snapshot.epoch}`;
+    if (run.message) {
+      if (snapshot.status === "completed" || snapshot.phase === "completed") {
+        addCompletedSummary({
+          runId: run.id,
+          epoch: snapshot.epoch,
+          message: run.message,
+        });
+      } else {
+        const existing = chatEntries.find((entry) => entry.id === key);
+        upsertChat({
+          id: key,
+          role: "assistant",
+          text: run.message,
+          runId: run.id,
+          epoch: snapshot.epoch,
+          interrupted: existing?.interrupted || false,
+          note: existing?.note || "",
+        });
+      }
+    }
+    if (snapshot.phase === "stopped" || snapshot.phase === "cancelled") {
+      markAssistantInterrupted(run.id, snapshot.epoch);
+    }
+  }
+  previousHarness = snapshot;
+  updateHarnessControls(snapshot);
+}
+
+function updateHarnessControls(snapshot) {
+  const mode = $("messageMode").value;
+  const action = primaryAction(snapshot, mode);
+  $("sendMessage").textContent = action.label;
+  $("sendMessage").disabled =
+    messageInFlight || (snapshot.stopping && !snapshot.active);
+  $("messageModeHint").textContent = messageModeHint(snapshot, mode);
+  $("pauseAI").disabled = !snapshot.active || snapshot.paused;
+  $("resumeAI").disabled = !snapshot.active || !snapshot.paused;
+  $("stopAI").disabled = !snapshot.active;
+  const run = snapshot.run;
+  const status = [`状态：${phaseLabel(snapshot)}`];
+  if (snapshot.queue.length) status.push(`排队 ${snapshot.queue.length}`);
+  if (run) {
+    status.push(`${run.steps || 0} 步 · ${fmt(run.tokens)} Token`);
+    if (run.error) status.push(friendlyError({ message: run.error }));
+  }
+  $("runStatus").textContent = status.join("\n");
+}
+
+async function refresh(force = false) {
+  if (polling) return;
+  polling = true;
+  try {
+    const next = await api("state");
+    state = next;
+    window.__morphforge.state = next;
+    switchUiScope(next.project?.id);
+    updateState();
+    if ((next.revision !== loadedRevision || force) && !loading) {
+      loading = true;
+      try {
+        sceneData = await api("scene");
+        if (
+          !sceneData.materials.some((material) => material.id === selectedStyle)
+        ) {
+          selectedStyle = sceneData.materials[0]?.id ?? 1;
+        }
+        await renderer.load(sceneData.scene, sceneData.materials, {
+          mode: $("renderMode").value,
+          scale:
+            $("renderMode").value === "vrc"
+              ? state.connection.placement.scale
+              : 1,
+        });
+        loadedRevision = sceneData.scene.revision;
+        selected = new Set(
+          [...selected].filter((id) =>
+            sceneData.scene.boxes.some((box) => box.id === id),
+          ),
+        );
+        renderer.selection = selected;
+        renderer.updateSelection();
+        drawPalette();
+        drawGroups();
+        selectionInfo();
+      } finally {
+        loading = false;
+      }
+    }
+    window.__morphforge.ready = true;
+  } catch (cause) {
+    $("saveState").textContent = "后端暂时不可用";
+    if (!state) error(cause);
+  } finally {
+    polling = false;
+  }
+}
+
+function updateState() {
+  const s = state;
+  const connection = s.connection;
+  const harness = s.harness;
+  setValue("projectName", s.project.name);
+  $("saveState").textContent = "已保存 · v" + s.revision;
+  $("boxCount").textContent =
+    fmt(s.stats.boxCount) + " Box / 目标 " + fmt(s.stats.targetBoxes);
+  $("voxelCount").textContent = fmt(s.stats.voxelCount) + " 格";
+  $("bounds").textContent = s.stats.bounds
+    ? "范围 " +
+      s.stats.bounds.min.join(",") +
+      " → " +
+      s.stats.bounds.max.join(",")
+    : "范围为空";
+  $("emptyHint").hidden = s.stats.boxCount > 0;
+  $("undo").disabled = !s.canUndo;
+  $("redo").disabled = !s.canRedo;
+  setValue("profile", connection.profile);
+  setValue("targetPort", connection.port);
+  setValue("interval", connection.interval);
+  setValue("targetCapacity", connection.capacity);
+  setValue("refreshSeconds", connection.refreshSeconds);
+  setChecked("autoPublish", connection.auto);
+  $("connect").textContent = connection.enabled ? "停止发送" : "开启发送";
+  $("connect").classList.toggle("selected", connection.enabled);
+  $("connectionBadge").textContent = connection.enabled
+    ? "OSC " + connection.port + " · " + connection.pending + "项"
+    : "独立创作";
+  $("connectionBadge").classList.toggle("live", connection.enabled);
+  $("syncStatus").textContent =
+    connection.error ||
+    (!connection.enabled
+      ? "发送已关闭；可继续独立创作。"
+      : `本机发包中 · 无远端ACK
+目标 v${connection.desiredRevision} / 已发送 v${connection.sentRevision ?? "—"}
+待发 ${fmt(connection.pending)} 批 · 预计 ${time(connection.etaSeconds)}
+累计 ${fmt(connection.sentCommands)} 批`);
+  setChecked("world", connection.placement.world);
+  setChecked("visible", connection.placement.visible);
+  setChecked("level", connection.placement.level);
+  setValue("scale", connection.placement.scale);
+  $("scaleValue").value = Number(connection.placement.scale).toFixed(2) + "×";
+  setValue("model", harness.settings.model);
+  setValue("reasoning", harness.settings.reasoning);
+  setValue("maxSteps", harness.settings.maxSteps);
+  setValue("maxRunSeconds", harness.settings.maxRunSeconds);
+  setValue("maxRunTokens", harness.settings.maxRunTokens);
+  setValue("maxOutputTokens", harness.settings.maxOutputTokens);
+  setValue("compactTokens", harness.settings.compactTokens);
+  setValue("language", harness.settings.language || "zh-CN");
+  setChecked("autoCompact", harness.settings.autoCompact);
+  setValue("pinnedNotes", s.project.pinnedNotes);
+  $("providerState").textContent = harness.provider.configured
+    ? "Key已配置"
+    : "需要Key";
+  $("providerState").classList.toggle("live", harness.provider.configured);
+  $("contextStats").textContent =
+    `上下文约 ${fmt(harness.context.estimatedTokens)} Token\n` +
+    `${harness.context.messages} 条消息 · compact ${harness.context.compactCount} 次`;
+  $("contextSummary").textContent = harness.context.summary || "暂无";
+  syncHarness(harness);
+  $("renderInfo").textContent =
+    `v${loadedRevision < 0 ? s.revision : loadedRevision} · ` +
+    `${renderer.renderer.info.render.calls} 绘制调用 · 底部中心 / +Z前`;
+}
+
+function edit(value) {
+  edits = edits.then(async () => {
+    try {
+      const result = await api("edit", {
+        ...value,
+        baseRevision: state?.revision,
+        requestId: crypto.randomUUID(),
+      });
+      if (result.warning) toast(result.warning);
+      await refresh();
+    } catch (cause) {
+      error(cause);
+      await refresh();
+    }
+  });
+  return edits;
+}
+
+function drawPalette() {
+  if (!sceneData) return;
+  const query = $("styleSearch").value.toLowerCase();
+  $("palette").replaceChildren();
+  for (const material of sceneData.materials) {
+    if (
+      query &&
+      !`${material.name} ${material.uid} ${material.family}`
+        .toLowerCase()
+        .includes(query)
+    ) {
+      continue;
+    }
+    const button = document.createElement("button");
+    button.className =
+      "swatch" + (material.id === selectedStyle ? " selected" : "");
+    button.style.background = `rgb(${material.color
+      .map((value) => Math.round(value * 255))
+      .join(",")})`;
+    button.title =
+      material.name +
+      " · " +
+      material.family +
+      (material.pack ? " · Avatar需预打包" : "");
+    if (material.textures?.length)
+      button.style.backgroundImage = `url("${material.textures[0]}")`;
+    button.onclick = () => {
+      selectedStyle = material.id;
+      drawPalette();
+      scheduleTextPreview();
+    };
+    $("palette").append(button);
+  }
+  const selectedMaterial = sceneData.materials.find(
+    (material) => material.id === selectedStyle,
+  );
+  $("styleName").textContent = selectedMaterial?.name || "未知材质";
+  $("textStyleName").textContent = selectedMaterial?.name || "未知材质";
+}
+
+function drawGroups() {
+  $("groups").replaceChildren();
+  for (const group of groupRows(
+    state?.stats?.groups,
+    state?.project?.protectedGroups,
+  )) {
+    const { name, count } = group;
+    const row = document.createElement("div");
+    row.className = `group-row${group.empty ? " empty" : ""}`;
+    row.dataset.group = name;
+    const check = document.createElement("input");
+    check.type = "checkbox";
+    check.checked = !renderer.groupsHidden.has(name);
+    check.className = "group-visibility";
+    check.title = `显示“${name}”的本地预览`;
+    check.setAttribute("aria-label", `显示分组 ${name}`);
+    check.onchange = async () => {
+      if (check.checked) renderer.groupsHidden.delete(name);
+      else renderer.groupsHidden.add(name);
+      await renderer.load(sceneData.scene, sceneData.materials, {
+        mode: $("renderMode").value,
+      });
+    };
+    const label = document.createElement("span");
+    label.textContent = name;
+    label.onclick = () => {
+      selected = new Set(
+        sceneData.scene.boxes
+          .filter((box) => box.group === name)
+          .map((box) => box.id),
+      );
+      renderer.selection = selected;
+      renderer.updateSelection();
+      selectionInfo();
+    };
+    const number = document.createElement("small");
+    number.textContent = count;
+    const protection = document.createElement("button");
+    const protectedGroup = isGroupProtected(
+      state?.project?.protectedGroups,
+      name,
+    );
+    protection.className = `group-protect${protectedGroup ? " selected" : ""}`;
+    protection.dataset.group = name;
+    protection.type = "button";
+    protection.setAttribute("aria-pressed", String(protectedGroup));
+    protection.title = protectedGroup
+      ? `“${name}”已受保护；点击解除后再编辑`
+      : `保护“${name}”，阻止绘制、擦除和变换`;
+    protection.textContent = protectedGroup ? "已保护" : "保护";
+    protection.disabled = groupSettingsBusy;
+    protection.onclick = () =>
+      saveGroupProtection(name, !protectedGroup, protection);
+    row.append(check, label, number, protection);
+    $("groups").append(row);
+  }
+}
+
+async function saveGroupProtection(name, protect, button) {
+  if (groupSettingsBusy) return;
+  groupSettingsBusy = true;
+  button.disabled = true;
+  button.textContent = "保存中";
+  try {
+    const groups = setProtectedGroup(
+      state.project.protectedGroups,
+      name,
+      protect,
+    );
+    const savedState = await api(
+      "project",
+      protectionSavePayload(groups, state.revision),
+    );
+    const saved = normalizeProtectedGroups(savedState.project?.protectedGroups);
+    if (saved.includes(name) !== protect) {
+      throw new Error("分组保护未保存，当前服务端可能尚未启用该设置");
+    }
+    state.project.protectedGroups = saved;
+    if (Number.isSafeInteger(Number(savedState.revision))) {
+      state.revision = Number(savedState.revision);
+    }
+    window.__morphforge.state = state;
+    updateState();
+    await refresh(true);
+    toast(
+      protect
+        ? `已保护分组“${name}”；绘制、擦除和变换会被拒绝`
+        : `已解除分组“${name}”的保护，现在可以编辑`,
+    );
+  } catch (cause) {
+    error(cause);
+    await refresh();
+  } finally {
+    groupSettingsBusy = false;
+    if (sceneData) drawGroups();
+  }
+}
+
+function selectionInfo() {
+  $("selectionInfo").textContent = selected.size
+    ? `已选 ${selected.size} Box · 移动/复制读取精确位置XYZ作为偏移`
+    : "选择工具点击，Shift多选；拖动框选";
+}
+
+function setTool(next) {
+  tool = next;
+  for (const [id, name] of [
+    ["addTool", "box"],
+    ["eraseTool", "erase"],
+    ["selectTool", "select"],
+  ]) {
+    $(id).classList.toggle("selected", next === name);
+  }
+  renderer.ghost.visible = false;
+}
+
+$("addTool").onclick = () => setTool("box");
+$("eraseTool").onclick = () => setTool("erase");
+$("selectTool").onclick = () => setTool("select");
+$("styleSearch").oninput = drawPalette;
+
+let hoverFrame = 0;
+let lastPointer;
+renderer.renderer.domElement.addEventListener("pointermove", (event) => {
+  lastPointer = event;
+  if (hoverFrame) return;
+  hoverFrame = requestAnimationFrame(() => {
+    hoverFrame = 0;
+    if (!state || loading) return;
+    const hit = renderer.pick(lastPointer, {
+      erase: tool === "erase" || lastPointer.shiftKey,
+      layer: Number($("layer").value),
+    });
+    if (tool !== "select") {
+      renderer.hover(hit, brush(), tool === "erase" || lastPointer.shiftKey);
+    }
+    if (hit) {
+      $("cursorPosition").textContent =
+        `X ${hit.pos[0]} · Y ${hit.pos[1]} · Z ${hit.pos[2]}`;
+    }
+  });
+});
+renderer.renderer.domElement.addEventListener("pointerleave", () => {
+  renderer.ghost.visible = false;
+});
+renderer.renderer.domElement.addEventListener("contextmenu", (event) =>
+  event.preventDefault(),
+);
+renderer.renderer.domElement.addEventListener("pointerdown", (event) => {
+  if (event.button === 0) pointerStart = [event.clientX, event.clientY];
+});
+renderer.renderer.domElement.addEventListener("pointerup", (event) => {
+  if (event.button !== 0 || !pointerStart || loading) return;
+  const start = pointerStart;
+  pointerStart = null;
+  const distance = Math.hypot(
+    event.clientX - start[0],
+    event.clientY - start[1],
+  );
+  if (tool === "select") {
+    if (!event.shiftKey) selected.clear();
+    if (distance > 5) {
+      const cell = sceneData.scene.cellSize;
+      for (const box of sceneData.scene.boxes) {
+        const point = renderer.projectPoint(
+          box.min.map((value, axis) => (value + box.size[axis] / 2) * cell),
+        );
+        if (
+          point.x >= Math.min(start[0], event.clientX) &&
+          point.x <= Math.max(start[0], event.clientX) &&
+          point.y >= Math.min(start[1], event.clientY) &&
+          point.y <= Math.max(start[1], event.clientY)
+        ) {
+          selected.add(box.id);
+        }
+      }
+    } else {
+      const hit = renderer.pick(event, { erase: true });
+      if (hit?.box) {
+        if (event.shiftKey && selected.has(hit.box.id))
+          selected.delete(hit.box.id);
+        else selected.add(hit.box.id);
+      }
+    }
+    renderer.selection = selected;
+    renderer.updateSelection();
+    selectionInfo();
+    return;
+  }
+  if (distance > 5) return;
+  const hit = renderer.pick(event, {
+    erase: tool === "erase" || event.shiftKey,
+    layer: Number($("layer").value),
+  });
+  if (hit) edit(operation(hit.pos, event.shiftKey));
+});
+
+$("applyPosition").onclick = () => edit(operation(coord()));
+$("layer").oninput = () => {
+  $("layerValue").value = $("layer").value;
+  renderer.setLayer(Number($("layer").value));
+};
+for (const [id, name] of [
+  ["houseDemo", "house"],
+  ["stairsDemo", "stairs"],
+  ["directionsDemo", "directions"],
+  ["stress5k", "stress5k"],
+  ["stress16k", "stress16k"],
+]) {
+  $(id).onclick = () => edit({ op: "demo", name }).then(() => renderer.view());
+}
+$("clearScene").onclick = () => edit({ op: "clear" });
+$("undo").onclick = () => edit({ op: "undo" });
+$("redo").onclick = () => edit({ op: "redo" });
+for (const [id, copy, turns, mirror] of [
+  ["moveSelection", false, 0, null],
+  ["copySelection", true, 0, null],
+  ["rotateSelection", false, 1, null],
+  ["mirrorSelection", false, 0, "x"],
+]) {
+  $(id).onclick = () => {
+    if (!selected.size) return toast("请先选择内容");
+    edit({
+      op: "transform",
+      ids: [...selected],
+      offset: turns || mirror ? [0, 0, 0] : coord(),
+      turns,
+      mirror,
+      copy,
+    });
+  };
+}
+$("paintSelection").onclick = () => {
+  if (!selected.size) return toast("请先选择内容");
+  const operations = sceneData.scene.boxes
+    .filter((box) => selected.has(box.id))
+    .map((box) => ({
+      op: "paint",
+      min: box.min,
+      size: box.size,
+      styleId: selectedStyle,
+      tintId: Number($("tintId").value) || 0,
+    }));
+  edit({ operations });
+};
+
+$("fitView").onclick = () => renderer.view();
+document.querySelectorAll("[data-view]").forEach((button) => {
+  button.onclick = () => renderer.view(button.dataset.view);
+});
+$("renderMode").onchange = () => refresh(true);
+$("projectName").onchange = async () => {
+  try {
+    await api("project", {
+      name: $("projectName").value,
+      baseRevision: state.revision,
+    });
+    await refresh();
+  } catch (cause) {
+    error(cause);
+  }
+};
+window.addEventListener("keydown", (event) => {
+  if (["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName))
+    return;
+  if (
+    (event.ctrlKey || event.metaKey) &&
+    ["z", "y"].includes(event.key.toLowerCase())
+  ) {
+    event.preventDefault();
+    edit({
+      op: event.key.toLowerCase() === "y" || event.shiftKey ? "redo" : "undo",
+    });
+  }
+});
+
+$("exportProject").onclick = async () => {
+  try {
+    const value = await api("export");
+    const blob = new Blob([JSON.stringify(value, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = (state.project.name || "morphforge") + ".json";
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  } catch (cause) {
+    error(cause);
+  }
+};
+$("importProject").onclick = () => $("projectFile").click();
+$("projectFile").onchange = async (event) => {
+  try {
+    const file = event.target.files[0];
+    if (!file) return;
+    await api("import", JSON.parse(await file.text()));
+    await refresh(true);
+    renderer.view();
+  } catch (cause) {
+    error(cause);
+  }
+  event.target.value = "";
+};
+$("packReportClose").onclick = () => $("packReportDialog").close();
+$("catalogExport").onclick = () => {
+  const link = document.createElement("a");
+  link.href = "/api/vrc/catalog";
+  link.download = "morphforge-materials.zip";
+  link.click();
+};
+$("packImport").onclick = () => $("packFile").click();
+$("packFile").onchange = async (event) => {
+  try {
+    const file = event.target.files[0];
+    if (!file) return;
+    const data = new FormData();
+    data.append("file", file);
+    const response = await fetch("/api/packs/import", {
+      method: "POST",
+      body: data,
+    });
+    const value = await response.json();
+    if (!response.ok) throw new Error(value.error);
+    toast(`已导入 ${value.materialsAdded} 种材质；Avatar使用需预打包`);
+    $("packReportContent").textContent = JSON.stringify(value, null, 2);
+    $("packReportDialog").showModal();
+    await refresh(true);
+  } catch (cause) {
+    error(cause);
+  }
+  event.target.value = "";
+};
+
+function connection(enabled = state.connection.enabled) {
+  return {
+    enabled,
+    port: Number($("targetPort").value),
+    profile: $("profile").value,
+    interval: Number($("interval").value),
+    capacity: Number($("targetCapacity").value),
+    refreshSeconds: Number($("refreshSeconds").value),
+    auto: $("autoPublish").checked,
+  };
+}
+
+async function configure(enabled) {
+  try {
+    await api("connect", connection(enabled));
+    await refresh();
+  } catch (cause) {
+    error(cause);
+    await refresh();
+  }
+}
+
+$("connect").onclick = () => configure(!state.connection.enabled);
+for (const id of [
+  "targetPort",
+  "profile",
+  "interval",
+  "targetCapacity",
+  "refreshSeconds",
+  "autoPublish",
+]) {
+  $(id).onchange = () => configure(state.connection.enabled);
+}
+$("unityPort").onclick = () => {
+  $("targetPort").value = 9012;
+  configure(state.connection.enabled);
+};
+$("vrcPort").onclick = () => {
+  $("targetPort").value = 9000;
+  configure(state.connection.enabled);
+};
+$("publish").onclick = async () => {
+  try {
+    await api("publish", {});
+    await refresh();
+    toast(
+      state.connection.enabled
+        ? "版本已进入发送队列"
+        : "版本已准备；开启发送后执行",
+    );
+  } catch (cause) {
+    error(cause);
+  }
+};
+$("resync").onclick = async () => {
+  try {
+    await api("publish", { resync: true });
+    await refresh();
+  } catch (cause) {
+    error(cause);
+  }
+};
+
+async function placement(value) {
+  try {
+    await api("placement", value);
+    await refresh();
+    if ($("renderMode").value === "vrc")
+      renderer.setScale(state.connection.placement.scale);
+  } catch (cause) {
+    error(cause);
+  }
+}
+
+for (const id of ["world", "visible", "level"]) {
+  $(id).onchange = () => placement({ [id]: $(id).checked });
+}
+$("scale").oninput = () => {
+  $("scaleValue").value = Number($("scale").value).toFixed(2) + "×";
+  if ($("renderMode").value === "vrc")
+    renderer.setScale(Number($("scale").value));
+};
+$("scale").onchange = () => placement({ scale: Number($("scale").value) });
+$("resetAnchor").onclick = () => placement({ reset: true });
+
+document.querySelectorAll("[data-tab]").forEach((button) => {
+  button.onclick = () => {
+    document.querySelectorAll("[data-tab]").forEach((item) => {
+      item.classList.toggle("selected", item === button);
+    });
+    for (const name of ["ai", "text", "sync", "context"]) {
+      $("tab-" + name).hidden = name !== button.dataset.tab;
+    }
+    if (button.dataset.tab === "text") loadFonts();
+  };
+});
+
+async function configHarness(value) {
+  try {
+    await api("harness/config", value);
+    await refresh();
+  } catch (cause) {
+    error(cause);
+  }
+}
+
+for (const [id, key] of [
+  ["model", "model"],
+  ["reasoning", "reasoning"],
+  ["maxSteps", "maxSteps"],
+  ["compactTokens", "compactTokens"],
+  ["maxRunSeconds", "maxRunSeconds"],
+  ["maxRunTokens", "maxRunTokens"],
+  ["maxOutputTokens", "maxOutputTokens"],
+  ["language", "language"],
+]) {
+  $(id).onchange = () => {
+    const numeric = [
+      "maxSteps",
+      "compactTokens",
+      "maxRunSeconds",
+      "maxRunTokens",
+      "maxOutputTokens",
+    ].includes(key);
+    configHarness({ [key]: numeric ? Number($(id).value) : $(id).value });
+  };
+}
+$("autoCompact").onchange = () =>
+  configHarness({ autoCompact: $("autoCompact").checked });
+
+function promptDraftKey() {
+  return `morphforge.prompt.${uiScope || "default"}`;
+}
+
+function savePromptDraft() {
+  safeStorageSet(promptDraftKey(), $("prompt").value);
+}
+
+function restorePromptDraft() {
+  const draft = safeStorageGet(promptDraftKey(), "");
+  if (typeof draft === "string" && $("prompt").value === "")
+    $("prompt").value = draft;
+}
+
+$("prompt").addEventListener("input", savePromptDraft);
+$("prompt").addEventListener("keydown", (event) => {
+  if (event.ctrlKey && event.key === "Enter") $("sendMessage").click();
+});
+$("messageMode").onchange = () => {
+  if (state?.harness) updateHarnessControls(normalizeHarness(state.harness));
+  safeStorageSet(
+    `morphforge.mode.${uiScope || "default"}`,
+    $("messageMode").value,
+  );
+};
+
+function newRequestId() {
+  return crypto.randomUUID
+    ? crypto.randomUUID()
+    : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+}
+
+async function sendFromComposer() {
+  const prompt = $("prompt").value.trim();
+  const snapshot = normalizeHarness(state?.harness);
+  const selectedMode = $("messageMode").value;
+  const mode = snapshot.active ? selectedMode : "steer";
+  const intent = snapshot.active ? mode : "start";
+  if (!prompt) {
+    $("prompt").focus();
+    return toast("请输入要发送的内容");
+  }
+  await postHarnessMessage({ prompt, mode, intent, clearPrompt: true });
+}
+
+async function postHarnessMessage({
+  prompt,
+  mode,
+  intent,
+  clearPrompt = false,
+}) {
+  if (messageInFlight) return;
+  const snapshot = normalizeHarness(state?.harness);
+  const submittedPrompt = prompt ?? "";
+  if (!submittedPrompt && !(mode === "interrupt" && snapshot.active)) {
+    return toast("空消息只能用于立即打断");
+  }
+  const payload = {
+    prompt: submittedPrompt,
+    mode: intent === "start" ? "steer" : mode,
+    requestId: newRequestId(),
+  };
+  if (snapshot.active && snapshot.runId) payload.runId = snapshot.runId;
+  messageInFlight = true;
+  retryPayload = { payload, intent, submittedPrompt, clearPrompt };
+  $("sendMessage").disabled = true;
+  const pending = {
+    requestId: payload.requestId,
+    runId: payload.runId || "",
+    epoch: snapshot.epoch,
+    mode: intent,
+    prompt: submittedPrompt,
+    status: "sending",
+    createdAt: new Date().toISOString(),
+    error: "",
+  };
+  pendingMessages.push(pending);
+  savePending();
+  renderPending();
+  try {
+    let ack;
+    try {
+      ack = await api("harness/message", payload);
+    } catch (cause) {
+      const retryable =
+        !cause.status || cause.status === 429 || cause.status >= 500;
+      if (!retryable) throw cause;
+      await new Promise((resolve) => setTimeout(resolve, 180));
+      ack = await api("harness/message", payload);
+    }
+    const merged = mergeAck(pending, ack);
+    updatePending(payload.requestId, merged);
+    if (merged.status !== "accepted") {
+      toast(merged.error || "消息未被接受，输入仍保留");
+      return;
+    }
+    retryPayload = null;
+    if (
+      intent === "interrupt" &&
+      previousHarness?.runId &&
+      merged.epoch > previousHarness.epoch
+    ) {
+      markAssistantInterrupted(previousHarness.runId, previousHarness.epoch);
+    }
+    if (submittedPrompt && intent !== "start") {
+      addUserChat({
+        id: `message:${payload.requestId}`,
+        text: submittedPrompt,
+        runId: merged.runId,
+        epoch: merged.epoch,
+        mode,
+        note: "已接收，等待安全点",
+      });
+    } else if (intent === "interrupt") {
+      addUserChat({
+        id: `message:${payload.requestId}`,
+        text: "暂停并取消当前请求",
+        runId: merged.runId,
+        epoch: merged.epoch,
+        mode,
+        note: "已接收，等待取消当前请求",
+      });
+    }
+    if (clearPrompt && $("prompt").value === submittedPrompt) {
+      $("prompt").value = "";
+      savePromptDraft();
+    }
+    await refresh();
+    messageInFlight = false;
+    updateHarnessControls(normalizeHarness(state?.harness));
+  } catch (cause) {
+    if (cause.status === 404 && intent === "start") {
+      try {
+        await api("harness/start", { prompt: submittedPrompt });
+        updatePending(payload.requestId, {
+          status: "accepted",
+          error: "",
+          acknowledgedAt: new Date().toISOString(),
+        });
+        retryPayload = null;
+        if ($("prompt").value === submittedPrompt) {
+          $("prompt").value = "";
+          savePromptDraft();
+        }
+        await refresh();
+        return;
+      } catch (fallbackError) {
+        cause = fallbackError;
+      }
+    }
+    const conflict = conflictFromError(cause);
+    updatePending(payload.requestId, {
+      status: conflict ? "rejected" : "failed",
+      error: friendlyError(cause),
+    });
+    error(cause);
+  } finally {
+    messageInFlight = false;
+    if (state?.harness) updateHarnessControls(normalizeHarness(state.harness));
+  }
+}
+
+$("sendMessage").onclick = sendFromComposer;
+$("pauseAI").onclick = async () => {
+  const snapshot = normalizeHarness(state?.harness);
+  if (!snapshot.active) return;
+  await postHarnessMessage({
+    prompt: "",
+    mode: "interrupt",
+    intent: "interrupt",
+  });
+};
+for (const [id, action] of [
+  ["resumeAI", "resume"],
+  ["stopAI", "stop"],
+  ["compact", "compact"],
+]) {
+  $(id).onclick = async () => {
+    try {
+      await api("harness/control", { action });
+      await refresh();
+    } catch (cause) {
+      error(cause);
+    }
+  };
+}
+$("saveNotes").onclick = async () => {
+  try {
+    await api("project", {
+      pinnedNotes: $("pinnedNotes").value,
+      baseRevision: state.revision,
+    });
+    await refresh();
+    toast("固定要求已保存");
+  } catch (cause) {
+    error(cause);
+  }
+};
+
+async function runRecipe(dryRun) {
+  try {
+    const value = await api("harness/tool", {
+      name: "run_recipe",
+      arguments: {
+        code: $("recipeCode").value,
+        mode: "apply",
+        seed: 1,
+        baseRevision: state.revision,
+        requestId: crypto.randomUUID(),
+        dryRun,
+      },
+    });
+    if (dryRun) {
+      toast(
+        `预计 ${value.stats.boxCount} Box / ${fmt(value.stats.voxelCount)} 格`,
+      );
+    } else {
+      await refresh();
+      renderer.view();
+    }
+  } catch (cause) {
+    error(cause);
+  }
+}
+$("runRecipe").onclick = () => runRecipe(false);
+$("dryRecipe").onclick = () => runRecipe(true);
+
+async function capture() {
+  const result = await api("harness/tool", {
+    name: "capture_views",
+    arguments: { revision: state.revision, views: ["hero", "front", "top"] },
+  });
+  window.__morphforge.lastCapture = result;
+  $("captureRevision").textContent = "v" + result.revision;
+  $("captureImages").replaceChildren();
+  for (const image of result.images) {
+    const wrap = document.createElement("div");
+    const img = document.createElement("img");
+    const caption = document.createElement("p");
+    img.src = image.url;
+    caption.textContent = image.view;
+    wrap.append(img, caption);
+    $("captureImages").append(wrap);
+  }
+  return result;
+}
+$("capture").onclick = async () => {
+  try {
+    toast("正在生成独立三视图…");
+    await capture();
+    $("captureDialog").showModal();
+  } catch (cause) {
+    error(cause);
+  }
+};
+$("captureClose").onclick = () => $("captureDialog").close();
+$("saveArtwork").onclick = async () => {
+  try {
+    const images = await capture();
+    await api("artworks", {
+      action: "save",
+      title: state.project.name,
+      tags: [],
+      thumbnail: images.images[0]?.artifact,
+      views: images.images.map((image) => image.artifact),
+    });
+    toast("作品和三视图已保存");
+  } catch (cause) {
+    error(cause);
+  }
+};
+
+async function library() {
+  const value = await api("artworks");
+  const query = $("librarySearch").value.toLowerCase();
+  $("libraryGrid").replaceChildren();
+  for (const artwork of value.artworks) {
+    if (
+      query &&
+      !`${artwork.title} ${artwork.tags.join(" ")}`
+        .toLowerCase()
+        .includes(query)
+    ) {
+      continue;
+    }
+    const card = document.createElement("article");
+    card.className = "artwork";
+    const img = document.createElement("img");
+    if (artwork.thumbnail)
+      img.src = "/artifacts/" + encodeURIComponent(artwork.thumbnail);
+    const body = document.createElement("div");
+    const name = document.createElement("h3");
+    const info = document.createElement("p");
+    const load = document.createElement("button");
+    name.textContent = artwork.title;
+    info.textContent = `${fmt(artwork.boxCount)} Box · ${fmt(artwork.voxelCount)} 格`;
+    load.textContent = "载入并继续";
+    if (artwork.views?.length) {
+      const preview = document.createElement("button");
+      preview.textContent = "多视图";
+      preview.onclick = () => {
+        $("captureRevision").textContent = artwork.title;
+        $("captureImages").replaceChildren();
+        for (const view of artwork.views) {
+          const image = document.createElement("img");
+          image.src = "/artifacts/" + encodeURIComponent(view);
+          $("captureImages").append(image);
+        }
+        $("captureDialog").showModal();
+      };
+      body.append(preview);
+    }
+    load.onclick = async () => {
+      try {
+        await api("artworks", { action: "fork", id: artwork.id });
+        await refresh(true);
+        renderer.view();
+        $("libraryDialog").close();
+      } catch (cause) {
+        error(cause);
+      }
+    };
+    body.append(name, info, load);
+    card.append(img, body);
+    $("libraryGrid").append(card);
+  }
+}
+
+$("libraryOpen").onclick = async () => {
+  try {
+    await library();
+    $("libraryDialog").showModal();
+  } catch (cause) {
+    error(cause);
+  }
+};
+$("libraryClose").onclick = () => $("libraryDialog").close();
+$("librarySearch").oninput = () => library().catch(error);
+$("diagnosticsExport").onclick = () => {
+  const link = document.createElement("a");
+  link.href = "/api/diagnostics";
+  link.download = "morphforge-diagnostics.zip";
+  link.click();
+};
+$("timelineToggle").onclick = () => {
+  $("timeline").hidden = !$("timeline").hidden;
+  setTimeout(() => renderer.resize(), 30);
+};
+$("eventFilter").onchange = drawEvents;
+$("eventRunFilter").oninput = drawEvents;
+$("eventRevisionFilter").oninput = drawEvents;
+
+function drawEvents() {
+  $("events").replaceChildren();
+  const filter = $("eventFilter").value;
+  const run = $("eventRunFilter").value.trim();
+  const revision = $("eventRevisionFilter").value;
+  for (const event of eventRows
+    .filter(
+      (item) =>
+        (!filter || item.kind.startsWith(filter)) &&
+        (!run || item.runId?.includes(run)) &&
+        (revision === "" || item.revision === Number(revision)),
+    )
+    .slice(-250)
+    .reverse()) {
+    const row = document.createElement("div");
+    row.className =
+      "event" + (event.kind.includes("error") ? " kind-error" : "");
+    const timeElement = document.createElement("time");
+    timeElement.textContent = event.time.slice(11, 23);
+    const kind = document.createElement("span");
+    kind.textContent = event.kind;
+    const detail = document.createElement("details");
+    const summary = document.createElement("summary");
+    const pre = document.createElement("pre");
+    summary.textContent =
+      `#${event.seq} · v${event.revision}` +
+      (event.runId ? " · " + event.runId.slice(0, 8) : "");
+    pre.textContent = JSON.stringify(event.data, null, 2);
+    detail.append(summary, pre);
+    row.append(timeElement, kind, detail);
+    $("events").append(row);
+  }
+}
+
+async function pollEvents() {
+  try {
+    const value = await api("events?after=" + lastSeq);
+    if (value.events.length) {
+      lastSeq = value.events.at(-1).seq;
+      eventRows.push(...value.events);
+      eventRows = eventRows.slice(-1500);
+      applyHarnessEvents(value.events);
+      drawEvents();
+    }
+  } catch {
+    // The main refresh loop reports backend availability.
+  }
+}
+
+$("historyOpen").onclick = async () => {
+  try {
+    const history = await api("history");
+    $("historyList").replaceChildren();
+    for (const revision of history.revisions.slice().reverse()) {
+      const row = document.createElement("div");
+      row.className = "history-row";
+      const label = document.createElement("span");
+      label.textContent = "v" + revision;
+      const commit = history.commits.find((item) => item.revision === revision);
+      const title = document.createElement("span");
+      title.className = "grow";
+      title.textContent = commit?.title || "草稿";
+      const restore = document.createElement("button");
+      restore.textContent = "从此版本继续";
+      restore.onclick = async () => {
+        try {
+          await api("undo", { revision });
+          await refresh();
+          $("historyDialog").close();
+        } catch (cause) {
+          error(cause);
+        }
+      };
+      row.append(label, title, restore);
+      $("historyList").append(row);
+    }
+    $("historyDialog").showModal();
+  } catch (cause) {
+    error(cause);
+  }
+};
+$("historyClose").onclick = () => $("historyDialog").close();
+
+function normalizeFont(font) {
+  if (typeof font === "string") return { id: font, name: font };
+  const familyStyle = [font.family, font.style]
+    .filter(Boolean)
+    .filter((value, index, list) => list.indexOf(value) === index)
+    .join(" · ");
+  return {
+    id: font.id || font.fontId || font.family || "",
+    name:
+      font.name ||
+      font.displayName ||
+      font.label ||
+      familyStyle ||
+      font.id ||
+      font.fontId,
+  };
+}
+
+async function loadFonts(force = false) {
+  if (fontsLoaded && !force) return true;
+  try {
+    const value = await api("fonts");
+    fontCatalog = (value.fonts || [])
+      .map(normalizeFont)
+      .filter((font) => font.id);
+    const select = $("textFont");
+    const previous = select.value;
+    select.replaceChildren();
+    for (const font of fontCatalog) {
+      const option = document.createElement("option");
+      option.value = font.id;
+      option.textContent = font.name;
+      select.append(option);
+    }
+    const preferred =
+      [...fontCatalog].find((font) => font.id === previous) ||
+      [...fontCatalog].find((font) => font.id === "builtin:noto-sans-sc") ||
+      fontCatalog[0];
+    if (preferred) select.value = preferred.id;
+    fontsLoaded = fontCatalog.length > 0;
+    select.disabled = !fontsLoaded;
+    if (!fontsLoaded) {
+      const option = document.createElement("option");
+      option.textContent = "字体服务没有可用字体";
+      select.append(option);
+    }
+    syncTextButtons();
+    return fontsLoaded;
+  } catch (cause) {
+    fontsLoaded = false;
+    $("textMetrics").textContent = "字体服务尚未就绪：" + friendlyError(cause);
+    $("textMetrics").className = "status error";
+    syncTextButtons();
+    return false;
+  }
+}
+
+$("textFontRefresh").onclick = () => loadFonts(true);
+
+function collectTextRequest() {
+  return buildTextRequest({
+    text: $("textContent").value,
+    fontId: $("textFont").value,
+    fontSize: $("textSize").value,
+    depth: $("textDepth").value,
+    origin: values(["textX", "textY", "textZ"]),
+    plane: $("textPlane").value,
+    facing: $("textFacing").value,
+    align: $("textAlign").value,
+    letterSpacing: $("textLetterSpacing").value,
+    lineSpacing: $("textLineSpacing").value,
+    maxWidth: $("textMaxWidth").value,
+    styleId: selectedStyle,
+    tintId: $("tintId").value,
+    motionPhase: 0,
+    group: $("textGroup").value,
+  });
+}
+
+function currentFingerprint() {
+  return textRequestFingerprint(collectTextRequest());
+}
+
+function syncTextButtons() {
+  const request = collectTextRequest();
+  const hasText = request.text.trim().length > 0;
+  $("textPreview").disabled = !fontsLoaded || !hasText;
+  $("textClearPreview").disabled = !currentTextPreview;
+  $("textApply").disabled =
+    textApplyBusy ||
+    !previewCanApply(
+      currentTextPreview,
+      currentPreviewSentJSON,
+      textRequestFingerprint(request),
+      state?.stats?.targetBoxes,
+      currentPreviewServerFingerprint,
+    );
+}
+
+function clearTextPreview() {
+  previewSequence++;
+  renderer.clearTextPreview();
+  currentTextPreview = null;
+  currentPreviewSentJSON = "";
+  currentPreviewServerFingerprint = "";
+  currentPreviewRequestId = "";
+  currentPreviewRequest = null;
+  $("textMetrics").textContent = "预览已清除。草稿没有变化。";
+  $("textMetrics").className = "status";
+  syncTextButtons();
+}
+
+$("textClearPreview").onclick = clearTextPreview;
+
+function scheduleTextPreview() {
+  clearTimeout(previewTimer);
+  if (!$("textContent").value.trim()) {
+    clearTextPreview();
+    return;
+  }
+  previewTimer = setTimeout(() => requestTextPreview(false), 320);
+  syncTextButtons();
+}
+
+for (const id of [
+  "textContent",
+  "textFont",
+  "textSize",
+  "textDepth",
+  "textPlane",
+  "textFacing",
+  "textAlign",
+  "textLetterSpacing",
+  "textLineSpacing",
+  "textMaxWidth",
+  "textX",
+  "textY",
+  "textZ",
+  "textGroup",
+  "tintId",
+]) {
+  $(id).addEventListener("input", scheduleTextPreview);
+  $(id).addEventListener("change", scheduleTextPreview);
+}
+$("textPreview").onclick = () => requestTextPreview(true);
+
+async function requestTextPreview(manual) {
+  clearTimeout(previewTimer);
+  if (!fontsLoaded && !(await loadFonts())) return;
+  const request = collectTextRequest();
+  if (!request.text.trim()) {
+    clearTextPreview();
+    return toast("请输入文字");
+  }
+  const fingerprint = textRequestFingerprint(request);
+  const sequence = ++previewSequence;
+  const previewRequestId = newRequestId();
+  $("textPreview").disabled = true;
+  $("textMetrics").textContent = "预览计算中…";
+  $("textMetrics").className = "status";
+  try {
+    const value = await api("text/preview", {
+      ...request,
+      requestId: previewRequestId,
+    });
+    if (sequence !== previewSequence || fingerprint !== currentFingerprint())
+      return;
+    if (
+      (value.requestId || value.preview?.requestId) &&
+      (value.requestId || value.preview?.requestId) !== previewRequestId
+    ) {
+      throw new Error("文字预览状态校验失败，请重新预览。");
+    }
+    if (value.ok === false || value.error) {
+      const failure = new Error(formatPreviewError(value));
+      failure.payload = value;
+      throw failure;
+    }
+    const preview = value.preview && !value.operations ? value.preview : value;
+    const serverFingerprint =
+      value.requestFingerprint || preview?.requestFingerprint || "";
+    if (!/^[0-9a-f]{64}$/i.test(serverFingerprint)) {
+      throw new Error("文字预览结果无法校验，请重新预览。");
+    }
+    const boxes = previewBoxes(preview);
+    const metrics = previewMetrics(preview);
+    const style =
+      sceneData?.materials.find(
+        (material) => material.id === request.styleId,
+      ) || {};
+    renderer.setTextPreview(boxes, {
+      ...style,
+      tintId: request.tintId,
+    });
+    currentTextPreview = preview;
+    currentPreviewSentJSON = fingerprint;
+    currentPreviewServerFingerprint = serverFingerprint;
+    currentPreviewRequestId = previewRequestId;
+    currentPreviewRequest = request;
+    const dimensionText = metrics.dimensions
+      ? metrics.dimensions.join(" × ")
+      : "—";
+    const lines = [
+      `尺寸 ${dimensionText} 格`,
+      `${fmt(metrics.boxCount)} Box · ${fmt(metrics.voxelCount)} 体素`,
+      `目标容量 ${fmt(state?.stats?.targetBoxes)} Box`,
+    ];
+    if (metrics.missing.length)
+      lines.push("缺字：" + metrics.missing.join(" "));
+    if (metrics.overCapacity) lines.push("超出目标材料容量");
+    if (metrics.warnings.length) lines.push(...metrics.warnings);
+    if (!boxes.length) lines.push("预览没有返回 Box");
+    $("textMetrics").textContent = lines.join("\n");
+    $("textMetrics").className =
+      metrics.missing.length || metrics.overCapacity
+        ? "status error"
+        : "status ok";
+    if (manual) toast("预览已更新，草稿未修改");
+  } catch (cause) {
+    if (sequence !== previewSequence) return;
+    currentTextPreview = null;
+    currentPreviewSentJSON = "";
+    currentPreviewServerFingerprint = "";
+    currentPreviewRequestId = "";
+    currentPreviewRequest = null;
+    renderer.clearTextPreview();
+    $("textMetrics").textContent = formatPreviewError(cause);
+    $("textMetrics").className = "status error";
+    if (manual && !formatPreviewError(cause).includes("缺字")) error(cause);
+  } finally {
+    syncTextButtons();
+  }
+}
+
+$("textApply").onclick = async () => {
+  if (textApplyBusy) return;
+  const fingerprint = currentFingerprint();
+  if (
+    !previewCanApply(
+      currentTextPreview,
+      currentPreviewSentJSON,
+      fingerprint,
+      state?.stats?.targetBoxes,
+      currentPreviewServerFingerprint,
+    )
+  ) {
+    return toast("请先预览当前参数；缺字或超容量时不能应用");
+  }
+  textApplyBusy = true;
+  syncTextButtons();
+  try {
+    const applyRequestId = newRequestId();
+    const value = await api("text/apply", {
+      ...currentPreviewRequest,
+      baseRevision: state.revision,
+      requestId: applyRequestId,
+      previewRequestId: currentPreviewRequestId,
+      previewFingerprint: currentPreviewServerFingerprint,
+    });
+    const applied = normalizeApplyResult(value, applyRequestId);
+    clearTextPreview();
+    await refresh(true);
+    renderer.view();
+    toast(
+      applied.warning
+        ? `文字已应用 · v${applied.revision} · ${applied.warning}`
+        : `文字已应用 · v${applied.revision}`,
+    );
+  } catch (cause) {
+    error(cause);
+    if (cause.status === 409) {
+      $("textMetrics").textContent =
+        "草稿版本已变化。预览未修改草稿，请重新预览后再应用。";
+      $("textMetrics").className = "status error";
+    }
+  } finally {
+    textApplyBusy = false;
+    syncTextButtons();
+  }
+};
+
+if (captureMode) {
+  document.body.classList.add("capture-mode");
+  renderer.renderer.setAnimationLoop(null);
+  window.__morphforge.ready = true;
+  let capturing = false;
+  setInterval(async () => {
+    if (capturing) return;
+    capturing = true;
+    let job;
+    try {
+      job = await api("capture/jobs");
+      if (job) {
+        await renderer.load(job.scene, job.materials, {
+          mode: job.mode,
+          scale: 1,
+        });
+        const images = await renderer.capture(job.views, job.width, job.height);
+        await api("capture/result", {
+          id: job.id,
+          revision: renderer.renderRevision,
+          images,
+        });
+      }
+    } catch (cause) {
+      if (job) {
+        await api("capture/result", {
+          id: job.id,
+          revision: job.revision,
+          error: cause.message,
+        }).catch(() => {});
+      }
+      console.error(cause);
+    } finally {
+      capturing = false;
+    }
+  }, 200);
+} else {
+  const storedMode = safeStorageGet("morphforge.mode.default", "steer");
+  if (["steer", "interrupt", "queue"].includes(storedMode))
+    $("messageMode").value = storedMode;
+  await refresh();
+  switchUiScope(state?.project?.id);
+  restorePromptDraft();
+  renderPending();
+  renderChat();
+  renderer.view();
+  loadFonts();
+  setInterval(() => refresh(), 700);
+  setInterval(pollEvents, 700);
+}

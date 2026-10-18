@@ -29,6 +29,7 @@ export class VoxelRenderer {
   this.marker=new THREE.Mesh(new THREE.SphereGeometry(.045,20,12),new THREE.MeshStandardMaterial({color:'#f6be4c',emissive:'#b7750b',emissiveIntensity:1.4,transparent:true,opacity:.65}));this.helpers.add(this.marker);
   this.ghost=new THREE.Mesh(new THREE.BoxGeometry(1,1,1),new THREE.MeshBasicMaterial({color:0xecc468,transparent:true,opacity:.25,depthWrite:false}));this.ghost.visible=false;this.helpers.add(this.ghost);
   this.selectedHelper=new THREE.Box3Helper(new THREE.Box3(),0xf3ca72);this.selectedHelper.visible=false;this.helpers.add(this.selectedHelper);
+  this.textPreviewGroup=new THREE.Group();this.textPreviewGroup.name='TextPreview';this.scene.add(this.textPreviewGroup);this.textPreviewMesh=null;this.textPreviewBoxes=[];
   this.resizeObserver=new ResizeObserver(()=>this.resize());this.resizeObserver.observe(container);this.resize();this.renderer.setAnimationLoop(time=>{this.controls.update();for(const uniforms of this.uniforms)uniforms.mfTime.value=time/1000;this.renderer.render(this.scene,this.camera)});
  }
  makeEnvironment(){const images=[];for(let i=0;i<6;i++){const canvas=document.createElement('canvas');canvas.width=canvas.height=128;const c=canvas.getContext('2d'),g=c.createLinearGradient(0,0,0,128);g.addColorStop(0,'#a4c9e5');g.addColorStop(.5,'#d4e0e4');g.addColorStop(.51,'#45545d');g.addColorStop(1,'#1d2732');c.fillStyle=g;c.fillRect(0,0,128,128);c.fillStyle=i%2?'#dbefff':'#fff0d7';c.fillRect(15,15,30,65);images.push(canvas)}const cube=new THREE.CubeTexture(images);cube.needsUpdate=true;const generator=new THREE.PMREMGenerator(this.renderer);this.environment=generator.fromCubemap(cube);this.scene.environment=this.environment.texture;cube.dispose();generator.dispose();}
@@ -91,7 +92,28 @@ export class VoxelRenderer {
  }
  makeGrid(){this.grid.geometry.dispose();this.grid.material.dispose();this.helpers.remove(this.grid);const n=Math.min(this.gridSize??16,256);this.grid=new THREE.GridHelper(n*this.cellSize*this.scale,Math.min(n,64),0x647788,0x2c3e4b);this.grid.material.transparent=true;this.grid.material.opacity=.5;this.helpers.add(this.grid);this.axes.scale.set(this.scale,this.scale,-this.scale);}
  setLayer(layer){this.grid.position.y=layer*this.cellSize*this.scale;}
- setScale(scale){this.scale=scale;this.content.scale.setScalar(scale);this.makeGrid();this.updateSelection();}
+ setScale(scale){this.scale=scale;this.content.scale.setScalar(scale);this.textPreviewGroup.scale.setScalar(scale);this.makeGrid();this.updateSelection();}
+ setTextPreview(boxes,style={}){
+  this.clearTextPreview();
+  const preview=boxes.filter(box=>Array.isArray(box?.min)&&Array.isArray(box?.size)&&box.size.every(value=>value>0));
+  if(!preview.length)return 0;
+  const color=new THREE.Color().setRGB(...(style.color||[.92,.76,.43]),THREE.SRGBColorSpace);
+  if(Number(style.tintId)){const tint=Number(style.tintId);color.multiply(new THREE.Color(...[.31,.53,.79].map(value=>.45+.55*((tint*value)%1))));}
+  const material=new THREE.MeshBasicMaterial({color,transparent:true,opacity:.58,depthWrite:false,side:THREE.DoubleSide});
+  const mesh=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),material,preview.length);
+  const matrix=new THREE.Matrix4(),rotation=new THREE.Quaternion(),size=new THREE.Vector3();
+  preview.forEach((box,index)=>{
+   const position=toThree(box.min.map((value,axis)=>(value+box.size[axis]/2)*this.cellSize));
+   size.set(...box.size.map(value=>value*this.cellSize));matrix.compose(position,rotation,size);mesh.setMatrixAt(index,matrix);
+  });
+  mesh.instanceMatrix.needsUpdate=true;mesh.computeBoundingSphere();mesh.renderOrder=20;mesh.userData.preview=true;
+  this.textPreviewGroup.add(mesh);this.textPreviewGroup.scale.setScalar(this.scale);this.textPreviewMesh=mesh;this.textPreviewBoxes=preview.map(({min,size})=>({min:[...min],size:[...size]}));
+  return preview.length;
+ }
+ clearTextPreview(){
+  if(!this.textPreviewMesh)return;
+  this.textPreviewGroup.remove(this.textPreviewMesh);this.textPreviewMesh.geometry.dispose();this.textPreviewMesh.material.dispose();this.textPreviewMesh=null;this.textPreviewBoxes=[];
+ }
  bounds(){const box=new THREE.Box3();for(const b of this.boxes){if(this.groupsHidden.has(b.group))continue;const p=b.min.map((v,i)=>(v+b.size[i]/2)*this.cellSize*this.scale);const center=toThree(p),extent=new THREE.Vector3(...b.size.map(v=>v*this.cellSize*this.scale));box.union(new THREE.Box3().setFromCenterAndSize(center,extent));}return box;}
  view(name='hero',focus=null){const box=this.bounds();let center=box.isEmpty()?new THREE.Vector3(0,.6,0):box.getCenter(new THREE.Vector3());let span=box.isEmpty()?4:Math.max(...box.getSize(new THREE.Vector3()).toArray(),.3);if(focus){center=toThree(focus.map(v=>v*this.cellSize*this.scale));span=Math.min(span,2)}const directions={hero:[1,.75,1.25],front:[0,.12,1],top:[0,1,.0001],side:[1,.1,0],detail:[1,.6,1.1]};const direction=toThree(directions[name]||directions.hero).normalize();this.controls.target.copy(center);this.camera.up.set(0,1,0);if(name==='top')this.camera.up.set(0,0,1);this.camera.position.copy(center).addScaledVector(direction,span*1.9+this.cellSize*this.scale);this.camera.near=Math.max(.001,span/10000);this.camera.far=Math.max(500,span*20);this.camera.updateProjectionMatrix();this.camera.lookAt(center);this.controls.update();this.renderer.render(this.scene,this.camera);}
  projectPoint(p){const v=toThree(p).multiplyScalar(this.scale).project(this.camera),r=this.renderer.domElement.getBoundingClientRect();return{x:r.left+(v.x+1)*r.width/2,y:r.top+(1-v.y)*r.height/2};}
@@ -102,5 +124,5 @@ export class VoxelRenderer {
  }
  hover(hit,size=[1,1,1],erase=false){this.ghost.visible=!!hit;if(!hit)return;const c=this.cellSize*this.scale;this.ghost.scale.set(...size.map(v=>v*c));this.ghost.position.copy(toThree(hit.pos.map((v,i)=>(v+size[i]/2)*c)));this.ghost.material.color.set(erase?'#e08c82':'#eac76e');}
  updateSelection(){const box=new THREE.Box3();for(const b of this.boxes){if(!this.selection.has(b.id))continue;const c=this.cellSize*this.scale;box.union(new THREE.Box3().setFromCenterAndSize(toThree(b.min.map((v,a)=>(v+b.size[a]/2)*c)),new THREE.Vector3(...b.size.map(v=>v*c))));}this.selectedHelper.box.copy(box);this.selectedHelper.visible=!box.isEmpty();}
- async capture(views,width=768,height=640){const r=this.container.getBoundingClientRect(),pixelRatio=this.renderer.getPixelRatio();this.renderer.setPixelRatio(1);this.renderer.setSize(width,height,false);this.camera.aspect=width/height;this.camera.updateProjectionMatrix();this.helpers.visible=false;const images=[];try{for(const view of views){this.view(view);for(const uniforms of this.uniforms)uniforms.mfTime.value=0;this.renderer.render(this.scene,this.camera);images.push({view,data:this.renderer.domElement.toDataURL('image/png'),camera:{position:fromThree(this.camera.position),target:fromThree(this.controls.target),fov:this.camera.fov}})}}finally{this.helpers.visible=true;this.renderer.setPixelRatio(pixelRatio);this.resize();}return images;}
+ async capture(views,width=768,height=640){const r=this.container.getBoundingClientRect(),pixelRatio=this.renderer.getPixelRatio();this.renderer.setPixelRatio(1);this.renderer.setSize(width,height,false);this.camera.aspect=width/height;this.camera.updateProjectionMatrix();this.helpers.visible=false;const previewVisible=this.textPreviewGroup.visible;this.textPreviewGroup.visible=false;const images=[];try{for(const view of views){this.view(view);for(const uniforms of this.uniforms)uniforms.mfTime.value=0;this.renderer.render(this.scene,this.camera);images.push({view,data:this.renderer.domElement.toDataURL('image/png'),camera:{position:fromThree(this.camera.position),target:fromThree(this.controls.target),fov:this.camera.fov}})}}finally{this.helpers.visible=true;this.textPreviewGroup.visible=previewVisible;this.renderer.setPixelRatio(pixelRatio);this.resize();}return images;}
 }

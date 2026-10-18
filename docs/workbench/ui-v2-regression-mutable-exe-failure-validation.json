@@ -1,0 +1,76 @@
+{
+  "success": false,
+  "checks": [
+    {
+      "name": "OSC disabled on launch",
+      "pass": true
+    },
+    {
+      "name": "Real pointer creates canonical positive cell",
+      "pass": true
+    },
+    {
+      "name": "Adjacent voxels merge",
+      "pass": true
+    },
+    {
+      "name": "Shift erases top cell",
+      "pass": true
+    },
+    {
+      "name": "Undo and redo visible",
+      "pass": true
+    },
+    {
+      "name": "One renderer canonical/Three Z conversion",
+      "pass": true
+    },
+    {
+      "name": "stress5k exact instances",
+      "pass": true
+    },
+    {
+      "name": "stress5k batches below32",
+      "pass": true
+    },
+    {
+      "name": "stress16k exact instances",
+      "pass": true
+    },
+    {
+      "name": "stress16k batches below32",
+      "pass": true
+    },
+    {
+      "name": "Independent capture binds exact revision",
+      "pass": true
+    },
+    {
+      "name": "Scene settings get a new immutable revision",
+      "pass": true
+    }
+  ],
+  "measurements": {
+    "stress5k": {
+      "loadSeconds": 1.7699838550761342,
+      "instances": 5000,
+      "drawCalls": 7
+    },
+    "stress16k": {
+      "loadSeconds": 5.970803061965853,
+      "instances": 16384,
+      "drawCalls": 7
+    },
+    "captureSeconds": 4.1975659700110555
+  },
+  "error": "HTTP Error 400: Bad Request",
+  "scope": "Real Chromium W3C input; OSC disabled; failed only because 8781 was launched from a later-replaced target/debug executable.",
+  "failureContext": {
+    "backendExecutable": "target/debug/morphforge (deleted)",
+    "failureEndpoint": "/api/harness/tool run_recipe",
+    "httpStatus": 400,
+    "sanitizedError": "No such file or directory (os error 2)",
+    "cause": "Recipe worker uses current_exe(); the original launch path was replaced while 8781 remained running.",
+    "action": "Preserved as historical evidence. Rerun under the stable executable label after backend restart."
+  }
+}

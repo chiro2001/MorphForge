@@ -1,0 +1,237 @@
+{
+  "schema": "MorphForgeGroupProtectionReal/1",
+  "success": true,
+  "scope": "Real Rust R2b backend with current web/ served by a same-origin test proxy, real Chromium UI, mock provider only",
+  "url": "http://127.0.0.1:8781",
+  "browserOrigin": "http://127.0.0.1:35943",
+  "localFrontendProxy": true,
+  "toolsVersion": "morphforge-tools/2.2",
+  "revisions": {
+    "beforeProtection": 88,
+    "locked": 89,
+    "afterConflicts": 92,
+    "unlocked": 93,
+    "afterEdit": 94,
+    "afterDirectUnlockedEdit": 95,
+    "final": 96
+  },
+  "boxCounts": {
+    "beforeProtection": 1,
+    "afterDrawConflict": 2,
+    "afterEraseConflict": 2,
+    "afterTransformConflict": 2,
+    "afterUnlockedEdit": 3,
+    "afterDirectUnlockedEdit": 4,
+    "final": 0
+  },
+  "protectedGroups": {
+    "locked": [
+      "protected-demo"
+    ],
+    "unlocked": []
+  },
+  "oscEnabledAtEveryCheckedStage": false,
+  "modelEvents": [],
+  "checks": [
+    {
+      "name": "R2 tool contract is loaded",
+      "pass": true,
+      "detail": "morphforge-tools/2.2"
+    },
+    {
+      "name": "provider is local mock and OSC is disabled before test",
+      "pass": true
+    },
+    {
+      "name": "isolated test starts with an empty scene and protection list",
+      "pass": true
+    },
+    {
+      "name": "locking persists protectedGroups and creates a revision",
+      "pass": true,
+      "detail": {
+        "beforeRevision": 88,
+        "lockedRevision": 89
+      }
+    },
+    {
+      "name": "OSC remains disabled after locking",
+      "pass": true
+    },
+    {
+      "name": "backend returns 409 PROTECTED_GROUP_CONFLICT for draw",
+      "pass": true,
+      "detail": {
+        "status": 409,
+        "error": "PROTECTED_GROUP_CONFLICT：受保护分组内容发生变化：protected-demo"
+      }
+    },
+    {
+      "name": "backend returns 409 PROTECTED_GROUP_CONFLICT for erase",
+      "pass": true,
+      "detail": {
+        "status": 409,
+        "error": "PROTECTED_GROUP_CONFLICT：受保护分组内容发生变化：protected-demo"
+      }
+    },
+    {
+      "name": "backend returns 409 PROTECTED_GROUP_CONFLICT for transform",
+      "pass": true,
+      "detail": {
+        "status": 409,
+        "error": "PROTECTED_GROUP_CONFLICT：受保护分组内容发生变化：protected-demo"
+      }
+    },
+    {
+      "name": "direct backend conflicts leave geometry and revision unchanged",
+      "pass": true
+    },
+    {
+      "name": "backend accepts a future empty protected group",
+      "pass": true,
+      "detail": {
+        "revision": 90
+      }
+    },
+    {
+      "name": "backend rejects the first draw into a future protected group",
+      "pass": true,
+      "detail": {
+        "status": 409,
+        "error": "PROTECTED_GROUP_CONFLICT：受保护分组内容发生变化：future-protected-empty"
+      }
+    },
+    {
+      "name": "future empty group is visible as zero and unlockable",
+      "pass": true
+    },
+    {
+      "name": "future group can be unlocked from the UI",
+      "pass": true,
+      "detail": {
+        "revision": 91
+      }
+    },
+    {
+      "name": "a formerly future group accepts drawing after unlock",
+      "pass": true,
+      "detail": {
+        "revision": 92
+      }
+    },
+    {
+      "name": "real draw conflict shows Chinese guidance and preserves draft",
+      "pass": true,
+      "detail": {
+        "revision": 92,
+        "boxes": 2
+      }
+    },
+    {
+      "name": "real erase conflict leaves geometry unchanged",
+      "pass": true,
+      "detail": {
+        "revision": 92,
+        "boxes": 2
+      }
+    },
+    {
+      "name": "real transform conflict leaves geometry unchanged",
+      "pass": true,
+      "detail": {
+        "revision": 92,
+        "boxes": 2
+      }
+    },
+    {
+      "name": "all conflict paths preserve the unsent prompt",
+      "pass": true
+    },
+    {
+      "name": "OSC remains disabled through all conflicts",
+      "pass": true
+    },
+    {
+      "name": "unlock persists an empty protectedGroups list",
+      "pass": true,
+      "detail": {
+        "revision": 93
+      }
+    },
+    {
+      "name": "after unlocking the next real draw succeeds",
+      "pass": true,
+      "detail": {
+        "revision": 94
+      }
+    },
+    {
+      "name": "backend permits a direct edit after unlocking",
+      "pass": true,
+      "detail": {
+        "revision": 95,
+        "boxCount": 4
+      }
+    },
+    {
+      "name": "no provider or Harness message requests were sent",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "protection test cleans its geometry and leaves OSC disabled",
+      "pass": true,
+      "detail": {
+        "revision": 96,
+        "protectedGroups": []
+      }
+    },
+    {
+      "name": "no unexpected JavaScript or WebGL errors",
+      "pass": true,
+      "detail": []
+    }
+  ],
+  "screenshots": [
+    "docs/ui-v2/group-protection-real-locked.png",
+    "docs/ui-v2/group-protection-real-unlocked.png"
+  ],
+  "browserLogs": [
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:35943/api/edit - Failed to load resource: the server responded with a status of 409 (Conflict)",
+      "source": "network",
+      "timestamp": 1792365703722
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:35943/studio.js 136:10 Error: PROTECTED_GROUP_CONFLICT：受保护分组内容发生变化：protected-demo\n    at api (http://127.0.0.1:35943/studio.js:119:19)\n    at async http://127.0.0.1:35943/studio.js:625:22",
+      "source": "console-api",
+      "timestamp": 1792365703722
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:35943/api/edit - Failed to load resource: the server responded with a status of 409 (Conflict)",
+      "source": "network",
+      "timestamp": 1792365703891
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:35943/studio.js 136:10 Error: PROTECTED_GROUP_CONFLICT：受保护分组内容发生变化：protected-demo\n    at api (http://127.0.0.1:35943/studio.js:119:19)\n    at async http://127.0.0.1:35943/studio.js:625:22",
+      "source": "console-api",
+      "timestamp": 1792365703892
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:35943/api/edit - Failed to load resource: the server responded with a status of 409 (Conflict)",
+      "source": "network",
+      "timestamp": 1792365704128
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:35943/studio.js 136:10 Error: PROTECTED_GROUP_CONFLICT：受保护分组内容发生变化：protected-demo\n    at api (http://127.0.0.1:35943/studio.js:119:19)\n    at async http://127.0.0.1:35943/studio.js:625:22",
+      "source": "console-api",
+      "timestamp": 1792365704130
+    }
+  ]
+}
