@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deploy this workspace's plain-text sources, without touching Unity assets."""
+"""Deploy sources and licensed font resources without copying commercial assets."""
 
 import base64
 import argparse
@@ -17,7 +17,7 @@ def main():
     parser.add_argument("--skip-unity-assets", action="store_true", help="Do not touch Assets/ while a Play Mode validation is running.")
     options = parser.parse_args()
     files = []
-    for pattern in ("tools/*.py", "tools/*.ps1", "tools/*.mjs", "crates/**/*.rs", "crates/**/*.js", "crates/**/*.txt", "crates/**/Cargo.toml", "AgentScripts/*.cs", "Assets/MorphForge/Editor/*.cs", "Assets/MorphForge/Runtime/*.cs", "Assets/MorphForge/Shaders/*.shader", "docs/**/*.md", ".agents/skills/**/*.md", "web/**/*.html", "web/**/*.css", "web/**/*.js", "web/**/*.txt", "web/**/*.json"):
+    for pattern in ("tools/*.py", "tools/*.ps1", "tools/*.mjs", "crates/**/*.rs", "crates/**/*.js", "crates/**/*.txt", "crates/**/*.md", "crates/**/Cargo.toml", "fonts/*.otf", "fonts/*.ttf", "fonts/*.txt", "AgentScripts/*.cs", "Assets/MorphForge/Editor/*.cs", "Assets/MorphForge/Runtime/*.cs", "Assets/MorphForge/Shaders/*.shader", "docs/**/*.md", ".agents/skills/**/*.md", "web/**/*.html", "web/**/*.css", "web/**/*.js", "web/**/*.mjs", "web/**/*.txt", "web/**/*.json"):
         files.extend(p for p in ROOT.glob(pattern) if p.is_file() and not p.is_symlink())
     for pattern in ("desktop/*.toml", "desktop/*.lock", "desktop/*.md", "desktop/*.svg", "desktop/ui/*", "desktop/src-tauri/*.toml", "desktop/src-tauri/*.json", "desktop/src-tauri/*.rs", "desktop/src-tauri/src/*.rs"):
         files.extend(p for p in ROOT.glob(pattern) if p.is_file() and not p.is_symlink())
@@ -35,7 +35,8 @@ $unchanged = 0
 foreach ($relative in $files.Keys) {{
     if ($relative -match '(^|/)\\.\\.(/|$)' -or [IO.Path]::IsPathRooted($relative)) {{ throw 'Invalid relative source path.' }}
     $extension = [IO.Path]::GetExtension($relative).ToLowerInvariant()
-    if ($extension -notin @('.py','.ps1','.cs','.shader','.md','.html','.css','.js','.txt','.json','.rs','.toml','.lock','.mjs','.svg')) {{ throw 'Only plain-text source deployment is allowed.' }}
+    $isFont = $relative -match '^fonts/[A-Za-z0-9_.-]+\\.(otf|ttf)$'
+    if (-not $isFont -and $extension -notin @('.py','.ps1','.cs','.shader','.md','.html','.css','.js','.txt','.json','.rs','.toml','.lock','.mjs','.svg')) {{ throw 'Only source files and bundled fonts are allowed.' }}
     $path = Join-Path $root $relative
     $bytes = [Convert]::FromBase64String($files[$relative])
     if (Test-Path -LiteralPath $path -PathType Leaf) {{

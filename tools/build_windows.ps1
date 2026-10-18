@@ -100,8 +100,7 @@ if ($needsIcons) {
 
 if ($CheckOnly) {
     Invoke-Checked $cargo.Source @(
-        "test", "--manifest-path", $coreManifest, "--workspace", "--target", $Target,
-        "--", "--skip", "periodic_refresh_waits_until_the_entire_previous_rebuild_was_sent"
+        "test", "--manifest-path", $coreManifest, "--workspace", "--target", $Target
     ) $root
     Invoke-Checked $cargo.Source @("test", "--manifest-path", (Join-Path $desktop "Cargo.toml"), "--workspace", "--target", $Target) $desktop
     Write-Host "Windows FullFT/desktop checks passed; no installer produced."
