@@ -1,6 +1,7 @@
 pub mod capture;
 pub mod catalog;
 pub mod diagnostics;
+pub mod fonts;
 pub mod harness;
 pub mod provider;
 pub mod recipe;
