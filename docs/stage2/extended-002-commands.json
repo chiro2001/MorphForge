@@ -1,0 +1,50 @@
+[
+  {
+    "op": "box",
+    "min": [
+      128,
+      128,
+      128
+    ],
+    "size": [
+      20,
+      10,
+      1
+    ],
+    "styleId": 2,
+    "tintId": 0,
+    "motionPhase": 0
+  },
+  {
+    "op": "box",
+    "min": [
+      151,
+      128,
+      128
+    ],
+    "size": [
+      2,
+      3,
+      4
+    ],
+    "styleId": 3,
+    "tintId": 0,
+    "motionPhase": 0
+  },
+  {
+    "op": "box",
+    "min": [
+      123,
+      128,
+      128
+    ],
+    "size": [
+      2,
+      2,
+      2
+    ],
+    "styleId": 4,
+    "tintId": 0,
+    "motionPhase": 0
+  }
+]

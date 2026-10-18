@@ -1,0 +1,512 @@
+{
+  "label": "region-erased",
+  "environment": "Unity Play Mode + native Gesture Manager OSC, not VRChat client",
+  "count": 17,
+  "sourceControl": 114,
+  "source": [
+    126,
+    126,
+    126,
+    2,
+    0,
+    2,
+    0,
+    0,
+    0,
+    0
+  ],
+  "received": 47.0,
+  "completed": 47.0,
+  "inboxReady": false,
+  "lastRxSeq": 14,
+  "work": [
+    126.0,
+    126.0,
+    126.0,
+    2.0,
+    0.0,
+    2.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "op": 2,
+  "lastSeq": 14,
+  "busy": false,
+  "pumpActive": false,
+  "triggerEnabled": false,
+  "storePlaying": true,
+  "storePaused": false,
+  "particles": [
+    {
+      "position": [
+        0.125000954,
+        -0.125000954,
+        0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        0.125000954,
+        0.125000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        0.125000954,
+        0.125000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        -0.125000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        -0.125000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        -0.125000954,
+        0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        0.125000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        0.125000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        0.125000954,
+        0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        0.125000954,
+        0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        0.125000954,
+        -0.125000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        0.125000954,
+        -0.125000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        -0.125000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        0.125000954,
+        0.125000954,
+        0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        -0.125000954,
+        0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        0.125000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        0.125000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    }
+  ],
+  "nativeStartSize": [
+    0.75,
+    0.25,
+    0.75
+  ],
+  "locator": [
+    -0.500000954,
+    -0.500000954,
+    -0.500000954
+  ],
+  "centerOffset": [
+    0.375,
+    0.125,
+    0.375
+  ],
+  "eraseScale": [
+    0.75,
+    0.25,
+    0.75
+  ],
+  "expectedPath": "Docs/Stage2/region-erased-expected.json",
+  "actualImage": "Docs/Stage2/region-erased.png",
+  "referenceImage": "Docs/Stage2/region-erased-reference.png",
+  "foregroundPixels": 121042,
+  "referenceMeanAbsoluteError": 0.00097910563151041674,
+  "referenceMaxError": 88,
+  "traceEvents": 276
+}

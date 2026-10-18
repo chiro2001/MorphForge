@@ -1,0 +1,122 @@
+{
+  "success": true,
+  "mode": "read-only",
+  "catalogCount": 100,
+  "fixture": {
+    "animation": {
+      "id": 25,
+      "uid": "mf:block/animated@d4da0b72",
+      "frames": 3,
+      "frameTime": 0.05,
+      "expected": [
+        "blue",
+        "red",
+        "purple"
+      ]
+    },
+    "sixFace": {
+      "id": 26,
+      "uid": "mf:block/sixface@d4da0b72",
+      "textures": 6,
+      "expected": [
+        "+X red",
+        "-X green",
+        "+Y blue",
+        "-Y yellow",
+        "+Z cyan",
+        "-Z magenta"
+      ]
+    }
+  },
+  "material": {
+    "path": "Assets/MorphForge/MaterialsCatalog/ParticleBoxCatalog.mat",
+    "shader": "MorphForge/ParticleBoxCatalog",
+    "cellSize": 0.25
+  },
+  "fireClipSeconds": 0.03,
+  "prefabs": [
+    {
+      "path": "Assets/MorphForge/Stage4/Geometry/Display.prefab",
+      "required": true,
+      "present": true,
+      "success": true,
+      "reason": null,
+      "modules": 1,
+      "stores": 1,
+      "pumps": 1,
+      "material": "ParticleBoxCatalog",
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "pumpLifetimes": [
+        0.5
+      ],
+      "streams": [
+        "Position",
+        "Normal",
+        "Color",
+        "UV",
+        "UV2",
+        "SizeXYZ"
+      ]
+    },
+    {
+      "path": "Assets/MorphForge/Stage4/Placement/Placement.prefab",
+      "required": true,
+      "present": true,
+      "success": true,
+      "reason": null,
+      "modules": 1,
+      "stores": 1,
+      "pumps": 1,
+      "material": "ParticleBoxCatalog",
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "pumpLifetimes": [
+        0.5
+      ],
+      "streams": [
+        "Position",
+        "Normal",
+        "Color",
+        "UV",
+        "UV2",
+        "SizeXYZ"
+      ]
+    },
+    {
+      "path": "Assets/MorphForge/Stage4/Avatar.prefab",
+      "required": true,
+      "present": true,
+      "success": true,
+      "reason": null,
+      "modules": 1,
+      "stores": 1,
+      "pumps": 1,
+      "material": "ParticleBoxCatalog",
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "pumpLifetimes": [
+        0.5
+      ],
+      "streams": [
+        "Position",
+        "Normal",
+        "Color",
+        "UV",
+        "UV2",
+        "SizeXYZ"
+      ]
+    },
+    {
+      "path": "Assets/MorphForge/FullFT/Avatar.prefab",
+      "required": false,
+      "present": false,
+      "success": true,
+      "reason": null,
+      "modules": 0,
+      "stores": 0,
+      "pumps": 0,
+      "material": null,
+      "shader": null,
+      "pumpLifetimes": null,
+      "streams": null
+    }
+  ]
+}

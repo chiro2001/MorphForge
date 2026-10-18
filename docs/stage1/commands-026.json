@@ -1,0 +1,47 @@
+[
+  {
+    "op": "box",
+    "min": [
+      128,
+      128,
+      128
+    ],
+    "size": [
+      20,
+      10,
+      1
+    ],
+    "styleId": 2,
+    "tintId": 0,
+    "motionPhase": 0
+  },
+  {
+    "op": "box",
+    "min": [
+      148,
+      132,
+      128
+    ],
+    "size": [
+      1,
+      1,
+      1
+    ],
+    "styleId": 3,
+    "tintId": 0,
+    "motionPhase": 0
+  },
+  {
+    "op": "remove",
+    "min": [
+      148,
+      132,
+      128
+    ],
+    "size": [
+      1,
+      1,
+      1
+    ]
+  }
+]

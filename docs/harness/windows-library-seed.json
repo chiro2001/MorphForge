@@ -1,0 +1,26 @@
+{
+  "success": true,
+  "artworks": [
+    {
+      "id": "8fb13eda-e484-4e2d-96de-9021b9facb4f",
+      "title": "铜灯塔·集成验证",
+      "views": 3,
+      "boxes": 42
+    },
+    {
+      "id": "495db230-7c65-47ac-8b6e-fab0259f00f9",
+      "title": "铜灯塔与树·续作验证",
+      "views": 3,
+      "boxes": 49
+    },
+    {
+      "id": "6402c7d7-4dc6-45a3-9c97-61e540f79b7f",
+      "title": "The Leviathan's Lantern · 精确体素版",
+      "views": 3,
+      "boxes": 7459
+    }
+  ],
+  "source": "Original generated local workbench library",
+  "destination": "%LOCALAPPDATA%/MorphForge",
+  "existingFilesPreserved": true
+}

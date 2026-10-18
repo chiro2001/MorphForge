@@ -1,0 +1,542 @@
+[
+  {
+    "time": 0.20402089999697637,
+    "ctl": 0,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 0,
+    "op": 0,
+    "lastSeq": 255
+  },
+  {
+    "time": 0.90817389999938314,
+    "ctl": 4,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 0,
+    "op": 4,
+    "lastSeq": 255
+  },
+  {
+    "time": 1.1514604999974836,
+    "ctl": 12,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 0,
+    "op": 4,
+    "lastSeq": 0
+  },
+  {
+    "time": 1.2539925999990373,
+    "ctl": 12,
+    "busy": true,
+    "pump": false,
+    "trigger": true,
+    "count": 0,
+    "op": 4,
+    "lastSeq": 0
+  },
+  {
+    "time": 1.3231006999994861,
+    "ctl": 12,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 0,
+    "op": 4,
+    "lastSeq": 0
+  },
+  {
+    "time": 1.3844709999975748,
+    "ctl": 12,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 0,
+    "op": 4,
+    "lastSeq": 0
+  },
+  {
+    "time": 1.7551727999998548,
+    "ctl": 17,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 0,
+    "op": 1,
+    "lastSeq": 0
+  },
+  {
+    "time": 2.0144707999970706,
+    "ctl": 25,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 0,
+    "op": 1,
+    "lastSeq": 1
+  },
+  {
+    "time": 2.1211670999982744,
+    "ctl": 25,
+    "busy": true,
+    "pump": false,
+    "trigger": true,
+    "count": 0,
+    "op": 1,
+    "lastSeq": 1
+  },
+  {
+    "time": 2.1867661999967822,
+    "ctl": 25,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 0,
+    "op": 1,
+    "lastSeq": 1
+  },
+  {
+    "time": 2.24635649999982,
+    "ctl": 25,
+    "busy": true,
+    "pump": true,
+    "trigger": false,
+    "count": 1,
+    "op": 1,
+    "lastSeq": 1
+  },
+  {
+    "time": 2.3498829999989539,
+    "ctl": 25,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 1,
+    "op": 1,
+    "lastSeq": 1
+  },
+  {
+    "time": 2.622444099997665,
+    "ctl": 33,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 1,
+    "op": 1,
+    "lastSeq": 1
+  },
+  {
+    "time": 2.8848128999998153,
+    "ctl": 41,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 1,
+    "op": 1,
+    "lastSeq": 2
+  },
+  {
+    "time": 2.9841879999985395,
+    "ctl": 41,
+    "busy": true,
+    "pump": false,
+    "trigger": true,
+    "count": 1,
+    "op": 1,
+    "lastSeq": 2
+  },
+  {
+    "time": 3.0556499999984226,
+    "ctl": 41,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 1,
+    "op": 1,
+    "lastSeq": 2
+  },
+  {
+    "time": 3.1154314999985218,
+    "ctl": 41,
+    "busy": true,
+    "pump": true,
+    "trigger": false,
+    "count": 2,
+    "op": 1,
+    "lastSeq": 2
+  },
+  {
+    "time": 3.2182010999968043,
+    "ctl": 41,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 2,
+    "op": 1,
+    "lastSeq": 2
+  },
+  {
+    "time": 3.49264299999777,
+    "ctl": 49,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 2,
+    "op": 1,
+    "lastSeq": 2
+  },
+  {
+    "time": 3.7466825999981666,
+    "ctl": 57,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 2,
+    "op": 1,
+    "lastSeq": 3
+  },
+  {
+    "time": 3.85101399999985,
+    "ctl": 57,
+    "busy": true,
+    "pump": false,
+    "trigger": true,
+    "count": 2,
+    "op": 1,
+    "lastSeq": 3
+  },
+  {
+    "time": 3.9177849999978207,
+    "ctl": 57,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 2,
+    "op": 1,
+    "lastSeq": 3
+  },
+  {
+    "time": 3.9778802999971958,
+    "ctl": 57,
+    "busy": true,
+    "pump": true,
+    "trigger": false,
+    "count": 3,
+    "op": 1,
+    "lastSeq": 3
+  },
+  {
+    "time": 4.077862099999038,
+    "ctl": 57,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 3,
+    "op": 1,
+    "lastSeq": 3
+  },
+  {
+    "time": 4.3481620999991719,
+    "ctl": 65,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 3,
+    "op": 1,
+    "lastSeq": 3
+  },
+  {
+    "time": 4.6045162999980676,
+    "ctl": 73,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 3,
+    "op": 1,
+    "lastSeq": 4
+  },
+  {
+    "time": 4.71114359999774,
+    "ctl": 73,
+    "busy": true,
+    "pump": false,
+    "trigger": true,
+    "count": 3,
+    "op": 1,
+    "lastSeq": 4
+  },
+  {
+    "time": 4.7758845999996993,
+    "ctl": 73,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 3,
+    "op": 1,
+    "lastSeq": 4
+  },
+  {
+    "time": 4.8384362999968289,
+    "ctl": 73,
+    "busy": true,
+    "pump": true,
+    "trigger": false,
+    "count": 4,
+    "op": 1,
+    "lastSeq": 4
+  },
+  {
+    "time": 4.9382016999988991,
+    "ctl": 73,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 4,
+    "op": 1,
+    "lastSeq": 4
+  },
+  {
+    "time": 5.2067260999974678,
+    "ctl": 81,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 4,
+    "op": 1,
+    "lastSeq": 4
+  },
+  {
+    "time": 5.4650482999968517,
+    "ctl": 89,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 4,
+    "op": 1,
+    "lastSeq": 5
+  },
+  {
+    "time": 5.5661140999982308,
+    "ctl": 89,
+    "busy": true,
+    "pump": false,
+    "trigger": true,
+    "count": 4,
+    "op": 1,
+    "lastSeq": 5
+  },
+  {
+    "time": 5.6368459999976039,
+    "ctl": 89,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 4,
+    "op": 1,
+    "lastSeq": 5
+  },
+  {
+    "time": 5.6931061999966914,
+    "ctl": 89,
+    "busy": true,
+    "pump": true,
+    "trigger": false,
+    "count": 5,
+    "op": 1,
+    "lastSeq": 5
+  },
+  {
+    "time": 5.79657369999768,
+    "ctl": 89,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 5,
+    "op": 1,
+    "lastSeq": 5
+  },
+  {
+    "time": 6.0641973999991023,
+    "ctl": 97,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 5,
+    "op": 1,
+    "lastSeq": 5
+  },
+  {
+    "time": 6.3160964999988209,
+    "ctl": 105,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 5,
+    "op": 1,
+    "lastSeq": 6
+  },
+  {
+    "time": 6.4191899999968882,
+    "ctl": 105,
+    "busy": true,
+    "pump": false,
+    "trigger": true,
+    "count": 5,
+    "op": 1,
+    "lastSeq": 6
+  },
+  {
+    "time": 6.4891489000001457,
+    "ctl": 105,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 5,
+    "op": 1,
+    "lastSeq": 6
+  },
+  {
+    "time": 6.5496542000000773,
+    "ctl": 105,
+    "busy": true,
+    "pump": true,
+    "trigger": false,
+    "count": 6,
+    "op": 1,
+    "lastSeq": 6
+  },
+  {
+    "time": 6.6480518999997,
+    "ctl": 105,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 6,
+    "op": 1,
+    "lastSeq": 6
+  },
+  {
+    "time": 6.9213133999983256,
+    "ctl": 113,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 6,
+    "op": 1,
+    "lastSeq": 6
+  },
+  {
+    "time": 7.1788649999980407,
+    "ctl": 121,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 6,
+    "op": 1,
+    "lastSeq": 7
+  },
+  {
+    "time": 7.2851322999995318,
+    "ctl": 121,
+    "busy": true,
+    "pump": false,
+    "trigger": true,
+    "count": 6,
+    "op": 1,
+    "lastSeq": 7
+  },
+  {
+    "time": 7.3521803999974509,
+    "ctl": 121,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 6,
+    "op": 1,
+    "lastSeq": 7
+  },
+  {
+    "time": 7.4076073999967775,
+    "ctl": 121,
+    "busy": true,
+    "pump": true,
+    "trigger": false,
+    "count": 7,
+    "op": 1,
+    "lastSeq": 7
+  },
+  {
+    "time": 7.5105688999974518,
+    "ctl": 121,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 7,
+    "op": 1,
+    "lastSeq": 7
+  },
+  {
+    "time": 7.7843685999978334,
+    "ctl": 129,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 7,
+    "op": 1,
+    "lastSeq": 7
+  },
+  {
+    "time": 8.0383115999975416,
+    "ctl": 137,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 7,
+    "op": 1,
+    "lastSeq": 8
+  },
+  {
+    "time": 8.13982119999855,
+    "ctl": 137,
+    "busy": true,
+    "pump": false,
+    "trigger": true,
+    "count": 7,
+    "op": 1,
+    "lastSeq": 8
+  },
+  {
+    "time": 8.2125039999991714,
+    "ctl": 137,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 7,
+    "op": 1,
+    "lastSeq": 8
+  },
+  {
+    "time": 8.2720853999999235,
+    "ctl": 137,
+    "busy": true,
+    "pump": true,
+    "trigger": false,
+    "count": 8,
+    "op": 1,
+    "lastSeq": 8
+  },
+  {
+    "time": 8.37179919999835,
+    "ctl": 137,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 8,
+    "op": 1,
+    "lastSeq": 8
+  }
+]

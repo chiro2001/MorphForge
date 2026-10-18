@@ -1,0 +1,27 @@
+{
+    "success": true,
+    "checkedAt": "2026-10-18T16:05:45.6794743+08:00",
+    "projectPath": "D:\\Projects\\VRChatProjects2\\MorphForge",
+    "unityVersion": "2022.3.22f1",
+    "scene": "Assets/MorphForge/Scenes/MorphForge_Nemesis.unity",
+    "prefab": "Assets/Nemesis/Nemesis.prefab",
+    "humanoid": true,
+    "avatarDescriptor": true,
+    "missingScripts": 0,
+    "renderers": 19,
+    "skinnedMeshes": 19,
+    "missingDependencies": [],
+    "shaderIssues": [],
+    "packages": [
+        "com.unity.pipeline@0.8.0-exp.1",
+        "com.vrchat.avatars@3.10.5",
+        "com.vrchat.base@3.10.5",
+        "com.vrchat.core.vpm-resolver@0.1.29",
+        "jp.lilxyzw.liltoon@2.3.4",
+        "minminmean.supine@5.1.0",
+        "nadena.dev.modular-avatar@1.18.7",
+        "nadena.dev.ndmf@1.14.8",
+        "vrchat.blackstartx.gesture-manager@3.9.9"
+    ],
+    "preview": "Docs/Setup/morphforge-nemesis.png"
+}

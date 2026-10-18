@@ -1,0 +1,1734 @@
+{
+  "label": "capacity-reused64",
+  "environment": "Unity Play Mode + native Gesture Manager OSC, not VRChat client",
+  "count": 64,
+  "sourceControl": 241,
+  "source": [
+    130,
+    130,
+    130,
+    0,
+    0,
+    0,
+    4,
+    0,
+    0,
+    0
+  ],
+  "received": 127.0,
+  "completed": 127.0,
+  "inboxReady": false,
+  "lastRxSeq": 30,
+  "work": [
+    130.0,
+    130.0,
+    130.0,
+    0.0,
+    0.0,
+    0.0,
+    4.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "op": 1,
+  "lastSeq": 30,
+  "busy": false,
+  "pumpActive": false,
+  "triggerEnabled": false,
+  "storePlaying": true,
+  "storePaused": false,
+  "particles": [
+    {
+      "position": [
+        -0.125000954,
+        -0.125000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.875000954,
+        -0.875000954,
+        -0.625000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.875000954,
+        -0.875000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.875000954,
+        -0.875000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.875000954,
+        -0.625000954,
+        -0.875000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.875000954,
+        -0.625000954,
+        -0.625000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.875000954,
+        -0.625000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.875000954,
+        -0.625000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.875000954,
+        -0.375000954,
+        -0.875000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.875000954,
+        -0.375000954,
+        -0.625000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.875000954,
+        -0.375000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.875000954,
+        -0.375000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.875000954,
+        -0.125000954,
+        -0.875000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.875000954,
+        -0.125000954,
+        -0.625000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.875000954,
+        -0.125000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.875000954,
+        -0.125000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.625000954,
+        -0.875000954,
+        -0.875000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.625000954,
+        -0.875000954,
+        -0.625000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.625000954,
+        -0.875000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.625000954,
+        -0.875000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.625000954,
+        -0.625000954,
+        -0.875000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.625000954,
+        -0.625000954,
+        -0.625000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.625000954,
+        -0.625000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.625000954,
+        -0.625000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.625000954,
+        -0.375000954,
+        -0.875000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.625000954,
+        -0.375000954,
+        -0.625000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.625000954,
+        -0.375000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.625000954,
+        -0.375000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.625000954,
+        -0.125000954,
+        -0.875000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.625000954,
+        -0.125000954,
+        -0.625000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.625000954,
+        -0.125000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.625000954,
+        -0.125000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        -0.875000954,
+        -0.875000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        -0.875000954,
+        -0.625000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        -0.875000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        -0.875000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        -0.625000954,
+        -0.875000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        -0.625000954,
+        -0.625000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        -0.625000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        -0.625000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        -0.375000954,
+        -0.875000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        -0.375000954,
+        -0.625000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        -0.375000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        -0.375000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        -0.125000954,
+        -0.875000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        -0.125000954,
+        -0.625000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        -0.125000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.375000954,
+        -0.125000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        -0.875000954,
+        -0.875000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        -0.875000954,
+        -0.625000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        -0.875000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        -0.875000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        -0.625000954,
+        -0.875000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        -0.625000954,
+        -0.625000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        -0.625000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        -0.625000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        -0.375000954,
+        -0.875000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        -0.375000954,
+        -0.625000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        -0.375000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        -0.375000954,
+        -0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        -0.125000954,
+        -0.875000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        -0.125000954,
+        -0.625000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        -0.125000954,
+        -0.375000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        0.625000954,
+        0.625000954,
+        0.625000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        16,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    }
+  ],
+  "nativeStartSize": [
+    0.25,
+    0.25,
+    0.25
+  ],
+  "locator": [
+    0.500000954,
+    0.500000954,
+    0.500000954
+  ],
+  "centerOffset": [
+    0.125,
+    0.125,
+    0.125
+  ],
+  "eraseScale": [
+    0.025,
+    0.025,
+    0.025
+  ],
+  "expectedPath": "Docs/Stage2/capacity-reused64-expected.json",
+  "actualImage": "Docs/Stage2/capacity-reused64.png",
+  "referenceImage": "Docs/Stage2/capacity-reused64-reference.png",
+  "foregroundPixels": 56008,
+  "referenceMeanAbsoluteError": 0.000148773193359375,
+  "referenceMaxError": 23,
+  "traceEvents": 749
+}

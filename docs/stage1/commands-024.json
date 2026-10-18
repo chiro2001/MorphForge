@@ -1,0 +1,79 @@
+[
+  {
+    "op": "remove",
+    "min": [
+      128,
+      128,
+      128
+    ],
+    "size": [
+      20,
+      10,
+      1
+    ]
+  },
+  {
+    "op": "box",
+    "min": [
+      128,
+      128,
+      128
+    ],
+    "size": [
+      10,
+      10,
+      1
+    ],
+    "styleId": 2,
+    "tintId": 0,
+    "motionPhase": 0
+  },
+  {
+    "op": "box",
+    "min": [
+      139,
+      128,
+      128
+    ],
+    "size": [
+      9,
+      10,
+      1
+    ],
+    "styleId": 2,
+    "tintId": 0,
+    "motionPhase": 0
+  },
+  {
+    "op": "box",
+    "min": [
+      138,
+      128,
+      128
+    ],
+    "size": [
+      1,
+      5,
+      1
+    ],
+    "styleId": 2,
+    "tintId": 0,
+    "motionPhase": 0
+  },
+  {
+    "op": "box",
+    "min": [
+      138,
+      134,
+      128
+    ],
+    "size": [
+      1,
+      4,
+      1
+    ],
+    "styleId": 2,
+    "tintId": 0,
+    "motionPhase": 0
+  }
+]

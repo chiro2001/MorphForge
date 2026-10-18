@@ -1,0 +1,47 @@
+{
+  "label": "cuboid-faces",
+  "views": [
+    {
+      "face": "px",
+      "actualImage": "Docs/Stage2/cuboid-faces-px.png",
+      "referenceImage": "Docs/Stage2/cuboid-faces-px-reference.png",
+      "foregroundPixels": 1900,
+      "referenceMeanAbsoluteError": 0.0
+    },
+    {
+      "face": "nx",
+      "actualImage": "Docs/Stage2/cuboid-faces-nx.png",
+      "referenceImage": "Docs/Stage2/cuboid-faces-nx-reference.png",
+      "foregroundPixels": 1900,
+      "referenceMeanAbsoluteError": 0.0
+    },
+    {
+      "face": "py",
+      "actualImage": "Docs/Stage2/cuboid-faces-py.png",
+      "referenceImage": "Docs/Stage2/cuboid-faces-py-reference.png",
+      "foregroundPixels": 2900,
+      "referenceMeanAbsoluteError": 0.0
+    },
+    {
+      "face": "ny",
+      "actualImage": "Docs/Stage2/cuboid-faces-ny.png",
+      "referenceImage": "Docs/Stage2/cuboid-faces-ny-reference.png",
+      "foregroundPixels": 2900,
+      "referenceMeanAbsoluteError": 0.0
+    },
+    {
+      "face": "pz",
+      "actualImage": "Docs/Stage2/cuboid-faces-pz.png",
+      "referenceImage": "Docs/Stage2/cuboid-faces-pz-reference.png",
+      "foregroundPixels": 20700,
+      "referenceMeanAbsoluteError": 0.0
+    },
+    {
+      "face": "nz",
+      "actualImage": "Docs/Stage2/cuboid-faces-nz.png",
+      "referenceImage": "Docs/Stage2/cuboid-faces-nz-reference.png",
+      "foregroundPixels": 20700,
+      "referenceMeanAbsoluteError": 0.0
+    }
+  ]
+}

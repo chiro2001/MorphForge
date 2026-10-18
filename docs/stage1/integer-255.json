@@ -1,0 +1,248 @@
+{
+  "label": "integer-255",
+  "environment": "Unity Play Mode + native Gesture Manager OSC, not VRChat client",
+  "count": 7,
+  "sourceControl": 121,
+  "source": [
+    255,
+    128,
+    128,
+    0,
+    0,
+    0,
+    63,
+    63,
+    63,
+    63
+  ],
+  "work": [
+    255.0,
+    128.0,
+    128.0,
+    0.0,
+    0.0,
+    0.0,
+    63.0,
+    63.0,
+    63.0,
+    63.0
+  ],
+  "op": 1,
+  "lastSeq": 7,
+  "busy": false,
+  "pumpActive": false,
+  "triggerEnabled": false,
+  "storePlaying": true,
+  "storePaused": false,
+  "particles": [
+    {
+      "position": [
+        -31.875,
+        0.125000954,
+        0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "codes": [
+        63,
+        63,
+        63,
+        63
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -16.125,
+        0.125000954,
+        0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "codes": [
+        63,
+        63,
+        63,
+        63
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -15.875,
+        0.125000954,
+        0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "codes": [
+        63,
+        63,
+        63,
+        63
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -0.125000954,
+        0.125000954,
+        0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "codes": [
+        63,
+        63,
+        63,
+        63
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        0.125000954,
+        0.125000954,
+        0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "codes": [
+        63,
+        63,
+        63,
+        63
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        31.625,
+        0.125000954,
+        0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "codes": [
+        63,
+        63,
+        63,
+        63
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        31.875,
+        0.125000954,
+        0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "codes": [
+        63,
+        63,
+        63,
+        63
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    }
+  ],
+  "nativeStartSize": [
+    0.25,
+    0.25,
+    0.25
+  ],
+  "locator": [
+    31.75,
+    9.536743E-07,
+    9.536743E-07
+  ],
+  "centerOffset": [
+    0.125,
+    0.125,
+    0.125
+  ],
+  "eraseScale": [
+    0.025,
+    0.025,
+    0.025
+  ],
+  "expectedPath": "Docs/Stage1/integer-255-expected.json",
+  "actualImage": "",
+  "referenceImage": "",
+  "foregroundPixels": 0,
+  "referenceMeanAbsoluteError": 0.0,
+  "referenceMaxError": 0,
+  "traceEvents": 48
+}

@@ -1,0 +1,25 @@
+{
+  "success": true,
+  "scope": "Native OSC-born particles; co-moving camera, pose-only Editor stimuli",
+  "labels": [
+    "base",
+    "translated",
+    "yaw37",
+    "tilted",
+    "scale-half",
+    "scale18",
+    "combined"
+  ],
+  "meanAbsoluteErrors": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    5.0862630208333336E-05
+  ],
+  "allowedMeanAbsoluteError": 0.05,
+  "legacyTranslationError": 1.4214897155761719,
+  "invariant": "UV repetition follows face UV and native birth size; no world-space position or normal chooses texture projection"
+}

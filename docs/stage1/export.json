@@ -1,0 +1,74 @@
+{
+  "success": true,
+  "scope": "NDMF/MA Editor processing, not SDK upload or VRChat runtime",
+  "missingScripts": 0,
+  "sourceParameters": [
+    {
+      "name": "MF1_Ctl",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF1_D00",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF1_D01",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF1_D02",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF1_D03",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF1_D04",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF1_D05",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF1_D06",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF1_D07",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF1_D08",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF1_D09",
+      "type": "Int",
+      "networkSynced": true
+    }
+  ],
+  "workParametersInExpression": 0,
+  "addedSyncedBits": 88,
+  "totalAvatarSyncedBits": 177,
+  "remainingBits": 79,
+  "controllerLayers": 2,
+  "capacity": 64,
+  "siblingSubEmitterRetained": true,
+  "infiniteLifetime": true,
+  "ringBuffer": "Disabled",
+  "applyActiveColorSpace": false,
+  "renderAlignment": "Local",
+  "avatarCustomRuntimeScriptTypes": []
+}

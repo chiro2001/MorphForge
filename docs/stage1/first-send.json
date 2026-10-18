@@ -1,0 +1,43 @@
+{
+  "sent": true,
+  "source": "independent Python UDP OSC process",
+  "type": "i",
+  "port": 9012,
+  "commands": 1,
+  "nextSeq": 1,
+  "operations": [
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          128,
+          128,
+          128
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 1,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 0,
+      "payload": [
+        128,
+        128,
+        128,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      "prepareControl": 1,
+      "executeControl": 9
+    }
+  ]
+}

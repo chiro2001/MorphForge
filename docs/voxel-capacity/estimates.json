@@ -1,0 +1,69 @@
+{
+  "scope": "Analytical estimates, not network or voxel-renderer benchmarks",
+  "assumptions": {
+    "effective_data_fields_per_batch": 16,
+    "batch_seconds": 0.2,
+    "fields_per_voxel_record": 4,
+    "records_per_batch": 4,
+    "ideal_voxels_per_second": 20.0,
+    "coordinate_levels_for_example": 64,
+    "palette_states_for_example": 64,
+    "all_fields_are_8bit_sync_budget_cost": true
+  },
+  "per_cube_position_and_palette_field_cost": {
+    "independent_12_triangles": 109,
+    "8_shared_vertices_with_known_cube_indices": 25,
+    "axis_aligned_box_center_size_palette": 7,
+    "fixed_unit_voxel_xyz_palette": 4
+  },
+  "grids": [
+    {
+      "axis_cells": 32,
+      "addressable_cells": 32768,
+      "extent_m_at_0_1m": 3.2,
+      "extent_m_at_0_25m": 8.0
+    },
+    {
+      "axis_cells": 64,
+      "addressable_cells": 262144,
+      "extent_m_at_0_1m": 6.4,
+      "extent_m_at_0_25m": 16.0
+    },
+    {
+      "axis_cells": 128,
+      "addressable_cells": 2097152,
+      "extent_m_at_0_1m": 12.8,
+      "extent_m_at_0_25m": 32.0
+    }
+  ],
+  "sparse_pool_examples": [
+    {
+      "occupied_voxels": 256,
+      "ideal_seconds": 12.8,
+      "naive_triangles": 3072
+    },
+    {
+      "occupied_voxels": 1024,
+      "ideal_seconds": 51.2,
+      "naive_triangles": 12288
+    },
+    {
+      "occupied_voxels": 4096,
+      "ideal_seconds": 204.8,
+      "naive_triangles": 49152
+    }
+  ],
+  "implicit_coordinate_snapshot": {
+    "style_fields_per_cell": 1,
+    "ideal_cells_per_second": 80,
+    "chunk_8_cubed_cells": 512,
+    "chunk_8_cubed_ideal_seconds": 6.4,
+    "grid_64_cubed_ideal_seconds": 3276.8,
+    "grid_64_cubed_ideal_minutes": 54.61333333333334
+  },
+  "dense_64_grid": {
+    "cells": 262144,
+    "one_byte_palette_storage_bytes": 262144,
+    "naive_triangles": 3145728
+  }
+}

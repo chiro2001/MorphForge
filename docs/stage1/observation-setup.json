@@ -1,0 +1,16 @@
+{
+  "scene": "Assets/MorphForge/Scenes/MorphForge_Stage1.unity",
+  "referenceScene": "Packages/com.vrchat.avatars/Samples/Dynamics/Robot Avatar/Avatar Dynamics Robot Avatar PC.unity",
+  "mainCamera": "Main Camera",
+  "fieldOfView": 60,
+  "directionalLight": true,
+  "groundY": -0.01,
+  "displayOrigin": [
+    1,
+    1,
+    0
+  ],
+  "displayStoreLayer": 0,
+  "cameraMask": -1,
+  "sceneGizmos": true
+}

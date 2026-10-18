@@ -1,0 +1,106 @@
+{
+  "sent": true,
+  "source": "independent Python UDP OSC process",
+  "type": "i",
+  "port": 9012,
+  "commands": 3,
+  "nextSeq": 12,
+  "operations": [
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          128,
+          128,
+          128
+        ],
+        "size": [
+          20,
+          10,
+          1
+        ],
+        "styleId": 2,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 9,
+      "payload": [
+        128,
+        128,
+        128,
+        19,
+        9,
+        0,
+        2,
+        0,
+        0,
+        0
+      ],
+      "prepareControl": 145,
+      "executeControl": 153
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          148,
+          132,
+          128
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 10,
+      "payload": [
+        148,
+        132,
+        128,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ],
+      "prepareControl": 161,
+      "executeControl": 169
+    },
+    {
+      "command": {
+        "op": "remove",
+        "min": [
+          148,
+          132,
+          128
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ]
+      },
+      "seq": 11,
+      "payload": [
+        148,
+        132,
+        128,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "prepareControl": 179,
+      "executeControl": 187
+    }
+  ]
+}

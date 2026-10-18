@@ -1,0 +1,13 @@
+test_invalid_import_no_mutation (__main__.ModelTests.test_invalid_import_no_mutation) ... ok
+test_large_cube_has_one_descriptor (__main__.ModelTests.test_large_cube_has_one_descriptor) ... ok
+test_paint_merge_style_and_export (__main__.ModelTests.test_paint_merge_style_and_export) ... ok
+test_random_edits_match_dense_oracle_and_reject_atomically (__main__.ModelTests.test_random_edits_match_dense_oracle_and_reject_atomically) ... ok
+test_channel_busy_reports_error (__main__.WriterTests.test_channel_busy_reports_error) ... ok
+test_disabled_by_default_coalesces_and_paces (__main__.WriterTests.test_disabled_by_default_coalesces_and_paces) ... ok
+test_persist_draft_restarts_offline (__main__.WriterTests.test_persist_draft_restarts_offline) ... ok
+test_placement_serialization (__main__.WriterTests.test_placement_serialization) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 2.760s
+
+OK

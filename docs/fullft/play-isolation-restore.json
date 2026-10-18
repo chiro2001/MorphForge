@@ -1,0 +1,20 @@
+{
+  "success": true,
+  "phase": "restore",
+  "capturedAtUtc": "2026-10-18T21:38:41.3591754Z",
+  "targetScene": "Assets/MorphForge/FullFT/MorphForge_FullFT.unity",
+  "sourceScene": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+  "restoredObjectCount": 3,
+  "sourceSceneSha256Before": "B09F22C2F830ADF876DB8FE2754C6AD0F81221706B71534BA9FA012F82092FED",
+  "sourceSceneSha256After": "B09F22C2F830ADF876DB8FE2754C6AD0F81221706B71534BA9FA012F82092FED",
+  "sourceSceneHashUnchanged": true,
+  "sourceSceneDirty": true,
+  "sourceSceneDirtyPreserved": true,
+  "sourceSceneStillOpen": true,
+  "targetSceneAvatarCount": 1,
+  "targetSceneGestureManagerCount": 1,
+  "targetSceneReceiverCount": 1,
+  "avatarMissingScripts": 0,
+  "morphForgeRuntimeScriptsInAvatar": [],
+  "activeScene": "Assets/MorphForge/FullFT/MorphForge_FullFT.unity"
+}

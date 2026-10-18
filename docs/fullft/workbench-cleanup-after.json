@@ -1,0 +1,27 @@
+{
+  "rootPid": 126580,
+  "ownedProcessCount": 9,
+  "ownedPids": [
+    126580,
+    128536,
+    128236,
+    129016,
+    126196,
+    120536,
+    126168,
+    125004,
+    105708
+  ],
+  "remainingOwnedPids": [],
+  "remainingOwnedMatches": [],
+  "port8766": null,
+  "port8765": null,
+  "unityPid46280Alive": true,
+  "vrchatProcesses": [
+    {
+      "ProcessId": 94236,
+      "Name": "VRChat.exe"
+    }
+  ],
+  "staleTasks": []
+}

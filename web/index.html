@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MorphForge · 体素工坊</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/style.css">
+  <script type="importmap">{"imports":{"three":"/vendor/three.module.js"}}</script>
+</head>
+<body>
+  <header><div class="brand"><span class="brand-mark">M</span><div><strong>MorphForge</strong><span>体素工坊</span></div></div><div class="header-note">手动搭建 · 渐进显示</div><div id="connectionBadge" class="badge">本地预览</div></header>
+  <main>
+    <aside class="panel tools">
+      <div class="section-title"><span>01</span> 绘制工具</div>
+      <div class="segmented"><button id="addTool" class="selected">＋ 放置</button><button id="eraseTool">－ 擦除</button></div>
+      <label class="label">方块样式</label>
+      <div class="palette"><button class="swatch stone" data-style="1" title="石色"></button><button class="swatch wood selected" data-style="2" title="木色"></button><button class="swatch blue" data-style="3" title="蓝色"></button><button class="swatch green" data-style="4" title="绿色"></button></div>
+      <div class="label">笔刷尺寸 <small>宽 × 高 × 深</small></div>
+      <div class="triple"><label>X<input id="brushX" type="number" min="1" max="256" value="1"></label><label>Y<input id="brushY" type="number" min="1" max="256" value="1"></label><label>Z<input id="brushZ" type="number" min="1" max="256" value="1"></label></div>
+      <label class="label">空白处绘制高度 <output id="layerValue">0</output></label><input id="layer" type="range" min="0" max="15" value="0">
+      <details><summary>精确位置与样式</summary><div class="triple"><label>X<input id="coordX" type="number" value="0"></label><label>Y<input id="coordY" type="number" value="0"></label><label>Z<input id="coordZ" type="number" value="0"></label></div><div class="double"><label>样式编号<input id="styleId" type="number" min="0" max="4095" value="2"></label><label>染色编号<input id="tintId" type="number" min="0" max="63" value="0"></label></div><button id="applyPosition" class="wide">在指定位置应用</button></details>
+      <div class="divider"></div><div class="section-title"><span>02</span> 场景</div>
+      <label class="row">网格边长<select id="gridSize"><option>8</option><option selected>16</option><option>32</option><option>64</option><option>128</option><option>256</option></select></label>
+      <div class="double"><button id="stairsDemo">阶梯示例</button><button id="houseDemo">小屋示例</button></div>
+      <div class="double"><button id="importButton">导入文件</button><button id="exportButton">导出文件</button></div><input id="importFile" type="file" accept=".json,application/json" hidden>
+      <button id="clearScene" class="wide danger">清空模型</button>
+      <div class="help"><strong>操作提示</strong><p>左键单击放置，Shift＋单击擦除。点击方块表面可向外搭建。</p><p>右键拖动旋转 · 中键平移 · 滚轮缩放</p><p>Ctrl＋Z 撤销 · Ctrl＋Y 重做</p></div>
+    </aside>
+    <section id="viewport" aria-label="三维体素编辑区域">
+      <div class="view-toolbar"><button id="undo" title="撤销 Ctrl+Z">↶</button><button id="redo" title="重做 Ctrl+Y">↷</button><button id="fitView">适应模型</button><button id="resetView">重置视角</button></div>
+      <div id="emptyHint"><div class="empty-icon">＋</div><h1>从第一块开始</h1><p>点击网格放置方块，或载入左侧示例。</p></div>
+      <div class="view-bottom"><span id="cursorPosition">移动鼠标选择位置</span><span>金球 = 体素空间底部中心</span></div>
+      <div id="toast" role="status"></div>
+    </section>
+    <aside class="panel connection">
+      <div class="section-title"><span>03</span> 实时显示</div>
+      <label class="label">目标<select id="target"><option value="9000">VRChat · 本机 9000</option><option value="9012">Unity 测试 · 9012</option></select></label>
+      <label class="label">Avatar 版本<select id="profile"><option value="anchor">定位球版 · 底部中心</option><option value="stage2">Stage2 兼容 · 中心坐标</option></select></label>
+      <label class="row">每条命令间隔<select id="interval"><option value="0.2">0.20 秒</option><option value="0.25" selected>0.25 秒</option><option value="0.5">0.50 秒</option></select></label>
+      <button id="connect" class="primary wide">开启实时显示</button>
+      <label class="check"><input id="auto" type="checkbox" checked> 编辑时自动发送</label>
+      <div class="double"><button id="publish">发送当前草稿</button><button id="resync">重新显示</button></div>
+      <div class="metrics"><div><span>体素体积</span><strong id="voxelCount">0 <small>格</small></strong></div><div><span>合并盒体</span><strong id="boxCount">0 <small>/ 64</small></strong></div></div>
+      <div class="status-line"><i id="sendDot"></i><span id="sendStatus">尚未开启发送</span></div><p class="caption">已发送表示本机发包完成；显示效果请在 VRChat 中确认。Unity 目标需要先打开测试接收器。</p>
+      <div class="divider"></div><div class="section-title"><span>04</span> 定位球</div>
+      <div id="placementControls">
+        <label class="check"><input id="world" type="checkbox" checked> 固定在世界</label><label class="check"><input id="visible" type="checkbox" checked> 显示金色定位球</label>
+        <label class="label">体素缩放 <output id="scaleValue">1.00×</output></label><input id="scale" type="range" min="0.05" max="1" step="0.01" value="1">
+        <button id="resetAnchor" class="wide">把定位球移到面前</button>
+      </div>
+      <p id="legacyNote" class="caption" hidden>Stage2 兼容模式不提供定位球和模型缩放。</p>
+      <p class="caption">本人用手靠近金球并握拳拿起，松手停放。也可在 Avatar 的 MorphForge 菜单中选择左右手跟随。菜单内修改不会自动回读到本页。</p>
+      <div class="mini-footer">默认单位边长 0.25m<br>草稿自动保存在本机</div>
+    </aside>
+  </main>
+  <script type="module" src="/app.js"></script>
+</body></html>

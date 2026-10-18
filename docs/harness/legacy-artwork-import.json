@@ -1,0 +1,73 @@
+{
+  "success": true,
+  "sourceCounts": {
+    "field": 70031,
+    "water": 266
+  },
+  "uniqueVoxels": 70286,
+  "boxes": 7459,
+  "mergeAxes": [
+    1,
+    0,
+    2
+  ],
+  "allCandidates": [
+    {
+      "axes": [
+        0,
+        1,
+        2
+      ],
+      "boxes": 7468
+    },
+    {
+      "axes": [
+        0,
+        2,
+        1
+      ],
+      "boxes": 7479
+    },
+    {
+      "axes": [
+        1,
+        0,
+        2
+      ],
+      "boxes": 7459
+    },
+    {
+      "axes": [
+        1,
+        2,
+        0
+      ],
+      "boxes": 7660
+    },
+    {
+      "axes": [
+        2,
+        0,
+        1
+      ],
+      "boxes": 7682
+    },
+    {
+      "axes": [
+        2,
+        1,
+        0
+      ],
+      "boxes": 7671
+    }
+  ],
+  "exactOccupancyAndStyles": true,
+  "bottomOffset": 12,
+  "coordinates": "canonical x=x, y=y-bottom, z=-sourceZ-1",
+  "excludes": [
+    "miniGroup (separate scale and animated clones)",
+    "effects, skies, nonvoxel lights and particles"
+  ],
+  "elapsedSeconds": 1.247499326709658,
+  "sourceSha256": "ef848dc3774f99eb1799bb8585a99e8cddb2c667c7a85a4d3b45c9f022a1cd9d"
+}

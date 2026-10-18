@@ -1,0 +1,26 @@
+[
+  {
+    "path": "Assets/MorphForge/Stage2/FX.controller",
+    "sha256": "530A8BFC30E05CFCC6AD95CD58875CA36ED751CCCD4AFD6278EAFBF13B401E05"
+  },
+  {
+    "path": "Assets/MorphForge/Stage2/Cube.asset",
+    "sha256": "FC0D19F969A0DD317E228AD36D57DAFD8E8202F0BC2B6B560F58535362A23F54"
+  },
+  {
+    "path": "Assets/MorphForge/Stage2/Box.mat",
+    "sha256": "93D3F26D8C1E7D830E7B64776C7CBEE79502BDC75F5636382AC5BD7EB694D470"
+  },
+  {
+    "path": "Assets/MorphForge/Stage2/Display.prefab",
+    "sha256": "70FADB638AB2C6F4A540C93DB47DD6A8A13A731D8E8EEAA21343C5C23E23C3FF"
+  },
+  {
+    "path": "Assets/MorphForge/Stage2/Avatar.prefab",
+    "sha256": "6D7FAF5646550E123C84FF7822915C7EE4BEEEDF8D17626F9BE077D3212AFE93"
+  },
+  {
+    "path": "Assets/MorphForge/Scenes/MorphForge_Stage2.unity",
+    "sha256": "F20D1E5E2B6D4C6BD1B00981C9C3EAEE2425FF5731FC1D14BAD63E7AB72C6617"
+  }
+]

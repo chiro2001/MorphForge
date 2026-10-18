@@ -1,0 +1,17 @@
+{
+  "task": "Running",
+  "response": {
+    "enabled": false,
+    "sending": false,
+    "port": 9000,
+    "profile": "anchor",
+    "interval": 0.25,
+    "auto": true,
+    "pending": 8,
+    "sentVersion": -1,
+    "desiredVersion": 0,
+    "sentCommands": 0,
+    "error": ""
+  },
+  "listener": "127.0.0.1"
+}

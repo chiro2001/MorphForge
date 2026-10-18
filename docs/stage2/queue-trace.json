@@ -1,0 +1,236 @@
+[
+  {
+    "time": 0.24927610000304412,
+    "ctl": 0,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 0,
+    "locator": [
+      9.536743e-07,
+      9.536743e-07,
+      9.536743e-07
+    ],
+    "received": 0.0,
+    "completed": 0.0,
+    "inboxReady": false,
+    "op": 0,
+    "lastSeq": 255
+  },
+  {
+    "time": 0.8440305000003718,
+    "ctl": 1,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 0,
+    "locator": [
+      9.536743e-07,
+      9.536743e-07,
+      9.536743e-07
+    ],
+    "received": 1.0,
+    "completed": 0.0,
+    "inboxReady": true,
+    "op": 0,
+    "lastSeq": 255
+  },
+  {
+    "time": 0.8524399000016274,
+    "ctl": 1,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 0,
+    "locator": [
+      9.536743e-07,
+      9.536743e-07,
+      9.536743e-07
+    ],
+    "received": 1.0,
+    "completed": 0.0,
+    "inboxReady": false,
+    "op": 1,
+    "lastSeq": 0
+  },
+  {
+    "time": 0.8656332999998995,
+    "ctl": 9,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 0,
+    "locator": [
+      9.536743e-07,
+      9.536743e-07,
+      9.536743e-07
+    ],
+    "received": 2.0,
+    "completed": 0.0,
+    "inboxReady": true,
+    "op": 1,
+    "lastSeq": 0
+  },
+  {
+    "time": 0.8826176000002306,
+    "ctl": 9,
+    "busy": true,
+    "pump": false,
+    "trigger": true,
+    "count": 0,
+    "locator": [
+      9.536743e-07,
+      9.536743e-07,
+      9.536743e-07
+    ],
+    "received": 2.0,
+    "completed": 0.0,
+    "inboxReady": true,
+    "op": 1,
+    "lastSeq": 0
+  },
+  {
+    "time": 0.8879506000012043,
+    "ctl": 9,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 0,
+    "locator": [
+      9.536743e-07,
+      9.536743e-07,
+      9.536743e-07
+    ],
+    "received": 2.0,
+    "completed": 0.0,
+    "inboxReady": true,
+    "op": 1,
+    "lastSeq": 0
+  },
+  {
+    "time": 0.8938561000031768,
+    "ctl": 9,
+    "busy": true,
+    "pump": true,
+    "trigger": false,
+    "count": 1,
+    "locator": [
+      9.536743e-07,
+      9.536743e-07,
+      9.536743e-07
+    ],
+    "received": 2.0,
+    "completed": 0.0,
+    "inboxReady": true,
+    "op": 1,
+    "lastSeq": 0
+  },
+  {
+    "time": 0.8996239000007336,
+    "ctl": 9,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 1,
+    "locator": [
+      9.536743e-07,
+      9.536743e-07,
+      9.536743e-07
+    ],
+    "received": 2.0,
+    "completed": 1.0,
+    "inboxReady": true,
+    "op": 1,
+    "lastSeq": 0
+  },
+  {
+    "time": 0.905631400000857,
+    "ctl": 9,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 1,
+    "locator": [
+      9.536743e-07,
+      9.536743e-07,
+      9.536743e-07
+    ],
+    "received": 2.0,
+    "completed": 1.0,
+    "inboxReady": false,
+    "op": 1,
+    "lastSeq": 1
+  },
+  {
+    "time": 0.942203900001914,
+    "ctl": 9,
+    "busy": true,
+    "pump": false,
+    "trigger": true,
+    "count": 1,
+    "locator": [
+      1.000001,
+      9.536743e-07,
+      9.536743e-07
+    ],
+    "received": 2.0,
+    "completed": 1.0,
+    "inboxReady": false,
+    "op": 1,
+    "lastSeq": 1
+  },
+  {
+    "time": 0.9491405000007944,
+    "ctl": 9,
+    "busy": true,
+    "pump": false,
+    "trigger": false,
+    "count": 1,
+    "locator": [
+      1.000001,
+      9.536743e-07,
+      9.536743e-07
+    ],
+    "received": 2.0,
+    "completed": 1.0,
+    "inboxReady": false,
+    "op": 1,
+    "lastSeq": 1
+  },
+  {
+    "time": 0.9553126999999222,
+    "ctl": 9,
+    "busy": true,
+    "pump": true,
+    "trigger": false,
+    "count": 2,
+    "locator": [
+      1.000001,
+      9.536743e-07,
+      9.536743e-07
+    ],
+    "received": 2.0,
+    "completed": 1.0,
+    "inboxReady": false,
+    "op": 1,
+    "lastSeq": 1
+  },
+  {
+    "time": 0.9608956000010949,
+    "ctl": 9,
+    "busy": false,
+    "pump": false,
+    "trigger": false,
+    "count": 2,
+    "locator": [
+      1.000001,
+      9.536743e-07,
+      9.536743e-07
+    ],
+    "received": 2.0,
+    "completed": 2.0,
+    "inboxReady": false,
+    "op": 1,
+    "lastSeq": 1
+  }
+]

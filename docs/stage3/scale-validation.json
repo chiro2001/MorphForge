@@ -1,0 +1,162 @@
+{
+  "success": true,
+  "scope": "Native OSC-created cuboid; camera position and orthographic scale follow actual content scale; Local mode is a negative control",
+  "records": [
+    {
+      "mode": "Hierarchy",
+      "scale": 1.0,
+      "actualContentScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "nativeBounds": [
+        1.42000008,
+        1.41999817,
+        1.42
+      ],
+      "meshBounds": [
+        1.0,
+        0.75,
+        0.5
+      ],
+      "meshCenter": [
+        0.500000954,
+        -31.625,
+        0.250000954
+      ],
+      "imageMeanAbsoluteError": 0.0,
+      "file": "scale-Hierarchy-1.png"
+    },
+    {
+      "mode": "Hierarchy",
+      "scale": 0.25,
+      "actualContentScale": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "nativeBounds": [
+        0.0887500048,
+        0.0887498856,
+        0.0887500048
+      ],
+      "meshBounds": [
+        0.25,
+        0.1875,
+        0.125
+      ],
+      "meshCenter": [
+        0.125000238,
+        -7.90625,
+        0.06250024
+      ],
+      "imageMeanAbsoluteError": 0.0,
+      "file": "scale-Hierarchy-0.25.png"
+    },
+    {
+      "mode": "Hierarchy",
+      "scale": 0.05,
+      "actualContentScale": [
+        0.05,
+        0.05,
+        0.05
+      ],
+      "nativeBounds": [
+        0.003549999,
+        0.00354995742,
+        0.00354999979
+      ],
+      "meshBounds": [
+        0.05,
+        0.0374999046,
+        0.0249999985
+      ],
+      "meshCenter": [
+        0.0250000488,
+        -1.58125007,
+        0.0125000477
+      ],
+      "imageMeanAbsoluteError": 0.0,
+      "file": "scale-Hierarchy-0.05.png"
+    },
+    {
+      "mode": "Local",
+      "scale": 1.0,
+      "actualContentScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "nativeBounds": [
+        1.42000008,
+        1.41999817,
+        1.42
+      ],
+      "meshBounds": [
+        1.0,
+        0.75,
+        0.5
+      ],
+      "meshCenter": [
+        0.500000954,
+        -31.625,
+        0.250000954
+      ],
+      "imageMeanAbsoluteError": 0.0,
+      "file": "scale-Local-1.png"
+    },
+    {
+      "mode": "Local",
+      "scale": 0.25,
+      "actualContentScale": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "nativeBounds": [
+        0.355000019,
+        0.354999542,
+        0.355
+      ],
+      "meshBounds": [
+        1.0,
+        0.75,
+        0.5
+      ],
+      "meshCenter": [
+        0.125000238,
+        -7.90625,
+        0.06250024
+      ],
+      "imageMeanAbsoluteError": 94.11221059163411,
+      "file": "scale-Local-0.25.png"
+    },
+    {
+      "mode": "Local",
+      "scale": 0.05,
+      "actualContentScale": [
+        0.05,
+        0.05,
+        0.05
+      ],
+      "nativeBounds": [
+        0.071,
+        0.07099991,
+        0.071
+      ],
+      "meshBounds": [
+        1.0,
+        0.75,
+        0.5
+      ],
+      "meshCenter": [
+        0.0250000358,
+        -1.58125007,
+        0.0125000477
+      ],
+      "imageMeanAbsoluteError": 21.919968922932942,
+      "file": "scale-Local-0.05.png"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "Default OSC disabled",
+      "pass": true
+    },
+    {
+      "name": "Real pointer adds grid voxel",
+      "pass": true
+    },
+    {
+      "name": "Adjacent voxels merge into one box",
+      "pass": true
+    },
+    {
+      "name": "Shift pointer removes top voxel",
+      "pass": true
+    },
+    {
+      "name": "Undo and redo buttons work",
+      "pass": true
+    },
+    {
+      "name": "Stairs demo uses eight cuboids",
+      "pass": true
+    },
+    {
+      "name": "House includes exact doorway subtraction",
+      "pass": true
+    },
+    {
+      "name": "No browser JavaScript or WebGL errors",
+      "pass": true
+    }
+  ],
+  "browserLogs": [],
+  "scope": "Real Chromium/WebDriver clicks against Windows editor service; OSC remains disabled"
+}

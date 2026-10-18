@@ -1,0 +1,35 @@
+{
+  "timestamp": "2026-10-18T15:56:34.2760739+08:00",
+  "source": "D:\\Projects\\VRChatProjects2\\TeslaRoadster",
+  "target": "D:\\Projects\\VRChatProjects2\\MorphForge",
+  "packages": [
+    {
+      "name": "com.unity.pipeline",
+      "version": "0.8.0-exp.1"
+    },
+    {
+      "name": "jp.lilxyzw.liltoon",
+      "version": "2.3.4"
+    },
+    {
+      "name": "nadena.dev.ndmf",
+      "version": "1.14.8"
+    },
+    {
+      "name": "nadena.dev.modular-avatar",
+      "version": "1.18.7"
+    },
+    {
+      "name": "minminmean.supine",
+      "version": "5.1.0"
+    },
+    {
+      "name": "vrchat.blackstartx.gesture-manager",
+      "version": "3.9.9"
+    }
+  ],
+  "nemesisFiles": 888,
+  "nemesisPrefabSHA256": "dc656e411c4f36b2f177cf36a096e9901d1a7023625971f3188b2db136ae63e0",
+  "verifiedPrefabCopy": true,
+  "unityImportVerified": false
+}

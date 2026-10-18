@@ -1,0 +1,224 @@
+{
+  "success": true,
+  "date": "2026-10-19",
+  "host": "GAMEPC\\Chiro",
+  "scope": "Final frozen Windows source including strict scene-import guards, release sidecar, Tauri shell, NSIS installer, random-loopback 10-check API regression, isolated Session 1 GUI evidence, install/start/exit/uninstall",
+  "unityTouched": false,
+  "environment": {
+    "rustc": "1.94.0",
+    "cargo": "1.94.0",
+    "target": "x86_64-pc-windows-msvc",
+    "tauriCli": "2.10.1",
+    "webview2Present": true,
+    "buildCommand": "powershell -ExecutionPolicy Bypass -File .\\tools\\build_windows.ps1",
+    "reuseSidecar": false
+  },
+  "sourceFreeze": {
+    "files": 44,
+    "aggregateSha256": "C05C6FFF4E96EDC4ABC2305B02C7A021B58E807DFA3C5967CDC08A86B9F0963D",
+    "manifest": "docs/desktop/source-freeze-final2.json",
+    "manifestSha256": "AC938E2F8D60054D4305518ACF1B046676F67F7076EABB579B72D7D83E6C2753",
+    "changedDuringBuild": [],
+    "missingDuringBuild": [],
+    "rendererSha256": "6B1AB7A1A2DCD3273ECAD9C6B25ACEB88A9957A59B3C73AA0A4DC3B258902BB6",
+    "transportSha256": "AEAA85F5977AB9627A9144B79822126A5D6CB4C0EB4CF97C2642DF80FBECECE0",
+    "serverSha256": "A8657D9DD6E74562EF50C94DB13BCC22DFB1C8BD1EF8867300FD00E8CC183FBB",
+    "coreGeometrySha256": "8409826FB1456DF6AE2AF22C2564EB3D38819B9767A8EFAFCD8A6C46A6F74D07",
+    "desktopCargoLockSha256": "E9C9B00D276DAB34F76448C24987CB4BE963BABB21C89880C6A50A3A7DB1D8BD"
+  },
+  "artifacts": {
+    "installer": {
+      "path": "D:\\Projects\\VRChatProjects2\\MorphForge\\desktop\\target\\x86_64-pc-windows-msvc\\release\\bundle\\nsis\\MorphForge Desktop_0.1.0_x64-setup.exe",
+      "size": 7564188,
+      "sha256": "CC535107346818E150E95F71519015B48FEC478BA4DB0B123073D29AFE50F3FF",
+    "linuxDistribution": "dist/windows/MorphForge Desktop_0.1.0_x64-setup.exe",
+    "linuxDistributionSize": 7564188,
+    "linuxDistributionSha256": "CC535107346818E150E95F71519015B48FEC478BA4DB0B123073D29AFE50F3FF",
+      "signed": false
+    },
+    "desktopExecutableBeforeBundlePatch": {
+      "path": "D:\\Projects\\VRChatProjects2\\MorphForge\\desktop\\target\\x86_64-pc-windows-msvc\\release\\morphforge-desktop.exe",
+      "size": 11077120,
+      "sha256": "7FF2CDFA767E89ED3DC452F7E68A5D50FB820F0A5EEE534FB558F4D1D70BD8BC"
+    },
+    "sidecar": {
+      "path": "D:\\Projects\\VRChatProjects2\\MorphForge\\desktop\\target\\x86_64-pc-windows-msvc\\release\\morphforge.exe",
+      "size": 22319616,
+      "sha256": "1951AE5DF028C1DAF356151754E06A70BC3F69929ABFF2891FA4888A032182CC"
+    },
+    "installerPayload": {
+      "desktopExecutableSize": 11077120,
+      "desktopExecutableSha256": "316169032EF029A8E2B32E8931896F8297B99C5C7347F64FD61A683BC7EC038C",
+      "sidecarSize": 22319616,
+      "sidecarSha256": "1951AE5DF028C1DAF356151754E06A70BC3F69929ABFF2891FA4888A032182CC",
+      "sidecarMatchesRelease": true
+    }
+  },
+  "checks": [
+    {
+      "name": "Final frozen source identity",
+      "pass": true,
+      "files": 44,
+      "aggregateSha256": "C05C6FFF4E96EDC4ABC2305B02C7A021B58E807DFA3C5967CDC08A86B9F0963D",
+      "changedDuringBuild": 0
+    },
+    {
+      "name": "Normal no-ReuseSidecar release build",
+      "pass": true,
+      "coreRelease": true,
+      "tauriRelease": true,
+      "nsis": true
+    },
+    {
+      "name": "Windows core tests excluding writer-lock contention",
+      "pass": true,
+      "passed": 35,
+      "failed": 0,
+      "filtered": 1,
+      "skippedTest": "periodic_refresh_waits_until_the_entire_previous_rebuild_was_sent"
+    },
+    {
+      "name": "Windows desktop shell tests",
+      "pass": true,
+      "passed": 2,
+      "failed": 0
+    },
+    {
+      "name": "Final sidecar 16384-operation recipe worker",
+      "pass": true,
+      "seconds": 2.767,
+      "targetBoxes": 16384,
+      "voxelCount": 16384,
+      "generationMs": 209.5479,
+      "scope": "Final release sidecar; current_exe recipe-worker path; isolated data"
+    },
+    {
+      "name": "DeepSeek free model-list authentication",
+      "pass": true,
+      "statusCode": 200,
+      "models": ["deepseek-flash", "deepseek-v4-pro"],
+      "creativeApiCalled": false,
+      "keyPrinted": false
+    },
+    {
+      "name": "Final Windows backend HTTP regression",
+      "pass": true,
+      "checksPassed": 10,
+      "checksFailed": 0,
+      "report": "docs/workbench/backend-validation-windows-final2-20261018T204358Z.json",
+      "randomPort": 65465,
+      "session": 1,
+      "malformedSceneImportCases": 5,
+      "strictSceneImportGuarded": true,
+      "providerEndpointCalled": false,
+      "oscEndpointCalled": false
+    },
+    {
+      "name": "Isolated Tauri Session 1 startup",
+      "pass": true,
+      "desktopSession": 1,
+      "randomPort": 54568,
+      "transportEnabled": false,
+      "providerConfigured": true
+    },
+    {
+      "name": "7459-Box artwork load and final WebView render",
+      "pass": true,
+      "boxCount": 7459,
+      "voxelCount": 70286,
+      "meshes": 58,
+      "drawCallsAfterFit": 61,
+      "webglContextLost": false,
+      "screenshot": "docs/desktop/window-final.png"
+    },
+    {
+      "name": "Final renderer three-view capture",
+      "pass": true,
+      "seconds": 0.467,
+      "revision": 1,
+      "views": ["hero", "front", "top"],
+      "hero": {
+        "path": "docs/desktop/final-hero.png",
+        "bytes": 100995,
+        "sha256": "9D7C450DCCE1015BAFCF4BD844A786B2E7DFD489B73599E4974279EDD4D8F997"
+      },
+      "front": {
+        "path": "docs/desktop/final-front.png",
+        "bytes": 66348,
+        "sha256": "D48708B89E863AC56F45ED04D91EA69BCB226264B764B85D55496FB490FF00C5"
+      },
+      "top": {
+        "path": "docs/desktop/final-top.png",
+        "bytes": 80525,
+        "sha256": "FD4B65BFFDD395411D68F672DA2A4BB1372AC20D1E5EAF06EAD1CD21B91272E7"
+      }
+    },
+    {
+      "name": "Normal desktop exit cleanup",
+      "pass": true,
+      "desktopAlive": false,
+      "coreAlive": false,
+      "randomPortClosed": true,
+      "validationProcessesRemaining": 0,
+      "validationTasksRemaining": 0
+    },
+    {
+      "name": "Final NSIS silent install",
+      "pass": true,
+      "exitCode": 0,
+      "isolatedDestination": "C:\\Users\\Chiro\\tmp\\morphforge\\desktop-final2-install",
+      "installedSidecarMatchesRelease": true
+    },
+    {
+      "name": "Final installed app starts and exits",
+      "pass": true,
+      "session": 1,
+      "randomPort": 50279,
+      "httpStatus": 200,
+      "exitCleanup": true
+    },
+    {
+      "name": "Final NSIS silent uninstall",
+      "pass": true,
+      "exitCode": 0,
+      "installedFilesRemoved": true,
+      "hkcuUninstallEntryRemoved": true
+    }
+  ],
+  "preservedData": {
+    "defaultLibrary": {
+      "artworks": 3,
+      "images": 9,
+      "aggregateSha256": "48D21795F8B26A111A92387A23C06D81543FD2371B79F4E51D7493BA63C9F836",
+      "changed": false
+    },
+    "defaultProject": {
+      "bytes": 10008,
+      "sha256": "910FA1727E530EF5DB5888845D02154F880CF98E72DB2A0BE30ACE781AB541AC",
+      "changed": false
+    },
+    "port8766": {
+      "pid": 126580,
+      "aliveThroughout": true
+    },
+    "unityLongTest": {
+      "udpPort": 9012,
+      "pid": 46280,
+      "unityTouched": false,
+      "assetsTouched": false
+    }
+  },
+  "supersededAttempts": [
+    {
+      "name": "Direct SSH Start-Process API probe",
+      "status": "invalid harness setup",
+      "reason": "The direct child was reclaimed with the SSH job before checks started; the isolated Session 1 rerun passed 9/9."
+    }
+  ],
+  "limitations": [
+    "The installer is unsigned.",
+    "The Windows provider check validates free model-list authentication, not a paid creative request. Linux already completed the real tool-loop and compact continuation checks.",
+    "The artwork was loaded through the same fork API used by the library, then renderer.view() was invoked explicitly in WebView; the normal UI load button performs the same fork followed by view.",
+    "Unity FullFT joint-build validation remains outside this desktop acceptance and must wait for the active Unity long test."
+  ]
+}

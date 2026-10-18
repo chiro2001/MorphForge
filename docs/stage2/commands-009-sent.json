@@ -1,0 +1,32 @@
+{
+  "sent": true,
+  "protocol": "MF2/single-commit",
+  "source": "independent Python UDP OSC process",
+  "port": 9012,
+  "commands": 1,
+  "nextSeq": 9,
+  "interval": 0.25,
+  "repeat": false,
+  "actualIntervals": [],
+  "operations": [
+    {
+      "command": {
+        "op": "clear"
+      },
+      "seq": 8,
+      "control": 68,
+      "payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

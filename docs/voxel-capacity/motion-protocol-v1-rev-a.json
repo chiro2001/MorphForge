@@ -1,0 +1,52 @@
+{
+  "status": "superseded_proposal_not_implemented",
+  "superseded_by": "motion-protocol-v1-rev-b.json",
+  "version": 1,
+  "revision": "A",
+  "date": "2026-10-18",
+  "supersedes_proposal": "motion-protocol-v1.json",
+  "total_synced_bits_assuming_existing_89": 249,
+  "logical_bits_per_payload_lane": 6,
+  "grid": {
+    "coordinate_bits_per_axis": 8,
+    "cells_per_axis": 256,
+    "addressable_cells": 16777216,
+    "cell_length_m": 0.25,
+    "extent_per_axis_m": 64,
+    "anchor_convention": "grid_center",
+    "cell_center_formula": "anchor + (g + 0.5 - 128) * h",
+    "min_center_m": -31.875,
+    "max_center_m": 31.875
+  },
+  "voxel_record": {
+    "lane_order": ["xLo", "yLo", "zLo", "styleLo", "styleHi", "xyzHi", "motionPhase"],
+    "lane_count": 7,
+    "coordinate_bits_total": 24,
+    "style_bits": 12,
+    "motion_group_bits": 3,
+    "particle_phase_bits": 3,
+    "logical_record_bits": 42,
+    "required_independent_pose_bits": 0,
+    "xyzHi_layout": {"bits0_1": "x_bits6_7", "bits2_3": "y_bits6_7", "bits4_5": "z_bits6_7"},
+    "rgba_logical_codes": ["styleLo", "styleHi", "reserved_zero", "motionPhase"],
+    "used_rgba_logical_bits": 18,
+    "reserved_rgba_logical_bits": 6,
+    "reserved_rgba_bits_are_not_free_additional_wire_payload": true,
+    "pose_strategy": "preuploaded_directional_style_variants",
+    "max_records_per_batch": 2
+  },
+  "birth_position_receiver_candidate": "fixed_coarse_parent_64_entry_mapping_plus_fine_child",
+  "motion_pivot": {
+    "bits_per_axis": 12,
+    "bias": 2048,
+    "step_m_at_default_h": 0.03125,
+    "min_m_at_default_h": -64,
+    "max_m_at_default_h": 63.96875,
+    "formula": "(lo + 64*hi - 2048) * h / 8"
+  },
+  "motion_groups_unchanged": {
+    "initial_writable_groups": 3,
+    "encoded_writable_groups": 7,
+    "fields_per_group": 16
+  }
+}

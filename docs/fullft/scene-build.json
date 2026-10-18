@@ -1,0 +1,77 @@
+{
+  "success": true,
+  "skipped": false,
+  "scope": "Independent FullFT review scene; no upload or VRChat launch",
+  "sourceScene": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+  "sourceSceneSha256": "B09F22C2F830ADF876DB8FE2754C6AD0F81221706B71534BA9FA012F82092FED",
+  "sourceSceneHashUnchanged": true,
+  "capturedUnsavedSource": true,
+  "sourceSceneSavedOrDiscarded": false,
+  "sourceAvatarModified": false,
+  "sourceSceneStillOpen": true,
+  "sourceSceneStillClean": false,
+  "sourceSceneDirtyBefore": true,
+  "sourceSceneDirtyAfter": true,
+  "sourceSceneDirtyPreserved": true,
+  "targetScene": "Assets/MorphForge/FullFT/MorphForge_FullFT.unity",
+  "targetSceneSha256": "9817A4239DF4DF52806F17F5CBCBE3AC60B0FE08C041DD1DB7EF1E4304AE39C8",
+  "avatar": "Assets/MorphForge/FullFT/Avatar.prefab",
+  "avatarInstance": "Avatar",
+  "avatarTransformPreserved": {
+    "before": {
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "after": {
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  },
+  "sceneAvatarCount": 1,
+  "gestureManagerCount": 1,
+  "gestureManagerFavouriteRedirected": true,
+  "receiverCount": 1,
+  "receiverAvatarRedirected": true,
+  "receivePort": 9012,
+  "sendPort": 9013,
+  "receiverAutoStart": true,
+  "cameraCount": 1,
+  "lightCount": 7,
+  "jointBuild": {
+    "completedAtUtc": "10/18/2026 21:31:51",
+    "prefabSha256": "A0C1C4446E8E0C313E030416B5A501675364505395B8A31B2C49848BBD4C21F6",
+    "finalBudgetSha256": "AF250C318CA9690B219CDFDCE9F9DE436F120B55C5E7EB1B29953764A92A6AEC"
+  },
+  "autoUpload": false,
+  "vrChatLaunched": false,
+  "sourcePrefabWritten": false,
+  "activeScene": "Assets/MorphForge/FullFT/MorphForge_FullFT.unity"
+}

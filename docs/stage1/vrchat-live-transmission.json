@@ -1,0 +1,816 @@
+{
+  "startedAt": "2026-10-18T14:15:03.693071+00:00",
+  "host": "127.0.0.1",
+  "port": 9000,
+  "prepareSeconds": 0.25,
+  "executeSeconds": 0.6,
+  "transmissionCompleted": true,
+  "clientObserved": null,
+  "remoteObserved": null,
+  "stages": [
+    {
+      "label": "0. Clear previous display",
+      "sentAt": "2026-10-18T14:15:05.412011+00:00",
+      "sender": {
+        "sent": true,
+        "source": "independent Python UDP OSC process",
+        "type": "i",
+        "port": 9000,
+        "commands": 2,
+        "nextSeq": 2,
+        "operations": [
+          {
+            "command": {
+              "op": "clear"
+            },
+            "seq": 0,
+            "payload": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 4,
+            "executeControl": 12
+          },
+          {
+            "command": {
+              "op": "clear"
+            },
+            "seq": 1,
+            "payload": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 20,
+            "executeControl": 28
+          }
+        ]
+      }
+    },
+    {
+      "label": "1. Brown wall (20 x 10 x 1)",
+      "sentAt": "2026-10-18T14:15:08.274528+00:00",
+      "sender": {
+        "sent": true,
+        "source": "independent Python UDP OSC process",
+        "type": "i",
+        "port": 9000,
+        "commands": 1,
+        "nextSeq": 3,
+        "operations": [
+          {
+            "command": {
+              "op": "box",
+              "min": [
+                128,
+                128,
+                128
+              ],
+              "size": [
+                20,
+                10,
+                1
+              ],
+              "styleId": 2
+            },
+            "seq": 2,
+            "payload": [
+              128,
+              128,
+              128,
+              19,
+              9,
+              0,
+              2,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 33,
+            "executeControl": 41
+          }
+        ]
+      }
+    },
+    {
+      "label": "2. Cut a 4 x 4 window in the wall",
+      "sentAt": "2026-10-18T14:15:17.571461+00:00",
+      "sender": {
+        "sent": true,
+        "source": "independent Python UDP OSC process",
+        "type": "i",
+        "port": 9000,
+        "commands": 5,
+        "nextSeq": 8,
+        "operations": [
+          {
+            "command": {
+              "op": "remove",
+              "min": [
+                128,
+                128,
+                128
+              ],
+              "size": [
+                20,
+                10,
+                1
+              ]
+            },
+            "seq": 3,
+            "payload": [
+              128,
+              128,
+              128,
+              19,
+              9,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 51,
+            "executeControl": 59
+          },
+          {
+            "command": {
+              "op": "box",
+              "min": [
+                128,
+                128,
+                128
+              ],
+              "size": [
+                8,
+                10,
+                1
+              ],
+              "styleId": 2,
+              "tintId": 0,
+              "motionPhase": 0
+            },
+            "seq": 4,
+            "payload": [
+              128,
+              128,
+              128,
+              7,
+              9,
+              0,
+              2,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 65,
+            "executeControl": 73
+          },
+          {
+            "command": {
+              "op": "box",
+              "min": [
+                140,
+                128,
+                128
+              ],
+              "size": [
+                8,
+                10,
+                1
+              ],
+              "styleId": 2,
+              "tintId": 0,
+              "motionPhase": 0
+            },
+            "seq": 5,
+            "payload": [
+              140,
+              128,
+              128,
+              7,
+              9,
+              0,
+              2,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 81,
+            "executeControl": 89
+          },
+          {
+            "command": {
+              "op": "box",
+              "min": [
+                136,
+                128,
+                128
+              ],
+              "size": [
+                4,
+                3,
+                1
+              ],
+              "styleId": 2,
+              "tintId": 0,
+              "motionPhase": 0
+            },
+            "seq": 6,
+            "payload": [
+              136,
+              128,
+              128,
+              3,
+              2,
+              0,
+              2,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 97,
+            "executeControl": 105
+          },
+          {
+            "command": {
+              "op": "box",
+              "min": [
+                136,
+                135,
+                128
+              ],
+              "size": [
+                4,
+                3,
+                1
+              ],
+              "styleId": 2,
+              "tintId": 0,
+              "motionPhase": 0
+            },
+            "seq": 7,
+            "payload": [
+              136,
+              135,
+              128,
+              3,
+              2,
+              0,
+              2,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 113,
+            "executeControl": 121
+          }
+        ]
+      }
+    },
+    {
+      "label": "3. Add a blue cuboid beside the wall",
+      "sentAt": "2026-10-18T14:15:23.442921+00:00",
+      "sender": {
+        "sent": true,
+        "source": "independent Python UDP OSC process",
+        "type": "i",
+        "port": 9000,
+        "commands": 1,
+        "nextSeq": 9,
+        "operations": [
+          {
+            "command": {
+              "op": "box",
+              "min": [
+                151,
+                128,
+                128
+              ],
+              "size": [
+                3,
+                6,
+                3
+              ],
+              "styleId": 3
+            },
+            "seq": 8,
+            "payload": [
+              151,
+              128,
+              128,
+              2,
+              5,
+              2,
+              3,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 129,
+            "executeControl": 137
+          }
+        ]
+      }
+    },
+    {
+      "label": "4. Change blue cuboid to green",
+      "sentAt": "2026-10-18T14:15:29.307608+00:00",
+      "sender": {
+        "sent": true,
+        "source": "independent Python UDP OSC process",
+        "type": "i",
+        "port": 9000,
+        "commands": 1,
+        "nextSeq": 10,
+        "operations": [
+          {
+            "command": {
+              "op": "box",
+              "min": [
+                151,
+                128,
+                128
+              ],
+              "size": [
+                3,
+                6,
+                3
+              ],
+              "styleId": 4
+            },
+            "seq": 9,
+            "payload": [
+              151,
+              128,
+              128,
+              2,
+              5,
+              2,
+              4,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 145,
+            "executeControl": 153
+          }
+        ]
+      }
+    },
+    {
+      "label": "5. Remove the green cuboid; wall remains",
+      "sentAt": "2026-10-18T14:15:35.161361+00:00",
+      "sender": {
+        "sent": true,
+        "source": "independent Python UDP OSC process",
+        "type": "i",
+        "port": 9000,
+        "commands": 1,
+        "nextSeq": 11,
+        "operations": [
+          {
+            "command": {
+              "op": "remove",
+              "min": [
+                151,
+                128,
+                128
+              ],
+              "size": [
+                3,
+                6,
+                3
+              ]
+            },
+            "seq": 10,
+            "payload": [
+              151,
+              128,
+              128,
+              2,
+              5,
+              2,
+              0,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 163,
+            "executeControl": 171
+          }
+        ]
+      }
+    },
+    {
+      "label": "6. Clear everything",
+      "sentAt": "2026-10-18T14:15:41.024720+00:00",
+      "sender": {
+        "sent": true,
+        "source": "independent Python UDP OSC process",
+        "type": "i",
+        "port": 9000,
+        "commands": 1,
+        "nextSeq": 12,
+        "operations": [
+          {
+            "command": {
+              "op": "clear"
+            },
+            "seq": 11,
+            "payload": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 180,
+            "executeControl": 188
+          }
+        ]
+      }
+    },
+    {
+      "label": "7.1. Grow staircase",
+      "sentAt": "2026-10-18T14:15:44.895956+00:00",
+      "sender": {
+        "sent": true,
+        "source": "independent Python UDP OSC process",
+        "type": "i",
+        "port": 9000,
+        "commands": 1,
+        "nextSeq": 13,
+        "operations": [
+          {
+            "command": {
+              "op": "box",
+              "min": [
+                128,
+                128,
+                128
+              ],
+              "size": [
+                2,
+                1,
+                2
+              ],
+              "styleId": 1
+            },
+            "seq": 12,
+            "payload": [
+              128,
+              128,
+              128,
+              1,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 193,
+            "executeControl": 201
+          }
+        ]
+      }
+    },
+    {
+      "label": "7.2. Grow staircase",
+      "sentAt": "2026-10-18T14:15:46.260004+00:00",
+      "sender": {
+        "sent": true,
+        "source": "independent Python UDP OSC process",
+        "type": "i",
+        "port": 9000,
+        "commands": 1,
+        "nextSeq": 14,
+        "operations": [
+          {
+            "command": {
+              "op": "box",
+              "min": [
+                130,
+                128,
+                128
+              ],
+              "size": [
+                2,
+                2,
+                2
+              ],
+              "styleId": 2
+            },
+            "seq": 13,
+            "payload": [
+              130,
+              128,
+              128,
+              1,
+              1,
+              1,
+              2,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 209,
+            "executeControl": 217
+          }
+        ]
+      }
+    },
+    {
+      "label": "7.3. Grow staircase",
+      "sentAt": "2026-10-18T14:15:47.614306+00:00",
+      "sender": {
+        "sent": true,
+        "source": "independent Python UDP OSC process",
+        "type": "i",
+        "port": 9000,
+        "commands": 1,
+        "nextSeq": 15,
+        "operations": [
+          {
+            "command": {
+              "op": "box",
+              "min": [
+                132,
+                128,
+                128
+              ],
+              "size": [
+                2,
+                3,
+                2
+              ],
+              "styleId": 3
+            },
+            "seq": 14,
+            "payload": [
+              132,
+              128,
+              128,
+              1,
+              2,
+              1,
+              3,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 225,
+            "executeControl": 233
+          }
+        ]
+      }
+    },
+    {
+      "label": "7.4. Grow staircase",
+      "sentAt": "2026-10-18T14:15:48.978047+00:00",
+      "sender": {
+        "sent": true,
+        "source": "independent Python UDP OSC process",
+        "type": "i",
+        "port": 9000,
+        "commands": 1,
+        "nextSeq": 0,
+        "operations": [
+          {
+            "command": {
+              "op": "box",
+              "min": [
+                134,
+                128,
+                128
+              ],
+              "size": [
+                2,
+                4,
+                2
+              ],
+              "styleId": 4
+            },
+            "seq": 15,
+            "payload": [
+              134,
+              128,
+              128,
+              1,
+              3,
+              1,
+              4,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 241,
+            "executeControl": 249
+          }
+        ]
+      }
+    },
+    {
+      "label": "7.5. Grow staircase",
+      "sentAt": "2026-10-18T14:15:50.349444+00:00",
+      "sender": {
+        "sent": true,
+        "source": "independent Python UDP OSC process",
+        "type": "i",
+        "port": 9000,
+        "commands": 1,
+        "nextSeq": 1,
+        "operations": [
+          {
+            "command": {
+              "op": "box",
+              "min": [
+                136,
+                128,
+                128
+              ],
+              "size": [
+                2,
+                5,
+                2
+              ],
+              "styleId": 1
+            },
+            "seq": 0,
+            "payload": [
+              136,
+              128,
+              128,
+              1,
+              4,
+              1,
+              1,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 1,
+            "executeControl": 9
+          }
+        ]
+      }
+    },
+    {
+      "label": "7.6. Grow staircase",
+      "sentAt": "2026-10-18T14:15:51.712124+00:00",
+      "sender": {
+        "sent": true,
+        "source": "independent Python UDP OSC process",
+        "type": "i",
+        "port": 9000,
+        "commands": 1,
+        "nextSeq": 2,
+        "operations": [
+          {
+            "command": {
+              "op": "box",
+              "min": [
+                138,
+                128,
+                128
+              ],
+              "size": [
+                2,
+                6,
+                2
+              ],
+              "styleId": 2
+            },
+            "seq": 1,
+            "payload": [
+              138,
+              128,
+              128,
+              1,
+              5,
+              1,
+              2,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 17,
+            "executeControl": 25
+          }
+        ]
+      }
+    },
+    {
+      "label": "7.7. Grow staircase",
+      "sentAt": "2026-10-18T14:15:53.067196+00:00",
+      "sender": {
+        "sent": true,
+        "source": "independent Python UDP OSC process",
+        "type": "i",
+        "port": 9000,
+        "commands": 1,
+        "nextSeq": 3,
+        "operations": [
+          {
+            "command": {
+              "op": "box",
+              "min": [
+                140,
+                128,
+                128
+              ],
+              "size": [
+                2,
+                7,
+                2
+              ],
+              "styleId": 3
+            },
+            "seq": 2,
+            "payload": [
+              140,
+              128,
+              128,
+              1,
+              6,
+              1,
+              3,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 33,
+            "executeControl": 41
+          }
+        ]
+      }
+    },
+    {
+      "label": "7.8. Grow staircase",
+      "sentAt": "2026-10-18T14:15:54.431985+00:00",
+      "sender": {
+        "sent": true,
+        "source": "independent Python UDP OSC process",
+        "type": "i",
+        "port": 9000,
+        "commands": 1,
+        "nextSeq": 4,
+        "operations": [
+          {
+            "command": {
+              "op": "box",
+              "min": [
+                142,
+                128,
+                128
+              ],
+              "size": [
+                2,
+                8,
+                2
+              ],
+              "styleId": 4
+            },
+            "seq": 3,
+            "payload": [
+              142,
+              128,
+              128,
+              1,
+              7,
+              1,
+              4,
+              0,
+              0,
+              0
+            ],
+            "prepareControl": 49,
+            "executeControl": 57
+          }
+        ]
+      }
+    }
+  ],
+  "nextSeq": 4
+}

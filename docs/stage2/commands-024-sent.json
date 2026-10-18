@@ -1,0 +1,175 @@
+{
+  "sent": true,
+  "protocol": "MF2/single-commit",
+  "source": "independent Python UDP OSC process",
+  "port": 9012,
+  "commands": 5,
+  "nextSeq": 24,
+  "interval": 0.25,
+  "repeat": false,
+  "actualIntervals": [
+    0.25,
+    0.25,
+    0.25,
+    0.25
+  ],
+  "operations": [
+    {
+      "command": {
+        "op": "remove",
+        "min": [
+          128,
+          128,
+          128
+        ],
+        "size": [
+          20,
+          10,
+          1
+        ]
+      },
+      "seq": 19,
+      "control": 155,
+      "payload": [
+        128,
+        128,
+        128,
+        19,
+        9,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          128,
+          128,
+          128
+        ],
+        "size": [
+          10,
+          10,
+          1
+        ],
+        "styleId": 2,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 20,
+      "control": 161,
+      "payload": [
+        128,
+        128,
+        128,
+        9,
+        9,
+        0,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          139,
+          128,
+          128
+        ],
+        "size": [
+          9,
+          10,
+          1
+        ],
+        "styleId": 2,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 21,
+      "control": 169,
+      "payload": [
+        139,
+        128,
+        128,
+        8,
+        9,
+        0,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          138,
+          128,
+          128
+        ],
+        "size": [
+          1,
+          5,
+          1
+        ],
+        "styleId": 2,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 22,
+      "control": 177,
+      "payload": [
+        138,
+        128,
+        128,
+        0,
+        4,
+        0,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          138,
+          134,
+          128
+        ],
+        "size": [
+          1,
+          4,
+          1
+        ],
+        "styleId": 2,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 23,
+      "control": 185,
+      "payload": [
+        138,
+        134,
+        128,
+        0,
+        3,
+        0,
+        2,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

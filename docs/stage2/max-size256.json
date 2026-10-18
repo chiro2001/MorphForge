@@ -1,0 +1,96 @@
+{
+  "label": "max-size256",
+  "environment": "Unity Play Mode + native Gesture Manager OSC, not VRChat client",
+  "count": 1,
+  "sourceControl": 129,
+  "source": [
+    0,
+    0,
+    0,
+    255,
+    255,
+    255,
+    63,
+    63,
+    63,
+    63
+  ],
+  "received": 49.0,
+  "completed": 49.0,
+  "inboxReady": false,
+  "lastRxSeq": 16,
+  "work": [
+    0.0,
+    0.0,
+    0.0,
+    255.0,
+    255.0,
+    255.0,
+    63.0,
+    63.0,
+    63.0,
+    63.0
+  ],
+  "op": 1,
+  "lastSeq": 16,
+  "busy": false,
+  "pumpActive": false,
+  "triggerEnabled": false,
+  "storePlaying": true,
+  "storePaused": false,
+  "particles": [
+    {
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size": [
+        64.0,
+        64.0,
+        64.0
+      ],
+      "color": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "codes": [
+        63,
+        63,
+        63,
+        63
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    }
+  ],
+  "nativeStartSize": [
+    64.0,
+    64.0,
+    64.0
+  ],
+  "locator": [
+    -32.0,
+    -32.0,
+    -32.0
+  ],
+  "centerOffset": [
+    32.0,
+    32.0,
+    32.0
+  ],
+  "eraseScale": [
+    0.025,
+    0.025,
+    0.025
+  ],
+  "expectedPath": "Docs/Stage2/max-size256-expected.json",
+  "actualImage": "Docs/Stage2/max-size256.png",
+  "referenceImage": "Docs/Stage2/max-size256-reference.png",
+  "foregroundPixels": 165724,
+  "referenceMeanAbsoluteError": 0.0,
+  "referenceMaxError": 0,
+  "traceEvents": 287
+}

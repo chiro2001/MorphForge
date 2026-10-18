@@ -1,0 +1,104 @@
+{
+  "status": "superseded_proposal_not_implemented",
+  "superseded_by": "motion-protocol-v1-rev-a.json",
+  "version": 1,
+  "date": "2026-10-18",
+  "budget": {
+    "existing_synced_bits_assumed": 89,
+    "header_int_count": 4,
+    "payload_float_count": 16,
+    "cost_bits_per_int_or_float": 8,
+    "added_synced_bits": 160,
+    "total_synced_bits": 249,
+    "remaining_synced_bits": 7,
+    "logical_bits_per_payload_lane": 6,
+    "logical_payload_bits_per_batch": 96
+  },
+  "header": {
+    "MF_Ctl": {"type": "Int", "version_bits": 2, "opcode_bits": 4, "stage_bits": 2},
+    "MF_Seq": {"type": "Int", "min": 0, "max": 255},
+    "MF_Target": {"type": "Int", "min": 0, "max": 255},
+    "MF_Epoch": {"type": "Int", "min": 0, "max": 255}
+  },
+  "grid": {
+    "cells_per_axis": 64,
+    "cell_length_m": 0.25,
+    "extent_per_axis_m": 16,
+    "addressable_cells": 262144,
+    "center_formula": "anchor + (grid_index + 0.5) * h"
+  },
+  "voxel_record": {
+    "lane_order": ["gx", "gy", "gz", "styleLo", "styleHi", "poseFlags", "motionPhase"],
+    "lane_count": 7,
+    "logical_record_bits": 42,
+    "metadata_bits": 24,
+    "style_id_bits": 12,
+    "style_id_count_including_empty": 4096,
+    "pose_bits": 5,
+    "valid_poses": 24,
+    "reserved_flag_bits": 1,
+    "motion_group_bits": 3,
+    "motion_group_slots_including_static": 8,
+    "particle_phase_bits": 3,
+    "particle_phase_steps": 8,
+    "native_particle_position_role": "immutable_logical_address",
+    "native_particle_velocity": [0, 0, 0],
+    "rgba_logical_codes": ["styleLo", "styleHi", "poseFlags", "motionPhase"]
+  },
+  "voxel_batch": {
+    "max_records": 2,
+    "record0_lanes": [0, 6],
+    "record1_lanes": [7, 13],
+    "count_lane": 14,
+    "reserved_lane": 15,
+    "planning_received_command_interval_s": 0.2,
+    "ideal_voxels_per_s_one_batch_per_command": 10,
+    "ideal_voxels_per_s_two_batches_per_command": 5
+  },
+  "motion_groups": {
+    "initial_slots_including_static": 4,
+    "initial_writable_groups": 3,
+    "maximum_writable_groups_for_codec": 7,
+    "fields_per_group": 16,
+    "initial_persistent_group_scalar_count": 48,
+    "expanded_persistent_group_scalar_count": 112,
+    "lane_order": [
+      "mode", "axis", "distance", "periodCode", "phaseBase",
+      "pivotXLo", "pivotXHi", "pivotYLo", "pivotYHi", "pivotZLo", "pivotZHi",
+      "playback", "magnitude", "clock", "frozenPhase", "flags"
+    ],
+    "mode_codes": {
+      "0": "static", "1": "sine_translation", "2": "spin",
+      "3": "swing", "4": "orbit_keep_orientation", "5": "scale_pulse", "6": "ping_pong_translation"
+    },
+    "axis_codes": {"0": "+X", "1": "+Y", "2": "+Z", "3": "-X", "4": "-Y", "5": "-Z"},
+    "pivot_bits_per_axis": 12,
+    "pivot_bias": 2048,
+    "pivot_step_m_at_default_h": 0.015625,
+    "pivot_min_m_at_default_h": -32,
+    "pivot_max_m_at_default_h": 31.984375,
+    "max_distance_m_at_default_h": 3.9375,
+    "group_phase_steps": 64,
+    "period_code_count": 64,
+    "period_formula_seconds": "2^(12 + (code >> 3)) / (1000 * (15 - (code & 7)))",
+    "minimum_period_s": 0.2730666666666667,
+    "maximum_period_s": 65.536,
+    "default_clock": "VRC_GetNetworkTimeInMilliseconds",
+    "playback_codes": {"0": "stopped_at_rest", "1": "running", "2": "paused_at_frozen_phase"},
+    "flags": {"bit0": "reverse", "bit1": "per_voxel_pivot", "bits2_to_5": "reserved_zero"}
+  },
+  "alternative_codec_reserved_not_implemented": {
+    "block_type_bits": 10,
+    "tint_bits": 4,
+    "pose_bits": 5,
+    "motion_group_bits": 3,
+    "particle_phase_bits": 2,
+    "metadata_bits": 24
+  },
+  "opcodes": {
+    "0": "Nop", "1": "SetVoxels", "2": "EraseBox", "3": "SetMotionGroup",
+    "4": "SetScene", "5": "BeginSnapshot", "6": "EndSnapshot", "7": "ClearScene",
+    "8": "SetTimeline_reserved", "9": "SetPalette_reserved", "10": "SetSurface_reserved",
+    "11": "SetMesh_reserved", "12": "Reserved", "13": "Reserved", "14": "Reserved", "15": "Extension_reserved"
+  }
+}

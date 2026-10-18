@@ -1,0 +1,30 @@
+{
+  "sent": true,
+  "source": "independent Python UDP OSC process",
+  "type": "i",
+  "port": 9012,
+  "commands": 1,
+  "nextSeq": 1,
+  "operations": [
+    {
+      "command": {
+        "op": "clear"
+      },
+      "seq": 0,
+      "payload": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "prepareControl": 4,
+      "executeControl": 12
+    }
+  ]
+}

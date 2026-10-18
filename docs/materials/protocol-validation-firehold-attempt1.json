@@ -1,0 +1,172 @@
+{
+  "success": false,
+  "error": "brush-max every command completed",
+  "checks": [
+    {
+      "name": "Play receiver auto started",
+      "pass": true
+    },
+    {
+      "name": "New MF3 starts with zero commands",
+      "pass": true
+    },
+    {
+      "name": "clear count",
+      "pass": true
+    },
+    {
+      "name": "clear every command completed",
+      "pass": true
+    },
+    {
+      "name": "brush-max count",
+      "pass": true
+    },
+    {
+      "name": "brush-max every command completed",
+      "pass": false
+    }
+  ],
+  "captures": [
+    {
+      "frame": 1080,
+      "avatar": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor": [
+        0.0,
+        0.5701405,
+        0.3420843
+      ],
+      "anchorEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentUp": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "contentForward": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contentScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world": true,
+      "leveled": true,
+      "grab": 0,
+      "grabL": false,
+      "grabR": false,
+      "frozen": true,
+      "count": 0,
+      "capacity": 16384,
+      "received": 1.0,
+      "completed": 1.0,
+      "busy": false,
+      "inbox": false,
+      "brush": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "particles": [],
+      "label": "clear"
+    },
+    {
+      "frame": 1603,
+      "avatar": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor": [
+        0.0,
+        0.5701405,
+        0.3420843
+      ],
+      "anchorEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentUp": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "contentForward": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contentScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world": true,
+      "leveled": true,
+      "grab": 0,
+      "grabL": false,
+      "grabR": false,
+      "frozen": true,
+      "count": 1,
+      "capacity": 16384,
+      "received": 3.0,
+      "completed": 2.0,
+      "busy": true,
+      "inbox": false,
+      "brush": [
+        63.0,
+        63.0,
+        63.0,
+        63.0
+      ],
+      "particles": [
+        {
+          "position": [
+            0.250000954,
+            -31.625,
+            0.500000954
+          ],
+          "size": [
+            0.5,
+            0.75,
+            1.0
+          ],
+          "worldPosition": [
+            0.250000954,
+            0.9451405,
+            0.842085242
+          ],
+          "codes": [
+            63,
+            63,
+            63,
+            63
+          ]
+        }
+      ],
+      "label": "brush-max"
+    }
+  ]
+}

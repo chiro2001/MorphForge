@@ -1,0 +1,40 @@
+{
+  "sent": true,
+  "source": "independent Python UDP OSC process",
+  "type": "i",
+  "port": 9012,
+  "commands": 1,
+  "nextSeq": 14,
+  "operations": [
+    {
+      "command": {
+        "op": "erase",
+        "min": [
+          127,
+          127,
+          127
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ]
+      },
+      "seq": 13,
+      "payload": [
+        127,
+        127,
+        127,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "prepareControl": 210,
+      "executeControl": 218
+    }
+  ]
+}

@@ -1,0 +1,582 @@
+# MorphForge 用户指南
+
+更新时间：2026-10-19。
+
+本指南按当前 Rust 后端、共享 Web 工作台、可选 VRChat 适配器和 Windows 桌面壳的实际接口编写。MorphForge 可以脱离 Unity 和 VRChat，作为独立的体素艺术生成器、浏览器编辑器和 AI Harness 使用。
+
+当前状态先说明清楚：
+
+- Rust 核心、HTTP API、共享前端、AI 工具循环、Recipe、作品库和材质资源包导入已经实现。
+- MF3 的 `Box / UnitVoxel / Brush / Erase / Remove / Clear`、序号回绕和单 Avatar 原生 UDP 接收已有测试证据。
+- 16,384 Box 首遍缺失192个；0.5秒补发后达16384个唯一方块，满池删除、补回、区域擦除、清空通过。新时序256条0.25秒首次漏1/第二次完整，0.5秒对照完整；不承诺无损，详见实施状态。
+- 最终 Windows 安装包已经重建，安装、启动、退出、卸载及 HTTP 10 项回归通过，见 `docs/desktop/validation.json`。
+- Unity原生100材质、40项像素与新版16k显示夹具通过；FullFT实际SDK联合构建256/256bit通过，FT161与MF70全部直通；新场景与166项API烟测、远端FT分支检查也已通过。
+- P2 高级折射、物理体积云以及任意 Minecraft 异形几何不在当前支持范围内。
+
+## 1. 安装与启动
+
+使用 `dist/windows/MorphForge Desktop_0.1.0_x64-setup.exe`，以当前用户模式安装。默认安装目录是：
+
+```text
+%LOCALAPPDATA%\MorphForge Desktop
+```
+
+作品、快照、运行记录和 API Key 配置不在安装目录中，而在独立数据根：
+
+```text
+%LOCALAPPDATA%\MorphForge
+```
+
+从开始菜单启动 MorphForge。桌面程序会：
+
+1. 启动随包发布的 Rust 核心；
+2. 在 `127.0.0.1` 上申请随机端口；
+3. 用 WebView2 打开同一个工作台页面；
+4. 正常关闭或异常终止时清理核心、截图浏览器和子进程。
+
+桌面模式不需要手动记端口，也不需要另开浏览器。开发版或独立 CLI 可显式启动 HTTP 服务：
+
+```powershell
+morphforge.exe serve --data "$env:LOCALAPPDATA\MorphForge" --port 8766
+```
+
+然后访问：
+
+```text
+http://127.0.0.1:8766
+```
+
+`MORPHFORGE_DATA` 可覆盖数据根，适合隔离测试。正常用户数据不建议通过该变量改写。
+
+服务只接受 loopback 的 `127.0.0.1`、`localhost` 或 `::1`，同时检查同源；不要暴露到局域网或公网。
+
+安装器目前没有代码签名。安装目录与作品数据目录分离；升级或卸载前，建议备份 `%LOCALAPPDATA%\MorphForge`。
+
+## 2. 配置 DeepSeek
+
+在默认数据根创建或编辑：
+
+```text
+%LOCALAPPDATA%\MorphForge\provider.env
+```
+
+内容格式：
+
+```dotenv
+DEEPSEEK_API_KEY=你的密钥
+MORPHFORGE_DEEPSEEK_BASE_URL=https://api.deepseek.com
+```
+
+`MORPHFORGE_DEEPSEEK_BASE_URL` 可省略，默认使用官方接口。不要把真实密钥写进工程、截图、README 或聊天记录。
+
+建议将该文件限制为当前 Windows 用户访问。先在这个用户的桌面会话中执行：
+
+```powershell
+$data = Join-Path $env:LOCALAPPDATA 'MorphForge'
+$envFile = Join-Path $data 'provider.env'
+New-Item -ItemType Directory -Force $data | Out-Null
+notepad $envFile
+$me = [Security.Principal.WindowsIdentity]::GetCurrent().Name
+icacls $envFile /inheritance:r /grant:r ($me + ':(R,W)')
+```
+
+文件内容编辑完成并保存后，重启 MorphForge。AI 页签右侧应显示“Key已配置”。
+
+当前模型：
+
+- `deepseek-flash`：支持图片输入，适合搭建、截图检查、修正的完整循环。
+- `deepseek-v4-pro`：用于模型文字和工具调用；当前 Harness 不会把截图图片回传给该模型。
+
+`provider.env` 不会被工程导出、材质目录 ZIP 或诊断包带出。诊断导出会排除该文件，并替换已知 Key。不要手动把密钥放进 `pinnedNotes`、Prompt 或作品标签。
+
+## 3. 工作台总览
+
+顶部：
+
+- 修改“工程名称”；输入框失焦后保存。
+- “作品库”打开已保存作品。
+- “导出工程”下载当前工程 JSON。
+- “导入”会载入工程 JSON，可能替换当前场景；导入前先导出当前草稿。
+
+左侧：
+
+- 放置、擦除、选择工具；
+- 笔刷 XYZ 尺寸；
+- 绘制高度；
+- 分组名称；
+- 精确位置；
+- 材质搜索、调色和染色编号；
+- 分组可见性和选择操作；
+- 示例与压力测试模型。
+
+中间：
+
+- 三维视口；
+- 撤销、重做；
+- 适应、主视、正面、俯视、侧面；
+- “艺术预览”和“VRC基础兼容”；
+- “三视图”截图。
+
+右侧：
+
+- `AI创作`；
+- `VRC发布`；
+- `上下文`。
+
+底部：
+
+- Box 数、体素量、边界；
+- “运行记录”开关。
+
+工程编辑会自动保存到数据根。顶部显示“已保存 · v版本号”时，当前修改已写入磁盘。
+
+## 4. 手动绘制
+
+坐标约定：
+
+- X 向右；
+- Y 向上；
+- `+Z` 为正面；
+- 金球是底部中心；
+- “艺术预览”使用工程的逻辑格长；
+- “VRC基础兼容”固定使用 `0.25m` 格长，与当前 Avatar 一致。
+
+基本操作：
+
+- 左键单击绘制；
+- `Shift` 加左键或切换到“擦除”后擦除；
+- 右键拖动旋转视角；
+- 中键平移；
+- 滚轮缩放；
+- `Ctrl+Z` 撤销；
+- `Ctrl+Y` 或 `Ctrl+Shift+Z` 重做。
+
+笔刷的 X/Y/Z 可以不同，适合一次画墙、柱、地板或其他长方体。选择“绘制高度”后，可以点击空白平面来放置。
+
+“精确位置”中的 XYZ 是底部中心坐标；“在指定位置应用”使用当前笔刷尺寸在该位置绘制或擦除。
+
+## 5. 选择、移动与分组
+
+切换到“选择”：
+
+- 单击选中一个 Box；
+- `Shift` 单击可加入或移出选择；
+- 在空白区域拖动可框选多个 Box；
+- 点击左侧分组名称可一次选中该组。
+
+选中后可执行：
+
+- “移动”：使用“精确位置”XYZ 作为偏移；
+- “复制”：复制选中内容，并应用同样的偏移；
+- “旋转90°”：按整数网格旋转；
+- “镜像X”：按 X 轴镜像；
+- “给选中内容换材质”：把当前材质和染色应用到所有选中 Box。
+
+分组名用于组织和选择。左侧分组复选框只隐藏本地预览，不会删除数据，也不会从 VRC 发布内容中排除该组。
+
+## 6. 视图与截图
+
+“主视 / 正面 / 俯视 / 侧面”使用固定相机。多视角截图使用独立截图渲染器，截图绑定当前 revision，不会改变你正在使用的相机。
+
+“三视图”生成：
+
+- hero；
+- front；
+- top。
+
+截图和作品保存依赖本机 Edge/Chromium 截图进程。桌面安装包通常已具备 WebView2 和 Edge；若截图不可用，手工编辑仍可继续，但 AI 的视觉检查和作品多视图会受影响。
+
+## 7. AI 创作
+
+AI 与手动编辑使用同一个 Rust 领域 API。生成、人工修改、截图和发布都围绕同一个工程 revision。
+
+推荐流程：
+
+1. 在左侧选择材质、分组和尺寸约定。
+2. 在 AI 页输入完整目标，例如“搭一座铜色灯塔，石质基座，保留负空间，完成后从 hero/front/top 检查”。
+3. 点击“开始创作 / 追加指令”。
+4. 观察右侧运行状态、当前工具调用和底部运行记录。
+5. 大形完成后再追加细节，例如“在右侧增加一棵树，不改动现有 42 个 Box”。
+
+连续输入：
+
+- 当前运行尚未结束时再次提交，Prompt 会进入队列。
+- Harness 在后续工具链边界追加该指令。
+- 新指令会基于当前工程和当前上下文继续。
+
+暂停、继续与停止：
+
+- “暂停”在步骤边界和下一个工具调用前生效；已经发出的模型请求不会被瞬间切断。
+- “继续”解除暂停。
+- “停止”取消当前模型请求或工具执行。
+- 已经写入工程的版本、截图和日志会保留；停止不会自动回滚此前修改。
+
+运行预算：
+
+- 最大步骤数：`1..100`；
+- 单次时间上限：`1..86400` 秒；
+- 单次累计 Token：至少 `1000`；
+- 每步输出 Token：`512..65536`。
+
+默认值：
+
+```text
+最大步骤 24
+单次时间 900 秒
+单次 Token 250000
+每步输出 16384
+```
+
+达到时间、步骤或 Token 预算时，运行会停止，已生成版本仍保留；不要假定 Harness 会自动替你 commit 或完成剩余检查。
+
+## 8. Compact 上下文
+
+“上下文”页展示估算 Token、消息条数、compact 次数和最近摘要。
+
+- “Compact 上下文”立即请求压缩模型活跃上下文；
+- “自动compact”在估算 Token 超过阈值时自动执行；
+- 默认阈值是 `60000`；
+- “固定要求”保存到工程，不依赖摘要记忆。
+
+Compact 只整理发送给模型的活跃消息，不修改体素、不会删除作品或截图。完整运行记录、工具返回、截图 artifact 和版本仍保存在数据根。
+
+手动 compact 会调用模型并计入当前运行预算。若 compact 超时、失败或期间上下文发生变化，旧上下文会保留。
+
+## 9. Recipe
+
+AI 页底部的“Recipe 工作区”可以直接执行确定性 JavaScript。
+
+示例：
+
+```javascript
+mf.group('dock', () => {
+  mf.box([-6, 0, -3], [12, 1, 6], {style: 'stone'});
+  mf.repeat(4, i => {
+    mf.box([-6, 1 + i, -3 + i], [12, 1, 1], {style: 'wood'});
+  });
+});
+
+mf.stairs([6, 0, 1], 5, {
+  width: 5,
+  depth: 1,
+  rise: 1,
+  style: 'stone'
+});
+```
+
+常用 API：
+
+- `mf.box(min, size, options)`；
+- `mf.erase(min, size)`；
+- `mf.paint(min, size, {style, tint})`；
+- `mf.clear()`；
+- `mf.group(name, fn)`；
+- `mf.repeat(count, fn)`；
+- `mf.translate(offset, fn)`；
+- `mf.mirror(axis, fn)`；
+- `mf.line(a, b, options)`；
+- `mf.stairs(origin, count, options)`；
+- `mf.wall(origin, width, height, options)`；
+- `mf.roof(origin, width, depth, height, options)`；
+- `mf.frame(origin, size, options)`。
+
+界面中的“执行 Recipe”使用 `apply` 模式，在现有作品上追加或修改；“只估算”不提交几何。`mf.clear()` 会清空当前场景，先用“只估算”或先导出工程。
+
+Recipe 使用固定 seed 的确定性随机数。坐标必须是整数，尺寸必须为正整数；VRC 目标要求 X/Z 在 `[-128,128)`、Y 在 `[0,256)`。
+
+## 10. 作品库
+
+“保存到作品库”会先生成三视图，再保存：
+
+- 当前工程和材质目录；
+- 当前 Box/Voxel 统计；
+- hero 缩略图；
+- hero/front/top 多视图；
+- 对应 recipe（若当前 revision 有 Recipe）；
+- 来源运行 ID。
+
+作品库支持：
+
+- 名称或标签搜索；
+- “多视图”查看保存截图；
+- “载入并继续”创建当前工程的新 revision；原作品保留，不会被覆盖。
+
+当前 Windows 数据根已种入 3 份样例作品，每份都有 3 个视图：
+
+| 作品 | Box |
+| --- | ---: |
+| 铜灯塔·集成验证 | 42 |
+| 铜灯塔与树·续作验证 | 49 |
+| The Leviathan's Lantern · 精确体素版 | 7,459 |
+
+如果使用全新的隔离数据根，作品库以该目录的实际内容为准。
+
+底部“运行记录”可筛选：
+
+- 工具调用；
+- 模型交互；
+- Compact；
+- OSC；
+- 几何；
+- 运行 ID；
+- 版本号。
+
+“版本历史”可以查看 revision；选择“从此版本继续”会创建一个新的工作 revision。“导出诊断记录”生成 ZIP，但不会包含 `provider.env`，已知 Key 会被替换。
+
+## 11. 工程导入与备份
+
+“导出工程”下载工程 JSON，包含当前工程、场景和材质目录，不包含 API Key。
+
+“导入”会载入工程 JSON。当前工程可能被替换，建议：
+
+1. 先导出当前工程；
+2. 再导入目标工程；
+3. 查看版本号和场景统计是否一致。
+
+需要迁移整台电脑时，复制数据根：
+
+```text
+%LOCALAPPDATA%\MorphForge
+```
+
+其中包含工程、快照、artifacts、作品库、运行记录和 `provider.env`。`provider.env` 只用于本机认证，不应随作品或诊断包分享。
+
+## 12. VRChat 发布
+
+“VRC发布”是可选适配器。没有 Unity 或 VRChat 时，仍可独立创作、截图和保存作品。
+
+### 端口
+
+界面不会猜测环境，必须显式选择：
+
+- `Unity 9012`：Unity Editor 测试接收器；
+- `VRChat 9000`：已启动的 VRChat 本机 OSC；
+- 也可以手动填写其他本机 UDP 端口。
+
+端口按钮只设置目标；还需要点击“开启发送”才会开始写 UDP。
+
+### 发送流程
+
+1. 选择 `MF3 · 56bit主档`；
+2. 选择目标端口；
+3. 设置 Box 容量；
+4. 点击“开启发送”；
+5. 点击“发布当前版本”或启用“编辑后自动发布”。
+
+“清空并重建”会要求接收端从空场景重建当前目标，适合清掉旧残留或重新同步。
+
+“周期全量刷新”单位为秒，`0` 表示关闭。设置例如 `300` 后，只有上一轮目标已经全部发完，才会在到期时从 Clear 开始重建，避免同时叠加两轮。
+
+### 无远端 ACK
+
+发送状态中的“已发送”只表示本机 UDP 已写出，`ack=false`。系统没有 VRChat 远端确认，不能据此断言：
+
+- 所有玩家已经看到；
+- 网络同步没有丢失；
+- 晚加入玩家已经自动恢复；
+- 客户端渲染一定完整。
+
+需要现场确认时，应同时观察目标客户端、发送计数、待发批次和周期刷新结果。
+
+### 预算
+
+当前目标预算：
+
+| 项目 | bit |
+| --- | ---: |
+| MF3 几何：6 个数据 Int + 控制 Int | 56 |
+| 定位：World 1 + Handle 1 + Scale 8 + Reset 1 + GrabL/R 2 + Level 1 | 14 |
+| 完整面捕固定项 | 161 |
+| 留给其它本体参数与压缩 carrier | 25 |
+| 合计 | 256 |
+
+实际FullFT SDK联合构建已通过256/256bit：面捕112项161bit、MF3 56bit、定位14bit全部直通，8个FT控制Bool和其余本体17bit也直接同步；没有压缩carrier。具体本地化组及远端影响见 `docs/fullft/README.md`。恢复这些功能的sync会增加预算，须重新构建验收。
+
+MF3 默认目标容量是 16,384 Box，界面可设置到 50,000，但未验证的高容量不能视为已支持。原生预填通过只证明粒子存储，不等于真实 UDP 全量无损。
+
+### 定位
+
+“定位球”区域可以设置：
+
+- 固定世界或跟随 Avatar；
+- 显示或隐藏定位球；
+- 保持水平并保留朝向；
+- `0.05..1.0` 显示缩放；
+- “移到面前”复位。
+
+定位控制需要目标 Avatar 包含对应的 MF3/Stage4 MA 模块。
+
+## 13. 材质与 Java 资源包
+
+左侧“导入 Minecraft Java 资源包”接受 Java 资源包 ZIP。导入完成后会弹出报告，包含：
+
+- 新增材质数；
+- 贴图数和动画材质数；
+- warnings；
+- 是否需要重新预打包 Avatar。
+
+当前支持：
+
+- Java `pack.mcmeta`；
+- `assets/<namespace>/textures/block` 下的 PNG；
+- `.png.mcmeta` 的 `frametime`、显式 `frames` 顺序、逐帧 `time` 和 `interpolate`；
+- 常见六面立方体父模型和纹理别名；
+- 不透明、cutout、透明、基础金属、发光、程序化云和水面效果。
+
+不支持：
+
+- 含任意 `elements` 的 Minecraft 异形模型；
+- 楼梯、台阶、十字植物、连接纹理和第三方 shader pack；
+- P2 高级折射；
+- 物理体积云或体积散射；
+- 未报告、静默变形为完整立方体的未知模型。
+
+会被安全拒绝或记录 warning 的内容：
+
+- 路径穿越、绝对路径、反斜杠路径；
+- 符号链接或特殊 ZIP 文件；
+- 重名路径；
+- 损坏或过大的 PNG；
+- 越界动画帧、超长时间轴、无法解析的纹理引用。
+
+资源包导入只更新本机材质目录。Avatar 侧使用前仍需导出材质目录并在 Unity 中重新构建、由用户上传。
+
+## 14. 导出 Avatar 材质目录
+
+在“VRC发布”页点击“导出 Avatar 材质目录”。浏览器下载：
+
+```text
+morphforge-materials.zip
+```
+
+ZIP 结构：
+
+```text
+catalog.json
+artifacts/
+  <hash>.png
+```
+
+所有显示的材质都会写入 manifest；`styleId` 必须唯一且不超过 `4095`。若不满足，导出会直接失败，不做静默回绕。
+
+在 Unity 工程中解压到：
+
+```text
+Docs/Materials/catalog.json
+Docs/Materials/artifacts/*.png
+```
+
+长测结束并得到 Unity 操作许可后，执行：
+
+```powershell
+python tools/unity_remote.py --check-result run_script --file AgentScripts/CatalogEntry.cs --entry CatalogEntry.Validate --timeout_ms 60000
+python tools/unity_remote.py --check-result run_script --file AgentScripts/CatalogEntry.cs --entry CatalogEntry.Build --timeout_ms 60000
+```
+
+构建器会生成：
+
+```text
+Assets/MorphForge/MaterialsCatalog/
+  CatalogAtlas.png
+  CatalogMetadata.asset
+  ParticleBoxCatalog.mat
+```
+
+该流程只准备预上传资产。MorphForge 不会自动修改 Stage4 Prefab、不会自动上传 Avatar，也不会启动 VRChat。
+
+Unity原生100材质目录、严格40项像素检查、NDMF产物与16k混合显示夹具已验收；这些结果不证明客户端16k透明排序和GPU性能。`ParticleBoxCatalog` 的水和云是表面近似；单粒子池不能保证透明粒子严格排序，也不提供物理水体或体积云。
+
+对 Shader、C# 和 Atlas 进行静态审阅只能发现明显的接口或兼容问题，不能作为材质通过依据。最终必须用实际像素测试和固定视角截图检查六面方向、动画帧顺序、颜色空间、透明 pass、局部纹理移动和缩放稳定性。
+
+## 15. CLI 与 HTTP
+
+独立 Rust CLI：
+
+```powershell
+morphforge.exe serve --port 8766
+morphforge.exe serve --data "D:\MorphForgeData" --port 8766 --no-capture
+morphforge.exe check scene.json
+morphforge.exe recipe build.js --data "D:\MorphForgeData" --seed 42
+morphforge.exe benchmark --count 16384
+```
+
+`--no-capture` 省略截图浏览器。依赖截图的功能会受限。
+
+常用 HTTP 读取接口：
+
+| 路径 | 用途 |
+| --- | --- |
+| `/api/state` | 工程、运行、发布和截图状态 |
+| `/api/scene` | 当前 revision 的场景和材质 |
+| `/api/artworks` | 作品库列表 |
+| `/api/harness/state` | AI 设置、运行和上下文状态 |
+| `/api/harness/tools` | 当前 Tool schema |
+| `/api/events` | 运行记录 |
+| `/api/packs` | 已导入资源包报告 |
+| `/api/vrc/catalog` | 下载离线材质目录 ZIP |
+| `/api/diagnostics` | 下载脱敏诊断 ZIP |
+
+写操作通过 JSON POST 或 multipart 上传，建议优先使用工作台。外部集成应使用独立 CLI 启动的固定 loopback 端口；桌面壳使用随机端口，不是对外集成入口。
+
+## 16. 常见问题
+
+“需要Key”：
+
+- 检查 `%LOCALAPPDATA%\MorphForge\provider.env`；
+- 检查 `DEEPSEEK_API_KEY` 是否非空；
+- 保存文件后重启应用。
+
+三视图或 AI 截图失败：
+
+- 检查 Edge/WebView2 是否可用；
+- 检查是否以 `--no-capture` 启动；
+- 当前手工编辑和工程保存不依赖截图浏览器。
+
+“另一进程正在占用OSC通道”：
+
+- 同一时间只允许一个 MorphForge 发送器写入 OSC；
+- 关闭旧的 CLI、测试脚本或发送进程后重新开启。
+
+发布提示超出容量：
+
+- 查看底部 Box 数；
+- 调整“目标Box容量”前，先确认目标 Avatar 的实际粒子容量；
+- 容量检查失败时草稿仍保留。
+
+导入工程出现 revision 冲突：
+
+- 重新载入当前工程；
+- 不要同时从两个页面提交旧 revision；
+- 先导出当前状态。
+
+材质目录下载失败：
+
+- 检查是否有 `styleId > 4095`；
+- 检查重复 ID；
+- 检查纹理是否为 `/artifacts/<hash>.png`；
+- 修复后重新点击“导出 Avatar 材质目录”。
+
+资源包只显示部分材质：
+
+- 打开导入报告查看 warnings；
+- 当前只自动转换为常见立方体模型；
+- 原资源包不会被静默改写。
+
+## 17. 验收结果与边界
+
+完整交付索引见 `docs/DELIVERY.md`。Windows软件、真实AI连续创作与compact、16k补发容量及回收、原生材质像素、FullFT预算与完整API烟测均已通过。
+
+- OSC没有远端ACK。16k首遍缺192；补发恢复16384唯一Box。0.25秒短回归首次漏1/第二次完整，0.5秒对照完整；可先用0.5秒测试，再按实际负载调整。
+- 最终版本没有重跑整轮16k无损长测；存储夹具、真实发送、补发、视觉和功能回归的证据分别记录。
+- 自动测试只发9012，未上传Avatar或启动VRChat。客户端多人、VR手势、Particle Limiter及GPU性能尚无新版实测结论。
+- 单粒子池不保证严格透明排序。水云是表面效果；高级折射、体积云、Minecraft异形模型和逐面染色遮罩仍属后续扩展。
+- `motionPhase`仅用于材质时间相位，不是逐Box实体运动API。
+- 安装器未代码签名，哈希及验证记录见 `docs/desktop/validation.json`。
+
+新的FullFT验证场景位于：
+
+```text
+Assets/MorphForge/FullFT/MorphForge_FullFT.unity
+```
+
+它已单独保存。原Stage3场景仍打开并保留未保存修改，文件未变；测试期间临时停用的三个对象已恢复。准备切换到新场景时，先自行处理原场景的未保存内容。完整Avatar为 `Assets/MorphForge/FullFT/Avatar.prefab`。

@@ -1,0 +1,724 @@
+{
+  "success": true,
+  "completed": true,
+  "scope": "Strict checks of PNGs generated from the native Material fixture ParticleSystem; no OSC and no product particle injection.",
+  "oscUsed": false,
+  "productParticlesInjected": false,
+  "testRig": "temporary non-product ParticleSystem",
+  "checks": [
+    {
+      "name": "base visual report completed",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "base visual report success",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "base: fixture25 explicit animation frames blue/red/purple",
+      "pass": true,
+      "detail": {
+        "name": "fixture25 explicit animation frames blue/red/purple",
+        "pass": true,
+        "samples": [
+          {
+            "label": "frame0",
+            "expected": "blue",
+            "actual": "blue",
+            "rgb": [
+              0.0,
+              0.0,
+              0.6
+            ],
+            "desiredFrame": 0,
+            "attempt": 0,
+            "basePhase": 0
+          },
+          {
+            "label": "frame1",
+            "expected": "red",
+            "actual": "red",
+            "rgb": [
+              0.6,
+              0.0,
+              0.0
+            ],
+            "desiredFrame": 1,
+            "attempt": 0,
+            "basePhase": 0
+          },
+          {
+            "label": "frame2",
+            "expected": "purple",
+            "actual": "purple",
+            "rgb": [
+              0.2901961,
+              0.0,
+              0.2901961
+            ],
+            "desiredFrame": 2,
+            "attempt": 0,
+            "basePhase": 0
+          }
+        ],
+        "file": "Docs/Materials/native/fixture25-frames.png",
+        "note": "Particle A phases align one cube to each declared frame at capture."
+      }
+    },
+    {
+      "name": "base: fixture26 face px",
+      "pass": true,
+      "detail": {
+        "name": "fixture26 face px",
+        "pass": true,
+        "expected": "red",
+        "actual": "red",
+        "rgb": [
+          0.7490196,
+          0.1254902,
+          0.1254902
+        ],
+        "file": "Docs/Materials/native/fixture26-px.png"
+      }
+    },
+    {
+      "name": "base: fixture26 face nx",
+      "pass": true,
+      "detail": {
+        "name": "fixture26 face nx",
+        "pass": true,
+        "expected": "green",
+        "actual": "green",
+        "rgb": [
+          0.0784313753,
+          0.5411765,
+          0.0784313753
+        ],
+        "file": "Docs/Materials/native/fixture26-nx.png"
+      }
+    },
+    {
+      "name": "base: fixture26 face py",
+      "pass": true,
+      "detail": {
+        "name": "fixture26 face py",
+        "pass": true,
+        "expected": "blue",
+        "actual": "blue",
+        "rgb": [
+          0.13333334,
+          0.13333334,
+          0.7882353
+        ],
+        "file": "Docs/Materials/native/fixture26-py.png"
+      }
+    },
+    {
+      "name": "base: fixture26 face ny",
+      "pass": true,
+      "detail": {
+        "name": "fixture26 face ny",
+        "pass": true,
+        "expected": "yellow",
+        "actual": "yellow",
+        "rgb": [
+          0.5411765,
+          0.5411765,
+          0.0784313753
+        ],
+        "file": "Docs/Materials/native/fixture26-ny.png"
+      }
+    },
+    {
+      "name": "base: fixture26 face pz",
+      "pass": true,
+      "detail": {
+        "name": "fixture26 face pz",
+        "pass": true,
+        "expected": "cyan",
+        "actual": "cyan",
+        "rgb": [
+          0.0784313753,
+          0.5411765,
+          0.5411765
+        ],
+        "file": "Docs/Materials/native/fixture26-pz.png"
+      }
+    },
+    {
+      "name": "base: fixture26 face nz",
+      "pass": true,
+      "detail": {
+        "name": "fixture26 face nz",
+        "pass": true,
+        "expected": "magenta",
+        "actual": "magenta",
+        "rgb": [
+          0.819607854,
+          0.141176477,
+          0.819607854
+        ],
+        "file": "Docs/Materials/native/fixture26-nz.png"
+      }
+    },
+    {
+      "name": "base: metal water cloud cutout visible",
+      "pass": true,
+      "detail": {
+        "name": "metal water cloud cutout visible",
+        "pass": true,
+        "samples": [
+          {
+            "style": 10,
+            "material": "metal",
+            "foreground": 1.0,
+            "pass": true
+          },
+          {
+            "style": 16,
+            "material": "water",
+            "foreground": 1.0,
+            "pass": true
+          },
+          {
+            "style": 19,
+            "material": "cloud",
+            "foreground": 1.0,
+            "pass": true
+          },
+          {
+            "style": 21,
+            "material": "cutout",
+            "foreground": 0.6556239,
+            "pass": true
+          }
+        ],
+        "file": "Docs/Materials/native/catalog-styles.png"
+      }
+    },
+    {
+      "name": "base: scale 0.5 keeps local UV pattern",
+      "pass": true,
+      "detail": {
+        "name": "scale 0.5 keeps local UV pattern",
+        "pass": true,
+        "meanAbsoluteError": 0.0,
+        "threshold": 0.06,
+        "files": [
+          "Docs/Materials/native/scale-1.png",
+          "Docs/Materials/native/scale-half.png"
+        ]
+      }
+    },
+    {
+      "name": "base: static texture remains fixed after rigid root translation and rotation",
+      "pass": true,
+      "detail": {
+        "name": "static texture remains fixed after rigid root translation and rotation",
+        "pass": true,
+        "meanAbsoluteError": 0.0,
+        "changedFraction": 0.0,
+        "transform": {
+          "position": [
+            3.0,
+            1.5,
+            -2.0
+          ],
+          "euler": [
+            17.0,
+            37.0,
+            -9.0
+          ]
+        },
+        "files": [
+          "Docs/Materials/native/rigid-root-before.png",
+          "Docs/Materials/native/rigid-root-after.png"
+        ]
+      }
+    },
+    {
+      "name": "native fixture system animation",
+      "pass": true,
+      "detail": {
+        "count": 3,
+        "capacity": 16,
+        "boundsCenter": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "boundsSize": [
+          3.42,
+          1.42,
+          1.42
+        ],
+        "material": "ParticleBoxCatalog",
+        "shader": "MorphForge/ParticleBoxCatalog",
+        "streams": [
+          "Position",
+          "Normal",
+          "Color",
+          "UV",
+          "UV2",
+          "SizeXYZ"
+        ]
+      }
+    },
+    {
+      "name": "native fixture system sixFace",
+      "pass": true,
+      "detail": {
+        "count": 1,
+        "capacity": 16,
+        "boundsCenter": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "boundsSize": [
+          1.42,
+          1.42,
+          1.42
+        ],
+        "material": "ParticleBoxCatalog",
+        "shader": "MorphForge/ParticleBoxCatalog",
+        "streams": [
+          "Position",
+          "Normal",
+          "Color",
+          "UV",
+          "UV2",
+          "SizeXYZ"
+        ]
+      }
+    },
+    {
+      "name": "native fixture system styles",
+      "pass": true,
+      "detail": {
+        "count": 4,
+        "capacity": 16,
+        "boundsCenter": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "boundsSize": [
+          4.42,
+          1.42,
+          1.42
+        ],
+        "material": "ParticleBoxCatalog",
+        "shader": "MorphForge/ParticleBoxCatalog",
+        "streams": [
+          "Position",
+          "Normal",
+          "Color",
+          "UV",
+          "UV2",
+          "SizeXYZ"
+        ]
+      }
+    },
+    {
+      "name": "native fixture system scale",
+      "pass": true,
+      "detail": {
+        "count": 1,
+        "capacity": 16,
+        "boundsCenter": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "boundsSize": [
+          0.71,
+          0.71,
+          0.71
+        ],
+        "material": "ParticleBoxCatalog",
+        "shader": "MorphForge/ParticleBoxCatalog",
+        "streams": [
+          "Position",
+          "Normal",
+          "Color",
+          "UV",
+          "UV2",
+          "SizeXYZ"
+        ]
+      }
+    },
+    {
+      "name": "PNG dimensions fixture25-frames.png",
+      "pass": true,
+      "detail": {
+        "expected": [
+          640,
+          480
+        ],
+        "actual": [
+          640,
+          480
+        ],
+        "bytes": 4421
+      }
+    },
+    {
+      "name": "decoded fixture25 0 blue",
+      "pass": true,
+      "detail": {
+        "x": 587,
+        "y": 240,
+        "radius": 34,
+        "expected": "blue",
+        "foreground": 4761,
+        "total": 4761,
+        "foregroundFraction": 1.0,
+        "expectedPixels": 4761,
+        "expectedCoverage": 1.0,
+        "classified": {
+          "blue": 4761
+        }
+      }
+    },
+    {
+      "name": "decoded fixture25 1 red",
+      "pass": true,
+      "detail": {
+        "x": 320,
+        "y": 240,
+        "radius": 34,
+        "expected": "red",
+        "foreground": 4761,
+        "total": 4761,
+        "foregroundFraction": 1.0,
+        "expectedPixels": 4761,
+        "expectedCoverage": 1.0,
+        "classified": {
+          "red": 4761
+        }
+      }
+    },
+    {
+      "name": "decoded fixture25 2 purple",
+      "pass": true,
+      "detail": {
+        "x": 53,
+        "y": 240,
+        "radius": 34,
+        "expected": "purple",
+        "foreground": 4761,
+        "total": 4761,
+        "foregroundFraction": 1.0,
+        "expectedPixels": 4761,
+        "expectedCoverage": 1.0,
+        "classified": {
+          "purple": 4761
+        }
+      }
+    },
+    {
+      "name": "PNG dimensions fixture26-px.png",
+      "pass": true,
+      "detail": {
+        "expected": [
+          384,
+          384
+        ],
+        "actual": [
+          384,
+          384
+        ],
+        "bytes": 2297
+      }
+    },
+    {
+      "name": "decoded fixture26 px red",
+      "pass": true,
+      "detail": {
+        "x": 192,
+        "y": 192,
+        "radius": 42,
+        "expected": "red",
+        "foreground": 7225,
+        "total": 7225,
+        "foregroundFraction": 1.0,
+        "expectedPixels": 7225,
+        "expectedCoverage": 1.0,
+        "classified": {
+          "red": 7225
+        }
+      }
+    },
+    {
+      "name": "PNG dimensions fixture26-nx.png",
+      "pass": true,
+      "detail": {
+        "expected": [
+          384,
+          384
+        ],
+        "actual": [
+          384,
+          384
+        ],
+        "bytes": 2297
+      }
+    },
+    {
+      "name": "decoded fixture26 nx green",
+      "pass": true,
+      "detail": {
+        "x": 192,
+        "y": 192,
+        "radius": 42,
+        "expected": "green",
+        "foreground": 7225,
+        "total": 7225,
+        "foregroundFraction": 1.0,
+        "expectedPixels": 7225,
+        "expectedCoverage": 1.0,
+        "classified": {
+          "green": 7225
+        }
+      }
+    },
+    {
+      "name": "PNG dimensions fixture26-py.png",
+      "pass": true,
+      "detail": {
+        "expected": [
+          384,
+          384
+        ],
+        "actual": [
+          384,
+          384
+        ],
+        "bytes": 2297
+      }
+    },
+    {
+      "name": "decoded fixture26 py blue",
+      "pass": true,
+      "detail": {
+        "x": 192,
+        "y": 192,
+        "radius": 42,
+        "expected": "blue",
+        "foreground": 7225,
+        "total": 7225,
+        "foregroundFraction": 1.0,
+        "expectedPixels": 7225,
+        "expectedCoverage": 1.0,
+        "classified": {
+          "blue": 7225
+        }
+      }
+    },
+    {
+      "name": "PNG dimensions fixture26-ny.png",
+      "pass": true,
+      "detail": {
+        "expected": [
+          384,
+          384
+        ],
+        "actual": [
+          384,
+          384
+        ],
+        "bytes": 2297
+      }
+    },
+    {
+      "name": "decoded fixture26 ny yellow",
+      "pass": true,
+      "detail": {
+        "x": 192,
+        "y": 192,
+        "radius": 42,
+        "expected": "yellow",
+        "foreground": 7225,
+        "total": 7225,
+        "foregroundFraction": 1.0,
+        "expectedPixels": 7225,
+        "expectedCoverage": 1.0,
+        "classified": {
+          "yellow": 7225
+        }
+      }
+    },
+    {
+      "name": "PNG dimensions fixture26-pz.png",
+      "pass": true,
+      "detail": {
+        "expected": [
+          384,
+          384
+        ],
+        "actual": [
+          384,
+          384
+        ],
+        "bytes": 2297
+      }
+    },
+    {
+      "name": "decoded fixture26 pz cyan",
+      "pass": true,
+      "detail": {
+        "x": 192,
+        "y": 192,
+        "radius": 42,
+        "expected": "cyan",
+        "foreground": 7225,
+        "total": 7225,
+        "foregroundFraction": 1.0,
+        "expectedPixels": 7225,
+        "expectedCoverage": 1.0,
+        "classified": {
+          "cyan": 7225
+        }
+      }
+    },
+    {
+      "name": "PNG dimensions fixture26-nz.png",
+      "pass": true,
+      "detail": {
+        "expected": [
+          384,
+          384
+        ],
+        "actual": [
+          384,
+          384
+        ],
+        "bytes": 2297
+      }
+    },
+    {
+      "name": "decoded fixture26 nz magenta",
+      "pass": true,
+      "detail": {
+        "x": 192,
+        "y": 192,
+        "radius": 42,
+        "expected": "magenta",
+        "foreground": 7225,
+        "total": 7225,
+        "foregroundFraction": 1.0,
+        "expectedPixels": 7225,
+        "expectedCoverage": 1.0,
+        "classified": {
+          "magenta": 7225
+        }
+      }
+    },
+    {
+      "name": "PNG dimensions catalog-styles.png",
+      "pass": true,
+      "detail": {
+        "expected": [
+          800,
+          480
+        ],
+        "actual": [
+          800,
+          480
+        ],
+        "bytes": 18310
+      }
+    },
+    {
+      "name": "PNG dimensions scale-1.png",
+      "pass": true,
+      "detail": {
+        "expected": [
+          512,
+          512
+        ],
+        "actual": [
+          512,
+          512
+        ],
+        "bytes": 4844
+      }
+    },
+    {
+      "name": "PNG dimensions scale-half.png",
+      "pass": true,
+      "detail": {
+        "expected": [
+          512,
+          512
+        ],
+        "actual": [
+          512,
+          512
+        ],
+        "bytes": 4844
+      }
+    },
+    {
+      "name": "decoded scale 0.5 per-pixel difference",
+      "pass": true,
+      "detail": {
+        "meanAbsoluteError": 0.0,
+        "changedFraction": 0.0,
+        "total": 47089
+      }
+    },
+    {
+      "name": "decoded scale 0.5 keeps checker transition count",
+      "pass": true,
+      "detail": {
+        "transitionsOne": 7,
+        "transitionsHalf": 7,
+        "tolerance": 1
+      }
+    },
+    {
+      "name": "PNG dimensions rigid-root-before.png",
+      "pass": true,
+      "detail": {
+        "expected": [
+          512,
+          512
+        ],
+        "actual": [
+          512,
+          512
+        ],
+        "bytes": 4136
+      }
+    },
+    {
+      "name": "PNG dimensions rigid-root-after.png",
+      "pass": true,
+      "detail": {
+        "expected": [
+          512,
+          512
+        ],
+        "actual": [
+          512,
+          512
+        ],
+        "bytes": 4136
+      }
+    },
+    {
+      "name": "decoded static texture unchanged after rigid root transform",
+      "pass": true,
+      "detail": {
+        "meanAbsoluteError": 0.0,
+        "changedFraction": 0.0,
+        "total": 130321
+      }
+    }
+  ],
+  "sourceReport": "{\r\n  \"success\": true,\r\n  \"completed\": true,\r\n  \"checks\": [\r\n    {\r\n      \"name\": \"fixture25 explicit animation frames blue/red/purple\",\r\n      \"pass\": true,\r\n      \"samples\": [\r\n        {\r\n          \"label\": \"frame0\",\r\n          \"expected\": \"blue\",\r\n          \"actual\": \"blue\",\r\n          \"rgb\": [\r\n            0.0,\r\n            0.0,\r\n            0.6\r\n          ],\r\n          \"desiredFrame\": 0,\r\n          \"attempt\": 0,\r\n          \"basePhase\": 0\r\n        },\r\n        {\r\n          \"label\": \"frame1\",\r\n          \"expected\": \"red\",\r\n          \"actual\": \"red\",\r\n          \"rgb\": [\r\n            0.6,\r\n            0.0,\r\n            0.0\r\n          ],\r\n          \"desiredFrame\": 1,\r\n          \"attempt\": 0,\r\n          \"basePhase\": 0\r\n        },\r\n        {\r\n          \"label\": \"frame2\",\r\n          \"expected\": \"purple\",\r\n          \"actual\": \"purple\",\r\n          \"rgb\": [\r\n            0.2901961,\r\n            0.0,\r\n            0.2901961\r\n          ],\r\n          \"desiredFrame\": 2,\r\n          \"attempt\": 0,\r\n          \"basePhase\": 0\r\n        }\r\n      ],\r\n      \"file\": \"Docs/Materials/native/fixture25-frames.png\",\r\n      \"note\": \"Particle A phases align one cube to each declared frame at capture.\"\r\n    },\r\n    {\r\n      \"name\": \"fixture26 face px\",\r\n      \"pass\": true,\r\n      \"expected\": \"red\",\r\n      \"actual\": \"red\",\r\n      \"rgb\": [\r\n        0.7490196,\r\n        0.1254902,\r\n        0.1254902\r\n      ],\r\n      \"file\": \"Docs/Materials/native/fixture26-px.png\"\r\n    },\r\n    {\r\n      \"name\": \"fixture26 face nx\",\r\n      \"pass\": true,\r\n      \"expected\": \"green\",\r\n      \"actual\": \"green\",\r\n      \"rgb\": [\r\n        0.0784313753,\r\n        0.5411765,\r\n        0.0784313753\r\n      ],\r\n      \"file\": \"Docs/Materials/native/fixture26-nx.png\"\r\n    },\r\n    {\r\n      \"name\": \"fixture26 face py\",\r\n      \"pass\": true,\r\n      \"expected\": \"blue\",\r\n      \"actual\": \"blue\",\r\n      \"rgb\": [\r\n        0.13333334,\r\n        0.13333334,\r\n        0.7882353\r\n      ],\r\n      \"file\": \"Docs/Materials/native/fixture26-py.png\"\r\n    },\r\n    {\r\n      \"name\": \"fixture26 face ny\",\r\n      \"pass\": true,\r\n      \"expected\": \"yellow\",\r\n      \"actual\": \"yellow\",\r\n      \"rgb\": [\r\n        0.5411765,\r\n        0.5411765,\r\n        0.0784313753\r\n      ],\r\n      \"file\": \"Docs/Materials/native/fixture26-ny.png\"\r\n    },\r\n    {\r\n      \"name\": \"fixture26 face pz\",\r\n      \"pass\": true,\r\n      \"expected\": \"cyan\",\r\n      \"actual\": \"cyan\",\r\n      \"rgb\": [\r\n        0.0784313753,\r\n        0.5411765,\r\n        0.5411765\r\n      ],\r\n      \"file\": \"Docs/Materials/native/fixture26-pz.png\"\r\n    },\r\n    {\r\n      \"name\": \"fixture26 face nz\",\r\n      \"pass\": true,\r\n      \"expected\": \"magenta\",\r\n      \"actual\": \"magenta\",\r\n      \"rgb\": [\r\n        0.819607854,\r\n        0.141176477,\r\n        0.819607854\r\n      ],\r\n      \"file\": \"Docs/Materials/native/fixture26-nz.png\"\r\n    },\r\n    {\r\n      \"name\": \"metal water cloud cutout visible\",\r\n      \"pass\": true,\r\n      \"samples\": [\r\n        {\r\n          \"style\": 10,\r\n          \"material\": \"metal\",\r\n          \"foreground\": 1.0,\r\n          \"pass\": true\r\n        },\r\n        {\r\n          \"style\": 16,\r\n          \"material\": \"water\",\r\n          \"foreground\": 1.0,\r\n          \"pass\": true\r\n        },\r\n        {\r\n          \"style\": 19,\r\n          \"material\": \"cloud\",\r\n          \"foreground\": 1.0,\r\n          \"pass\": true\r\n        },\r\n        {\r\n          \"style\": 21,\r\n          \"material\": \"cutout\",\r\n          \"foreground\": 0.6556239,\r\n          \"pass\": true\r\n        }\r\n      ],\r\n      \"file\": \"Docs/Materials/native/catalog-styles.png\"\r\n    },\r\n    {\r\n      \"name\": \"scale 0.5 keeps local UV pattern\",\r\n      \"pass\": true,\r\n      \"meanAbsoluteError\": 0.0,\r\n      \"threshold\": 0.06,\r\n      \"files\": [\r\n        \"Docs/Materials/native/scale-1.png\",\r\n        \"Docs/Materials/native/scale-half.png\"\r\n      ]\r\n    },\r\n    {\r\n      \"name\": \"static texture remains fixed after rigid root translation and rotation\",\r\n      \"pass\": true,\r\n      \"meanAbsoluteError\": 0.0,\r\n      \"changedFraction\": 0.0,\r\n      \"transform\": {\r\n        \"position\": [\r\n          3.0,\r\n          1.5,\r\n          -2.0\r\n        ],\r\n        \"euler\": [\r\n          17.0,\r\n          37.0,\r\n          -9.0\r\n        ]\r\n      },\r\n      \"files\": [\r\n        \"Docs/Materials/native/rigid-root-before.png\",\r\n        \"Docs/Materials/native/rigid-root-after.png\"\r\n      ]\r\n    }\r\n  ],\r\n  \"captures\": [\r\n    \"Docs/Materials/native/fixture25-frames.png\",\r\n    \"Docs/Materials/native/fixture26-px.png\",\r\n    \"Docs/Materials/native/fixture26-nx.png\",\r\n    \"Docs/Materials/native/fixture26-py.png\",\r\n    \"Docs/Materials/native/fixture26-ny.png\",\r\n    \"Docs/Materials/native/fixture26-pz.png\",\r\n    \"Docs/Materials/native/fixture26-nz.png\",\r\n    \"Docs/Materials/native/catalog-styles.png\",\r\n    \"Docs/Materials/native/scale-1.png\",\r\n    \"Docs/Materials/native/scale-half.png\",\r\n    \"Docs/Materials/native/rigid-root-before.png\",\r\n    \"Docs/Materials/native/rigid-root-after.png\"\r\n  ],\r\n  \"stats\": {\r\n    \"catalogMaterial\": \"ParticleBoxCatalog\",\r\n    \"animationParticles\": 3,\r\n    \"sixFaceParticles\": 1,\r\n    \"styleParticles\": 4,\r\n    \"scaleParticles\": 0,\r\n    \"fixture25FrameTime\": 0.05,\r\n    \"fixture25Frames\": 3,\r\n    \"fixture26FaceOrder\": [\r\n      \"+X\",\r\n      \"-X\",\r\n      \"+Y\",\r\n      \"-Y\",\r\n      \"+Z\",\r\n      \"-Z\"\r\n    ],\r\n    \"particleStats\": {\r\n      \"animation\": {\r\n        \"count\": 3,\r\n        \"capacity\": 16,\r\n        \"boundsCenter\": [\r\n          0.0,\r\n          0.0,\r\n          0.0\r\n        ],\r\n        \"boundsSize\": [\r\n          3.42,\r\n          1.42,\r\n          1.42\r\n        ],\r\n        \"material\": \"ParticleBoxCatalog\",\r\n        \"shader\": \"MorphForge/ParticleBoxCatalog\",\r\n        \"streams\": [\r\n          \"Position\",\r\n          \"Normal\",\r\n          \"Color\",\r\n          \"UV\",\r\n          \"UV2\",\r\n          \"SizeXYZ\"\r\n        ]\r\n      },\r\n      \"sixFace\": {\r\n        \"count\": 1,\r\n        \"capacity\": 16,\r\n        \"boundsCenter\": [\r\n          0.0,\r\n          0.0,\r\n          0.0\r\n        ],\r\n        \"boundsSize\": [\r\n          1.42,\r\n          1.42,\r\n          1.42\r\n        ],\r\n        \"material\": \"ParticleBoxCatalog\",\r\n        \"shader\": \"MorphForge/ParticleBoxCatalog\",\r\n        \"streams\": [\r\n          \"Position\",\r\n          \"Normal\",\r\n          \"Color\",\r\n          \"UV\",\r\n          \"UV2\",\r\n          \"SizeXYZ\"\r\n        ]\r\n      },\r\n      \"styles\": {\r\n        \"count\": 4,\r\n        \"capacity\": 16,\r\n        \"boundsCenter\": [\r\n          0.0,\r\n          0.0,\r\n          0.0\r\n        ],\r\n        \"boundsSize\": [\r\n          4.42,\r\n          1.42,\r\n          1.42\r\n        ],\r\n        \"material\": \"ParticleBoxCatalog\",\r\n        \"shader\": \"MorphForge/ParticleBoxCatalog\",\r\n        \"streams\": [\r\n          \"Position\",\r\n          \"Normal\",\r\n          \"Color\",\r\n          \"UV\",\r\n          \"UV2\",\r\n          \"SizeXYZ\"\r\n        ]\r\n      },\r\n      \"scale\": {\r\n        \"count\": 1,\r\n        \"capacity\": 16,\r\n        \"boundsCenter\": [\r\n          0.0,\r\n          0.0,\r\n          0.0\r\n        ],\r\n        \"boundsSize\": [\r\n          0.71,\r\n          0.71,\r\n          0.71\r\n        ],\r\n        \"material\": \"ParticleBoxCatalog\",\r\n        \"shader\": \"MorphForge/ParticleBoxCatalog\",\r\n        \"streams\": [\r\n          \"Position\",\r\n          \"Normal\",\r\n          \"Color\",\r\n          \"UV\",\r\n          \"UV2\",\r\n          \"SizeXYZ\"\r\n        ]\r\n      }\r\n    },\r\n    \"scope\": \"Actual native ParticleSystem + ParticleSystemRenderer + ParticleBoxCatalog shader; temporary Play rig\"\r\n  },\r\n  \"pixelScope\": \"PNG evidence is generated by Camera.Render + Texture2D.ReadPixels; this is not a VRChat client capture.\"\r\n}"
+}

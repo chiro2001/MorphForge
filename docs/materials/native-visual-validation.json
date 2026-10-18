@@ -1,0 +1,319 @@
+{
+  "success": true,
+  "completed": true,
+  "checks": [
+    {
+      "name": "fixture25 explicit animation frames blue/red/purple",
+      "pass": true,
+      "samples": [
+        {
+          "label": "frame0",
+          "expected": "blue",
+          "actual": "blue",
+          "rgb": [
+            0.0,
+            0.0,
+            0.6
+          ],
+          "desiredFrame": 0,
+          "attempt": 0,
+          "basePhase": 0
+        },
+        {
+          "label": "frame1",
+          "expected": "red",
+          "actual": "red",
+          "rgb": [
+            0.6,
+            0.0,
+            0.0
+          ],
+          "desiredFrame": 1,
+          "attempt": 0,
+          "basePhase": 0
+        },
+        {
+          "label": "frame2",
+          "expected": "purple",
+          "actual": "purple",
+          "rgb": [
+            0.2901961,
+            0.0,
+            0.2901961
+          ],
+          "desiredFrame": 2,
+          "attempt": 0,
+          "basePhase": 0
+        }
+      ],
+      "file": "Docs/Materials/native/fixture25-frames.png",
+      "note": "Particle A phases align one cube to each declared frame at capture."
+    },
+    {
+      "name": "fixture26 face px",
+      "pass": true,
+      "expected": "red",
+      "actual": "red",
+      "rgb": [
+        0.7490196,
+        0.1254902,
+        0.1254902
+      ],
+      "file": "Docs/Materials/native/fixture26-px.png"
+    },
+    {
+      "name": "fixture26 face nx",
+      "pass": true,
+      "expected": "green",
+      "actual": "green",
+      "rgb": [
+        0.0784313753,
+        0.5411765,
+        0.0784313753
+      ],
+      "file": "Docs/Materials/native/fixture26-nx.png"
+    },
+    {
+      "name": "fixture26 face py",
+      "pass": true,
+      "expected": "blue",
+      "actual": "blue",
+      "rgb": [
+        0.13333334,
+        0.13333334,
+        0.7882353
+      ],
+      "file": "Docs/Materials/native/fixture26-py.png"
+    },
+    {
+      "name": "fixture26 face ny",
+      "pass": true,
+      "expected": "yellow",
+      "actual": "yellow",
+      "rgb": [
+        0.5411765,
+        0.5411765,
+        0.0784313753
+      ],
+      "file": "Docs/Materials/native/fixture26-ny.png"
+    },
+    {
+      "name": "fixture26 face pz",
+      "pass": true,
+      "expected": "cyan",
+      "actual": "cyan",
+      "rgb": [
+        0.0784313753,
+        0.5411765,
+        0.5411765
+      ],
+      "file": "Docs/Materials/native/fixture26-pz.png"
+    },
+    {
+      "name": "fixture26 face nz",
+      "pass": true,
+      "expected": "magenta",
+      "actual": "magenta",
+      "rgb": [
+        0.819607854,
+        0.141176477,
+        0.819607854
+      ],
+      "file": "Docs/Materials/native/fixture26-nz.png"
+    },
+    {
+      "name": "metal water cloud cutout visible",
+      "pass": true,
+      "samples": [
+        {
+          "style": 10,
+          "material": "metal",
+          "foreground": 1.0,
+          "pass": true
+        },
+        {
+          "style": 16,
+          "material": "water",
+          "foreground": 1.0,
+          "pass": true
+        },
+        {
+          "style": 19,
+          "material": "cloud",
+          "foreground": 1.0,
+          "pass": true
+        },
+        {
+          "style": 21,
+          "material": "cutout",
+          "foreground": 0.6556239,
+          "pass": true
+        }
+      ],
+      "file": "Docs/Materials/native/catalog-styles.png"
+    },
+    {
+      "name": "scale 0.5 keeps local UV pattern",
+      "pass": true,
+      "meanAbsoluteError": 0.0,
+      "threshold": 0.06,
+      "files": [
+        "Docs/Materials/native/scale-1.png",
+        "Docs/Materials/native/scale-half.png"
+      ]
+    },
+    {
+      "name": "static texture remains fixed after rigid root translation and rotation",
+      "pass": true,
+      "meanAbsoluteError": 0.0,
+      "changedFraction": 0.0,
+      "transform": {
+        "position": [
+          3.0,
+          1.5,
+          -2.0
+        ],
+        "euler": [
+          17.0,
+          37.0,
+          -9.0
+        ]
+      },
+      "files": [
+        "Docs/Materials/native/rigid-root-before.png",
+        "Docs/Materials/native/rigid-root-after.png"
+      ]
+    }
+  ],
+  "captures": [
+    "Docs/Materials/native/fixture25-frames.png",
+    "Docs/Materials/native/fixture26-px.png",
+    "Docs/Materials/native/fixture26-nx.png",
+    "Docs/Materials/native/fixture26-py.png",
+    "Docs/Materials/native/fixture26-ny.png",
+    "Docs/Materials/native/fixture26-pz.png",
+    "Docs/Materials/native/fixture26-nz.png",
+    "Docs/Materials/native/catalog-styles.png",
+    "Docs/Materials/native/scale-1.png",
+    "Docs/Materials/native/scale-half.png",
+    "Docs/Materials/native/rigid-root-before.png",
+    "Docs/Materials/native/rigid-root-after.png"
+  ],
+  "stats": {
+    "catalogMaterial": "ParticleBoxCatalog",
+    "animationParticles": 3,
+    "sixFaceParticles": 1,
+    "styleParticles": 4,
+    "scaleParticles": 0,
+    "fixture25FrameTime": 0.05,
+    "fixture25Frames": 3,
+    "fixture26FaceOrder": [
+      "+X",
+      "-X",
+      "+Y",
+      "-Y",
+      "+Z",
+      "-Z"
+    ],
+    "particleStats": {
+      "animation": {
+        "count": 3,
+        "capacity": 16,
+        "boundsCenter": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "boundsSize": [
+          3.42,
+          1.42,
+          1.42
+        ],
+        "material": "ParticleBoxCatalog",
+        "shader": "MorphForge/ParticleBoxCatalog",
+        "streams": [
+          "Position",
+          "Normal",
+          "Color",
+          "UV",
+          "UV2",
+          "SizeXYZ"
+        ]
+      },
+      "sixFace": {
+        "count": 1,
+        "capacity": 16,
+        "boundsCenter": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "boundsSize": [
+          1.42,
+          1.42,
+          1.42
+        ],
+        "material": "ParticleBoxCatalog",
+        "shader": "MorphForge/ParticleBoxCatalog",
+        "streams": [
+          "Position",
+          "Normal",
+          "Color",
+          "UV",
+          "UV2",
+          "SizeXYZ"
+        ]
+      },
+      "styles": {
+        "count": 4,
+        "capacity": 16,
+        "boundsCenter": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "boundsSize": [
+          4.42,
+          1.42,
+          1.42
+        ],
+        "material": "ParticleBoxCatalog",
+        "shader": "MorphForge/ParticleBoxCatalog",
+        "streams": [
+          "Position",
+          "Normal",
+          "Color",
+          "UV",
+          "UV2",
+          "SizeXYZ"
+        ]
+      },
+      "scale": {
+        "count": 1,
+        "capacity": 16,
+        "boundsCenter": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "boundsSize": [
+          0.71,
+          0.71,
+          0.71
+        ],
+        "material": "ParticleBoxCatalog",
+        "shader": "MorphForge/ParticleBoxCatalog",
+        "streams": [
+          "Position",
+          "Normal",
+          "Color",
+          "UV",
+          "UV2",
+          "SizeXYZ"
+        ]
+      }
+    },
+    "scope": "Actual native ParticleSystem + ParticleSystemRenderer + ParticleBoxCatalog shader; temporary Play rig"
+  },
+  "pixelScope": "PNG evidence is generated by Camera.Render + Texture2D.ReadPixels; this is not a VRChat client capture."
+}

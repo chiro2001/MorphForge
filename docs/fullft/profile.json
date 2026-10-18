@@ -1,0 +1,97 @@
+{
+  "success": true,
+  "asset": "Assets/MorphForge/FullFT/FullFT_SyncProfile.asset",
+  "schemaVersion": 2,
+  "profileVersion": "fullft-sync-v2",
+  "avatarNamePrefix": "MorphForge_FullFT",
+  "expectedFtSyncedBits": 161,
+  "expectedFtSyncedParameters": 112,
+  "controls": [
+    "EyeTrackingActive",
+    "LipTrackingActive",
+    "EyeDilationEnable",
+    "VisemesEnable",
+    "FacialExpressionsDisabled",
+    "FaceTrackingEmulation",
+    "FaceTrackingLimits",
+    "MixExpressions"
+  ],
+  "disableGroups": [
+    {
+      "id": "foot-toe",
+      "label": "Foot/toe tracking and animation",
+      "remoteImpact": "Remote viewers no longer receive toe axis values or toe control toggles; the remote toe PhysBone/animation state can fall back to its default.",
+      "parameters": [
+        "AshiyubiLX",
+        "AshiyubiLY",
+        "AshiyubiRX",
+        "AshiyubiRY",
+        "ConstToggle",
+        "Toe",
+        "IsAshiyubiControllL",
+        "IsAshiyubiControllR"
+      ]
+    },
+    {
+      "id": "wand",
+      "label": "Nemesis wand and projectile state",
+      "remoteImpact": "Remote viewers no longer receive wand take/reload/aim/fire/selection state. Non-local clients may render the default wand or omit transient effects.",
+      "parameters": [
+        "Nem/AllowTakeWand",
+        "Nem/CloseFlag",
+        "Nem/Enhancement",
+        "Nem/Enhancemented",
+        "Nem/IsLightWand",
+        "Nem/NeedReload",
+        "Nem/Reload",
+        "Nem/Reticle",
+        "Nem/ReverceGrip",
+        "Nem/SelectParticle",
+        "Nem/ShotCount",
+        "Nem/ShotParticle",
+        "Nem/TakeWand",
+        "Nem/WandWorldFix",
+        "Nem/WavingReverce",
+        "Nem/WavingWand"
+      ]
+    },
+    {
+      "id": "sleep-supine",
+      "label": "Sleep, crouch and Supine state",
+      "remoteImpact": "Remote viewers no longer receive sleep/supine, crouch pose, root-height or foot-anchor state. This group is optional and is normally absent from the minimal FullFT test avatar.",
+      "parameters": [
+        "CrouchPose",
+        "RootHeight",
+        "SetRootHeight",
+        "VRCFootAnchor",
+        "VRCLockPose",
+        "VRCSupine",
+        "VRCSupinePoseAdjust"
+      ]
+    },
+    {
+      "id": "legacy-facial-selector",
+      "label": "Legacy facial preset selector",
+      "remoteImpact": "Remote viewers no longer receive the locally selected legacy facial set. The source drivers are local-only, so remote clients otherwise stay at set 0. Current FaceLock/Fasial result state remains protected.",
+      "parameters": [
+        "GestureNum",
+        "FasialSetNumGlobal"
+      ]
+    },
+    {
+      "id": "fullft-cohabitation-trim",
+      "label": "Nonessential FullFT cohabitation controls",
+      "remoteImpact": "Remote viewers no longer receive the legacy manual FaceLock/Fasial preset selection, shield toggle, jump-collider toggle, face-petting gesture state, head-petting toggle, or tail-collider toggle. High-frequency FT/v2 tracking, the eight VRCFT controls, MF3 geometry, and placement remain direct.",
+      "parameters": [
+        "FaceLock",
+        "Fasial",
+        "AllowShield",
+        "ColliderJump",
+        "NadeNadeFace",
+        "NadeNadeHeadToggle",
+        "TailColliderDisable"
+      ]
+    }
+  ],
+  "preserveUnknownSync": true
+}

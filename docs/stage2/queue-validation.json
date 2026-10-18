@@ -1,0 +1,213 @@
+{
+  "success": true,
+  "scope": "Editor local burst; tests queue isolation, not VRChat network throughput",
+  "sender": {
+    "sent": true,
+    "protocol": "MF2/single-commit",
+    "source": "independent Python UDP OSC process",
+    "port": 9012,
+    "commands": 2,
+    "nextSeq": 2,
+    "interval": 0.025,
+    "repeat": false,
+    "actualIntervals": [
+      0.031000000002677552
+    ],
+    "operations": [
+      {
+        "command": {
+          "op": "box",
+          "min": [
+            128,
+            128,
+            128
+          ],
+          "size": [
+            2,
+            3,
+            1
+          ],
+          "styleId": 1,
+          "tintId": 63,
+          "motionPhase": 21
+        },
+        "seq": 0,
+        "control": 1,
+        "payload": [
+          128,
+          128,
+          128,
+          1,
+          2,
+          0,
+          1,
+          0,
+          63,
+          21
+        ]
+      },
+      {
+        "command": {
+          "op": "box",
+          "min": [
+            132,
+            128,
+            128
+          ],
+          "size": [
+            3,
+            1,
+            4
+          ],
+          "styleId": 4095,
+          "tintId": 17,
+          "motionPhase": 63
+        },
+        "seq": 1,
+        "control": 9,
+        "payload": [
+          132,
+          128,
+          128,
+          2,
+          0,
+          3,
+          63,
+          63,
+          17,
+          63
+        ]
+      }
+    ]
+  },
+  "capture": {
+    "label": "queue-isolation",
+    "environment": "Unity Play Mode + native Gesture Manager OSC, not VRChat client",
+    "count": 2,
+    "sourceControl": 9,
+    "source": [
+      132,
+      128,
+      128,
+      2,
+      0,
+      3,
+      63,
+      63,
+      17,
+      63
+    ],
+    "received": 2.0,
+    "completed": 2.0,
+    "inboxReady": false,
+    "lastRxSeq": 1,
+    "work": [
+      132.0,
+      128.0,
+      128.0,
+      2.0,
+      0.0,
+      3.0,
+      63.0,
+      63.0,
+      17.0,
+      63.0
+    ],
+    "op": 1,
+    "lastSeq": 1,
+    "busy": false,
+    "pumpActive": false,
+    "triggerEnabled": false,
+    "storePlaying": true,
+    "storePaused": false,
+    "particles": [
+      {
+        "position": [
+          0.250000954,
+          0.375000954,
+          0.125000954
+        ],
+        "size": [
+          0.5,
+          0.75,
+          0.25
+        ],
+        "color": [
+          4,
+          0,
+          255,
+          85
+        ],
+        "codes": [
+          1,
+          0,
+          63,
+          21
+        ],
+        "remainingLifetime": "Infinity",
+        "startLifetime": "Infinity"
+      },
+      {
+        "position": [
+          1.375001,
+          0.125000954,
+          0.500000954
+        ],
+        "size": [
+          0.75,
+          0.25,
+          1.0
+        ],
+        "color": [
+          255,
+          255,
+          69,
+          255
+        ],
+        "codes": [
+          63,
+          63,
+          17,
+          63
+        ],
+        "remainingLifetime": "Infinity",
+        "startLifetime": "Infinity"
+      }
+    ],
+    "nativeStartSize": [
+      0.75,
+      0.25,
+      1.0
+    ],
+    "locator": [
+      1.000001,
+      9.536743e-07,
+      9.536743e-07
+    ],
+    "centerOffset": [
+      0.375,
+      0.125,
+      0.5
+    ],
+    "eraseScale": [
+      0.025,
+      0.025,
+      0.025
+    ],
+    "expectedPath": "Docs/Stage2/queue-expected.json",
+    "actualImage": "Docs/Stage2/queue-isolation.png",
+    "referenceImage": "Docs/Stage2/queue-isolation-reference.png",
+    "foregroundPixels": 31918,
+    "referenceMeanAbsoluteError": 0.0,
+    "referenceMaxError": 0,
+    "traceEvents": 13
+  },
+  "checks": {
+    "bothReceivedCompleted": true,
+    "twoParticles": true,
+    "referenceImage": true,
+    "immutableBirth0": true,
+    "immutableBirth1": true
+  },
+  "queueObservedDuringBusy": true
+}

@@ -1,0 +1,44 @@
+{
+  "status": "analytical_candidates_not_benchmarks",
+  "date": "2026-10-18",
+  "state_interval_assumed_s": 0.2,
+  "interface": {
+    "control_bits": 8,
+    "payload_int_count": 16,
+    "payload_bits": 128,
+    "total_bits": 136,
+    "control_budget_fraction": 0.058823529411764705
+  },
+  "independent_record_batch": {
+    "records": 2,
+    "effective_record_bits": 48,
+    "effective_batch_bits": 96,
+    "unused_metadata_bits": 16,
+    "count_and_reserved_bits": 16,
+    "effective_fraction_of_interface_bits": 0.7058823529411765
+  },
+  "candidates": [
+    {"name": "independent_two_state_baseline", "voxels_per_batch": 2, "network_slots": 2, "cycle_s": 0.4, "ideal_voxels_per_s": 5, "ideal_1024_voxels_s": 204.8},
+    {"name": "independent_single_state", "voxels_per_batch": 2, "network_slots": 1, "cycle_s": 0.2, "ideal_voxels_per_s": 10, "ideal_1024_voxels_s": 102.4},
+    {"name": "shared_description_two_state", "voxels_per_batch": 4, "network_slots": 2, "cycle_s": 0.4, "ideal_voxels_per_s": 10, "ideal_1024_voxels_s": 102.4},
+    {"name": "shared_description_single_state", "voxels_per_batch": 4, "network_slots": 1, "cycle_s": 0.2, "ideal_voxels_per_s": 20, "ideal_1024_voxels_s": 51.2}
+  ],
+  "shared_description_batch": {
+    "metadata_lanes": 4,
+    "position_lanes": 12,
+    "position_records": 4,
+    "count_encoded_in": "D00_bits6_7_as_count_minus_one",
+    "max_count": 4,
+    "style_low_encoded_in": "D00_bits0_5"
+  },
+  "double_wire_bank_comparison": {
+    "two_8_lane_banks_each_records": 1,
+    "ideal_pipelined_voxels_per_s": 5,
+    "two_16_lane_banks_payload_bits": 256,
+    "with_8bit_control_bits": 264,
+    "with_assumed_89bit_existing_avatar_bits": 353
+  },
+  "object_commit_overhead_example": {"data_batches": 512, "boundary_batches": 2, "additional_fraction_vs_data_batches": 0.00390625},
+  "single_state_requires_new_receiver_validation": true,
+  "native_receiver_rate_limit_not_measured": true
+}

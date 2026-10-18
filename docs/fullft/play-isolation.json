@@ -1,0 +1,35 @@
+{
+  "success": true,
+  "phase": "prepare",
+  "capturedAtUtc": "2026-10-18T21:33:44.0822527Z",
+  "targetScene": "Assets/MorphForge/FullFT/MorphForge_FullFT.unity",
+  "sourceScene": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+  "sourceSceneSha256Before": "B09F22C2F830ADF876DB8FE2754C6AD0F81221706B71534BA9FA012F82092FED",
+  "sourceSceneSha256AfterPrepare": "B09F22C2F830ADF876DB8FE2754C6AD0F81221706B71534BA9FA012F82092FED",
+  "sourceSceneDirtyBefore": true,
+  "capturedUnsavedSource": true,
+  "sourceSceneSavedOrDiscarded": false,
+  "sourceSceneStillOpen": true,
+  "disabledObjects": [
+    {
+      "scenePath": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+      "path": "MorphForge_Stage3_Avatar",
+      "activeSelf": true
+    },
+    {
+      "scenePath": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+      "path": "MorphForge Stage3 Gesture Manager",
+      "activeSelf": true
+    },
+    {
+      "scenePath": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+      "path": "MorphForge Test Receiver",
+      "activeSelf": true
+    }
+  ],
+  "activeAvatarCount": 1,
+  "activeGestureManagerCount": 1,
+  "activeReceiverCount": 1,
+  "receivePort": 9012,
+  "sendPort": 9013
+}

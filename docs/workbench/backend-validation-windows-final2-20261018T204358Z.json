@@ -1,0 +1,162 @@
+{
+  "format": "MorphForgeBackendValidation/1",
+  "label": "windows-final2",
+  "startedAt": "2026-10-18T20:43:58.192616+00:00",
+  "target": {
+    "host": "127.0.0.1",
+    "port": 65465,
+    "scheme": "http"
+  },
+  "safety": {
+    "providerEndpointCalled": false,
+    "oscEndpointCalled": false,
+    "diagnosticPayloadsOrSecretsPrinted": false
+  },
+  "checks": [
+    {
+      "name": "target_health",
+      "status": "pass",
+      "details": {
+        "httpStatus": 200,
+        "revisionPresent": true
+      }
+    },
+    {
+      "name": "malformed_scene_import_atomicity",
+      "status": "pass",
+      "elapsedMs": 821,
+      "details": {
+        "allMalformedScenesRejectedAtomically": true,
+        "cases": [
+          {
+            "case": "empty_scene",
+            "httpStatus": 400,
+            "revisionUnchanged": true,
+            "sceneAndMaterialsUnchanged": true,
+            "passed": true
+          },
+          {
+            "case": "arbitrary_json_scene",
+            "httpStatus": 400,
+            "revisionUnchanged": true,
+            "sceneAndMaterialsUnchanged": true,
+            "passed": true
+          },
+          {
+            "case": "unknown_scene_format",
+            "httpStatus": 400,
+            "revisionUnchanged": true,
+            "sceneAndMaterialsUnchanged": true,
+            "passed": true
+          },
+          {
+            "case": "empty_nested_project_scene",
+            "httpStatus": 400,
+            "revisionUnchanged": true,
+            "sceneAndMaterialsUnchanged": true,
+            "passed": true
+          },
+          {
+            "case": "zero_size_scene",
+            "httpStatus": 400,
+            "revisionUnchanged": true,
+            "sceneAndMaterialsUnchanged": true,
+            "passed": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "bad_material_import_atomicity",
+      "status": "pass",
+      "elapsedMs": 299,
+      "details": {
+        "rootMaterialsHttpStatus": 400,
+        "rootRevisionUnchanged": true,
+        "rootSceneAndMaterialsUnchanged": true,
+        "nestedProjectMaterialsHttpStatus": 400,
+        "nestedProjectRevisionUnchanged": true,
+        "nestedProjectSceneAndMaterialsUnchanged": true
+      }
+    },
+    {
+      "name": "invalid_project_settings_atomicity",
+      "status": "pass",
+      "elapsedMs": 130,
+      "details": {
+        "httpStatus": 400,
+        "nameUnchanged": true,
+        "revisionUnchanged": true,
+        "sceneUnchanged": true
+      }
+    },
+    {
+      "name": "recipe_host_capability_isolation",
+      "status": "pass",
+      "elapsedMs": 224,
+      "details": {
+        "httpStatus": 200,
+        "hostFilesystemNetworkAndEnvironmentGlobalsAbsent": true,
+        "dryRunDidNotChangeGeometry": true
+      }
+    },
+    {
+      "name": "infinite_recipe_failure_rolls_back_geometry",
+      "status": "pass",
+      "elapsedMs": 271,
+      "details": {
+        "httpStatus": 400,
+        "failedWithoutApplyingStagedGeometry": true,
+        "responseBodyLogged": false
+      }
+    },
+    {
+      "name": "memory_limit_failure_rolls_back_geometry",
+      "status": "pass",
+      "elapsedMs": 7695,
+      "details": {
+        "httpStatus": 400,
+        "failedWithoutApplyingStagedGeometry": true,
+        "responseBodyLogged": false
+      }
+    },
+    {
+      "name": "duplicate_request_id_and_revision_conflict",
+      "status": "pass",
+      "elapsedMs": 349,
+      "details": {
+        "firstEditHttpStatus": 200,
+        "duplicateHttpStatus": 200,
+        "duplicateRequestIdReplayedWithoutNewRevision": true,
+        "staleRevisionHttpStatus": 409,
+        "revisionConflictPreservedScene": true
+      }
+    },
+    {
+      "name": "catalog_zip_texture_references",
+      "status": "pass",
+      "elapsedMs": 53,
+      "details": {
+        "packMaterialCount": 1,
+        "textureReferenceCount": 6,
+        "allReferencesResolveInsideCatalogZip": true,
+        "invalidReferenceCount": 0,
+        "missingReferenceCount": 0
+      }
+    },
+    {
+      "name": "diagnostics_redaction_and_exclusions",
+      "status": "pass",
+      "elapsedMs": 8,
+      "details": {
+        "memberCount": 10,
+        "credentialAndEnvironmentFilesAbsent": true,
+        "credentialLikeContentAbsent": true,
+        "browserProfileFilesAbsent": true,
+        "manifestDeclaresSensitiveExclusions": true
+      }
+    }
+  ],
+  "finishedAt": "2026-10-18T20:44:08.046181+00:00",
+  "overall": "pass"
+}

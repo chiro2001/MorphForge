@@ -1,0 +1,48 @@
+{
+  "status": "control_api_proposal_not_implemented",
+  "date": "2026-10-18",
+  "scope": "control_fields_and_api_only_payload_lane_count_unchanged",
+  "old_control_bits": 32,
+  "proposed_control_parameter": {
+    "name": "MF_Ctl",
+    "type": "Int",
+    "synced_bits": 8,
+    "opcode": {"offset": 0, "width": 3},
+    "phase": {"offset": 3, "width": 1},
+    "seq": {"offset": 4, "width": 4},
+    "phase_codes": {"0": "prepare", "1": "execute"},
+    "seq_modulus": 16
+  },
+  "api": [
+    {"opcode": 0, "name": "Nop", "args": []},
+    {"opcode": 1, "name": "SetVoxels", "args": ["records_1_or_2"]},
+    {"opcode": 2, "name": "EraseBox", "args": ["minXYZ", "maxXYZ"]},
+    {"opcode": 3, "name": "SetMotionGroup", "args": ["groupId", "config16"], "target_location": "D15_bits2_4"},
+    {"opcode": 4, "name": "SetDisplay", "args": ["visible", "packId"]},
+    {"opcode": 5, "name": "ClearScene", "args": []},
+    {"opcode": 6, "name": "Reserved", "args": []},
+    {"opcode": 7, "name": "Extended", "args": ["subOpcode", "args"]}
+  ],
+  "motion_group_D15": {
+    "bits0_1": "motion_flags",
+    "bits2_4": "group_id",
+    "bits5_7": "reserved_zero"
+  },
+  "comparison_with_payload_count_unchanged": {
+    "existing_avatar_bits_assumed": 89,
+    "payload_int_count": 16,
+    "payload_bits": 128,
+    "new_control_bits": 8,
+    "new_total_bits": 225,
+    "remaining_bits": 31,
+    "saved_control_bits": 24
+  },
+  "not_equivalent_to_old_header": [
+    "sequence_window_reduced_from_256_to_16",
+    "no_per_command_epoch",
+    "no_per_command_version",
+    "no_ack_or_atomic_delivery_guarantee"
+  ],
+  "fragmentation_profile": "not_designed_in_this_proposal",
+  "payload_lane_configuration": "deferred_as_requested"
+}

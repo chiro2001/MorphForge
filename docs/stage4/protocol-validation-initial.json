@@ -1,0 +1,2363 @@
+{
+  "success": true,
+  "scope": "Actual independent Windows UDP9012 -> automatic GM -> MF3 native FX -> native particles",
+  "checks": [
+    {
+      "name": "Play receiver auto started",
+      "pass": true
+    },
+    {
+      "name": "New MF3 starts with zero commands",
+      "pass": true
+    },
+    {
+      "name": "clear count",
+      "pass": true
+    },
+    {
+      "name": "clear every command completed",
+      "pass": true
+    },
+    {
+      "name": "brush-max count",
+      "pass": true
+    },
+    {
+      "name": "brush-max every command completed",
+      "pass": true
+    },
+    {
+      "name": "brush-max native center [128, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "brush-max native size",
+      "pass": true
+    },
+    {
+      "name": "brush-max native metadata",
+      "pass": true
+    },
+    {
+      "name": "brush-preserves-old-and-voxel-forces-size count",
+      "pass": true
+    },
+    {
+      "name": "brush-preserves-old-and-voxel-forces-size every command completed",
+      "pass": true
+    },
+    {
+      "name": "brush-preserves-old-and-voxel-forces-size native center [128, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "brush-preserves-old-and-voxel-forces-size native size",
+      "pass": true
+    },
+    {
+      "name": "brush-preserves-old-and-voxel-forces-size native metadata",
+      "pass": true
+    },
+    {
+      "name": "brush-preserves-old-and-voxel-forces-size native center [133, 1, 128]",
+      "pass": true
+    },
+    {
+      "name": "brush-preserves-old-and-voxel-forces-size native size",
+      "pass": true
+    },
+    {
+      "name": "brush-preserves-old-and-voxel-forces-size native metadata",
+      "pass": true
+    },
+    {
+      "name": "overwrite-no-duplicate count",
+      "pass": true
+    },
+    {
+      "name": "overwrite-no-duplicate every command completed",
+      "pass": true
+    },
+    {
+      "name": "overwrite-no-duplicate native center [128, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "overwrite-no-duplicate native size",
+      "pass": true
+    },
+    {
+      "name": "overwrite-no-duplicate native metadata",
+      "pass": true
+    },
+    {
+      "name": "overwrite-no-duplicate native center [133, 1, 128]",
+      "pass": true
+    },
+    {
+      "name": "overwrite-no-duplicate native size",
+      "pass": true
+    },
+    {
+      "name": "overwrite-no-duplicate native metadata",
+      "pass": true
+    },
+    {
+      "name": "duplicate-sequence-ignored count",
+      "pass": true
+    },
+    {
+      "name": "duplicate-sequence-ignored every command completed",
+      "pass": true
+    },
+    {
+      "name": "duplicate-sequence-ignored native center [128, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "duplicate-sequence-ignored native size",
+      "pass": true
+    },
+    {
+      "name": "duplicate-sequence-ignored native metadata",
+      "pass": true
+    },
+    {
+      "name": "duplicate-sequence-ignored native center [133, 1, 128]",
+      "pass": true
+    },
+    {
+      "name": "duplicate-sequence-ignored native size",
+      "pass": true
+    },
+    {
+      "name": "duplicate-sequence-ignored native metadata",
+      "pass": true
+    },
+    {
+      "name": "remove-exact count",
+      "pass": true
+    },
+    {
+      "name": "remove-exact every command completed",
+      "pass": true
+    },
+    {
+      "name": "remove-exact native center [133, 1, 128]",
+      "pass": true
+    },
+    {
+      "name": "remove-exact native size",
+      "pass": true
+    },
+    {
+      "name": "remove-exact native metadata",
+      "pass": true
+    },
+    {
+      "name": "erase-region count",
+      "pass": true
+    },
+    {
+      "name": "erase-region every command completed",
+      "pass": true
+    },
+    {
+      "name": "clear-retains-brush count",
+      "pass": true
+    },
+    {
+      "name": "clear-retains-brush every command completed",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 count",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 every command completed",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [0, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [3, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [6, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [9, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [12, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [15, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [18, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [21, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [24, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [27, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [30, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [33, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [36, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [39, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [42, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [45, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [48, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [51, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [54, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [57, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [60, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [63, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [66, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [69, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [72, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [75, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [78, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [81, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [84, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [87, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [90, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [93, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [96, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [99, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [102, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [105, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [108, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [111, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [114, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native center [117, 0, 128]",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native size",
+      "pass": true
+    },
+    {
+      "name": "sequence-wrap-40 native metadata",
+      "pass": true
+    },
+    {
+      "name": "finish-clear count",
+      "pass": true
+    },
+    {
+      "name": "finish-clear every command completed",
+      "pass": true
+    }
+  ],
+  "captures": [
+    {
+      "frame": 31514,
+      "avatar": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor": [
+        0.0,
+        0.5701405,
+        0.3420843
+      ],
+      "anchorEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentUp": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "contentForward": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contentScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world": true,
+      "leveled": true,
+      "grab": 0,
+      "grabL": false,
+      "grabR": false,
+      "frozen": true,
+      "count": 0,
+      "capacity": 16384,
+      "received": 1.0,
+      "completed": 1.0,
+      "busy": false,
+      "inbox": false,
+      "brush": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "particles": [],
+      "label": "clear"
+    },
+    {
+      "frame": 32027,
+      "avatar": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor": [
+        0.0,
+        0.5701405,
+        0.3420843
+      ],
+      "anchorEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentUp": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "contentForward": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contentScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world": true,
+      "leveled": true,
+      "grab": 0,
+      "grabL": false,
+      "grabR": false,
+      "frozen": true,
+      "count": 1,
+      "capacity": 16384,
+      "received": 3.0,
+      "completed": 3.0,
+      "busy": false,
+      "inbox": false,
+      "brush": [
+        63.0,
+        63.0,
+        63.0,
+        63.0
+      ],
+      "particles": [
+        {
+          "position": [
+            0.250000954,
+            -31.625,
+            0.500000954
+          ],
+          "size": [
+            0.5,
+            0.75,
+            1.0
+          ],
+          "worldPosition": [
+            0.250000954,
+            0.9451405,
+            0.842085242
+          ],
+          "codes": [
+            63,
+            63,
+            63,
+            63
+          ]
+        }
+      ],
+      "label": "brush-max"
+    },
+    {
+      "frame": 32542,
+      "avatar": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor": [
+        0.0,
+        0.5701405,
+        0.3420843
+      ],
+      "anchorEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentUp": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "contentForward": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contentScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world": true,
+      "leveled": true,
+      "grab": 0,
+      "grabL": false,
+      "grabR": false,
+      "frozen": true,
+      "count": 2,
+      "capacity": 16384,
+      "received": 5.0,
+      "completed": 5.0,
+      "busy": false,
+      "inbox": false,
+      "brush": [
+        2.0,
+        0.0,
+        0.0,
+        5.0
+      ],
+      "particles": [
+        {
+          "position": [
+            0.250000954,
+            -31.625,
+            0.500000954
+          ],
+          "size": [
+            0.5,
+            0.75,
+            1.0
+          ],
+          "worldPosition": [
+            0.250000954,
+            0.9451405,
+            0.842085242
+          ],
+          "codes": [
+            63,
+            63,
+            63,
+            63
+          ]
+        },
+        {
+          "position": [
+            1.375001,
+            -31.625,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            1.375001,
+            0.9451405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        }
+      ],
+      "label": "brush-preserves-old-and-voxel-forces-size"
+    },
+    {
+      "frame": 33010,
+      "avatar": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor": [
+        0.0,
+        0.5701405,
+        0.3420843
+      ],
+      "anchorEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentUp": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "contentForward": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contentScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world": true,
+      "leveled": true,
+      "grab": 0,
+      "grabL": false,
+      "grabR": false,
+      "frozen": true,
+      "count": 2,
+      "capacity": 16384,
+      "received": 6.0,
+      "completed": 6.0,
+      "busy": false,
+      "inbox": false,
+      "brush": [
+        2.0,
+        0.0,
+        0.0,
+        5.0
+      ],
+      "particles": [
+        {
+          "position": [
+            1.375001,
+            -31.625,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            1.375001,
+            0.9451405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            0.250000954,
+            -31.625,
+            0.500000954
+          ],
+          "size": [
+            0.5,
+            0.75,
+            1.0
+          ],
+          "worldPosition": [
+            0.250000954,
+            0.9451405,
+            0.842085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        }
+      ],
+      "label": "overwrite-no-duplicate"
+    },
+    {
+      "frame": 33463,
+      "avatar": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor": [
+        0.0,
+        0.5701405,
+        0.3420843
+      ],
+      "anchorEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentUp": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "contentForward": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contentScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world": true,
+      "leveled": true,
+      "grab": 0,
+      "grabL": false,
+      "grabR": false,
+      "frozen": true,
+      "count": 2,
+      "capacity": 16384,
+      "received": 6.0,
+      "completed": 6.0,
+      "busy": false,
+      "inbox": false,
+      "brush": [
+        2.0,
+        0.0,
+        0.0,
+        5.0
+      ],
+      "particles": [
+        {
+          "position": [
+            1.375001,
+            -31.625,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            1.375001,
+            0.9451405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            0.250000954,
+            -31.625,
+            0.500000954
+          ],
+          "size": [
+            0.5,
+            0.75,
+            1.0
+          ],
+          "worldPosition": [
+            0.250000954,
+            0.9451405,
+            0.842085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        }
+      ],
+      "label": "duplicate-sequence-ignored"
+    },
+    {
+      "frame": 33925,
+      "avatar": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor": [
+        0.0,
+        0.5701405,
+        0.3420843
+      ],
+      "anchorEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentUp": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "contentForward": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contentScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world": true,
+      "leveled": true,
+      "grab": 0,
+      "grabL": false,
+      "grabR": false,
+      "frozen": true,
+      "count": 1,
+      "capacity": 16384,
+      "received": 7.0,
+      "completed": 7.0,
+      "busy": false,
+      "inbox": false,
+      "brush": [
+        2.0,
+        0.0,
+        0.0,
+        5.0
+      ],
+      "particles": [
+        {
+          "position": [
+            1.375001,
+            -31.625,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            1.375001,
+            0.9451405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        }
+      ],
+      "label": "remove-exact"
+    },
+    {
+      "frame": 34389,
+      "avatar": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor": [
+        0.0,
+        0.5701405,
+        0.3420843
+      ],
+      "anchorEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentUp": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "contentForward": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contentScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world": true,
+      "leveled": true,
+      "grab": 0,
+      "grabL": false,
+      "grabR": false,
+      "frozen": true,
+      "count": 0,
+      "capacity": 16384,
+      "received": 8.0,
+      "completed": 8.0,
+      "busy": false,
+      "inbox": false,
+      "brush": [
+        2.0,
+        0.0,
+        0.0,
+        5.0
+      ],
+      "particles": [],
+      "label": "erase-region"
+    },
+    {
+      "frame": 34879,
+      "avatar": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor": [
+        0.0,
+        0.5701405,
+        0.3420843
+      ],
+      "anchorEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentUp": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "contentForward": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contentScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world": true,
+      "leveled": true,
+      "grab": 0,
+      "grabL": false,
+      "grabR": false,
+      "frozen": true,
+      "count": 0,
+      "capacity": 16384,
+      "received": 9.0,
+      "completed": 9.0,
+      "busy": false,
+      "inbox": false,
+      "brush": [
+        2.0,
+        0.0,
+        0.0,
+        5.0
+      ],
+      "particles": [],
+      "label": "clear-retains-brush"
+    },
+    {
+      "frame": 37008,
+      "avatar": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor": [
+        0.0,
+        0.5701405,
+        0.3420843
+      ],
+      "anchorEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentUp": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "contentForward": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contentScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world": true,
+      "leveled": true,
+      "grab": 0,
+      "grabL": false,
+      "grabR": false,
+      "frozen": true,
+      "count": 40,
+      "capacity": 16384,
+      "received": 49.0,
+      "completed": 49.0,
+      "busy": false,
+      "inbox": false,
+      "brush": [
+        2.0,
+        0.0,
+        0.0,
+        5.0
+      ],
+      "particles": [
+        {
+          "position": [
+            -31.875,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -31.875,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -31.125,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -31.125,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -30.375,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -30.375,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -29.625,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -29.625,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -28.875,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -28.875,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -28.125,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -28.125,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -27.375,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -27.375,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -26.625,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -26.625,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -25.875,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -25.875,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -25.125,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -25.125,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -24.375,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -24.375,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -23.625,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -23.625,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -22.875,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -22.875,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -22.125,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -22.125,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -21.375,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -21.375,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -20.625,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -20.625,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -19.875,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -19.875,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -19.125,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -19.125,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -18.375,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -18.375,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -17.625,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -17.625,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -16.875,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -16.875,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -16.125,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -16.125,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -15.375,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -15.375,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -14.625,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -14.625,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -13.875,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -13.875,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -13.125,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -13.125,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -12.375,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -12.375,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -11.625,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -11.625,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -10.875,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -10.875,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -10.125,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -10.125,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -9.375,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -9.375,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -8.625,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -8.625,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -7.875001,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -7.875001,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -7.125001,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -7.125001,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -6.375001,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -6.375001,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -5.625001,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -5.625001,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -4.875001,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -4.875001,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -4.125001,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -4.125001,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -3.375001,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -3.375001,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        },
+        {
+          "position": [
+            -2.625001,
+            -31.875,
+            0.125000954
+          ],
+          "size": [
+            0.25,
+            0.25,
+            0.25
+          ],
+          "worldPosition": [
+            -2.625001,
+            0.6951405,
+            0.467085242
+          ],
+          "codes": [
+            2,
+            0,
+            0,
+            5
+          ]
+        }
+      ],
+      "label": "sequence-wrap-40"
+    },
+    {
+      "frame": 37487,
+      "avatar": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "anchor": [
+        0.0,
+        0.5701405,
+        0.3420843
+      ],
+      "anchorEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "contentUp": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "contentForward": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "contentScale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world": true,
+      "leveled": true,
+      "grab": 0,
+      "grabL": false,
+      "grabR": false,
+      "frozen": true,
+      "count": 0,
+      "capacity": 16384,
+      "received": 50.0,
+      "completed": 50.0,
+      "busy": false,
+      "inbox": false,
+      "brush": [
+        2.0,
+        0.0,
+        0.0,
+        5.0
+      ],
+      "particles": [],
+      "label": "finish-clear"
+    }
+  ],
+  "commands": 50
+}

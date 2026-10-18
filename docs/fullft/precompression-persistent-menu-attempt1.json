@@ -1,0 +1,6 @@
+{
+  "success": false,
+  "stage": "Max-200",
+  "avatar": "MorphForge_FullFT_Avatar_Build",
+  "error": "System.InvalidOperationException: Refusing to modify persistent menu 'Packages/com.vrcfury.temp/Builds/MorphFo_ar_Build/VRCFury Other.asset' for control '固定在世界'. The VRCFury/MA build clone did not provide an in-memory final menu.\r\n  at MorphForge.Editor.FullFTBudgetUtil.PlanDirectMenuOverrides (UnityEngine.GameObject avatar, System.Collections.Generic.IEnumerable`1[T] parameterNames) [0x000aa] in D:\\Projects\\VRChatProjects2\\MorphForge\\Assets\\MorphForge\\Editor\\FullFTBudgetUtil.cs:373 \r\n  at MorphForge.Editor.FullFTSyncOverride.OnPreprocessAvatar (UnityEngine.GameObject avatarObject) [0x0077d] in D:\\Projects\\VRChatProjects2\\MorphForge\\Assets\\MorphForge\\Editor\\FullFTSyncOverride.cs:192 "
+}

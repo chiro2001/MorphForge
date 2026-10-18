@@ -1,0 +1,146 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "OSC disabled on launch",
+      "pass": true
+    },
+    {
+      "name": "Real pointer creates canonical positive cell",
+      "pass": true
+    },
+    {
+      "name": "Adjacent voxels merge",
+      "pass": true
+    },
+    {
+      "name": "Shift erases top cell",
+      "pass": true
+    },
+    {
+      "name": "Undo and redo visible",
+      "pass": true
+    },
+    {
+      "name": "One renderer canonical/Three Z conversion",
+      "pass": true
+    },
+    {
+      "name": "stress5k exact instances",
+      "pass": true
+    },
+    {
+      "name": "stress5k batches below32",
+      "pass": true
+    },
+    {
+      "name": "stress16k exact instances",
+      "pass": true
+    },
+    {
+      "name": "stress16k batches below32",
+      "pass": true
+    },
+    {
+      "name": "Independent capture binds exact revision",
+      "pass": true
+    },
+    {
+      "name": "Scene settings get a new immutable revision",
+      "pass": true
+    },
+    {
+      "name": "Recipe sandbox dry run retains revision",
+      "pass": true
+    },
+    {
+      "name": "No browser JS/WebGL errors",
+      "pass": true
+    }
+  ],
+  "measurements": {
+    "stress5k": {
+      "loadSeconds": 1.2329419259913266,
+      "instances": 5000,
+      "drawCalls": 7
+    },
+    "stress16k": {
+      "loadSeconds": 3.551168564707041,
+      "instances": 16384,
+      "drawCalls": 7
+    },
+    "captureSeconds": 0.6532150530256331
+  },
+  "capture": {
+    "id": "284303db-3b1e-4349-b245-7412f29b1973",
+    "images": [
+      {
+        "artifact": "69777fcb83b5e46d09e607f65e405bfc2f96b97dc55f3c914254ca8b87c1a2a2.png",
+        "camera": {
+          "fov": 42,
+          "position": [
+            25.149275580220785,
+            24.799456685165588,
+            31.49909447527599
+          ],
+          "target": [
+            -0.24999999999999997,
+            5.749999999999999,
+            -0.24999999999999997
+          ]
+        },
+        "height": 640,
+        "url": "/artifacts/69777fcb83b5e46d09e607f65e405bfc2f96b97dc55f3c914254ca8b87c1a2a2.png",
+        "view": "hero",
+        "width": 768
+      },
+      {
+        "artifact": "4cdcd936d56586f01c4b91f9a9455f7da970fc2f2cf9556a5d0ed05d340f6135.png",
+        "camera": {
+          "fov": 42,
+          "position": [
+            -0.2499999999999945,
+            11.099620405767531,
+            44.33017004806281
+          ],
+          "target": [
+            -0.24999999999999997,
+            5.749999999999999,
+            -0.24999999999999997
+          ]
+        },
+        "height": 640,
+        "url": "/artifacts/4cdcd936d56586f01c4b91f9a9455f7da970fc2f2cf9556a5d0ed05d340f6135.png",
+        "view": "front",
+        "width": 768
+      },
+      {
+        "artifact": "6111f236866556d82ad2c086c4d04359ddc449c9055602c98e3ad14d7f865e11.png",
+        "camera": {
+          "fov": 42,
+          "position": [
+            -0.24999999999999997,
+            50.6499997755,
+            -0.2455100000192564
+          ],
+          "target": [
+            -0.24999999999999997,
+            5.749999999999999,
+            -0.24999999999999997
+          ]
+        },
+        "height": 640,
+        "url": "/artifacts/6111f236866556d82ad2c086c4d04359ddc449c9055602c98e3ad14d7f865e11.png",
+        "view": "top",
+        "width": 768
+      }
+    ],
+    "ok": true,
+    "revision": 18,
+    "stats": {
+      "boxCount": 16384
+    }
+  },
+  "browserLogs": [],
+  "scope": "Real Chromium W3C input; no OSC enabled"
+}

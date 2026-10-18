@@ -1,0 +1,54 @@
+{
+  "success": true,
+  "scope": "Editor native temporary ContactSender + gesture parameter stimuli; not VR hardware or multiplayer",
+  "checks": [
+    {
+      "name": "HandL native Contact reaches Near",
+      "pass": true
+    },
+    {
+      "name": "HandL open hand alone does not grab",
+      "pass": true
+    },
+    {
+      "name": "HandL contact + fist drives synced Grab",
+      "pass": true
+    },
+    {
+      "name": "HandL leaving contact while closed retains hold",
+      "pass": true
+    },
+    {
+      "name": "HandL opening hand releases",
+      "pass": true
+    },
+    {
+      "name": "HandR native Contact reaches Near",
+      "pass": true
+    },
+    {
+      "name": "HandR open hand alone does not grab",
+      "pass": true
+    },
+    {
+      "name": "HandR contact + fist drives synced Grab",
+      "pass": true
+    },
+    {
+      "name": "HandR leaving contact while closed retains hold",
+      "pass": true
+    },
+    {
+      "name": "HandR opening hand releases",
+      "pass": true
+    },
+    {
+      "name": "Remote synced Grab selects right source without contacts",
+      "pass": true
+    },
+    {
+      "name": "Remote synced release freezes",
+      "pass": true
+    }
+  ]
+}

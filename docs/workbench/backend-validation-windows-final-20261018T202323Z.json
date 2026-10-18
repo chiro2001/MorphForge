@@ -1,0 +1,24 @@
+{
+  "format": "MorphForgeBackendValidation/1",
+  "label": "windows-final",
+  "startedAt": "2026-10-18T20:23:23.608558+00:00",
+  "target": {
+    "host": "127.0.0.1",
+    "port": 50314,
+    "scheme": "http"
+  },
+  "safety": {
+    "providerEndpointCalled": false,
+    "oscEndpointCalled": false,
+    "diagnosticPayloadsOrSecretsPrinted": false
+  },
+  "checks": [
+    {
+      "name": "target_health",
+      "status": "fail",
+      "reason": "http_transport_or_timeout"
+    }
+  ],
+  "overall": "fail",
+  "finishedAt": "2026-10-18T20:23:25.642200+00:00"
+}

@@ -1,0 +1,92 @@
+{
+  "label": "first-box",
+  "environment": "Unity Play Mode + native Gesture Manager OSC, not VRChat client",
+  "count": 1,
+  "sourceControl": 9,
+  "source": [
+    128,
+    128,
+    128,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+  ],
+  "work": [
+    128.0,
+    128.0,
+    128.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "op": 1,
+  "lastSeq": 0,
+  "busy": false,
+  "pumpActive": false,
+  "triggerEnabled": false,
+  "storePlaying": true,
+  "storePaused": false,
+  "particles": [
+    {
+      "position": [
+        0.0,
+        0.0,
+        0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": 5.96046448E-08,
+      "startLifetime": 0.5
+    }
+  ],
+  "nativeStartSize": [
+    0.25,
+    0.25,
+    0.25
+  ],
+  "locator": [
+    0.0,
+    0.0,
+    9.536743E-07
+  ],
+  "centerOffset": [
+    0.0,
+    0.0,
+    0.125
+  ],
+  "eraseScale": [
+    1.0,
+    1.0,
+    0.025
+  ],
+  "expectedPath": "",
+  "actualImage": "Docs/Stage1/first-box.png",
+  "referenceImage": "",
+  "foregroundPixels": 25600,
+  "referenceMeanAbsoluteError": 0.0,
+  "referenceMaxError": 0,
+  "traceEvents": 7
+}

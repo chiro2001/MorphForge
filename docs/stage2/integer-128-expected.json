@@ -1,0 +1,79 @@
+{
+  "boxes": [
+    {
+      "min": [
+        0,
+        128,
+        128
+      ],
+      "size": [
+        1,
+        1,
+        1
+      ],
+      "styleId": 4095,
+      "tintId": 63,
+      "motionPhase": 63
+    },
+    {
+      "min": [
+        63,
+        128,
+        128
+      ],
+      "size": [
+        1,
+        1,
+        1
+      ],
+      "styleId": 4095,
+      "tintId": 63,
+      "motionPhase": 63
+    },
+    {
+      "min": [
+        64,
+        128,
+        128
+      ],
+      "size": [
+        1,
+        1,
+        1
+      ],
+      "styleId": 4095,
+      "tintId": 63,
+      "motionPhase": 63
+    },
+    {
+      "min": [
+        127,
+        128,
+        128
+      ],
+      "size": [
+        1,
+        1,
+        1
+      ],
+      "styleId": 4095,
+      "tintId": 63,
+      "motionPhase": 63
+    },
+    {
+      "min": [
+        128,
+        128,
+        128
+      ],
+      "size": [
+        1,
+        1,
+        1
+      ],
+      "styleId": 4095,
+      "tintId": 63,
+      "motionPhase": 63
+    }
+  ]
+}

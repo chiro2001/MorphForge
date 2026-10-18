@@ -1,0 +1,122 @@
+{
+  "label": "resize-via-remove-set",
+  "environment": "Unity Play Mode + native Gesture Manager OSC, not VRChat client",
+  "count": 2,
+  "sourceControl": 129,
+  "source": [
+    120,
+    128,
+    128,
+    2,
+    4,
+    1,
+    2,
+    0,
+    0,
+    0
+  ],
+  "received": 17.0,
+  "completed": 17.0,
+  "inboxReady": false,
+  "lastRxSeq": 16,
+  "work": [
+    120.0,
+    128.0,
+    128.0,
+    2.0,
+    4.0,
+    1.0,
+    2.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "op": 1,
+  "lastSeq": 16,
+  "busy": false,
+  "pumpActive": false,
+  "triggerEnabled": false,
+  "storePlaying": true,
+  "storePaused": false,
+  "particles": [
+    {
+      "position": [
+        0.125000954,
+        0.125000954,
+        0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -1.625001,
+        0.625000954,
+        0.250000954
+      ],
+      "size": [
+        0.75,
+        1.25,
+        0.5
+      ],
+      "color": [
+        8,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    }
+  ],
+  "nativeStartSize": [
+    0.75,
+    1.25,
+    0.5
+  ],
+  "locator": [
+    -2.000001,
+    9.536743E-07,
+    9.536743E-07
+  ],
+  "centerOffset": [
+    0.375,
+    0.625,
+    0.25
+  ],
+  "eraseScale": [
+    0.025,
+    0.025,
+    0.025
+  ],
+  "expectedPath": "Docs/Stage2/resize-via-remove-set-expected.json",
+  "actualImage": "Docs/Stage2/resize-via-remove-set.png",
+  "referenceImage": "Docs/Stage2/resize-via-remove-set-reference.png",
+  "foregroundPixels": 26369,
+  "referenceMeanAbsoluteError": 0.0,
+  "referenceMaxError": 0,
+  "traceEvents": 99
+}

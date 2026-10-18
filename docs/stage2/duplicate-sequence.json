@@ -1,0 +1,122 @@
+{
+  "label": "duplicate-sequence",
+  "environment": "Unity Play Mode + native Gesture Manager OSC, not VRChat client",
+  "count": 2,
+  "sourceControl": 105,
+  "source": [
+    120,
+    128,
+    128,
+    1,
+    2,
+    3,
+    3,
+    0,
+    0,
+    0
+  ],
+  "received": 14.0,
+  "completed": 14.0,
+  "inboxReady": false,
+  "lastRxSeq": 13,
+  "work": [
+    120.0,
+    128.0,
+    128.0,
+    1.0,
+    2.0,
+    3.0,
+    3.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "op": 1,
+  "lastSeq": 13,
+  "busy": false,
+  "pumpActive": false,
+  "triggerEnabled": false,
+  "storePlaying": true,
+  "storePaused": false,
+  "particles": [
+    {
+      "position": [
+        0.125000954,
+        0.125000954,
+        0.125000954
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "color": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    },
+    {
+      "position": [
+        -1.750001,
+        0.375000954,
+        0.500000954
+      ],
+      "size": [
+        0.5,
+        0.75,
+        1.0
+      ],
+      "color": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    }
+  ],
+  "nativeStartSize": [
+    0.5,
+    0.75,
+    1.0
+  ],
+  "locator": [
+    -2.000001,
+    9.536743E-07,
+    9.536743E-07
+  ],
+  "centerOffset": [
+    0.25,
+    0.375,
+    0.5
+  ],
+  "eraseScale": [
+    0.025,
+    0.025,
+    0.025
+  ],
+  "expectedPath": "Docs/Stage2/duplicate-sequence-expected.json",
+  "actualImage": "",
+  "referenceImage": "",
+  "foregroundPixels": 0,
+  "referenceMeanAbsoluteError": 0.0,
+  "referenceMaxError": 0,
+  "traceEvents": 82
+}

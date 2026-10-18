@@ -1,0 +1,764 @@
+{
+  "success": true,
+  "scope": "Unity native OSC; uninterrupted loops, one UDP packet per command",
+  "results": [
+    {
+      "interval": 0.25,
+      "cycles": 3,
+      "success": true,
+      "capture": {
+        "label": "loop250-final",
+        "environment": "Unity Play Mode + native Gesture Manager OSC, not VRChat client",
+        "count": 0,
+        "sourceControl": 75,
+        "source": [
+          128,
+          128,
+          128,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "received": 74.0,
+        "completed": 74.0,
+        "inboxReady": false,
+        "lastRxSeq": 9,
+        "work": [
+          128.0,
+          128.0,
+          128.0,
+          1.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "op": 3,
+        "lastSeq": 9,
+        "busy": false,
+        "pumpActive": false,
+        "triggerEnabled": false,
+        "storePlaying": false,
+        "storePaused": false,
+        "particles": [],
+        "nativeStartSize": [
+          0.5,
+          0.25,
+          0.5
+        ],
+        "locator": [
+          9.536743e-07,
+          9.536743e-07,
+          9.536743e-07
+        ],
+        "centerOffset": [
+          0.25,
+          0.125,
+          0.25
+        ],
+        "eraseScale": [
+          0.025,
+          0.025,
+          0.025
+        ],
+        "expectedPath": "",
+        "actualImage": "",
+        "referenceImage": "",
+        "foregroundPixels": 0,
+        "referenceMeanAbsoluteError": 0.0,
+        "referenceMaxError": 0,
+        "traceEvents": 419
+      },
+      "senderOutput": "MF2 cycle 1: one command every 0.25s\r\nMF2 cycle 2: one command every 0.25s\r\nMF2 cycle 3: one command every 0.25s\r\nStopped MF2 loop.\r\n",
+      "completionCounts": {
+        "1": {
+          "actual": 0,
+          "expected": 0
+        },
+        "2": {
+          "actual": 0,
+          "expected": 0
+        },
+        "3": {
+          "actual": 1,
+          "expected": 1
+        },
+        "4": {
+          "actual": 2,
+          "expected": 2
+        },
+        "5": {
+          "actual": 3,
+          "expected": 3
+        },
+        "6": {
+          "actual": 4,
+          "expected": 4
+        },
+        "7": {
+          "actual": 5,
+          "expected": 5
+        },
+        "8": {
+          "actual": 6,
+          "expected": 6
+        },
+        "9": {
+          "actual": 7,
+          "expected": 7
+        },
+        "10": {
+          "actual": 8,
+          "expected": 8
+        },
+        "11": {
+          "actual": 8,
+          "expected": 8
+        },
+        "12": {
+          "actual": 8,
+          "expected": 8
+        },
+        "13": {
+          "actual": 8,
+          "expected": 8
+        },
+        "14": {
+          "actual": 8,
+          "expected": 8
+        },
+        "15": {
+          "actual": 8,
+          "expected": 8
+        },
+        "16": {
+          "actual": 8,
+          "expected": 8
+        },
+        "17": {
+          "actual": 8,
+          "expected": 8
+        },
+        "18": {
+          "actual": 8,
+          "expected": 8
+        },
+        "19": {
+          "actual": 7,
+          "expected": 7
+        },
+        "20": {
+          "actual": 6,
+          "expected": 6
+        },
+        "21": {
+          "actual": 5,
+          "expected": 5
+        },
+        "22": {
+          "actual": 4,
+          "expected": 4
+        },
+        "23": {
+          "actual": 3,
+          "expected": 3
+        },
+        "24": {
+          "actual": 2,
+          "expected": 2
+        },
+        "25": {
+          "actual": 1,
+          "expected": 1
+        },
+        "26": {
+          "actual": 0,
+          "expected": 0
+        },
+        "27": {
+          "actual": 1,
+          "expected": 1
+        },
+        "28": {
+          "actual": 2,
+          "expected": 2
+        },
+        "29": {
+          "actual": 3,
+          "expected": 3
+        },
+        "30": {
+          "actual": 4,
+          "expected": 4
+        },
+        "31": {
+          "actual": 5,
+          "expected": 5
+        },
+        "32": {
+          "actual": 6,
+          "expected": 6
+        },
+        "33": {
+          "actual": 7,
+          "expected": 7
+        },
+        "34": {
+          "actual": 8,
+          "expected": 8
+        },
+        "35": {
+          "actual": 8,
+          "expected": 8
+        },
+        "36": {
+          "actual": 8,
+          "expected": 8
+        },
+        "37": {
+          "actual": 8,
+          "expected": 8
+        },
+        "38": {
+          "actual": 8,
+          "expected": 8
+        },
+        "39": {
+          "actual": 8,
+          "expected": 8
+        },
+        "40": {
+          "actual": 8,
+          "expected": 8
+        },
+        "41": {
+          "actual": 8,
+          "expected": 8
+        },
+        "42": {
+          "actual": 8,
+          "expected": 8
+        },
+        "43": {
+          "actual": 7,
+          "expected": 7
+        },
+        "44": {
+          "actual": 6,
+          "expected": 6
+        },
+        "45": {
+          "actual": 5,
+          "expected": 5
+        },
+        "46": {
+          "actual": 4,
+          "expected": 4
+        },
+        "47": {
+          "actual": 3,
+          "expected": 3
+        },
+        "48": {
+          "actual": 2,
+          "expected": 2
+        },
+        "49": {
+          "actual": 1,
+          "expected": 1
+        },
+        "50": {
+          "actual": 0,
+          "expected": 0
+        },
+        "51": {
+          "actual": 1,
+          "expected": 1
+        },
+        "52": {
+          "actual": 2,
+          "expected": 2
+        },
+        "53": {
+          "actual": 3,
+          "expected": 3
+        },
+        "54": {
+          "actual": 4,
+          "expected": 4
+        },
+        "55": {
+          "actual": 5,
+          "expected": 5
+        },
+        "56": {
+          "actual": 6,
+          "expected": 6
+        },
+        "57": {
+          "actual": 7,
+          "expected": 7
+        },
+        "58": {
+          "actual": 8,
+          "expected": 8
+        },
+        "59": {
+          "actual": 8,
+          "expected": 8
+        },
+        "60": {
+          "actual": 8,
+          "expected": 8
+        },
+        "61": {
+          "actual": 8,
+          "expected": 8
+        },
+        "62": {
+          "actual": 8,
+          "expected": 8
+        },
+        "63": {
+          "actual": 8,
+          "expected": 8
+        },
+        "64": {
+          "actual": 8,
+          "expected": 8
+        },
+        "65": {
+          "actual": 8,
+          "expected": 8
+        },
+        "66": {
+          "actual": 8,
+          "expected": 8
+        },
+        "67": {
+          "actual": 7,
+          "expected": 7
+        },
+        "68": {
+          "actual": 6,
+          "expected": 6
+        },
+        "69": {
+          "actual": 5,
+          "expected": 5
+        },
+        "70": {
+          "actual": 4,
+          "expected": 4
+        },
+        "71": {
+          "actual": 3,
+          "expected": 3
+        },
+        "72": {
+          "actual": 2,
+          "expected": 2
+        },
+        "73": {
+          "actual": 1,
+          "expected": 1
+        },
+        "74": {
+          "actual": 0,
+          "expected": 0
+        }
+      },
+      "checks": {
+        "74CommandsReceivedCompleted": true,
+        "EveryCompletionObserved": true,
+        "NativeCountCorrectAfterEveryCommand": true,
+        "FinalEmpty": true
+      }
+    },
+    {
+      "interval": 0.2,
+      "cycles": 3,
+      "success": true,
+      "capture": {
+        "label": "loop200-final",
+        "environment": "Unity Play Mode + native Gesture Manager OSC, not VRChat client",
+        "count": 0,
+        "sourceControl": 75,
+        "source": [
+          128,
+          128,
+          128,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "received": 74.0,
+        "completed": 74.0,
+        "inboxReady": false,
+        "lastRxSeq": 9,
+        "work": [
+          128.0,
+          128.0,
+          128.0,
+          1.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "op": 3,
+        "lastSeq": 9,
+        "busy": false,
+        "pumpActive": false,
+        "triggerEnabled": false,
+        "storePlaying": false,
+        "storePaused": false,
+        "particles": [],
+        "nativeStartSize": [
+          0.5,
+          0.25,
+          0.5
+        ],
+        "locator": [
+          9.536743e-07,
+          9.536743e-07,
+          9.536743e-07
+        ],
+        "centerOffset": [
+          0.25,
+          0.125,
+          0.25
+        ],
+        "eraseScale": [
+          0.025,
+          0.025,
+          0.025
+        ],
+        "expectedPath": "",
+        "actualImage": "",
+        "referenceImage": "",
+        "foregroundPixels": 0,
+        "referenceMeanAbsoluteError": 0.0,
+        "referenceMaxError": 0,
+        "traceEvents": 419
+      },
+      "senderOutput": "MF2 cycle 1: one command every 0.2s\r\nMF2 cycle 2: one command every 0.2s\r\nMF2 cycle 3: one command every 0.2s\r\nStopped MF2 loop.\r\n",
+      "completionCounts": {
+        "1": {
+          "actual": 0,
+          "expected": 0
+        },
+        "2": {
+          "actual": 0,
+          "expected": 0
+        },
+        "3": {
+          "actual": 1,
+          "expected": 1
+        },
+        "4": {
+          "actual": 2,
+          "expected": 2
+        },
+        "5": {
+          "actual": 3,
+          "expected": 3
+        },
+        "6": {
+          "actual": 4,
+          "expected": 4
+        },
+        "7": {
+          "actual": 5,
+          "expected": 5
+        },
+        "8": {
+          "actual": 6,
+          "expected": 6
+        },
+        "9": {
+          "actual": 7,
+          "expected": 7
+        },
+        "10": {
+          "actual": 8,
+          "expected": 8
+        },
+        "11": {
+          "actual": 8,
+          "expected": 8
+        },
+        "12": {
+          "actual": 8,
+          "expected": 8
+        },
+        "13": {
+          "actual": 8,
+          "expected": 8
+        },
+        "14": {
+          "actual": 8,
+          "expected": 8
+        },
+        "15": {
+          "actual": 8,
+          "expected": 8
+        },
+        "16": {
+          "actual": 8,
+          "expected": 8
+        },
+        "17": {
+          "actual": 8,
+          "expected": 8
+        },
+        "18": {
+          "actual": 8,
+          "expected": 8
+        },
+        "19": {
+          "actual": 7,
+          "expected": 7
+        },
+        "20": {
+          "actual": 6,
+          "expected": 6
+        },
+        "21": {
+          "actual": 5,
+          "expected": 5
+        },
+        "22": {
+          "actual": 4,
+          "expected": 4
+        },
+        "23": {
+          "actual": 3,
+          "expected": 3
+        },
+        "24": {
+          "actual": 2,
+          "expected": 2
+        },
+        "25": {
+          "actual": 1,
+          "expected": 1
+        },
+        "26": {
+          "actual": 0,
+          "expected": 0
+        },
+        "27": {
+          "actual": 1,
+          "expected": 1
+        },
+        "28": {
+          "actual": 2,
+          "expected": 2
+        },
+        "29": {
+          "actual": 3,
+          "expected": 3
+        },
+        "30": {
+          "actual": 4,
+          "expected": 4
+        },
+        "31": {
+          "actual": 5,
+          "expected": 5
+        },
+        "32": {
+          "actual": 6,
+          "expected": 6
+        },
+        "33": {
+          "actual": 7,
+          "expected": 7
+        },
+        "34": {
+          "actual": 8,
+          "expected": 8
+        },
+        "35": {
+          "actual": 8,
+          "expected": 8
+        },
+        "36": {
+          "actual": 8,
+          "expected": 8
+        },
+        "37": {
+          "actual": 8,
+          "expected": 8
+        },
+        "38": {
+          "actual": 8,
+          "expected": 8
+        },
+        "39": {
+          "actual": 8,
+          "expected": 8
+        },
+        "40": {
+          "actual": 8,
+          "expected": 8
+        },
+        "41": {
+          "actual": 8,
+          "expected": 8
+        },
+        "42": {
+          "actual": 8,
+          "expected": 8
+        },
+        "43": {
+          "actual": 7,
+          "expected": 7
+        },
+        "44": {
+          "actual": 6,
+          "expected": 6
+        },
+        "45": {
+          "actual": 5,
+          "expected": 5
+        },
+        "46": {
+          "actual": 4,
+          "expected": 4
+        },
+        "47": {
+          "actual": 3,
+          "expected": 3
+        },
+        "48": {
+          "actual": 2,
+          "expected": 2
+        },
+        "49": {
+          "actual": 1,
+          "expected": 1
+        },
+        "50": {
+          "actual": 0,
+          "expected": 0
+        },
+        "51": {
+          "actual": 1,
+          "expected": 1
+        },
+        "52": {
+          "actual": 2,
+          "expected": 2
+        },
+        "53": {
+          "actual": 3,
+          "expected": 3
+        },
+        "54": {
+          "actual": 4,
+          "expected": 4
+        },
+        "55": {
+          "actual": 5,
+          "expected": 5
+        },
+        "56": {
+          "actual": 6,
+          "expected": 6
+        },
+        "57": {
+          "actual": 7,
+          "expected": 7
+        },
+        "58": {
+          "actual": 8,
+          "expected": 8
+        },
+        "59": {
+          "actual": 8,
+          "expected": 8
+        },
+        "60": {
+          "actual": 8,
+          "expected": 8
+        },
+        "61": {
+          "actual": 8,
+          "expected": 8
+        },
+        "62": {
+          "actual": 8,
+          "expected": 8
+        },
+        "63": {
+          "actual": 8,
+          "expected": 8
+        },
+        "64": {
+          "actual": 8,
+          "expected": 8
+        },
+        "65": {
+          "actual": 8,
+          "expected": 8
+        },
+        "66": {
+          "actual": 8,
+          "expected": 8
+        },
+        "67": {
+          "actual": 7,
+          "expected": 7
+        },
+        "68": {
+          "actual": 6,
+          "expected": 6
+        },
+        "69": {
+          "actual": 5,
+          "expected": 5
+        },
+        "70": {
+          "actual": 4,
+          "expected": 4
+        },
+        "71": {
+          "actual": 3,
+          "expected": 3
+        },
+        "72": {
+          "actual": 2,
+          "expected": 2
+        },
+        "73": {
+          "actual": 1,
+          "expected": 1
+        },
+        "74": {
+          "actual": 0,
+          "expected": 0
+        }
+      },
+      "checks": {
+        "74CommandsReceivedCompleted": true,
+        "EveryCompletionObserved": true,
+        "NativeCountCorrectAfterEveryCommand": true,
+        "FinalEmpty": true
+      }
+    }
+  ]
+}

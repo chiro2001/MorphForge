@@ -1,0 +1,9 @@
+{
+  "Assets/MorphForge/Editor/ParticleStage2Build.cs": "37d2326e53dccbc9e63e44a03e5dc19aaaac9ecc62c3f429664790ce98e90274",
+  "Assets/MorphForge/Editor/ParticleStage2Harness.cs": "e3c8d809b2bcc3732489a8725d47055b6adc6a3ac3109ef7d162dd7a4ab83636",
+  "Assets/MorphForge/Shaders/ParticleBoxLocalUV.shader": "00e22f65ea8bed932afccf4d493e148beeffbcd432d9f87d7f8d35b734d8f8c4",
+  "AgentScripts/ParticleStage2Entry.cs": "0bb28f260aeb0d11de5881caf8b14b659510cc60149face1ea749c36cfb842b0",
+  "AgentScripts/ParticleStage2PoseCheck.cs": "bc6ff5f7d1ff18c238090f81bf30e6536f1ba4852861c857d085056ed7c9bcd7",
+  "tools/send_stage2.py": "e1a643d69f05d30a84ce228667a3415add70df1a060e64022cad36fb6f6fe6b4",
+  "tools/loop_stage2.py": "0e35a0ddea9db3138b6b91d7c792fdc3bb17254a32c48eeb212d1f93f09d6ba3"
+}

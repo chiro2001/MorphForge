@@ -1,0 +1,96 @@
+{
+  "label": "wall-full",
+  "environment": "Unity Play Mode + native Gesture Manager OSC, not VRChat client",
+  "count": 1,
+  "sourceControl": 145,
+  "source": [
+    128,
+    128,
+    128,
+    19,
+    9,
+    0,
+    2,
+    0,
+    0,
+    0
+  ],
+  "received": 51.0,
+  "completed": 51.0,
+  "inboxReady": false,
+  "lastRxSeq": 18,
+  "work": [
+    128.0,
+    128.0,
+    128.0,
+    19.0,
+    9.0,
+    0.0,
+    2.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "op": 1,
+  "lastSeq": 18,
+  "busy": false,
+  "pumpActive": false,
+  "triggerEnabled": false,
+  "storePlaying": true,
+  "storePaused": false,
+  "particles": [
+    {
+      "position": [
+        2.500001,
+        1.250001,
+        0.125000954
+      ],
+      "size": [
+        5.0,
+        2.5,
+        0.25
+      ],
+      "color": [
+        8,
+        0,
+        0,
+        0
+      ],
+      "codes": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "remainingLifetime": "Infinity",
+      "startLifetime": "Infinity"
+    }
+  ],
+  "nativeStartSize": [
+    5.0,
+    2.5,
+    0.25
+  ],
+  "locator": [
+    9.536743E-07,
+    9.536743E-07,
+    9.536743E-07
+  ],
+  "centerOffset": [
+    2.5,
+    1.25,
+    0.125
+  ],
+  "eraseScale": [
+    0.025,
+    0.025,
+    0.025
+  ],
+  "expectedPath": "Docs/Stage2/wall-full-expected.json",
+  "actualImage": "Docs/Stage2/wall-full.png",
+  "referenceImage": "Docs/Stage2/wall-full-reference.png",
+  "foregroundPixels": 45030,
+  "referenceMeanAbsoluteError": 0.0,
+  "referenceMaxError": 0,
+  "traceEvents": 298
+}

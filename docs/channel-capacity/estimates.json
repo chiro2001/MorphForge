@@ -1,0 +1,94 @@
+{
+  "note": "Analytical estimates, not network benchmarks. Assumes independently decodable 8-bit lanes, stable one-way reception and persistent paged storage.",
+  "assumptions": {
+    "interval_seconds": 0.2,
+    "base_avatar_synced_bits": 89,
+    "remaining_bits": 167,
+    "protocol_state_bits": 32,
+    "payload_8bit_lanes": 16,
+    "payload_bytes_per_batch": 16,
+    "ideal_payload_bytes_per_second": 80.0,
+    "total_used_synced_bits": 249,
+    "bit_budget_ceiling_bytes_per_second_with_no_overhead": 160.0
+  },
+  "triangle_soup_positions_only": [
+    {
+      "triangles": 8,
+      "coordinate_8bit": {
+        "bytes": 72,
+        "batches": 5,
+        "ideal_seconds": 1.0
+      },
+      "coordinate_16bit": {
+        "bytes": 144,
+        "batches": 9,
+        "ideal_seconds": 1.8
+      }
+    },
+    {
+      "triangles": 100,
+      "coordinate_8bit": {
+        "bytes": 900,
+        "batches": 57,
+        "ideal_seconds": 11.4
+      },
+      "coordinate_16bit": {
+        "bytes": 1800,
+        "batches": 113,
+        "ideal_seconds": 22.6
+      }
+    },
+    {
+      "triangles": 1000,
+      "coordinate_8bit": {
+        "bytes": 9000,
+        "batches": 563,
+        "ideal_seconds": 112.6
+      },
+      "coordinate_16bit": {
+        "bytes": 18000,
+        "batches": 1125,
+        "ideal_seconds": 225.0
+      }
+    },
+    {
+      "triangles": 10000,
+      "coordinate_8bit": {
+        "bytes": 90000,
+        "batches": 5625,
+        "ideal_seconds": 1125.0
+      },
+      "coordinate_16bit": {
+        "bytes": 180000,
+        "batches": 11250,
+        "ideal_seconds": 2250.0
+      }
+    }
+  ],
+  "precision": [
+    {
+      "span_m": 1,
+      "float_synced_step_mm": 3.937007874015748,
+      "packed_14bit_step_mm": 0.061038881767686015,
+      "packed_16bit_step_mm": 0.015259021896696421
+    },
+    {
+      "span_m": 2,
+      "float_synced_step_mm": 7.874015748031496,
+      "packed_14bit_step_mm": 0.12207776353537203,
+      "packed_16bit_step_mm": 0.030518043793392843
+    },
+    {
+      "span_m": 10,
+      "float_synced_step_mm": 39.37007874015748,
+      "packed_14bit_step_mm": 0.6103888176768602,
+      "packed_16bit_step_mm": 0.15259021896696423
+    },
+    {
+      "span_m": 20,
+      "float_synced_step_mm": 78.74015748031496,
+      "packed_14bit_step_mm": 1.2207776353537203,
+      "packed_16bit_step_mm": 0.30518043793392846
+    }
+  ]
+}

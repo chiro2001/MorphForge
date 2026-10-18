@@ -1,0 +1,24 @@
+{
+  "success": true,
+  "format": "MorphForgeMaterialCatalog/1",
+  "sourceRoot": "D:\\Projects\\VRChatProjects2\\MorphForge\\Docs\\Materials",
+  "atlas": "Assets/MorphForge/MaterialsCatalog/CatalogAtlas.png",
+  "metadata": "Assets/MorphForge/MaterialsCatalog/CatalogMetadata.asset",
+  "material": "Assets/MorphForge/MaterialsCatalog/ParticleBoxCatalog.mat",
+  "styleCount": 100,
+  "styleIdRange": [
+    1,
+    330
+  ],
+  "atlasSize": [
+    384,
+    96
+  ],
+  "cellPixels": 32,
+  "metadataWidth": 16384,
+  "animatedStyles": 1,
+  "transparentStyles": 8,
+  "cutoutStyles": 1,
+  "texturedStyles": 2,
+  "unverified": "Requires the long-run Unity gate before visual/NDMF acceptance."
+}

@@ -1,0 +1,87 @@
+{
+  "success": true,
+  "scope": "NDMF/MA Editor processing, not SDK upload or VRChat runtime",
+  "missingScripts": 0,
+  "sourceParameters": [
+    {
+      "name": "MF2_Ctl",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF2_D00",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF2_D01",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF2_D02",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF2_D03",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF2_D04",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF2_D05",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF2_D06",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF2_D07",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF2_D08",
+      "type": "Int",
+      "networkSynced": true
+    },
+    {
+      "name": "MF2_D09",
+      "type": "Int",
+      "networkSynced": true
+    }
+  ],
+  "workParametersInExpression": 0,
+  "addedSyncedBits": 88,
+  "totalAvatarSyncedBits": 177,
+  "remainingBits": 79,
+  "controllerLayers": 3,
+  "capacity": 64,
+  "siblingSubEmitterRetained": true,
+  "infiniteLifetime": true,
+  "ringBuffer": "Disabled",
+  "applyActiveColorSpace": false,
+  "renderAlignment": "Local",
+  "shader": "MorphForge/ParticleBoxLocalUV",
+  "vertexStreams": [
+    "Position",
+    "Normal",
+    "Color",
+    "UV",
+    "UV2",
+    "SizeXYZ"
+  ],
+  "protocol": "MF2/single-commit",
+  "sequenceBits": 5,
+  "inboxCapacity": 1,
+  "hasExistingBlueprint": true,
+  "avatarCustomRuntimeScriptTypes": []
+}

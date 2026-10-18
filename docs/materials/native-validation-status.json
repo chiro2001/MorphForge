@@ -1,0 +1,191 @@
+{
+  "status": "completed-with-known-limitations",
+  "scope": "Stage4 native catalog material finish, visual pixels, performance fixture, short UDP regression, and basic NDMF",
+  "date": "2026-10-19",
+  "unityExecuted": true,
+  "playModeExecuted": true,
+  "prefabsModified": true,
+  "releasedTo": "/root for FullFT",
+  "finalUnitySession": {
+    "playMode": "stopped",
+    "compiling": false,
+    "recompileStatus": "completed",
+    "recompileFailed": false,
+    "compileErrors": [],
+    "activeScene": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+    "activeSceneDirty": true,
+    "sourceScenePreserved": "Dirty before and after Finish; never saved or modified by Finish."
+  },
+  "finalAssets": {
+    "catalogMaterials": 100,
+    "catalogStyleRange": [
+      1,
+      330
+    ],
+    "atlas": "Assets/MorphForge/MaterialsCatalog/CatalogAtlas.png",
+    "atlasSize": [
+      384,
+      96
+    ],
+    "metadata": "Assets/MorphForge/MaterialsCatalog/CatalogMetadata.asset",
+    "material": "Assets/MorphForge/MaterialsCatalog/ParticleBoxCatalog.mat",
+    "shader": "MorphForge/ParticleBoxCatalog",
+    "cellSize": 0.25,
+    "fireSeconds": 0.03,
+    "pumpLifetimeSeconds": 0.5,
+    "fireWindow": "Fire -> Done; FireHold experiment removed",
+    "streams": [
+      "Position",
+      "Normal",
+      "Color",
+      "UV",
+      "UV2",
+      "SizeXYZ"
+    ],
+    "prefabs": [
+      "Assets/MorphForge/Stage4/Geometry/Display.prefab",
+      "Assets/MorphForge/Stage4/Placement/Placement.prefab",
+      "Assets/MorphForge/Stage4/Avatar.prefab"
+    ],
+    "fullFTPrefabTouched": false
+  },
+  "visualStrict": {
+    "success": true,
+    "report": "docs/materials/native-strict-validation.json",
+    "evidenceDirectory": "docs/materials/native",
+    "checks": 40,
+    "animationFrames": [
+      "blue",
+      "red",
+      "purple"
+    ],
+    "sixFace": {
+      "+X": "red",
+      "-X": "green",
+      "+Y": "blue",
+      "-Y": "yellow",
+      "+Z": "cyan",
+      "-Z": "magenta"
+    },
+    "visibility": [
+      "metal",
+      "water",
+      "cloud",
+      "cutout"
+    ],
+    "scaleHalfPerPixelMeanAbsoluteError": 0.0,
+    "scaleCheckerTransitions": [
+      7,
+      7
+    ],
+    "rigidRoot": {
+      "translation": [
+        3.0,
+        1.5,
+        -2.0
+      ],
+      "euler": [
+        17.0,
+        37.0,
+        -9.0
+      ],
+      "perPixelMeanAbsoluteError": 0.0,
+      "changedFraction": 0.0
+    },
+    "composition": "temporary native ParticleSystem rig; no OSC and no product Store injection"
+  },
+  "catalog16kPerformance": {
+    "scope": "temporary native display fixture; NOT OSC and NOT Avatar Store",
+    "count": 16384,
+    "visible": true,
+    "mixedMaterials": [
+      "metal",
+      "water",
+      "cloud",
+      "cutout"
+    ],
+    "samples": 657,
+    "p50Ms": 8.91759991645813,
+    "p95Ms": 11.804499663412571,
+    "maxMs": 20.737700164318085,
+    "image": "docs/materials/native/catalog-16k-performance.png",
+    "report": "docs/materials/catalog-16k-performance.json",
+    "note": "This does not measure the old-shader 16k UDP long test and is not a VRChat client GPU benchmark."
+  },
+  "shortProtocol": {
+    "udpPort": 9012,
+    "mainProtocolPreFireHoldExperiment": {
+      "success": true,
+      "checks": 166,
+      "report": "docs/materials/protocol-validation-prefirehold.json",
+      "currentAssetCompatibility": "Final product is back to the same Fire 0.03 -> Done path; FireHold was removed."
+    },
+    "attempt1_025s": {
+      "success": false,
+      "receivedDelta": 256,
+      "completedDelta": 256,
+      "nativeCount": 255,
+      "missingIndex": 28,
+      "interpretation": "Capture and Done completed, but one Birth was missing.",
+      "report": "docs/materials/protocol-regression-256-attempt1.json"
+    },
+    "attempt2_025s": {
+      "success": true,
+      "receivedDelta": 256,
+      "completedDelta": 256,
+      "nativeCount": 256,
+      "unique": 256,
+      "metadataMismatch": 0,
+      "report": "docs/materials/protocol-regression-256-attempt2.json"
+    },
+    "interval050s": {
+      "success": true,
+      "receivedDelta": 256,
+      "completedDelta": 256,
+      "nativeCount": 256,
+      "unique": 256,
+      "metadataMismatch": 0,
+      "report": "docs/materials/protocol-regression-256-interval050.json"
+    },
+    "fireHoldExperiment": {
+      "kept": false,
+      "attemptReports": [
+        "docs/materials/protocol-validation-firehold-attempt1.json",
+        "docs/materials/protocol-validation-firehold-attempt2.json"
+      ],
+      "reason": "The first injected transition did not advance; the alternate exit-time transition held in Fire instead of completing. Product was restored to Fire 0.03 -> Done."
+    }
+  },
+  "ndmfBasic": {
+    "success": true,
+    "missingScripts": 0,
+    "customAvatarScripts": 0,
+    "totalSyncedBits": 159,
+    "geometryBits": 56,
+    "placementBits": 14,
+    "capacity": 16384,
+    "scope": "Basic Nemesis + MF3; not FullFT"
+  },
+  "knownLimitations": [
+    "The first real-UDP 16,384 pass ended with 16,192 unique particles: 192 missing indices from 125 commands. A 193-command 0.5s repair reached 16,384; remove16/refill16/erase64/clear checks passed.",
+    "The first 256-command 0.25s regression reproduced one sporadic missing Birth while received/completed were both 256. The second 0.25s run and the 0.5s comparison passed, so the limitation is retained rather than declared lossless.",
+    "Water is a surface approximation without refraction or physical volume; clouds are local surface noise without volumetric scattering.",
+    "One ParticleSystemRenderer with two passes does not guarantee per-particle transparent sorting."
+  ],
+  "evidence": {
+    "finish": "docs/materials/native-finish.json",
+    "inspect": "docs/materials/native-inspect.json",
+    "visual": "docs/materials/native-visual-validation.json",
+    "strict": "docs/materials/native-strict-validation.json",
+    "performance": "docs/materials/catalog-16k-performance.json",
+    "longCapacity": "docs/stage4/capacity-validation.json"
+  },
+  "finalFullFTProtocolVerification": {
+    "success": true,
+    "effectiveCommands": 50,
+    "checksPassed": 166,
+    "intervalSeconds": 0.5,
+    "report": "docs/fullft/protocol-smoke.json",
+    "scope": "Final Fire -> Done path combined with full FT; not a full 16k lossless rerun"
+  }
+}

@@ -1,0 +1,30 @@
+   Compiling morphforge-core v0.1.0 (/home/chiro/projects/vrc-projects/morphforge/crates/morphforge-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.22s
+     Running unittests src/lib.rs (target/debug/deps/morphforge_core-2bf19c8ef1448645)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/geometry.rs (target/debug/deps/geometry-5ec7cd29cb98456c)
+
+running 9 tests
+test brush_is_sent_only_at_changes_and_remove_uses_old_geometry ... ok
+test failed_transaction_preserves_original ... ok
+test group_prevents_semantic_merge_and_transform_is_exact ... ok
+test geometry_beyond_vrc_is_valid_art ... ok
+test legacy_import_shifts_only_xz ... ok
+test mf3_byte_layout_and_opcode_range ... ok
+test huge_cube_is_sparse_and_hole_has_exact_volume ... ok
+test random_operations_match_independent_dense_oracle ... ok
+16384 sparse boxes + validation: 1.589729424s
+test independent_16k_boxes_fit_without_quadratic_validation ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.59s
+
+   Doc-tests morphforge_core
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

@@ -1,0 +1,40 @@
+{
+  "success": true,
+  "scope": "Temporary native ParticleSystem display fixture; NOT OSC, NOT avatar Store, NOT a multiplayer/client benchmark",
+  "count": 16384,
+  "capacity": 16384,
+  "visible": true,
+  "mixedStyles": [
+    10,
+    11,
+    16,
+    19,
+    21
+  ],
+  "mixedKinds": [
+    "metal",
+    "metal",
+    "water",
+    "cloud",
+    "cutout"
+  ],
+  "samples": 657,
+  "p50Ms": 8.91759991645813,
+  "p95Ms": 11.804499663412571,
+  "maxMs": 20.737700164318085,
+  "frameSeconds": 6,
+  "image": "Docs/Materials/native/catalog-16k-performance.png",
+  "rendererBounds": {
+    "center": [
+      -0.375,
+      5.625,
+      -0.375
+    ],
+    "size": [
+      24.67,
+      12.67,
+      24.67
+    ]
+  },
+  "note": "VRChat client GPU cost, per-particle sorting and user filtering remain separate."
+}

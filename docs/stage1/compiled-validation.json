@@ -1,0 +1,710 @@
+{
+  "success": true,
+  "scope": "Compiled geometry -> independent UDP -> GM native OSC -> Avatar FX; Editor only",
+  "checks": [
+    {
+      "name": "Compiled plan has 5 disjoint boxes and wall volume 199",
+      "pass": true
+    },
+    {
+      "name": "Native particle count matches compiled target",
+      "pass": true
+    },
+    {
+      "name": "Native fragment [128, 128, 128]",
+      "pass": true
+    },
+    {
+      "name": "Native fragment size and metadata",
+      "pass": true
+    },
+    {
+      "name": "Native fragment [139, 128, 128]",
+      "pass": true
+    },
+    {
+      "name": "Native fragment size and metadata",
+      "pass": true
+    },
+    {
+      "name": "Native fragment [138, 128, 128]",
+      "pass": true
+    },
+    {
+      "name": "Native fragment size and metadata",
+      "pass": true
+    },
+    {
+      "name": "Native fragment [138, 134, 128]",
+      "pass": true
+    },
+    {
+      "name": "Native fragment size and metadata",
+      "pass": true
+    },
+    {
+      "name": "Native fragment [150, 128, 128]",
+      "pass": true
+    },
+    {
+      "name": "Native fragment size and metadata",
+      "pass": true
+    },
+    {
+      "name": "Receiver settled",
+      "pass": true
+    },
+    {
+      "name": "Compiled scene renders and matches independent geometry",
+      "pass": true
+    }
+  ],
+  "plan": {
+    "commands": [
+      {
+        "op": "clear"
+      },
+      {
+        "op": "box",
+        "min": [
+          128,
+          128,
+          128
+        ],
+        "size": [
+          20,
+          10,
+          1
+        ],
+        "styleId": 2,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      {
+        "op": "remove",
+        "min": [
+          128,
+          128,
+          128
+        ],
+        "size": [
+          20,
+          10,
+          1
+        ]
+      },
+      {
+        "op": "box",
+        "min": [
+          128,
+          128,
+          128
+        ],
+        "size": [
+          10,
+          10,
+          1
+        ],
+        "styleId": 2,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      {
+        "op": "box",
+        "min": [
+          139,
+          128,
+          128
+        ],
+        "size": [
+          9,
+          10,
+          1
+        ],
+        "styleId": 2,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      {
+        "op": "box",
+        "min": [
+          138,
+          128,
+          128
+        ],
+        "size": [
+          1,
+          5,
+          1
+        ],
+        "styleId": 2,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      {
+        "op": "box",
+        "min": [
+          138,
+          134,
+          128
+        ],
+        "size": [
+          1,
+          4,
+          1
+        ],
+        "styleId": 2,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      {
+        "op": "box",
+        "min": [
+          150,
+          128,
+          128
+        ],
+        "size": [
+          2,
+          3,
+          4
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      }
+    ],
+    "boxes": [
+      {
+        "min": [
+          128,
+          128,
+          128
+        ],
+        "size": [
+          10,
+          10,
+          1
+        ],
+        "styleId": 2,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      {
+        "min": [
+          139,
+          128,
+          128
+        ],
+        "size": [
+          9,
+          10,
+          1
+        ],
+        "styleId": 2,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      {
+        "min": [
+          138,
+          128,
+          128
+        ],
+        "size": [
+          1,
+          5,
+          1
+        ],
+        "styleId": 2,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      {
+        "min": [
+          138,
+          134,
+          128
+        ],
+        "size": [
+          1,
+          4,
+          1
+        ],
+        "styleId": 2,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      {
+        "min": [
+          150,
+          128,
+          128
+        ],
+        "size": [
+          2,
+          3,
+          4
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      }
+    ],
+    "capacity": 64
+  },
+  "sender": {
+    "sent": true,
+    "source": "independent Python UDP OSC process",
+    "type": "i",
+    "port": 9012,
+    "commands": 8,
+    "nextSeq": 8,
+    "operations": [
+      {
+        "command": {
+          "op": "clear"
+        },
+        "seq": 0,
+        "payload": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "prepareControl": 4,
+        "executeControl": 12
+      },
+      {
+        "command": {
+          "op": "box",
+          "min": [
+            128,
+            128,
+            128
+          ],
+          "size": [
+            20,
+            10,
+            1
+          ],
+          "styleId": 2,
+          "tintId": 0,
+          "motionPhase": 0
+        },
+        "seq": 1,
+        "payload": [
+          128,
+          128,
+          128,
+          19,
+          9,
+          0,
+          2,
+          0,
+          0,
+          0
+        ],
+        "prepareControl": 17,
+        "executeControl": 25
+      },
+      {
+        "command": {
+          "op": "remove",
+          "min": [
+            128,
+            128,
+            128
+          ],
+          "size": [
+            20,
+            10,
+            1
+          ]
+        },
+        "seq": 2,
+        "payload": [
+          128,
+          128,
+          128,
+          19,
+          9,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "prepareControl": 35,
+        "executeControl": 43
+      },
+      {
+        "command": {
+          "op": "box",
+          "min": [
+            128,
+            128,
+            128
+          ],
+          "size": [
+            10,
+            10,
+            1
+          ],
+          "styleId": 2,
+          "tintId": 0,
+          "motionPhase": 0
+        },
+        "seq": 3,
+        "payload": [
+          128,
+          128,
+          128,
+          9,
+          9,
+          0,
+          2,
+          0,
+          0,
+          0
+        ],
+        "prepareControl": 49,
+        "executeControl": 57
+      },
+      {
+        "command": {
+          "op": "box",
+          "min": [
+            139,
+            128,
+            128
+          ],
+          "size": [
+            9,
+            10,
+            1
+          ],
+          "styleId": 2,
+          "tintId": 0,
+          "motionPhase": 0
+        },
+        "seq": 4,
+        "payload": [
+          139,
+          128,
+          128,
+          8,
+          9,
+          0,
+          2,
+          0,
+          0,
+          0
+        ],
+        "prepareControl": 65,
+        "executeControl": 73
+      },
+      {
+        "command": {
+          "op": "box",
+          "min": [
+            138,
+            128,
+            128
+          ],
+          "size": [
+            1,
+            5,
+            1
+          ],
+          "styleId": 2,
+          "tintId": 0,
+          "motionPhase": 0
+        },
+        "seq": 5,
+        "payload": [
+          138,
+          128,
+          128,
+          0,
+          4,
+          0,
+          2,
+          0,
+          0,
+          0
+        ],
+        "prepareControl": 81,
+        "executeControl": 89
+      },
+      {
+        "command": {
+          "op": "box",
+          "min": [
+            138,
+            134,
+            128
+          ],
+          "size": [
+            1,
+            4,
+            1
+          ],
+          "styleId": 2,
+          "tintId": 0,
+          "motionPhase": 0
+        },
+        "seq": 6,
+        "payload": [
+          138,
+          134,
+          128,
+          0,
+          3,
+          0,
+          2,
+          0,
+          0,
+          0
+        ],
+        "prepareControl": 97,
+        "executeControl": 105
+      },
+      {
+        "command": {
+          "op": "box",
+          "min": [
+            150,
+            128,
+            128
+          ],
+          "size": [
+            2,
+            3,
+            4
+          ],
+          "styleId": 3,
+          "tintId": 0,
+          "motionPhase": 0
+        },
+        "seq": 7,
+        "payload": [
+          150,
+          128,
+          128,
+          1,
+          2,
+          3,
+          3,
+          0,
+          0,
+          0
+        ],
+        "prepareControl": 113,
+        "executeControl": 121
+      }
+    ]
+  },
+  "capture": {
+    "label": "compiled-demo",
+    "environment": "Unity Play Mode + native Gesture Manager OSC, not VRChat client",
+    "count": 5,
+    "sourceControl": 121,
+    "source": [
+      150,
+      128,
+      128,
+      1,
+      2,
+      3,
+      3,
+      0,
+      0,
+      0
+    ],
+    "work": [
+      150.0,
+      128.0,
+      128.0,
+      1.0,
+      2.0,
+      3.0,
+      3.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "op": 1,
+    "lastSeq": 7,
+    "busy": false,
+    "pumpActive": false,
+    "triggerEnabled": false,
+    "storePlaying": true,
+    "storePaused": false,
+    "particles": [
+      {
+        "position": [
+          1.250001,
+          1.250001,
+          0.125000954
+        ],
+        "size": [
+          2.5,
+          2.5,
+          0.25
+        ],
+        "color": [
+          8,
+          0,
+          0,
+          0
+        ],
+        "codes": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "remainingLifetime": "Infinity",
+        "startLifetime": "Infinity"
+      },
+      {
+        "position": [
+          3.875001,
+          1.250001,
+          0.125000954
+        ],
+        "size": [
+          2.25,
+          2.5,
+          0.25
+        ],
+        "color": [
+          8,
+          0,
+          0,
+          0
+        ],
+        "codes": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "remainingLifetime": "Infinity",
+        "startLifetime": "Infinity"
+      },
+      {
+        "position": [
+          2.625001,
+          0.625000954,
+          0.125000954
+        ],
+        "size": [
+          0.25,
+          1.25,
+          0.25
+        ],
+        "color": [
+          8,
+          0,
+          0,
+          0
+        ],
+        "codes": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "remainingLifetime": "Infinity",
+        "startLifetime": "Infinity"
+      },
+      {
+        "position": [
+          2.625001,
+          2.000001,
+          0.125000954
+        ],
+        "size": [
+          0.25,
+          1.0,
+          0.25
+        ],
+        "color": [
+          8,
+          0,
+          0,
+          0
+        ],
+        "codes": [
+          2,
+          0,
+          0,
+          0
+        ],
+        "remainingLifetime": "Infinity",
+        "startLifetime": "Infinity"
+      },
+      {
+        "position": [
+          5.750001,
+          0.375000954,
+          0.500000954
+        ],
+        "size": [
+          0.5,
+          0.75,
+          1.0
+        ],
+        "color": [
+          12,
+          0,
+          0,
+          0
+        ],
+        "codes": [
+          3,
+          0,
+          0,
+          0
+        ],
+        "remainingLifetime": "Infinity",
+        "startLifetime": "Infinity"
+      }
+    ],
+    "nativeStartSize": [
+      0.5,
+      0.75,
+      1.0
+    ],
+    "locator": [
+      5.500001,
+      9.536743e-07,
+      9.536743e-07
+    ],
+    "centerOffset": [
+      0.25,
+      0.375,
+      0.5
+    ],
+    "eraseScale": [
+      0.025,
+      0.025,
+      0.025
+    ],
+    "expectedPath": "Docs/Stage1/compiled-demo-expected.json",
+    "actualImage": "Docs/Stage1/compiled-demo.png",
+    "referenceImage": "Docs/Stage1/compiled-demo-reference.png",
+    "foregroundPixels": 33590,
+    "referenceMeanAbsoluteError": 8.138020833333333e-05,
+    "referenceMaxError": 14,
+    "traceEvents": 48
+  }
+}

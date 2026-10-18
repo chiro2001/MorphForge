@@ -1,0 +1,1876 @@
+{
+  "environment": "Editor native API mechanism investigation, not OSC validation",
+  "siblingSubEmitterReference": true,
+  "storeParent": "MorphForge temporary particle investigation",
+  "pumpParent": "MorphForge temporary particle investigation",
+  "countAfterFirst": 1,
+  "countAfterPumpDisable": 1,
+  "countAfterSecond": 2,
+  "bindings": [
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ClampVelocityModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ClampVelocityModule.x.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ClampVelocityModule.x.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ClampVelocityModule.y.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ClampVelocityModule.y.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ClampVelocityModule.z.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ClampVelocityModule.z.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ClampVelocityModule.magnitude.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ClampVelocityModule.magnitude.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ClampVelocityModule.dampen"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ClampVelocityModule.drag.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ClampVelocityModule.drag.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CollisionModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CollisionModule.m_Dampen.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CollisionModule.m_Dampen.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CollisionModule.m_Bounce.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CollisionModule.m_Bounce.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CollisionModule.m_EnergyLossOnCollision.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CollisionModule.m_EnergyLossOnCollision.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CollisionModule.minKillSpeed"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CollisionModule.maxKillSpeed"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CollisionModule.collidesWithDynamic"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CollisionModule.radiusScale"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CollisionModule.colliderForce"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorBySpeedModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorBySpeedModule.gradient.minColor.r"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorBySpeedModule.gradient.minColor.g"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorBySpeedModule.gradient.minColor.b"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorBySpeedModule.gradient.minColor.a"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorBySpeedModule.gradient.maxColor.r"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorBySpeedModule.gradient.maxColor.g"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorBySpeedModule.gradient.maxColor.b"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorBySpeedModule.gradient.maxColor.a"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorBySpeedModule.range.x"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorBySpeedModule.range.y"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorModule.gradient.minColor.r"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorModule.gradient.minColor.g"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorModule.gradient.minColor.b"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorModule.gradient.minColor.a"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorModule.gradient.maxColor.r"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorModule.gradient.maxColor.g"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorModule.gradient.maxColor.b"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ColorModule.gradient.maxColor.a"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.vector0_0.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.vector0_0.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.vector0_1.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.vector0_1.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.vector0_2.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.vector0_2.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.vector0_3.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.vector0_3.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.vector1_0.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.vector1_0.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.vector1_1.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.vector1_1.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.vector1_2.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.vector1_2.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.vector1_3.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.vector1_3.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.color0.minColor.r"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.color0.minColor.g"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.color0.minColor.b"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.color0.minColor.a"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.color0.maxColor.r"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.color0.maxColor.g"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.color0.maxColor.b"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.color0.maxColor.a"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.color1.minColor.r"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.color1.minColor.g"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.color1.minColor.b"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.color1.minColor.a"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.color1.maxColor.r"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.color1.maxColor.g"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.color1.maxColor.b"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "CustomDataModule.color1.maxColor.a"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ExternalForcesModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ExternalForcesModule.multiplierCurve.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ExternalForcesModule.multiplierCurve.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.rateOverTime.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.rateOverTime.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.rateOverDistance.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.rateOverDistance.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[0].countCurve.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[0].countCurve.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[1].countCurve.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[1].countCurve.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[2].countCurve.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[2].countCurve.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[3].countCurve.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[3].countCurve.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[4].countCurve.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[4].countCurve.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[5].countCurve.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[5].countCurve.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[6].countCurve.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[6].countCurve.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[7].countCurve.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[7].countCurve.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[0].time"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[1].time"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[2].time"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[3].time"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[4].time"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[5].time"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[6].time"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[7].time"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[0].cycleCount"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[1].cycleCount"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[2].cycleCount"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[3].cycleCount"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[4].cycleCount"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[5].cycleCount"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[6].cycleCount"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[7].cycleCount"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[0].repeatInterval"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[1].repeatInterval"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[2].repeatInterval"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[3].repeatInterval"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[4].repeatInterval"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[5].repeatInterval"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[6].repeatInterval"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[7].repeatInterval"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[0].probability"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[1].probability"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[2].probability"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[3].probability"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[4].probability"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[5].probability"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[6].probability"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_Bursts.Array.data[7].probability"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "EmissionModule.m_BurstCount"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ForceModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ForceModule.x.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ForceModule.x.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ForceModule.y.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ForceModule.y.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ForceModule.z.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ForceModule.z.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ForceModule.randomizePerFrame"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InheritVelocityModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InheritVelocityModule.m_Curve.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InheritVelocityModule.m_Curve.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "looping"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "simulationSpeed"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "startDelay"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startLifetime.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startLifetime.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startSpeed.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startSpeed.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startSize.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startSize.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startSizeY.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startSizeY.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startSizeZ.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startSizeZ.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startRotationX.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startRotationX.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startRotationY.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startRotationY.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startRotation.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startRotation.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startColor.minColor.r"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startColor.minColor.g"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startColor.minColor.b"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startColor.minColor.a"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startColor.maxColor.r"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startColor.maxColor.g"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startColor.maxColor.b"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.startColor.maxColor.a"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.randomizeRotationDirection"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.gravityModifier.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.gravityModifier.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.customEmitterVelocity.x"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.customEmitterVelocity.y"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "InitialModule.customEmitterVelocity.z"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "LifetimeByEmitterSpeedModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "LifetimeByEmitterSpeedModule.m_Curve.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "LifetimeByEmitterSpeedModule.m_Curve.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "LifetimeByEmitterSpeedModule.m_Range.x"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "LifetimeByEmitterSpeedModule.m_Range.y"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "LightsModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "LightsModule.ratio"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "LightsModule.randomDistribution"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "LightsModule.useParticleColor"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "LightsModule.sizeAffectsRange"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "LightsModule.alphaAffectsIntensity"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "LightsModule.rangeCurve.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "LightsModule.rangeCurve.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "LightsModule.intensityCurve.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "LightsModule.intensityCurve.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.strength.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.strength.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.strengthY.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.strengthY.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.strengthZ.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.strengthZ.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.frequency"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.damping"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.octaveMultiplier"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.octaveScale"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.scrollSpeed.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.scrollSpeed.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.remap.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.remap.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.remapY.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.remapY.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.remapZ.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.remapZ.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.positionAmount.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.positionAmount.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.rotationAmount.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.rotationAmount.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.sizeAmount.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "NoiseModule.sizeAmount.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "RotationBySpeedModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "RotationBySpeedModule.x.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "RotationBySpeedModule.x.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "RotationBySpeedModule.y.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "RotationBySpeedModule.y.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "RotationBySpeedModule.curve.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "RotationBySpeedModule.curve.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "RotationBySpeedModule.range.x"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "RotationBySpeedModule.range.y"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "RotationModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "RotationModule.x.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "RotationModule.x.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "RotationModule.y.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "RotationModule.y.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "RotationModule.curve.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "RotationModule.curve.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.radius.value"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.radius.spread"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.radius.speed.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.radius.speed.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.radiusThickness"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.angle"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.length"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.boxThickness.x"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.boxThickness.y"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.boxThickness.z"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.arc.value"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.arc.spread"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.arc.speed.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.arc.speed.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.m_MeshMaterialIndex"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.m_MeshNormalOffset"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.alignToDirection"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.randomDirectionAmount"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.sphericalDirectionAmount"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.randomPositionAmount"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.m_UseMeshMaterialIndex"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.m_UseMeshColors"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.m_MeshSpawn.value"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.m_MeshSpawn.spread"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.m_MeshSpawn.speed.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.m_MeshSpawn.speed.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.m_Position.x"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.m_Position.y"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.m_Position.z"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.m_Rotation.x"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.m_Rotation.y"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.m_Rotation.z"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.m_Scale.x"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.m_Scale.y"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.m_Scale.z"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "ShapeModule.m_TextureClipThreshold"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "SizeBySpeedModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "SizeBySpeedModule.curve.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "SizeBySpeedModule.curve.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "SizeBySpeedModule.y.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "SizeBySpeedModule.y.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "SizeBySpeedModule.z.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "SizeBySpeedModule.z.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "SizeBySpeedModule.range.x"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "SizeBySpeedModule.range.y"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "SizeModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "SizeModule.curve.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "SizeModule.curve.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "SizeModule.y.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "SizeModule.y.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "SizeModule.z.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "SizeModule.z.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.ratio"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.lifetime.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.lifetime.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.minVertexDistance"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.dieWithParticles"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.sizeAffectsWidth"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.sizeAffectsLifetime"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.inheritParticleColor"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.colorOverLifetime.minColor.r"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.colorOverLifetime.minColor.g"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.colorOverLifetime.minColor.b"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.colorOverLifetime.minColor.a"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.colorOverLifetime.maxColor.r"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.colorOverLifetime.maxColor.g"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.colorOverLifetime.maxColor.b"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.colorOverLifetime.maxColor.a"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.widthOverTrail.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.widthOverTrail.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.colorOverTrail.minColor.r"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.colorOverTrail.minColor.g"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.colorOverTrail.minColor.b"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.colorOverTrail.minColor.a"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.colorOverTrail.maxColor.r"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.colorOverTrail.maxColor.g"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.colorOverTrail.maxColor.b"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.colorOverTrail.maxColor.a"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.shadowBias"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.textureScale.x"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TrailModule.textureScale.y"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TriggerModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "TriggerModule.radiusScale"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "UVModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "UVModule.frameOverTime.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "UVModule.frameOverTime.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "UVModule.startFrame.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "UVModule.startFrame.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "UVModule.fps"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "UVModule.speedRange.x"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "UVModule.speedRange.y"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.x.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.x.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.y.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.y.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.z.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.z.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.orbitalX.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.orbitalX.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.orbitalY.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.orbitalY.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.orbitalZ.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.orbitalZ.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.orbitalOffsetX.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.orbitalOffsetX.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.orbitalOffsetY.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.orbitalOffsetY.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.orbitalOffsetZ.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.orbitalOffsetZ.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.radial.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.radial.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.speedModifier.scalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystem",
+      "propertyName": "VelocityModule.speedModifier.minScalar"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_Materials.Array.data[0]"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_ReceiveShadows"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_SortingOrder"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_Enabled"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_RendererPriority"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_MinParticleSize"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_MaxParticleSize"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_CameraVelocityScale"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_VelocityScale"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_LengthScale"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_SortingFudge"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_NormalDirection"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_ShadowBias"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_Pivot.x"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_Pivot.y"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_Pivot.z"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_Flip.x"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_Flip.y"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_Flip.z"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_MeshWeighting"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_MeshWeighting1"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_MeshWeighting2"
+    },
+    {
+      "path": "Store",
+      "type": "ParticleSystemRenderer",
+      "propertyName": "m_MeshWeighting3"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "success": true,
+  "scope": "External geometry compiler; independent voxel sets, no Unity runtime",
+  "date": "2026-10-18",
+  "testsRun": 5,
+  "randomSubtractionCases": 500,
+  "output": "test_capacity_rejected_before_transmission (test_stage1_geometry.GeometryChecks.test_capacity_rejected_before_transmission) ... ok\ntest_overlay_and_erase_preserve_voxel_styles (test_stage1_geometry.GeometryChecks.test_overlay_and_erase_preserve_voxel_styles) ... ok\ntest_requires_known_empty_start_and_valid_bounds (test_stage1_geometry.GeometryChecks.test_requires_known_empty_start_and_valid_bounds) ... ok\ntest_subtraction_against_independent_voxel_sets (test_stage1_geometry.GeometryChecks.test_subtraction_against_independent_voxel_sets) ... ok\ntest_thin_wall_hole (test_stage1_geometry.GeometryChecks.test_thin_wall_hole) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.009s\n\nOK\n"
+}

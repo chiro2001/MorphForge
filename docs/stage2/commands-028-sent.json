@@ -1,0 +1,2125 @@
+{
+  "sent": true,
+  "protocol": "MF2/single-commit",
+  "source": "independent Python UDP OSC process",
+  "port": 9012,
+  "commands": 64,
+  "nextSeq": 29,
+  "interval": 0.25,
+  "repeat": false,
+  "actualIntervals": [
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25,
+    0.25
+  ],
+  "operations": [
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          124,
+          124,
+          124
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 29,
+      "control": 233,
+      "payload": [
+        124,
+        124,
+        124,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          124,
+          124,
+          125
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 30,
+      "control": 241,
+      "payload": [
+        124,
+        124,
+        125,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          124,
+          124,
+          126
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 31,
+      "control": 249,
+      "payload": [
+        124,
+        124,
+        126,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          124,
+          124,
+          127
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 0,
+      "control": 1,
+      "payload": [
+        124,
+        124,
+        127,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          124,
+          125,
+          124
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 1,
+      "control": 9,
+      "payload": [
+        124,
+        125,
+        124,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          124,
+          125,
+          125
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 2,
+      "control": 17,
+      "payload": [
+        124,
+        125,
+        125,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          124,
+          125,
+          126
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 3,
+      "control": 25,
+      "payload": [
+        124,
+        125,
+        126,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          124,
+          125,
+          127
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 4,
+      "control": 33,
+      "payload": [
+        124,
+        125,
+        127,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          124,
+          126,
+          124
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 5,
+      "control": 41,
+      "payload": [
+        124,
+        126,
+        124,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          124,
+          126,
+          125
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 6,
+      "control": 49,
+      "payload": [
+        124,
+        126,
+        125,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          124,
+          126,
+          126
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 7,
+      "control": 57,
+      "payload": [
+        124,
+        126,
+        126,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          124,
+          126,
+          127
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 8,
+      "control": 65,
+      "payload": [
+        124,
+        126,
+        127,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          124,
+          127,
+          124
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 9,
+      "control": 73,
+      "payload": [
+        124,
+        127,
+        124,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          124,
+          127,
+          125
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 10,
+      "control": 81,
+      "payload": [
+        124,
+        127,
+        125,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          124,
+          127,
+          126
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 11,
+      "control": 89,
+      "payload": [
+        124,
+        127,
+        126,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          124,
+          127,
+          127
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 12,
+      "control": 97,
+      "payload": [
+        124,
+        127,
+        127,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          125,
+          124,
+          124
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 13,
+      "control": 105,
+      "payload": [
+        125,
+        124,
+        124,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          125,
+          124,
+          125
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 14,
+      "control": 113,
+      "payload": [
+        125,
+        124,
+        125,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          125,
+          124,
+          126
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 15,
+      "control": 121,
+      "payload": [
+        125,
+        124,
+        126,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          125,
+          124,
+          127
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 16,
+      "control": 129,
+      "payload": [
+        125,
+        124,
+        127,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          125,
+          125,
+          124
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 17,
+      "control": 137,
+      "payload": [
+        125,
+        125,
+        124,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          125,
+          125,
+          125
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 18,
+      "control": 145,
+      "payload": [
+        125,
+        125,
+        125,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          125,
+          125,
+          126
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 19,
+      "control": 153,
+      "payload": [
+        125,
+        125,
+        126,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          125,
+          125,
+          127
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 20,
+      "control": 161,
+      "payload": [
+        125,
+        125,
+        127,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          125,
+          126,
+          124
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 21,
+      "control": 169,
+      "payload": [
+        125,
+        126,
+        124,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          125,
+          126,
+          125
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 22,
+      "control": 177,
+      "payload": [
+        125,
+        126,
+        125,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          125,
+          126,
+          126
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 23,
+      "control": 185,
+      "payload": [
+        125,
+        126,
+        126,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          125,
+          126,
+          127
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 24,
+      "control": 193,
+      "payload": [
+        125,
+        126,
+        127,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          125,
+          127,
+          124
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 25,
+      "control": 201,
+      "payload": [
+        125,
+        127,
+        124,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          125,
+          127,
+          125
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 26,
+      "control": 209,
+      "payload": [
+        125,
+        127,
+        125,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          125,
+          127,
+          126
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 27,
+      "control": 217,
+      "payload": [
+        125,
+        127,
+        126,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          125,
+          127,
+          127
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 28,
+      "control": 225,
+      "payload": [
+        125,
+        127,
+        127,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          126,
+          124,
+          124
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 29,
+      "control": 233,
+      "payload": [
+        126,
+        124,
+        124,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          126,
+          124,
+          125
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 30,
+      "control": 241,
+      "payload": [
+        126,
+        124,
+        125,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          126,
+          124,
+          126
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 31,
+      "control": 249,
+      "payload": [
+        126,
+        124,
+        126,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          126,
+          124,
+          127
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 0,
+      "control": 1,
+      "payload": [
+        126,
+        124,
+        127,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          126,
+          125,
+          124
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 1,
+      "control": 9,
+      "payload": [
+        126,
+        125,
+        124,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          126,
+          125,
+          125
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 2,
+      "control": 17,
+      "payload": [
+        126,
+        125,
+        125,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          126,
+          125,
+          126
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 3,
+      "control": 25,
+      "payload": [
+        126,
+        125,
+        126,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          126,
+          125,
+          127
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 4,
+      "control": 33,
+      "payload": [
+        126,
+        125,
+        127,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          126,
+          126,
+          124
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 5,
+      "control": 41,
+      "payload": [
+        126,
+        126,
+        124,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          126,
+          126,
+          125
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 6,
+      "control": 49,
+      "payload": [
+        126,
+        126,
+        125,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          126,
+          126,
+          126
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 7,
+      "control": 57,
+      "payload": [
+        126,
+        126,
+        126,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          126,
+          126,
+          127
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 8,
+      "control": 65,
+      "payload": [
+        126,
+        126,
+        127,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          126,
+          127,
+          124
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 9,
+      "control": 73,
+      "payload": [
+        126,
+        127,
+        124,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          126,
+          127,
+          125
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 10,
+      "control": 81,
+      "payload": [
+        126,
+        127,
+        125,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          126,
+          127,
+          126
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 11,
+      "control": 89,
+      "payload": [
+        126,
+        127,
+        126,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          126,
+          127,
+          127
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 12,
+      "control": 97,
+      "payload": [
+        126,
+        127,
+        127,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          127,
+          124,
+          124
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 13,
+      "control": 105,
+      "payload": [
+        127,
+        124,
+        124,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          127,
+          124,
+          125
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 14,
+      "control": 113,
+      "payload": [
+        127,
+        124,
+        125,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          127,
+          124,
+          126
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 15,
+      "control": 121,
+      "payload": [
+        127,
+        124,
+        126,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          127,
+          124,
+          127
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 16,
+      "control": 129,
+      "payload": [
+        127,
+        124,
+        127,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          127,
+          125,
+          124
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 17,
+      "control": 137,
+      "payload": [
+        127,
+        125,
+        124,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          127,
+          125,
+          125
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 18,
+      "control": 145,
+      "payload": [
+        127,
+        125,
+        125,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          127,
+          125,
+          126
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 19,
+      "control": 153,
+      "payload": [
+        127,
+        125,
+        126,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          127,
+          125,
+          127
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 20,
+      "control": 161,
+      "payload": [
+        127,
+        125,
+        127,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          127,
+          126,
+          124
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 21,
+      "control": 169,
+      "payload": [
+        127,
+        126,
+        124,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          127,
+          126,
+          125
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 22,
+      "control": 177,
+      "payload": [
+        127,
+        126,
+        125,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          127,
+          126,
+          126
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 23,
+      "control": 185,
+      "payload": [
+        127,
+        126,
+        126,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          127,
+          126,
+          127
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 24,
+      "control": 193,
+      "payload": [
+        127,
+        126,
+        127,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          127,
+          127,
+          124
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 25,
+      "control": 201,
+      "payload": [
+        127,
+        127,
+        124,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          127,
+          127,
+          125
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 26,
+      "control": 209,
+      "payload": [
+        127,
+        127,
+        125,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          127,
+          127,
+          126
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 27,
+      "control": 217,
+      "payload": [
+        127,
+        127,
+        126,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          127,
+          127,
+          127
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 28,
+      "control": 225,
+      "payload": [
+        127,
+        127,
+        127,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

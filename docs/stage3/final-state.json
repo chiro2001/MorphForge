@@ -1,0 +1,26 @@
+{
+  "ready": true,
+  "avatar": "MorphForge_Stage3_Avatar",
+  "scene": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+  "isDirty": false,
+  "playMode": false,
+  "hasExistingBlueprint": true,
+  "openScenes": [
+    {
+      "path": "Assets/MorphForge/Scenes/MorphForge_Stage1.unity",
+      "isDirty": true
+    },
+    {
+      "path": "Assets/MorphForge/Scenes/MorphForge_Stage2.unity",
+      "isDirty": true
+    },
+    {
+      "path": "Packages/nadena.dev.ndmf/Runtime/___NDMF Preview___.unity",
+      "isDirty": false
+    },
+    {
+      "path": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+      "isDirty": false
+    }
+  ]
+}

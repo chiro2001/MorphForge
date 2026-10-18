@@ -1,0 +1,758 @@
+{
+  "success": true,
+  "scope": "Editor native constraint evaluation; root and bone proxy stimuli; not hardware pickup or multiplayer",
+  "checks": [
+    {
+      "name": "Default world mode freezes native constraint",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Reset locates anchor at dock",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Avatar stimulus applied",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "World anchor remains in place",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "World anchor ignores actual avatar rotation",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Follow mode unfreezes",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Follow tracks actual avatar movement",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Follow tracks avatar rotation and preserved offset",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Left grab keeps pose without snapping",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Left source selected",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Hand stimulus applied",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Held anchor follows left movement",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Release retains dropped world pose",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Held anchor follows right movement",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Reset during manual grab releases and returns to dock",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "MF_Scale drives all content axes",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Hiding handle disables visual and sensors",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Showing handle restores visual and sensors",
+      "pass": true,
+      "detail": null
+    }
+  ],
+  "states": [
+    {
+      "label": "initial",
+      "avatar": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "dock": [
+        0.0,
+        0.5701405,
+        0.3420843
+      ],
+      "anchor": [
+        0.0,
+        0.5701405,
+        0.3420843
+      ],
+      "left": [
+        -0.08123448,
+        0.358962566,
+        -0.01188481
+      ],
+      "right": [
+        0.07795509,
+        0.360416055,
+        0.008157913
+      ],
+      "IsActive": true,
+      "FreezeToWorld": true,
+      "RebakeOffsetsWhenUnfrozen": true,
+      "guideActive": false,
+      "guideTarget": "AnchorPose",
+      "sources": [
+        {
+          "weight": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "weight": 0.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "weight": 0.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "grab": 0,
+      "near": false,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "label": "avatar moved in world mode",
+      "avatar": [
+        0.7,
+        0.0,
+        0.3
+      ],
+      "dock": [
+        0.7,
+        0.5701405,
+        0.6420843
+      ],
+      "anchor": [
+        0.0,
+        0.5701405,
+        0.3420843
+      ],
+      "left": [
+        0.618765533,
+        0.358962566,
+        0.2881152
+      ],
+      "right": [
+        0.7779551,
+        0.360416055,
+        0.308157921
+      ],
+      "IsActive": true,
+      "FreezeToWorld": true,
+      "RebakeOffsetsWhenUnfrozen": true,
+      "guideActive": false,
+      "guideTarget": "AnchorPose",
+      "sources": [
+        {
+          "weight": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "weight": 0.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "weight": 0.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "grab": 0,
+      "near": false,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "label": "follow moved",
+      "avatar": [
+        1.0,
+        0.1,
+        0.100000009
+      ],
+      "dock": [
+        1.20587146,
+        0.6701405,
+        0.373200655
+      ],
+      "anchor": [
+        0.300000072,
+        0.6701405,
+        0.142084286
+      ],
+      "left": [
+        0.9279708,
+        0.45896256,
+        0.139396489
+      ],
+      "right": [
+        1.06716728,
+        0.460416049,
+        0.0596006662
+      ],
+      "IsActive": true,
+      "FreezeToWorld": false,
+      "RebakeOffsetsWhenUnfrozen": true,
+      "guideActive": false,
+      "guideTarget": "AnchorPose",
+      "sources": [
+        {
+          "weight": 1.0,
+          "offset": [
+            -0.5843718,
+            0.0,
+            -0.729744732
+          ]
+        },
+        {
+          "weight": 0.0,
+          "offset": [
+            0.6587978,
+            -0.0443582721,
+            0.661841154
+          ]
+        },
+        {
+          "weight": 0.0,
+          "offset": [
+            -0.708688736,
+            -0.327752054,
+            -0.514156163
+          ]
+        }
+      ],
+      "grab": 0,
+      "near": false,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "label": "left held",
+      "avatar": [
+        1.0,
+        0.1,
+        0.100000009
+      ],
+      "dock": [
+        1.33579922,
+        0.6701405,
+        0.165272787
+      ],
+      "anchor": [
+        0.507958651,
+        0.670140564,
+        0.5996659
+      ],
+      "left": [
+        0.9728333,
+        0.45896256,
+        0.177474231
+      ],
+      "right": [
+        1.02288258,
+        0.460416049,
+        0.0250337645
+      ],
+      "IsActive": true,
+      "FreezeToWorld": false,
+      "RebakeOffsetsWhenUnfrozen": true,
+      "guideActive": false,
+      "guideTarget": "AnchorPose",
+      "sources": [
+        {
+          "weight": 0.0,
+          "offset": [
+            -0.5031373,
+            0.211177945,
+            -0.375775754
+          ]
+        },
+        {
+          "weight": 1.0,
+          "offset": [
+            0.292628765,
+            -0.218940079,
+            0.5526152
+          ]
+        },
+        {
+          "weight": 0.0,
+          "offset": [
+            -0.311188817,
+            -0.416228831,
+            -0.41093266
+          ]
+        }
+      ],
+      "grab": 1,
+      "near": false,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "label": "left moved",
+      "avatar": [
+        1.0,
+        0.1,
+        0.100000009
+      ],
+      "dock": [
+        1.33579922,
+        0.6701405,
+        0.165272787
+      ],
+      "anchor": [
+        0.303014934,
+        0.502752364,
+        0.6494584
+      ],
+      "left": [
+        0.7678896,
+        0.291574359,
+        0.227266654
+      ],
+      "right": [
+        1.02288258,
+        0.460416049,
+        0.0250337645
+      ],
+      "IsActive": true,
+      "FreezeToWorld": false,
+      "RebakeOffsetsWhenUnfrozen": true,
+      "guideActive": false,
+      "guideTarget": "AnchorPose",
+      "sources": [
+        {
+          "weight": 0.0,
+          "offset": [
+            -0.5031373,
+            0.211177945,
+            -0.375775754
+          ]
+        },
+        {
+          "weight": 1.0,
+          "offset": [
+            0.292628765,
+            -0.218940079,
+            0.5526152
+          ]
+        },
+        {
+          "weight": 0.0,
+          "offset": [
+            -0.311188817,
+            -0.416228831,
+            -0.41093266
+          ]
+        }
+      ],
+      "grab": 1,
+      "near": false,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "label": "left release",
+      "avatar": [
+        1.1,
+        0.1,
+        0.3
+      ],
+      "dock": [
+        1.43579924,
+        0.6701405,
+        0.3652728
+      ],
+      "anchor": [
+        0.303014874,
+        0.502752364,
+        0.6494584
+      ],
+      "left": [
+        1.0728333,
+        0.45896256,
+        0.377474219
+      ],
+      "right": [
+        1.1228826,
+        0.460416049,
+        0.22503376
+      ],
+      "IsActive": true,
+      "FreezeToWorld": true,
+      "RebakeOffsetsWhenUnfrozen": true,
+      "guideActive": false,
+      "guideTarget": "AnchorPose",
+      "sources": [
+        {
+          "weight": 1.0,
+          "offset": [
+            -0.5031373,
+            0.211177945,
+            -0.375775754
+          ]
+        },
+        {
+          "weight": 0.0,
+          "offset": [
+            0.292628765,
+            -0.218940079,
+            0.5526152
+          ]
+        },
+        {
+          "weight": 0.0,
+          "offset": [
+            -0.311188817,
+            -0.416228831,
+            -0.41093266
+          ]
+        }
+      ],
+      "grab": 0,
+      "near": false,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "label": "right moved",
+      "avatar": [
+        1.1,
+        0.1,
+        0.3
+      ],
+      "dock": [
+        1.43579924,
+        0.6701405,
+        0.3652728
+      ],
+      "anchor": [
+        0.23578763,
+        0.413139373,
+        0.464121
+      ],
+      "left": [
+        1.0728333,
+        0.45896256,
+        0.377474219
+      ],
+      "right": [
+        1.05565548,
+        0.370802969,
+        0.0396962464
+      ],
+      "IsActive": true,
+      "FreezeToWorld": false,
+      "RebakeOffsetsWhenUnfrozen": true,
+      "guideActive": false,
+      "guideTarget": "AnchorPose",
+      "sources": [
+        {
+          "weight": 0.0,
+          "offset": [
+            -0.573065,
+            0.0423363149,
+            -0.7238203
+          ]
+        },
+        {
+          "weight": 0.0,
+          "offset": [
+            0.6490695,
+            -0.08640045,
+            0.6521915
+          ]
+        },
+        {
+          "weight": 1.0,
+          "offset": [
+            -0.6918062,
+            -0.363096654,
+            -0.493636429
+          ]
+        }
+      ],
+      "grab": 2,
+      "near": false,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "label": "reset held after grab",
+      "avatar": [
+        1.1,
+        0.1,
+        0.3
+      ],
+      "dock": [
+        1.43579924,
+        0.6701405,
+        0.3652728
+      ],
+      "anchor": [
+        1.43579924,
+        0.6701405,
+        0.365272731
+      ],
+      "left": [
+        1.0728333,
+        0.45896256,
+        0.377474219
+      ],
+      "right": [
+        1.05565548,
+        0.370802969,
+        0.0396962464
+      ],
+      "IsActive": false,
+      "FreezeToWorld": false,
+      "RebakeOffsetsWhenUnfrozen": false,
+      "guideActive": true,
+      "guideTarget": "AnchorPose",
+      "sources": [
+        {
+          "weight": 1.0,
+          "offset": [
+            -0.573065,
+            0.0423363149,
+            -0.7238203
+          ]
+        },
+        {
+          "weight": 0.0,
+          "offset": [
+            0.6490695,
+            -0.08640045,
+            0.6521915
+          ]
+        },
+        {
+          "weight": 0.0,
+          "offset": [
+            -0.6918062,
+            -0.363096654,
+            -0.493636429
+          ]
+        }
+      ],
+      "grab": 0,
+      "near": false,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "label": "reset after grab",
+      "avatar": [
+        1.1,
+        0.1,
+        0.3
+      ],
+      "dock": [
+        1.43579924,
+        0.6701405,
+        0.3652728
+      ],
+      "anchor": [
+        1.43579924,
+        0.6701405,
+        0.365272671
+      ],
+      "left": [
+        1.0728333,
+        0.45896256,
+        0.377474219
+      ],
+      "right": [
+        1.05565548,
+        0.370802969,
+        0.0396962464
+      ],
+      "IsActive": true,
+      "FreezeToWorld": true,
+      "RebakeOffsetsWhenUnfrozen": true,
+      "guideActive": false,
+      "guideTarget": "AnchorPose",
+      "sources": [
+        {
+          "weight": 1.0,
+          "offset": [
+            -0.573065,
+            0.0423363149,
+            -0.7238203
+          ]
+        },
+        {
+          "weight": 0.0,
+          "offset": [
+            0.6490695,
+            -0.08640045,
+            0.6521915
+          ]
+        },
+        {
+          "weight": 0.0,
+          "offset": [
+            -0.6918062,
+            -0.363096654,
+            -0.493636429
+          ]
+        }
+      ],
+      "grab": 0,
+      "near": false,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "label": "quarter scale",
+      "avatar": [
+        1.1,
+        0.1,
+        0.3
+      ],
+      "dock": [
+        1.43579924,
+        0.6701405,
+        0.3652728
+      ],
+      "anchor": [
+        1.43579924,
+        0.6701405,
+        0.365272671
+      ],
+      "left": [
+        1.0728333,
+        0.45896256,
+        0.377474219
+      ],
+      "right": [
+        1.05565548,
+        0.370802969,
+        0.0396962464
+      ],
+      "IsActive": true,
+      "FreezeToWorld": true,
+      "RebakeOffsetsWhenUnfrozen": true,
+      "guideActive": false,
+      "guideTarget": "AnchorPose",
+      "sources": [
+        {
+          "weight": 1.0,
+          "offset": [
+            -0.573065,
+            0.0423363149,
+            -0.7238203
+          ]
+        },
+        {
+          "weight": 0.0,
+          "offset": [
+            0.6490695,
+            -0.08640045,
+            0.6521915
+          ]
+        },
+        {
+          "weight": 0.0,
+          "offset": [
+            -0.6918062,
+            -0.363096654,
+            -0.493636429
+          ]
+        }
+      ],
+      "grab": 0,
+      "near": false,
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    }
+  ]
+}

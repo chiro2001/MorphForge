@@ -1,0 +1,112 @@
+{
+  "sent": true,
+  "protocol": "MF2/single-commit",
+  "source": "independent Python UDP OSC process",
+  "port": 9012,
+  "commands": 3,
+  "nextSeq": 12,
+  "interval": 0.25,
+  "repeat": false,
+  "actualIntervals": [
+    0.25,
+    0.25
+  ],
+  "operations": [
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          128,
+          128,
+          128
+        ],
+        "size": [
+          1,
+          1,
+          1
+        ],
+        "styleId": 1,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 9,
+      "control": 73,
+      "payload": [
+        128,
+        128,
+        128,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          132,
+          128,
+          128
+        ],
+        "size": [
+          20,
+          10,
+          1
+        ],
+        "styleId": 2,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 10,
+      "control": 81,
+      "payload": [
+        132,
+        128,
+        128,
+        19,
+        9,
+        0,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": {
+        "op": "box",
+        "min": [
+          120,
+          128,
+          128
+        ],
+        "size": [
+          2,
+          3,
+          4
+        ],
+        "styleId": 3,
+        "tintId": 0,
+        "motionPhase": 0
+      },
+      "seq": 11,
+      "control": 89,
+      "payload": [
+        120,
+        128,
+        128,
+        1,
+        2,
+        3,
+        3,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

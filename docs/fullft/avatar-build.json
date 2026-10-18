@@ -1,0 +1,20 @@
+{
+  "success": true,
+  "avatar": "Assets/MorphForge/FullFT/Avatar.prefab",
+  "baseAvatar": "Assets/Nemesis/Nemesis_Full_FT.prefab",
+  "injections": [
+    "Assets/MoeWhite/VRCFT/Prefab/VRCFT_UE_Nemesis_VRCFur.prefab",
+    "Assets/MoeWhite/VRCFT/Prefab/Optional/MixExpressions.prefab",
+    "Assets/MorphForge/Stage4/Placement/Placement.prefab"
+  ],
+  "ftMesh": "Assets/MoeWhite/VRCFT/FBX/Nemesis_FT.fbx",
+  "excluded": [
+    "outfits",
+    "sleep",
+    "Supine",
+    "VRCFury generated build directory"
+  ],
+  "missingScripts": 0,
+  "activeSceneWritten": false,
+  "sourcePrefabWritten": false
+}

@@ -1,0 +1,22 @@
+{
+  "success": true,
+  "phase": "close-saved-fullft-scene",
+  "capturedAtUtc": "2026-10-18T21:40:20.6420305Z",
+  "fullFtSceneWasDirty": true,
+  "fullFtSceneSaved": true,
+  "fullFtSceneClosed": true,
+  "fullFtSceneAssetRetained": true,
+  "ndmfPreviewClosed": true,
+  "sourceScene": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+  "sourceSceneStillOpen": true,
+  "sourceSceneStillDirty": true,
+  "sourceSceneSavedOrDiscarded": false,
+  "activeScene": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+  "remainingScenes": [
+    {
+      "path": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+      "isDirty": true,
+      "isActive": true
+    }
+  ]
+}

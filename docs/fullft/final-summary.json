@@ -1,0 +1,171 @@
+{
+  "success": true,
+  "date": "2026-10-19",
+  "scope": "Actual MorphForge Windows Unity FullFT dependency build, SDK preprocess, scene creation, Play protocol and remote-FT smoke, restoration, and owned-process cleanup",
+  "uploaded": false,
+  "vrChatLaunchedByTest": false,
+  "unity": {
+    "processId": 46280,
+    "finalPlayMode": "stopped",
+    "finalCompiling": false,
+    "finalActiveScene": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+    "finalOpenSceneCount": 1,
+    "sourceSceneStillOpen": true,
+    "sourceSceneDirty": true,
+    "sourceSceneSavedOrDiscarded": false
+  },
+  "budget": {
+    "finalBits": 256,
+    "maxBits": 256,
+    "initialPreCompressionBits": 278,
+    "afterFTDebugLocal": 277,
+    "preCompressionBitsBeforeCompressor": 256,
+    "compressorCandidates": [],
+    "ft": {
+      "manifestCount": 112,
+      "representedCount": 112,
+      "bits": 161,
+      "allDirect": true,
+      "compressedCount": 0,
+      "unexpectedSynced": [],
+      "missing": [],
+      "typeMismatches": [],
+      "duplicates": []
+    },
+    "vrcftControls": {
+      "count": 8,
+      "bits": 8,
+      "allDirect": true
+    },
+    "geometry": {
+      "count": 7,
+      "bits": 56,
+      "allDirect": true
+    },
+    "placement": {
+      "count": 7,
+      "bits": 14,
+      "allDirect": true
+    },
+    "localOnly": [
+      "FT/Debug"
+    ],
+    "cohabitationTrim": {
+      "bitsRemoved": 21,
+      "parameters": {
+        "FaceLock": 1,
+        "Fasial": 8,
+        "NadeNadeFace": 8,
+        "AllowShield": 1,
+        "ColliderJump": 1,
+        "NadeNadeHeadToggle": 1,
+        "TailColliderDisable": 1
+      },
+      "remoteImpact": [
+        "Manual FaceLock/Fasial selection and result no longer synchronize",
+        "Shield and jump-collider toggles no longer synchronize",
+        "Face-petting state, head-petting enable toggle, and tail-collider toggle no longer synchronize; NadeNadeHead result remains synchronized"
+      ]
+    },
+    "requiredDirectCheck": {
+      "name": "FT is fully direct (161 physical bits)",
+      "pass": true
+    }
+  },
+  "assets": {
+    "sourceScene": {
+      "path": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+      "bytes": 968138,
+      "sha256": "B09F22C2F830ADF876DB8FE2754C6AD0F81221706B71534BA9FA012F82092FED",
+      "unchanged": true
+    },
+    "fullFtAvatarPrefab": {
+      "path": "Assets/MorphForge/FullFT/Avatar.prefab",
+      "sha256": "A0C1C4446E8E0C313E030416B5A501675364505395B8A31B2C49848BBD4C21F6",
+      "missingScripts": 0,
+      "morphForgeRuntimeScripts": []
+    },
+    "fullFtScene": {
+      "path": "Assets/MorphForge/FullFT/MorphForge_FullFT.unity",
+      "bytes": 42393,
+      "sha256": "335CCF4F416548571B01ABF91C6E818C4D71A2C37B5DDD204DB63A1466466926",
+      "assetRetained": true,
+      "savedOnClose": true,
+      "openAfterValidation": false,
+      "avatarCount": 1,
+      "gestureManagerCount": 1,
+      "receiverCount": 1,
+      "receivePort": 9012,
+      "sendPort": 9013
+    }
+  },
+  "evidence": {
+    "jointBuild": {
+      "path": "joint-build.json",
+      "success": true,
+      "finalBits": 256,
+      "finalBudgetSha256": "B57BA6EA37C114D38743C729566ED3FA4DAFD90485CFB9BF1C1B796745058B3F"
+    },
+    "finalBudget": {
+      "path": "final-budget.json",
+      "success": true,
+      "finalBits": 256,
+      "ftAllDirect": true,
+      "compressorCandidates": 0
+    },
+    "sceneBuild": {
+      "path": "scene-build.json",
+      "success": true,
+      "capturedUnsavedSource": true,
+      "sourceSceneSavedOrDiscarded": false,
+      "sourceSceneHashUnchanged": true,
+      "gmFavouriteRedirected": true,
+      "receiverAvatarRedirected": true
+    },
+    "sceneClose": {
+      "path": "scene-close.json",
+      "success": true,
+      "fullFtSceneSaved": true,
+      "fullFtSceneClosed": true,
+      "assetRetained": true,
+      "sourceSceneStillOpen": true,
+      "sourceSceneStillDirty": true
+    },
+    "protocolSmoke": {
+      "path": "protocol-smoke.json",
+      "success": true,
+      "intervalSeconds": 0.5,
+      "commands": 50,
+      "checksPassed": 166,
+      "checksTotal": 166
+    },
+    "remoteFacialTracking": {
+      "path": "ft-remote-smoke.json",
+      "success": true,
+      "isLocal": 0,
+      "eyeTrackingActive": 1,
+      "lipTrackingActive": 1,
+      "visemesEnable": 1,
+      "changedOutputCount": 18
+    },
+    "playIsolationRestore": {
+      "path": "play-isolation-restore.json",
+      "success": true,
+      "restoredObjectCount": 3,
+      "sourceSceneHashUnchanged": true,
+      "sourceSceneDirtyPreserved": true,
+      "avatarMissingScripts": 0
+    },
+    "ownedProcessCleanup": {
+      "path": "workbench-cleanup-after.json",
+      "rootPid": 126580,
+      "ownedProcessCount": 9,
+      "remainingOwnedPids": [],
+      "port8766Listening": false,
+      "port8765Listening": false,
+      "unityPid46280Alive": true,
+      "vrChatProcessLeftRunning": 94236,
+      "staleTasks": []
+    }
+  }
+}

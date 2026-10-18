@@ -1,0 +1,178 @@
+[
+  {
+    "path": "Cargo.lock",
+    "hash": "9E2072E96C27DCD7760CA9BDBA03A9D63FA7D942EE0136F6455B5F4897CB0A20"
+  },
+  {
+    "path": "Cargo.toml",
+    "hash": "97215528169F00ED28B261BE273A57B48AB8CCB23A98B6EDD1A3823884E6112D"
+  },
+  {
+    "path": "crates/morphforge-app/Cargo.toml",
+    "hash": "1323EEA11123D18441743B2A99AC974B37885143C6B402F995C6B59AD91157E5"
+  },
+  {
+    "path": "crates/morphforge-app/src/capture.rs",
+    "hash": "5F55ECE73AA665DCC30920D6301A6355618346746DC8021452B408E374D72936"
+  },
+  {
+    "path": "crates/morphforge-app/src/catalog.rs",
+    "hash": "F6AEF9FFB5E915547E2555C152C6FCFEE791180918E564A048E2765B34A5FA40"
+  },
+  {
+    "path": "crates/morphforge-app/src/diagnostics.rs",
+    "hash": "FDB0C7B8FBD811F0DB1E91EFEFD4C56BC0DECC9473EC781744BC7F9AE4A989C1"
+  },
+  {
+    "path": "crates/morphforge-app/src/harness.rs",
+    "hash": "C56FF787804FF7E25508ABFB9816966F51D75C485FBC516BC8185D407322F575"
+  },
+  {
+    "path": "crates/morphforge-app/src/lib.rs",
+    "hash": "EEFE9AF601D3A948B829B8BEB68A8CA8036C10958539B88D504CDEDDBE783A80"
+  },
+  {
+    "path": "crates/morphforge-app/src/main.rs",
+    "hash": "AFC0A23B6ED42B012E7126A885503421668E8921D0DFE80D5843CEA717B41AA6"
+  },
+  {
+    "path": "crates/morphforge-app/src/provider.rs",
+    "hash": "D4C67E7B6A673DE145FD4F55771671B6A7305AC7A9D5DA28C67ECCD2CC4A324F"
+  },
+  {
+    "path": "crates/morphforge-app/src/recipe_sdk.js",
+    "hash": "C4474485C90D145B313418BC9DE37C190BC1911BFE5FC184BFF17A08C660D261"
+  },
+  {
+    "path": "crates/morphforge-app/src/recipe.rs",
+    "hash": "841140A567867DBA6121EAD7B70243F563836C5DFD5798CCEF53344F663B3D4E"
+  },
+  {
+    "path": "crates/morphforge-app/src/resources.rs",
+    "hash": "0098232F5D5D2D6A45A9981414E4F246D3B996EBC8244D2FD71206EBA886F25D"
+  },
+  {
+    "path": "crates/morphforge-app/src/server.rs",
+    "hash": "A8657D9DD6E74562EF50C94DB13BCC22DFB1C8BD1EF8867300FD00E8CC183FBB"
+  },
+  {
+    "path": "crates/morphforge-app/src/store.rs",
+    "hash": "FE1E82B248B7815B1B77E18A2A3035298A74080C8657301FD1BC696059A6850A"
+  },
+  {
+    "path": "crates/morphforge-app/src/system_prompt.txt",
+    "hash": "A6D355CF3F4548454841363048293CDAC4311EC6D68BCA94AECAA887FEB6EC17"
+  },
+  {
+    "path": "crates/morphforge-app/src/transport.rs",
+    "hash": "AEAA85F5977AB9627A9144B79822126A5D6CB4C0EB4CF97C2642DF80FBECECE0"
+  },
+  {
+    "path": "crates/morphforge-app/tests/catalog_history.rs",
+    "hash": "EDABF596C69145053115679ED74DEB58D4CB637408D188173DA14E0D158D17CC"
+  },
+  {
+    "path": "crates/morphforge-app/tests/context_catalog.rs",
+    "hash": "9B47708F5F10991E5D8F559BCE3D6BA066748831A2A21B7F8BB791E8B2F78CB4"
+  },
+  {
+    "path": "crates/morphforge-app/tests/provider_harness.rs",
+    "hash": "98339A8F326F08107C1DE9746008DD88FD45F8C261E727A613DE227DAE847A89"
+  },
+  {
+    "path": "crates/morphforge-app/tests/resources.rs",
+    "hash": "7B6572A35140D8C409801B815514252656AD5186899BD1C102DB56A7D7844F1F"
+  },
+  {
+    "path": "crates/morphforge-app/tests/transport.rs",
+    "hash": "30C477D18270A74E0C56C552AB20B4FB54E2B0FD5D48AB0B5B4FAE890428C32B"
+  },
+  {
+    "path": "crates/morphforge-core/Cargo.toml",
+    "hash": "06BD5D7B8898E17EE25CC692874C57339E1712BBCBF71B25004F01AD53AEFB58"
+  },
+  {
+    "path": "crates/morphforge-core/src/geometry.rs",
+    "hash": "8409826FB1456DF6AE2AF22C2564EB3D38819B9767A8EFAFCD8A6C46A6F74D07"
+  },
+  {
+    "path": "crates/morphforge-core/src/lib.rs",
+    "hash": "60C8E687432ECAC8DC9FC8F14FBC26A97B471D7311A96675DACC65AF90038363"
+  },
+  {
+    "path": "crates/morphforge-core/src/materials.rs",
+    "hash": "31DF777BA6E52C95D02A61C8344FB43A3978A453D4354885BBB52956553D695E"
+  },
+  {
+    "path": "crates/morphforge-core/src/protocol.rs",
+    "hash": "A6AC13AFCDB5CBD6122E3CE2E0123D2D0C6134A6353344AFA6D2FB95651C519E"
+  },
+  {
+    "path": "crates/morphforge-core/tests/geometry.rs",
+    "hash": "D6B4897CE85D5B0058DC8D7190F51AFC8C767E1BEA07CFDBE291B7C34546B3DB"
+  },
+  {
+    "path": "desktop/Cargo.lock",
+    "hash": "E9C9B00D276DAB34F76448C24987CB4BE963BABB21C89880C6A50A3A7DB1D8BD"
+  },
+  {
+    "path": "desktop/Cargo.toml",
+    "hash": "CA05C23BEBA99A2ACB7E42D5283F4BAAE2CC4BDC1FB19BE12057998780182292"
+  },
+  {
+    "path": "desktop/src-tauri/Cargo.toml",
+    "hash": "6A296F757E8311926737DB44D84D9993F0500A6BA1C0412BD5CF8D37FF1DEB72"
+  },
+  {
+    "path": "desktop/src-tauri/tauri.conf.json",
+    "hash": "77B2BE4EB0CDDFCE58436AC263162FC740A8158F31D3D4249C74C70C0717E8CE"
+  },
+  {
+    "path": "web/app.js",
+    "hash": "F666667843A48A8F341D1F00A35565BDB510E4537849C8854AB8B3DC232C7400"
+  },
+  {
+    "path": "web/index.html",
+    "hash": "1F7038619E7570B0B018F8E64C04BD7FFBBF39D23FC4436D84F3EB30BE49782D"
+  },
+  {
+    "path": "web/renderer.js",
+    "hash": "6B1AB7A1A2DCD3273ECAD9C6B25ACEB88A9957A59B3C73AA0A4DC3B258902BB6"
+  },
+  {
+    "path": "web/studio.html",
+    "hash": "E43DD3E270B3085340AB9A2780ECA15C930FC7B5EBB6ACCF3EC4115EBE7F4354"
+  },
+  {
+    "path": "web/studio.js",
+    "hash": "7F61FD0281E1E5AC907B5B11AE957CD0E4BE1CB3A677FC6DDC7B457FBF0362B2"
+  },
+  {
+    "path": "web/style.css",
+    "hash": "BEC3D4127DF616B7B363A3C244F9D1BB995106E60B38DCFA16058B35FD9DD1D2"
+  },
+  {
+    "path": "web/vendor/LICENSE.txt",
+    "hash": "BFE119EA4FD413F5F7CA3FCD63ADB0C4A073ED39DAA2FE7D3E6B769E21272601"
+  },
+  {
+    "path": "web/vendor/OrbitControls.js",
+    "hash": "B97879C748170BAADEB3FB84CEA1FFDF4674E283DC06042F34E2ACB95A76042C"
+  },
+  {
+    "path": "web/vendor/three.core.js",
+    "hash": "EB077D2417F61D3E6D9264C317CABC4EA35769ED6B0AB533067292A550784C20"
+  },
+  {
+    "path": "web/vendor/three.module.js",
+    "hash": "C8211C69345D2E9949DC7A8AC969380497AA0600A5A8AC6A459C8CD02DD9CB8A"
+  },
+  {
+    "path": "web/vendor/VERSION.txt",
+    "hash": "839BD9D77AB7F14B64E22072EB842475DA16A2640643A21762D124C3E28BCA1C"
+  },
+  {
+    "path": "web/workbench.css",
+    "hash": "24019EFE5557F99446B8DF27095BFCF5BB8CD840BB22DE82B068B8DE642CD4BD"
+  }
+]

@@ -1,0 +1,666 @@
+use crate::{
+    capture::CaptureBroker,
+    harness::Harness,
+    provider::Provider,
+    store::{validate_id, Workspace},
+    transport::Transport,
+};
+use anyhow::{bail, Context, Result};
+use axum::{
+    extract::Request,
+    extract::{DefaultBodyLimit, Multipart, Path as AxPath, Query, State},
+    http::{HeaderMap, StatusCode},
+    middleware::{self, Next},
+    response::{IntoResponse, Response},
+    routing::{get, post},
+    Json, Router,
+};
+use include_dir::{include_dir, Dir};
+use morphforge_core::{Box3, Operation, Scene};
+use serde::{Deserialize, Serialize};
+use serde_json::{json, Value};
+use std::{
+    path::PathBuf,
+    sync::{Arc, Mutex},
+};
+static WEB: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/../../web");
+#[derive(Clone)]
+pub struct App {
+    pub workspace: Arc<Mutex<Workspace>>,
+    pub transport: Transport,
+    pub capture: CaptureBroker,
+    pub harness: Harness,
+    pub browser: Arc<Mutex<Option<u32>>>,
+}
+pub struct ApiError(anyhow::Error);
+impl<E: Into<anyhow::Error>> From<E> for ApiError {
+    fn from(e: E) -> Self {
+        Self(e.into())
+    }
+}
+impl IntoResponse for ApiError {
+    fn into_response(self) -> Response {
+        let message = self.0.to_string();
+        let status = if message.contains("REVISION_CONFLICT") {
+            StatusCode::CONFLICT
+        } else {
+            StatusCode::BAD_REQUEST
+        };
+        (status, Json(json!({"ok":false,"error":message}))).into_response()
+    }
+}
+type ApiResult = std::result::Result<Json<Value>, ApiError>;
+#[derive(Default, Deserialize)]
+pub struct Revision {
+    revision: Option<u64>,
+    after: Option<u64>,
+    run: Option<String>,
+}
+impl App {
+    pub fn open(root: PathBuf, env: Option<PathBuf>) -> Result<Self> {
+        let workspace = Arc::new(Mutex::new(Workspace::open(root.clone())?));
+        let transport = Transport::new(workspace.clone());
+        let capture = CaptureBroker::new();
+        let provider = Provider::new(&root, env.as_deref())?;
+        let harness = Harness::new(
+            workspace.clone(),
+            provider,
+            capture.clone(),
+            transport.clone(),
+        );
+        Ok(Self {
+            workspace,
+            transport,
+            capture,
+            harness,
+            browser: Arc::new(Mutex::new(None)),
+        })
+    }
+    pub fn router(&self) -> Router {
+        Router::new()
+            .route("/api/vrc/catalog", get(catalog))
+            .route("/api/packs", get(packs))
+            .route("/api/diagnostics", get(diagnostics))
+            .route("/api/metrics", get(metrics))
+            .route("/api/state", get(state))
+            .route("/api/scene", get(scene))
+            .route("/api/export", get(export))
+            .route("/api/project", post(project))
+            .route("/api/edit", post(edit))
+            .route("/api/import", post(import))
+            .route("/api/history", get(history))
+            .route("/api/undo", post(undo))
+            .route("/api/connect", post(connect))
+            .route("/api/publish", post(publish))
+            .route("/api/placement", post(placement))
+            .route("/api/styles", get(styles))
+            .route("/api/events", get(events))
+            .route("/api/artworks", get(artworks).post(artwork_action))
+            .route("/api/artworks/{id}", get(artwork_get))
+            .route("/api/packs/import", post(pack_import))
+            .route("/api/harness/tools", get(harness_tools))
+            .route("/api/harness/state", get(harness_state))
+            .route("/api/harness/config", post(harness_config))
+            .route("/api/harness/start", post(harness_start))
+            .route("/api/harness/control", post(harness_control))
+            .route("/api/harness/tool", post(harness_tool))
+            .route("/api/provider/models", get(models))
+            .route("/api/capture/jobs", get(capture_jobs))
+            .route("/api/capture/result", post(capture_result))
+            .route("/artifacts/{id}", get(artifact))
+            .fallback(get(asset))
+            .layer(DefaultBodyLimit::max(70 * 1024 * 1024))
+            .layer(middleware::from_fn(origin_guard))
+            .with_state(self.clone())
+    }
+}
+async fn origin_guard(request: Request, next: Next) -> Response {
+    let headers = request.headers();
+    let host = headers
+        .get("host")
+        .and_then(|h| h.to_str().ok())
+        .unwrap_or("");
+    let name = host.split(':').next().unwrap_or("");
+    if !["127.0.0.1", "localhost", "[::1]"].contains(&name) {
+        return (StatusCode::FORBIDDEN, "Host not allowed").into_response();
+    };
+    if let Some(origin) = headers.get("origin").and_then(|v| v.to_str().ok()) {
+        if origin != format!("http://{host}") && origin != format!("https://{host}") {
+            return (StatusCode::FORBIDDEN, "Origin not allowed").into_response();
+        }
+    }
+    next.run(request).await
+}
+async fn state(State(a): State<App>) -> ApiResult {
+    let mut value = a.workspace.lock().unwrap().state();
+    value["connection"] = a.transport.state();
+    value["harness"] = a.harness.state();
+    value["capture"] = json!({"browserPid":*a.browser.lock().unwrap()});
+    Ok(Json(value))
+}
+async fn scene(State(a): State<App>, Query(q): Query<Revision>) -> ApiResult {
+    let w = a.workspace.lock().unwrap();
+    let revision = q.revision.unwrap_or(w.project.scene.revision);
+    let scene = w.scene_at(revision)?;
+    let materials = w.materials_at(revision)?;
+    Ok(Json(json!({"scene":scene,"materials":materials})))
+}
+async fn export(State(a): State<App>) -> ApiResult {
+    let w = a.workspace.lock().unwrap();
+    Ok(Json(
+        json!({"format":"MorphForgeProject/1","project":w.project}),
+    ))
+}
+async fn project(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    let mut w = a.workspace.lock().unwrap();
+    let name = v
+        .get("name")
+        .map(|x| x.as_str().context("名称须为文本"))
+        .transpose()?;
+    let notes = v
+        .get("pinnedNotes")
+        .map(|x| x.as_str().context("固定要求须为文本"))
+        .transpose()?;
+    if name.is_some_and(|s| s.len() > 256) || notes.is_some_and(|s| s.len() > 32000) {
+        bail_api("名称或固定要求过长")?;
+    }
+    let mut next = w.project.scene.clone();
+    if let Some(value) = v.get("cellSize") {
+        next.cell_size = value.as_f64().context("格长须为数字")?;
+    }
+    if let Some(value) = v.get("size") {
+        let size = value.as_u64().context("网格边长须为正整数")?;
+        if !(8..=65536).contains(&size) {
+            bail_api("网格边长8..65536")?;
+        }
+        next.size = size as u32;
+    }
+    next.validate(&w.project.limits)?;
+    if next.cell_size != w.project.scene.cell_size || next.size != w.project.scene.size {
+        w.replace(next, v["baseRevision"].as_u64(), None)?;
+    }
+    if let Some(name) = name {
+        w.project.name = name.into();
+    }
+    if let Some(notes) = notes {
+        w.project.pinned_notes = notes.into();
+    }
+    w.persist()?;
+    w.event("project.settings", None, v)?;
+    Ok(Json(w.state()))
+}
+fn bail_api(s: &str) -> Result<()> {
+    bail!("{s}")
+}
+async fn edit(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    let mut w = a.workspace.lock().unwrap();
+    let result = if v["op"] == "demo" {
+        let ops = demo(v["name"].as_str().unwrap_or("house"))?;
+        w.apply(
+            &ops,
+            v["baseRevision"].as_u64(),
+            v["requestId"].as_str(),
+            None,
+        )?
+    } else if v["op"] == "undo" || v["op"] == "redo" {
+        w.undo(v["op"] == "redo", None)?
+    } else {
+        let operations: Vec<Operation> = if let Some(values) = v.get("operations") {
+            serde_json::from_value(values.clone())?
+        } else {
+            vec![serde_json::from_value(v.clone())?]
+        };
+        w.apply(
+            &operations,
+            v["baseRevision"].as_u64(),
+            v["requestId"].as_str(),
+            None,
+        )?
+    };
+    if a.transport.config().enabled && a.transport.config().auto {
+        let _ = w.commit(None, "手动编辑自动发布", None)?;
+        if let Err(e) = a.transport.publish(&w.project.scene, false) {
+            w.event("publish.rejected", None, json!({"error":e.to_string()}))?;
+            return Ok(Json(
+                json!({"ok":true,"revision":w.project.scene.revision,"warning":e.to_string(),"draftSaved":true}),
+            ));
+        }
+    }
+    Ok(Json(result))
+}
+async fn import(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    let mut w = a.workspace.lock().unwrap();
+    let value = v
+        .get("project")
+        .and_then(|p| p.get("scene"))
+        .or_else(|| v.get("scene"))
+        .or_else(|| v.get("document"))
+        .unwrap_or(&v);
+    let scene = Scene::import_json(value, &w.project.limits)?;
+    let materials = v
+        .get("project")
+        .and_then(|p| p.get("materials"))
+        .or_else(|| v.get("materials"))
+        .map(|m| serde_json::from_value::<Vec<morphforge_core::materials::Material>>(m.clone()))
+        .transpose()?;
+    if let Some(ref values) = materials {
+        validate_materials(values)?;
+    }
+    let materials = materials.unwrap_or_else(|| w.project.materials.clone());
+    let result = w.replace_with_materials(scene, materials, v["baseRevision"].as_u64(), None)?;
+    Ok(Json(result))
+}
+fn validate_materials(values: &[morphforge_core::materials::Material]) -> Result<()> {
+    if values.len() > 16384 {
+        bail!("材质数量超过保护值")
+    };
+    let mut ids = std::collections::BTreeSet::new();
+    for m in values {
+        if !ids.insert(m.id)
+            || m.name.len() > 1024
+            || m.uid.len() > 1024
+            || !m
+                .color
+                .iter()
+                .all(|v| v.is_finite() && (0.0..=1.0).contains(v))
+            || ![m.metallic, m.roughness, m.opacity]
+                .iter()
+                .all(|v| v.is_finite() && (0.0..=1.0).contains(v))
+            || !m.emission.is_finite()
+            || !(0.0..=100.).contains(&m.emission)
+        {
+            bail!("材质字段无效或id重复")
+        };
+        if !["opaque", "cutout", "transparent"].contains(&m.render_mode.as_str())
+            || m.textures.len() > 6
+            || m.textures.iter().any(|v| {
+                !v.starts_with("/artifacts/")
+                    || v[11..].contains('/')
+                    || crate::store::validate_id(&v[11..]).is_err()
+            })
+        {
+            bail!("材质渲染模式或纹理路径无效")
+        }
+    }
+    Ok(())
+}
+async fn undo(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    Ok(Json(a.workspace.lock().unwrap().undo(
+        v["redo"].as_bool().unwrap_or(false),
+        v["revision"].as_u64(),
+    )?))
+}
+async fn history(State(a): State<App>) -> ApiResult {
+    let w = a.workspace.lock().unwrap();
+    Ok(Json(
+        json!({"revisions":w.revisions.keys().collect::<Vec<_>>(),"commits":w.project.commits}),
+    ))
+}
+async fn connect(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    let mut w = a.workspace.lock().unwrap();
+    Ok(Json(a.transport.configure(&v, &mut w)?))
+}
+async fn publish(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    let mut w = a.workspace.lock().unwrap();
+    let rev = v["revision"].as_u64().unwrap_or(w.project.scene.revision);
+    let _ = w.commit(Some(rev), v["title"].as_str().unwrap_or("手动发布"), None)?;
+    let scene = w.scene_at(rev)?;
+    let result = a
+        .transport
+        .publish(&scene, v["resync"].as_bool().unwrap_or(false))?;
+    w.event(
+        "revision.published",
+        None,
+        json!({"revision":rev,"state":result}),
+    )?;
+    Ok(Json(result))
+}
+async fn placement(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    let result = a.transport.placement(&v)?;
+    let mut w = a.workspace.lock().unwrap();
+    let mut config = a.transport.config();
+    config.enabled = false;
+    crate::store::write_json(&w.root.join("connection.json"), &config)?;
+    w.event("placement.changed", None, v)?;
+    Ok(Json(result))
+}
+async fn styles(State(a): State<App>) -> ApiResult {
+    Ok(Json(
+        json!({"styles":a.workspace.lock().unwrap().project.materials}),
+    ))
+}
+async fn events(State(a): State<App>, Query(q): Query<Revision>) -> ApiResult {
+    let w = a.workspace.lock().unwrap();
+    let values: Vec<_> = w
+        .events
+        .iter()
+        .filter(|e| {
+            e.seq > q.after.unwrap_or(0)
+                && q.run.as_ref().is_none_or(|r| e.run_id.as_ref() == Some(r))
+        })
+        .take(500)
+        .collect();
+    Ok(Json(json!({"events":values,"lastSeq":w.next_seq-1})))
+}
+async fn artworks(State(a): State<App>) -> ApiResult {
+    Ok(Json(
+        json!({"artworks":a.workspace.lock().unwrap().library()?}),
+    ))
+}
+async fn artwork_action(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    Ok(Json(a.harness.tool("artworks", &v, None).await?))
+}
+async fn artwork_get(State(a): State<App>, AxPath(id): AxPath<String>) -> ApiResult {
+    validate_id(&id)?;
+    let w = a.workspace.lock().unwrap();
+    Ok(Json(serde_json::from_slice(&std::fs::read(
+        w.root.join("artworks").join(format!("{id}.json")),
+    )?)?))
+}
+async fn pack_import(State(a): State<App>, mut multipart: Multipart) -> ApiResult {
+    let mut data = None;
+    let mut name = "资源包".to_owned();
+    while let Some(field) = multipart.next_field().await? {
+        if field.name() == Some("file") {
+            name = field.file_name().unwrap_or("资源包").to_owned();
+            data = Some(field.bytes().await?.to_vec());
+        }
+    }
+    let bytes = data.context("缺少ZIP文件")?;
+    let result =
+        crate::resources::import_java_pack(&mut a.workspace.lock().unwrap(), &bytes, &name)?;
+    Ok(Json(result))
+}
+async fn harness_state(State(a): State<App>) -> ApiResult {
+    Ok(Json(a.harness.state()))
+}
+async fn harness_config(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    Ok(Json(a.harness.configure(&v)?))
+}
+async fn harness_start(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    Ok(Json(
+        a.harness
+            .start(v["prompt"].as_str().context("缺少prompt")?)?,
+    ))
+}
+async fn harness_control(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    Ok(Json(
+        a.harness
+            .control(v["action"].as_str().context("缺少action")?)?,
+    ))
+}
+async fn harness_tool(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    let name = v["name"].as_str().context("缺少工具名")?;
+    let arguments = v.get("arguments").cloned().unwrap_or_else(|| json!({}));
+    let id = uuid::Uuid::new_v4().to_string();
+    let start = std::time::Instant::now();
+    a.workspace.lock().unwrap().event("tool.request",None,json!({"callId":id,"name":name,"arguments":arguments,"toolVersion":"mf-tools/1","source":"manual"}))?;
+    let result = a.harness.tool(name, &arguments, None).await;
+    let value = match &result {
+        Ok(value) => value.clone(),
+        Err(error) => json!({"ok":false,"error":{"code":"TOOL_ERROR","message":error.to_string()}}),
+    };
+    a.workspace.lock().unwrap().event("tool.result",None,json!({"callId":id,"name":name,"elapsedMs":start.elapsed().as_secs_f64()*1000.,"result":value,"source":"manual"}))?;
+    Ok(Json(result?))
+}
+async fn models(State(a): State<App>) -> ApiResult {
+    Ok(Json(a.harness.provider.models().await?))
+}
+async fn capture_jobs(State(a): State<App>) -> ApiResult {
+    Ok(Json(a.capture.claim()))
+}
+async fn capture_result(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    Ok(Json(
+        a.capture.complete(&mut a.workspace.lock().unwrap(), &v)?,
+    ))
+}
+async fn artifact(State(a): State<App>, AxPath(id): AxPath<String>) -> Response {
+    if validate_id(&id).is_err() {
+        return StatusCode::BAD_REQUEST.into_response();
+    };
+    let path = a.workspace.lock().unwrap().root.join("artifacts").join(&id);
+    match tokio::fs::read(path).await {
+        Ok(bytes) => (
+            [
+                (
+                    "Content-Type",
+                    mime_guess::from_path(&id)
+                        .first_or_octet_stream()
+                        .as_ref()
+                        .to_owned(),
+                ),
+                (
+                    "Cache-Control",
+                    "public, max-age=31536000, immutable".into(),
+                ),
+            ],
+            bytes,
+        )
+            .into_response(),
+        Err(_) => StatusCode::NOT_FOUND.into_response(),
+    }
+}
+async fn asset(uri: axum::http::Uri, _headers: HeaderMap) -> Response {
+    let path = uri.path().trim_start_matches('/');
+    let path = if path.is_empty() { "studio.html" } else { path };
+    if path.contains("..") || path.contains('\\') {
+        return StatusCode::BAD_REQUEST.into_response();
+    };
+    match WEB.get_file(path) {
+        Some(file) => (
+            [
+                (
+                    "Content-Type",
+                    mime_guess::from_path(path)
+                        .first_or_octet_stream()
+                        .as_ref()
+                        .to_owned(),
+                ),
+                ("Cache-Control", "no-cache".into()),
+            ],
+            file.contents(),
+        )
+            .into_response(),
+        None => StatusCode::NOT_FOUND.into_response(),
+    }
+}
+fn demo(name: &str) -> Result<Vec<Operation>> {
+    let mut ops = vec![Operation::Clear];
+    match name {
+        "stairs" => {
+            for i in 0..8 {
+                ops.push(Operation::Box {
+                    value: Box3::new([-8 + i * 2, 0, 0], [2, (i + 1) as u32, 2], i as u32 % 4 + 1),
+                })
+            }
+        }
+        "directions" => {
+            for (p, s, c) in [
+                ([-4, 0, 0], [1, 3, 1], 15),
+                ([4, 0, 0], [1, 1, 1], 3),
+                ([0, 0, 4], [1, 2, 1], 4),
+                ([0, 0, -4], [1, 4, 1], 11),
+            ] {
+                ops.push(Operation::Box {
+                    value: Box3::new(p, s, c),
+                })
+            }
+        }
+        "stress16k" | "stress5k" => {
+            let count = if name == "stress5k" { 5000 } else { 16384 };
+            for i in 0..count {
+                let x = i % 32;
+                let y = i / (32 * 32);
+                let z = (i / 32) % 32;
+                ops.push(Operation::Box {
+                    value: Box3::new([x * 3 - 48, y * 3, z * 3 - 48], [1; 3], (i % 4 + 1) as u32),
+                })
+            }
+        }
+        "house" => {
+            for (p, s, c) in [
+                ([-4, 0, -4], [8, 1, 8], 1),
+                ([-4, 1, -4], [8, 5, 1], 2),
+                ([-4, 1, 3], [8, 5, 1], 2),
+                ([-4, 1, -3], [1, 5, 6], 2),
+                ([3, 1, -3], [1, 5, 6], 2),
+            ] {
+                ops.push(Operation::Box {
+                    value: Box3::new(p, s, c),
+                })
+            }
+            ops.push(Operation::Erase {
+                min: [-1, 1, 3],
+                size: [2, 3, 1],
+            });
+            for i in 0..3 {
+                ops.push(Operation::Box {
+                    value: Box3::new([-5 + i, 6 + i, -5], [(10 - 2 * i) as u32, 1, 10], 4),
+                })
+            }
+        }
+        _ => bail!("未知示例"),
+    };
+    Ok(ops)
+}
+#[derive(Clone, Serialize, Deserialize)]
+pub struct ServerOptions {
+    pub root: PathBuf,
+    pub env_file: Option<PathBuf>,
+    pub port: u16,
+    pub capture: bool,
+}
+pub async fn serve(options: ServerOptions) -> Result<()> {
+    use fs2::FileExt;
+    std::fs::create_dir_all(&options.root)?;
+    let lock = std::fs::OpenOptions::new()
+        .create(true)
+        .truncate(false)
+        .read(true)
+        .write(true)
+        .open(options.root.join("workspace.lock"))?;
+    lock.try_lock_exclusive()
+        .context("同一作品目录已有后端运行")?;
+    let app = App::open(options.root.clone(), options.env_file)?;
+    let listener =
+        tokio::net::TcpListener::bind((std::net::Ipv4Addr::LOCALHOST, options.port)).await?;
+    let port = listener.local_addr()?.port();
+    let mut browser = None;
+    if options.capture {
+        if let Some(binary) = browser_binary() {
+            let profile = options.root.join("capture-browser");
+            let log = std::fs::File::create(options.root.join("capture-browser.log"))?;
+            let mut cmd = std::process::Command::new(binary);
+            cmd.args([
+                "--headless=new",
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--enable-unsafe-swiftshader",
+                "--no-first-run",
+                "--disable-background-timer-throttling",
+                "--disable-renderer-backgrounding",
+            ])
+            .arg(format!("--user-data-dir={}", profile.display()))
+            .arg(format!("http://127.0.0.1:{port}/?capture=1"))
+            .stdout(log.try_clone()?)
+            .stderr(log);
+            #[cfg(windows)]
+            {
+                use std::os::windows::process::CommandExt;
+                cmd.creation_flags(0x08000000);
+            }
+            let child = cmd.spawn()?;
+            *app.browser.lock().unwrap() = Some(child.id());
+            browser = Some(child);
+        }
+    }
+    println!(
+        "MorphForge Rust ready: http://127.0.0.1:{port} · data={} · OSC disabled",
+        options.root.display()
+    );
+    let result = axum::serve(listener, app.router())
+        .with_graceful_shutdown(async {
+            let _ = tokio::signal::ctrl_c().await;
+        })
+        .await;
+    app.transport.inner.lock().unwrap().stop = true;
+    if let Some(mut child) = browser {
+        let _ = child.kill();
+        let _ = child.wait();
+    }
+    result?;
+    drop(lock);
+    Ok(())
+}
+fn browser_binary() -> Option<PathBuf> {
+    if let Some(path) = std::env::var_os("MORPHFORGE_BROWSER") {
+        return Some(path.into());
+    }
+    let candidates = if cfg!(windows) {
+        vec![
+            r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+            r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
+            r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+        ]
+    } else {
+        vec![
+            "/usr/bin/chromium",
+            "/usr/bin/chromium-browser",
+            "/usr/bin/google-chrome",
+        ]
+    };
+    candidates
+        .into_iter()
+        .map(PathBuf::from)
+        .find(|p| p.is_file())
+}
+
+async fn diagnostics(State(a): State<App>) -> Result<Response, ApiError> {
+    let root = a.workspace.lock().unwrap().root.clone();
+    let bytes = crate::diagnostics::bundle(&root, |s| a.harness.provider.redact(s))?;
+    Ok((
+        [
+            ("Content-Type", "application/zip"),
+            (
+                "Content-Disposition",
+                "attachment; filename=morphforge-diagnostics.zip",
+            ),
+        ],
+        bytes,
+    )
+        .into_response())
+}
+async fn metrics(State(a): State<App>) -> ApiResult {
+    let root = a.workspace.lock().unwrap().root.clone();
+    Ok(Json(crate::diagnostics::metrics(&root)?))
+}
+
+async fn catalog(State(a): State<App>) -> Result<Response, ApiError> {
+    let bytes = crate::catalog::export(&a.workspace.lock().unwrap())?;
+    Ok((
+        [
+            ("Content-Type", "application/zip"),
+            (
+                "Content-Disposition",
+                "attachment; filename=morphforge-materials.zip",
+            ),
+        ],
+        bytes,
+    )
+        .into_response())
+}
+async fn packs(State(a): State<App>) -> ApiResult {
+    let root = a.workspace.lock().unwrap().root.clone();
+    let mut values = vec![];
+    for e in std::fs::read_dir(root.join("packs"))? {
+        let p = e?.path();
+        if p.extension().is_some_and(|x| x == "json") {
+            values.push(serde_json::from_slice::<Value>(&std::fs::read(p)?)?)
+        }
+    }
+    Ok(Json(json!({"packs":values})))
+}
+
+async fn harness_tools() -> Json<Value> {
+    Json(json!({"version":"mf-tools/1","tools":crate::harness::tools()}))
+}

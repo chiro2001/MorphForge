@@ -1,0 +1,89 @@
+{
+  "capture": {
+    "id": "f571736c-34b9-412c-b114-7dc1ae0a5883",
+    "images": [
+      {
+        "artifact": "791c9593e8188a6bb7636d1340adf4021186f057d93ca7d365dd38b4bfcac60f.png",
+        "camera": {
+          "fov": 42,
+          "position": [
+            45.63888167239235,
+            47.80228625429426,
+            60.86047709049045
+          ],
+          "target": [
+            0.14250000000000007,
+            13.68,
+            3.9899999999999984
+          ]
+        },
+        "height": 640,
+        "url": "/artifacts/791c9593e8188a6bb7636d1340adf4021186f057d93ca7d365dd38b4bfcac60f.png",
+        "view": "hero",
+        "width": 768
+      },
+      {
+        "artifact": "9dc37ff4d1af8c1a71999e364a5a8fadbdd1c22e432e89b7940bceea6eda8668.png",
+        "camera": {
+          "fov": 42,
+          "position": [
+            0.14250000000000984,
+            23.26249265867851,
+            83.84410548898765
+          ],
+          "target": [
+            0.14250000000000007,
+            13.68,
+            3.9899999999999984
+          ]
+        },
+        "height": 640,
+        "url": "/artifacts/9dc37ff4d1af8c1a71999e364a5a8fadbdd1c22e432e89b7940bceea6eda8668.png",
+        "view": "front",
+        "width": 768
+      },
+      {
+        "artifact": "753d8604d429d9cc994c86e3fdfdc0560c70bc463f0caa87e31f3f3463392a5d.png",
+        "camera": {
+          "fov": 42,
+          "position": [
+            0.14250000000000007,
+            94.10699959786498,
+            3.9980426999655054
+          ],
+          "target": [
+            0.14250000000000007,
+            13.68,
+            3.9899999999999984
+          ]
+        },
+        "height": 640,
+        "url": "/artifacts/753d8604d429d9cc994c86e3fdfdc0560c70bc463f0caa87e31f3f3463392a5d.png",
+        "view": "top",
+        "width": 768
+      }
+    ],
+    "ok": true,
+    "revision": 6,
+    "stats": {
+      "boxCount": 7459
+    }
+  },
+  "artwork": {
+    "artwork": {
+      "boxCount": 7459,
+      "createdAt": "2026-10-18T19:34:15.949Z",
+      "id": "6402c7d7-4dc6-45a3-9c97-61e540f79b7f",
+      "sourceRun": null,
+      "tags": [
+        "import",
+        "7459-box",
+        "original-art"
+      ],
+      "thumbnail": "791c9593e8188a6bb7636d1340adf4021186f057d93ca7d365dd38b4bfcac60f.png",
+      "title": "The Leviathan's Lantern · 精确体素版",
+      "voxelCount": 70286
+    },
+    "ok": true
+  }
+}

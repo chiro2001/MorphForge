@@ -1,0 +1,11 @@
+{
+  "scene": "Assets/MorphForge/Scenes/MorphForge_Stage1.unity",
+  "controllerLayers": 2,
+  "clips": 39,
+  "syncedIntParameters": 11,
+  "addedSyncedBits": 88,
+  "capacity": 64,
+  "customAvatarRuntimeScripts": 0,
+  "emission": "Animator toggles sibling pump; native Birth sub-emitter emits into persistent Store",
+  "scope": "Editor prototype, not VRChat validation"
+}

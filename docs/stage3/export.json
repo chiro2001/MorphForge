@@ -1,0 +1,161 @@
+{
+  "success": true,
+  "missingScripts": 0,
+  "syncedBits": 196,
+  "remainingBits": 60,
+  "placementParameters": [
+    {
+      "name": "MF_World",
+      "type": "Bool",
+      "networkSynced": true,
+      "defaultValue": 1.0
+    },
+    {
+      "name": "MF_Handle",
+      "type": "Bool",
+      "networkSynced": true,
+      "defaultValue": 1.0
+    },
+    {
+      "name": "MF_Scale",
+      "type": "Float",
+      "networkSynced": true,
+      "defaultValue": 1.0
+    },
+    {
+      "name": "MF_Reset",
+      "type": "Bool",
+      "networkSynced": true,
+      "defaultValue": 0.0
+    },
+    {
+      "name": "MF_Grab",
+      "type": "Int",
+      "networkSynced": true,
+      "defaultValue": 0.0
+    }
+  ],
+  "menuNames": [
+    "着せ替え",
+    "アウターを脱ぐ",
+    "ニーソを脱ぐ",
+    "靴を脱ぐ",
+    "ベレー帽を脱ぐ",
+    "なでなで",
+    "なでなで ON/OFF",
+    "Happy",
+    "Unhappy",
+    "確認用",
+    "表情固定",
+    "現在の表情で固定",
+    "表情セット変更",
+    "表情セット呼び出し",
+    "右手 セット１",
+    "うげ…（Fist）",
+    "舌出し（Point）",
+    "どやっ（Peace）",
+    "照れ（RockNRoll）",
+    "おろおろ（Gun）",
+    "ふんす（Thumbs up）",
+    "にこにこ（Open）",
+    "左手 セット１",
+    "＞＜（Fist）",
+    "白目（Point）",
+    "ウィンク（Peace）",
+    "ぼろ泣き（RockNRoll）",
+    "じと（Gun）",
+    "キラキラ（Thumbs up）",
+    "にこにこ（Open）",
+    "右手 セット２",
+    "＊（Fist）",
+    "舌出し（Point）",
+    "どやっ（Peace）",
+    "放心（RockNRoll）",
+    "ふーん（Gun）",
+    "暗黒微笑（Thumbs up）",
+    "笑顔（Open）",
+    "左手 セット２",
+    "＞＜（Fist）",
+    "虚無（Point）",
+    "煽り（Peace）",
+    "耐え（RockNRoll）",
+    "覚醒（Gun）",
+    "きらきら（Thumbs up）",
+    "笑顔（Open）",
+    "おまけ",
+    "デフォルト表情",
+    "露骨に嫌な顔（なでなで）",
+    "しわしわ",
+    "FXで有り金全部溶かす人の顔",
+    "ぼけーっ",
+    "引",
+    "すや…",
+    "棒目",
+    "おまけ２",
+    "ぼろ泣き２",
+    "覚醒２",
+    "白目",
+    "照れ２",
+    "悪だくみ",
+    "足指",
+    "足指トラッキング",
+    "足指アニメーション",
+    "ashiyubi Right",
+    "ashiyubi",
+    "ashiyubi Left",
+    "足指のPBを有効化",
+    "便利機能",
+    "ColliderJump",
+    "しっぽのコライダー無効化",
+    "MorphForge",
+    "固定在世界",
+    "显示定位球",
+    "体素缩放",
+    "移到面前",
+    "左手跟随（菜单）",
+    "右手跟随（菜单）"
+  ],
+  "contacts": [
+    {
+      "parameter": "MF_NearL",
+      "localOnly": true,
+      "allowSelf": true,
+      "allowOthers": false,
+      "radius": 0.13,
+      "tags": [
+        "HandL"
+      ]
+    },
+    {
+      "parameter": "MF_NearR",
+      "localOnly": true,
+      "allowSelf": true,
+      "allowOthers": false,
+      "radius": 0.13,
+      "tags": [
+        "HandR"
+      ]
+    }
+  ],
+  "customAvatarScripts": [],
+  "particleCapacity": 64,
+  "scalingMode": "Hierarchy",
+  "constraints": [
+    {
+      "name": "ResetGuide",
+      "FreezeToWorld": false,
+      "RebakeOffsetsWhenUnfrozen": false
+    },
+    {
+      "name": "(MA WorldFixedRoot)",
+      "FreezeToWorld": false,
+      "RebakeOffsetsWhenUnfrozen": false
+    },
+    {
+      "name": "AnchorPose",
+      "FreezeToWorld": false,
+      "RebakeOffsetsWhenUnfrozen": true
+    }
+  ],
+  "scope": "NDMF Editor processing, not a VRChat client pickup test"
+}

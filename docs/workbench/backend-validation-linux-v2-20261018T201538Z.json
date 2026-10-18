@@ -1,0 +1,117 @@
+{
+  "format": "MorphForgeBackendValidation/1",
+  "label": "linux-v2",
+  "startedAt": "2026-10-18T20:15:38.422961+00:00",
+  "target": {
+    "host": "127.0.0.1",
+    "port": 8769,
+    "scheme": "http"
+  },
+  "safety": {
+    "providerEndpointCalled": false,
+    "oscEndpointCalled": false,
+    "diagnosticPayloadsOrSecretsPrinted": false
+  },
+  "checks": [
+    {
+      "name": "target_health",
+      "status": "pass",
+      "details": {
+        "httpStatus": 200,
+        "revisionPresent": true
+      }
+    },
+    {
+      "name": "bad_material_import_atomicity",
+      "status": "pass",
+      "elapsedMs": 8,
+      "details": {
+        "rootMaterialsHttpStatus": 400,
+        "rootRevisionUnchanged": true,
+        "rootSceneAndMaterialsUnchanged": true,
+        "nestedProjectMaterialsHttpStatus": 400,
+        "nestedProjectRevisionUnchanged": true,
+        "nestedProjectSceneAndMaterialsUnchanged": true
+      }
+    },
+    {
+      "name": "invalid_project_settings_atomicity",
+      "status": "pass",
+      "elapsedMs": 4,
+      "details": {
+        "httpStatus": 400,
+        "nameUnchanged": true,
+        "revisionUnchanged": true,
+        "sceneUnchanged": true
+      }
+    },
+    {
+      "name": "recipe_host_capability_isolation",
+      "status": "pass",
+      "elapsedMs": 23,
+      "details": {
+        "httpStatus": 200,
+        "hostFilesystemNetworkAndEnvironmentGlobalsAbsent": true,
+        "dryRunDidNotChangeGeometry": true
+      }
+    },
+    {
+      "name": "infinite_recipe_failure_rolls_back_geometry",
+      "status": "pass",
+      "elapsedMs": 303,
+      "details": {
+        "httpStatus": 400,
+        "failedWithoutApplyingStagedGeometry": true,
+        "responseBodyLogged": false
+      }
+    },
+    {
+      "name": "memory_limit_failure_rolls_back_geometry",
+      "status": "pass",
+      "elapsedMs": 10022,
+      "details": {
+        "httpStatus": 400,
+        "failedWithoutApplyingStagedGeometry": true,
+        "responseBodyLogged": false
+      }
+    },
+    {
+      "name": "duplicate_request_id_and_revision_conflict",
+      "status": "pass",
+      "elapsedMs": 20,
+      "details": {
+        "firstEditHttpStatus": 200,
+        "duplicateHttpStatus": 200,
+        "duplicateRequestIdReplayedWithoutNewRevision": true,
+        "staleRevisionHttpStatus": 409,
+        "revisionConflictPreservedScene": true
+      }
+    },
+    {
+      "name": "catalog_zip_texture_references",
+      "status": "pass",
+      "elapsedMs": 5,
+      "details": {
+        "packMaterialCount": 1,
+        "textureReferenceCount": 6,
+        "allReferencesResolveInsideCatalogZip": true,
+        "invalidReferenceCount": 0,
+        "missingReferenceCount": 0
+      }
+    },
+    {
+      "name": "diagnostics_redaction_and_exclusions",
+      "status": "pass",
+      "elapsedMs": 11,
+      "details": {
+        "memberCount": 14,
+        "credentialAndEnvironmentFilesAbsent": true,
+        "credentialLikeContentAbsent": true,
+        "browserProfileFilesAbsent": true,
+        "manifestDeclaresSensitiveExclusions": true
+      }
+    }
+  ],
+  "finishedAt": "2026-10-18T20:15:48.822501+00:00",
+  "overall": "pass"
+}

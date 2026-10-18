@@ -1,0 +1,69 @@
+{
+  "label": "rate200-c0-erase",
+  "environment": "Unity Play Mode + native Gesture Manager OSC, not VRChat client",
+  "count": 0,
+  "sourceControl": 235,
+  "source": [
+    128,
+    128,
+    128,
+    1,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0
+  ],
+  "received": 126.0,
+  "completed": 126.0,
+  "inboxReady": false,
+  "lastRxSeq": 29,
+  "work": [
+    128.0,
+    128.0,
+    128.0,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "op": 3,
+  "lastSeq": 29,
+  "busy": false,
+  "pumpActive": false,
+  "triggerEnabled": false,
+  "storePlaying": false,
+  "storePaused": false,
+  "particles": [],
+  "nativeStartSize": [
+    0.5,
+    0.25,
+    0.5
+  ],
+  "locator": [
+    9.536743E-07,
+    9.536743E-07,
+    9.536743E-07
+  ],
+  "centerOffset": [
+    0.25,
+    0.125,
+    0.25
+  ],
+  "eraseScale": [
+    0.025,
+    0.025,
+    0.025
+  ],
+  "expectedPath": "Docs/Stage2/rate200-c0-erase-expected.json",
+  "actualImage": "",
+  "referenceImage": "",
+  "foregroundPixels": 0,
+  "referenceMeanAbsoluteError": 0.0,
+  "referenceMaxError": 0,
+  "traceEvents": 714
+}

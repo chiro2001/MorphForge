@@ -1,0 +1,29 @@
+{
+  "scene": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+  "avatar": "Assets/MorphForge/Stage3/Avatar.prefab",
+  "module": "Assets/MorphForge/Stage3/Placement.prefab",
+  "transport": "MF2 unchanged",
+  "placementParameters": [
+    "MF_World",
+    "MF_Handle",
+    "MF_Scale",
+    "MF_Reset",
+    "MF_Grab"
+  ],
+  "addedBits": 19,
+  "defaultWorldFixed": true,
+  "scaleRange": [
+    0.05,
+    1.0
+  ],
+  "bottomCenterProtocolOffset": [
+    0,
+    32,
+    0
+  ],
+  "dock": [
+    0.0,
+    0.5701405,
+    0.3420843
+  ]
+}

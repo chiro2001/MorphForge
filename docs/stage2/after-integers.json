@@ -1,0 +1,69 @@
+{
+  "label": "after-integers",
+  "environment": "Unity Play Mode + native Gesture Manager OSC, not VRChat client",
+  "count": 0,
+  "sourceControl": 68,
+  "source": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "received": 9.0,
+  "completed": 9.0,
+  "inboxReady": false,
+  "lastRxSeq": 8,
+  "work": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "op": 4,
+  "lastSeq": 8,
+  "busy": false,
+  "pumpActive": false,
+  "triggerEnabled": false,
+  "storePlaying": false,
+  "storePaused": false,
+  "particles": [],
+  "nativeStartSize": [
+    0.25,
+    0.25,
+    0.25
+  ],
+  "locator": [
+    -32.0,
+    -32.0,
+    -32.0
+  ],
+  "centerOffset": [
+    0.125,
+    0.125,
+    0.125
+  ],
+  "eraseScale": [
+    128.0,
+    128.0,
+    128.0
+  ],
+  "expectedPath": "Docs/Stage2/after-integers-expected.json",
+  "actualImage": "",
+  "referenceImage": "",
+  "foregroundPixels": 0,
+  "referenceMeanAbsoluteError": 0.0,
+  "referenceMaxError": 0,
+  "traceEvents": 53
+}
