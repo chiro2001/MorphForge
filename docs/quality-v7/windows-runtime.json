@@ -1,0 +1,159 @@
+{
+  "success": true,
+  "scope": "Windows packaged desktop + real screenshot worker; isolated QA data only. No paid API, real VRChat or OSC.",
+  "checks": [
+    {
+      "name": "packaged core reports 0.7.0 and OSC off",
+      "passed": true
+    },
+    {
+      "name": "negative-Y target violation is visible",
+      "passed": true
+    },
+    {
+      "name": "center preview leaves original revision unchanged",
+      "passed": true
+    },
+    {
+      "name": "whole-scene centering fits target",
+      "passed": true
+    },
+    {
+      "name": "nineteen original pixel materials are offline",
+      "passed": true
+    },
+    {
+      "name": "grass contains different top and bottom textures",
+      "passed": true
+    },
+    {
+      "name": "native backend finds adjacent transparent interfaces",
+      "passed": true
+    },
+    {
+      "name": "quality options persist outside model context",
+      "passed": true
+    },
+    {
+      "name": "real screenshot worker returns custom and preset cameras",
+      "passed": true
+    },
+    {
+      "name": "real Windows render uses 2x sampling and virtual light",
+      "passed": true
+    },
+    {
+      "name": "target catalog export/import agrees with used materials",
+      "passed": true
+    },
+    {
+      "name": "preparing publication does not turn on OSC",
+      "passed": true
+    },
+    {
+      "name": "final localized tool schema is embedded",
+      "passed": true
+    }
+  ],
+  "error": null,
+  "capture": {
+    "id": "1f6582e1-ac73-42ee-ad48-6dafe52648d7",
+    "images": [
+      {
+        "artifact": "f7bfd55319b505789b3868fa92dc521ca3c685c9e0b60e3fc4e63420369cb7d5.png",
+        "camera": {
+          "coordinateSpace": "render-world",
+          "fov": 42,
+          "position": [
+            4.653229432149741,
+            3.6774220741123056,
+            4.504036790187178
+          ],
+          "projection": "perspective",
+          "target": [
+            0.75,
+            0.75,
+            -0.375
+          ]
+        },
+        "height": 480,
+        "rendering": {
+          "hiddenFaces": 2,
+          "mode": "vrc",
+          "renderHeight": 960,
+          "renderWidth": 1280,
+          "supersampling": 2,
+          "surfaceCulling": true,
+          "textureWarnings": [],
+          "voxelGrid": false
+        },
+        "url": "/artifacts/f7bfd55319b505789b3868fa92dc521ca3c685c9e0b60e3fc4e63420369cb7d5.png",
+        "view": "hero",
+        "width": 640
+      },
+      {
+        "artifact": "62bd0365715750f8dd2d0a59c6f50da1ab4501f4e114eb85694895e4dda201e2.png",
+        "camera": {
+          "bounds": {
+            "max": [
+              2,
+              1,
+              0
+            ],
+            "min": [
+              -3,
+              0,
+              -5
+            ]
+          },
+          "coordinateSpace": "voxel-grid",
+          "far": 5000,
+          "fov": 42,
+          "near": 0.001,
+          "orthographic": {
+            "bottom": -2.571964229922338,
+            "left": -3.42928563989645,
+            "right": 3.42928563989645,
+            "top": 2.571964229922338
+          },
+          "position": [
+            1.310681627424354,
+            5.398607536080465,
+            4.25755582987919
+          ],
+          "projection": "orthographic",
+          "target": [
+            -0.5,
+            0.5,
+            -2.5
+          ],
+          "up": [
+            -0.1484525055496845,
+            0.8191520442889917,
+            -0.5540322932223233
+          ]
+        },
+        "height": 480,
+        "rendering": {
+          "hiddenFaces": 2,
+          "mode": "vrc",
+          "renderHeight": 960,
+          "renderWidth": 1280,
+          "supersampling": 2,
+          "surfaceCulling": true,
+          "textureWarnings": [],
+          "voxelGrid": false
+        },
+        "url": "/artifacts/62bd0365715750f8dd2d0a59c6f50da1ab4501f4e114eb85694895e4dda201e2.png",
+        "view": "grass-detail",
+        "width": 640
+      }
+    ],
+    "ok": true,
+    "revision": 4,
+    "stats": {
+      "boxCount": 7
+    }
+  },
+  "finishedAt": "2026-10-20T00:11:25.1450682+08:00"
+}

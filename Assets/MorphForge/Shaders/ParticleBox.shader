@@ -1,6 +1,6 @@
 Shader "MorphForge/ParticleBox"
 {
-    Properties { _CellSize("Cell size",Float)=0.25 }
+    Properties { _VoxelGrid("Debug voxel grid",Float)=0 _CellSize("Cell size",Float)=0.25 }
     SubShader
     {
         Tags { "Queue"="Geometry" "RenderType"="Opaque" }
@@ -13,6 +13,7 @@ Shader "MorphForge/ParticleBox"
             #pragma fragment frag
             #include "UnityCG.cginc"
             float _CellSize;
+            float _VoxelGrid;
             struct appdata {float4 vertex:POSITION;float3 normal:NORMAL;fixed4 color:COLOR;UNITY_VERTEX_INPUT_INSTANCE_ID};
             struct v2f {float4 pos:SV_POSITION;float3 world:TEXCOORD0;float3 normal:TEXCOORD1;fixed4 data:COLOR;UNITY_VERTEX_OUTPUT_STEREO};
             v2f vert(appdata v)
@@ -38,7 +39,7 @@ Shader "MorphForge/ParticleBox"
                 float edge=min(min(uv.x,1-uv.x),min(uv.y,1-uv.y));
                 float checker=fmod(floor(uv.x*2)+floor(uv.y*2),2);
                 float shading=.52+.48*abs(dot(n,normalize(float3(.4,.8,.6))));
-                color*=shading*lerp(.84,1,checker)*lerp(.3,1,step(.025,edge));
+                color*=shading; if(_VoxelGrid>.5)color*=lerp(.55,1,smoothstep(0,fwidth(edge)*1.2,edge));
                 return float4(color,1); // A stores data, never opacity.
             }
             ENDCG

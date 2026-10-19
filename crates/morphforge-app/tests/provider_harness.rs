@@ -260,6 +260,8 @@ fn attach_capture_to_the_next_request(h: &Harness, artifact: &str) {
 fn inert_transport() -> Transport {
     Transport {
         inner: Arc::new(Mutex::new(TransportState {
+            avatar_catalog: None,
+            avatar_catalog_error: String::new(),
             config: Connection::default(),
             sent: vec![],
             desired: vec![],
@@ -1399,6 +1401,8 @@ async fn failed_compact_keeps_old_context_and_records_failure() {
     let dir = tempfile::tempdir().unwrap();
     let workspace = workspace(&dir);
     let original = Conversation {
+        schema_tools: morphforge_app::harness::TOOL_SCHEMA_VERSION.into(),
+        schema_prompt: morphforge_app::harness::SYSTEM_PROMPT_VERSION.into(),
         goal: None,
         reference_images: Vec::new(),
         input: vec![

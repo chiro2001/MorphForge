@@ -1,3 +1,4 @@
+#![recursion_limit = "256"]
 pub mod capture;
 pub mod catalog;
 pub mod diagnostics;
@@ -13,3 +14,8 @@ pub mod sources;
 pub mod store;
 pub mod timeline;
 pub mod transport;
+
+pub mod builtin_pixels;
+pub mod scene_tools;
+pub mod target;
+pub mod view_settings;

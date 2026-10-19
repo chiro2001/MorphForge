@@ -1,0 +1,31 @@
+{
+  "coreSha256": "f21d36fd88659c2c00b96880c78fd600c25b39f7d8927c87717be9c9e9f3746a",
+  "checks": [
+    {
+      "file": "web/renderer.js",
+      "embeddedExact": true
+    },
+    {
+      "file": "web/studio.js",
+      "embeddedExact": true
+    },
+    {
+      "file": "web/studio.html",
+      "embeddedExact": true
+    },
+    {
+      "file": "web/workbench.css",
+      "embeddedExact": true
+    },
+    {
+      "file": "web/render-settings.js",
+      "embeddedExact": true
+    },
+    {
+      "file": "web/timeline-ui.js",
+      "embeddedExact": true
+    }
+  ],
+  "acceptanceCoreSha256": "23c86a41b05a8a61a67850dfbf180a9400d4cb4d9cfbfa7457c1b9198ee74d8a",
+  "success": true
+}

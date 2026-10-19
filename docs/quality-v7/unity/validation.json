@@ -1,0 +1,42 @@
+{
+  "success": true,
+  "build": {
+    "success": true,
+    "format": "MorphForgeMaterialCatalog/1",
+    "sourceRoot": "D:\\Projects\\VRChatProjects2\\MorphForge\\Docs\\Materials\\acceptance-v07",
+    "atlas": "Assets/MorphForge/Diagnostics/AcceptanceV07/CatalogAtlas.png",
+    "metadata": "Assets/MorphForge/Diagnostics/AcceptanceV07/CatalogMetadata.asset",
+    "material": "Assets/MorphForge/Diagnostics/AcceptanceV07/ParticleBoxCatalog.mat",
+    "styleCount": 43,
+    "styleIdRange": [
+      1,
+      82
+    ],
+    "atlasSize": [
+      3648,
+      128
+    ],
+    "cellPixels": 32,
+    "metadataWidth": 256,
+    "metadataHeight": 64,
+    "metadataTexels": 16384,
+    "metadataStyles": 4096,
+    "animatedStyles": 1,
+    "transparentStyles": 7,
+    "cutoutStyles": 2,
+    "layeredTextures": 132,
+    "texturedStyles": 19,
+    "unverified": "Requires the long-run Unity gate before visual/NDMF acceptance."
+  },
+  "shaderErrors": [],
+  "metadataGridMatches": true,
+  "metadataGridShaderErrors": 0,
+  "layerCount": 132,
+  "mipmapCount": 6,
+  "virtualLightIgnoresWorldLights": true,
+  "gridIsOptional": true,
+  "transparentFaceMaskWorks": true,
+  "productionMaterialGuidUnchanged": true,
+  "output": "Assets/MorphForge/Diagnostics/AcceptanceV07",
+  "scope": "Isolated persisted material/array assets and actual camera pixels. No Avatar upload or OSC."
+}

@@ -18,7 +18,7 @@ def fixture():
   z.writestr('assets/mf/models/block/animated.json',json.dumps({'parent':'minecraft:block/cube_all','textures':{'all':'mf:block/animated'}}))
  return buffer.getvalue()
 def main():
- p=argparse.ArgumentParser();p.add_argument('--url',default='http://127.0.0.1:8768');a=p.parse_args();out=ROOT/'docs/materials';out.mkdir(exist_ok=True,parents=True);checks=[];b=Browser()
+ p=argparse.ArgumentParser();p.add_argument('--url',default='http://127.0.0.1:8768');p.add_argument('--out',type=Path,default=ROOT/'docs/materials');a=p.parse_args();out=a.out;out.mkdir(exist_ok=True,parents=True);checks=[];b=Browser()
  def api(path,body=None):
   r=urllib.request.Request(a.url+'/api/'+path,data=None if body is None else json.dumps(body).encode(),headers={'Content-Type':'application/json'})
   with urllib.request.urlopen(r,timeout=60)as v:return json.load(v)

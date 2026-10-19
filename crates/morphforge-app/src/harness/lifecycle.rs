@@ -35,6 +35,8 @@ fn fresh(project_id: &str, title: &str) -> Conversation {
         id: uuid::Uuid::new_v4().to_string(),
         project_id: project_id.into(),
         title: title.into(),
+        schema_tools: TOOL_SCHEMA_VERSION.into(),
+        schema_prompt: SYSTEM_PROMPT_VERSION.into(),
         created_at: now(),
         ..Default::default()
     }
@@ -192,7 +194,7 @@ impl Harness {
         if target_session.as_deref() == Some(&state.conversation.id) && project.id == w.project.id {
             return Ok(json!({"ok":true,"unchanged":true}));
         }
-        let next = if let Some(id) = target_session {
+        let mut next = if let Some(id) = target_session {
             let next: Session = serde_json::from_slice(
                 &fs::read(session_path(&w.root, &id)?).context("找不到指定对话")?,
             )?;
@@ -207,6 +209,15 @@ impl Harness {
                 provider_state: json!({"prefix":{},"guard":{}}),
             }
         };
+        if let Some(ref run) = next.run {
+            if next.conversation.schema_tools.is_empty() {
+                next.conversation.schema_tools = run.tools_version.clone();
+            }
+            if next.conversation.schema_prompt.is_empty() {
+                next.conversation.schema_prompt = run.prompt_version.clone();
+            }
+        }
+        Self::hydrate_versions(&mut next.conversation, &w.events);
         // Validate restored state before changing the durable workspace pointer.
         self.provider.validate_context_guard(&next.provider_state)?;
         self.archive_session(&w, &state)?;

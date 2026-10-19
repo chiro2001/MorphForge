@@ -2,6 +2,9 @@ Shader "MorphForge/ParticleBoxCatalog"
 {
     Properties
     {
+        _VoxelGrid("Debug voxel grid", Float) = 0
+        _UseLayeredTextures("Mipmapped texture layers", Float) = 0
+        _CatalogLayers("Catalog texture layers", 2DArray) = "" {}
         _CellSize("Logical cell size", Float) = 0.25
         _CellPixels("Catalog cell pixels", Float) = 32
         _AtlasSize("Atlas size", Vector) = (1, 1, 1, 1)
@@ -23,6 +26,9 @@ Shader "MorphForge/ParticleBoxCatalog"
         #include "UnityCG.cginc"
         #include "Lighting.cginc"
 
+        UNITY_DECLARE_TEX2DARRAY(_CatalogLayers);
+        float _UseLayeredTextures;
+        float _VoxelGrid;
         sampler2D _CatalogAtlas;
         sampler2D _CatalogMeta;
         float4 _AtlasSize;
@@ -131,11 +137,7 @@ Shader "MorphForge/ParticleBoxCatalog"
             }
             // Manifest colors are sRGB-normalized values. This is the only
             // color-space conversion applied to metadata colors.
-            #if defined(UNITY_COLORSPACE_GAMMA)
-            baseColor = sRGBColor;
-            #else
             baseColor = GammaToLinearSpace(sRGBColor);
-            #endif
             opacity = saturate(m1.a);
 
             if (tint > 0.0)
@@ -154,6 +156,12 @@ Shader "MorphForge/ParticleBoxCatalog"
                 n = vertexAxis >= 0.0 ? axisVector : -axisVector;
             }
 
+            float face = FaceIndex(axis, i.normal, i.local);
+            if (fmod(floor(flags / 32.0), 2.0) >= 1.0)
+            {
+                clip(0.5 - fmod(floor(codes.a / exp2(face)), 2.0));
+                motion = 0.0; // transparent surfaces use these six bits for interface masks
+            }
             float2 tile = FaceUV(axis, i.local, i.size, i.uvFace);
             float4 texel = float4(1, 1, 1, 1);
             bool hasTexture = fmod(flags, 2.0) >= 1.0;
@@ -163,32 +171,39 @@ Shader "MorphForge/ParticleBoxCatalog"
                 float frameTime = max(0.001, m0.w);
                 float phaseTicks = motion * frames;
                 float frame = fmod(floor((_Time.y / frameTime + phaseTicks) + 0.0001), frames);
-                float face = FaceIndex(axis, i.normal, i.local);
                 float cell = max(1.0, _CellPixels);
                 float2 inset = float2(0.001, 0.001);
                 float2 atlasPixels = m0.xy + float2(face * cell, frame * cell) + clamp(tile, inset, 1.0 - inset) * cell;
                 float2 atlasUV = atlasPixels / max(_AtlasSize.xy, float2(1, 1));
-                texel = tex2D(_CatalogAtlas, atlasUV);
+                if (_UseLayeredTextures > 0.5 && fmod(floor(flags / 64.0), 2.0) >= 1.0)
+                {
+                    float baseLayer = MetaTexel(styleId, 3.0).y;
+                    float2 extent = axis < .5 ? i.size.zy : (axis < 1.5 ? i.size.xz : i.size.xy);
+                    float2 logical = i.uvFace.xy * extent / max(_CellSize, .0001);
+                    texel = _CatalogLayers.SampleGrad(sampler_CatalogLayers, float3(tile, baseLayer + frame * 6.0 + face), ddx(logical), ddy(logical));
+                }
+                else texel = tex2D(_CatalogAtlas, atlasUV);
+                #if defined(UNITY_COLORSPACE_GAMMA)
+                texel.rgb = GammaToLinearSpace(texel.rgb);
+                #endif
             }
 
             if (hasTexture)
             {
                 baseColor *= texel.rgb;
             }
-            else
+            if (_VoxelGrid > .5)
             {
-                float2 uv = tile;
-                float edge = min(min(uv.x, 1.0 - uv.x), min(uv.y, 1.0 - uv.y));
-                float checker = fmod(floor(uv.x * 2.0) + floor(uv.y * 2.0), 2.0);
-                baseColor *= lerp(0.84, 1.0, checker) * lerp(0.3, 1.0, step(0.025, edge));
+                float2 edge = min(tile, 1.0 - tile);
+                float2 smoothing = max(fwidth(i.uvFace.xy), .0001);
+                float2 lines = smoothstep(0.0, smoothing * 1.2, edge);
+                baseColor *= lerp(.55, 1.0, min(lines.x, lines.y));
             }
 
-            // A simplified, surface-level PBR approximation. This intentionally
-            // does not claim refracting water, volumetric clouds, or global gi.
-            n = normalize(UnityObjectToWorldNormal(n));
-            float3 lightVector = _WorldSpaceLightPos0.xyz;
-            float3 lightDirection = dot(lightVector, lightVector) > 1e-6 ? normalize(lightVector) : normalize(float3(.4,.8,.6));
-            float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - i.world);
+            // Fixed virtual sun + hemisphere lighting in artwork-local coordinates.
+            n = normalize(n);
+            float3 lightDirection = normalize(float3(.4,.8,.6));
+            float3 viewDirection = normalize(mul((float3x3)unity_WorldToObject, _WorldSpaceCameraPos.xyz - i.world));
             float3 halfDirection = normalize(lightDirection + viewDirection);
             float nDotL = saturate(dot(n, lightDirection));
             float metallic = saturate(m2.x);
@@ -196,15 +211,14 @@ Shader "MorphForge/ParticleBoxCatalog"
             float specularPower = exp2(2.0 + 10.0 * (1.0 - roughness));
             float specular = pow(saturate(dot(n, halfDirection)), specularPower) * lerp(0.04, 1.0, metallic);
             float3 diffuse = baseColor * (1.0 - 0.55 * metallic) * (0.28 + 0.72 * nDotL);
-            float3 ambient = UNITY_LIGHTMODEL_AMBIENT.rgb * baseColor;
+            float3 ambient = lerp(float3(.12,.13,.16),float3(.35,.42,.52),n.y*.5+.5)*baseColor;
             float3 surface = ambient + diffuse + baseColor * specular * lerp(0.18, 1.0, metallic);
             surface += baseColor * max(0.0, m2.z);
 
             if (fmod(flags, 32.0) >= 16.0)
             {
-                float n1 = sin(i.local.x * 8.0 + i.local.y * 6.0 + _Time.y * 0.13 + motion * 4.0);
-                float n2 = sin(i.local.z * 7.0 - i.local.y * 5.0 + _Time.y * 0.11);
-                surface *= 0.86 + 0.14 * (0.5 + 0.5 * n1 * n2);
+                float3 fraction = frac(i.local / max(_CellSize,.0001));
+                surface *= .94 + .06 * sin(fraction.x*9.+fraction.y*7.+fraction.z*8.+_Time.y*.13);
             }
 
             if (fmod(flags, 16.0) >= 8.0)
@@ -220,6 +234,9 @@ Shader "MorphForge/ParticleBoxCatalog"
             }
 
             float alpha = hasTexture ? saturate(texel.a * opacity) : opacity;
+            #if defined(UNITY_COLORSPACE_GAMMA)
+            surface = LinearToGammaSpace(surface);
+            #endif
             return fixed4(surface, alpha);
         }
         ENDCG
@@ -233,7 +250,7 @@ Shader "MorphForge/ParticleBoxCatalog"
             Blend Off
 
             CGPROGRAM
-            #pragma target 3.0
+            #pragma target 3.5
             #pragma vertex vert
             #pragma fragment frag
 
@@ -260,7 +277,7 @@ Shader "MorphForge/ParticleBoxCatalog"
             Blend SrcAlpha OneMinusSrcAlpha
 
             CGPROGRAM
-            #pragma target 3.0
+            #pragma target 3.5
             #pragma vertex vert
             #pragma fragment frag
 

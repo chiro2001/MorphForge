@@ -51,3 +51,11 @@
 - read_artifact可重读图片或裁剪局部、读取已存代码文本，避免为了重看反复渲染。历史图片不等于当前revision截图，不增加Goal复核轮数。每轮找出具体可见短板，局部修改后从相同视角对比；不要为凑复核次数改一块，也不要求已达标作品继续改动。
 
 - run_recipe和recipe_sources(action=run)可带capture:{views:['hero','front']}或capture:{shots:[...]}，成功提交后直接返回对应版本图片，减少一次网络往返；无需另发capture_views。截图失败时geometryCommitted/captureError说明几何已提交，只重试截图。必须在下一响应实际查看返回图片后，才能finish_artwork。
+
+
+视觉、材质和整体定位：
+- capture_views 支持自由/局部视角、正交/透视，以及 mode=art/vrc、quality=high/standard、supersampling=1..3。默认 high 会以 2× 分辨率绘制再缩图；不要误称为实拍 VRChat。截图默认不含观察格纹。
+- 用户要像素积木风时，可用 builtin_materials 查看和加入原创 pixel-workshop 主题。新的材质/贴图必须重新打包 Avatar，OSC 不传纹理。目标目录未声明时不要宣称 Avatar 已匹配。
+- 用 transform_scene 平移已有整个作品，或 center_on_ground 落地居中；dryRun 可先看偏移。此操作可撤销、不改写源码。mf.translate 仅作用于新绘制代码。不要每一步居中而移动整个场景。
+- 艺术坐标允许负数；VRC 允许 X/Z[-128,128)、Y[0,256)。超过 256 格的尺寸不能靠显示缩放解决。读取 placement/targetCompatibility 检查。
+- 开启完成前自动居中时，finish_artwork 可能返回 CENTERED_NEEDS_REVIEW，表示几何已移动；重新截图，在下一响应看图后再完成，勿重复搭建。

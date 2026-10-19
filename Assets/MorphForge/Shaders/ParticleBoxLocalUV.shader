@@ -1,6 +1,6 @@
 Shader "MorphForge/ParticleBoxLocalUV"
 {
-    Properties { _CellSize("Logical cell size",Float)=0.25 }
+    Properties { _VoxelGrid("Debug voxel grid",Float)=0 _CellSize("Logical cell size",Float)=0.25 }
     SubShader
     {
         Tags { "Queue"="Geometry" "RenderType"="Opaque" }
@@ -13,6 +13,7 @@ Shader "MorphForge/ParticleBoxLocalUV"
             #pragma fragment frag
             #include "UnityCG.cginc"
             float _CellSize;
+            float _VoxelGrid;
             // Native streams: UV.xy + UV2.xy => TEXCOORD0; SizeXYZ => TEXCOORD1.
             struct appdata {float4 vertex:POSITION;fixed4 color:COLOR;float4 uvFace:TEXCOORD0;float3 size:TEXCOORD1;UNITY_VERTEX_INPUT_INSTANCE_ID};
             struct v2f {float4 pos:SV_POSITION;float2 tiles:TEXCOORD0;float shade:TEXCOORD1;fixed4 data:COLOR;UNITY_VERTEX_OUTPUT_STEREO};
@@ -41,7 +42,7 @@ Shader "MorphForge/ParticleBoxLocalUV"
                 float2 uv=frac(i.tiles);
                 float edge=min(min(uv.x,1-uv.x),min(uv.y,1-uv.y));
                 float checker=fmod(floor(uv.x*2)+floor(uv.y*2),2);
-                color*=i.shade*lerp(.84,1,checker)*lerp(.3,1,step(.025,edge));
+                color*=i.shade; if(_VoxelGrid>.5)color*=lerp(.55,1,smoothstep(0,fwidth(edge)*1.2,edge));
                 return float4(color,1);
             }
             ENDCG

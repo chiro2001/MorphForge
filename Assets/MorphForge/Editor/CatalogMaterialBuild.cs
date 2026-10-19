@@ -17,10 +17,11 @@ namespace MorphForge.Editor
     {
         public const string Format = "MorphForgeMaterialCatalog/1";
         public const string DefaultSourceSubdirectory = "Docs/Materials";
-        public const string OutputRoot = "Assets/MorphForge/MaterialsCatalog";
-        public const string AtlasAssetPath = OutputRoot + "/CatalogAtlas.png";
-        public const string MetadataAssetPath = OutputRoot + "/CatalogMetadata.asset";
-        public const string MaterialAssetPath = OutputRoot + "/ParticleBoxCatalog.mat";
+        public const string DefaultOutputRoot = "Assets/MorphForge/MaterialsCatalog";
+        public static string OutputRoot { get; private set; } = DefaultOutputRoot;
+        public static string AtlasAssetPath => OutputRoot + "/CatalogAtlas.png";
+        public static string MetadataAssetPath => OutputRoot + "/CatalogMetadata.asset";
+        public static string MaterialAssetPath => OutputRoot + "/ParticleBoxCatalog.mat";
 
         public const int MaxStyleId = 4095;
         public const int MaxFrames = 1024;
@@ -31,6 +32,7 @@ namespace MorphForge.Editor
         public const int MetadataHeight = 64;
         public const int MetadataTexelCount = (MaxStyleId + 1) * 4;
 
+        public static string LayersAssetPath => OutputRoot + "/CatalogLayers.asset";
         const int HasTextureFlag = 1;
         const int TransparentFlag = 2;
         const int CutoutFlag = 4;
@@ -48,6 +50,15 @@ namespace MorphForge.Editor
         {
             Debug.Log(Build());
         }
+
+        public static string BuildAt(string sourceRoot, string outputRoot)
+       {
+           if (!outputRoot.StartsWith("Assets/MorphForge/Diagnostics/", StringComparison.Ordinal) || outputRoot.Contains(".."))
+               throw new InvalidOperationException("Isolated output must be under Assets/MorphForge/Diagnostics/.");
+           var previous = OutputRoot;
+           try { OutputRoot = outputRoot; return Build(sourceRoot); }
+           finally { OutputRoot = previous; }
+       }
 
         public static string Build()
         {
@@ -71,6 +82,7 @@ namespace MorphForge.Editor
             EnsureFolder(OutputRoot);
 
             WriteAtlas(layout);
+            var layers = WriteLayers(layout);
             WriteMetadata(layout);
             var atlas = AssetDatabase.LoadAssetAtPath<Texture2D>(AtlasAssetPath);
             var metadata = AssetDatabase.LoadAssetAtPath<Texture2D>(MetadataAssetPath);
@@ -83,6 +95,9 @@ namespace MorphForge.Editor
 
             var generated = new Material(shader) { name = "ParticleBoxCatalog" };
             generated.SetTexture("_CatalogAtlas", atlas);
+           generated.SetTexture("_CatalogLayers", layers);
+           generated.SetFloat("_UseLayeredTextures", layers ? 1f : 0f);
+           generated.SetFloat("_VoxelGrid", 0f);
             generated.SetTexture("_CatalogMeta", metadata);
             generated.SetVector("_AtlasSize", new Vector4(
                 layout.Width,
@@ -127,6 +142,7 @@ namespace MorphForge.Editor
                 animatedStyles = prepared.Count(item => item.Frames > 1),
                 transparentStyles = prepared.Count(item => (item.Flags & TransparentFlag) != 0),
                 cutoutStyles = prepared.Count(item => (item.Flags & CutoutFlag) != 0),
+                layeredTextures = layers ? layers.depth : 0,
                 texturedStyles = prepared.Count(item => (item.Flags & HasTextureFlag) != 0),
                 unverified = "Requires the long-run Unity gate before visual/NDMF acceptance."
             }, Formatting.Indented);
@@ -192,6 +208,7 @@ namespace MorphForge.Editor
             var uids = new HashSet<string>(StringComparer.Ordinal);
             foreach (var material in document.materials)
             {
+                if(material != null) material.SurfaceMasks = document.capabilities != null && document.capabilities.Contains("transparent-face-mask/1");
                 if (material == null)
                     throw new InvalidDataException("catalog.json contains a null material");
                 if (material.id < 1 || material.id > MaxStyleId)
@@ -274,6 +291,7 @@ namespace MorphForge.Editor
                 var flags = 0;
                 if (sources != null) flags |= HasTextureFlag;
                 if (material.renderMode == "transparent") flags |= TransparentFlag;
+                if (material.renderMode == "transparent" && material.SurfaceMasks) flags |= 32;
                 if (material.renderMode == "cutout") flags |= CutoutFlag;
                 if (string.Equals(material.family, "water", StringComparison.OrdinalIgnoreCase)) flags |= WaterFlag;
                 if (string.Equals(material.family, "cloud", StringComparison.OrdinalIgnoreCase)) flags |= CloudFlag;
@@ -468,6 +486,36 @@ namespace MorphForge.Editor
             importer.SaveAndReimport();
         }
 
+        static Texture2DArray WriteLayers(AtlasLayout layout)
+       {
+           var textured = layout.Items.Where(i => i.Prepared.Textures != null).ToList();
+           var count = textured.Sum(i => i.Prepared.Frames * 6);
+           if (count == 0 || !SystemInfo.supports2DArrayTextures || count > SystemInfo.maxTextureArraySlices || (long)count*CellPixels*CellPixels*4 > 64*1024*1024)
+               return null;
+           var array = new Texture2DArray(CellPixels, CellPixels, count, TextureFormat.RGBA32, true, false)
+           { name="CatalogLayers", filterMode=FilterMode.Trilinear, wrapMode=TextureWrapMode.Repeat, anisoLevel=8 };
+           var layer=0;
+           foreach (var item in textured)
+           {
+               item.LayerBase=layer;
+               item.Prepared.Flags |= 64;
+               for(var frame=0;frame<item.Prepared.Frames;frame++) for(var face=0;face<6;face++)
+               {
+                   var source=item.Prepared.Textures[face];
+                   var pixels=new Color32[CellPixels*CellPixels];
+                   var top=source.Height-(frame+1)*source.Width;
+                   for(var y=0;y<CellPixels;y++) for(var x=0;x<CellPixels;x++)
+                       pixels[y*CellPixels+x]=source.Pixels[(top+y*source.Width/CellPixels)*source.Width+x*source.Width/CellPixels];
+                   array.SetPixels32(pixels,layer++,0);
+               }
+           }
+           array.Apply(true,false);
+           var existing=AssetDatabase.LoadAssetAtPath<Texture2DArray>(LayersAssetPath);
+           if(existing){EditorUtility.CopySerialized(array,existing);UnityEngine.Object.DestroyImmediate(array);EditorUtility.SetDirty(existing);array=existing;}
+           else AssetDatabase.CreateAsset(array,LayersAssetPath);
+           return array;
+       }
+
         static void WriteMetadata(AtlasLayout layout)
         {
             // RGBAFloat is a linear data texture, not a color texture. Use
@@ -490,6 +538,7 @@ namespace MorphForge.Editor
                 pixels[index + 10] = material.emission;
                 pixels[index + 11] = item.Prepared.Flags;
                 pixels[index + 12] = CellPixels;
+                pixels[index + 13] = item.LayerBase;
             }
 
             // Preserve the asset GUID so existing material references survive rebuilds.
@@ -534,7 +583,7 @@ namespace MorphForge.Editor
 
         static void WriteReport(string name, string content)
         {
-            var directory = Path.Combine(ProjectRoot, "Docs", "Materials");
+            var directory = Path.Combine(ProjectRoot, "Docs", "Materials", OutputRoot == DefaultOutputRoot ? "" : "diagnostics");
             Directory.CreateDirectory(directory);
             File.WriteAllText(Path.Combine(directory, name), content + Environment.NewLine);
         }
@@ -544,11 +593,13 @@ namespace MorphForge.Editor
         {
             [JsonProperty("format")] public string format;
             [JsonProperty("materials")] public List<CatalogMaterial> materials;
+            [JsonProperty("capabilities")] public List<string> capabilities;
         }
 
         [JsonObject(MemberSerialization.OptIn)]
         public sealed class CatalogMaterial
         {
+            [JsonIgnore] public bool SurfaceMasks;
             [JsonProperty("id")] public int id;
             [JsonProperty("uid")] public string uid;
             [JsonProperty("name")] public string name;
@@ -588,6 +639,7 @@ namespace MorphForge.Editor
             public PreparedMaterial Prepared;
             public int OffsetX;
             public int OffsetY;
+            public int LayerBase;
         }
 
         sealed class AtlasLayout

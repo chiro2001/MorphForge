@@ -107,10 +107,13 @@ canonical Rust/Unity 坐标的 `+Z` 是槽位 **4**，`-Z` 是槽位 **5**。Thr
 Assets/MorphForge/MaterialsCatalog/
   CatalogAtlas.png
   CatalogMetadata.asset
+  CatalogLayers.asset  # 0.7，设备及层数预算允许时生成
   ParticleBoxCatalog.mat
 ```
 
 `CatalogAtlas.png` 使用 sRGB 导入、Point filtering、无 mipmap、Clamp。每个 style 占据 `6 × 32` 像素的一行内的六面块；动画帧在 style 块内向上堆叠。当前单元为 32 像素，Atlas 最大宽度 8192，实际高度受 GPU `SystemInfo.maxTextureSize` 限制。构建器计算所有 style 的矩形，超出最大纹理尺寸时直接失败并报告 style ID，不会截断材质。
+
+0.7 起优先生成 `CatalogLayers.asset`：每个面/动画帧独占一个 32×32 数组层，带完整 mipmap、Trilinear、8×各向异性。Shader 用连续 UV 的导数 SampleGrad，避免 fract 边界错误和图集串色。超出设备纹理数组层数或64MiB源像素预算时回退原 Atlas；旧目录无需存在数组纹理。新 Shader 默认关闭格线，并使用局部固定虚拟太阳/半球光照。仅将 Shader 源码更新到工程不等于更新已上传的 Avatar。
 
 `CatalogMetadata.asset` 是 `RGBAFloat`、linear、Point、Clamp、无 mipmap 的 256×64 纹理（共 16384 texel，覆盖全部 4096 styles）。每个 style 使用四个 texel：
 
@@ -119,7 +122,7 @@ Assets/MorphForge/MaterialsCatalog/
 | 0 | `offsetX, offsetY, frames, frameTime` |
 | 1 | `color.r, color.g, color.b, opacity`，颜色为 sRGB 值 |
 | 2 | `metallic, roughness, emission, flags` |
-| 3 | `cellPixels, 0, 0, 0` |
+| 3 | `cellPixels, arrayBaseLayer, 0, 0`（0.7；旧目录的后三项为0） |
 
 flags：
 
@@ -130,6 +133,8 @@ flags：
 | 2 | alpha cutout |
 | 3 | water 程序效果 |
 | 4 | cloud 程序效果 |
+| 5 | 透明 Box 的 Acode 是六面遮罩（目标声明 transparent-face-mask/1） |
+| 6 | 有独立 mipmap 数组层，slot3.y 为起始层 |
 
 metadata 的线性索引固定为 `styleId * 4 + slot`，再按行展开：
 
@@ -197,3 +202,11 @@ python tools/unity_remote.py --check-result run_script --file AgentScripts/Catal
 - FullFT 联合参数预算；
 - 真实玩家移动和多人晚加入；
 - 首次 16k UDP 首遍偶发漏 Birth 的无损保证。
+
+## 0.7 目标目录声明与透明表面
+
+导出 manifest 可含 `capabilities: ["virtual-light/1", "transparent-face-mask/1"]`。Builder 只有读到遮面声明，才为透明材质设置 flag bit5；旧 manifest 继续使用原相位编码。桌面也只有在用户导入的目标目录声明该能力后，才将透明 Box 的6-bit motion通路改为 `+X,-X,+Y,-Y,+Z,-Z` 六个内部面位。透明动画使用统一相位；源艺术几何的 motionPhase 不修改，Opaque 的编码不变，MF3仍为56bit。
+
+导入目标目录是一项用户声明，并非远端握手。逐已用styleId核对渲染定义与贴图引用，不匹配时拦截发送。需要用同一目录重建并上传Avatar，再声明该目录。不能仅因网页加入新材质而假定当前Avatar已具有贴图。
+
+隔离验证可调用 `CatalogMaterialBuild.BuildAt(sourceRoot, "Assets/MorphForge/Diagnostics/<name>")`，不会把测试目录写入生产材质路径。当前测试证明本机Shader/数组图像可用，不代替新的VRChat服务端/客户端验收。

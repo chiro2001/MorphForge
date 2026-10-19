@@ -202,6 +202,10 @@ async fn legacy_context_is_migrated_and_corrupt_context_is_never_silently_erased
     let id = app.harness.inner.lock().unwrap().conversation.id.clone();
     assert!(!id.is_empty());
     assert_eq!(
+        app.harness.state()["context"]["schemaUpgradeRequired"],
+        true
+    );
+    assert_eq!(
         app.harness.inner.lock().unwrap().conversation.summary,
         "摘要"
     );

@@ -125,6 +125,8 @@ pub struct Project {
     #[serde(default)]
     pub pinned_notes: String,
     #[serde(default)]
+    pub auto_center_on_finish: bool,
+    #[serde(default)]
     pub text_receipts: BTreeMap<String, TextReceipt>,
     #[serde(default)]
     pub protected_groups: BTreeSet<String>,
@@ -141,6 +143,7 @@ impl Default for Project {
             materials: builtins(),
             commits: vec![],
             pinned_notes: String::new(),
+            auto_center_on_finish: false,
             text_receipts: BTreeMap::new(),
             protected_groups: BTreeSet::new(),
             source_credits: Vec::new(),
@@ -883,9 +886,13 @@ impl Workspace {
         Ok(())
     }
     pub fn state(&self) -> Value {
-        json!({"project":{"id":self.project.id,"name":self.project.name,"cellSize":self.project.scene.cell_size,"size":self.project.scene.size,"pinnedNotes":self.project.pinned_notes,"protectedGroups":self.project.protected_groups},"revision":self.project.scene.revision,"stats":self.project.scene.stats(&self.project.limits),"canUndo":!self.undo.is_empty(),"canRedo":!self.redo.is_empty(),"commits":self.project.commits,"eventSeq":self.next_seq-1})
+        json!({"project":{"id":self.project.id,"name":self.project.name,"cellSize":self.project.scene.cell_size,"size":self.project.scene.size,"pinnedNotes":self.project.pinned_notes,"autoCenterOnFinish":self.project.auto_center_on_finish,"protectedGroups":self.project.protected_groups},"revision":self.project.scene.revision,"stats":self.project.scene.stats(&self.project.limits),"canUndo":!self.undo.is_empty(),"canRedo":!self.redo.is_empty(),"commits":self.project.commits,"eventSeq":self.next_seq-1})
     }
-    fn ensure_protected_groups_unchanged(&self, before: &Scene, after: &Scene) -> Result<()> {
+    pub(crate) fn ensure_protected_groups_unchanged(
+        &self,
+        before: &Scene,
+        after: &Scene,
+    ) -> Result<()> {
         if self.project.protected_groups.is_empty() {
             return Ok(());
         }

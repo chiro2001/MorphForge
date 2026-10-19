@@ -22,8 +22,8 @@ mod palette;
 mod prompts;
 mod visual_context;
 pub use goal::GoalProgress;
-pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/4.8";
-pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/3.5";
+pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/4.9";
+pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/3.6";
 
 #[derive(Clone, Debug)]
 struct PendingPrompt {
@@ -64,6 +64,10 @@ pub struct Conversation {
     pub created_at: String,
     #[serde(default)]
     pub title: String,
+    #[serde(default)]
+    pub schema_tools: String,
+    #[serde(default)]
+    pub schema_prompt: String,
     pub input: Vec<Value>,
     pub goals: Vec<String>,
     pub summary: String,
@@ -185,6 +189,7 @@ impl Harness {
             }
             w.session_id = conversation.id.clone();
         }
+        Self::hydrate_versions(&mut conversation, &events);
         let scoped_events: Vec<_> = events
             .into_iter()
             .filter(|e| {
@@ -231,6 +236,53 @@ impl Harness {
             transport,
             fonts,
         }
+    }
+    pub(super) fn hydrate_versions(c: &mut Conversation, events: &[crate::store::Event]) {
+        let previous = events
+            .iter()
+            .rev()
+            .filter(|e| e.session_id.as_deref().is_none_or(|id| id == c.id))
+            .find_map(|e| {
+                let value = if e.kind == "provider.request" {
+                    &e.data["trace"]
+                } else {
+                    &e.data
+                };
+                Some((
+                    value["toolsVersion"].as_str()?.to_owned(),
+                    value["promptVersion"]
+                        .as_str()
+                        .unwrap_or(SYSTEM_PROMPT_VERSION)
+                        .to_owned(),
+                ))
+            });
+        if c.schema_tools.is_empty() {
+            c.schema_tools = previous.as_ref().map(|p| p.0.clone()).unwrap_or_else(|| {
+                if c.input.is_empty() {
+                    TOOL_SCHEMA_VERSION.into()
+                } else {
+                    "legacy-unknown".into()
+                }
+            });
+        }
+        if c.schema_prompt.is_empty() {
+            c.schema_prompt = previous.as_ref().map(|p| p.1.clone()).unwrap_or_else(|| {
+                if c.input.is_empty() {
+                    SYSTEM_PROMPT_VERSION.into()
+                } else {
+                    "legacy-unknown".into()
+                }
+            });
+        }
+        if c.input.is_empty() {
+            c.schema_tools = TOOL_SCHEMA_VERSION.into();
+            c.schema_prompt = SYSTEM_PROMPT_VERSION.into();
+        }
+    }
+    fn schema_upgrade_required(c: &Conversation) -> bool {
+        !c.input.is_empty()
+            && ((!c.schema_tools.is_empty() && c.schema_tools != TOOL_SCHEMA_VERSION)
+                || (!c.schema_prompt.is_empty() && c.schema_prompt != SYSTEM_PROMPT_VERSION))
     }
     pub fn state(&self) -> Value {
         let s = self.inner.lock().unwrap();
@@ -283,7 +335,7 @@ impl Harness {
                 "queue":queued,
             },
             "context":{
-                "id":s.conversation.id,"title":s.conversation.title,"createdAt":s.conversation.created_at,
+                "id":s.conversation.id,"title":s.conversation.title,"createdAt":s.conversation.created_at,"schemaUpgradeRequired":Self::schema_upgrade_required(&s.conversation),"schemaTools":s.conversation.schema_tools,"currentTools":TOOL_SCHEMA_VERSION,
                 "estimatedTokens":estimate(&s.conversation.input),
                 "messages":s.conversation.input.len(),
                 "compactCount":s.conversation.compact_count,
@@ -404,6 +456,11 @@ impl Harness {
             .unwrap_or_else(|| uuid::Uuid::new_v4().to_string());
         if request_id.len() > 128 {
             bail!("REQUEST_ID_CONFLICT：requestId超过128字符")
+        }
+        if !prompt.trim().is_empty()
+            && Self::schema_upgrade_required(&self.inner.lock().unwrap().conversation)
+        {
+            bail!("HARNESS_UPGRADE_REQUIRED：工具/提示词已升级。可新开对话，或显式升级旧对话并重新预热缓存；未发送模型请求。");
         }
         if !prompt.trim().is_empty() && !self.provider.configured() {
             bail!("请先配置API Key")
@@ -595,7 +652,28 @@ impl Harness {
     }
 
     pub fn control(&self, action: &str) -> Result<Value> {
+        if ["resume", "compact"].contains(&action)
+            && Self::schema_upgrade_required(&self.inner.lock().unwrap().conversation)
+        {
+            bail!("HARNESS_UPGRADE_REQUIRED：请先升级旧对话或新开对话；未发送模型请求。");
+        }
         match action {
+            "upgrade_context" => {
+                let mut state = self.inner.lock().unwrap();
+                if is_active_phase(&state.phase)
+                    || state.worker_epoch.is_some()
+                    || !state.queued.is_empty()
+                {
+                    bail!("RUN_CONFLICT：请先停止AI运行和排队消息");
+                }
+                if !self.provider.cache_status()["alert"].is_null() {
+                    bail!("CACHE_GUARD_PAUSED：已有缓存告警未确认，升级不会绕过告警。请先检查并确认告警。");
+                }
+                state.conversation.schema_tools = TOOL_SCHEMA_VERSION.into();
+                state.conversation.schema_prompt = SYSTEM_PROMPT_VERSION.into();
+                self.provider
+                    .authorize_prefix_reset("explicit_schema_upgrade");
+            }
             "stop" => self.stop_run()?,
             "pause" | "interrupt" => {
                 self.message(&json!({"mode":"interrupt","prompt":""}))?;
@@ -1809,6 +1887,10 @@ impl Harness {
             "projectName":workspace.project.name,
             "stats":stats,
             "targetCompatibility":target_compatibility,
+            "placement":crate::scene_tools::target_report(&workspace.project.scene,self.transport.config().capacity),
+            "materialCompatibility":self.transport.material_report(&workspace.project.scene,&workspace.project.materials),
+            "builtinMaterialPacks":crate::builtin_pixels::list(),
+            "autoCenterOnFinish":workspace.project.auto_center_on_finish,
             "protectedGroups":workspace.project.protected_groups,
             "styles":styles,
             "catalog":catalog,
@@ -1946,6 +2028,18 @@ impl Harness {
         }
         match name {
             "get_context" => Ok(self.context_with_options(args)),
+            "transform_scene" => self.with_workspace_guard(guard.as_ref(),|workspace|{
+                let mut result=crate::scene_tools::transform(workspace,args,run)?;
+                if args["dryRun"]!=true && result["unchanged"]!=true && self.transport.config().enabled && self.transport.config().auto{
+                    match self.transport.publish_with_materials(&workspace.project.scene,&workspace.project.materials,false){Ok(v)=>result["sync"]=v,Err(e)=>result["syncWarning"]=json!(e.to_string())}
+                }
+                Ok(result)
+            }),
+            "builtin_materials" => self.with_workspace_guard(guard.as_ref(),|workspace|{
+                if args["action"].as_str().unwrap_or("list")=="list"{return Ok(json!({"packs":crate::builtin_pixels::list()}));}
+                if self.transport.config().enabled{bail!("加入主题前请停止OSC发送，避免Avatar目录不一致");}
+                crate::builtin_pixels::apply(workspace,args,run)
+            }),
             "define_palette" => self.with_workspace_guard(guard.as_ref(), |workspace| {
                 palette::define(workspace, args, run)
             }),
@@ -2002,7 +2096,7 @@ impl Harness {
                 let scene = workspace.scene_at(revision)?;
                 let state = self
                     .transport
-                    .publish(&scene, args["resync"].as_bool().unwrap_or(false))?;
+                    .publish_with_materials(&scene, &workspace.materials_at(revision)?, args["resync"].as_bool().unwrap_or(false))?;
                 workspace.event(
                     "revision.published",
                     run,
@@ -2115,6 +2209,7 @@ impl Harness {
                 bail!("capture必须是对象")
             };
             crate::capture::view_options(capture)?;
+            crate::capture::render_options(capture)?;
         }
         Ok(())
     }
@@ -2156,6 +2251,17 @@ impl Harness {
                 bail!("RUN_CANCELLED")
             }
             let mut workspace = self.workspace.lock().unwrap();
+            if workspace.project.auto_center_on_finish {
+                let base = workspace.project.scene.revision;
+                let centered = crate::scene_tools::transform(
+                    &mut workspace,
+                    &json!({"action":"center_on_ground","baseRevision":base}),
+                    run,
+                )?;
+                if centered["unchanged"] != true {
+                    bail!("CENTERED_NEEDS_REVIEW：完成前已落地居中到revision {}，请截图并在下一响应看图后再完成；源码未改写。",workspace.project.scene.revision);
+                }
+            }
             goal::check_goal_finish(&state, &workspace, args)?;
             if state.settings.send_images {
                 if let Some(images) = latest_capture_images(&workspace) {
@@ -2212,6 +2318,17 @@ impl Harness {
         } else {
             let mut state = self.inner.lock().unwrap();
             let mut workspace = self.workspace.lock().unwrap();
+            if workspace.project.auto_center_on_finish {
+                let base = workspace.project.scene.revision;
+                let centered = crate::scene_tools::transform(
+                    &mut workspace,
+                    &json!({"action":"center_on_ground","baseRevision":base}),
+                    run,
+                )?;
+                if centered["unchanged"] != true {
+                    bail!("CENTERED_NEEDS_REVIEW：完成前已落地居中到revision {}，请截图并在下一响应看图后再完成；源码未改写。",workspace.project.scene.revision);
+                }
+            }
             goal::check_goal_finish(&state, &workspace, args)?;
             workspace.event(
                 "artwork.reference_sources",
@@ -2313,7 +2430,11 @@ impl Harness {
             )?;
             if self.transport.config().enabled && self.transport.config().auto {
                 let _ = workspace.commit(None, "自动发布", run)?;
-                let state = self.transport.publish(&workspace.project.scene, false)?;
+                let state = self.transport.publish_with_materials(
+                    &workspace.project.scene,
+                    &workspace.project.materials,
+                    false,
+                )?;
                 workspace.event("revision.published", run, state)?;
             }
             Ok(value)
@@ -3188,6 +3309,26 @@ pub fn tools_for_language(language: &str) -> Value {
             vec!["action"]
         ),
         tool(
+            "transform_scene",
+            if en {
+                "Translate the existing whole scene or center it on the ground; dryRun previews offset and bounds. Does not rewrite recipe source. Uses signed integer cells, preserves materials/groups and supports Undo. Auto-centering is not performed after every draw."
+            } else {
+                "整体平移现有作品或落地居中。dryRun预览偏移和边界，保留材质/分组、可撤销；不改写Recipe源码，重新replace源码仍采用原坐标。不要每步自动居中。"
+            },
+            json!({"action":{"type":"string","enum":["translate","center_on_ground"]},"offset":{"type":"array","items":{"type":"integer"},"minItems":3,"maxItems":3},"baseRevision":{"type":"integer","minimum":0},"dryRun":{"type":"boolean"}}),
+            vec!["action", "baseRevision"]
+        ),
+        tool(
+            "builtin_materials",
+            if en {
+                "List offline original pixel material themes or add one to the current project. apply requires baseRevision and id. replaceBaseMaterials optionally repaints built-in base styles. New textures require rebuilding the Avatar catalog; stop OSC before applying."
+            } else {
+                "查看离线内置原创像素材质主题，或加入当前工程。apply需id和baseRevision；replaceBaseMaterials可将基础材质映射为像素风。新贴图需重新打包Avatar目录，应用前停止OSC。"
+            },
+            json!({"action":{"type":"string","enum":["list","apply"]},"id":{"type":"string","enum":["pixel-workshop"]},"baseRevision":{"type":"integer","minimum":0},"replaceBaseMaterials":{"type":"boolean"}}),
+            vec!["action"]
+        ),
+        tool(
             "inspect_region",
             descriptions[2],
             json!({
@@ -3213,6 +3354,7 @@ pub fn tools_for_language(language: &str) -> Value {
             descriptions[3],
             json!({
                 "revision":{"type":"integer","minimum":0},
+                "mode":{"type":"string","enum":["art","vrc"]},"quality":{"type":"string","enum":["standard","high"]},"supersampling":{"type":"integer","minimum":1,"maximum":3},"voxelGrid":{"type":"boolean"},"surfaceCulling":{"type":"boolean"},
                 "shots":{"type":"array","minItems":1,"maxItems":5,"description":"自由/局部取景；可与views组合，同名覆盖预设，合计最多5个视角。坐标为体素格。yaw=0从+Z看正面；pitch=0为平视。","items":{"type":"object","properties":{
                     "id":{"type":"string","pattern":"^[A-Za-z0-9_-]{1,64}$"},"projection":{"type":"string","enum":["perspective","orthographic"]},
                     "yaw":{"type":"number","minimum":-360,"maximum":360},"pitch":{"type":"number","minimum":-90,"maximum":90},"fov":{"type":"number","minimum":10,"maximum":120},"margin":{"type":"number","minimum":0,"maximum":1},

@@ -1,6 +1,6 @@
 # Harness 强化与创作时间轴
 
-0.6.0候选版本，工具 `morphforge-tools/3.5`、提示词 `morphforge-system/4.8`。默认1M上下文、384K输出保持；实际请求仍受上游窗口及运行预算约束。
+0.7.0开发测试副本，工具 `morphforge-tools/3.6`、提示词 `morphforge-system/4.9`。默认1M上下文、384K输出保持；实际请求仍受上游窗口及运行预算约束。
 
 ## 时间轴
 
@@ -109,3 +109,12 @@ find默认必须唯一，明确 `all:true` 才替换全部；多处编辑任意�
 ## 受控评测
 
 `tools/evaluate_harness.py` 可加 `--require-cache-hit --lifetime-token-limit 100000`。先完成独立的小型缓存探测；脚本不会为探测偷偷发模型请求。模型/提示词等设置变化须重新探测，目录累计用量包含探测。脚本夹紧本run预算并检查累计实际用量，未知或有误差的收费仍如实记录，不声称精确金额上限。
+
+## 0.7 画质、像素材质与整体定位
+
+- `capture_views` 及 Recipe 附带的 capture 支持 `mode:art/vrc`、`quality:high/standard`、`supersampling:1..3`、`voxelGrid`、`surfaceCulling`。high 默认2×绘制再缩图，输出尺寸仍是 width/height；结果 rendering 记录实际倍率和回退警告。非法选项在执行几何前拒绝。
+- `builtin_materials(action=list/apply, id=pixel-workshop, baseRevision, replaceBaseMaterials?)` 加入19种离线原创材质。新增材质必须重建Avatar目录，应用前停止OSC。
+- `transform_scene(action=translate/center_on_ground, offset?, baseRevision, dryRun?)` 操作已有整个作品，保留分组和材质、可撤销；不重写持久源码。
+- 读取 `placement` / `targetCompatibility` / `materialCompatibility` 检查有符号坐标、目标容量及用户声明的Avatar目录。目录匹配不等于远端确认。
+- 开启完成前自动居中后，可能返回 `CENTERED_NEEDS_REVIEW`；几何已移动，不要重复绘制，重新截图并在下一响应观察后完成。建议把整体定位放在最终复核前。
+- 旧版或无法确定版本的旧对话需要显式升级静态说明，或新开对话；不会悄悄把大上下文作为首次冷输入发送。升级不清除已有缓存告警；实际上游命中仍由原监测判断。

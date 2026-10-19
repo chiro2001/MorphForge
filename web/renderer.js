@@ -1,3 +1,4 @@
+import { captureSampling, viewPixelRatio } from "/render-settings.js";
 import { fitBounds, resolveCamera } from "/camera-spec.js";
 import * as THREE from "three";
 import { OrbitControls } from "/vendor/OrbitControls.js";
@@ -48,7 +49,13 @@ export class VoxelRenderer {
       antialias: true,
       preserveDrawingBuffer: true,
     });
-    this.renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+    this.quality = "high";
+    this.voxelGrid = false;
+    this.surfaceCulling = true;
+    this.surfaceMasks = {};
+    this.textureWarnings = [];
+    this.depthByBox = new WeakMap();
+    this.renderer.setPixelRatio(viewPixelRatio(this.quality, devicePixelRatio));
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.15;
@@ -90,6 +97,9 @@ export class VoxelRenderer {
     this.axes = new THREE.AxesHelper(0.4);
     this.axes.scale.z = -1;
     this.helpers.add(this.axes);
+    this.targetBounds = new THREE.Box3Helper(new THREE.Box3(), 0xeac26e);
+    this.targetBounds.visible = false;
+    this.helpers.add(this.targetBounds);
     this.marker = new THREE.Mesh(
       new THREE.SphereGeometry(0.045, 20, 12),
       new THREE.MeshStandardMaterial({
@@ -123,11 +133,47 @@ export class VoxelRenderer {
     this.resizeObserver = new ResizeObserver(() => this.resize());
     this.resizeObserver.observe(container);
     this.resize();
+    this.controls.addEventListener("change", () => this.sortTransparency());
     this.renderer.setAnimationLoop((time) => {
       this.controls.update();
       for (const uniforms of this.uniforms) uniforms.mfTime.value = time / 1000;
       this.renderer.render(this.scene, this.camera);
     });
+  }
+  setViewOptions({quality = this.quality, voxelGrid = this.voxelGrid, surfaceCulling = this.surfaceCulling, showTargetBounds = this.targetBounds.visible} = {}) {
+    this.quality = quality;
+    this.voxelGrid = !!voxelGrid;
+    this.surfaceCulling = !!surfaceCulling;
+    this.renderer.setPixelRatio(viewPixelRatio(quality, devicePixelRatio));
+    for (const u of this.uniforms) {
+      u.mfGrid.value = this.voxelGrid ? 1 : 0;
+      u.mfCull.value = this.surfaceCulling && !this.groupsHidden.size ? 1 : 0;
+    }
+    const c = this.cellSize * this.scale;
+    this.targetBounds.box.min.copy(toThree([-128*c, 0, 128*c]));
+    this.targetBounds.box.max.copy(toThree([128*c, 256*c, -128*c]));
+    this.targetBounds.visible = !!showTargetBounds;
+    this.resize();
+  }
+  sortTransparency() {
+    if (!this.meshes?.length || !this.styles) return;
+    const direction = new THREE.Vector3();
+    this.camera.getWorldDirection(direction);
+    const unit=this.cellSize*this.scale, eye=this.camera.position;
+    for (const mesh of this.meshes) {
+      if (!mesh.material.transparent) continue;
+      for(const box of mesh.userData.boxes){
+        const x=(box.min[0]+box.size[0]/2)*unit-eye.x;
+        const y=(box.min[1]+box.size[1]/2)*unit-eye.y;
+        const z=-(box.min[2]+box.size[2]/2)*unit-eye.z;
+        this.depthByBox.set(box,x*direction.x+y*direction.y+z*direction.z);
+      }
+      const boxes = mesh.userData.boxes.slice().sort((a,b)=>this.depthByBox.get(b)-this.depthByBox.get(a));
+      if (boxes.some((b,i)=>b.id!==mesh.userData.boxes[i]?.id)) {
+        const style=this.styles.find(m=>m.id===mesh.userData.styleId);
+        if(style) this.updateInstances(mesh,boxes,style,{full:true});
+      }
+    }
   }
   makeEnvironment() {
     const images = [];
@@ -230,15 +276,35 @@ export class VoxelRenderer {
           );
       }
     }
-    const texture = new THREE.CanvasTexture(canvas);
+    const gl = this.renderer.getContext();
+    const useArray = frames * 6 <= gl.getParameter(gl.MAX_ARRAY_TEXTURE_LAYERS) && resolution * resolution * frames * 24 <= 16 * 1024 * 1024;
+    let texture;
+    if (useArray) {
+      const raw = ctx.getImageData(0,0,canvas.width,canvas.height).data;
+      const pixels = new Uint8Array(resolution * resolution * frames * 24);
+      for(let f=0;f<frames;f++) for(let face=0;face<6;face++) for(let y=0;y<resolution;y++) {
+        const from=((f*resolution+y)*canvas.width+face*resolution)*4;
+        pixels.set(raw.subarray(from,from+resolution*4),((f*6+face)*resolution*resolution+y*resolution)*4);
+      }
+      texture = new THREE.DataArrayTexture(pixels,resolution,resolution,frames*6);
+      texture.generateMipmaps = true;
+      texture.minFilter = THREE.LinearMipmapLinearFilter;
+      texture.anisotropy = Math.min(8,this.renderer.capabilities.getMaxAnisotropy());
+      texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+      texture.needsUpdate = true;
+    } else {
+      texture = new THREE.CanvasTexture(canvas);
+      texture.minFilter = THREE.NearestFilter;
+      texture.generateMipmaps = false;
+      texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
+      this.textureWarnings.push(`${style.name}: 动画图集超出独立纹理层预算，保留最近邻回退；截图仍可超采样。`);
+    }
     texture.colorSpace = THREE.SRGBColorSpace;
     texture.magFilter = THREE.NearestFilter;
-    texture.minFilter = THREE.NearestFilter;
-    texture.generateMipmaps = false;
-    texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
     this.textures.push(texture);
     return {
       texture,
+      array: useArray,
       frames,
       frameTime: Math.max(0.001, Number(style.frameTime) || 0.1),
     };
@@ -249,13 +315,15 @@ export class VoxelRenderer {
       size = new THREE.Vector3(),
       color = new THREE.Color(),
       dims = mesh.geometry.attributes.mfSize,
-      phases = mesh.geometry.attributes.mfMotion;
+      phases = mesh.geometry.attributes.mfMotion,
+      hidden = mesh.geometry.attributes.mfHiddenFaces;
     const previous = mesh.userData.boxes || [];
     let changed = false;
     mesh.instanceMatrix.clearUpdateRanges();
     mesh.instanceColor?.clearUpdateRanges();
     dims.clearUpdateRanges();
     phases.clearUpdateRanges();
+    hidden.clearUpdateRanges();
     for (let i = 0; i < boxes.length; i++) {
       const b = boxes[i],
         old = previous[i];
@@ -266,7 +334,8 @@ export class VoxelRenderer {
         b.min.every((v, a) => v === old.min[a]) &&
         b.size.every((v, a) => v === old.size[a]) &&
         b.tintId === old.tintId &&
-        b.motionPhase === old.motionPhase
+        b.motionPhase === old.motionPhase &&
+        hidden.array[i] === (this.surfaceMasks[b.id] || 0)
       )
         continue;
       const position = toThree(
@@ -277,6 +346,7 @@ export class VoxelRenderer {
       mesh.setMatrixAt(i, matrix);
       dims.array.set(b.size, i * 3);
       phases.array[i] = b.motionPhase ?? 0;
+      hidden.array[i] = this.surfaceMasks[b.id] || 0;
       color.setRGB(...style.color, THREE.SRGBColorSpace);
       if (b.tintId) {
         const t = b.tintId;
@@ -291,6 +361,7 @@ export class VoxelRenderer {
       mesh.instanceColor.addUpdateRange(i * 3, 3);
       dims.addUpdateRange(i * 3, 3);
       phases.addUpdateRange(i, 1);
+      hidden.addUpdateRange(i, 1);
       changed = true;
     }
     mesh.count = boxes.length;
@@ -300,6 +371,7 @@ export class VoxelRenderer {
       mesh.instanceColor.needsUpdate = true;
       dims.needsUpdate = true;
       phases.needsUpdate = true;
+      hidden.needsUpdate = true;
     }
     mesh.computeBoundingSphere();
     return changed;
@@ -349,7 +421,9 @@ export class VoxelRenderer {
     this.updateSelection();
     return true;
   }
-  async load(scene, styles, { mode = this.mode, scale = this.scale } = {}) {
+  async load(scene, styles, { mode = this.mode, scale = this.scale, surfaces = null } = {}) {
+    this.surfaceMasks = surfaces?.masks || {};
+    this.surfaceStats = surfaces || {hiddenFaces:0};
     if (this.tryIncremental(scene, styles, { mode, scale })) return this;
     this.styleSignature = JSON.stringify(styles);
     this.visibilitySignature = [...this.groupsHidden].sort().join("\0");
@@ -370,6 +444,7 @@ export class VoxelRenderer {
     this.materials = [];
     this.textures = [];
     this.uniforms = [];
+    this.textureWarnings = [];
     const groups = new Map(),
       catalog = new Map(styles.map((m) => [m.id, m]));
     for (const b of scene.boxes) {
@@ -422,13 +497,22 @@ export class VoxelRenderer {
         "mfSize",
         new THREE.InstancedBufferAttribute(dimensions, 3),
       );
+      geometry.setAttribute("mfHiddenFaces", new THREE.InstancedBufferAttribute(new Float32Array(capacity),1));
       geometry.setAttribute(
         "mfMotion",
         new THREE.InstancedBufferAttribute(new Float32Array(capacity), 1),
       );
       material.onBeforeCompile = (shader) => {
         const uniforms = {
-          mfAtlas: { value: atlas?.texture ?? null },
+          mfAtlas: { value: atlas && !atlas.array ? atlas.texture : null },
+          mfArrayAtlas: { value: atlas?.array ? atlas.texture : null },
+          mfArray: { value: atlas?.array ? 1 : 0 },
+          mfGrid: { value: this.voxelGrid ? 1 : 0 },
+          mfCull: { value: this.surfaceCulling && !this.groupsHidden.size ? 1 : 0 },
+          mfVirtual: { value: mode === "vrc" ? 1 : 0 },
+          mfMetal: { value: style.metallic || 0 },
+          mfRough: { value: style.roughness ?? .8 },
+          mfEmission: { value: style.emission || 0 },
           mfHasAtlas: { value: atlas ? 1 : 0 },
           mfFrames: { value: atlas?.frames ?? 1 },
           mfFrameTime: { value: atlas?.frameTime ?? (style.frameTime || 0.1) },
@@ -449,14 +533,15 @@ export class VoxelRenderer {
         Object.assign(shader.uniforms, uniforms);
         this.uniforms.push(uniforms);
         shader.vertexShader =
-          "attribute vec3 mfSize;attribute float mfMotion;varying float mfPhase; varying vec3 mfLocal; varying vec3 mfDims; varying vec3 mfNormal;\n" +
+          "attribute vec3 mfSize;attribute float mfMotion,mfHiddenFaces;varying float mfPhase,mfHidden; varying vec3 mfLocal,mfDims,mfNormal,mfEye;\n" +
           shader.vertexShader;
         shader.vertexShader = shader.vertexShader.replace(
           "#include <begin_vertex>",
-          "#include <begin_vertex>\nmfLocal=position+0.5;mfDims=mfSize;mfNormal=normal;mfPhase=mfMotion/64.;",
+          "#include <begin_vertex>\nmfLocal=position+0.5;mfDims=mfSize;mfNormal=normal;mfPhase=mfMotion/64.;mfHidden=mfHiddenFaces;",
         );
+        shader.vertexShader = shader.vertexShader.replace("#include <worldpos_vertex>", "#include <worldpos_vertex>\nmfEye=cameraPosition-(modelMatrix*instanceMatrix*vec4(transformed,1.)).xyz;");
         shader.fragmentShader =
-          "uniform sampler2D mfAtlas; uniform float mfHasAtlas,mfFrames,mfFrameTime,mfTime,mfKind; varying vec3 mfLocal,mfDims,mfNormal;varying float mfPhase;\n" +
+          "uniform sampler2D mfAtlas;uniform highp sampler2DArray mfArrayAtlas; uniform float mfArray,mfGrid,mfCull,mfVirtual,mfMetal,mfRough,mfEmission,mfHasAtlas,mfFrames,mfFrameTime,mfTime,mfKind; varying vec3 mfLocal,mfDims,mfNormal,mfEye;varying float mfPhase,mfHidden;\n" +
           shader.fragmentShader;
         shader.fragmentShader = shader.fragmentShader.replace(
           "#include <color_fragment>",
@@ -464,17 +549,32 @@ export class VoxelRenderer {
      float axis=abs(mfNormal.x)>.5?0.:(abs(mfNormal.y)>.5?1.:2.);
      vec2 logical=axis<.5?mfLocal.zy*mfDims.zy:(axis<1.5?mfLocal.xz*mfDims.xz:mfLocal.xy*mfDims.xy);
      float face=axis<.5?(mfNormal.x>0.?0.:1.):(axis<1.5?(mfNormal.y>0.?2.:3.):(mfNormal.z>0.?5.:4.));
+     float hiddenCode=floor(mfHidden+.5);
+     if(mfCull>.5 && mod(floor(hiddenCode/exp2(face)),2.)>.5)discard;
      if(mfKind==1.)logical+=vec2(mfTime*.12,mfTime*.045)+.03*sin(logical.yx*4.+mfTime);
-     vec2 tile=fract(logical);float edge=min(min(tile.x,1.-tile.x),min(tile.y,1.-tile.y));
-     if(mfHasAtlas>.5){float frame=mod(floor(mfTime/max(mfFrameTime,.001)+mfPhase*mfFrames+.0001),mfFrames);vec2 uv=vec2((face+clamp(tile.x,.004,.996))/6.,1.-(frame+1.-clamp(tile.y,.004,.996))/mfFrames);vec4 texel=texture2D(mfAtlas,uv);diffuseColor*=texel;}
-     else{float checker=mod(floor(tile.x*2.)+floor(tile.y*2.),2.);diffuseColor.rgb*=mix(.88,1.,checker)*mix(.45,1.,step(.025,edge));}
-     if(mfKind==2.)diffuseColor.rgb*=.9+.1*sin(mfLocal.x*9.+mfLocal.y*7.+mfLocal.z*8.+mfPhase*6.2831853);
+     vec2 tile=fract(logical);
+     if(mfHasAtlas>.5){
+       float frame=mod(floor(mfTime/max(mfFrameTime,.001)+mfPhase*mfFrames+.0001),mfFrames);
+       vec4 texel;
+       if(mfArray>.5){vec2 dx=dFdx(logical)*vec2(1.,-1.);vec2 dy=dFdy(logical)*vec2(1.,-1.);texel=textureGrad(mfArrayAtlas,vec3(tile.x,1.-tile.y,frame*6.+face),dx,dy);}
+       else{vec2 uv=vec2((face+clamp(tile.x,.004,.996))/6.,1.-(frame+1.-clamp(tile.y,.004,.996))/mfFrames);texel=texture2D(mfAtlas,uv);}
+       diffuseColor*=texel;
+     }
+     if(mfGrid>.5){vec2 edge=min(tile,1.-tile);vec2 fw=max(fwidth(logical),vec2(.0001));float line=min(smoothstep(vec2(0.),fw*1.2,edge).x,smoothstep(vec2(0.),fw*1.2,edge).y);diffuseColor.rgb*=mix(.55,1.,line);}
      if(mfKind==3.){float leaf=sin(tile.x*12.)*sin(tile.y*12.);if(mfHasAtlas<.5&&leaf<-.2)discard;if(diffuseColor.a<.5)discard;}
+     if(mfVirtual>.5){
+       vec3 n=normalize(vec3(mfNormal.x,mfNormal.y,-mfNormal.z));
+       vec3 light=normalize(vec3(.4,.8,.6));vec3 eye=normalize(vec3(mfEye.x,mfEye.y,-mfEye.z));vec3 halfDir=normalize(light+eye);
+       float nl=max(0.,dot(n,light));float spec=pow(max(0.,dot(n,halfDir)),exp2(2.+10.*(1.-mfRough)))*mix(.04,1.,mfMetal);
+       vec3 base=diffuseColor.rgb;vec3 ambient=mix(vec3(.12,.13,.16),vec3(.35,.42,.52),n.y*.5+.5)*base;
+       diffuseColor.rgb=ambient+base*(1.-.55*mfMetal)*(.28+.72*nl)+base*spec*mix(.18,1.,mfMetal)+base*mfEmission;
+     }
+     if(mfKind==2.)diffuseColor.rgb*=.94+.06*sin(mfLocal.x*9.+mfLocal.y*7.+mfLocal.z*8.+mfTime*.13);
     `,
         );
       };
       material.customProgramCacheKey = () =>
-        `mf-${mode}-${style.family}-${!!atlas}-${style.renderMode}`;
+        `mf-v07-${mode}-${style.family}-${!!atlas}-${!!atlas?.array}-${style.renderMode}`;
       const mesh = new THREE.InstancedMesh(geometry, material, capacity);
       mesh.userData.styleId = id;
       mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
@@ -496,6 +596,7 @@ export class VoxelRenderer {
     return this;
   }
   makeGrid() {
+    this.setViewOptions();
     this.grid.geometry.dispose();
     this.grid.material.dispose();
     this.helpers.remove(this.grid);
@@ -767,13 +868,17 @@ export class VoxelRenderer {
     this.controls.update();
     return spec;
   }
-  async capture(views, width = 768, height = 640, shots = null) {
+  async capture(views, width = 768, height = 640, shots = null, options = {}) {
     const pixelRatio = this.renderer.getPixelRatio(),
       original = this.camera,
       originalState = this.camera.clone(),
       target = this.controls.target.clone();
+    const priorGrid=this.voxelGrid, priorCull=this.surfaceCulling;
+    this.setViewOptions({voxelGrid:options.voxelGrid ?? false,surfaceCulling:options.surfaceCulling ?? true});
+    const gl=this.renderer.getContext();
+    const sample=captureSampling(width,height,options.supersampling ?? (options.quality === "standard" ? 1 : 2),gl.getParameter(gl.MAX_RENDERBUFFER_SIZE));
     this.renderer.setPixelRatio(1);
-    this.renderer.setSize(width, height, false);
+    this.renderer.setSize(sample.width, sample.height, false);
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
     const helpersVisible = this.helpers.visible;
@@ -796,10 +901,12 @@ export class VoxelRenderer {
           this.view(view);
         }
         for (const uniforms of this.uniforms) uniforms.mfTime.value = 0;
+        this.sortTransparency();
         this.renderer.render(this.scene, this.camera);
         images.push({
           view,
-          data: this.renderer.domElement.toDataURL("image/png"),
+          data: (()=>{const canvas=document.createElement("canvas");canvas.width=width;canvas.height=height;const c=canvas.getContext("2d");c.imageSmoothingEnabled=true;c.imageSmoothingQuality="high";c.drawImage(this.renderer.domElement,0,0,width,height);return canvas.toDataURL("image/png");})(),
+          rendering:{mode:this.mode,supersampling:sample.factor,renderWidth:sample.width,renderHeight:sample.height,voxelGrid:this.voxelGrid,surfaceCulling:this.surfaceCulling,hiddenFaces:this.surfaceStats?.hiddenFaces||0,textureWarnings:this.textureWarnings.slice()},
           camera: spec || {
             position: fromThree(this.camera.position),
             target: fromThree(this.controls.target),
@@ -817,6 +924,7 @@ export class VoxelRenderer {
       this.controls.update();
       this.helpers.visible = helpersVisible;
       this.textPreviewGroup.visible = previewVisible;
+      this.setViewOptions({voxelGrid:priorGrid,surfaceCulling:priorCull});
       this.renderer.setPixelRatio(pixelRatio);
       this.resize();
     }

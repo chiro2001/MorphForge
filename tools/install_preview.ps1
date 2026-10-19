@@ -6,7 +6,8 @@ param(
     [string]$PreviewRoot=(Join-Path $env:LOCALAPPDATA 'MorphForge Preview'),
     [string]$SeedDataFrom='',
     [string]$SeedBaseUrl='',
-    [string]$ReportPath=''
+    [string]$ReportPath='',
+    [switch]$SkipShortcut
 )
 $ErrorActionPreference='Stop'
 Set-StrictMode -Version Latest
@@ -75,6 +76,8 @@ try {
     $vbs="CreateObject(""WScript.Shell"").Run ""pwsh.exe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -EncodedCommand $encoded"", 0, False`r`n"
     AtomicBytes (Join-Path $root 'Launch-Preview.vbs') ([Text.Encoding]::ASCII.GetBytes($vbs))
     AtomicJson (Join-Path $root 'current.json') @{version=$ExpectedVersion;runtime=$relative;payloadSha256=$identity}
+    $shortcutPath=$null
+    if(-not $SkipShortcut){
     $shell=New-Object -ComObject WScript.Shell
     $shortcutPath=Join-Path ([Environment]::GetFolderPath('Desktop')) 'MorphForge - 开发测试副本.lnk'
     $shortcut=$shell.CreateShortcut($shortcutPath)
@@ -84,6 +87,7 @@ try {
     $shortcut.IconLocation=(Join-Path $runtime 'morphforge-desktop.exe')+',0'
     $shortcut.Description='独立开发测试副本；与当前验收版同时运行，作品和上下文分别保存。'
     $shortcut.Save()
+    }
     $report.version=$ExpectedVersion;$report.previewRoot=$root;$report.runtime=$runtime;$report.dataDir=$data;$report.shortcut=$shortcutPath;$report.payloadSha256=$identity;$report.success=$true
 } catch {$report.error=$_.Exception.Message}
 finally {

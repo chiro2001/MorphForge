@@ -1,0 +1,11 @@
+{
+  "rustPassed": 156,
+  "rustFailure": false,
+  "nodePassed": 38,
+  "clippy": "pass",
+  "paidModelGenerationRequests": 0,
+  "browserChecks": 25,
+  "prefixChatChecks": 16,
+  "prefixResponsesChecks": 16,
+  "scope": "Actual local fixtures and GPU render checks, no real upstream model or VRChat"
+}

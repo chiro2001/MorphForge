@@ -72,6 +72,7 @@
           />
         </div>
         <button id="paintSelection" class="wide">给选中内容换材质</button>
+        <button id="pixelThemeOpen" class="wide">内置像素工坊 · 19种材质</button>
         <button id="packImport" class="wide">导入 Minecraft Java 资源包</button>
         <input id="packFile" type="file" accept=".zip" hidden />
 
@@ -117,9 +118,11 @@
           <button data-view="side">侧面</button>
           <select id="renderMode">
             <option value="art">艺术预览</option>
-            <option value="vrc">VRC基础兼容</option>
+            <option value="vrc">VRC虚拟光照</option>
           </select>
           <button id="capture">三视图</button>
+          <button id="renderOptionsOpen">画质/显示</button>
+          <button id="centerScene">整体定位</button>
         </div>
         <div id="emptyHint">
           <h1>从想象，到一块一块</h1>
@@ -146,6 +149,8 @@
             <span id="providerState" class="badge">检查配置</span>
             <button id="aiSettingsOpen" title="打开连接与创作配置">配置</button>
           </div>
+          <div id="schemaUpgradeNotice" class="status" hidden>此对话使用旧版工具说明。新开对话可使用新工具；升级旧对话会改变静态前缀、需要重新预热缓存。较大上下文建议新开对话，避免一次完整冷输入。</div>
+          <button id="schemaUpgradeContext" class="wide" hidden>升级旧对话工具并重新预热</button>
           <label
             >创作预设<select id="preset">
               <option value="sketch">快速草图 · 轮廓优先</option>
@@ -440,7 +445,14 @@ mf.group('main', () => {
               value="0"
               min="0"
           /></label>
+          <div id="vrcBoundsStatus" class="status"></div>
+          <label class="check"><input id="autoCenterOnFinish" type="checkbox" />AI 完成前自动落地居中</label>
+          <p class="caption">允许负 X/Z；目标范围 X/Z -128～127、Y 0～255。显示缩放不扩大编码范围。</p>
           <button id="catalogExport" class="wide">导出 Avatar 材质目录</button>
+          <button id="avatarCatalogImport" class="wide">导入目标 Avatar 材质目录</button>
+          <input id="avatarCatalogFile" type="file" accept=".json,.zip" hidden />
+          <div id="materialCompatibility" class="status"></div>
+          <button id="avatarCatalogClear" class="wide">清除目标目录声明</button>
           <div id="syncStatus" class="status">发送已关闭</div>
           <div class="section-title">定位球</div>
           <label class="check"
@@ -799,6 +811,36 @@ mf.group('main', () => {
       <div id="events"></div>
     </section>
 
+    <dialog id="renderOptionsDialog" aria-labelledby="renderOptionsTitle">
+      <div class="row"><h2 id="renderOptionsTitle" class="grow">画质与显示</h2><button id="renderOptionsClose">关闭</button></div>
+      <div class="double">
+        <label>观察画质<select id="renderQuality"><option value="high">精细 · 2× 像素采样</option><option value="standard">标准 · 节省显卡负载</option></select></label>
+        <label>手动截图画质<select id="captureQuality"><option value="high">精细 · 2× 超采样后缩图</option><option value="standard">标准 · 原尺寸</option></select></label>
+      </div>
+      <label class="check"><input id="voxelGrid" type="checkbox" />观察时显示体素格线</label>
+      <label class="check"><input id="captureGrid" type="checkbox" />手动截图包含格线</label>
+      <label class="check"><input id="surfaceCulling" type="checkbox" checked />剔除连续透明介质的内部界面</label>
+      <label class="check"><input id="showTargetBounds" type="checkbox" />显示 VRC 256³ 发布边界</label>
+      <p class="caption">近处保持像素纹理；远处使用独立纹理层 mipmap。VRC 预览使用固定虚拟光照。隐藏分组时暂停内部界面剔除，避免被隐藏的邻居留下缺面。观察辅助边界不进入截图。</p>
+      <p id="renderDiagnostics" class="caption"></p>
+    </dialog>
+    <dialog id="transformDialog" aria-labelledby="transformTitle">
+      <div class="row"><h2 id="transformTitle" class="grow">整体定位</h2><button id="transformClose">关闭</button></div>
+      <label>操作<select id="transformAction"><option value="center_on_ground">落地居中</option><option value="translate">按偏移量整体平移</option></select></label>
+      <div class="triple"><label>X<input id="shiftX" type="number" step="1" value="0" /></label><label>Y<input id="shiftY" type="number" step="1" value="0" /></label><label>Z<input id="shiftZ" type="number" step="1" value="0" /></label></div>
+      <button id="transformPreview">预览偏移与边界</button><pre id="transformReport">请预览后应用。</pre>
+      <p class="caption">使用整数体素格；可撤销。几何移动不会改写 Recipe 源码，重新 replace 源码仍使用原坐标。超过 256 格的尺寸不能仅靠居中解决。</p>
+      <button id="transformApply" class="primary wide" disabled>应用整体定位</button>
+    </dialog>
+    <dialog id="pixelThemeDialog" aria-labelledby="pixelThemeTitle">
+      <div class="row"><h2 id="pixelThemeTitle" class="grow">内置像素工坊</h2><button id="pixelThemeClose">关闭</button></div>
+      <p>原创 16×16 像素主题 · 19种材质 · MIT 许可 · 完全离线</p>
+      <div class="pixel-swatches"><span style="background:#899197">石</span><span style="background:#9d6a39">木</span><span style="background:#57943e">草</span><span style="background:#a7513d">砖</span><span style="background:#408fcc">水</span><span style="background:#edf4fa;color:#273442">云</span><span style="background:#edbe40;color:#273442">金</span></div>
+      <p class="caption">包括原木六面、木板、石材、泥土、草地、砖、沙、雪、树叶、流水、玻璃、云、铁铜金、灯石与黑曜石。不是 Minecraft 原版素材；其他主题可继续导入 Java 资源包。</p>
+      <label class="check"><input id="pixelThemeReplace" type="checkbox" />同时把当前作品的基础木石、草土、砖等映射成像素主题</label>
+      <p class="caption">新材质会随作品保存。VRC 使用前需重新导出并打包 Avatar 材质目录；应用前先停止 OSC。</p>
+      <button id="applyPixelTheme" class="primary wide">加入当前项目</button>
+    </dialog>
     <dialog id="workspaceDialog" aria-labelledby="workspaceTitle">
       <div class="row">
         <h2 id="workspaceTitle" class="grow">项目与对话</h2>

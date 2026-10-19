@@ -241,7 +241,7 @@ export class TimelineView {
       this.preview = new VoxelRenderer(
         document.getElementById("timelinePreviewViewport"),
       );
-    await this.preview.load(data.scene, data.materials, { mode: "art" });
+    await this.preview.load(data.scene, data.materials, { mode: "art", surfaces:data.surfaces });
     this.preview.resize();
     this.preview.view("hero");
   }

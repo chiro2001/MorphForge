@@ -1,0 +1,309 @@
+{
+  "success": true,
+  "api": "responses",
+  "images": true,
+  "stream": true,
+  "checks": [
+    {
+      "name": "disposable empty scene and OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "run completes",
+      "passed": true
+    },
+    {
+      "name": "real Recipe/capture/finish loop ran",
+      "passed": true
+    },
+    {
+      "name": "run completes",
+      "passed": true
+    },
+    {
+      "name": "run completes",
+      "passed": true
+    },
+    {
+      "name": "eight actual requests captured",
+      "passed": true
+    },
+    {
+      "name": "every ordinary wire prefix appends",
+      "passed": true
+    },
+    {
+      "name": "request bytes unchanged by relay",
+      "passed": true
+    },
+    {
+      "name": "old captures remain and references are not duplicated",
+      "passed": true
+    },
+    {
+      "name": "run completes",
+      "passed": true
+    },
+    {
+      "name": "run completes",
+      "passed": true
+    },
+    {
+      "name": "compact is the explicit reset boundary",
+      "passed": true
+    },
+    {
+      "name": "new context resumes append-only",
+      "passed": true
+    },
+    {
+      "name": "all request bodies were forwarded unchanged",
+      "passed": true
+    },
+    {
+      "name": "upstream JSON or SSE bytes reached relay output unchanged",
+      "passed": true
+    },
+    {
+      "name": "OSC remains disabled",
+      "passed": true
+    }
+  ],
+  "relay": {
+    "scope": "transparent HTTP relay; no claim of server KV-cache hit",
+    "templateFiles": null,
+    "requests": [
+      {
+        "number": 1,
+        "path": "/responses",
+        "requestSha256": "882e6b7b01e5123cd1e1dc6eaee7178b0945be72a7e9bc8aaf96e56d8505cb25",
+        "requestBytes": 173844,
+        "staticSha256": "128e52eef730865a04bc0f7b821cdfee91603726fd456e616481994c111b67b0",
+        "messages": 2,
+        "images": 1,
+        "comparison": null,
+        "responseSha256": "cc5b1ae08b96f75b323f1476a00246fb841833503d60f8765c9c4b5b958b190c",
+        "responseBytes": 313,
+        "status": 200
+      },
+      {
+        "number": 2,
+        "path": "/responses",
+        "requestSha256": "93e949c11a8a58352f664a9a58cdeb7823df8ee07aed01aebd9216f5cc762181",
+        "requestBytes": 183378,
+        "staticSha256": "128e52eef730865a04bc0f7b821cdfee91603726fd456e616481994c111b67b0",
+        "messages": 4,
+        "images": 1,
+        "comparison": {
+          "appendOnly": true,
+          "staticPrefixUnchanged": true,
+          "sharedMessages": 2,
+          "previousMessages": 2,
+          "firstChangedMessage": null
+        },
+        "responseSha256": "a43e573e5b7cb2e378d965d205ce252d86803731e66a1e0a18ed7c7373bb560f",
+        "responseBytes": 453,
+        "status": 200
+      },
+      {
+        "number": 3,
+        "path": "/responses",
+        "requestSha256": "ea307ea1b042fc610ea926b075cbed80a4100cbba6a1ca75d45b9b980a9927d9",
+        "requestBytes": 185338,
+        "staticSha256": "128e52eef730865a04bc0f7b821cdfee91603726fd456e616481994c111b67b0",
+        "messages": 6,
+        "images": 1,
+        "comparison": {
+          "appendOnly": true,
+          "staticPrefixUnchanged": true,
+          "sharedMessages": 4,
+          "previousMessages": 4,
+          "firstChangedMessage": null
+        },
+        "responseSha256": "1b258f07df8b82ffc446bbf430e09c0638cf4b634e51237d8f691b384e983fe1",
+        "responseBytes": 366,
+        "status": 200
+      },
+      {
+        "number": 4,
+        "path": "/responses",
+        "requestSha256": "9158d220c70cba153bff5d32a7bbb7cfa08f64c4fb6551f9f95486d996054632",
+        "requestBytes": 273222,
+        "staticSha256": "128e52eef730865a04bc0f7b821cdfee91603726fd456e616481994c111b67b0",
+        "messages": 8,
+        "images": 3,
+        "comparison": {
+          "appendOnly": true,
+          "staticPrefixUnchanged": true,
+          "sharedMessages": 6,
+          "previousMessages": 6,
+          "firstChangedMessage": null
+        },
+        "responseSha256": "ff68b104e62afd794d7e649310f5df83c736a9341486545bcc7c5c00f30d714c",
+        "responseBytes": 426,
+        "status": 200
+      },
+      {
+        "number": 5,
+        "path": "/responses",
+        "requestSha256": "946040591c7fc7166dcc5846c20d673c9eb80fefa74e0b3bde2e91cdb77df206",
+        "requestBytes": 275159,
+        "staticSha256": "128e52eef730865a04bc0f7b821cdfee91603726fd456e616481994c111b67b0",
+        "messages": 10,
+        "images": 3,
+        "comparison": {
+          "appendOnly": true,
+          "staticPrefixUnchanged": true,
+          "sharedMessages": 8,
+          "previousMessages": 8,
+          "firstChangedMessage": null
+        },
+        "responseSha256": "f2963faaff85e88631c641a17f8ce5dd3f8c66004e002482c83bfe8a5657b9fe",
+        "responseBytes": 366,
+        "status": 200
+      },
+      {
+        "number": 6,
+        "path": "/responses",
+        "requestSha256": "eb59e664c6037ebc98e685ee39eab68667369894d74885b7b7b5c2f0d4b8e1f8",
+        "requestBytes": 366431,
+        "staticSha256": "128e52eef730865a04bc0f7b821cdfee91603726fd456e616481994c111b67b0",
+        "messages": 12,
+        "images": 5,
+        "comparison": {
+          "appendOnly": true,
+          "staticPrefixUnchanged": true,
+          "sharedMessages": 10,
+          "previousMessages": 10,
+          "firstChangedMessage": null
+        },
+        "responseSha256": "877dfce18d0be215c01f2edb7f9e3403516930ea972a66732cf92408a3edcbdf",
+        "responseBytes": 421,
+        "status": 200
+      },
+      {
+        "number": 7,
+        "path": "/responses",
+        "requestSha256": "e6425be9504dbbf218775249b385ec995cf6695909002468b43d12846fb354e9",
+        "requestBytes": 368601,
+        "staticSha256": "128e52eef730865a04bc0f7b821cdfee91603726fd456e616481994c111b67b0",
+        "messages": 15,
+        "images": 5,
+        "comparison": {
+          "appendOnly": true,
+          "staticPrefixUnchanged": true,
+          "sharedMessages": 12,
+          "previousMessages": 12,
+          "firstChangedMessage": null
+        },
+        "responseSha256": "3bf2ea1ac2092ab9a67767b25dcaccb3f001318ac36c116c48805fa40ffc84e5",
+        "responseBytes": 354,
+        "status": 200
+      },
+      {
+        "number": 8,
+        "path": "/responses",
+        "requestSha256": "acb5d8c2630df39cb186c707c9894d687766cc07f1e262984af7fae0afb9af6d",
+        "requestBytes": 369992,
+        "staticSha256": "128e52eef730865a04bc0f7b821cdfee91603726fd456e616481994c111b67b0",
+        "messages": 18,
+        "images": 5,
+        "comparison": {
+          "appendOnly": true,
+          "staticPrefixUnchanged": true,
+          "sharedMessages": 15,
+          "previousMessages": 15,
+          "firstChangedMessage": null
+        },
+        "responseSha256": "a96dc712f3646804f4a4b125a18315bb3c5647cd1f339bf2cfc56ffd7734d0e2",
+        "responseBytes": 354,
+        "status": 200
+      },
+      {
+        "number": 9,
+        "path": "/responses",
+        "requestSha256": "013b144b9354f7e360dce2aa31569274f7386b12f3c77397f8c3eb239758f8cd",
+        "requestBytes": 41705,
+        "staticSha256": "5aa59cba832091af3b72c9e96319df22a2dccdb8da0d247ad1527343fd71cfe7",
+        "messages": 1,
+        "images": 0,
+        "comparison": {
+          "appendOnly": false,
+          "staticPrefixUnchanged": false,
+          "sharedMessages": 0,
+          "previousMessages": 18,
+          "firstChangedMessage": 0
+        },
+        "responseSha256": "3b5433e93d266655a3c08d90cb9ad47936c27249cf159bd0feee87914e745dc0",
+        "responseBytes": 396,
+        "status": 200
+      },
+      {
+        "number": 10,
+        "path": "/responses",
+        "requestSha256": "587e035833d91ed5689418b2b0cb26088a9a3d5f101650791bb11079dbcab439",
+        "requestBytes": 34638,
+        "staticSha256": "128e52eef730865a04bc0f7b821cdfee91603726fd456e616481994c111b67b0",
+        "messages": 7,
+        "images": 0,
+        "comparison": {
+          "appendOnly": false,
+          "staticPrefixUnchanged": false,
+          "sharedMessages": 0,
+          "previousMessages": 1,
+          "firstChangedMessage": 0
+        },
+        "responseSha256": "4f297ceaf61c9153079689ea8857dc9ad54e1194c642464235e396bd254049a0",
+        "responseBytes": 322,
+        "status": 200
+      },
+      {
+        "number": 11,
+        "path": "/responses",
+        "requestSha256": "39337cacf175227fcb397d13ba4099c4d33e005fd1ab4662b54e896b35b85267",
+        "requestBytes": 43772,
+        "staticSha256": "128e52eef730865a04bc0f7b821cdfee91603726fd456e616481994c111b67b0",
+        "messages": 9,
+        "images": 0,
+        "comparison": {
+          "appendOnly": true,
+          "staticPrefixUnchanged": true,
+          "sharedMessages": 7,
+          "previousMessages": 7,
+          "firstChangedMessage": null
+        },
+        "responseSha256": "b6f88130e47d7d87c85d13b8ad4079ffe68a4efb54bcfdef520a4dae42d16bd1",
+        "responseBytes": 355,
+        "status": 200
+      }
+    ]
+  },
+  "upstreamRequestSha256": [
+    "882e6b7b01e5123cd1e1dc6eaee7178b0945be72a7e9bc8aaf96e56d8505cb25",
+    "93e949c11a8a58352f664a9a58cdeb7823df8ee07aed01aebd9216f5cc762181",
+    "ea307ea1b042fc610ea926b075cbed80a4100cbba6a1ca75d45b9b980a9927d9",
+    "9158d220c70cba153bff5d32a7bbb7cfa08f64c4fb6551f9f95486d996054632",
+    "946040591c7fc7166dcc5846c20d673c9eb80fefa74e0b3bde2e91cdb77df206",
+    "eb59e664c6037ebc98e685ee39eab68667369894d74885b7b7b5c2f0d4b8e1f8",
+    "e6425be9504dbbf218775249b385ec995cf6695909002468b43d12846fb354e9",
+    "acb5d8c2630df39cb186c707c9894d687766cc07f1e262984af7fae0afb9af6d",
+    "013b144b9354f7e360dce2aa31569274f7386b12f3c77397f8c3eb239758f8cd",
+    "587e035833d91ed5689418b2b0cb26088a9a3d5f101650791bb11079dbcab439",
+    "39337cacf175227fcb397d13ba4099c4d33e005fd1ab4662b54e896b35b85267"
+  ],
+  "upstreamResponseSha256": [
+    "cc5b1ae08b96f75b323f1476a00246fb841833503d60f8765c9c4b5b958b190c",
+    "a43e573e5b7cb2e378d965d205ce252d86803731e66a1e0a18ed7c7373bb560f",
+    "1b258f07df8b82ffc446bbf430e09c0638cf4b634e51237d8f691b384e983fe1",
+    "ff68b104e62afd794d7e649310f5df83c736a9341486545bcc7c5c00f30d714c",
+    "f2963faaff85e88631c641a17f8ce5dd3f8c66004e002482c83bfe8a5657b9fe",
+    "877dfce18d0be215c01f2edb7f9e3403516930ea972a66732cf92408a3edcbdf",
+    "3bf2ea1ac2092ab9a67767b25dcaccb3f001318ac36c116c48805fa40ffc84e5",
+    "a96dc712f3646804f4a4b125a18315bb3c5647cd1f339bf2cfc56ffd7734d0e2",
+    "3b5433e93d266655a3c08d90cb9ad47936c27249cf159bd0feee87914e745dc0",
+    "4f297ceaf61c9153079689ea8857dc9ad54e1194c642464235e396bd254049a0",
+    "b6f88130e47d7d87c85d13b8ad4079ffe68a4efb54bcfdef520a4dae42d16bd1"
+  ],
+  "boxCount": 5,
+  "compactCount": 1
+}

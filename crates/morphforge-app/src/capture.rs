@@ -27,6 +27,24 @@ impl Drop for PendingJobCleanup {
         }
     }
 }
+pub fn render_options(options: &Value) -> Result<(&str, &str, u64)> {
+    let mode = options["mode"].as_str().unwrap_or("art");
+    let quality = options["quality"].as_str().unwrap_or("high");
+    let supersampling = if let Some(value) = options.get("supersampling") {
+        value.as_u64().context("supersampling须为1..3的整数")?
+    } else if quality == "high" {
+        2
+    } else {
+        1
+    };
+    if !["art", "vrc"].contains(&mode)
+        || !["standard", "high"].contains(&quality)
+        || !(1..=3).contains(&supersampling)
+    {
+        bail!("截图模式或画质参数无效");
+    }
+    Ok((mode, quality, supersampling))
+}
 impl CaptureBroker {
     pub fn new() -> Self {
         Self {
@@ -49,6 +67,7 @@ impl CaptureBroker {
             .and_then(Value::as_u64)
             .unwrap_or(640)
             .clamp(128, 2048);
+        let (mode, quality, supersampling) = render_options(options)?;
         let (views, shots) = view_options(options)?;
         let id = uuid::Uuid::new_v4().to_string();
         let value = {
@@ -57,7 +76,7 @@ impl CaptureBroker {
                 .get("revision")
                 .and_then(Value::as_u64)
                 .unwrap_or(w.project.scene.revision);
-            json!({"id":id,"revision":rev,"scene":w.scene_at(rev)?,"materials":w.materials_at(rev)?,"views":views,"shots":shots,"width":width,"height":height,"mode":options.get("mode").and_then(Value::as_str).unwrap_or("art")})
+            json!({"id":id,"revision":rev,"scene":w.scene_at(rev)?,"materials":w.materials_at(rev)?,"views":views,"shots":shots,"width":width,"height":height,"mode":mode,"quality":quality,"supersampling":supersampling,"voxelGrid":options["voxelGrid"].as_bool().unwrap_or(false),"surfaceCulling":options["surfaceCulling"].as_bool().unwrap_or(true),"surfaces":morphforge_core::surfaces::transparent_interfaces(&w.scene_at(rev)?,&w.materials_at(rev)?)})
         };
         let (tx, rx) = oneshot::channel();
         self.jobs.lock().unwrap().insert(
@@ -135,7 +154,7 @@ impl CaptureBroker {
                 bail!("无效PNG")
             };
             let name = workspace.artifact(&bytes, "png")?;
-            artifacts.push(json!({"view":view,"artifact":name,"url":format!("/artifacts/{name}"),"width":job.value["width"],"height":job.value["height"],"camera":image.get("camera")}));
+            artifacts.push(json!({"view":view,"artifact":name,"url":format!("/artifacts/{name}"),"width":job.value["width"],"height":job.value["height"],"camera":image.get("camera"),"rendering":image.get("rendering")}));
         }
         let result = json!({"ok":true,"id":id,"revision":job.value["revision"],"images":artifacts,"stats":job.value["scene"].get("boxes").and_then(Value::as_array).map(|a|json!({"boxCount":a.len()}))});
         let _ = job.tx.send(Ok(result.clone()));

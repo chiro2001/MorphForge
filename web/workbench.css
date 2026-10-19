@@ -1136,3 +1136,8 @@ body.settings-page #timeline {
   header .grow { display: none; }
   #saveState { margin-right: auto; }
 }
+
+#renderOptionsDialog,#transformDialog,#pixelThemeDialog { width:min(720px,94vw); }
+.pixel-swatches {display:flex;gap:8px;margin:16px 0;flex-wrap:wrap}
+.pixel-swatches span {padding:14px 22px;border-radius:6px;font-weight:600;color:white;image-rendering:pixelated}
+.palette button { image-rendering:pixelated;background-position:center;background-size:cover }

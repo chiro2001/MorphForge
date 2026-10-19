@@ -47,6 +47,8 @@ impl Default for Connection {
 }
 pub struct State {
     pub config: Connection,
+    pub avatar_catalog: Option<crate::target::AvatarCatalog>,
+    pub avatar_catalog_error: String,
     pub sent: Vec<Box3>,
     pub desired: Vec<Box3>,
     pub desired_revision: u64,
@@ -75,6 +77,17 @@ pub struct Transport {
 impl Transport {
     pub fn new(workspace: Arc<Mutex<Workspace>>) -> Self {
         let root = workspace.lock().unwrap().root.clone();
+        let (avatar_catalog, avatar_catalog_error) = if root.join("avatar-catalog.json").exists() {
+            match std::fs::read(root.join("avatar-catalog.json"))
+                .map_err(anyhow::Error::from)
+                .and_then(|b| crate::target::AvatarCatalog::from_bytes(&b))
+            {
+                Ok(c) => (Some(c), String::new()),
+                Err(e) => (None, e.to_string()),
+            }
+        } else {
+            (None, String::new())
+        };
         let config_path = root.join("connection.json");
         let mut config = fs::read(&config_path)
             .ok()
@@ -84,6 +97,8 @@ impl Transport {
         let t = Self {
             inner: Arc::new(Mutex::new(State {
                 config,
+                avatar_catalog,
+                avatar_catalog_error,
                 sent: vec![],
                 desired: vec![],
                 desired_revision: 0,
@@ -139,10 +154,18 @@ impl Transport {
         {
             bail!("连接配置越界")
         }
+        if config.enabled && !s.avatar_catalog_error.is_empty() {
+            bail!("MATERIAL_CATALOG_INVALID：{}", s.avatar_catalog_error);
+        }
         let restart = config.enabled
             && (!old.enabled || old.port != config.port || old.profile != config.profile);
         if restart || (config.enabled && config.auto && !old.auto) {
-            protocol::validate_target(&workspace.project.scene, config.capacity)?;
+            let projected = crate::target::project(
+                &workspace.project.scene,
+                &workspace.project.materials,
+                s.avatar_catalog.as_ref(),
+            )?;
+            protocol::validate_target(&projected, config.capacity)?;
         }
         s.config = config;
         if restart {
@@ -163,7 +186,12 @@ impl Transport {
                 s.controls.insert("MF_Level".into(), Control::Bool(c.level));
             }
             protocol::validate_target(&workspace.project.scene, s.config.capacity)?;
-            s.desired = workspace.project.scene.boxes.clone();
+            s.desired = crate::target::project(
+                &workspace.project.scene,
+                &workspace.project.materials,
+                s.avatar_catalog.as_ref(),
+            )?
+            .boxes;
             s.desired_revision = workspace.project.scene.revision;
         }
         if !s.config.enabled {
@@ -172,7 +200,12 @@ impl Transport {
         }
         if s.config.enabled && s.config.auto && !old.auto {
             protocol::validate_target(&workspace.project.scene, s.config.capacity)?;
-            s.desired = workspace.project.scene.boxes.clone();
+            s.desired = crate::target::project(
+                &workspace.project.scene,
+                &workspace.project.materials,
+                s.avatar_catalog.as_ref(),
+            )?
+            .boxes;
             s.desired_revision = workspace.project.scene.revision;
         }
         let mut saved = s.config.clone();
@@ -182,6 +215,54 @@ impl Transport {
         drop(s);
         workspace.event("transport.configured", None, event)?;
         Ok(self.state())
+    }
+    pub fn material_report(
+        &self,
+        scene: &Scene,
+        materials: &[morphforge_core::materials::Material],
+    ) -> Value {
+        let state = self.inner.lock().unwrap();
+        if !state.avatar_catalog_error.is_empty() {
+            return json!({"status":"invalid","matched":false,"missingIds":[],"differentIds":[],"note":state.avatar_catalog_error,"remoteVerified":false});
+        }
+        crate::target::compatibility(scene, materials, state.avatar_catalog.as_ref())
+    }
+    pub fn set_catalog(
+        &self,
+        catalog: Option<crate::target::AvatarCatalog>,
+        root: &std::path::Path,
+    ) -> Result<()> {
+        let mut s = self.inner.lock().unwrap();
+        if s.config.enabled {
+            bail!("请先停止OSC发送，再更换Avatar目录");
+        }
+        if let Some(ref c) = catalog {
+            crate::store::write_json(&root.join("avatar-catalog.json"), c)?;
+        } else {
+            let p = root.join("avatar-catalog.json");
+            if p.exists() {
+                std::fs::remove_file(p)?;
+            }
+        }
+        s.avatar_catalog = catalog;
+        s.avatar_catalog_error.clear();
+        Ok(())
+    }
+    pub fn publish_with_materials(
+        &self,
+        scene: &Scene,
+        materials: &[morphforge_core::materials::Material],
+        resync: bool,
+    ) -> Result<Value> {
+        let profile = {
+            let state = self.inner.lock().unwrap();
+            if !state.avatar_catalog_error.is_empty() {
+                bail!("MATERIAL_CATALOG_INVALID：{}", state.avatar_catalog_error);
+            }
+            state.avatar_catalog.clone()
+        };
+        let projected = crate::target::project(scene, materials, profile.as_ref())?;
+        self.publish(&projected, resync)
     }
     pub fn publish(&self, scene: &Scene, resync: bool) -> Result<Value> {
         let mut s = self.inner.lock().unwrap();

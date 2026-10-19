@@ -1,0 +1,119 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "Resource pack accepted and materials persisted",
+      "pass": true
+    },
+    {
+      "name": "Explicit frame timeline has three ticks",
+      "pass": true
+    },
+    {
+      "name": "Animation first tick is source frame1 blue",
+      "pass": true
+    },
+    {
+      "name": "Second tick is source frame0 red",
+      "pass": true
+    },
+    {
+      "name": "Interpolation produces mixed third tick",
+      "pass": true
+    },
+    {
+      "name": "Per-box motionPhase offsets animation in reused GPU batch",
+      "pass": true
+    },
+    {
+      "name": "Canonical +Z face is cyan",
+      "pass": true
+    },
+    {
+      "name": "Canonical +X face is red",
+      "pass": true
+    },
+    {
+      "name": "Top face is blue",
+      "pass": true
+    },
+    {
+      "name": "Small edit reuses GPU material batch",
+      "pass": true
+    },
+    {
+      "name": "No browser JS/WebGL errors",
+      "pass": true
+    }
+  ],
+  "pixels": {
+    "blue": [
+      0,
+      0,
+      221,
+      255
+    ],
+    "red": [
+      211,
+      0,
+      0,
+      255
+    ],
+    "mixed": [
+      105,
+      0,
+      110,
+      255
+    ],
+    "front": [
+      32,
+      193,
+      199,
+      255
+    ],
+    "side": [
+      180,
+      31,
+      32,
+      255
+    ],
+    "top": [
+      37,
+      39,
+      227,
+      255
+    ],
+    "phase32": [
+      211,
+      0,
+      0,
+      255
+    ]
+  },
+  "import": {
+    "animatedMaterials": 1,
+    "animation": {
+      "explicitFrames": true,
+      "frameTimeSeconds": 0.05000000074505806,
+      "interpolation": true,
+      "maxTimelineTicks": 1024,
+      "perFrameTiming": true,
+      "timelineTicksPerSecond": 20
+    },
+    "avatarRequiresBuild": true,
+    "bakedTextures": 7,
+    "materialsAdded": 2,
+    "metadata": {
+      "pack": {
+        "description": "MorphForge original visual fixture",
+        "pack_format": 46
+      }
+    },
+    "name": "visual-fixture.zip",
+    "ok": true,
+    "packId": "d4da0b7234f9471e6c73395360bba7e2f88fd20556be9fb3522ebeb4a1e49592",
+    "textures": 7,
+    "warnings": []
+  },
+  "scope": "Real WebGL sampled framebuffer; original generated textures"
+}

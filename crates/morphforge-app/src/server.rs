@@ -124,10 +124,16 @@ impl App {
     pub fn router(&self) -> Router {
         Router::new()
             .route("/api/vrc/catalog", get(catalog))
+            .route("/api/vrc/profile", post(avatar_profile))
+            .route("/api/vrc/profile/import", post(avatar_profile_import))
             .route("/api/packs", get(packs))
             .route("/api/diagnostics", get(diagnostics))
             .route("/api/metrics", get(metrics))
             .route("/api/state", get(state))
+            .route(
+                "/api/view-settings",
+                get(view_settings).post(view_settings_save),
+            )
             .route("/api/scene", get(scene))
             .route("/api/export", get(export))
             .route("/api/project", post(project))
@@ -188,6 +194,18 @@ async fn workspace_gate(State(a): State<App>, request: Request, next: Next) -> R
         next.run(request).await
     }
 }
+async fn view_settings(State(a): State<App>) -> ApiResult {
+    Ok(Json(crate::view_settings::load(
+        &a.workspace.lock().unwrap().root,
+    )?))
+}
+async fn view_settings_save(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    let mut w = a.workspace.lock().unwrap();
+    let settings = crate::view_settings::patch(&crate::view_settings::load(&w.root)?, &v)?;
+    crate::store::write_json(&w.root.join("view-settings.json"), &settings)?;
+    w.event("view.settings", None, settings.clone())?;
+    Ok(Json(settings))
+}
 async fn workspaces(State(a): State<App>) -> ApiResult {
     Ok(Json(a.harness.workspaces()?))
 }
@@ -212,7 +230,16 @@ async fn origin_guard(request: Request, next: Next) -> Response {
     next.run(request).await
 }
 async fn state(State(a): State<App>) -> ApiResult {
-    let mut value = a.workspace.lock().unwrap().state();
+    let mut value = {
+        let w = a.workspace.lock().unwrap();
+        let mut value = w.state();
+        value["targetCompatibility"] =
+            crate::scene_tools::target_report(&w.project.scene, a.transport.config().capacity);
+        value["materialCompatibility"] = a
+            .transport
+            .material_report(&w.project.scene, &w.project.materials);
+        value
+    };
     value["software"] = json!({
         "name": "MorphForge",
         "version": env!("CARGO_PKG_VERSION"),
@@ -228,7 +255,41 @@ async fn scene(State(a): State<App>, Query(q): Query<Revision>) -> ApiResult {
     let revision = q.revision.unwrap_or(w.project.scene.revision);
     let scene = w.scene_at(revision)?;
     let materials = w.materials_at(revision)?;
-    Ok(Json(json!({"scene":scene,"materials":materials})))
+    let surfaces = morphforge_core::surfaces::transparent_interfaces(&scene, &materials);
+    Ok(Json(
+        json!({"scene":scene,"materials":materials,"surfaces":surfaces}),
+    ))
+}
+async fn avatar_profile(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    let w = a.workspace.lock().unwrap();
+    if v["action"] != "clear" {
+        bail_api("仅支持清除目录；请通过文件导入目标目录")?;
+    }
+    a.transport.set_catalog(None, &w.root)?;
+    Ok(Json(
+        a.transport
+            .material_report(&w.project.scene, &w.project.materials),
+    ))
+}
+async fn avatar_profile_import(State(a): State<App>, mut files: Multipart) -> ApiResult {
+    let mut bytes = None;
+    while let Some(field) = files.next_field().await? {
+        if field.name() == Some("file") {
+            bytes = Some(field.bytes().await?);
+        }
+    }
+    let catalog = crate::target::AvatarCatalog::from_bytes(&bytes.context("请选择目录JSON或ZIP")?)?;
+    let mut w = a.workspace.lock().unwrap();
+    a.transport.set_catalog(Some(catalog), &w.root)?;
+    w.event(
+        "target.catalog.imported",
+        None,
+        json!({"remoteVerified":false}),
+    )?;
+    Ok(Json(
+        a.transport
+            .material_report(&w.project.scene, &w.project.materials),
+    ))
 }
 async fn export(State(a): State<App>) -> ApiResult {
     let w = a.workspace.lock().unwrap();
@@ -289,6 +350,10 @@ async fn project(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     if let Some(notes) = notes {
         w.project.pinned_notes = notes.into();
     }
+    if let Some(value) = v.get("autoCenterOnFinish") {
+        w.project.auto_center_on_finish = value.as_bool().context("自动居中须为布尔值")?;
+    }
+
     w.persist()?;
     w.event("project.settings", None, v)?;
     Ok(Json(w.state()))
@@ -323,7 +388,10 @@ async fn edit(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     };
     if a.transport.config().enabled && a.transport.config().auto {
         let _ = w.commit(None, "手动编辑自动发布", None)?;
-        if let Err(e) = a.transport.publish(&w.project.scene, false) {
+        if let Err(e) =
+            a.transport
+                .publish_with_materials(&w.project.scene, &w.project.materials, false)
+        {
             w.event("publish.rejected", None, json!({"error":e.to_string()}))?;
             return Ok(Json(
                 json!({"ok":true,"revision":w.project.scene.revision,"warning":e.to_string(),"draftSaved":true}),
@@ -409,9 +477,11 @@ async fn publish(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     let rev = v["revision"].as_u64().unwrap_or(w.project.scene.revision);
     let _ = w.commit(Some(rev), v["title"].as_str().unwrap_or("手动发布"), None)?;
     let scene = w.scene_at(rev)?;
-    let result = a
-        .transport
-        .publish(&scene, v["resync"].as_bool().unwrap_or(false))?;
+    let result = a.transport.publish_with_materials(
+        &scene,
+        &w.materials_at(rev)?,
+        v["resync"].as_bool().unwrap_or(false),
+    )?;
     w.event(
         "revision.published",
         None,
@@ -998,7 +1068,13 @@ async fn text_apply(State(a): State<App>, Json(value): Json<Value>) -> ApiResult
     if a.transport.config().enabled && a.transport.config().auto {
         let publish = workspace
             .commit(None, "体素文字自动发布", None)
-            .and_then(|_| a.transport.publish(&workspace.project.scene, false));
+            .and_then(|_| {
+                a.transport.publish_with_materials(
+                    &workspace.project.scene,
+                    &workspace.project.materials,
+                    false,
+                )
+            });
         if let Err(error) = publish {
             let _ = workspace.event("publish.rejected", None, json!({"error":error.to_string()}));
             result["warning"] = json!(error.to_string());

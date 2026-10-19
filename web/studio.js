@@ -75,6 +75,8 @@ let providerDraftDirty = false;
 let providerSaveBusy = false;
 let workspaceBusy = false;
 let loadedProjectId = "";
+let viewSettings = {quality:"high",captureQuality:"high",voxelGrid:false,captureGrid:false,surfaceCulling:true,showTargetBounds:false};
+let pendingTransform = null;
 
 window.__morphforge = {
   ready: false,
@@ -592,6 +594,7 @@ async function refresh(force = false) {
           selectedStyle = sceneData.materials[0]?.id ?? 1;
         }
         await renderer.load(sceneData.scene, sceneData.materials, {
+          surfaces: sceneData.surfaces,
           mode: $("renderMode").value,
           scale:
             $("renderMode").value === "vrc"
@@ -628,6 +631,8 @@ function updateState() {
   const harness = s.harness;
   setValue("projectName", s.project.name);
   $("activeSessionTitle").textContent = harness.context.title || "对话";
+  $("schemaUpgradeNotice").hidden=!harness.context.schemaUpgradeRequired;
+  $("schemaUpgradeContext").hidden=!harness.context.schemaUpgradeRequired;
   $("saveState").textContent = "已保存 · v" + s.revision;
   $("boxCount").textContent =
     fmt(s.stats.boxCount) + " Box / 目标 " + fmt(s.stats.targetBoxes);
@@ -639,6 +644,13 @@ function updateState() {
       s.stats.bounds.max.join(",")
     : "范围为空";
   $("emptyHint").hidden = s.stats.boxCount > 0;
+  const target=s.targetCompatibility;
+  $("vrcBoundsStatus").textContent=target ? `${target.fits?"坐标/容量可发布":"目标预检未通过"} · ${target.outOfBoundsCount} 个越界 Box\n作品尺寸 ${target.extent.join(" × ")} 格${target.outOfBoundsGroups.length?"\n越界分组："+target.outOfBoundsGroups.join("、"):""}` : "";
+  const catalog=s.materialCompatibility;
+  $("materialCompatibility").textContent=catalog ? (catalog.status==="unknown"?"未声明目标目录，未核实上传的Avatar。":catalog.matched?`目录匹配 · ${catalog.usedStyles} 种已用材质 · ${catalog.fingerprint.slice(0,12)}\n用户导入的目录，非远端确认。`:`目录不匹配：缺少 [${catalog.missingIds.join(",")}]，定义不同 [${catalog.differentIds.join(",")}]\n${catalog.note||"请更新Avatar目录后再发布。"}`) : "";
+  setChecked("autoCenterOnFinish",s.project.autoCenterOnFinish);
+  if(pendingTransform) $("transformApply").disabled=pendingTransform.baseRevision!==s.revision;
+  $("renderDiagnostics").textContent=`实际 WebGL 抗锯齿样本：${renderer.renderer.getContext().getParameter(renderer.renderer.getContext().SAMPLES)} · 内部透明面 ${renderer.surfaceStats?.hiddenFaces||0} 个\n${renderer.textureWarnings.join("\n")}`;
   $("undo").disabled = !s.canUndo;
   $("redo").disabled = !s.canRedo;
   setValue("profile", connection.profile);
@@ -843,6 +855,7 @@ function drawGroups() {
       if (check.checked) renderer.groupsHidden.delete(name);
       else renderer.groupsHidden.add(name);
       await renderer.load(sceneData.scene, sceneData.materials, {
+          surfaces: sceneData.surfaces,
         mode: $("renderMode").value,
       });
     };
@@ -1159,6 +1172,41 @@ $("workspaceCreateForm").onsubmit = (event) => {
   event.preventDefault();
   changeWorkspace({action: $("workspaceKind").value, name: $("workspaceName").value});
 };
+
+function applyViewSettings() {
+  renderer.setViewOptions(viewSettings);
+  $("renderQuality").value=viewSettings.quality;
+  $("captureQuality").value=viewSettings.captureQuality;
+  for(const id of ["voxelGrid","captureGrid","surfaceCulling","showTargetBounds"]) $(id).checked=!!viewSettings[id];
+}
+$("renderOptionsOpen").onclick=()=>{$("renderOptionsDialog").showModal();};
+$("renderOptionsClose").onclick=()=>$("renderOptionsDialog").close();
+for(const [id,key] of [["renderQuality","quality"],["captureQuality","captureQuality"],...["voxelGrid","captureGrid","surfaceCulling","showTargetBounds"].map(k=>[k,k])]){
+  $(id).onchange=async()=>{try{viewSettings=await api("view-settings",{[key]:$(id).type==="checkbox"?$(id).checked:$(id).value});applyViewSettings();}catch(cause){error(cause);}};
+}
+$("centerScene").onclick=()=>{$("transformDialog").showModal();previewTransform();};
+$("transformClose").onclick=()=>$("transformDialog").close();
+async function previewTransform(){
+  $("transformApply").disabled=true;pendingTransform=null;
+  try{
+    const args={action:$("transformAction").value,offset:["shiftX","shiftY","shiftZ"].map(id=>Number($(id).value)),baseRevision:state.revision,dryRun:true};
+    const result=await api("harness/tool",{name:"transform_scene",arguments:args});
+    pendingTransform={...args,dryRun:false};
+    $("transformReport").textContent=`偏移 ${result.offset.join(", ")} 格\n原范围 ${JSON.stringify(result.before.bounds)}\n新范围 ${JSON.stringify(result.after.bounds)}\n${result.after.fits?"坐标和容量可发布":"目标预检仍未通过，请检查尺寸/容量"}`;
+    $("transformApply").disabled=false;
+  }catch(cause){$("transformReport").textContent=cause.message;error(cause);}
+}
+$("transformPreview").onclick=previewTransform;
+for(const id of ["transformAction","shiftX","shiftY","shiftZ"]) $(id).oninput=()=>{pendingTransform=null;$("transformApply").disabled=true;};
+$("transformApply").onclick=async()=>{if(!pendingTransform)return;try{await api("harness/tool",{name:"transform_scene",arguments:pendingTransform});pendingTransform=null;$("transformDialog").close();await refresh(true);renderer.view();toast("整体定位已保存，可撤销");}catch(cause){error(cause);}};
+$("schemaUpgradeContext").onclick=async()=>{try{await api("harness/control",{action:"upgrade_context"});await refresh();toast("已升级工具说明；首次请求重新预热，实际缓存仍持续监测");}catch(cause){error(cause);}};
+$("autoCenterOnFinish").onchange=async()=>{try{await api("project",{autoCenterOnFinish:$("autoCenterOnFinish").checked});await refresh();}catch(cause){error(cause);}};
+$("pixelThemeOpen").onclick=()=>$("pixelThemeDialog").showModal();
+$("pixelThemeClose").onclick=()=>$("pixelThemeDialog").close();
+$("applyPixelTheme").onclick=async()=>{try{const result=await api("harness/tool",{name:"builtin_materials",arguments:{action:"apply",id:"pixel-workshop",baseRevision:state.revision,replaceBaseMaterials:$("pixelThemeReplace").checked}});await refresh(true);$("pixelThemeDialog").close();toast(`像素主题已加入 · 新增${result.materialsAdded}种材质`);}catch(cause){error(cause);}};
+$("avatarCatalogImport").onclick=()=>$("avatarCatalogFile").click();
+$("avatarCatalogFile").onchange=async(event)=>{try{const file=event.target.files[0];if(!file)return;const form=new FormData();form.append("file",file);const r=await fetch("/api/vrc/profile/import",{method:"POST",body:form});const value=await r.json();if(!r.ok)throw new Error(value.error);await refresh();toast(value.matched?"目标目录与已用材质匹配":"已记录目标目录，存在材质差异");}catch(cause){error(cause);}event.target.value="";};
+$("avatarCatalogClear").onclick=async()=>{try{await api("vrc/profile",{action:"clear"});await refresh();}catch(cause){error(cause);}};
 
 $("exportProject").onclick = async () => {
   try {
@@ -1713,7 +1761,7 @@ $("dryRecipe").onclick = () => runRecipe(true);
 async function capture() {
   const result = await api("harness/tool", {
     name: "capture_views",
-    arguments: { revision: state.revision, views: ["hero", "front", "top"] },
+    arguments: { revision: state.revision, views: ["hero", "front", "top"], mode: $("renderMode").value, quality: viewSettings.captureQuality, voxelGrid: viewSettings.captureGrid, surfaceCulling: viewSettings.surfaceCulling },
   });
   window.__morphforge.lastCapture = result;
   $("captureRevision").textContent = "v" + result.revision;
@@ -2211,12 +2259,14 @@ if (captureMode) {
         await renderer.load(job.scene, job.materials, {
           mode: job.mode,
           scale: 1,
+          surfaces: job.surfaces,
         });
         const images = await renderer.capture(
           job.views,
           job.width,
           job.height,
           job.shots,
+          job,
         );
         await api("capture/result", {
           id: job.id,
@@ -2241,6 +2291,7 @@ if (captureMode) {
   const storedMode = safeStorageGet("morphforge.mode.default", "steer");
   if (["steer", "interrupt", "queue"].includes(storedMode))
     $("messageMode").value = storedMode;
+  try{viewSettings=await api("view-settings");applyViewSettings();}catch(cause){error(cause);}
   await refresh();
   switchUiScope(state?.project?.id, state?.harness?.context?.referenceImages, state?.harness?.context?.id);
   restorePromptDraft();
