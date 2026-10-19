@@ -1,0 +1,286 @@
+{
+  "schemaVersion": "1.0",
+  "status": "blocked-before-network-upload",
+  "generatedAtUtc": "2026-10-19T01:12:12.611742+00:00",
+  "purpose": "Official VRChat SDK build and private upload of the independent 4096-capacity security probe without altering the original dirty Stage3 or existing Avatar ID.",
+  "securityBoundary": {
+    "credentialsReadOrReported": false,
+    "authCookieOrAuthorizationHeaderReported": false,
+    "signedS3UrlsReported": false,
+    "queryTokensReported": false,
+    "vrcChatLaunched": false,
+    "oscSent": false,
+    "originalDirtyStage3SavedOrClosed": false,
+    "desktopMorphForgeProcessesTouched": false
+  },
+  "sdkAccount": {
+    "loggedIn": true,
+    "id": "usr_c0dd064e-ac42-47a7-a17e-da6540382c55",
+    "displayName": "芝芝芝楼",
+    "matchesExpected": true,
+    "canPublishAvatars": true,
+    "source": "VRC.Core.APIUser.CurrentUser through read-only Unity Pipeline script",
+    "credentialsReadOrPrinted": false
+  },
+  "sdkEnvironment": {
+    "unity": "2022.3.22f1",
+    "vrchatSdkAvatars": "3.10.5",
+    "vrchatSdkBase": "3.10.5",
+    "builderType": "VRC.SDK3A.Editor.VRCSdkControlPanelAvatarBuilder",
+    "initialBuilderState": {
+      "build": "Idle",
+      "upload": "Idle"
+    },
+    "sdkPanelOpen": true
+  },
+  "publicApiResearch": {
+    "builder": [
+      "Task<string> IVRCSdkAvatarBuilderApi.Build(GameObject target)",
+      "Task InternalBuild(string path, bool testAvatar)",
+      "Task BuildAndUpload(GameObject target, VRCAvatar avatar, string thumbnailPath = null, CancellationToken cancellationToken = default)",
+      "Task BuildAndUpload(GameObject target, List<Option> overrides, VRCAvatar avatar, string thumbnailPath = null, CancellationToken cancellationToken = default)",
+      "Task BuildAndTest(GameObject target)",
+      "void SelectAvatar(GameObject avatar)"
+    ],
+    "buildAndUploadBehavior": [
+      "Verifies current user can publish avatars.",
+      "For an empty probe blueprintId, reserves a new Avatar record through VRCApi.CreateAvatarRecord.",
+      "Assigns the returned ID to the probe PipelineManager.",
+      "Performs the official build and SDK validation.",
+      "Uploads the bundle and thumbnail through the normal SDK path.",
+      "Never updates the existing MorphForge 16384 blueprint unless its ID is assigned to the probe."
+    ],
+    "vrChatReadMethods": [
+      "Task<VRCAvatar> VRCApi.GetAvatar(string id, bool forceRefresh = false, CancellationToken cancellationToken = default)",
+      "Task<T> VRCApi.Get<T>(string requestUrl, Dictionary<string,string> queryParams = null, bool forceRefresh = false, ...)"
+    ],
+    "assetBundleStatusOnAvatarRecord": "Not exposed",
+    "analysisStatusOnPublicTypedApi": "Not exposed",
+    "rawAvatarSecurityFields": "Absent (no assetBundleStatus, security, securityStatus, or analysisStatus)",
+    "analysisEndpointPattern": "/api/1/analysis/{fileId}/{fileVersion}/security, derived from the current Windows asset URL; no query or signed upload URL is retained."
+  },
+  "existingAvatarRecordRead": {
+    "avatarId": "avtr_3ba403cb-569d-4198-8de6-678e59c4440f",
+    "serverDisplayName": "MrothForge_Test",
+    "authorId": "usr_c0dd064e-ac42-47a7-a17e-da6540382c55",
+    "releaseStatus": "private",
+    "version": 6,
+    "pendingUpload": false,
+    "unityPackageCount": 1,
+    "unityPackage": {
+      "platform": "standalonewindows",
+      "unityVersion": "2022.3.22f1",
+      "assetVersion": 1,
+      "variant": "standard",
+      "fileId": "file_d68d4ea2-015f-40cd-bd19-444a2e49b24a",
+      "fileVersion": "5"
+    },
+    "securityEndpointHttpStatus": 403,
+    "securityEndpointError": "File forbidden",
+    "interpretation": "The rejected Avatar revision is absent or forbidden in server security analysis. This is consistent with the client-side AssetBundleFailedServerSideChecks, but is not itself a public SDK status field."
+  },
+  "positiveControlOwnedAvatar": {
+    "purpose": "Prove whether 403 is due to general SDK-session permissions or to bundle-specific server analysis state.",
+    "avatarId": "avtr_757a1077-3e17-48d7-8da7-9774f347151a",
+    "serverDisplayName": "Nemesis-Roadster",
+    "authorId": "usr_c0dd064e-ac42-47a7-a17e-da6540382c55",
+    "authorMatches": true,
+    "releaseStatus": "private",
+    "version": 15,
+    "fileId": "file_95b7fe4c-f699-400c-80ba-5ebe2c490d28",
+    "fileVersion": "14",
+    "securityEndpointHttpStatus": 200,
+    "analysisSuccess": true,
+    "performanceRating": "VeryPoor",
+    "fileSize": 17342907,
+    "uncompressedSize": 90579668,
+    "particleSystemCount": 36,
+    "totalMaxParticles": 14400,
+    "conclusion": "The same authenticated SDK session can read this owned Avatar security analysis. The old MorphForge 403 is therefore bundle/analysis-specific, not a general SDK-session inability to read analysis."
+  },
+  "probeSource": {
+    "scene": "Assets/MorphForge/Diagnostics/Security4096/MorphForge_Stage3_Avatar_4096Probe.unity",
+    "prefab": "Assets/MorphForge/Diagnostics/Security4096/MorphForge_Stage3_Avatar_4096Probe.prefab",
+    "rootGameObjectName": "MorphForge_Stage3_Avatar_4096Probe",
+    "prefabSha256": "7ba43282408524fb8bde05391623b40978f65af52f9499e6141f24e839e3a7a8",
+    "prefabBytes": 1195290,
+    "sceneSha256BeforeSdkBuild": "0d0748058cf4085dcf88833aec6e5ce698176adce0694065394e5d454b8b31ca",
+    "sceneSha256AfterSdkBuild": "4577b95c847e80624da74fb4200f086ba1751979ea2b03158353db62d00a5055",
+    "sceneWriteBySdkBuildReportedFromRuntimeState": true,
+    "storeMaxParticlesInput": 4096,
+    "storeStartLifetimeInput": "Infinity",
+    "probeBlueprintIdBeforeUpload": ""
+  },
+  "successfulSdkLocalBuild": {
+    "operationId": "build-20261019T005743196Z-b70b8a60",
+    "status": "success",
+    "phase": "complete",
+    "networkUploadStarted": false,
+    "bundlePath": "C:\\Users\\Chiro\\AppData\\Local\\Temp\\DefaultCompany\\MorphForge\\be6fdfee-9783-4cff-a4e3-557c2286dc25.vrca",
+    "bundleBytes": 8133091,
+    "bundleSha256": "02f7be8a42a63921bc5290537b6435eb62bb9c34302d7b04e97776a4b7929ffd",
+    "bundleSignature": "The public Build API does not expose the internal cryptographic upload signature. It is generated by the upload path internally.",
+    "sourceStage3DiskSha256Before": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453",
+    "sourceStage3DiskSha256After": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453",
+    "sourceStage3LoadedAfter": true,
+    "sourceStage3DirtyAfter": true
+  },
+  "actualBuiltVrcaAudit": {
+    "bundleSha256": "02f7be8a42a63921bc5290537b6435eb62bb9c34302d7b04e97776a4b7929ffd",
+    "unityVersion": "2022.3.22f1",
+    "platform": "StandaloneWindows64",
+    "particleSystems": [
+      {
+        "name": "Pump",
+        "maxParticles": 1,
+        "startLifetime": 0.5,
+        "size3D": false,
+        "startSize": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "playOnAwake": true
+      },
+      {
+        "name": "Store",
+        "maxParticles": 4096,
+        "startLifetime": "Infinity",
+        "size3D": true,
+        "startSize": [
+          0.25,
+          0.25,
+          0.25
+        ],
+        "playOnAwake": false
+      }
+    ],
+    "catalogMaterialPresent": true,
+    "catalogShader": "MorphForge/ParticleBoxCatalog",
+    "animatorControllerCount": 8,
+    "animationClipCount": 243,
+    "monoBehaviourCount": 506,
+    "conclusion": "The final built VRCA itself contains Store.maxParticles=4096 and +Infinity lifetime; this is not only an input-prefab claim, and NDMF/VRCFury did not restore 16384."
+  },
+  "uploadAttempt": {
+    "authorizedByUser": true,
+    "officialSdkMethod": true,
+    "networkUploadStarted": false,
+    "newAvatarRecordCreated": false,
+    "newAvatarId": null,
+    "newFileId": null,
+    "newFileVersion": null,
+    "statusFile": "C:\\Users\\Chiro\\AppData\\Local\\Temp\\morphforge\\security4096\\upload4096-operation.json",
+    "lastState": "local-build / success / complete",
+    "reason": "The Unity main thread became blocked before StartUpload could return its async operation handle.",
+    "rootCause": {
+      "summary": "The invoked in-memory ephemeral assembly contained the old synchronous StartUpload implementation. It called CurrentAccount().GetAwaiter().GetResult(); CurrentAccount executed to await Task.Yield and scheduled its continuation on UnitySynchronizationContext, which required the blocked main thread.",
+      "invokedSourceAtTimeOfCall": "public static string StartUpload()",
+      "pipelineBoundary": "RunScriptCommand invokes the synchronous method at method.Invoke before it can inspect a returned Task, so the outer async wrapper never received control back.",
+      "notCopyrightModal": true,
+      "notAuthenticationFailure": true,
+      "notNetworkOrServerFailure": true
+    },
+    "sourceFixApplied": {
+      "startUpload": "public static async Task<string> StartUpload() with await CurrentAccount()",
+      "currentAccount": "non-async Task.FromResult snapshot; the previous meaningless Task.Yield was removed",
+      "syncBlockingPatternsRemainingInTool": 0,
+      "sourceSha256AtReportTime": "f2d4522424f9059587231695c9d595159ddc3ecf67bc8314f5bf519c1d77b2d7",
+      "sourceFixVerifiedByCompilation": false,
+      "reasonFixCannotBeVerifiedNow": "Unity Editor main thread is blocked; Pipeline dry-run cannot execute until recovery."
+    },
+    "lastKnownUploadStateFile": {
+      "status": "success",
+      "kind": "local-build",
+      "networkUploadStarted": false,
+      "message": "SDK build callback finished: Avatar build finished"
+    }
+  },
+  "intendedUploadIdentity": {
+    "avatarDisplayName": "MorphForge Stage3 4096 Probe",
+    "availability": "private",
+    "newSeparateAvatar": "The probe blueprintId is empty and therefore the SDK must reserve a new Avatar ID.",
+    "existingAvatarChanged": false,
+    "sceneRootName": "MorphForge_Stage3_Avatar_4096Probe",
+    "note": "Root GameObject/Prefab name and server display name intentionally differ."
+  },
+  "editorRecoveryInvestigation": {
+    "unityPid": 46280,
+    "debuggerPort": 56280,
+    "debuggerPortConfirmed": true,
+    "debuggerPortEvidence": "Editor.log: --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56280",
+    "softDebuggerDll": "D:\\Software\\Unity\\2022.3.22f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\4.5\\Mono.Debugger.Soft.dll",
+    "probeBuild": {
+      "compilerExitCode": 0,
+      "probePath": "C:\\Users\\Chiro\\AppData\\Local\\Temp\\morphforge\\MonoStackProbe.exe",
+      "probeBytes": 7680,
+      "probeSha256": "1fed6b6cf5a30637a3454fb380b0456a987785cd80899c47f201eb1e3290a550",
+      "probeMtime": "2026-10-19T09:09:07.7791412+08:00",
+      "probeExitCode": 3,
+      "result": "CONNECT_TIMEOUT after 8 seconds"
+    },
+    "tcpState": {
+      "listener": "127.0.0.1:56280 LISTEN",
+      "connectionAccepted": true,
+      "handshakeReadFirst": "Timed out waiting for DWP-Handshake from Unity",
+      "connectionAfterClientClose": "CLOSE_WAIT",
+      "interpretation": "The TCP listener exists, but Unity debugger agent did not service the handshake while the main thread was blocked. No ESTABLISHED connection was competing at probe start."
+    },
+    "positiveControl": {
+      "target": "independent temporary Mono process, no Unity interaction",
+      "monoVersion": "6.13.0",
+      "debuggerAgent": "transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56381",
+      "clientSuccess": true,
+      "stackObserved": [
+        "MonoTarget.Main",
+        "System.Threading.Thread.Sleep"
+      ],
+      "lifecycle": "Suspend, GetFrames, Resume, Detach all executed"
+    },
+    "managedStackObtainedForUnity": false,
+    "threadInterruptExecuted": false,
+    "nativeMemoryPatched": false,
+    "unityProcessKilledOrRestarted": false,
+    "wholeMemoryDumpCreated": false,
+    "threadAbortUsed": false,
+    "osThreadDumpCreated": false,
+    "manualExecUnitySynchronizationContext": false
+  },
+  "nextSafeSteps": [
+    "Do not interrupt blindly until an independently reviewed recovery plan confirms the blocked frame and continuation side effects.",
+    "Restore editor responsiveness without closing or discarding the original dirty Stage3.",
+    "Verify the corrected async StartUpload compiles and runs in dry-run mode.",
+    "Retry the official SDK BuildAndUpload with a separate private Avatar ID.",
+    "Poll SDK build/upload events and then query the new Avatar record and its server analysis endpoint."
+  ],
+  "sources": [
+    {
+      "type": "local source",
+      "path": "Packages/com.unity.pipeline/Editor/Commands/Scripts/RunScriptCommand.cs",
+      "lines": "217-277",
+      "fact": "Synchronous reflection invocation plus async Task handling for Task-returning entries."
+    },
+    {
+      "type": "local source",
+      "path": "Packages/com.vrchat.avatars/Editor/VRCSDK/SDK3A/Public SDK API/IVRCSdkAvatarBuilderApi.cs",
+      "fact": "Official public Build/BuildAndUpload signatures."
+    },
+    {
+      "type": "local source",
+      "path": "Packages/com.vrchat.avatars/Editor/VRCSDK/SDK3A/VRCSdkControlPanelAvatarBuilder.cs",
+      "lines": "3733-3825",
+      "fact": "BuildAndUpload reserves a new record when blueprintId is empty."
+    },
+    {
+      "type": "local source",
+      "path": "Packages/com.vrchat.base/Editor/VRCSDK/Dependencies/VRChat/API/VRCApi.cs",
+      "lines": "581-756",
+      "fact": "Typed avatar read/update/create methods; no security status field."
+    },
+    {
+      "type": "local source",
+      "path": "Packages/com.vrchat.base/Editor/VRCSDK/Dependencies/VRChat/API/VRCAvatar.cs",
+      "fact": "Public VRCAvatar fields include UnityPackages/asset URLs, no analysis status."
+    }
+  ]
+}
