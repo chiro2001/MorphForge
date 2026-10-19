@@ -1415,7 +1415,7 @@ dependencies = [
 
 [[package]]
 name = "morphforge-app"
-version = "0.4.1"
+version = "0.4.2"
 dependencies = [
  "anyhow",
  "axum",
@@ -1446,7 +1446,7 @@ dependencies = [
 
 [[package]]
 name = "morphforge-core"
-version = "0.4.1"
+version = "0.4.2"
 dependencies = [
  "rand 0.8.8",
  "serde",

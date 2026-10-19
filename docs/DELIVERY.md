@@ -1,6 +1,6 @@
 # MorphForge 交付记录
 
-当前软件候选为 **0.4.1**，增加精确RGB色板、按视角限制旧截图重放、参考图复核与提前收尾提醒；保留参考图库、独立配置页、API Token/Prefix统计、自定义Chat/Responses和Goal。安装器在 `dist/windows/MorphForge Desktop_0.4.1_x64-setup.exe`，校验和在同目录；[本轮验证与边界](quality-v4.1/RESULTS.md)、[使用说明](PROVIDERS-PRESETS-GOALS.md)。默认安装与用户作品未被测试覆盖。新色板用于本机创作，发布VRC前需导出并更新Avatar材质目录。
+当前软件候选为 **0.4.2**，修复Harness每轮改写system、临时追加参考图及替换历史截图造成的前缀失效。普通历史按追加方式增长，清理仅在compact边界进行，增加出站前缀指纹与透明透传验证工具；保留色板、图库、配置页、Token统计和Goal。安装器在 `dist/windows/MorphForge Desktop_0.4.2_x64-setup.exe`，校验和在同目录；[本轮验证与边界](quality-v4.2/RESULTS.md)、[使用说明](PROVIDERS-PRESETS-GOALS.md)。默认安装与用户作品未被测试覆盖。新色板发布VRC前仍需更新Avatar材质目录。
 
 ## 0.2.0 历史交付
 

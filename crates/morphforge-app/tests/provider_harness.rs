@@ -321,15 +321,18 @@ async fn completion_reserve_uses_observed_visual_input_cost() {
     assert_eq!(prepared.len(), 2);
     assert_eq!(prepared[1]["completionPhase"], true);
     assert!(prepared[1]["completionReserveTokens"].as_u64().unwrap() >= 360000);
-    assert!(fake.requests()[1]["instructions"]
-        .as_str()
-        .unwrap()
+    assert_eq!(
+        fake.requests()[0]["instructions"],
+        fake.requests()[1]["instructions"]
+    );
+    assert!(fake.requests()[1]["input"]
+        .to_string()
         .contains("现在进入收尾"));
     assert_eq!(h.state()["run"]["tokens"], 120036);
 }
 
 #[tokio::test]
-async fn request_replays_latest_capture_per_view_without_mutating_history_or_references() {
+async fn requests_preserve_historical_images_and_append_only_at_the_wire_boundary() {
     use base64::{engine::general_purpose::STANDARD, Engine};
     let fake = FakeResponses::start(vec![
         completed(vec![function_call(
@@ -392,22 +395,21 @@ async fn request_replays_latest_capture_per_view_without_mutating_history_or_ref
         .filter(|part| part["type"] == "input_image")
         .collect();
     assert_eq!(images.len(), 2, "full capture history remains local");
-    for (index, image) in images.iter().enumerate() {
+    for image in &images {
         let path = dir
             .path()
             .join("artifacts")
             .join(image["artifact"].as_str().unwrap());
         let encoded = STANDARD.encode(std::fs::read(path).unwrap());
-        assert_eq!(
+        assert!(
             final_input.contains(&encoded),
-            index == 1,
-            "old front removed, hero retained"
+            "historical pixels remain stable until compact"
         );
     }
     assert_eq!(
         final_input.matches("data:image/png;base64,").count(),
-        3,
-        "latest front, hero and explicit reference"
+        4,
+        "both old views, the new front and one reference snapshot"
     );
     let workspace = w.lock().unwrap();
     let prepared = workspace
@@ -416,8 +418,22 @@ async fn request_replays_latest_capture_per_view_without_mutating_history_or_ref
         .rev()
         .find(|e| e.kind == "harness.request.prepared")
         .unwrap();
-    assert_eq!(prepared.data["visualContext"]["omittedCaptures"], 1);
-    assert_eq!(prepared.data["visualContext"]["retainedCaptures"], 2);
+    assert_eq!(prepared.data["contextPolicy"], "append-only-until-compact");
+    for pair in requests.windows(2) {
+        assert_eq!(pair[0]["instructions"], pair[1]["instructions"]);
+        assert_eq!(pair[0]["tools"], pair[1]["tools"]);
+        let old = pair[0]["input"].as_array().unwrap();
+        let next = pair[1]["input"].as_array().unwrap();
+        assert_eq!(&next[..old.len()], old.as_slice());
+    }
+    for event in workspace
+        .events
+        .iter()
+        .filter(|e| e.kind == "provider.request")
+        .skip(1)
+    {
+        assert_eq!(event.data["prefix"]["appendOnly"], true);
+    }
 }
 
 #[tokio::test]
@@ -535,9 +551,9 @@ async fn max_output_incomplete_retries_compactly_without_dispatching_partial_too
         .iter()
         .any(|event| event.kind == "tool.request"));
     let requests = fake.requests();
-    assert!(requests[1]["instructions"]
-        .as_str()
-        .unwrap()
+    assert_eq!(requests[0]["instructions"], requests[1]["instructions"]);
+    assert!(requests[1]["input"]
+        .to_string()
         .contains("max_output_tokens"));
     assert!(requests[1]["input"].to_string().contains("先画一个大厅"));
     assert!(!requests[1]["input"].to_string().contains("partial-recipe"));
@@ -1355,6 +1371,7 @@ async fn failed_compact_keeps_old_context_and_records_failure() {
         summary: "compact前摘要".into(),
         boundaries: vec![2],
         compact_count: 4,
+        ..Default::default()
     };
     let root = workspace.lock().unwrap().root.clone();
     write_json(&root.join("runs/conversation.json"), &original).unwrap();
@@ -1786,6 +1803,87 @@ async fn third_party_files_setting_is_forced_inline_and_chat_cache_usage_is_pres
         provider.usage(Some("cache-run"))["total"]["prefixHitRate"],
         0.6
     );
+}
+
+#[tokio::test]
+async fn chat_wire_prefix_survives_tool_state_changes_continuation_and_reference_clearing() {
+    fn chat_reply(name: Option<(&str, Value)>) -> Reply {
+        let has_tool = name.is_some();
+        let message = if let Some((name, arguments)) = name {
+            json!({"role":"assistant","tool_calls":[{"id":format!("call-{name}"),"type":"function","function":{"name":name,"arguments":arguments.to_string()}}]})
+        } else {
+            json!({"role":"assistant","content":"已完成本阶段"})
+        };
+        Reply::Http(
+            200,
+            json!({"choices":[{"message":message,"finish_reason":if has_tool{"tool_calls"}else{"stop"}}],"usage":{"prompt_tokens":100,"completion_tokens":10,"total_tokens":110}}),
+        )
+    }
+    let fake = FakeResponses::start(vec![
+        chat_reply(Some(("get_context", json!({})))),
+        chat_reply(Some((
+            "define_palette",
+            json!({"baseRevision":0,"colors":[{"name":"蓝","color":"#123456"}]}),
+        ))),
+        chat_reply(Some(("get_context", json!({})))),
+        chat_reply(None),
+        chat_reply(None),
+        chat_reply(None),
+    ])
+    .await;
+    let dir = TempDir::new().unwrap();
+    let w = workspace(&dir);
+    let h = harness(w.clone(), &fake.base);
+    h.provider
+        .configure(&json!({"apiType":"chat","stream":false}))
+        .unwrap();
+    h.message(&json!({"prompt":"按参考建模","referenceIds":["builtin:chair"]}))
+        .unwrap();
+    assert_eq!(terminal_run(&h).await.status, "completed");
+    h.message(&json!({"prompt":"保持参考，继续","referenceIds":["builtin:chair"]}))
+        .unwrap();
+    assert_eq!(terminal_run(&h).await.status, "completed");
+    h.message(&json!({"prompt":"取消参考，继续","referenceIds":[]}))
+        .unwrap();
+    assert_eq!(terminal_run(&h).await.status, "completed");
+    let requests = fake.requests();
+    assert_eq!(requests.len(), 6);
+    for pair in requests.windows(2) {
+        assert_eq!(pair[0]["tools"], pair[1]["tools"]);
+        let old = pair[0]["messages"].as_array().unwrap();
+        let next = pair[1]["messages"].as_array().unwrap();
+        assert_eq!(
+            &next[..old.len()],
+            old.as_slice(),
+            "converted Chat history must append at the actual HTTP boundary"
+        );
+    }
+    for request in &requests {
+        assert_eq!(
+            request["messages"]
+                .to_string()
+                .matches("data:image/png;base64,")
+                .count(),
+            1,
+            "reference added only once"
+        );
+    }
+    assert!(requests[5]["messages"]
+        .to_string()
+        .contains("当前视觉参考已取消"));
+    assert!(h.state()["context"]["referenceImages"]
+        .as_array()
+        .unwrap()
+        .is_empty());
+    let workspace = w.lock().unwrap();
+    for event in workspace
+        .events
+        .iter()
+        .filter(|e| e.kind == "provider.request")
+        .skip(1)
+    {
+        assert_eq!(event.data["prefix"]["appendOnly"], true);
+    }
 }
 
 #[tokio::test]

@@ -50,7 +50,9 @@ Goal 是有预算的创作续作机制。输入目标后，模型先搭建、调
 
 事件包含预设、提示词/工具版本、请求预算、实际usage或估算来源、Goal建立/续作/复核/完成及工具失败。`runs/conversation.json`使用本地图片 artifact 引用，发送前才按所选协议转换，避免将大段base64当文本上下文保存。换服务时丢弃不兼容的内部推理项；普通文本与工具结果继续沿用。
 
-0.4.1的请求事件增加`completionPhase`、`completionReserveTokens`和`visualContext`（`retainedCaptures`/`omittedCaptures`为请求副本中的作品截图筛选统计，图片发送关闭时不向上游发送）。收尾提醒以本地估算和最近实际输入的较大者加输出上限，按约三次请求预估余量；不改实际usage计费、预算上限或超限停止规则。仅重放每视角最近一次作品截图，参考图独立保留，完整原始会话与artifact不删除。
+0.4.2开始，system及工具定义在设置不变时保持固定；预算、权威状态增量和重试说明追加到尚未发送的新输入/工具结果。参考图只在选择变更或compact后追加，历史截图裁剪仅发生在compact边界。取消参考追加说明，不删除普通历史中的旧图片。开启/关闭图片、变更模型/提示设置、重置上下文和compact属于可预期的前缀边界。
+
+`harness.request.prepared`保留`completionPhase`、`completionReserveTokens`，新增`contextPolicy`、`contextEpoch`、`runtimePlacement`和`authorityChangedFields`。`provider.request.prefix`在图片和协议转换后比较实际出站消息，记录`appendOnly`、`sharedMessages`、`firstChangedMessage`和原因；只保存指纹，不把它当作服务端token统计。`compact.completed.visualContext`记录边界上的截图裁剪。收尾提醒不改变实际usage计费或预算规则。[透明透传与token前缀验证](quality-v4.2/RESULTS.md)。
 
 ## 验证范围
 

@@ -172,7 +172,9 @@ def main():
             browser.js("document.getElementById('prompt').value='取消参考，继续当前几何'")
             browser.click('sendMessage')
             browser.wait(f"return window.__morphforge.state.harness.run?.status==='completed' && window.__morphforge.state.harness.usage.total.requests==={creation_requests + 1}",timeout=20)
-            check('clearing references removes their next-request image block',api('harness/state')['context']['referenceImages']==[] and '当前用户选中的视觉参考图' not in json.dumps(requests[-1]['messages'],ensure_ascii=False))
+            old_messages = requests[-2]['messages']
+            new_messages = requests[-1]['messages']
+            check('clearing references appends instruction while retaining cacheable history',api('harness/state')['context']['referenceImages']==[] and new_messages[:len(old_messages)]==old_messages and '当前视觉参考已取消' in json.dumps(new_messages,ensure_ascii=False))
 
         displayed_tokens = format(creation_tokens + (1100 if args.with_references else 0), ',')
         browser.wait("return document.getElementById('usageTokens').textContent.includes('"+displayed_tokens+"') && document.getElementById('usagePrefix').textContent.includes('60.0%')")

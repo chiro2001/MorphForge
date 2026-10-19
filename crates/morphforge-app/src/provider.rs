@@ -1,5 +1,6 @@
 mod compat;
 mod config;
+mod prefix;
 mod usage;
 pub use config::{ApiType, Connection, ImageDelivery};
 
@@ -79,6 +80,7 @@ pub struct Provider {
     redaction_keys: Arc<Mutex<Vec<String>>>,
     files: Arc<Mutex<BTreeMap<String, (String, i64)>>>,
     usage: Arc<Mutex<usage::UsageLedger>>,
+    prefix: Arc<Mutex<prefix::PrefixTracker>>,
     file_path: PathBuf,
 }
 struct CancellationInner {
@@ -131,6 +133,9 @@ pub struct ProviderRequestTrace {
     pub tools_version: Option<String>,
     pub language: Option<String>,
     pub epoch: Option<u64>,
+    pub context_epoch: Option<u32>,
+    pub image_policy: Option<bool>,
+    pub compact: bool,
 }
 
 impl ProviderRequestTrace {
@@ -148,6 +153,17 @@ impl ProviderRequestTrace {
         if let Some(value) = self.epoch {
             fields.insert("epoch".into(), json!(value));
         }
+        if let Some(value) = self.context_epoch {
+            fields.insert("contextEpoch".into(), json!(value));
+        }
+        fields.insert(
+            "purpose".into(),
+            json!(if self.compact {
+                "compact"
+            } else {
+                "generation"
+            }),
+        );
         Value::Object(fields)
     }
 }
@@ -186,6 +202,7 @@ impl Provider {
             redaction_keys: Arc::new(Mutex::new(redaction_keys)),
             files: Arc::new(Mutex::new(files)),
             usage: Arc::new(Mutex::new(usage::UsageLedger::load(root)?)),
+            prefix: Arc::new(Mutex::new(prefix::PrefixTracker::default())),
             file_path,
         })
     }
@@ -204,6 +221,9 @@ impl Provider {
     }
     pub fn usage(&self, run: Option<&str>) -> Value {
         self.usage.lock().unwrap().value(run)
+    }
+    pub(crate) fn reset_prefix_trace(&self) {
+        *self.prefix.lock().unwrap() = prefix::PrefixTracker::default();
     }
     fn record_event(
         &self,
@@ -495,6 +515,11 @@ impl Provider {
         };
         let identity = connection.identity();
         let start = std::time::Instant::now();
+        let prefix = self
+            .prefix
+            .lock()
+            .unwrap()
+            .observe(&payload, &connection, &trace);
         let request_id = trace
             .request_id
             .clone()
@@ -502,7 +527,7 @@ impl Provider {
         self.record_event(&workspace,
             "provider.request",
             Some(run),
-            json!({"requestId":request_id,"time":now(),"apiType":connection.api_type,"baseUrl":connection.base_url,"body":self.log_value(&payload),"trace":trace.event_fields()}),
+            json!({"requestId":request_id,"time":now(),"apiType":connection.api_type,"baseUrl":connection.base_url,"body":self.log_value(&payload),"trace":trace.event_fields(),"prefix":prefix}),
         )?;
         for attempt in 0..4u32 {
             if cancel.stopped() {
