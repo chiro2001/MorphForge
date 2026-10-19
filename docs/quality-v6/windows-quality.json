@@ -1,0 +1,60 @@
+{
+  "success": true,
+  "scope": "Windows release core and HTTP; real recipe worker, Unicode modules/patch, capture broker PNG fixture, persistent timeline and preflight budget. No paid API/OSC; physical rendering tested separately in Chromium.",
+  "checks": [
+    {
+      "passed": true,
+      "name": "fresh 1M/384K defaults and disabled OSC"
+    },
+    {
+      "passed": true,
+      "name": "real CommonJS worker executes Unicode relative modules"
+    },
+    {
+      "passed": true,
+      "name": "dry run skips capture and preserves revision"
+    },
+    {
+      "passed": true,
+      "name": "exact patch returns a new per-file hash"
+    },
+    {
+      "passed": true,
+      "name": "committed source run exposes one mixed capture job"
+    },
+    {
+      "passed": true,
+      "name": "draw plus capture returns actual committed revision and artifacts"
+    },
+    {
+      "passed": true,
+      "name": "slice is one voxel thick"
+    },
+    {
+      "passed": true,
+      "name": "reading old revision does not restore or mutate current draft"
+    },
+    {
+      "passed": true,
+      "name": "timeline includes durable source and geometry records"
+    },
+    {
+      "passed": true,
+      "name": "timeline detail resolves by durable event sequence"
+    },
+    {
+      "passed": true,
+      "name": "module source survives worker runs"
+    },
+    {
+      "passed": true,
+      "name": "input reserve rejects an unaffordable generation before sending"
+    },
+    {
+      "passed": true,
+      "name": "no generation request recorded and OSC stays off"
+    }
+  ],
+  "error": null,
+  "finishedAt": "2026-10-19T12:45:23.3461631+00:00"
+}

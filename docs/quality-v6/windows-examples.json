@@ -1,0 +1,175 @@
+{
+  "success": true,
+  "scope": "Windows release binary; six embedded artworks, image bytes and editable fork; no model requests or OSC",
+  "examples": [
+    {
+      "sourceCredits": [
+        {
+          "author": "MorphForge项目示例",
+          "id": "builtin:copper-lighthouse",
+          "license": "MIT",
+          "source": "docs/harness/windows-library-seed.json",
+          "title": "铜灯塔与树"
+        }
+      ],
+      "id": "builtin:copper-lighthouse",
+      "boxCount": 49,
+      "images": [
+        {
+          "sha256": "563353a1e21b0d9173f5a2b548d49048f423da61f45b3d6fe101e0655069970b",
+          "view": "hero"
+        },
+        {
+          "sha256": "d202ad764f846595f40ed4635b789658584e6858554f019b08f71016bbe31711",
+          "view": "front"
+        },
+        {
+          "sha256": "0e91da7822705e54ba54433a027003bd81fed7735421841eec75f25ca150ef86",
+          "view": "top"
+        }
+      ]
+    },
+    {
+      "sourceCredits": [
+        {
+          "author": "MorphForge项目示例",
+          "id": "builtin:leviathan-lantern",
+          "license": "MIT",
+          "source": "docs/harness/legacy-artwork-library.json",
+          "title": "The Leviathan’s Lantern · 精确体素版"
+        }
+      ],
+      "id": "builtin:leviathan-lantern",
+      "boxCount": 7459,
+      "images": [
+        {
+          "sha256": "9f3142524ea10be14bff9b4d58c328d13c154509e1ea3c8035417ea5944b134e",
+          "view": "hero"
+        },
+        {
+          "sha256": "eedf3b0f31875d1d8aab41a376bff57580e7665082765e884994a9225c9a463c",
+          "view": "front"
+        },
+        {
+          "sha256": "abb93dcf1b6ac26abf9835f3f2034f44e8ed58606228a706c67d9e87c0d7544b",
+          "view": "top"
+        }
+      ]
+    },
+    {
+      "sourceCredits": [
+        {
+          "author": "MorphForge项目示例",
+          "id": "builtin:cloud-post",
+          "license": "MIT",
+          "source": "docs/harness-v2/evals/r2c-closeout/report.json",
+          "title": "云港信使驿站 · 中文标牌与双铜灯"
+        }
+      ],
+      "id": "builtin:cloud-post",
+      "boxCount": 766,
+      "images": [
+        {
+          "sha256": "035d41ff36fbe56efcab1e1e60327b4fb5c71a9abe7c098d881a501b6facd3c0",
+          "view": "hero"
+        },
+        {
+          "sha256": "772660ebe77d62f92b474902eb10be61eb30ce473f73cd26a6959bbb7cbf5ecf",
+          "view": "front"
+        },
+        {
+          "sha256": "f5010e065efb32a4d6e96eabd3e22ff64dfc43ec421b97f9a24e32ff73764118",
+          "view": "top"
+        }
+      ]
+    },
+    {
+      "sourceCredits": [
+        {
+          "author": "MorphForge项目示例",
+          "id": "builtin:starlight-harbor",
+          "license": "MIT",
+          "source": "docs/harness-v2/evals/r3c-front-text/report.json",
+          "title": "星砂港 · 正面体素文字修正版"
+        }
+      ],
+      "id": "builtin:starlight-harbor",
+      "boxCount": 791,
+      "images": [
+        {
+          "sha256": "0d09ca76fddb33264845d33ec1f79f5d910841f14e837ead1b541249ee8c3c36",
+          "view": "hero"
+        },
+        {
+          "sha256": "13bc9ea8a05ffbee6c9654349a3f0b014f9ce1a5a0b8a0b681755ad1a808d367",
+          "view": "front"
+        },
+        {
+          "sha256": "75a7dd8926ac198b549daf7585e22b1cd46f8269eb26841eaea62ac66412df44",
+          "view": "top"
+        }
+      ]
+    },
+    {
+      "sourceCredits": [
+        {
+          "author": "体素二创：MorphForge；参考图：ZipZipPipe；原角色：上善无形",
+          "id": "builtin:whale-maid",
+          "license": "CC BY-NC-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+          "source": "docs/quality-v4.1/whale-palette-finish/report.json",
+          "sourceUrls": [
+            "https://www.bilibili.com/opus/1233069202138464289",
+            "https://www.bilibili.com/opus/1236803362705375305"
+          ],
+          "title": "鲸鱼娘女仆 · 参考图与RGB色板"
+        }
+      ],
+      "id": "builtin:whale-maid",
+      "boxCount": 223,
+      "images": [
+        {
+          "sha256": "901ca6c8c0be6bd02598482f28158713212efdd7f4c3b95452f78d7b661bc6a6",
+          "view": "hero"
+        },
+        {
+          "sha256": "93e6e1182c05210f11b4a213189afe5c2a95fbd0b0d2ac5272bb29bf6a777437",
+          "view": "front"
+        },
+        {
+          "sha256": "fd570b4a30564c8cf1806d8c212cb1782dfd2af1e07dde90e17b1a9422d40f9b",
+          "view": "top"
+        }
+      ]
+    },
+    {
+      "sourceCredits": [
+        {
+          "author": "MorphForge项目示例",
+          "id": "builtin:wooden-chair",
+          "license": "MIT",
+          "source": "docs/quality-v4.1/chair-reference/report.json",
+          "title": "木椅 · 入门体素样例"
+        }
+      ],
+      "id": "builtin:wooden-chair",
+      "boxCount": 16,
+      "images": [
+        {
+          "sha256": "ec2cca5a0cc385234a617f4461b7476968ffc94096bdd78bc7ec2695bd8912dd",
+          "view": "hero"
+        },
+        {
+          "sha256": "b3a48a6ed16eb8712030ebe54be422b720c19dc5242f7c9279c1741b7be17e77",
+          "view": "front"
+        },
+        {
+          "sha256": "578a6d4647e4eb7c6ef1c58871f8dcfa08b6dec24b86f3cc00c16affa6cf08a5",
+          "view": "top"
+        }
+      ]
+    }
+  ],
+  "error": null,
+  "finishedAt": "2026-10-19T12:45:19.6596592+00:00"
+}

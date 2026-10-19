@@ -50,7 +50,13 @@
 
 [真实模型先前被拒的混合相机参数](capture-mix-replay/report.json)已在不发模型请求的服务中原样渲染三图；历史截图rev3与当前编辑rev4分别标注，版本回看不修改当前工程。时间轴包含实际上游思考的[离线回放截图](timeline-real-replay.png)；没有为了截图重新付费生成。
 
-Windows构建与安装器验收以本目录后续windows-*.json及source-freeze.json为准。
+## Windows与安装器
+
+使用[155项冻结输入](source-freeze.json)构建，构建前后及最终校验一致；Windows核心/桌面 **145项**、[HTTP 62项](windows-http.json)、[强化功能13项](windows-quality.json)通过。原生补充检查覆盖中文相对模块、精确patch、真实工作子进程、绘制+混合截图broker、历史读取和输入预算拦截；broker使用固定PNG协议fixture，实际相机像素由Chromium检查覆盖，Windows真实显卡与VRChat多人效果仍待用户现场验证。
+
+[8张参考图及缩略图](windows-references.json)、[6份作品和18张视图](windows-examples.json)字节匹配；安装器解包核心与已验收Windows核心hash完全相同，8份许可/署名匹配源文件。[构建摘要](windows-build.json)。NSIS安装器17,351,411字节，SHA256 `0650eba8d7e9f0d77e7ee7dbca26b91f29ccc2d63a4e9c4fd9bf2fa86d8ce16f`。保留已有Tauri STATIC_VCRUNTIME弃用提示，构建成功。
+
+Release另附 `MorphForge-0.6.0-whale-draft.zip`，解压并导入artwork.json即可离线查看1,661 Box和完整材质，不必再次生成；标注人工保存和MIT许可。本轮没有覆盖用户安装或默认数据目录。
 
 ## 与dsh的比较边界
 
