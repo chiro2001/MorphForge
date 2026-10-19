@@ -1,0 +1,93 @@
+{
+  "success": true,
+  "scope": "Isolated unpackaged Tauri runtime; no installer or user-install changes",
+  "checks": [
+    {
+      "name": "isolated directory is new: C:\\Users\\Chiro\\tmp\\morphforge\\v04-runtime-7a65155ec00946f791c547acd885cc3c",
+      "passed": true
+    },
+    {
+      "name": "isolated directory is new: C:\\Users\\Chiro\\tmp\\morphforge\\v04-shell-7a65155ec00946f791c547acd885cc3c",
+      "passed": true
+    },
+    {
+      "name": "isolated Tauri process and loopback core started",
+      "passed": true
+    },
+    {
+      "name": "candidate version 0.4.0 and OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "detailed preset applies complete budgets and Goal",
+      "passed": true
+    },
+    {
+      "name": "connection config saves without returning key",
+      "passed": true
+    },
+    {
+      "name": "private config stored only in isolated data directory",
+      "passed": true
+    },
+    {
+      "name": "packaged UI includes preset, Goal and provider settings",
+      "passed": true
+    },
+    {
+      "name": "runtime exposes final prompt and tools versions",
+      "passed": true
+    },
+    {
+      "name": "real native window captured",
+      "passed": true
+    },
+    {
+      "name": "window belongs to isolated process and has usable size",
+      "passed": true
+    },
+    {
+      "name": "WM_CLOSE exits only the isolated shell",
+      "passed": true
+    },
+    {
+      "name": "isolated sidecar cleaned after exit",
+      "passed": true
+    }
+  ],
+  "error": null,
+  "runtimeDir": "C:\\Users\\Chiro\\tmp\\morphforge\\v04-runtime-7a65155ec00946f791c547acd885cc3c",
+  "dataDir": "C:\\Users\\Chiro\\tmp\\morphforge\\v04-shell-7a65155ec00946f791c547acd885cc3c",
+  "window": {
+    "processId": 23116,
+    "sessionId": 1,
+    "windowHandle": 3477620,
+    "title": "MorphForge",
+    "dpi": 120,
+    "processDpiAwarenessSet": true,
+    "previousThreadDpiAwarenessContext": 2147483682,
+    "boundsSource": "dwm-extended-frame",
+    "dwmResult": 0,
+    "windowRect": {
+      "left": 371,
+      "top": 96,
+      "right": 2189,
+      "bottom": 1293,
+      "width": 1818,
+      "height": 1197
+    },
+    "screenshotRect": {
+      "left": 379,
+      "top": 96,
+      "right": 2181,
+      "bottom": 1285
+    },
+    "width": 1802,
+    "height": 1189,
+    "screenshot": "D:\\Projects\\VRChatProjects2\\MorphForge\\docs\\quality-v4\\desktop-candidate.png",
+    "screenshotBytes": 276420,
+    "screenshotSha256": "f6866301d561512417c4a9681cd27b8d33c73b9b4e1d177e5240ac40bf7b56ec",
+    "capturedAt": "2026-10-19T13:03:10.2663988+08:00"
+  },
+  "finishedAt": "2026-10-19T05:03:15.8097213+00:00"
+}

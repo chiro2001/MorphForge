@@ -34,3 +34,7 @@ Windows新克隆需保留仓库的`.gitattributes`。它让源码使用LF，即�
 ## 0.3.1 配置与用量更新
 
 候选标签 `v0.3.1-rc.1`，开发分支 `feat/settings-and-api-usage`。包含独立配置页、非官方API强制内嵌图片、API累计/本轮Token和加权Prefix缓存率。新冻结清单为 `docs/quality-v3.1/source-freeze.json`（81输入），旧版本清单需切换对应历史标签后验证。
+
+## 0.4 参考图片更新
+
+候选标签 `v0.4.0-rc.1`，分支 `feat/reference-images`。新增内置/个人参考图库、多图选用、压缩保持与来源记录。冻结清单为 `docs/quality-v4/source-freeze.json`（111输入）。参考图片独立许可，源码、安装器许可目录与 [署名清单](../references/ATTRIBUTION.md) 均保留作者和具体原帖。

@@ -4,7 +4,7 @@
 
 ## 自动与浏览器
 
-Rust与Node检查摘要见automated-checks.json。真实Rust+Chromium+本机Chat协议服务验证图库选择、上传、关闭/组合来源、刷新恢复、图片仅随发送交给上游、每步附图、作品来源追溯、取消旧参考；[报告](provider-presets-browser.json)。原插话/打断、暂停、保护与字体回归报告在regression-validation.json。
+Linux Rust 97项、Node 29项通过，Clippy与格式检查通过；摘要见automated-checks.json。真实Rust+Chromium+本机Chat协议服务验证图库选择、上传、关闭/组合来源、刷新恢复、图片仅随发送交给上游、每步附图、作品来源追溯、取消旧参考；[报告](provider-presets-browser.json)。原插话/打断、暂停、保护与字体回归报告在regression-validation.json。
 
 首次测试发现已有artifact类型白名单不含WebP，补充后上传缩略图与不可变快照通过。无效图片、尺寸/字节保护、重复图片归一化去重、移出图库保留历史、参考不冒充当前作品截图均有测试。
 
@@ -20,4 +20,8 @@ Rust与Node检查摘要见automated-checks.json。真实Rust+Chromium+本机Chat
 
 ## Windows候选
 
-最终冻结、Windows原生与隔离桌面验证及包内容核对将记录在本目录。程序与图片分别许可；安装器携带CC许可全文与作者/原帖清单。默认安装和现有作品不由测试覆盖。
+111项冻结输入构建前后完全一致，运行时代码提交为f3e240a。Windows核心97项、桌面2项通过；原生HTTP63项、隔离桌面13项通过。另对发布核心实际请求8张内置图及8张缩略图，字节hash均与源码素材一致，作者/许可信息完整；见windows-reference-runtime.json。
+
+NSIS解包核对了核心、字体OFL、图片CC许可全文、项目MIT许可与署名清单，均匹配源码或已验证核心；详情见windows-build.json。候选安装器为dist/windows/MorphForge Desktop_0.4.0_x64-setup.exe。程序与图片分别许可；测试未运行安装器覆盖用户已有安装。
+
+首次部署清单漏了5份参考Recipe JS，被构建前111输入核对拦住；补充部署规则并全部匹配后才构建。初次记录在windows-deploy-initial-failure.json。

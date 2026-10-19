@@ -1,0 +1,14 @@
+{
+  "passed": false,
+  "stage": "pre-build frozen input check",
+  "expectedFiles": 111,
+  "actualFiles": 106,
+  "missing": [
+    "references/recipes/bridge.js",
+    "references/recipes/chair.js",
+    "references/recipes/cottage.js",
+    "references/recipes/lighthouse.js",
+    "references/recipes/pine.js"
+  ],
+  "resolution": "Added references/**/*.js to source deployment; build was blocked until all frozen inputs match."
+}
