@@ -10,4 +10,11 @@
 
 统计从已有请求事件恢复，内存维护汇总，页面轮询不扫描全日志。相同请求ID的完成/不完整事件去重；截断流已收到的usage也保留，工具执行仍必须满足完整响应条件。重启恢复已有日志保留的统计，不能补出旧版本已丢弃的字段。清空模型上下文不会清空API累计用量。
 
-本轮验证与Windows候选构建结果追加于此；0.3.0历史记录保留在相邻quality-v3目录。
+验证结果：
+
+- Linux Rust 91项、Node 27项通过，Clippy `-D warnings`与格式检查通过；[摘要](automated-checks.json)。
+- 原交互Chromium回归31项通过；[报告](regression-validation.json)。真实Rust + Chromium + 本机Chat服务16项通过，覆盖配置页切换保留草稿、第三方隐藏Files、真实建模/截图/入库及输入框旁4400 Token/60.0%缓存率；[报告](provider-presets-browser.json)。
+- 重放此前21次真实DeepSeek请求，恢复379,453 Token、命中37,504/输入370,337，即约10.13%，与原始记录一致；[报告](real-usage-replay.json)。这不是新的上游调用。
+- Windows核心91项、桌面2项通过；原生HTTP61项含新usage-ui.js字节核验通过，隔离Tauri启动/设置/退出13项通过；[原生](windows-native.json)、[桌面](desktop-candidate.json)、[包核对](windows-build.json)。
+- 81项构建输入在Windows构建前后校验一致；[冻结清单](source-freeze.json)指向运行时代码提交 `c286f12`。NSIS解包核心与已验证核心相同，OFL许可与来源相同。候选包在Windows项目 `dist/windows/MorphForge Desktop_0.3.1_x64-setup.exe`；测试未运行安装器覆盖用户既有安装。
+- README新增主页面和配置页WebP截图，旧验收图保留；0.3.0历史记录保留在相邻quality-v3目录。

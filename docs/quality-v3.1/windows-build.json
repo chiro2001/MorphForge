@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "windowsCoreAndDesktopPassed": 93,
+  "logSha256": "2c447986a8cdcc985abbf7271506164cafd6e1cdfbb4ea61a3fdd5dc915128ac",
+  "nsisPayloadHashes": {
+    "morphforge.exe": "87fc9337baf5f27735a5ce818b82f09a5bb7901a94243eea48b85a7a5bc2741d",
+    "morphforge-desktop.exe": "d1cacad8905e380e3e83e811c34ffeee603f87de62ccb4aac40e10c3bbdc79c8",
+    "licenses/OFL-NotoSansSC.txt": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2"
+  },
+  "nsisCoreMatchesValidatedCore": true,
+  "installer": {
+    "file": "MorphForge Desktop_0.3.1_x64-setup.exe",
+    "bytes": 13506622,
+    "sha256": "197d40a801f5398db58e637e7441654b22c48f04214d87e66fb1dfe51bbfebce"
+  }
+}

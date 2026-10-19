@@ -30,3 +30,7 @@ Windows新克隆需保留仓库的`.gitattributes`。它让源码使用LF，即�
 ## 0.3 软件候选更新
 
 新功能分支 `feat/provider-presets-and-goals` 提供兼容 API、三档创作预设和有界 Goal。对应安装器为0.3.0，新的构建冻结清单与验证在 [quality-v3](quality-v3/RESULTS.md)。0.2 的Avatar验收状态与历史标签保持独立，软件升级不代表已完成客户端现场验证。
+
+## 0.3.1 配置与用量更新
+
+候选标签 `v0.3.1-rc.1`，开发分支 `feat/settings-and-api-usage`。包含独立配置页、非官方API强制内嵌图片、API累计/本轮Token和加权Prefix缓存率。新冻结清单为 `docs/quality-v3.1/source-freeze.json`（81输入），旧版本清单需切换对应历史标签后验证。
