@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAtUtc": "2026-10-19T01:51:27.187032+00:00",
+  "status": "uploaded-and-passed-server-security-analysis",
+  "experiment": {
+    "name": "capacity-64-metadata-narrow",
+    "intendedDifference": "Narrow Catalog metadata only; original Catalog shader and Atlas retained",
+    "capacity": 64,
+    "startLifetime": "Infinity"
+  },
+  "avatar": {
+    "id": "avtr_df2ff222-b6ff-47fb-80be-e060868596a2",
+    "displayName": "MorphForge Stage3 4096 Probe",
+    "rootGameObjectName": "MorphForge_Stage3_Avatar_4096Probe",
+    "authorId": "usr_c0dd064e-ac42-47a7-a17e-da6540382c55",
+    "releaseStatus": "private",
+    "avatarVersion": 5
+  },
+  "upload": {
+    "operationId": "diagnostic-material-64-20261019T014952918Z-b6b26ec5",
+    "officialSdk": "VRChat SDK 3.10.5 IVRCSdkAvatarBuilderApi.BuildAndUpload",
+    "existingPrivateAvatarUpdate": true,
+    "thumbnailPath": null,
+    "sdkStatus": "success",
+    "completedAtUtc": "2026-10-19T01:50:34.4910088Z",
+    "fileId": "file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf",
+    "fileVersion": 4,
+    "pendingUpload": false
+  },
+  "materialSource": {
+    "path": "Assets/MorphForge/Diagnostics/CatalogSecurity/CatalogNarrow.mat",
+    "sha256": "b7a122232d937097be248bde1b56c38dfd1391d81596b7205af2a2aeb3aec0f7",
+    "isolatedDiagnosticAsset": true,
+    "sharedCatalogMaterialModified": false,
+    "sharedCatalogShaderModified": false
+  },
+  "actualVrca": {
+    "path": "e4ace73d-65ff-49ac-9a3a-0dd301118e1e.vrca",
+    "bytes": 7529458,
+    "sha256": "287d5d7602178c78a0df036000eb09dec45a9eaf7022bb4153698dc8820f82a2",
+    "md5Base64": "g2e7acxQ/qBQpREOzd/wbQ==",
+    "remoteDescriptorMatches": {
+      "fileId": "file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf",
+      "version": 4,
+      "fileBytes": 7529458,
+      "fileMd5Base64": "g2e7acxQ/qBQpREOzd/wbQ==",
+      "match": true
+    }
+  },
+  "packageAudit": {
+    "particleSystems": [
+      {
+        "name": "Pump",
+        "maxParticles": 1,
+        "startLifetime": 0.5,
+        "size3D": false
+      },
+      {
+        "name": "Store",
+        "maxParticles": 64,
+        "startLifetime": "Infinity",
+        "size3D": true
+      }
+    ],
+    "storeMaterial": "CatalogNarrow",
+    "storeShader": "MorphForge/ParticleBoxCatalog",
+    "metadataTexture": {
+      "name": "MetadataNarrow",
+      "width": 4096,
+      "height": 1,
+      "textureFormat": 20,
+      "interpretation": "RGBAFloat"
+    },
+    "atlasTexture": {
+      "name": "CatalogAtlas",
+      "width": 384,
+      "height": 96,
+      "textureFormat": 4
+    },
+    "catalogAtlasPresent": true,
+    "legacyLocalUvPresent": false,
+    "conclusion": "The uploaded VRCA contains the Narrow diagnostic material using the original Catalog shader, original Atlas, and a 4096x1 metadata texture."
+  },
+  "securityAnalysis": {
+    "fileId": "file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf",
+    "fileVersion": 4,
+    "generic": {
+      "httpStatus": 200
+    },
+    "standard": {
+      "httpStatus": 200
+    },
+    "security": {
+      "httpStatus": 200,
+      "success": true,
+      "fileSize": 7440824,
+      "uncompressedSize": 57134824,
+      "performanceRating": "VeryPoor",
+      "createdAt": "2026-10-19T01:50:38.98Z"
+    },
+    "terminal": true,
+    "isStillProcessing": false,
+    "conclusion": "Narrow metadata passes server-side security analysis with generic, standard, and security all returning 200."
+  },
+  "fileSizeAccounting": {
+    "remoteDescriptorBytes": 7529458,
+    "genericAndStandardFileSize": 7529458,
+    "securityFileSize": 7440824,
+    "securitySizeDifferenceBytes": 88634,
+    "note": "Generic/standard match the remote descriptor. Security reports a smaller analyzed fileSize; the same accounting difference appears in the other passing variants and does not change any 200 verdict."
+  },
+  "safetyBoundary": {
+    "originalAvatarIdChanged": false,
+    "originalModelAssetsModified": false,
+    "sourceStage3SavedOrDiscarded": false,
+    "sourceStage3Sha256": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453",
+    "original4096PrefabSha256": "7ba43282408524fb8bde05391623b40978f65af52f9499e6141f24e839e3a7a8",
+    "credentialsOrCookiesReported": false,
+    "signedUrlsReported": false,
+    "vrcChatLaunched": false,
+    "oscSent": false
+  },
+  "script": {
+    "path": "AgentScripts/AvatarDiagnosticPublish.cs",
+    "sha256": "2616692ae8073f38bd2b34ed3283c396fc11e4f01f796fd957700792c259144c"
+  }
+}

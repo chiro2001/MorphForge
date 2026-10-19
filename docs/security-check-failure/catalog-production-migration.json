@@ -1,0 +1,84 @@
+{
+  "success": true,
+  "generatedAtUtc": "2026-10-19T02:02:37.3649892Z",
+  "build": {
+    "success": true,
+    "format": "MorphForgeMaterialCatalog/1",
+    "sourceRoot": "D:\\Projects\\VRChatProjects2\\MorphForge\\Docs\\Materials",
+    "atlas": "Assets/MorphForge/MaterialsCatalog/CatalogAtlas.png",
+    "metadata": "Assets/MorphForge/MaterialsCatalog/CatalogMetadata.asset",
+    "material": "Assets/MorphForge/MaterialsCatalog/ParticleBoxCatalog.mat",
+    "styleCount": 100,
+    "styleIdRange": [
+      1,
+      330
+    ],
+    "atlasSize": [
+      384,
+      96
+    ],
+    "cellPixels": 32,
+    "metadataWidth": 256,
+    "metadataHeight": 64,
+    "metadataTexels": 16384,
+    "metadataStyles": 4096,
+    "animatedStyles": 1,
+    "transparentStyles": 8,
+    "cutoutStyles": 1,
+    "texturedStyles": 2,
+    "unverified": "Requires the long-run Unity gate before visual/NDMF acceptance."
+  },
+  "beforeSize": [
+    16384,
+    1
+  ],
+  "afterSize": [
+    256,
+    64
+  ],
+  "metadataGuid": "ec0707e246447504f903f97ef8fad854",
+  "materialGuid": "da5a36723d577ce4397c6b1a6efd98cd",
+  "dataSha256": "e1fcb74ace3430edd183ab5d0377acad624c74e2d61212215ac07aedfb26ad18",
+  "allDataPreserved": true,
+  "guidsPreserved": true,
+  "shader": "MorphForge/ParticleBoxCatalog",
+  "shaderErrors": [],
+  "prefabs": [
+    {
+      "path": "Assets/MorphForge/Stage4/Geometry/Display.prefab",
+      "stores": 1,
+      "allBound": true,
+      "capacity": [
+        16384
+      ],
+      "unchanged": true
+    },
+    {
+      "path": "Assets/MorphForge/Stage4/Placement/Placement.prefab",
+      "stores": 1,
+      "allBound": true,
+      "capacity": [
+        16384
+      ],
+      "unchanged": true
+    },
+    {
+      "path": "Assets/MorphForge/Stage4/Avatar.prefab",
+      "stores": 1,
+      "allBound": true,
+      "capacity": [
+        16384
+      ],
+      "unchanged": true
+    },
+    {
+      "path": "Assets/MorphForge/FullFT/Avatar.prefab",
+      "stores": 1,
+      "allBound": true,
+      "capacity": [
+        16384
+      ],
+      "unchanged": true
+    }
+  ]
+}

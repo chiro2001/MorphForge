@@ -112,7 +112,7 @@ Assets/MorphForge/MaterialsCatalog/
 
 `CatalogAtlas.png` 使用 sRGB 导入、Point filtering、无 mipmap、Clamp。每个 style 占据 `6 × 32` 像素的一行内的六面块；动画帧在 style 块内向上堆叠。当前单元为 32 像素，Atlas 最大宽度 8192，实际高度受 GPU `SystemInfo.maxTextureSize` 限制。构建器计算所有 style 的矩形，超出最大纹理尺寸时直接失败并报告 style ID，不会截断材质。
 
-`CatalogMetadata.asset` 是 `RGBAFloat`、linear、Point、Clamp、无 mipmap 的 16384×1 纹理。每个 style 使用四个 texel：
+`CatalogMetadata.asset` 是 `RGBAFloat`、linear、Point、Clamp、无 mipmap 的 256×64 纹理（共 16384 texel，覆盖全部 4096 styles）。每个 style 使用四个 texel：
 
 | texel | 内容 |
 | --- | --- |
@@ -131,7 +131,17 @@ flags：
 | 3 | water 程序效果 |
 | 4 | cloud 程序效果 |
 
-metadata 的索引固定为 `styleId * 4 + slot`，所以 styleId 4095 正好占用最后四个 texel。
+metadata 的线性索引固定为 `styleId * 4 + slot`，再按行展开：
+
+```text
+x = index % 256
+y = floor(index / 256)
+uv = ((x + 0.5) / 256, (y + 0.5) / 64)
+```
+
+材质同时设置 `_MetaWidth=256` 和 `_MetaHeight=64`。styleId 4095 占用最后一行的最后四个 texel，编号空间不缩减。重建 metadata 时保留资产 GUID，避免已有材质引用断开。
+
+2026-10-19 的服务端对照中，原 `16384×1` 布局被拒，`4096×1` 诊断子集及完整 `256×64` 布局均通过；后者原始数据字节完全不变。详见[实际上传对照](../security-check-failure/README.md)。这是已观察到的资源布局差异，不是对 VRChat 未公开尺寸阈值的推断。
 
 ## Shader 行为
 
@@ -175,7 +185,7 @@ python tools/unity_remote.py --check-result run_script --file AgentScripts/Catal
 
 1. Unity 2022.3 编译 Shader 和 Editor 构建器；
 2. 100 材质 union 和 7 个 artifact 的 Catalog 构建；
-3. Atlas `384×96`、metadata `16384×1`、Material 引用；
+3. Atlas `384×96`、metadata `256×64`、Material 引用；
 4. Stage4 单一 Renderer 的六面、局部 UV、scale 0.5 和根刚体变换稳定性；
 5. 金属、水、云、cutout 的像素可见性；
 6. 16,384 混合材质的临时原生 rig：可见，p50 `8.92ms`、p95 `11.80ms`；

@@ -1,0 +1,291 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAtUtc": "2026-10-19T01:44:19.503396+00:00",
+  "avatar": {
+    "id": "avtr_df2ff222-b6ff-47fb-80be-e060868596a2",
+    "displayName": "MorphForge Stage3 4096 Probe",
+    "rootGameObjectName": "MorphForge_Stage3_Avatar_4096Probe",
+    "authorId": "usr_c0dd064e-ac42-47a7-a17e-da6540382c55",
+    "releaseStatus": "private"
+  },
+  "uploadMethod": {
+    "officialSdk": "VRChat SDK 3.10.5 IVRCSdkAvatarBuilderApi.BuildAndUpload",
+    "existingAvatarUpdate": true,
+    "thumbnailPathForSuccessfulUpdate": null,
+    "thumbnailReason": "Existing updates must pass null to preserve the remote image. Passing the unchanged image causes UpdateAvatarImage to reject the duplicate and prevents bundle upload.",
+    "operationHandleFirst": true,
+    "sdkStartsViaEditorApplication.delayCall": true,
+    "validationBypassed": false
+  },
+  "safetyBoundary": {
+    "originalAvatarIdChanged": false,
+    "originalModelAssetsModified": false,
+    "sourceStage3SavedOrDiscarded": false,
+    "sourceStage3Sha256": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453",
+    "original4096PrefabSha256": "7ba43282408524fb8bde05391623b40978f65af52f9499e6141f24e839e3a7a8",
+    "credentialsOrCookiesReported": false,
+    "signedUrlsReported": false,
+    "vrcChatLaunched": false,
+    "oscSent": false
+  },
+  "script": {
+    "path": "AgentScripts/AvatarDiagnosticPublish.cs",
+    "sha256": "2616692ae8073f38bd2b34ed3283c396fc11e4f01f796fd957700792c259144c"
+  },
+  "positiveControl": {
+    "avatarId": "avtr_757a1077-3e17-48d7-8da7-9774f347151a",
+    "name": "Nemesis-Roadster",
+    "securityStatus": 200,
+    "analysisReturned": true
+  },
+  "status": "uploaded-and-passed-server-security-analysis",
+  "experiment": {
+    "name": "capacity-64-legacy",
+    "intendedDifference": "Replace only the Catalog renderer path with the legacy LocalUV material; Store remains 64 and lifetime Infinity"
+  },
+  "invalidAttempts": [
+    {
+      "reason": "unchanged thumbnail re-upload rejected before VRCA file upload",
+      "error": "UploadException: This file was already uploaded",
+      "actualBundle": {
+        "path": "06519f85-292a-4e11-897e-bcab798db974.vrca",
+        "bytes": 7526851,
+        "sha256": "96decb34a8ae942627505f98ebf1cd58f13272d24e58128af8848f8047428052",
+        "storeMaxParticles": 64,
+        "storeStartLifetime": "Infinity",
+        "legacyMaterialPresent": true
+      },
+      "countedAsExperiment": false
+    }
+  ],
+  "upload": {
+    "operationId": "capacity-64-legacy-20261019T014112674Z-5c3f9ec3",
+    "sdkStatus": "success",
+    "uploadedAtUtc": "2026-10-19T01:41:58.6523996Z",
+    "avatarVersion": 4,
+    "fileId": "file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf",
+    "fileVersion": 3,
+    "pendingUpload": false,
+    "serverFileBytes": 7513103,
+    "serverFileMd5Base64": "N3WZuIk3JkG4wkk5Y0LW2g==",
+    "localBundle": {
+      "path": "634aab93-5979-4672-b5d2-0b2a7e84e4b1.vrca",
+      "bytes": 7513103,
+      "sha256": "a0ad6dd2ff680a8fe10ce148305094d3904b16d2f723d31d947a811d24d1182a"
+    }
+  },
+  "actualVrcaAudit": {
+    "bundleSha256": "a0ad6dd2ff680a8fe10ce148305094d3904b16d2f723d31d947a811d24d1182a",
+    "bytes": 7513103,
+    "particleSystems": [
+      {
+        "name": "Pump",
+        "maxParticles": 1,
+        "startLifetime": 0.5
+      },
+      {
+        "name": "Store",
+        "maxParticles": 64,
+        "startLifetime": "Infinity",
+        "size3D": true
+      }
+    ],
+    "materials": [
+      "MorphForgeLegacyBox64",
+      "Nemesis_Skin",
+      "Gold translucent placement handle",
+      "Nemesis_Alpha1",
+      "Nemesis_Hair_Shadow",
+      "Nemesis_Hair",
+      "Nemesis_Eye",
+      "Nemesis_Face",
+      "Nemesis_Alpha2",
+      "Nemesis_FaceOutline",
+      "Nemesis_Cloth1",
+      "Nemesis_Hair_Outline",
+      "Nemesis_Cloth2"
+    ],
+    "catalogMaterialPresent": false,
+    "catalogShaderPresent": false,
+    "catalogAtlasPresent": false,
+    "catalogMetadataPresent": false,
+    "legacyShaderPresent": true,
+    "conclusion": "The actual uploaded package contains the legacy material/LocalUV shader and none of the Catalog material, Catalog shader, CatalogAtlas, or CatalogMetadata resources. This is a valid Catalog-vs-legacy variable comparison."
+  },
+  "securityAnalysis": {
+    "fileVersion": 3,
+    "securityStatus": 200,
+    "success": true,
+    "response": {
+      "avatarStats": {
+        "animatorCount": 1,
+        "audioSourceCount": 0,
+        "blendShapeCount": 669,
+        "boneCount": 227,
+        "bounds": [
+          1.5999997,
+          1.6281219,
+          1.5713755
+        ],
+        "cameraCount": 0,
+        "clothCount": 0,
+        "constraintCount": 52,
+        "constraintDepth": 7,
+        "contactCount": 1,
+        "customExpressions": true,
+        "customizeAnimationLayers": true,
+        "enableEyeLook": true,
+        "lightCount": 0,
+        "lineRendererCount": 0,
+        "lipSync": 3,
+        "materialCount": 13,
+        "materialSlotsUsed": 30,
+        "meshCount": 1,
+        "meshIndices": 2304,
+        "meshParticleMaxPolygons": 768,
+        "meshPolygons": 768,
+        "meshVertices": 515,
+        "particleCollisionEnabled": false,
+        "particleSystemCount": 2,
+        "particleTrailsEnabled": false,
+        "physBoneColliderCount": 11,
+        "physBoneCollisionCheckCount": 348,
+        "physBoneComponentCount": 40,
+        "physBoneTransformCount": 193,
+        "physicsColliders": 2,
+        "physicsRigidbodies": 0,
+        "raycastCount": 0,
+        "skinnedMeshCount": 19,
+        "skinnedMeshIndices": 260352,
+        "skinnedMeshPolygons": 86784,
+        "skinnedMeshVertices": 58418,
+        "totalClothVertices": 0,
+        "totalIndices": 262656,
+        "totalMaxParticles": 65,
+        "totalPolygons": 87552,
+        "totalTextureUsage": 32156325,
+        "totalVertices": 58933,
+        "trailRendererCount": 0,
+        "writeDefaultsUsed": true
+      },
+      "createdAt": "2026-10-19T01:42:04.975Z",
+      "fileSize": 7431447,
+      "performanceRating": "VeryPoor",
+      "success": true,
+      "uncompressedSize": 56914520
+    },
+    "isStillProcessing": false,
+    "conclusion": "The 64-capacity legacy renderer passed the server-side security analysis. Generic/standard analysis were still 202 at the moment security returned 200, but security itself is the authoritative result.",
+    "endpointResults": {
+      "generic": {
+        "status": 200,
+        "fileSize": 7513103,
+        "uncompressedSize": 56914520,
+        "createdAt": "2026-10-19T01:42:17.288Z"
+      },
+      "standard": {
+        "status": 200,
+        "fileSize": 7513103,
+        "uncompressedSize": 56914520,
+        "createdAt": "2026-10-19T01:42:17.288Z"
+      },
+      "security": {
+        "status": 200,
+        "fileSize": 7431447,
+        "uncompressedSize": 56914520,
+        "createdAt": "2026-10-19T01:42:04.975Z"
+      }
+    },
+    "fileSizeDifference": {
+      "remoteFileDescriptorBytes": 7513103,
+      "securityResponseFileSize": 7431447,
+      "differenceBytes": 81656,
+      "genericAndStandardResponseFileSize": 7513103,
+      "interpretation": "The remote descriptor and local VRCA match exactly, so the upload artifact is unambiguous. The security analysis reports a different fileSize than the generic/standard analysis. This is retained as an observed analyzer field discrepancy; the available evidence does not establish whether it represents a pre-transform, analyzed subset, or another accounting convention. It does not block the successful security verdict."
+    }
+  },
+  "comparisonConclusion": "Reducing capacity to 64 while retaining Catalog still failed. Replacing the Catalog renderer path with legacy LocalUV while keeping capacity 64 passed. The failure is therefore associated with the new Catalog renderer/resource path as a group, not with capacity.",
+  "currentSceneState": {
+    "path": "Assets/MorphForge/Diagnostics/Security4096/MorphForge_Stage3_Avatar_4096Probe.unity",
+    "sha256AfterExperiment": "1db0cb45de83435013b170e25d6948c5519e61bd2c72b3101993343dacb790fe",
+    "saved": true,
+    "onlyDiagnosticSceneChanged": true,
+    "currentMaterial": "Assets/MorphForge/Diagnostics/Security4096/MorphForgeLegacyBox64.mat",
+    "currentCapacity": 64
+  },
+  "independentLegacyMaterial": {
+    "path": "Assets/MorphForge/Diagnostics/Security4096/MorphForgeLegacyBox64.mat",
+    "sha256": "d10f31e60598e061833ef871bb4c0ba3f93b3dcd50a6429f01a0143da8b774e1",
+    "source": "Assets/MorphForge/Stage2/Box.mat",
+    "sourceSha256": "93d3f26d8c1e7d830e7b64776c7cbee79502bdc75f5636382ac5bd7eb694d470",
+    "sourceMaterialModified": false
+  },
+  "sourceAssets": {
+    "stage3Unity": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453",
+    "sourceStage3Prefab": "f35f236fe8280679529c9bf1b0cbf8c8ddec4cc8ec73249adb278a506f522d24",
+    "controller": "720a1de6348452bb6ba48353c50e50eaff1370d4a378b605462ac0ecf33e83ad",
+    "legacyMaterialSource": "93d3f26d8c1e7d830e7b64776c7cbee79502bdc75f5636382ac5bd7eb694d470",
+    "legacyShader": "00e22f65ea8bed932afccf4d493e148beeffbcd432d9f87d7f8d35b734d8f8c4",
+    "catalogAssetsUnchanged": true,
+    "original4096PrefabRetained": true
+  },
+  "remoteFileRecord": {
+    "fileId": "file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf",
+    "ownerId": "usr_c0dd064e-ac42-47a7-a17e-da6540382c55",
+    "version": 3,
+    "status": "complete",
+    "fileStatus": "complete",
+    "fileCategory": "simple",
+    "fileBytes": 7513103,
+    "fileMd5Base64": "N3WZuIk3JkG4wkk5Y0LW2g==",
+    "signatureStatus": "complete",
+    "signatureMd5Base64": "MhX2PGbKBFqokDX2knxdEg==",
+    "signingBytes": 132096,
+    "matchesLocalBundle": {
+      "bytes": true,
+      "md5": true,
+      "localBytes": 7513103,
+      "localMd5Base64": "N3WZuIk3JkG4wkk5Y0LW2g==",
+      "localSha256": "a0ad6dd2ff680a8fe10ce148305094d3904b16d2f723d31d947a811d24d1182a"
+    }
+  },
+  "baseline": {
+    "serverSecurityBaseline": true,
+    "frozenAfter": "2026-10-19T01:42:04.975Z",
+    "avatarId": "avtr_df2ff222-b6ff-47fb-80be-e060868596a2",
+    "avatarVersion": 4,
+    "fileId": "file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf",
+    "fileVersion": 3,
+    "capacity": 64,
+    "startLifetime": "Infinity",
+    "renderer": "legacy LocalUV",
+    "currentDiagnosticSceneSha256": "1db0cb45de83435013b170e25d6948c5519e61bd2c72b3101993343dacb790fe",
+    "doNotChangeRendererOrUploadUntilNextVariantIsPrepared": true,
+    "supersededBy": {
+      "variant": "capacity-64-metadata-grid",
+      "avatarVersion": 6,
+      "fileVersion": 5,
+      "passed": true
+    },
+    "currentServerPassBaseline": false,
+    "historicalServerPassBaseline": true
+  },
+  "nextVariantHandoff": {
+    "status": "helper-ready-not-executed",
+    "entry": "AvatarDiagnosticPublish.StartUpdate64DiagnosticMaterial",
+    "argumentExample": "{\"materialAssetPath\":\"Assets/MorphForge/Diagnostics/Security4096/<variant>.mat\"}",
+    "restrictions": [
+      "only avtr_df2ff222-b6ff-47fb-80be-e060868596a2",
+      "existing private Avatar update only",
+      "Store capacity remains 64",
+      "+Infinity lifetime required",
+      "material must be under Assets/MorphForge/Diagnostics/",
+      "thumbnailPath=null to preserve remote image",
+      "operation handle returned before EditorApplication.delayCall SDK launch",
+      "original model/shared Catalog assets remain read-only"
+    ],
+    "dryRun": "success",
+    "uploadStartedThisStep": false,
+    "currentSceneRemainsLegacyServerPassBaseline": true
+  }
+}

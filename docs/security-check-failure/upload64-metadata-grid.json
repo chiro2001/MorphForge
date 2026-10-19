@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAtUtc": "2026-10-19T01:53:00.682524+00:00",
+  "status": "historical-diagnostic-pass-superseded-by-capacity-4096-grid",
+  "experiment": {
+    "name": "capacity-64-metadata-grid",
+    "intendedDifference": "Grid Catalog shader and 256x64 metadata layout; original Atlas retained and all 4096 styles preserve original bytes",
+    "capacity": 64,
+    "startLifetime": "Infinity"
+  },
+  "avatar": {
+    "id": "avtr_df2ff222-b6ff-47fb-80be-e060868596a2",
+    "displayName": "MorphForge Stage3 4096 Probe",
+    "rootGameObjectName": "MorphForge_Stage3_Avatar_4096Probe",
+    "authorId": "usr_c0dd064e-ac42-47a7-a17e-da6540382c55",
+    "releaseStatus": "private",
+    "avatarVersion": 6
+  },
+  "upload": {
+    "operationId": "diagnostic-material-64-20261019T015131558Z-3729ad5b",
+    "officialSdk": "VRChat SDK 3.10.5 IVRCSdkAvatarBuilderApi.BuildAndUpload",
+    "existingPrivateAvatarUpdate": true,
+    "thumbnailPath": null,
+    "sdkStatus": "success",
+    "completedAtUtc": "2026-10-19T01:52:14.0631472Z",
+    "fileId": "file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf",
+    "fileVersion": 5,
+    "pendingUpload": false
+  },
+  "materialSource": {
+    "path": "Assets/MorphForge/Diagnostics/CatalogSecurity/CatalogGrid.mat",
+    "sha256": "bc54b78510af5805984b8dfce08509e3ba0f87ccfc33437791f7b38e3764075f",
+    "isolatedDiagnosticAsset": true
+  },
+  "gridShader": {
+    "path": "Assets/MorphForge/Shaders/ParticleBoxCatalogMetadataGrid.shader",
+    "sha256": "ec69678c50ab08a6ae4566ce7244de5e1522a1fe06ccbcc0bf0ec6910bf6a11a",
+    "ownedByRootAgent": true,
+    "name": "MorphForge/ParticleBoxCatalogMetadataGrid"
+  },
+  "metadataSource": {
+    "sha256Note": "Root reported metadata original bytes preserved with SHA e1fcb74a...",
+    "layout": "256x64",
+    "allStyles": 4096
+  },
+  "actualVrca": {
+    "path": "7e76efa8-7cce-48b3-8352-0cb81a5642da.vrca",
+    "bytes": 7525015,
+    "sha256": "0c6935f76c71c7c31d17046f8bdfa163cffc9cbf329d0b1bd7fdac06f186bcec",
+    "md5Base64": "/1XINZpHPgQZUYCU5lozUg==",
+    "remoteDescriptorMatches": {
+      "fileId": "file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf",
+      "version": 5,
+      "fileBytes": 7525015,
+      "fileMd5Base64": "/1XINZpHPgQZUYCU5lozUg==",
+      "match": true
+    }
+  },
+  "packageAudit": {
+    "particleSystems": [
+      {
+        "name": "Pump",
+        "maxParticles": 1,
+        "startLifetime": 0.5,
+        "size3D": false
+      },
+      {
+        "name": "Store",
+        "maxParticles": 64,
+        "startLifetime": "Infinity",
+        "size3D": true
+      }
+    ],
+    "storeMaterial": "CatalogGrid",
+    "storeShader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+    "metadataTexture": {
+      "name": "MetadataGrid",
+      "width": 256,
+      "height": 64,
+      "textureFormat": 20,
+      "interpretation": "RGBAFloat"
+    },
+    "atlasTexture": {
+      "name": "CatalogAtlas",
+      "width": 384,
+      "height": 96,
+      "textureFormat": 4
+    },
+    "catalogAtlasPresent": true,
+    "metadataGridPresent": true,
+    "catalogMetadataPresent": false,
+    "legacyLocalUvPresent": false,
+    "conclusion": "The uploaded VRCA contains the Grid diagnostic material, Grid shader, original Atlas, and 256x64 metadata texture."
+  },
+  "securityAnalysis": {
+    "fileId": "file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf",
+    "fileVersion": 5,
+    "generic": {
+      "httpStatus": 200
+    },
+    "standard": {
+      "httpStatus": 200
+    },
+    "security": {
+      "httpStatus": 200,
+      "success": true,
+      "fileSize": 7431555,
+      "uncompressedSize": 57332044,
+      "performanceRating": "VeryPoor",
+      "createdAt": "2026-10-19T01:52:18.295Z"
+    },
+    "terminal": true,
+    "isStillProcessing": false,
+    "conclusion": "Grid metadata passes server-side security analysis with generic, standard, and security all returning 200."
+  },
+  "fileSizeAccounting": {
+    "remoteDescriptorBytes": 7525015,
+    "genericAndStandardFileSize": 7525015,
+    "securityFileSize": 7431555,
+    "securitySizeDifferenceBytes": 93460,
+    "note": "Generic/standard match the descriptor; security again reports a slightly smaller fileSize. The verdict is still success=200. This field difference is retained but not treated as a cause."
+  },
+  "experimentConvergence": {
+    "narrow": "64 + original Catalog shader + original Atlas + 4096x1 metadata limited styles: 200 pass",
+    "grid": "64 + Grid shader + original Atlas + 256x64 metadata all styles: 200 pass",
+    "fullCatalog": "64/4096 + original 16384x1 metadata failed: 403",
+    "conclusion": "The failure is associated with the original 16384x1 metadata resource/layout or its direct shader consumption, not with particle count, original Atlas, or the entire Catalog concept. Both the Narrow subset layout and the Grid full-style layout pass."
+  },
+  "safetyBoundary": {
+    "originalAvatarIdChanged": false,
+    "originalModelAssetsModified": false,
+    "sourceStage3SavedOrDiscarded": false,
+    "sourceStage3Sha256": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453",
+    "original4096PrefabSha256": "7ba43282408524fb8bde05391623b40978f65af52f9499e6141f24e839e3a7a8",
+    "sharedCatalogMaterialModifiedByAgent": false,
+    "sharedCatalogShaderModifiedByAgent": false,
+    "credentialsOrCookiesReported": false,
+    "signedUrlsReported": false,
+    "vrcChatLaunched": false,
+    "oscSent": false
+  },
+  "currentScene": {
+    "path": "Assets/MorphForge/Diagnostics/Security4096/MorphForge_Stage3_Avatar_4096Probe.unity",
+    "currentMaterial": "Assets/MorphForge/Diagnostics/CatalogSecurity/CatalogGrid.mat",
+    "capacity": "updated by later diagnostic operations",
+    "dirty": false
+  },
+  "script": {
+    "path": "AgentScripts/AvatarDiagnosticPublish.cs",
+    "sha256": "2616692ae8073f38bd2b34ed3283c396fc11e4f01f796fd957700792c259144c"
+  },
+  "supersededBy": {
+    "variant": "diagnostic-grid-capacity-4096",
+    "avatarVersion": 7,
+    "fileVersion": 6,
+    "passed": true
+  }
+}

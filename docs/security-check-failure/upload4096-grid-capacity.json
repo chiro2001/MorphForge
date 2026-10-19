@@ -1,0 +1,130 @@
+{
+  "avatar": {
+    "id": "avtr_df2ff222-b6ff-47fb-80be-e060868596a2",
+    "displayName": "MorphForge Stage3 4096 Probe",
+    "rootGameObjectName": "MorphForge_Stage3_Avatar_4096Probe",
+    "authorId": "usr_c0dd064e-ac42-47a7-a17e-da6540382c55",
+    "releaseStatus": "private",
+    "avatarVersion": 7
+  },
+  "materialSource": {
+    "path": "Assets/MorphForge/Diagnostics/CatalogSecurity/CatalogGrid.mat"
+  },
+  "visualValidation": {
+    "report": "docs/security-check-failure/catalog-grid-visual/report.json",
+    "checksPassed": 16,
+    "checksTotal": 16,
+    "allCatalogStylesMeanAbsoluteError": 0.0,
+    "scope": "Native mesh particles + Camera.Render in idle Edit Mode; not VRChat client capture"
+  },
+  "safetyBoundary": {
+    "originalAvatarIdChanged": false,
+    "originalModelAssetsModified": false,
+    "sourceStage3SavedOrDiscarded": false,
+    "sourceStage3Sha256Before": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453",
+    "sourceStage3Sha256After": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453",
+    "vrChatLaunched": false,
+    "oscSent": false
+  },
+  "schemaVersion": "1.0",
+  "generatedAtUtc": "2026-10-19T02:00:00+00:00",
+  "status": "uploaded-and-passed-server-security-analysis",
+  "experiment": {
+    "name": "diagnostic-grid-capacity-4096",
+    "intendedDifference": "Store capacity 64 -> 4096; CatalogGrid material retained",
+    "capacity": 4096,
+    "startLifetime": "Infinity"
+  },
+  "upload": {
+    "operationId": "diagnostic-grid-capacity-4096-20261019T015812820Z-86ef3b60",
+    "officialSdk": "VRChat SDK 3.10.5 IVRCSdkAvatarBuilderApi.BuildAndUpload",
+    "existingPrivateAvatarUpdate": true,
+    "thumbnailPath": null,
+    "sdkStatus": "success",
+    "completedAtUtc": "2026-10-19T01:58:57.7507325Z",
+    "fileId": "file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf",
+    "fileVersion": 6,
+    "pendingUpload": false
+  },
+  "actualVrca": {
+    "path": "17c3490f-ddbe-4e1e-8856-4e9264248d03.vrca",
+    "bytes": 7545859,
+    "sha256": "e4595f3cd20f4245042e07f436b28ee7f6de0ee993445bba485669572fa97a72",
+    "remoteDescriptorBytes": 7545859,
+    "remoteDescriptorMatches": true
+  },
+  "packageAudit": {
+    "particleSystems": [
+      {
+        "name": "Store",
+        "maxParticles": 4096,
+        "startLifetime": "Infinity",
+        "size3D": true,
+        "burstCount": 1
+      },
+      {
+        "name": "Pump",
+        "maxParticles": 1,
+        "startLifetime": 0.5,
+        "size3D": false,
+        "burstCount": 1
+      }
+    ],
+    "storeMaterial": "CatalogGrid",
+    "storeShader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+    "metadataTexture": {
+      "name": "MetadataGrid",
+      "width": 256,
+      "height": 64,
+      "textureFormat": 20,
+      "interpretation": "RGBAFloat",
+      "mipCount": 1
+    },
+    "atlasTexture": {
+      "name": "CatalogAtlas",
+      "width": 384,
+      "height": 96,
+      "textureFormat": 4,
+      "mipCount": 1
+    },
+    "materialMetaWidth": 256.0,
+    "materialMetaHeight": 64.0,
+    "conclusion": "Actual uploaded VRCA contains Store maxParticles=4096, +Infinity lifetime, Grid shader, 256x64 metadata, and original Atlas."
+  },
+  "securityAnalysis": {
+    "fileId": "file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf",
+    "fileVersion": 6,
+    "generic": {
+      "httpStatus": 200,
+      "fileSize": 7545859,
+      "success": true
+    },
+    "standard": {
+      "httpStatus": 200,
+      "fileSize": 7545859,
+      "success": true
+    },
+    "security": {
+      "httpStatus": 200,
+      "fileSize": 7429364,
+      "success": true,
+      "performanceRating": "VeryPoor",
+      "totalMaxParticles": 4097,
+      "meshParticleMaxPolygons": 49152
+    },
+    "terminal": true,
+    "isStillProcessing": false,
+    "conclusion": "All generic, standard, and security analyses returned terminal 200. totalMaxParticles=4097 equals Store 4096 plus Pump 1."
+  },
+  "currentScene": {
+    "path": "Assets/MorphForge/Diagnostics/Security4096/MorphForge_Stage3_Avatar_4096Probe.unity",
+    "sha256": "0efd8ae8ea1bd65ccf65dc9bbdac47f3a4f6cc048a648128fa907c8c1342bd53",
+    "saved": true,
+    "dirty": false,
+    "capacity": 4096
+  },
+  "script": {
+    "path": "AgentScripts/AvatarDiagnosticPublish.cs",
+    "sha256": "5294b669d8163b285a87f26df3824c61bff5ad72ce2ae30c40f2a483dc0071e5"
+  }
+}

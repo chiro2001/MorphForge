@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAtUtc": "2026-10-19T01:44:19.503057+00:00",
+  "avatar": {
+    "id": "avtr_df2ff222-b6ff-47fb-80be-e060868596a2",
+    "displayName": "MorphForge Stage3 4096 Probe",
+    "rootGameObjectName": "MorphForge_Stage3_Avatar_4096Probe",
+    "authorId": "usr_c0dd064e-ac42-47a7-a17e-da6540382c55",
+    "releaseStatus": "private"
+  },
+  "uploadMethod": {
+    "officialSdk": "VRChat SDK 3.10.5 IVRCSdkAvatarBuilderApi.BuildAndUpload",
+    "existingAvatarUpdate": true,
+    "thumbnailPathForSuccessfulUpdate": null,
+    "thumbnailReason": "Existing updates must pass null to preserve the remote image. Passing the unchanged image causes UpdateAvatarImage to reject the duplicate and prevents bundle upload.",
+    "operationHandleFirst": true,
+    "sdkStartsViaEditorApplication.delayCall": true,
+    "validationBypassed": false
+  },
+  "safetyBoundary": {
+    "originalAvatarIdChanged": false,
+    "originalModelAssetsModified": false,
+    "sourceStage3SavedOrDiscarded": false,
+    "sourceStage3Sha256": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453",
+    "original4096PrefabSha256": "7ba43282408524fb8bde05391623b40978f65af52f9499e6141f24e839e3a7a8",
+    "credentialsOrCookiesReported": false,
+    "signedUrlsReported": false,
+    "vrcChatLaunched": false,
+    "oscSent": false
+  },
+  "script": {
+    "path": "AgentScripts/AvatarDiagnosticPublish.cs",
+    "sha256": "2616692ae8073f38bd2b34ed3283c396fc11e4f01f796fd957700792c259144c"
+  },
+  "positiveControl": {
+    "avatarId": "avtr_757a1077-3e17-48d7-8da7-9774f347151a",
+    "name": "Nemesis-Roadster",
+    "securityStatus": 200,
+    "analysisReturned": true
+  },
+  "status": "uploaded-and-rejected-by-server-security-analysis",
+  "experiment": {
+    "name": "capacity-64-catalog",
+    "intendedDifference": "Store.maxParticles 4096 -> 64; Catalog path retained"
+  },
+  "invalidAttempts": [
+    {
+      "reason": "unchanged thumbnail re-upload rejected before VRCA file upload",
+      "error": "UploadException: This file was already uploaded",
+      "actualBundle": {
+        "path": "08b37a53-1770-429d-a6b2-ea67bb2c5f63.vrca",
+        "bytes": 7540219,
+        "sha256": "a4ff469fa401de0f8adfebd38bf9fdaf654c027acafe8aedef33926a626ec305",
+        "storeMaxParticles": 64,
+        "storeStartLifetime": "Infinity",
+        "catalogPreserved": true
+      },
+      "countedAsExperiment": false
+    }
+  ],
+  "upload": {
+    "operationId": "capacity-64-catalog-20261019T013921849Z-c6d47a2b",
+    "sdkStatus": "success",
+    "uploadedAtUtc": "2026-10-19T01:40:03.2679668Z",
+    "avatarVersion": 3,
+    "fileId": "file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf",
+    "fileVersion": 2,
+    "pendingUpload": false,
+    "serverFileBytes": 7537605,
+    "serverFileMd5Base64": "1D59Kbr97+yHLK/AppRtLw==",
+    "localBundle": {
+      "path": "bc695eaf-a58b-4cb5-b705-0bab500979cc.vrca",
+      "bytes": 7537605,
+      "sha256": "ef3db2319d16bec8f1a361c06584df88d0737ecea091abfd3e6880e494abe5ab"
+    }
+  },
+  "actualVrcaAudit": {
+    "bundleSha256": "ef3db2319d16bec8f1a361c06584df88d0737ecea091abfd3e6880e494abe5ab",
+    "bytes": 7537605,
+    "particleSystems": [
+      {
+        "name": "Pump",
+        "maxParticles": 1,
+        "startLifetime": 0.5
+      },
+      {
+        "name": "Store",
+        "maxParticles": 64,
+        "startLifetime": "Infinity",
+        "size3D": true
+      }
+    ],
+    "catalogMaterialPresent": true,
+    "catalogShaderPresent": true,
+    "catalogAtlasPresent": true,
+    "catalogMetadataPresent": true,
+    "conclusion": "This was a valid 64-capacity Catalog experiment; NDMF/VRCFury retained the intended capacity and renderer path."
+  },
+  "securityAnalysis": {
+    "fileVersion": 2,
+    "firstObservation": "generic and standard endpoints returned 202 Analysis not yet available while security returned 403 File forbidden.",
+    "terminalObservation": "After waiting, generic, standard, and security all returned 403 File forbidden.",
+    "isStillProcessing": false,
+    "securityStatus": 403,
+    "success": false,
+    "conclusion": "64 + Catalog remains rejected by the server-side security analysis."
+  },
+  "comparisonConclusion": "Together with 4096+Catalog rejection, this excludes particle capacity 16384 vs 64 as the sole trigger. The Catalog renderer/resource path remains the common factor.",
+  "currentSceneState": {
+    "path": "Assets/MorphForge/Diagnostics/Security4096/MorphForge_Stage3_Avatar_4096Probe.unity",
+    "sha256AfterExperiment": "41728c463f2cb5e1ccfc55beb0ec7807b17ddb8bd3f26b8a5c6aee03fcf0d4f4",
+    "saved": true,
+    "onlyDiagnosticSceneChanged": true
+  },
+  "sourceAssets": {
+    "stage3Unity": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453",
+    "sourceStage3Prefab": "f35f236fe8280679529c9bf1b0cbf8c8ddec4cc8ec73249adb278a506f522d24",
+    "controller": "720a1de6348452bb6ba48353c50e50eaff1370d4a378b605462ac0ecf33e83ad",
+    "catalogMaterial": "4bb67fab6a54c2f23415669081488ef8e45ce54d7218346db9918bd8e2bbdf76",
+    "catalogShader": "3660d65d4916de538a615b657eb98ae76fb01786f4ca13fbbf0b6b4b09813494",
+    "unchanged": true
+  },
+  "remoteFileRecord": {
+    "fileId": "file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf",
+    "ownerId": "usr_c0dd064e-ac42-47a7-a17e-da6540382c55",
+    "version": 2,
+    "status": "complete",
+    "fileStatus": "complete",
+    "fileCategory": "simple",
+    "fileBytes": 7537605,
+    "fileMd5Base64": "1D59Kbr97+yHLK/AppRtLw==",
+    "signatureStatus": "complete",
+    "signatureMd5Base64": "dWCtMlABKzKYnS3T3V6OVw==",
+    "signingBytes": 132528,
+    "matchesLocalBundle": {
+      "bytes": true,
+      "md5": true,
+      "localBytes": 7537605,
+      "localMd5Base64": "1D59Kbr97+yHLK/AppRtLw==",
+      "localSha256": "ef3db2319d16bec8f1a361c06584df88d0737ecea091abfd3e6880e494abe5ab"
+    },
+    "securityEndpointsWereQueryableForSameVersion": true
+  },
+  "baselineHandoff": {
+    "thisVersionRejected": true,
+    "doNotUseAsCurrentBaseline": true,
+    "currentServerPassBaseline": "file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf version 3 (64 legacy)"
+  }
+}

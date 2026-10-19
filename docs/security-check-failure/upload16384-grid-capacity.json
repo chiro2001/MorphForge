@@ -1,0 +1,138 @@
+{
+  "avatar": {
+    "id": "avtr_df2ff222-b6ff-47fb-80be-e060868596a2",
+    "displayName": "MorphForge Stage3 4096 Probe",
+    "rootGameObjectName": "MorphForge_Stage3_Avatar_4096Probe",
+    "authorId": "usr_c0dd064e-ac42-47a7-a17e-da6540382c55",
+    "releaseStatus": "private",
+    "avatarVersion": 8
+  },
+  "materialSource": {
+    "path": "Assets/MorphForge/Diagnostics/CatalogSecurity/CatalogGrid.mat"
+  },
+  "visualValidation": {
+    "report": "docs/security-check-failure/catalog-grid-visual/report.json",
+    "checksPassed": 16,
+    "checksTotal": 16,
+    "allCatalogStylesMeanAbsoluteError": 0.0,
+    "scope": "Native mesh particles + Camera.Render in idle Edit Mode; not VRChat client capture"
+  },
+  "safetyBoundary": {
+    "originalAvatarIdChanged": false,
+    "originalModelAssetsModified": false,
+    "sourceStage3SavedOrDiscarded": false,
+    "sourceStage3Sha256Before": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453",
+    "sourceStage3Sha256After": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453",
+    "vrChatLaunched": false,
+    "oscSent": false
+  },
+  "schemaVersion": "1.0",
+  "generatedAtUtc": "2026-10-19T02:01:00+00:00",
+  "status": "uploaded-and-passed-server-security-analysis",
+  "experiment": {
+    "name": "diagnostic-grid-capacity-16384",
+    "intendedDifference": "Store capacity 4096 -> 16384; CatalogGrid material and all other assets retained",
+    "capacity": 16384,
+    "startLifetime": "Infinity"
+  },
+  "upload": {
+    "operationId": "diagnostic-grid-capacity-16384-20261019T020000059Z-6564757b",
+    "officialSdk": "VRChat SDK 3.10.5 IVRCSdkAvatarBuilderApi.BuildAndUpload",
+    "existingPrivateAvatarUpdate": true,
+    "thumbnailPath": null,
+    "sdkStatus": "success",
+    "completedAtUtc": "2026-10-19T02:00:43.6865985Z",
+    "fileId": "file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf",
+    "fileVersion": 7,
+    "pendingUpload": false
+  },
+  "actualVrca": {
+    "path": "75b0977a-2866-4e80-a3c8-9ceb5ddb7081.vrca",
+    "bytes": 7536622,
+    "sha256": "f03f315dd63da1dd37fed6413e8a261180fc2a8ad337fccaa57469bdbdffa588",
+    "remoteDescriptorBytes": 7536622,
+    "remoteDescriptorMatches": true
+  },
+  "packageAudit": {
+    "particleSystems": [
+      {
+        "name": "Store",
+        "maxParticles": 16384,
+        "startLifetime": "Infinity",
+        "size3D": true,
+        "burstCount": 1
+      },
+      {
+        "name": "Pump",
+        "maxParticles": 1,
+        "startLifetime": 0.5,
+        "size3D": false,
+        "burstCount": 1
+      }
+    ],
+    "storeMaterial": "CatalogGrid",
+    "storeShader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+    "metadataTexture": {
+      "name": "MetadataGrid",
+      "width": 256,
+      "height": 64,
+      "textureFormat": 20,
+      "interpretation": "RGBAFloat",
+      "mipCount": 1
+    },
+    "atlasTexture": {
+      "name": "CatalogAtlas",
+      "width": 384,
+      "height": 96,
+      "textureFormat": 4,
+      "mipCount": 1
+    },
+    "materialMetaWidth": 256.0,
+    "materialMetaHeight": 64.0,
+    "catalogMetadataPresent": false,
+    "legacyLocalUvPresent": false,
+    "conclusion": "Actual uploaded VRCA contains Store maxParticles=16384, +Infinity lifetime, Grid shader, 256x64 metadata, original Atlas, and no original 16384x1 metadata."
+  },
+  "securityAnalysis": {
+    "fileId": "file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf",
+    "fileVersion": 7,
+    "generic": {
+      "httpStatus": 200,
+      "fileSize": 7536622,
+      "success": true
+    },
+    "standard": {
+      "httpStatus": 200,
+      "fileSize": 7536622,
+      "success": true
+    },
+    "security": {
+      "httpStatus": 200,
+      "fileSize": 7436917,
+      "success": true,
+      "performanceRating": "VeryPoor",
+      "totalMaxParticles": 16385,
+      "meshParticleMaxPolygons": 196608
+    },
+    "terminal": true,
+    "isStillProcessing": false,
+    "conclusion": "All generic, standard, and security analyses returned terminal 200. totalMaxParticles=16385 equals Store 16384 plus Pump 1; 196608 mesh-particle polygons equal 16384 cubes x 12 triangles."
+  },
+  "currentScene": {
+    "path": "Assets/MorphForge/Diagnostics/Security4096/MorphForge_Stage3_Avatar_4096Probe.unity",
+    "sha256": "5f363fd6003b206999098abdcbe5eeb32db910fbc7357c93f66a53c9d9f3367a",
+    "saved": true,
+    "dirty": false,
+    "capacity": 16384
+  },
+  "script": {
+    "path": "AgentScripts/AvatarDiagnosticPublish.cs",
+    "sha256": "5294b669d8163b285a87f26df3824c61bff5ad72ce2ae30c40f2a483dc0071e5"
+  },
+  "handoff": {
+    "status": "uploads-stopped",
+    "unityAvailableForProductionMigration": true,
+    "productionGeneratorOrFullFtChanged": false,
+    "note": "Diagnostic Grid capacity and security path passed. Production generator migration, production 16k visual/performance/SDK validation, FullFT server check, and real VRChat client/multiplayer validation remain."
+  }
+}

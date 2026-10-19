@@ -25,7 +25,11 @@ namespace MorphForge.Editor
         public const int MaxStyleId = 4095;
         public const int MaxFrames = 1024;
         public const int CellPixels = 32;
-        public const int MetadataWidth = 4096 * 4;
+        // Keep the 4096-style address space in a compact two-dimensional data texture.
+        // The former 16384x1 layout failed VRChat server checks; 256x64 passed.
+        public const int MetadataWidth = 256;
+        public const int MetadataHeight = 64;
+        public const int MetadataTexelCount = (MaxStyleId + 1) * 4;
 
         const int HasTextureFlag = 1;
         const int TransparentFlag = 2;
@@ -59,9 +63,11 @@ namespace MorphForge.Editor
             var materials = LoadManifest(root);
             var prepared = Prepare(materials, root);
             var layout = Pack(prepared);
-            if (SystemInfo.maxTextureSize < MetadataWidth)
+            if (MetadataWidth * MetadataHeight != MetadataTexelCount)
+                throw new InvalidOperationException("Metadata layout does not cover all style IDs.");
+            if (SystemInfo.maxTextureSize < Mathf.Max(MetadataWidth, MetadataHeight))
                 throw new InvalidOperationException(
-                    "GPU max texture width is below the 16384px metadata requirement required for 4096 style IDs.");
+                    "GPU max texture size is below the 256x64 metadata requirement.");
             EnsureFolder(OutputRoot);
 
             WriteAtlas(layout);
@@ -85,6 +91,7 @@ namespace MorphForge.Editor
                 1f / Mathf.Max(1, layout.Height)));
             generated.SetFloat("_CellPixels", CellPixels);
             generated.SetFloat("_MetaWidth", MetadataWidth);
+            generated.SetFloat("_MetaHeight", MetadataHeight);
             generated.SetFloat("_CellSize", 0.25f);
 
             var existing = AssetDatabase.LoadAssetAtPath<Material>(MaterialAssetPath);
@@ -114,6 +121,9 @@ namespace MorphForge.Editor
                 atlasSize = new[] { layout.Width, layout.Height },
                 cellPixels = CellPixels,
                 metadataWidth = MetadataWidth,
+                metadataHeight = MetadataHeight,
+                metadataTexels = MetadataTexelCount,
+                metadataStyles = MaxStyleId + 1,
                 animatedStyles = prepared.Count(item => item.Frames > 1),
                 transparentStyles = prepared.Count(item => (item.Flags & TransparentFlag) != 0),
                 cutoutStyles = prepared.Count(item => (item.Flags & CutoutFlag) != 0),
@@ -462,7 +472,7 @@ namespace MorphForge.Editor
         {
             // RGBAFloat is a linear data texture, not a color texture. Use
             // SetPixelData so pixel offsets/counts above 1.0 are not color-clamped.
-            var pixels = new float[MetadataWidth * 4];
+            var pixels = new float[MetadataTexelCount * 4];
             foreach (var item in layout.Items)
             {
                 var index = item.Prepared.Material.id * 16;
@@ -482,27 +492,27 @@ namespace MorphForge.Editor
                 pixels[index + 12] = CellPixels;
             }
 
-            var existing = AssetDatabase.LoadAssetAtPath<Texture2D>(MetadataAssetPath);
-            if (existing)
-                AssetDatabase.DeleteAsset(MetadataAssetPath);
-            var texture = new Texture2D(MetadataWidth, 1, TextureFormat.RGBAFloat, false, true)
+            // Preserve the asset GUID so existing material references survive rebuilds.
+            var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(MetadataAssetPath);
+            var created = !texture;
+            if (created)
+                texture = new Texture2D(MetadataWidth, MetadataHeight, TextureFormat.RGBAFloat, false, true);
+            else
             {
-                name = "CatalogMetadata",
-                filterMode = FilterMode.Point,
-                wrapMode = TextureWrapMode.Clamp,
-                anisoLevel = 0
-            };
-            try
-            {
-                texture.SetPixelData(pixels, 0);
-                texture.Apply(false, false);
-                AssetDatabase.CreateAsset(texture, MetadataAssetPath);
-                AssetDatabase.SaveAssets();
+                if (texture.format != TextureFormat.RGBAFloat || texture.isDataSRGB)
+                    throw new InvalidDataException("Existing catalog metadata must be linear RGBAFloat.");
+                if (!texture.Reinitialize(MetadataWidth, MetadataHeight, TextureFormat.RGBAFloat, false))
+                    throw new InvalidOperationException("Unable to resize catalog metadata.");
             }
-            finally
-            {
-                // CreateAsset transfers ownership to the asset database.
-            }
+            texture.name = "CatalogMetadata";
+            texture.filterMode = FilterMode.Point;
+            texture.wrapMode = TextureWrapMode.Clamp;
+            texture.anisoLevel = 0;
+            texture.SetPixelData(pixels, 0);
+            texture.Apply(false, false);
+            if (created) AssetDatabase.CreateAsset(texture, MetadataAssetPath);
+            else EditorUtility.SetDirty(texture);
+            AssetDatabase.SaveAssets();
         }
 
         static string ProjectRoot

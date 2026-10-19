@@ -1,0 +1,34 @@
+{
+  "success": true,
+  "generatedAtUtc": "2026-10-19T01:49:25.4855302Z",
+  "source": {
+    "material": "Assets/MorphForge/MaterialsCatalog/ParticleBoxCatalog.mat",
+    "metadata": "Assets/MorphForge/MaterialsCatalog/CatalogMetadata.asset",
+    "sha256": "e1fcb74ace3430edd183ab5d0377acad624c74e2d61212215ac07aedfb26ad18",
+    "sourceHash": "4bb67fab6a54c2f23415669081488ef8e45ce54d7218346db9918bd8e2bbdf76",
+    "metadataHash": "961f8306f56f302bbbc0076479572b03bca2708f60a48a748d81b8fa3fa4da0d"
+  },
+  "narrow": {
+    "material": "Assets/MorphForge/Diagnostics/CatalogSecurity/CatalogNarrow.mat",
+    "size": [
+      4096,
+      1
+    ],
+    "styles": 1024,
+    "diagnosticOnly": true,
+    "sha256": "eed07251486284832edcb61277483521a61ebe1521bc9a68d2bdea4e98fda910",
+    "prefixMatches": true
+  },
+  "grid": {
+    "material": "Assets/MorphForge/Diagnostics/CatalogSecurity/CatalogGrid.mat",
+    "size": [
+      256,
+      64
+    ],
+    "styles": 4096,
+    "sha256": "e1fcb74ace3430edd183ab5d0377acad624c74e2d61212215ac07aedfb26ad18",
+    "allBytesMatch": true
+  },
+  "sharedAssetsUnchanged": true,
+  "shaderErrors": []
+}

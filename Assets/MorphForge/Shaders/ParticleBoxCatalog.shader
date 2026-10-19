@@ -5,7 +5,8 @@ Shader "MorphForge/ParticleBoxCatalog"
         _CellSize("Logical cell size", Float) = 0.25
         _CellPixels("Catalog cell pixels", Float) = 32
         _AtlasSize("Atlas size", Vector) = (1, 1, 1, 1)
-        _MetaWidth("Metadata width", Float) = 16384
+        _MetaWidth("Metadata width", Float) = 256
+        _MetaHeight("Metadata height", Float) = 64
         _CatalogAtlas("Catalog atlas", 2D) = "white" {}
         _CatalogMeta("Catalog metadata", 2D) = "black" {}
     }
@@ -28,6 +29,7 @@ Shader "MorphForge/ParticleBoxCatalog"
         float _CellSize;
         float _CellPixels;
         float _MetaWidth;
+        float _MetaHeight;
 
         #define CATALOG_HAS_TEXTURE  1.0
         #define CATALOG_TRANSPARENT  2.0
@@ -75,8 +77,11 @@ Shader "MorphForge/ParticleBoxCatalog"
 
         float4 MetaTexel(float styleId, float slot)
         {
-            float x = (styleId * 4.0 + slot + 0.5) / max(_MetaWidth, 1.0);
-            return tex2Dlod(_CatalogMeta, float4(x, 0.5, 0.0, 0.0));
+            float index = styleId * 4.0 + slot;
+            float width = max(_MetaWidth, 1.0);
+            float2 pixel = float2(fmod(index, width), floor(index / width));
+            float2 uv = (pixel + 0.5) / float2(width, max(_MetaHeight, 1.0));
+            return tex2Dlod(_CatalogMeta, float4(uv, 0.0, 0.0));
         }
 
         float AxisOf(float4 faceData)
