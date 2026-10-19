@@ -1,4 +1,24 @@
+# Reproduce frozen build inputs on Windows even when core.autocrlf=true.
+* text=auto eol=lf
 
-# Preserve original Windows report bytes and command output in release evidence.
+# Preserve audit bytes and their recorded hashes exactly.
+docs/** -text
+dist/** -text
+fonts/** -text
+
+*.png -text
+*.jpg -text
+*.jpeg -text
+*.gif -text
+*.otf -text
+*.ttf -text
+*.bin -text
+*.exe -text
+*.msi -text
+*.zip -text
+*.bundle -text
+
+# Keep the existing whitespace policy for captured Windows evidence.
 docs/quality-v2/*.json whitespace=cr-at-eol
 docs/quality-v2/core-tests.txt whitespace=-blank-at-eof
+docs/security-check-failure/**/*.json whitespace=cr-at-eol
