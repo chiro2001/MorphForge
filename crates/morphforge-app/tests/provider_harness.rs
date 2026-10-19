@@ -3,7 +3,7 @@ use axum::{
     extract::State,
     http::{header, StatusCode},
     response::{IntoResponse, Response},
-    routing::post,
+    routing::{get, post},
     Json, Router,
 };
 use morphforge_app::{
@@ -36,6 +36,8 @@ enum Reply {
 struct FakeState {
     replies: Arc<Mutex<VecDeque<Reply>>>,
     requests: Arc<Mutex<Vec<Value>>>,
+    models: Arc<Mutex<Value>>,
+    model_reads: Arc<std::sync::atomic::AtomicUsize>,
 }
 
 struct FakeResponses {
@@ -51,10 +53,13 @@ impl FakeResponses {
         let state = FakeState {
             replies: Arc::new(Mutex::new(replies.into())),
             requests: Arc::new(Mutex::new(Vec::new())),
+            models: Arc::new(Mutex::new(json!({"data":[]}))),
+            model_reads: Arc::new(std::sync::atomic::AtomicUsize::new(0)),
         };
         let router = Router::new()
             .route("/responses", post(responses_handler))
             .route("/chat/completions", post(responses_handler))
+            .route("/models", get(models_handler))
             .with_state(state.clone());
         let task = tokio::spawn(async move {
             let _ = axum::serve(listener, router).await;
@@ -73,6 +78,13 @@ impl FakeResponses {
     fn requests(&self) -> Vec<Value> {
         self.state.requests.lock().unwrap().clone()
     }
+}
+
+async fn models_handler(State(state): State<FakeState>) -> Json<Value> {
+    state
+        .model_reads
+        .fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+    Json(state.models.lock().unwrap().clone())
 }
 
 impl Drop for FakeResponses {
@@ -1513,7 +1525,7 @@ async fn run_deadline_cancels_a_slow_provider_request() {
 }
 
 #[test]
-fn old_harness_settings_default_to_a_900_second_run_budget() {
+fn missing_run_seconds_uses_the_expanded_default_budget() {
     let settings: ProviderSettings = serde_json::from_value(json!({
         "model":"deepseek-flash",
         "reasoning":"high",
@@ -1525,7 +1537,7 @@ fn old_harness_settings_default_to_a_900_second_run_budget() {
         "uploadImages":true
     }))
     .unwrap();
-    assert_eq!(settings.max_run_seconds, 900);
+    assert_eq!(settings.max_run_seconds, 7200);
 }
 
 #[test]
@@ -1536,7 +1548,7 @@ fn presets_apply_budgets_and_explicit_overrides_without_restricting_models() {
         .configure(&json!({"preset":"detailed","model":"my-local-vision-model","maxSteps":96}))
         .unwrap();
     assert_eq!(response["settings"]["maxSteps"], 96);
-    assert_eq!(response["settings"]["maxRunTokens"], 2000000);
+    assert_eq!(response["settings"]["maxRunTokens"], 32000000);
     assert_eq!(response["settings"]["goalMinReviewRounds"], 3);
     assert_eq!(response["settings"]["goalMode"], true);
     let sketch = harness.configure(&json!({"preset":"sketch"})).unwrap();
@@ -1544,6 +1556,9 @@ fn presets_apply_budgets_and_explicit_overrides_without_restricting_models() {
     assert_eq!(sketch["settings"]["goalMode"], false);
     assert!(harness
         .configure(&json!({"contextWindowTokens":8192}))
+        .is_ok());
+    assert!(harness
+        .configure(&json!({"contextWindowTokens":4096}))
         .is_err());
     assert!(harness.configure(&json!({"preset":"unknown"})).is_err());
 }
@@ -1883,6 +1898,79 @@ async fn chat_wire_prefix_survives_tool_state_changes_continuation_and_reference
         .skip(1)
     {
         assert_eq!(event.data["prefix"]["appendOnly"], true);
+    }
+}
+
+#[tokio::test]
+async fn expanded_output_stream_can_exceed_the_old_16mib_wire_limit() {
+    let padding = "x".repeat(900_000);
+    let mut frames = String::new();
+    for _ in 0..20 {
+        frames.push_str(&format!(
+            "data: {}\n\n",
+            json!({"type":"response.output_text.delta","delta":"x","fixturePadding":padding})
+        ));
+    }
+    frames.push_str(&format!("data: {}\n\n",json!({"type":"response.completed","response":{"status":"completed","output":[{"type":"message","role":"assistant","content":[{"type":"output_text","text":"completed"}]}],"usage":{"input_tokens":100,"output_tokens":20,"total_tokens":120}}})));
+    assert!(frames.len() > 16 * 1024 * 1024);
+    let fake = FakeResponses::start(vec![Reply::Sse(frames)]).await;
+    let dir = TempDir::new().unwrap();
+    let w = workspace(&dir);
+    let provider = Provider::new_for_loopback_test(dir.path(), &fake.base).unwrap();
+    let result=tokio::time::timeout(Duration::from_secs(45),provider.response(json!({"model":"fixture","instructions":"fixed","input":[{"role":"user","content":"probe"}],"max_output_tokens":393216,"stream":true}),w,"large-stream",&Cancellation::new())).await.unwrap().unwrap();
+    assert_eq!(result["status"], "completed");
+    assert_eq!(fake.requests()[0]["max_output_tokens"], 393216);
+}
+
+#[tokio::test]
+async fn incomplete_stream_keeps_a_bounded_diagnostic_frame_tail() {
+    let mut frames = Vec::new();
+    for index in 0..140 {
+        frames.push(json!({"type":"response.output_text.delta","delta":"x","index":index}));
+    }
+    frames.push(json!({"type":"response.incomplete","response":{"status":"incomplete","incomplete_details":{"reason":"max_output_tokens"}}}));
+    let fake = FakeResponses::start(vec![sse(frames)]).await;
+    let dir = TempDir::new().unwrap();
+    let w = workspace(&dir);
+    let provider = Provider::new_for_loopback_test(dir.path(), &fake.base).unwrap();
+    let result=provider.response(json!({"model":"fixture","instructions":"fixed","input":[{"role":"user","content":"probe"}],"max_output_tokens":393216,"stream":true}),w.clone(),"tail-test",&Cancellation::new()).await.unwrap();
+    assert_eq!(result["status"], "incomplete");
+    let workspace = w.lock().unwrap();
+    let event = workspace
+        .events
+        .iter()
+        .rev()
+        .find(|e| e.kind == "provider.incomplete")
+        .unwrap();
+    assert_eq!(event.data["frames"].as_array().unwrap().len(), 128);
+    assert_eq!(event.data["frames"][0]["index"], 12);
+}
+
+#[tokio::test]
+async fn defaults_use_full_output_and_honor_advertised_upstream_limits() {
+    for small in [false, true] {
+        let fake = FakeResponses::start(vec![completed(vec![]), completed(vec![])]).await;
+        *fake.state.models.lock().unwrap() = json!({"data":[{"id":"deepseek-flash",
+            "context_window":if small{65536}else{1048576},"max_output_tokens":if small{8192}else{393216}}]});
+        let dir = TempDir::new().unwrap();
+        let h = harness(workspace(&dir), &fake.base);
+        h.start("检查模型能力").unwrap();
+        assert_eq!(terminal_run(&h).await.status, "completed");
+        h.start("继续检查").unwrap();
+        assert_eq!(terminal_run(&h).await.status, "completed");
+        assert_eq!(
+            fake.requests()[0]["max_output_tokens"],
+            if small { 8192 } else { 393216 }
+        );
+        assert_eq!(h.state()["settings"]["contextWindowTokens"], 1048576);
+        assert_eq!(h.state()["modelLimits"]["source"], "upstream_models");
+        assert_eq!(
+            fake.state
+                .model_reads
+                .load(std::sync::atomic::Ordering::SeqCst),
+            1,
+            "discover once per connection"
+        );
     }
 }
 

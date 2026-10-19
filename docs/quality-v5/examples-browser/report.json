@@ -1,0 +1,70 @@
+{
+  "success": true,
+  "scope": "Real Rust + Chromium + local metadata/Chat fixture; no real AI request or OSC",
+  "checks": [
+    {
+      "name": "empty isolated project",
+      "passed": true
+    },
+    {
+      "name": "fresh defaults expose full context and output",
+      "passed": true
+    },
+    {
+      "name": "six offline examples visible",
+      "passed": true
+    },
+    {
+      "name": "every example thumbnail loaded",
+      "passed": true
+    },
+    {
+      "name": "load creates editable revision without model calls",
+      "passed": true
+    },
+    {
+      "name": "modified copy saves actual views and sources",
+      "passed": true
+    },
+    {
+      "name": "builtin original remains 223 boxes",
+      "passed": true
+    },
+    {
+      "name": "personal and builtin works coexist",
+      "passed": true
+    },
+    {
+      "name": "settings inputs retain full configured ceilings",
+      "passed": true
+    },
+    {
+      "name": "upstream limits shown without overwriting defaults",
+      "passed": true
+    },
+    {
+      "name": "requests honor advertised 8192 output limit",
+      "passed": true
+    },
+    {
+      "name": "metadata discovered once",
+      "passed": true
+    },
+    {
+      "name": "prefix remains append-only",
+      "passed": true
+    },
+    {
+      "name": "OSC stays disabled and copy retained",
+      "passed": true
+    },
+    {
+      "name": "no browser or WebGL errors",
+      "passed": true
+    }
+  ],
+  "boxCount": 224,
+  "builtinCount": 6,
+  "providerRequests": 2,
+  "modelReads": 1
+}

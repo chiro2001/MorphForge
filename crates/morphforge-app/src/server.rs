@@ -410,14 +410,21 @@ async fn events(State(a): State<App>, Query(q): Query<Revision>) -> ApiResult {
     Ok(Json(json!({"events":values,"lastSeq":w.next_seq-1})))
 }
 async fn artworks(State(a): State<App>) -> ApiResult {
+    let mut workspace = a.workspace.lock().unwrap();
     Ok(Json(
-        json!({"artworks":a.workspace.lock().unwrap().library()?}),
+        json!({"artworks":workspace.library()?,"examples":crate::examples::list(&mut workspace)?}),
     ))
 }
 async fn artwork_action(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     Ok(Json(a.harness.tool("artworks", &v, None).await?))
 }
 async fn artwork_get(State(a): State<App>, AxPath(id): AxPath<String>) -> ApiResult {
+    if id.starts_with("builtin:") {
+        return Ok(Json(crate::examples::get(
+            &mut a.workspace.lock().unwrap(),
+            &id,
+        )?));
+    }
     validate_id(&id)?;
     let w = a.workspace.lock().unwrap();
     Ok(Json(serde_json::from_slice(&std::fs::read(

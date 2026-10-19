@@ -1,0 +1,351 @@
+{
+  "format": "MorphForgeBuiltinArtworks/1",
+  "version": 1,
+  "examples": [
+    {
+      "id": "builtin:copper-lighthouse",
+      "projectFile": "projects/copper-lighthouse.json",
+      "artwork": {
+        "boxCount": 49,
+        "createdAt": "2026-10-18T19:11:32.259Z",
+        "id": "builtin:copper-lighthouse",
+        "sourceRun": "965771fa-f8b4-4488-96ff-9a36196edfe0",
+        "tags": [
+          "内置示例",
+          "灯塔",
+          "体素",
+          "续作"
+        ],
+        "thumbnail": "c3d80d5d43aebb9eedc03b20f9f099ac8c344212591be10c33af1a70f5dfbcc2.png",
+        "title": "铜灯塔与树",
+        "voxelCount": 774,
+        "origin": "builtin",
+        "sourceCredits": [
+          {
+            "id": "builtin:copper-lighthouse",
+            "title": "铜灯塔与树",
+            "author": "MorphForge项目示例",
+            "license": "MIT",
+            "source": "docs/harness/windows-library-seed.json"
+          }
+        ],
+        "description": "小型灯塔与树，适合快速修改、发布与定位演示。"
+      },
+      "images": [
+        {
+          "view": "hero",
+          "file": "images/copper-lighthouse-hero.webp",
+          "originalArtifact": "c3d80d5d43aebb9eedc03b20f9f099ac8c344212591be10c33af1a70f5dfbcc2.png",
+          "sha256": "563353a1e21b0d9173f5a2b548d49048f423da61f45b3d6fe101e0655069970b"
+        },
+        {
+          "view": "front",
+          "file": "images/copper-lighthouse-front.webp",
+          "originalArtifact": "2e350cb1d8cbf16fc2f0ac2c57ba752bcfb97cfc7dd6125be68cd8c725842061.png",
+          "sha256": "d202ad764f846595f40ed4635b789658584e6858554f019b08f71016bbe31711"
+        },
+        {
+          "view": "top",
+          "file": "images/copper-lighthouse-top.webp",
+          "originalArtifact": "4c45474ac1529abef824de3c5cdfc482b5879c0a4bdf2ae450f13c7eab9e7699.png",
+          "sha256": "0e91da7822705e54ba54433a027003bd81fed7735421841eec75f25ca150ef86"
+        }
+      ],
+      "sourceRecord": "docs/harness/windows-library-seed.json"
+    },
+    {
+      "id": "builtin:leviathan-lantern",
+      "projectFile": "projects/leviathan-lantern.json",
+      "artwork": {
+        "boxCount": 7459,
+        "createdAt": "2026-10-18T19:34:15.949Z",
+        "id": "builtin:leviathan-lantern",
+        "sourceRun": null,
+        "tags": [
+          "内置示例",
+          "import",
+          "7459-box",
+          "original-art"
+        ],
+        "thumbnail": "791c9593e8188a6bb7636d1340adf4021186f057d93ca7d365dd38b4bfcac60f.png",
+        "title": "The Leviathan’s Lantern · 精确体素版",
+        "voxelCount": 70286,
+        "origin": "builtin",
+        "sourceCredits": [
+          {
+            "id": "builtin:leviathan-lantern",
+            "title": "The Leviathan’s Lantern · 精确体素版",
+            "author": "MorphForge项目示例",
+            "license": "MIT",
+            "source": "docs/harness/legacy-artwork-library.json"
+          }
+        ],
+        "description": "70,286 个占用体素合并为7,459 Box的原始完整作品。"
+      },
+      "images": [
+        {
+          "view": "hero",
+          "file": "images/leviathan-lantern-hero.webp",
+          "originalArtifact": "791c9593e8188a6bb7636d1340adf4021186f057d93ca7d365dd38b4bfcac60f.png",
+          "sha256": "9f3142524ea10be14bff9b4d58c328d13c154509e1ea3c8035417ea5944b134e"
+        },
+        {
+          "view": "front",
+          "file": "images/leviathan-lantern-front.webp",
+          "originalArtifact": "9dc37ff4d1af8c1a71999e364a5a8fadbdd1c22e432e89b7940bceea6eda8668.png",
+          "sha256": "eedf3b0f31875d1d8aab41a376bff57580e7665082765e884994a9225c9a463c"
+        },
+        {
+          "view": "top",
+          "file": "images/leviathan-lantern-top.webp",
+          "originalArtifact": "753d8604d429d9cc994c86e3fdfdc0560c70bc463f0caa87e31f3f3463392a5d.png",
+          "sha256": "abb93dcf1b6ac26abf9835f3f2034f44e8ed58606228a706c67d9e87c0d7544b"
+        }
+      ],
+      "sourceRecord": "docs/harness/legacy-artwork-library.json"
+    },
+    {
+      "id": "builtin:cloud-post",
+      "projectFile": "projects/cloud-post.json",
+      "artwork": {
+        "boxCount": 766,
+        "createdAt": "2026-10-18T23:40:11.742Z",
+        "id": "builtin:cloud-post",
+        "sourceRun": "46e9bc87-d236-40c1-9d70-46198b3978fa",
+        "tags": [
+          "内置示例",
+          "云港",
+          "字体",
+          "保护验证",
+          "体素文字",
+          "铜灯",
+          "云岛",
+          "驿站",
+          "钟楼"
+        ],
+        "thumbnail": "f8eb9c122019d0e30675e08c59591185ad3d56ef09d43e78a4d56427bdd87bb7.png",
+        "title": "云港信使驿站 · 中文标牌与双铜灯",
+        "views": [
+          "f8eb9c122019d0e30675e08c59591185ad3d56ef09d43e78a4d56427bdd87bb7.png",
+          "4ebcbd48bb3e00061cab23ee2481c8bc08287a274b31c7ab57e9f3de120aa78c.png",
+          "43ddd4a2548efb28106f4093a3e1694b8af328de2949b1c343e418b3d549f4fd.png"
+        ],
+        "voxelCount": 97789,
+        "origin": "builtin",
+        "sourceCredits": [
+          {
+            "id": "builtin:cloud-post",
+            "title": "云港信使驿站 · 中文标牌与双铜灯",
+            "author": "MorphForge项目示例",
+            "license": "MIT",
+            "source": "docs/harness-v2/evals/r2c-closeout/report.json"
+          }
+        ],
+        "description": "已完成收尾的766 Box保护版；保留负Y，属于独立艺术示例。"
+      },
+      "images": [
+        {
+          "view": "hero",
+          "file": "images/cloud-post-hero.webp",
+          "originalArtifact": "f8eb9c122019d0e30675e08c59591185ad3d56ef09d43e78a4d56427bdd87bb7.png",
+          "sha256": "035d41ff36fbe56efcab1e1e60327b4fb5c71a9abe7c098d881a501b6facd3c0"
+        },
+        {
+          "view": "front",
+          "file": "images/cloud-post-front.webp",
+          "originalArtifact": "4ebcbd48bb3e00061cab23ee2481c8bc08287a274b31c7ab57e9f3de120aa78c.png",
+          "sha256": "772660ebe77d62f92b474902eb10be61eb30ce473f73cd26a6959bbb7cbf5ecf"
+        },
+        {
+          "view": "top",
+          "file": "images/cloud-post-top.webp",
+          "originalArtifact": "43ddd4a2548efb28106f4093a3e1694b8af328de2949b1c343e418b3d549f4fd.png",
+          "sha256": "f5010e065efb32a4d6e96eabd3e22ff64dfc43ec421b97f9a24e32ff73764118"
+        }
+      ],
+      "sourceRecord": "docs/harness-v2/evals/r2c-closeout/report.json"
+    },
+    {
+      "id": "builtin:starlight-harbor",
+      "projectFile": "projects/starlight-harbor.json",
+      "artwork": {
+        "boxCount": 791,
+        "createdAt": "2026-10-18T23:46:09.128Z",
+        "id": "builtin:starlight-harbor",
+        "sourceRun": "25113d22-2cc0-4d41-9ed5-0c038e183d88",
+        "tags": [
+          "内置示例",
+          "体素",
+          "星砂港",
+          "灯塔",
+          "海岛",
+          "中文标牌",
+          "蓝铜配色",
+          "VRChat",
+          "voxel-art"
+        ],
+        "thumbnail": "8d7fd4b28bfb0da5506f97a789fc5e435d6891e139c9c5a241587e677b34695e.png",
+        "title": "星砂港 · 正面体素文字修正版",
+        "views": [
+          "8d7fd4b28bfb0da5506f97a789fc5e435d6891e139c9c5a241587e677b34695e.png",
+          "95728cedc9dccc80c5ef690c8865e9e3a946953447e10677b05ec146d942bbab.png",
+          "d77b791b9159a337db91ba10da434597387f27300b5e812266f8b76fe54649d3.png"
+        ],
+        "voxelCount": 190393,
+        "origin": "builtin",
+        "sourceCredits": [
+          {
+            "id": "builtin:starlight-harbor",
+            "title": "星砂港 · 正面体素文字修正版",
+            "author": "MorphForge项目示例",
+            "license": "MIT",
+            "source": "docs/harness-v2/evals/r3c-front-text/report.json"
+          }
+        ],
+        "description": "灯塔、岛屿、桥与体素汉字；保留无损续作的旧背字。"
+      },
+      "images": [
+        {
+          "view": "hero",
+          "file": "images/starlight-harbor-hero.webp",
+          "originalArtifact": "8d7fd4b28bfb0da5506f97a789fc5e435d6891e139c9c5a241587e677b34695e.png",
+          "sha256": "0d09ca76fddb33264845d33ec1f79f5d910841f14e837ead1b541249ee8c3c36"
+        },
+        {
+          "view": "front",
+          "file": "images/starlight-harbor-front.webp",
+          "originalArtifact": "95728cedc9dccc80c5ef690c8865e9e3a946953447e10677b05ec146d942bbab.png",
+          "sha256": "13bc9ea8a05ffbee6c9654349a3f0b014f9ce1a5a0b8a0b681755ad1a808d367"
+        },
+        {
+          "view": "top",
+          "file": "images/starlight-harbor-top.webp",
+          "originalArtifact": "d77b791b9159a337db91ba10da434597387f27300b5e812266f8b76fe54649d3.png",
+          "sha256": "75a7dd8926ac198b549daf7585e22b1cd46f8269eb26841eaea62ac66412df44"
+        }
+      ],
+      "sourceRecord": "docs/harness-v2/evals/r3c-front-text/report.json"
+    },
+    {
+      "id": "builtin:whale-maid",
+      "projectFile": "projects/whale-maid.json",
+      "artwork": {
+        "boxCount": 223,
+        "createdAt": "2026-10-19T05:32:25.681Z",
+        "id": "builtin:whale-maid",
+        "sourceRun": "602635d9-de16-4d6c-8aa1-b1386dbd0511",
+        "tags": [
+          "内置示例",
+          "体素雕像",
+          "鲸鱼娘",
+          "女仆装",
+          "非官方二创",
+          "含底座",
+          "front与hero复核",
+          "未发布"
+        ],
+        "thumbnail": "7d12ddd147e6abfaa1bb419d61eb3c447d31840aeb3bac4642bb0d259e95348b.png",
+        "title": "鲸鱼娘女仆 · 参考图与RGB色板",
+        "views": [
+          "cb5c926e5f9678c6523f37fe4248ed532802d42ffb8ffaf45beec212d523c604.png",
+          "7d12ddd147e6abfaa1bb419d61eb3c447d31840aeb3bac4642bb0d259e95348b.png"
+        ],
+        "voxelCount": 13827,
+        "origin": "builtin",
+        "sourceCredits": [
+          {
+            "id": "builtin:whale-maid",
+            "title": "鲸鱼娘女仆 · 参考图与RGB色板",
+            "author": "体素二创：MorphForge；参考图：ZipZipPipe；原角色：上善无形",
+            "license": "CC BY-NC-SA 4.0",
+            "source": "docs/quality-v4.1/whale-palette-finish/report.json",
+            "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+            "sourceUrls": [
+              "https://www.bilibili.com/opus/1233069202138464289",
+              "https://www.bilibili.com/opus/1236803362705375305"
+            ]
+          }
+        ],
+        "description": "223 Box参考图二创；蓝发、肤色和藏蓝服装，比例与裙摆仍有简化。"
+      },
+      "images": [
+        {
+          "view": "hero",
+          "file": "images/whale-maid-hero.webp",
+          "originalArtifact": "7d12ddd147e6abfaa1bb419d61eb3c447d31840aeb3bac4642bb0d259e95348b.png",
+          "sha256": "901ca6c8c0be6bd02598482f28158713212efdd7f4c3b95452f78d7b661bc6a6"
+        },
+        {
+          "view": "front",
+          "file": "images/whale-maid-front.webp",
+          "originalArtifact": "cb5c926e5f9678c6523f37fe4248ed532802d42ffb8ffaf45beec212d523c604.png",
+          "sha256": "93e6e1182c05210f11b4a213189afe5c2a95fbd0b0d2ac5272bb29bf6a777437"
+        },
+        {
+          "view": "top",
+          "file": "images/whale-maid-top.webp",
+          "originalArtifact": "8dcd89abf8d3372c2992f87ab724b02f74fb9dcc71a016d92a99f49e0143c4a3.png",
+          "sha256": "fd570b4a30564c8cf1806d8c212cb1782dfd2af1e07dde90e17b1a9422d40f9b"
+        }
+      ],
+      "sourceRecord": "docs/quality-v4.1/whale-palette-finish/report.json"
+    },
+    {
+      "id": "builtin:wooden-chair",
+      "projectFile": "projects/wooden-chair.json",
+      "artwork": {
+        "boxCount": 16,
+        "createdAt": "2026-10-19T05:30:32.208Z",
+        "id": "builtin:wooden-chair",
+        "sourceRun": "cc68ca5b-2094-4ba2-bc15-a1f63b6f29d5",
+        "tags": [
+          "内置示例",
+          "木椅",
+          "家具",
+          "体素",
+          "参考图建模",
+          "镂空靠背"
+        ],
+        "thumbnail": "2735fd3f8e78526662a6fda909970257c2025266ed4757276ead516f82efb96e.png",
+        "title": "木椅 · 入门体素样例",
+        "views": [
+          "39f4d723d162e545fa65ad66a7db9cc4938f1de6552c3d637ed403594c334de9.png",
+          "2735fd3f8e78526662a6fda909970257c2025266ed4757276ead516f82efb96e.png"
+        ],
+        "voxelCount": 1987,
+        "origin": "builtin",
+        "sourceCredits": [
+          {
+            "id": "builtin:wooden-chair",
+            "title": "木椅 · 入门体素样例",
+            "author": "MorphForge项目示例",
+            "license": "MIT",
+            "source": "docs/quality-v4.1/chair-reference/report.json"
+          }
+        ],
+        "description": "16 Box家具样例，适合练习选区、擦除和换色；靠背负空间仍可改进。"
+      },
+      "images": [
+        {
+          "view": "hero",
+          "file": "images/wooden-chair-hero.webp",
+          "originalArtifact": "2735fd3f8e78526662a6fda909970257c2025266ed4757276ead516f82efb96e.png",
+          "sha256": "ec2cca5a0cc385234a617f4461b7476968ffc94096bdd78bc7ec2695bd8912dd"
+        },
+        {
+          "view": "front",
+          "file": "images/wooden-chair-front.webp",
+          "originalArtifact": "39f4d723d162e545fa65ad66a7db9cc4938f1de6552c3d637ed403594c334de9.png",
+          "sha256": "b3a48a6ed16eb8712030ebe54be422b720c19dc5242f7c9279c1741b7be17e77"
+        },
+        {
+          "view": "top",
+          "file": "images/wooden-chair-top.webp",
+          "originalArtifact": "df5611ecd917522a775737bbb2e0b1f6ae4f1a8d61b53db711981e3be3203743.png",
+          "sha256": "578a6d4647e4eb7c6ef1c58871f8dcfa08b6dec24b86f3cc00c16affa6cf08a5"
+        }
+      ],
+      "sourceRecord": "docs/quality-v4.1/chair-reference/report.json"
+    }
+  ]
+}

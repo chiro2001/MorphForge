@@ -1,8 +1,13 @@
 mod compat;
 mod config;
+mod limits;
 mod prefix;
 mod usage;
 pub use config::{ApiType, Connection, ImageDelivery};
+pub use limits::{
+    ModelLimits, DEFAULT_COMPACT_TOKENS, DEFAULT_CONTEXT_TOKENS, DEFAULT_OUTPUT_TOKENS,
+    DEFAULT_RUN_TOKENS,
+};
 
 use crate::store::{now, Workspace};
 use anyhow::{bail, Context, Result};
@@ -19,7 +24,7 @@ use std::{
 };
 use tokio::sync::Notify;
 fn default_max_run_seconds() -> u64 {
-    900
+    7200
 }
 fn default_language() -> String {
     "zh-CN".into()
@@ -27,6 +32,8 @@ fn default_language() -> String {
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(default, rename_all = "camelCase")]
 pub struct ProviderSettings {
+    #[serde(default)]
+    pub budget_defaults_version: u32,
     pub model: String,
     pub reasoning: String,
     pub max_output_tokens: u32,
@@ -51,18 +58,19 @@ pub struct ProviderSettings {
 impl Default for ProviderSettings {
     fn default() -> Self {
         Self {
+            budget_defaults_version: 1,
             model: "deepseek-flash".into(),
             reasoning: "high".into(),
-            max_output_tokens: 16384,
+            max_output_tokens: DEFAULT_OUTPUT_TOKENS,
             max_steps: 24,
-            max_run_tokens: 250000,
+            max_run_tokens: DEFAULT_RUN_TOKENS,
             max_run_seconds: default_max_run_seconds(),
-            compact_tokens: 60000,
+            compact_tokens: DEFAULT_COMPACT_TOKENS,
             auto_compact: true,
             upload_images: true,
             language: default_language(),
             preset: "standard".into(),
-            context_window_tokens: 131072,
+            context_window_tokens: DEFAULT_CONTEXT_TOKENS,
             send_images: true,
             detail_instructions: String::new(),
             goal_mode: false,
@@ -81,6 +89,7 @@ pub struct Provider {
     files: Arc<Mutex<BTreeMap<String, (String, i64)>>>,
     usage: Arc<Mutex<usage::UsageLedger>>,
     prefix: Arc<Mutex<prefix::PrefixTracker>>,
+    limits: Arc<Mutex<limits::LimitCache>>,
     file_path: PathBuf,
 }
 struct CancellationInner {
@@ -195,7 +204,8 @@ impl Provider {
         let redaction_keys = connection.api_key.iter().cloned().collect();
         Ok(Self {
             client: reqwest::Client::builder()
-                .timeout(std::time::Duration::from_secs(240))
+                .connect_timeout(std::time::Duration::from_secs(20))
+                .timeout(std::time::Duration::from_secs(86400))
                 .build()?,
             connection: Arc::new(Mutex::new(connection)),
             root: root.into(),
@@ -203,6 +213,7 @@ impl Provider {
             files: Arc::new(Mutex::new(files)),
             usage: Arc::new(Mutex::new(usage::UsageLedger::load(root)?)),
             prefix: Arc::new(Mutex::new(prefix::PrefixTracker::default())),
+            limits: Arc::new(Mutex::new(limits::LimitCache::default())),
             file_path,
         })
     }
@@ -217,6 +228,7 @@ impl Provider {
             }
         }
         *current = next;
+        *self.limits.lock().unwrap() = limits::LimitCache::default();
         Ok(current.status())
     }
     pub fn usage(&self, run: Option<&str>) -> Value {
@@ -286,7 +298,9 @@ impl Provider {
         let connection = self.connection();
         let response = Self::auth(
             &connection,
-            self.client.get(format!("{}/models", connection.base_url)),
+            self.client
+                .get(format!("{}/models", connection.base_url))
+                .timeout(std::time::Duration::from_secs(15)),
         )
         .send()
         .await?;
@@ -295,6 +309,12 @@ impl Provider {
         if !status.is_success() {
             bail!("Provider鉴权/模型列表失败 HTTP {}", status.as_u16())
         };
+        {
+            let mut cache = self.limits.lock().unwrap();
+            cache.connection = connection.identity();
+            cache.attempted = true;
+            cache.models = limits::parse_models(&value);
+        }
         Ok(value)
     }
     pub async fn image_part(
@@ -354,7 +374,9 @@ impl Provider {
             );
         let request = Self::auth(
             connection,
-            self.client.post(format!("{}/files", connection.base_url)),
+            self.client
+                .post(format!("{}/files", connection.base_url))
+                .timeout(std::time::Duration::from_secs(120)),
         )
         .multipart(form);
         let response =
@@ -608,7 +630,7 @@ impl Provider {
             }
             let mut stream = response.bytes_stream();
             let mut buffer = Vec::<u8>::new();
-            let mut stream_frames = Vec::<Value>::new();
+            let mut stream_frames = std::collections::VecDeque::<Value>::new();
             let mut first = true;
             let mut chat = compat::ChatStream::default();
             let mut bytes_total = 0usize;
@@ -634,7 +656,7 @@ impl Provider {
                 let Some(chunk) = chunk else { break };
                 let chunk = chunk?;
                 bytes_total += chunk.len();
-                if bytes_total > 16 * 1024 * 1024 {
+                if bytes_total > 256 * 1024 * 1024 {
                     bail!("Provider流超过本地保护值")
                 };
                 buffer.extend_from_slice(&chunk);
@@ -681,7 +703,10 @@ impl Provider {
                                 json!({"requestId":request_id,"text":self.redact(&delta)}),
                             )?;
                         }
-                        stream_frames.push(self.log_value(&event));
+                        if stream_frames.len() == 128 {
+                            stream_frames.pop_front();
+                        }
+                        stream_frames.push_back(self.log_value(&event));
                         continue;
                     }
                     let kind = event["type"].as_str().unwrap_or("");
@@ -722,7 +747,13 @@ impl Provider {
                         }
                         bail!("Provider响应未完成，未执行部分工具：{}", kind)
                     }
-                    stream_frames.push(self.log_value(&event));
+                    if stream_frames.len() == 128 {
+                        stream_frames.pop_front();
+                    }
+                    stream_frames.push_back(self.log_value(&event));
+                }
+                if buffer.len() > 16 * 1024 * 1024 {
+                    bail!("Provider单个SSE帧超过16MiB保护值")
                 }
             }
             self.record_event(

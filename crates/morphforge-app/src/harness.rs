@@ -21,8 +21,8 @@ mod palette;
 mod prompts;
 mod visual_context;
 pub use goal::GoalProgress;
-pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/4.4";
-pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/3.1";
+pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/4.5";
+pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/3.2";
 
 #[derive(Clone, Debug)]
 struct PendingPrompt {
@@ -163,10 +163,17 @@ impl Harness {
             .ok()
             .and_then(|b| serde_json::from_slice(&b).ok())
             .unwrap_or_default();
-        let settings = std::fs::read(root.join("harness.json"))
+        let (settings, upgraded) = std::fs::read(root.join("harness.json"))
             .ok()
-            .and_then(|b| serde_json::from_slice(&b).ok())
-            .unwrap_or_default();
+            .and_then(|b| prompts::saved_settings(&b).ok())
+            .unwrap_or_else(|| (ProviderSettings::default(), false));
+        if upgraded {
+            let _ = write_json(&root.join("harness.json"), &settings);
+            let _=workspace.lock().unwrap().event("harness.defaults.upgraded",None,json!({
+                "contextWindowTokens":settings.context_window_tokens,"maxOutputTokens":settings.max_output_tokens,
+                "note":"仅升级仍匹配旧预设默认值的字段；自定义数值保留。"
+            }));
+        }
         let (message_acks, restored_queue) = restore_message_state(&events);
         Self {
             inner: Arc::new(Mutex::new(State {
@@ -230,6 +237,7 @@ impl Harness {
         json!({
             "settings":s.settings,
             "provider":self.provider.status(),
+            "modelLimits":self.provider.limits_status(&s.settings),
             "usage":self.provider.usage(s.run.as_ref().map(|run|run.id.as_str())),
             "run":s.run,
             "paused":s.paused,
@@ -278,12 +286,11 @@ impl Harness {
             || next.max_steps == 0
             || next.max_steps > 4096
             || next.max_output_tokens < 512
-            || next.max_output_tokens > 262144
+            || next.max_output_tokens > 4_194_304
             || next.compact_tokens < 1000
             || next.context_window_tokens < 8192
             || next.context_window_tokens > 4_194_304
-            || next.max_output_tokens as usize + 4096 >= next.context_window_tokens
-            || next.compact_tokens >= next.context_window_tokens - next.max_output_tokens as usize
+            || next.compact_tokens > 4_194_304
             || next.detail_instructions.len() > 32000
             || next.goal_criteria.len() > 32000
             || next.goal_min_review_rounds == 0
@@ -991,16 +998,26 @@ impl Harness {
                 bail!("RUN_BUDGET：达到步骤或Token预算，已提交版本仍保留")
             }
 
-            let previous_input_tokens =
+            let model_limits = tokio::select! {
+                value=self.provider.discover_model_limits(&settings.model)=>value,
+                _=guard.cancel.wait()=>bail!("RUN_CANCELLED"),
+                _=tokio::time::sleep_until(guard.deadline)=>bail!("RUN_TIME_BUDGET：读取模型能力时超过时限"),
+            };
+            let effective_context_window = model_limits.context(settings.context_window_tokens);
+            let compact_threshold = settings
+                .compact_tokens
+                .min(effective_context_window.saturating_sub(4096));
+            let mut previous_input_tokens =
                 latest_provider_input_tokens(&self.workspace.lock().unwrap(), &guard.id);
             let estimated_history = estimate(&self.inner.lock().unwrap().conversation.input);
             if force_compact
                 || (settings.auto_compact
                     && (previous_input_tokens
-                        .is_some_and(|tokens| tokens > settings.compact_tokens as u64)
-                        || estimated_history > settings.compact_tokens))
+                        .is_some_and(|tokens| tokens > compact_threshold as u64)
+                        || estimated_history > compact_threshold))
             {
                 self.compact_with_guard(&guard, force_compact).await?;
+                previous_input_tokens = None;
                 let mut state = self.inner.lock().unwrap();
                 if state
                     .run
@@ -1090,19 +1107,18 @@ impl Harness {
                 .saturating_add(estimate(std::slice::from_ref(&tool_schemas)))
                 .saturating_add(system.len() / 3)
                 .saturating_add(2048);
-            if estimated_input_tokens.saturating_add(settings.max_output_tokens as usize)
-                > settings.context_window_tokens
-            {
-                bail!("CONTEXT_BUDGET：估算上下文与输出预留超过窗口，请compact或调高上下文窗口；原始历史已保留")
-            }
             let estimated_input_tokens_u64 =
                 u64::try_from(estimated_input_tokens).unwrap_or(u64::MAX);
             if remaining_tokens == 0 {
                 bail!("RUN_BUDGET：Provider实际用量已达到Token预算，停止发起新请求")
             }
-            let effective_output_tokens = settings
-                .max_output_tokens
-                .min(remaining_tokens.min(u32::MAX as u64) as u32);
+            let input_for_headroom = estimated_input_tokens.max(
+                previous_input_tokens
+                    .unwrap_or_default()
+                    .min(usize::MAX as u64) as usize,
+            );
+            let effective_output_tokens =
+                model_limits.output_allowance(&settings, input_for_headroom, remaining_tokens)?;
             let remaining_seconds = guard
                 .deadline
                 .saturating_duration_since(tokio::time::Instant::now())
@@ -1111,7 +1127,7 @@ impl Harness {
             // Actual visual input can cost more than the local image estimate.
             let request_budget_estimate = estimated_input_tokens_u64
                 .max(previous_input_tokens.unwrap_or_default())
-                .saturating_add(settings.max_output_tokens as u64);
+                .saturating_add(effective_output_tokens as u64);
             let completion_reserve_tokens = request_budget_estimate.saturating_mul(3);
             let near_budget = remaining_steps <= 3
                 || remaining_tokens <= completion_reserve_tokens
@@ -1209,6 +1225,8 @@ impl Harness {
                         "authorityChangedFields":context_changes.as_object().map(|fields|fields.len()),
                         "preset":settings.preset,
                         "contextWindowTokens":settings.context_window_tokens,
+                        "effectiveContextWindow":effective_context_window,
+                        "upstreamModelLimits":model_limits,
                         "goalMode":settings.goal_mode,
                         "referenceImages":state.conversation.reference_images,
                     }),
@@ -1676,6 +1694,8 @@ impl Harness {
             "styles":styles,
             "catalog":catalog,
             "pinnedNotes":workspace.project.pinned_notes,
+            "sourceCredits":workspace.project.source_credits,
+            "libraryHints":{"builtinExamples":6,"tool":"artworks action=search returns personal artworks and immutable examples; load/fork needs id and current baseRevision and creates an editable copy."},
             "goal":active_goal,
             "referenceImages":reference_images,
             "viewConventions":{"front":{"cameraFrom":"+Z","looksToward":"-Z"},"hero":{"cameraFrom":"+X,+Y,+Z"},"placementHint":"脸、眼睛、围裙、门窗、正面文字应位于主体的+Z外表面；更大的Z更靠近front相机。"},
@@ -1709,6 +1729,34 @@ impl Harness {
             if !self.guard_is_current(guard) {
                 bail!("RUN_CANCELLED")
             }
+        }
+        if name == "artworks" && matches!(args["action"].as_str(), Some("load" | "fork")) {
+            let mut state = self.inner.lock().unwrap();
+            if let Some(ref guard) = guard {
+                if !guard_matches_locked(&state, guard) {
+                    bail!("RUN_CANCELLED")
+                }
+            } else if is_active_phase(&state.phase) || state.worker_epoch.is_some() {
+                bail!("RUN_CONFLICT：先停止AI运行，再载入作品副本")
+            }
+            let mut workspace = self.workspace.lock().unwrap();
+            let base = args["baseRevision"]
+                .as_u64()
+                .context("载入作品需要baseRevision")?;
+            if base != workspace.project.scene.revision {
+                bail!("REVISION_CONFLICT")
+            }
+            let id = args["id"].as_str().context("载入作品需要id")?;
+            let result = workspace.load_artwork(id)?;
+            if guard.is_none() {
+                state.conversation.goal = None;
+                state.conversation.input.push(json!({"role":"user","content":format!("用户已载入作品副本：{}（{}）。后续以当前工程几何为准，旧目标已结束。",workspace.project.name,id)}));
+                write_json(
+                    &workspace.root.join("runs/conversation.json"),
+                    &state.conversation,
+                )?;
+            }
+            return Ok(result);
         }
         match name {
             "get_context" => Ok(self.context_with_options(args)),
@@ -1798,7 +1846,8 @@ impl Harness {
                 match args["action"].as_str().unwrap_or("search") {
                     "search" => {
                         let query = args["query"].as_str().unwrap_or("").to_lowercase();
-                        Ok(json!({"ok":true,"artworks":workspace.library()?.into_iter().filter(|artwork|artwork.title.to_lowercase().contains(&query)||artwork.tags.iter().any(|tag|tag.to_lowercase().contains(&query))).collect::<Vec<_>>()}))
+                        let matches=|artwork:&&crate::store::Artwork|artwork.title.to_lowercase().contains(&query)||artwork.tags.iter().any(|tag|tag.to_lowercase().contains(&query));
+                        Ok(json!({"ok":true,"artworks":workspace.library()?.iter().filter(matches).collect::<Vec<_>>(),"examples":crate::examples::list(workspace)?.iter().filter(matches).collect::<Vec<_>>()}))
                     }
                     "save" => {
                         let artwork = save_artwork_from_args(workspace, args, run)?;
@@ -2201,13 +2250,7 @@ impl Harness {
         if before.max(estimate(&conversation.input)) < 500 && !force {
             return Ok(());
         }
-        let cut = conversation
-            .boundaries
-            .iter()
-            .rev()
-            .nth(2)
-            .copied()
-            .unwrap_or(conversation.input.len());
+        let cut = context::compact_cut(&conversation.boundaries, conversation.input.len());
         let source = &conversation.input[..cut];
         let tail = conversation.input[cut..].to_vec();
         let (pinned, revision, project_id) = {
@@ -2260,7 +2303,8 @@ impl Harness {
                 settings.max_run_tokens.saturating_sub(state.run.as_ref().map(|r|r.tokens).unwrap_or(0))
             };
             if remaining_tokens == 0 { bail!("RUN_BUDGET：compact前已无Token预算") }
-            let compact_output_cap = settings.max_output_tokens.min(4096).min(remaining_tokens.min(u32::MAX as u64) as u32);
+            let model_limits=self.provider.model_limits(&settings.model);
+            let compact_output_cap = model_limits.output(settings.max_output_tokens).min(4096).min(remaining_tokens.min(u32::MAX as u64) as u32);
             let payload = json!({
                 "model":settings.model,
                 "instructions":format!("{}\n{}",prompts::system_prompt(&settings.language),compact_prompt),
@@ -2280,7 +2324,7 @@ impl Harness {
                 compact: true,
             };
             let compact_estimate = estimate(std::slice::from_ref(&payload));
-            if compact_estimate.saturating_add(compact_output_cap as usize) > settings.context_window_tokens {
+            if compact_estimate.saturating_add(compact_output_cap as usize) > model_limits.context(settings.context_window_tokens) {
                 bail!("CONTEXT_BUDGET：compact输入超过配置窗口，请提高窗口或重置上下文；原始历史仍保留")
             }
             let response_result = tokio::select! {
@@ -2895,6 +2939,7 @@ pub fn tools_for_language(language: &str) -> Value {
                 "query":{"type":"string"},
                 "title":{"type":"string"},
                 "id":{"type":"string"},
+                "baseRevision":{"type":"integer","minimum":0,"description":"load/fork必填，使用get_context返回的当前revision。Required for load/fork."},
                 "tags":{"type":"array","items":{"type":"string"}},
                 "thumbnail":{"type":"string","description":"Optional captured view name or existing artifact filename; defaults to hero/first image from the latest current-revision capture."},
                 "views":{"type":"array","items":{"type":"string"},"description":"Captured view aliases (hero/front/top/side/detail) or real artifact filenames. Omit to reuse every image in the latest current-revision capture."}

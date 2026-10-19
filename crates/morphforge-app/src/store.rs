@@ -128,6 +128,8 @@ pub struct Project {
     pub text_receipts: BTreeMap<String, TextReceipt>,
     #[serde(default)]
     pub protected_groups: BTreeSet<String>,
+    #[serde(default)]
+    pub source_credits: Vec<Value>,
 }
 impl Default for Project {
     fn default() -> Self {
@@ -141,6 +143,7 @@ impl Default for Project {
             pinned_notes: String::new(),
             text_receipts: BTreeMap::new(),
             protected_groups: BTreeSet::new(),
+            source_credits: Vec::new(),
         }
     }
 }
@@ -157,6 +160,12 @@ pub struct Artwork {
     #[serde(default)]
     pub views: Vec<String>,
     pub source_run: Option<String>,
+    #[serde(default)]
+    pub origin: String,
+    #[serde(default)]
+    pub description: String,
+    #[serde(default)]
+    pub source_credits: Vec<Value>,
 }
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -268,6 +277,19 @@ impl Workspace {
             Ok(self.project.materials.clone())
         }
     }
+    fn credits_path(&self, revision: u64) -> PathBuf {
+        self.root
+            .join("snapshots")
+            .join(format!("{}-{revision}.credits.json", self.project.id))
+    }
+    fn credits_at(&self, revision: u64) -> Result<Vec<Value>> {
+        let path = self.credits_path(revision);
+        if path.exists() {
+            Ok(serde_json::from_slice(&fs::read(path)?)?)
+        } else {
+            Ok(Vec::new())
+        }
+    }
     pub fn replace_with_materials(
         &mut self,
         scene: Scene,
@@ -309,6 +331,14 @@ impl Workspace {
             &self.snapshot_path(self.project.scene.revision),
             &self.project.scene,
         )?;
+        let credits = self.credits_path(self.project.scene.revision);
+        if credits.exists() {
+            if self.credits_at(self.project.scene.revision)? != self.project.source_credits {
+                bail!("不可在同一revision覆写作品署名")
+            }
+        } else {
+            write_json(&credits, &self.project.source_credits)?;
+        }
         write_json(&self.root.join("project.json"), &self.project)?;
         Ok(())
     }
@@ -438,6 +468,8 @@ impl Workspace {
         let attempted_revision = next.revision;
         let material_snapshot = self.material_snapshot_path(attempted_revision);
         let scene_snapshot = self.snapshot_path(attempted_revision);
+        let credit_snapshot = self.credits_path(attempted_revision);
+        let credit_snapshot_existed = credit_snapshot.exists();
         let material_snapshot_existed = material_snapshot.exists();
         let scene_snapshot_existed = scene_snapshot.exists();
         self.undo.push(before.revision);
@@ -469,6 +501,9 @@ impl Workspace {
                 }
                 if !scene_snapshot_existed {
                     let _ = fs::remove_file(scene_snapshot);
+                }
+                if !credit_snapshot_existed {
+                    let _ = fs::remove_file(credit_snapshot);
                 }
             }
             return Err(error);
@@ -545,12 +580,14 @@ impl Workspace {
         self.ensure_protected_groups_unchanged(&self.project.scene, &scene)?;
         let current = self.project.scene.revision;
         let restored_materials = self.materials_at(target)?;
+        let restored_credits = self.credits_at(target)?;
         if redo {
             self.redo.pop();
         } else {
             self.undo.pop();
         }
         self.project.materials = restored_materials;
+        self.project.source_credits = restored_credits;
         if redo {
             self.undo.push(current)
         } else {
@@ -651,6 +688,9 @@ impl Workspace {
             thumbnail: thumbnail.or_else(|| views.first().cloned()),
             views,
             source_run: run.map(str::to_owned),
+            origin: "user".into(),
+            description: String::new(),
+            source_credits: self.project.source_credits.clone(),
         };
         let reference_images = run
             .and_then(|run| {
@@ -673,22 +713,54 @@ impl Workspace {
         Ok(artwork)
     }
     pub fn load_artwork(&mut self, id: &str) -> Result<Value> {
-        validate_id(id)?;
-        let v: Value = serde_json::from_slice(&fs::read(
-            self.root.join("artworks").join(format!("{id}.json")),
-        )?)?;
+        let v: Value = if id.starts_with("builtin:") {
+            crate::examples::get(self, id)?
+        } else {
+            validate_id(id)?;
+            serde_json::from_slice(&fs::read(
+                self.root.join("artworks").join(format!("{id}.json")),
+            )?)?
+        };
         let p: Project = serde_json::from_value(v["project"].clone())?;
         let mut scene = p.scene;
         scene.revision = self.project.scene.revision + 1;
         scene.validate(&self.project.limits)?;
         self.ensure_protected_groups_unchanged(&self.project.scene, &scene)?;
+        let previous_project = self.project.clone();
+        let previous_undo = self.undo.clone();
+        let previous_redo = self.redo.clone();
+        let previous_revisions = self.revisions.clone();
+        let attempted_paths = [
+            self.snapshot_path(scene.revision),
+            self.material_snapshot_path(scene.revision),
+            self.credits_path(scene.revision),
+        ]
+        .map(|path| {
+            let existed = path.exists();
+            (path, existed)
+        });
         self.undo.push(self.project.scene.revision);
         self.redo.clear();
         self.project.scene = scene.clone();
         self.project.materials = p.materials;
         self.project.name = p.name;
+        self.project.source_credits = p.source_credits;
         self.revisions.insert(scene.revision, ());
-        self.persist()?;
+        if let Err(error) = self.persist() {
+            self.project = previous_project;
+            self.undo = previous_undo;
+            self.redo = previous_redo;
+            self.revisions = previous_revisions;
+            for (path, existed) in attempted_paths {
+                if !existed {
+                    let _ = fs::remove_file(path);
+                }
+            }
+            return Err(error);
+        }
+        if let Some(recipe) = v["recipe"].as_str() {
+            self.recipes.insert(scene.revision, recipe.into());
+        }
         self.event(
             "artwork.loaded",
             None,
@@ -718,6 +790,8 @@ impl Workspace {
         let revision_was_present = self.revisions.contains_key(&next_revision);
         let material_snapshot = self.material_snapshot_path(next_revision);
         let scene_snapshot = self.snapshot_path(next_revision);
+        let credit_snapshot = self.credits_path(next_revision);
+        let credit_snapshot_existed = credit_snapshot.exists();
         let material_snapshot_existed = material_snapshot.exists();
         let scene_snapshot_existed = scene_snapshot.exists();
 
@@ -735,6 +809,9 @@ impl Workspace {
             }
             if !scene_snapshot_existed {
                 let _ = fs::remove_file(scene_snapshot);
+            }
+            if !credit_snapshot_existed {
+                let _ = fs::remove_file(credit_snapshot);
             }
             return Err(error);
         }

@@ -719,6 +719,10 @@ function updateState() {
   setValue("maxRunSeconds", harness.settings.maxRunSeconds);
   setValue("maxRunTokens", harness.settings.maxRunTokens);
   setValue("maxOutputTokens", harness.settings.maxOutputTokens);
+  if (harness.modelLimits) {
+    const limits=harness.modelLimits;
+    $("modelLimitsInfo").textContent=`有效上下文 ${fmt(limits.effectiveContextWindow)} · 输出上限 ${fmt(limits.effectiveOutputCeiling)} Token（${limits.source==="upstream_models"?"已读取上游 /models":"按当前配置；尚未获取上游限制"}，单次输出按剩余窗口裁剪）`;
+  }
   setValue("compactTokens", harness.settings.compactTokens);
   setValue("language", harness.settings.language || "zh-CN");
   setChecked("autoCompact", harness.settings.autoCompact);
@@ -1669,7 +1673,7 @@ async function library() {
   const value = await api("artworks");
   const query = $("librarySearch").value.toLowerCase();
   $("libraryGrid").replaceChildren();
-  for (const artwork of value.artworks) {
+  for (const artwork of [...value.artworks,...(value.examples||[])]) {
     if (
       query &&
       !`${artwork.title} ${artwork.tags.join(" ")}`
@@ -1680,6 +1684,8 @@ async function library() {
     }
     const card = document.createElement("article");
     card.className = "artwork";
+    card.dataset.artworkId=artwork.id;
+    card.dataset.origin=artwork.origin||"user";
     const img = document.createElement("img");
     if (artwork.thumbnail)
       img.src = "/artifacts/" + encodeURIComponent(artwork.thumbnail);
@@ -1688,8 +1694,11 @@ async function library() {
     const info = document.createElement("p");
     const load = document.createElement("button");
     name.textContent = artwork.title;
-    info.textContent = `${fmt(artwork.boxCount)} Box · ${fmt(artwork.voxelCount)} 格`;
-    load.textContent = "载入并继续";
+    info.textContent = `${artwork.origin==="builtin"?"内置示例":"我的作品"} · ${fmt(artwork.boxCount)} Box · ${fmt(artwork.voxelCount)} 格`;
+    load.textContent = artwork.origin==="builtin"?"载入可编辑副本":"载入并继续";
+    body.append(name,info);
+    if (artwork.description) {const description=document.createElement("p");description.textContent=artwork.description;body.append(description);}
+    if (artwork.sourceCredits?.length) {const credits=document.createElement("p");credits.className="caption";credits.textContent=artwork.sourceCredits.map(credit=>`${credit.author} · ${credit.license}`).join("；");body.append(credits);}
     if (artwork.views?.length) {
       const preview = document.createElement("button");
       preview.textContent = "多视图";
@@ -1707,7 +1716,7 @@ async function library() {
     }
     load.onclick = async () => {
       try {
-        await api("artworks", { action: "fork", id: artwork.id });
+        await api("artworks", { action: "fork", id: artwork.id, baseRevision:state.revision });
         await refresh(true);
         renderer.view();
         $("libraryDialog").close();
@@ -1715,7 +1724,7 @@ async function library() {
         error(cause);
       }
     };
-    body.append(name, info, load);
+    body.append(load);
     card.append(img, body);
     $("libraryGrid").append(card);
   }

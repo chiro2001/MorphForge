@@ -623,22 +623,22 @@ mf.group('main', () => {
                 type="number"
                 min="1"
                 max="86400"
-                value="900"
+                value="7200"
             /></label>
             <label
               >单次累计 Token 上限<input
                 id="maxRunTokens"
                 type="number"
                 min="1000"
-                value="250000"
+                value="8000000"
             /></label>
             <label
               >每步输出 Token 上限<input
                 id="maxOutputTokens"
                 type="number"
                 min="512"
-                max="262144"
-                value="16384"
+                max="4194304"
+                value="393216"
             /></label>
             <label
               >模型上下文窗口（Token）<input
@@ -646,7 +646,7 @@ mf.group('main', () => {
                 type="number"
                 min="8192"
                 max="4194304"
-                value="131072"
+                value="1048576"
             /></label>
             <label
               ><input
@@ -665,6 +665,7 @@ mf.group('main', () => {
             <p class="caption">
               预设预算是上限，不是耗时或质量保证。请按所选模型实际支持的上下文与输出窗口调整。
             </p>
+            <p class="caption" id="modelLimitsInfo">默认上下文 1M、输出上限 384K；有效输出还受上游与剩余窗口限制。</p>
             <label
               >提示词工具语言<select id="language">
                 <option value="zh-CN">简体中文</option>
@@ -719,7 +720,7 @@ mf.group('main', () => {
                 id="compactTokens"
                 type="number"
                 min="1000"
-                value="60000"
+                value="900000"
             /></label>
           </section>
         </div>

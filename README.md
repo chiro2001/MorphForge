@@ -4,7 +4,7 @@
 
 - [用户指南](docs/USER-GUIDE.md)：安装、配置、编辑、AI、compact、作品库与 OSC 发布。
 - [交付记录](docs/DELIVERY.md) · [实施状态及证据](docs/plan/STATUS.md) · [已确认设计](docs/plan/README.md) · [验收标准](docs/plan/ACCEPTANCE.md)。
-- Windows **0.4.2 候选版**：`dist/windows/MorphForge Desktop_0.4.2_x64-setup.exe`；校验和在同目录。[前缀缓存修复验证](docs/quality-v4.2/RESULTS.md) · [参考图建模迭代](docs/quality-v4.1/RESULTS.md) · [0.2 历史验收](docs/quality-v2/RESULTS.md)。
+- Windows **0.5.0 候选版**：`dist/windows/MorphForge Desktop_0.5.0_x64-setup.exe`；校验和在同目录。[本轮验证](docs/quality-v5/RESULTS.md) · [前缀缓存修复](docs/quality-v4.2/RESULTS.md) · [参考图建模迭代](docs/quality-v4.1/RESULTS.md)。
 
 GitHub私有仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支与完整历史保留。
 [获取源码和Windows克隆验证](docs/GIT-SOURCE.md)。
@@ -54,6 +54,10 @@ GitHub私有仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支�
 
 工作台截图为新版界面载入已有星港作品；下方为此前真实 DeepSeek 创作的渲染，包含由字体栅格化的可编辑体素汉字。作品过程、失败与修正见 [Harness 迭代记录](docs/harness-v2/evals/README.md)。展示图为压缩 WebP 副本，原始验收 PNG 保留。
 
+作品库已离线内置6个完整示例：铜灯塔与树（49 Box）、Leviathan灯塔（7,459）、云港驿站（766）、星砂港（791）、鲸鱼娘（223）和木椅（16）。点击“载入可编辑副本”即可继续手工或AI修改；几何、材质与18张真实视图随程序附带，无需重新生成或覆盖示例原件。[示例署名与许可](examples/ATTRIBUTION.md)。
+
+![离线内置作品库](docs/media/builtin-artworks.webp)
+
 ## 图片参考
 
 支持从内置图库或本次添加的图片生成体素，可分别关闭或组合使用，最多6张。内置5张项目自制结构参考与3张核实出处的鲸鱼娘参考，附作者、原帖和独立许可；个人图片留在本机图库，发送选中参考时才交给模型。续作和compact保留参考，取消后下一次输入更新，Harness作品记录来源。
@@ -73,6 +77,8 @@ GitHub私有仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支�
 AI创作支持 **快速草图／标准创作／精细作品** 三档 preset，分别偏向轮廓速度、结构与细节平衡、多阶段细化。预设同时设置中英提示词和默认预算，仍可手动调整。精细档默认启用有界 Goal 续作，要求不同几何的真实截图复核；支持插话、打断、暂停和 compact。耗时和质量仍取决于任务及所选模型。
 
 连接、预算和Goal等设置集中在独立配置页；输入框旁显示API累计Token、本轮Token和加权Prefix缓存命中率，上游未报告时明确标记。
+
+默认上下文开放到 **1M（1,048,576）Token**，每步输出上限 **384K（393,216）Token**，三档预设共用这两个容量上限。运行时读取上游`/models`能力，并按较小的模型限制、上下文剩余空间及运行预算裁剪实际输出；完整窗口中的输入与输出不能相加超过模型上限。仍匹配旧默认值的配置自动升级，自定义数值保留。
 
 API连接可自定义 **Chat Completions 或 Responses** 服务、Base URL、模型名和 Key。非DeepSeek官方接口强制内嵌截图，无需图片上传或 file_id 接口；文本模型可关闭图片。连接与作品库独立于 VRC，可作为体素生成器、浏览器和编辑器使用。配置方法、三档预算与验证范围见 [使用说明](docs/PROVIDERS-PRESETS-GOALS.md)。
 

@@ -5,6 +5,16 @@ use serde_json::{json, Value};
 
 pub(super) const REFERENCE_LABEL: &str = "当前用户选中的视觉参考图（不是当前作品截图）。";
 
+pub(super) fn compact_cut(boundaries: &[usize], length: usize) -> usize {
+    boundaries
+        .iter()
+        .rev()
+        .nth(2)
+        .or_else(|| boundaries.iter().rev().nth(1))
+        .copied()
+        .unwrap_or(length)
+}
+
 pub(super) fn reference_fingerprint(images: &[ReferenceImage]) -> String {
     crate::store::hash(&serde_json::to_vec(images).expect("reference metadata serializes"))
 }
@@ -45,6 +55,7 @@ pub(super) fn authority_snapshot(context: &Value) -> Value {
         "targetCompatibility",
         "protectedGroups",
         "pinnedNotes",
+        "sourceCredits",
         "goal",
         "referenceImages",
         "viewConventions",
@@ -136,6 +147,12 @@ pub(super) fn compact_references(input: &mut [Value]) {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn compact_keeps_a_complete_recent_batch_even_just_after_a_previous_compact() {
+        assert_eq!(compact_cut(&[20, 40], 40), 20);
+        assert_eq!(compact_cut(&[10, 20, 40], 40), 10);
+        assert_eq!(compact_cut(&[20], 20), 20);
+    }
     #[test]
     fn snapshots_append_only_changed_authoritative_fields() {
         let first = authority_snapshot(

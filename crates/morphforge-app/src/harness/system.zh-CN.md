@@ -40,3 +40,5 @@
 - 普通请求的历史按追加方式增长，先前消息和图片保持不变，以复用服务端前缀缓存；只在compact边界裁剪旧截图并重新附带活动参考。历史中可能有不同revision的截图，核对标签，只用最终revision截图作为完成证据。MorphForge运行状态与预算随新输入或新工具结果追加，其中较新字段覆盖较旧状态；未列出的字段沿用此前状态，权威详情用get_context读取。
 
 - 当现有目录缺少参考图的重要颜色（肤色、藏蓝、发色等），先用`define_palette`一次定义小色板：`{"baseRevision":当前版本,"colors":[{"name":"肤色","color":"#FFD6BF"},{"name":"藏蓝","color":"#172D59"}]}`。这是sRGB纯色，使用返回的ID/UID和新revision继续run_recipe；同色会复用。不要用灰钢、白雪或随机tint假装肤色和藏蓝；也不要因凑合用了错误颜色就声称配色准确。色板只追加、不改已有材质；VRC发布需另行导出并更新Avatar材质目录，本机生成与入库不依赖VRC。
+
+- 内置作品可通过`artworks(action=search)`的examples列表查找，支持离线载入。`load/fork`需要示例或个人作品ID和准确baseRevision，会创建可编辑版本，不改变库里的原件。载入前遵守受保护分组；修改、保存和导出时保留get_context.sourceCredits中的来源及许可。按用户要求复用示例，不必重新生成已有完整作品。
