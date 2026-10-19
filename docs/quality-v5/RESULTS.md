@@ -36,6 +36,7 @@ Rust **118项**、格式检查和Clippy `-D warnings`通过。覆盖完整393216
 | [离线图库、编辑副本、另存与上游限额](examples-browser/report.json) | 15项通过 |
 | [Provider配置、参考图、色板、用量与作品](provider-browser/provider-presets-browser.json) | 27项通过 |
 | [透明透传Chat图片SSE、续作与compact](prefix/report.json) | 16项通过、11次请求 |
+| [透明透传Responses图片SSE、续作与compact](prefix-responses/report.json) | 16项通过、11次请求 |
 
 图库实测鲸鱼娘223 Box载入、手工新增为224 Box、真实三视图保存、原件仍223。模拟上游声明65536/8192，实际请求8192，配置仍保留1M/384K；元数据GET一次。透传验证普通请求前缀保持、compact作为明确边界、压缩后继续追加。
 
@@ -43,4 +44,6 @@ Rust **118项**、格式检查和Clippy `-D warnings`通过。覆盖完整393216
 
 ## Windows交付
 
-Windows构建、冻结输入、原生HTTP与安装器资源验收结果由本目录的 `windows-*.json` 和 `source-freeze.json` 记录；安装包及校验和发布至私有GitHub候选版。具体数值以最终构建记录为准。
+Windows使用[146项冻结输入](source-freeze.json)构建，前后hash一致；核心与桌面 **120项**、[原生HTTP 62项](windows-http.json)通过。[八张内置参考图及缩略图](windows-references.json)、[六份完整作品与18张图片](windows-examples.json)均与源文件匹配，载入副本及1M/384K默认值原生检查通过。安装器解包核心与验收核心SHA256一致，字体、参考图和新增作品的署名及许可全部匹配。[构建摘要](windows-build.json)。
+
+安装包 `MorphForge Desktop_0.5.0_x64-setup.exe` 共17,241,769字节，SHA256为 `766adabf51b1047c227d1e0cf2428a108d96d213494a3c7c92b1ec075c763d09`。Tauri构建保留已有STATIC_VCRUNTIME弃用提示，构建成功。本轮没有覆盖默认安装或用户数据。

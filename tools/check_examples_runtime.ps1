@@ -27,7 +27,7 @@ try {
   $images=@()
   for($i=0;$i -lt 3;$i++){
    $artifact=$example.artwork.views[$i]
-   $response=Invoke-WebRequest -Uri ($base+'/api/artifacts/'+$artifact) -NoProxy
+   $response=Invoke-WebRequest -Uri ($base+'/artifacts/'+$artifact) -NoProxy
    $actual=[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($response.RawContentStream.ToArray())).ToLowerInvariant()
    if($actual -ne $entry.images[$i].sha256){throw 'Embedded artwork image mismatch'}
    $images+=@{view=$entry.images[$i].view;sha256=$actual}

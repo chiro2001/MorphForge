@@ -1,0 +1,14 @@
+{
+  "success": true,
+  "rustPassed": 118,
+  "clippy": "--workspace --all-targets -- -D warnings",
+  "fmt": "cargo fmt --all",
+  "linuxBinarySha256": "f8a0b488c806ef533371e3555f4cbc79b32b19178165767a4ce47edad0723732",
+  "browserExampleChecks": 15,
+  "browserProviderChecks": 27,
+  "prefixChatChecks": 16,
+  "prefixChatRequests": 11,
+  "scope": "Actual Rust/Chromium with local protocol fixtures; no real paid long generation or user intranet KV-cache claim",
+  "prefixResponsesChecks": 16,
+  "prefixResponsesRequests": 11
+}

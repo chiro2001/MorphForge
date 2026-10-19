@@ -1,3 +1,4 @@
 CC535107346818E150E95F71519015B48FEC478BA4DB0B123073D29AFE50F3FF  MorphForge Desktop_0.1.0_x64-setup.exe
 494bf0f8ca193d5be0758269b7bcdbc0ce00d64948366be066a5f25c9504cae7  MorphForge Desktop_0.4.1_x64-setup.exe
 f8acb195a32f8d90aea0880ab751f6fcecdb66f05da49ef52d1160a621008144  MorphForge Desktop_0.4.2_x64-setup.exe
+766adabf51b1047c227d1e0cf2428a108d96d213494a3c7c92b1ec075c763d09  MorphForge Desktop_0.5.0_x64-setup.exe

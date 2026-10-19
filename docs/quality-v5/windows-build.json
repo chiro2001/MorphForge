@@ -1,0 +1,31 @@
+{
+  "success": true,
+  "sourceCommit": "4efd06d183aa11858b0b6e0472ec2dfd0b1e386a",
+  "windowsCoreAndDesktopPassed": 120,
+  "httpChecksPassed": 62,
+  "referenceImagesVerified": 8,
+  "builtinArtworksVerified": 6,
+  "builtinArtworkImagesVerified": 18,
+  "installer": {
+    "file": "MorphForge Desktop_0.5.0_x64-setup.exe",
+    "bytes": 17241769,
+    "sha256": "766adabf51b1047c227d1e0cf2428a108d96d213494a3c7c92b1ec075c763d09"
+  },
+  "payloadSha256": {
+    "morphforge.exe": "e168148b5c5b46cbd47cf3832ae321b230079b77a076bfd009ec4cba6cfb8524",
+    "licenses/OFL-NotoSansSC.txt": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+    "licenses/REFERENCE-ATTRIBUTION.md": "81394b57ead7a0677c161147789eb47ad76036f0c579a55db647596c54dbb63c",
+    "licenses/EXAMPLE-ATTRIBUTION.md": "40f14e12bcd19b5a9c4985a197d2bb686da671224cd7e2e98a7cfc8edd8ee195",
+    "licenses/references/CC-BY-NC-SA-4.0.txt": "1349a4b6148492b44f629e64eed676612e234fe9a839e4f3b277c1482c8849f1",
+    "licenses/references/MIT.txt": "8807c795ed4586b292a178b4c4758acab2c523f580156a28187fe5b134c89a08",
+    "licenses/references/SELF-AUTHORED.txt": "33b421aeb32f076d93fe995b8fc92c4df9b9b1f92282cb876843a5eeb236640c",
+    "licenses/examples/CC-BY-NC-SA-4.0.txt": "1349a4b6148492b44f629e64eed676612e234fe9a839e4f3b277c1482c8849f1",
+    "licenses/examples/MIT.txt": "8807c795ed4586b292a178b4c4758acab2c523f580156a28187fe5b134c89a08"
+  },
+  "installerMatchesValidatedCore": true,
+  "licensesMatchSources": true,
+  "sourceFreezeSha256": "b3964888b7b78f822fcc45c7288ae60b09dd7a540a46e182a398b1c4e9c175b2",
+  "sourceFreezeInputCount": 146,
+  "buildLogSha256": "d1caee0ee41212d6dc8528444ec4ddd1a74e0696dd8825039432d2cbad3a0a8b",
+  "knownBuildNotice": "Existing Tauri STATIC_VCRUNTIME deprecation notice; build succeeded"
+}
