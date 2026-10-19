@@ -5,6 +5,7 @@ pub mod fonts;
 pub mod harness;
 pub mod provider;
 pub mod recipe;
+pub mod references;
 pub mod resources;
 pub mod server;
 pub mod store;

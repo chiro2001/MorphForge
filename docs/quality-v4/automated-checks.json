@@ -1,0 +1,27 @@
+[
+  {
+    "name": "rust",
+    "logSha256": "66b6c58d3f4010cb7ebd80859a7a8012b26fdd68e9a93c02a975a66963733467",
+    "passed": true,
+    "rustPassed": 97,
+    "nodeSummary": []
+  },
+  {
+    "name": "node",
+    "logSha256": "948bbd808efb5291f4253c4677cade9734feee827c32c5615e35b96b64b486a6",
+    "passed": true,
+    "rustPassed": 0,
+    "nodeSummary": [
+      "\u2139 tests 29",
+      "\u2139 pass 29",
+      "\u2139 fail 0"
+    ]
+  },
+  {
+    "name": "clippy",
+    "logSha256": "b65a154248cfc314ed49c2244dc346f7e1c8f0c0ee88da5f3b02813bc49fcf06",
+    "passed": true,
+    "rustPassed": 0,
+    "nodeSummary": []
+  }
+]

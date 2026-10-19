@@ -1,3 +1,4 @@
+import { ReferencePicker } from "/reference-ui.js";
 import { usageDisplay, supportsFileUpload } from "/usage-ui.js";
 import { VoxelRenderer } from "/renderer.js";
 import {
@@ -208,10 +209,11 @@ function safeStorageSet(key, value) {
   }
 }
 
-function switchUiScope(projectId) {
+function switchUiScope(projectId, activeReferences = []) {
   const next = projectId || "default";
   if (uiScope === next) return;
   uiScope = next;
+  referencePicker.setScope(uiScope, activeReferences);
   pendingMessages = dedupeMessages(
     safeStorageGet(`morphforge.pending.${uiScope}`, []),
   );
@@ -541,7 +543,9 @@ function updateHarnessControls(snapshot) {
   const action = primaryAction(snapshot, mode);
   $("sendMessage").textContent = action.label;
   $("sendMessage").disabled =
-    messageInFlight || (snapshot.stopping && !snapshot.active);
+    messageInFlight ||
+    referencePicker.busy ||
+    (snapshot.stopping && !snapshot.active);
   $("messageModeHint").textContent = messageModeHint(snapshot, mode);
   $("pauseAI").disabled = !snapshot.active || snapshot.paused;
   $("resumeAI").disabled = !snapshot.active || !snapshot.paused;
@@ -563,7 +567,7 @@ async function refresh(force = false) {
     const next = await api("state");
     state = next;
     window.__morphforge.state = next;
-    switchUiScope(next.project?.id);
+    switchUiScope(next.project?.id, next.harness?.context?.referenceImages);
     updateState();
     if ((next.revision !== loadedRevision || force) && !loading) {
       loading = true;
@@ -1370,6 +1374,17 @@ $("saveProvider").onclick = async () => {
 $("autoCompact").onchange = () =>
   configHarness({ autoCompact: $("autoCompact").checked });
 
+const referencePicker = new ReferencePicker({
+  api,
+  error,
+  storageGet: safeStorageGet,
+  storageSet: safeStorageSet,
+  onBusy: () => {
+    if (state?.harness) updateHarnessControls(normalizeHarness(state.harness));
+  },
+});
+referencePicker.setScope(uiScope || "default");
+
 function promptDraftKey() {
   return `morphforge.prompt.${uiScope || "default"}`;
 }
@@ -1403,7 +1418,11 @@ function newRequestId() {
 }
 
 async function sendFromComposer() {
-  const prompt = $("prompt").value.trim();
+  const prompt =
+    $("prompt").value.trim() ||
+    (referencePicker.selected().length
+      ? "请根据所选参考图片进行体素建模。"
+      : "");
   const snapshot = normalizeHarness(state?.harness);
   const selectedMode = $("messageMode").value;
   const mode = snapshot.active ? selectedMode : "steer";
@@ -1420,8 +1439,9 @@ async function postHarnessMessage({
   mode,
   intent,
   clearPrompt = false,
+  referenceIds,
 }) {
-  if (messageInFlight) return;
+  if (messageInFlight || (referencePicker.busy && prompt?.trim())) return;
   const snapshot = normalizeHarness(state?.harness);
   const submittedPrompt = prompt ?? "";
   if (!submittedPrompt && !(mode === "interrupt" && snapshot.active)) {
@@ -1431,6 +1451,9 @@ async function postHarnessMessage({
     prompt: submittedPrompt,
     mode: intent === "start" ? "steer" : mode,
     requestId: newRequestId(),
+    referenceIds: submittedPrompt
+      ? referenceIds || referencePicker.selected().map((item) => item.id)
+      : [],
   };
   if (snapshot.active && snapshot.runId) payload.runId = snapshot.runId;
   messageInFlight = true;

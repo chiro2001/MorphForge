@@ -5,7 +5,8 @@ param(
     [Parameter(Mandatory)][string]$RuntimeDir,
     [Parameter(Mandatory)][string]$DataDir,
     [Parameter(Mandatory)][string]$ReportPath,
-    [string]$ExpectedVersion = "0.3.0"
+    [string]$ExpectedVersion = "0.3.0",
+    [string]$ExpectedPromptVersion = "morphforge-system/3.1"
 )
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
@@ -64,7 +65,7 @@ try {
     $html = (Invoke-WebRequest -Uri ($script:baseUrl+'/studio.html') -NoProxy).Content
     Check 'packaged UI includes preset, Goal and provider settings' ($html.Contains('id="preset"') -and $html.Contains('id="goalMode"') -and $html.Contains('id="providerKey"'))
     $tools = Api '/api/harness/tools'
-    Check 'runtime exposes final prompt and tools versions' ($tools.version -eq 'morphforge-tools/3.0' -and $tools.promptVersion -eq 'morphforge-system/3.1')
+    Check 'runtime exposes final prompt and tools versions' ($tools.version -eq 'morphforge-tools/3.0' -and $tools.promptVersion -eq $ExpectedPromptVersion)
     $outDir = Split-Path -Parent $ReportPath
     New-Item -ItemType Directory -Path $outDir -Force | Out-Null
     $png = Join-Path $outDir 'desktop-candidate.png'

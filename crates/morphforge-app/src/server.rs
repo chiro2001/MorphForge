@@ -3,6 +3,7 @@ use crate::{
     fonts::{self, FontCatalog, MissingGlyphsError},
     harness::Harness,
     provider::Provider,
+    references,
     store::{validate_id, Workspace},
     transport::Transport,
 };
@@ -35,6 +36,7 @@ pub struct App {
     pub browser: Arc<Mutex<Option<u32>>>,
     pub fonts: Arc<FontCatalog>,
     text_jobs: Arc<tokio::sync::Semaphore>,
+    reference_jobs: Arc<tokio::sync::Semaphore>,
 }
 pub struct ApiError(anyhow::Error);
 impl<E: Into<anyhow::Error>> From<E> for ApiError {
@@ -104,6 +106,7 @@ impl App {
             browser: Arc::new(Mutex::new(None)),
             fonts,
             text_jobs: Arc::new(tokio::sync::Semaphore::new(2)),
+            reference_jobs: Arc::new(tokio::sync::Semaphore::new(2)),
         })
     }
     pub fn router(&self) -> Router {
@@ -139,6 +142,11 @@ impl App {
             .route("/api/harness/control", post(harness_control))
             .route("/api/harness/tool", post(harness_tool))
             .route("/api/provider/models", get(models))
+            .route("/api/references", get(reference_list))
+            .route("/api/references/remove", post(reference_remove))
+            .route("/api/references/upload", post(reference_upload))
+            .route("/api/references/{id}/image", get(reference_image))
+            .route("/api/references/{id}/thumbnail", get(reference_thumbnail))
             .route("/api/provider/config", post(provider_config))
             .route("/api/capture/jobs", get(capture_jobs))
             .route("/api/capture/result", post(capture_result))
@@ -478,6 +486,73 @@ async fn capture_result(State(a): State<App>, Json(v): Json<Value>) -> ApiResult
     Ok(Json(
         a.capture.complete(&mut a.workspace.lock().unwrap(), &v)?,
     ))
+}
+async fn reference_list(State(a): State<App>) -> ApiResult {
+    Ok(Json(references::list(&a.workspace.lock().unwrap())?))
+}
+async fn reference_remove(State(a): State<App>, Json(value): Json<Value>) -> ApiResult {
+    Ok(Json(references::remove(
+        &mut a.workspace.lock().unwrap(),
+        value["id"].as_str().context("缺少图片ID")?,
+    )?))
+}
+async fn reference_upload(State(a): State<App>, mut multipart: Multipart) -> ApiResult {
+    let mut file = None;
+    while let Some(mut field) = multipart.next_field().await? {
+        if field.name() != Some("file") {
+            bail_api("图片上传只接受file字段")?;
+        }
+        if file.is_some() {
+            bail_api("每次上传一张图片")?;
+        }
+        let name = field.file_name().unwrap_or("参考图片").to_owned();
+        let mut bytes = Vec::new();
+        while let Some(chunk) = field.chunk().await? {
+            if bytes.len().saturating_add(chunk.len()) > references::MAX_UPLOAD_BYTES {
+                bail_api("图片超过8MiB")?;
+            }
+            bytes.extend_from_slice(&chunk);
+        }
+        file = Some((name, bytes));
+    }
+    let (name, bytes) = file.context("请选择图片文件")?;
+    let permit = a.reference_jobs.clone().acquire_owned().await?;
+    let prepared = tokio::task::spawn_blocking(move || {
+        let _permit = permit;
+        references::prepare(&bytes)
+    })
+    .await??;
+    Ok(Json(references::import(
+        &mut a.workspace.lock().unwrap(),
+        &name,
+        prepared,
+    )?))
+}
+async fn reference_bytes(a: App, id: String, thumbnail: bool) -> Response {
+    match references::image(&a.workspace.lock().unwrap(), &id, thumbnail) {
+        Ok((bytes, mime)) => (
+            [
+                ("Content-Type", mime),
+                (
+                    "Cache-Control",
+                    if id.starts_with("builtin:") {
+                        "private, no-cache"
+                    } else {
+                        "private, max-age=31536000, immutable"
+                    },
+                ),
+            ],
+            bytes,
+        )
+            .into_response(),
+        Err(_) => StatusCode::NOT_FOUND.into_response(),
+    }
+}
+async fn reference_image(State(a): State<App>, AxPath(id): AxPath<String>) -> Response {
+    reference_bytes(a, id, false).await
+}
+async fn reference_thumbnail(State(a): State<App>, AxPath(id): AxPath<String>) -> Response {
+    reference_bytes(a, id, true).await
 }
 async fn artifact(State(a): State<App>, AxPath(id): AxPath<String>) -> Response {
     if validate_id(&id).is_err() {

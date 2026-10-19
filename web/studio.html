@@ -170,6 +170,39 @@
             <div id="pendingMessages" class="pending-list"></div>
           </div>
 
+          <details class="reference-composer" id="referenceComposer">
+            <summary>
+              参考图片 · <span id="referenceSummary">不使用参考图片</span>
+            </summary>
+            <div class="double">
+              <button id="referenceOpen">参考图库</button
+              ><button id="referenceUpload">添加图片</button>
+            </div>
+            <input
+              id="referenceFiles"
+              type="file"
+              accept="image/png,image/jpeg,image/webp,image/gif"
+              multiple
+              hidden
+            />
+            <div class="reference-switches">
+              <label
+                ><input
+                  id="referenceUseLibrary"
+                  type="checkbox"
+                />使用图库图片</label
+              ><label
+                ><input
+                  id="referenceUseInput"
+                  type="checkbox"
+                />使用当前图片</label
+              >
+            </div>
+            <div id="referenceSelected"></div>
+            <p class="caption">
+              最多6张。选中图片用于后续续作；取消后下次输入更新参考。图片先保存在本机，发送时才交给模型。
+            </p>
+          </details>
           <div class="prompt-meta">
             <label for="prompt">输入</label>
             <div
@@ -730,6 +763,27 @@ mf.group('main', () => {
       <div id="events"></div>
     </section>
 
+    <dialog id="referenceDialog" aria-labelledby="referenceTitle">
+      <div class="row">
+        <h2 id="referenceTitle">参考图库</h2>
+        <span class="grow"></span><button id="referenceClose">完成选择</button>
+      </div>
+      <div class="row reference-filter">
+        <input
+          id="referenceSearch"
+          placeholder="搜索标题、作者"
+          aria-label="搜索参考图片"
+        /><select id="referenceCategory" aria-label="参考图片类别">
+          <option value="">全部类别</option>
+        </select>
+      </div>
+      <p id="referenceCatalogCount" class="caption"></p>
+      <div id="referenceGrid"></div>
+      <details>
+        <summary>素材来源与本机收藏</summary>
+        <div id="referenceSources" class="caption"></div>
+      </details>
+    </dialog>
     <dialog id="packReportDialog">
       <div class="row">
         <h2>资源包导入报告</h2>

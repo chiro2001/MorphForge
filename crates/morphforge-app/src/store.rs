@@ -585,7 +585,7 @@ impl Workspace {
         Ok(commit)
     }
     pub fn artifact(&mut self, bytes: &[u8], extension: &str) -> Result<String> {
-        if !["png", "jpg", "json", "js", "txt", "zip"].contains(&extension) {
+        if !["png", "jpg", "webp", "json", "js", "txt", "zip"].contains(&extension) {
             bail!("不支持的artifact类型")
         };
         let name = format!("{}.{}", hash(bytes), extension);
@@ -652,12 +652,22 @@ impl Workspace {
             views,
             source_run: run.map(str::to_owned),
         };
+        let reference_images = run
+            .and_then(|run| {
+                self.events.iter().rev().find(|event| {
+                    ["harness.message.applied", "artwork.reference_sources"]
+                        .contains(&event.kind.as_str())
+                        && event.run_id.as_deref() == Some(run)
+                })
+            })
+            .map(|event| event.data["references"].clone())
+            .unwrap_or_else(|| json!([]));
         write_json(
             &self
                 .root
                 .join("artworks")
                 .join(format!("{}.json", artwork.id)),
-            &json!({"artwork":artwork,"project":self.project,"recipe":self.recipes.get(&self.project.scene.revision)}),
+            &json!({"artwork":artwork,"project":self.project,"recipe":self.recipes.get(&self.project.scene.revision),"referenceImages":reference_images}),
         )?;
         self.event("artwork.saved", run, json!(&artwork))?;
         Ok(artwork)

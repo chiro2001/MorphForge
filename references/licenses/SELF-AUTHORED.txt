@@ -1,0 +1,5 @@
+MorphForge 项目自制参考图
+
+chair、pine、cottage、bridge、lighthouse 由本项目 references/recipes/*.js 生成，使用项目自制材质与渲染器，依项目 MIT 许可使用。
+
+鲸鱼娘参考图不属于此许可，另见 CC-BY-NC-SA-4.0.txt 与 ATTRIBUTION.md。

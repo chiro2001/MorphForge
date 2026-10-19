@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--url', required=True)
+    parser.add_argument('--with-references', action='store_true')
     parser.add_argument('--out', type=Path, default=ROOT / 'docs/quality-v3')
     args = parser.parse_args()
     requests = []
@@ -51,6 +52,9 @@ def main():
                 ('finish', 'finish_artwork', {'title': '兼容接口测试小屋', 'summary': '已通过本机 Chat 接口完成工具循环、真实双视角截图和作品入库。', 'tags': ['fixture', 'house']}),
             ]
             index = len(requests) - 1
+            if index == len(actions) and args.with_references:
+                payload=json.dumps({'id':'clear-reference','choices':[{'index':0,'message':{'role':'assistant','content':'已取消视觉参考，继续当前几何。'},'finish_reason':'stop'}],'usage':{'prompt_tokens':1000,'completion_tokens':100,'total_tokens':1100,'prompt_cache_hit_tokens':600,'prompt_cache_miss_tokens':400}}).encode()
+                self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(payload)));self.end_headers();self.wfile.write(payload);return
             if index >= len(actions):
                 self.send_error(500)
                 return
@@ -109,7 +113,24 @@ def main():
         browser.click('settingsBack')
         browser.wait("return document.getElementById('settingsPage').hidden && !document.getElementById('workbenchMain').hidden")
         check('settings navigation keeps draft and artwork', browser.js("return document.getElementById('prompt').value==='配置页切换保留的草稿'"))
-        browser.js("document.getElementById('prompt').value='搭建一个小屋并截图检查，最后保存作品。'")
+        if args.with_references:
+            browser.js("document.getElementById('referenceComposer').open=true")
+            browser.click('referenceOpen')
+            browser.wait("return document.getElementById('referenceDialog').open && document.querySelectorAll('.reference-card').length>=8")
+            browser.js("document.querySelector('[data-reference-id=\"builtin:chair\"] input').click()")
+            browser.click('referenceClose')
+            check('built-in reference selection appears in composer',browser.js("return document.getElementById('referenceSummary').textContent.includes('1/6')"))
+            element=browser.call(browser.path+'/element',{'using':'css selector','value':'#referenceFiles'})
+            browser.call(browser.path+'/element/'+element['element-6066-11e4-a52e-4f735466cecf']+'/value',{'text':str(ROOT/'references/images/pine.png')})
+            browser.wait("return document.getElementById('referenceSummary').textContent.includes('2/6') && !document.getElementById('sendMessage').disabled",timeout=20)
+            check('current image uploaded and combined with built-in reference',len(api('references')['images'])>=9)
+            for id in ['referenceUseLibrary','referenceUseInput']:browser.click(id)
+            check('both reference sources can be disabled',browser.js("return document.getElementById('referenceSummary').textContent==='不使用参考图片'"))
+            for id in ['referenceUseLibrary','referenceUseInput']:browser.click(id)
+            browser.call(browser.path+'/refresh',{})
+            browser.wait("return window.__morphforge?.ready && document.getElementById('referenceSummary').textContent.includes('2/6')")
+            check('reference choices survive refresh without upstream submission',not requests)
+        browser.js("document.getElementById('prompt').value=arguments[0]",'' if args.with_references else '搭建一个小屋并截图检查，最后保存作品。')
         browser.click('sendMessage')
         browser.wait("return window.__morphforge.state.harness.run?.status==='completed'||window.__morphforge.state.harness.run?.status==='failed'", timeout=40)
         state = api('state')
@@ -118,9 +139,25 @@ def main():
         check('geometry created and library saved', state['stats']['boxCount'] > 5 and len(api('artworks')['artworks']) == 1)
         messages = requests[-1]['messages']
         images = [p for m in messages if isinstance(m.get('content'), list) for p in m['content'] if p['type'] == 'image_url']
-        check('real screenshots delivered inline without files endpoint', len(images) == 2 and all(p['image_url']['url'].startswith('data:image/png;base64,') for p in images) and paths == ['/chat/completions'] * 4)
+        check('real screenshots delivered inline without files endpoint', len(images) == (4 if args.with_references else 2) and all(p['image_url']['url'].startswith('data:image/png;base64,') for p in images) and paths == ['/chat/completions'] * 4)
         check('actual provider usage counted', state['harness']['run']['tokens'] == 4400)
-        browser.wait("return document.getElementById('usageTokens').textContent.includes('4,400') && document.getElementById('usagePrefix').textContent.includes('60.0%')")
+        if args.with_references:
+            refs=state['harness']['context']['referenceImages']
+            check('selected references reach every model request as images',len(refs)==2 and all('当前用户选中的视觉参考图' in json.dumps(request,ensure_ascii=False) for request in requests))
+            artwork=api('artworks')['artworks'][0];saved=api('artworks/'+artwork['id'])
+            check('saved artwork records reference provenance',len(saved['referenceImages'])==2)
+            browser.js("localStorage.clear()")
+            browser.call(browser.path+'/refresh',{})
+            browser.wait("return window.__morphforge?.ready && document.getElementById('referenceSummary').textContent.includes('2/6')")
+            check('active references recover from backend when browser storage is new',True)
+
+            for id in ['referenceUseLibrary','referenceUseInput']:browser.js("const e=document.getElementById(arguments[0]);e.checked=false;e.dispatchEvent(new Event('change'))",id)
+            browser.js("document.getElementById('prompt').value='取消参考，继续当前几何'")
+            browser.click('sendMessage')
+            browser.wait("return window.__morphforge.state.harness.run?.status==='completed' && window.__morphforge.state.harness.usage.total.requests===5",timeout=20)
+            check('clearing references removes their next-request image block',api('harness/state')['context']['referenceImages']==[] and '当前用户选中的视觉参考图' not in json.dumps(requests[-1]['messages'],ensure_ascii=False))
+
+        browser.wait("return document.getElementById('usageTokens').textContent.includes('"+('5,500' if args.with_references else '4,400')+"') && document.getElementById('usagePrefix').textContent.includes('60.0%')")
         check('usage displayed beside composer with weighted cache rate', state['harness']['usage']['total']['totalTokens']==4400 and state['harness']['usage']['total']['prefixHitRate']==0.6)
         check('OSC still disabled after creation' , not state['connection']['enabled'])
         logs = browser.call(browser.path + '/log', {'type': 'browser'})

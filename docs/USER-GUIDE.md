@@ -9,13 +9,13 @@
 - Rust 核心、HTTP API、共享前端、AI 工具循环、Recipe、作品库和材质资源包导入已经实现。
 - MF3 的 `Box / UnitVoxel / Brush / Erase / Remove / Clear`、序号回绕和单 Avatar 原生 UDP 接收已有测试证据。
 - 16,384 Box 首遍缺失192个；0.5秒补发后达16384个唯一方块，满池删除、补回、区域擦除、清空通过。新时序256条0.25秒首次漏1/第二次完整，0.5秒对照完整；不承诺无损，详见实施状态。
-- 当前软件候选为 Windows 0.3.1，原生测试、隔离桌面与HTTP检查通过，见 [0.3.1验证](quality-v3.1/RESULTS.md)；[0.2历史验收](quality-v2/WINDOWS-V2.md)保留。
+- 当前软件候选为 Windows 0.4.0，原生测试、隔离桌面与HTTP检查通过，见 [0.4验证](quality-v4/RESULTS.md)；[0.2历史验收](quality-v2/WINDOWS-V2.md)保留。
 - Unity原生100材质、40项像素与新版16k显示夹具通过；FullFT实际SDK联合构建256/256bit通过，FT161与MF70全部直通；新场景与166项API烟测、远端FT分支检查也已通过。
 - P2 高级折射、物理体积云以及任意 Minecraft 异形几何不在当前支持范围内。
 
 ## 1. 安装与启动
 
-使用 `dist/windows/MorphForge Desktop_0.3.1_x64-setup.exe`，以当前用户模式安装。默认安装目录是：
+使用 `dist/windows/MorphForge Desktop_0.4.0_x64-setup.exe`，以当前用户模式安装。默认安装目录是：
 
 ```text
 %LOCALAPPDATA%\MorphForge Desktop
@@ -606,3 +606,7 @@ Assets/MorphForge/FullFT/MorphForge_FullFT.unity
 ```
 
 它已单独保存。原Stage3场景仍打开并保留未保存修改，文件未变；测试期间临时停用的三个对象已恢复。准备切换到新场景时，先自行处理原场景的未保存内容。完整Avatar为 `Assets/MorphForge/FullFT/Avatar.prefab`。
+
+## 图片参考
+
+在AI创作的「参考图片」中选择图库或添加PNG/JPEG/WebP/GIF图片（动图首帧），可分别开关图库图片和当前图片。最多6张、单张8MiB；上传后留在本机个人图库。选中后发送提示词或直接开始，续作继续使用这些图；取消后下次输入不再附带旧参考。只有支持视觉的模型且开启图片发送时可用。内置图、来源与许可见 [图片说明](references/README.md)。

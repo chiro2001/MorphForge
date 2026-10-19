@@ -1,0 +1,120 @@
+{
+  "success": true,
+  "scope": "Real Rust server + Chromium; local Chat JSON protocol fixture, not a live model aesthetic evaluation",
+  "checks": [
+    {
+      "name": "OSC remains disabled",
+      "passed": true
+    },
+    {
+      "name": "detailed preset applies budget and goal",
+      "passed": true
+    },
+    {
+      "name": "sketch preset applies budget and goal",
+      "passed": true
+    },
+    {
+      "name": "advanced settings have a dedicated page",
+      "passed": true
+    },
+    {
+      "name": "provider form draft survives state polling",
+      "passed": true
+    },
+    {
+      "name": "nonofficial provider hides Files settings",
+      "passed": true
+    },
+    {
+      "name": "key saved locally and never returned by state",
+      "passed": true
+    },
+    {
+      "name": "settings navigation keeps draft and artwork",
+      "passed": true
+    },
+    {
+      "name": "built-in reference selection appears in composer",
+      "passed": true
+    },
+    {
+      "name": "current image uploaded and combined with built-in reference",
+      "passed": true
+    },
+    {
+      "name": "both reference sources can be disabled",
+      "passed": true
+    },
+    {
+      "name": "reference choices survive refresh without upstream submission",
+      "passed": true
+    },
+    {
+      "name": "real Rust recipe, capture and finish loop completes",
+      "passed": true
+    },
+    {
+      "name": "finish skips unnecessary followup",
+      "passed": true
+    },
+    {
+      "name": "geometry created and library saved",
+      "passed": true
+    },
+    {
+      "name": "real screenshots delivered inline without files endpoint",
+      "passed": true
+    },
+    {
+      "name": "actual provider usage counted",
+      "passed": true
+    },
+    {
+      "name": "selected references reach every model request as images",
+      "passed": true
+    },
+    {
+      "name": "saved artwork records reference provenance",
+      "passed": true
+    },
+    {
+      "name": "active references recover from backend when browser storage is new",
+      "passed": true
+    },
+    {
+      "name": "clearing references removes their next-request image block",
+      "passed": true
+    },
+    {
+      "name": "usage displayed beside composer with weighted cache rate",
+      "passed": true
+    },
+    {
+      "name": "OSC still disabled after creation",
+      "passed": true
+    },
+    {
+      "name": "no browser or WebGL errors",
+      "passed": true
+    }
+  ],
+  "requests": 5,
+  "run": {
+    "activeRequestId": null,
+    "epoch": 1,
+    "error": "",
+    "finishedAt": "2026-10-19T04:56:26.689Z",
+    "id": "4eb4d47b-0184-4778-b91c-898fe365f7ae",
+    "language": "zh-CN",
+    "message": "已通过本机 Chat 接口完成工具循环、真实双视角截图和作品入库。",
+    "prompt": "请根据所选参考图片进行体素建模。",
+    "promptVersion": "morphforge-system/4.1",
+    "startedAt": "2026-10-19T04:56:23.496Z",
+    "status": "completed",
+    "steps": 4,
+    "tokens": 4400,
+    "toolsVersion": "morphforge-tools/3.0"
+  },
+  "boxCount": 9
+}

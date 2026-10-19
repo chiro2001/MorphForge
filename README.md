@@ -4,7 +4,7 @@
 
 - [用户指南](docs/USER-GUIDE.md)：安装、配置、编辑、AI、compact、作品库与 OSC 发布。
 - [交付记录](docs/DELIVERY.md) · [实施状态及证据](docs/plan/STATUS.md) · [已确认设计](docs/plan/README.md) · [验收标准](docs/plan/ACCEPTANCE.md)。
-- Windows **0.3.1 候选版**：`dist/windows/MorphForge Desktop_0.3.1_x64-setup.exe`；校验和在同目录。[本轮验证](docs/quality-v3.1/RESULTS.md) · [0.2 历史验收](docs/quality-v2/RESULTS.md)。
+- Windows **0.4.0 候选版**：`dist/windows/MorphForge Desktop_0.4.0_x64-setup.exe`；校验和在同目录。[本轮验证](docs/quality-v4/RESULTS.md) · [0.2 历史验收](docs/quality-v2/RESULTS.md)。
 
 GitHub私有仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支与完整历史保留。
 [获取源码和Windows克隆验证](docs/GIT-SOURCE.md)。
@@ -22,6 +22,14 @@ GitHub私有仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支�
 | ![云上邮局体素作品](docs/media/cloud-post.webp) | ![星港灯塔及体素汉字](docs/media/starlight-harbor.webp) |
 
 工作台截图为新版界面载入已有星港作品；下方为此前真实 DeepSeek 创作的渲染，包含由字体栅格化的可编辑体素汉字。作品过程、失败与修正见 [Harness 迭代记录](docs/harness-v2/evals/README.md)。展示图为压缩 WebP 副本，原始验收 PNG 保留。
+
+## 图片参考
+
+支持从内置图库或本次添加的图片生成体素，可分别关闭或组合使用，最多6张。内置5张项目自制结构参考与3张核实出处的鲸鱼娘参考，附作者、原帖和独立许可；个人图片留在本机图库，发送选中参考时才交给模型。续作和compact保留参考，取消后下一次输入更新，Harness作品记录来源。
+
+![内置参考图库](docs/media/reference-library.webp)
+
+[用法、素材出处与许可](docs/references/README.md)。复杂角色的比例、遮挡与配色仍需人工复核，参考图片不等于自动重建保证。
 
 ## 创作速度与精度
 

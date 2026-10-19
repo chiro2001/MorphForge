@@ -1219,6 +1219,7 @@ async fn failed_compact_keeps_old_context_and_records_failure() {
     let workspace = workspace(&dir);
     let original = Conversation {
         goal: None,
+        reference_images: Vec::new(),
         input: vec![
             json!({"role":"user","content":"请保留整件作品的轮廓"}),
             json!({"type":"message","content":[{"type":"output_text","text":"目前完成底座"}]}),
@@ -1657,5 +1658,78 @@ async fn third_party_files_setting_is_forced_inline_and_chat_cache_usage_is_pres
     assert_eq!(
         provider.usage(Some("cache-run"))["total"]["prefixHitRate"],
         0.6
+    );
+}
+
+#[tokio::test]
+async fn reference_images_are_explicit_inputs_survive_compact_and_can_be_cleared() {
+    let reply = || {
+        completed(vec![
+            json!({"type":"message","role":"assistant","content":[{"type":"output_text","text":"阶段说明"}]} ),
+        ])
+    };
+    let fake = FakeResponses::start(vec![reply(), reply(), reply()]).await;
+    let dir = TempDir::new().unwrap();
+    let w = workspace(&dir);
+    let h = harness(w.clone(), &fake.base);
+    let message = json!({"requestId":"reference-1","prompt":"按照图片搭建椅子","referenceIds":["builtin:chair"]});
+    let ack = h.message(&message).unwrap();
+    assert_eq!(terminal_run(&h).await.status, "completed");
+    assert_eq!(h.message(&message).unwrap(), ack);
+    assert_eq!(fake.request_count(), 1);
+    assert!(h.message(&json!({"requestId":"reference-1","prompt":"按照图片搭建椅子","referenceIds":["builtin:pine"]})).is_err());
+    assert!(fake.requests()[0]["input"]
+        .to_string()
+        .contains("data:image/png;base64,"));
+    let reference = h.state()["context"]["referenceImages"].clone();
+    assert_eq!(reference[0]["id"], "builtin:chair");
+    let history = std::fs::read_to_string(dir.path().join("runs/conversation.json")).unwrap();
+    assert!(!history.contains("data:image/"));
+    h.control("compact").unwrap();
+    assert_eq!(terminal_run(&h).await.status, "completed");
+    assert_eq!(h.state()["context"]["referenceImages"], reference);
+    h.message(&json!({"prompt":"取消参考，继续修改","referenceIds":[]}))
+        .unwrap();
+    assert_eq!(terminal_run(&h).await.status, "completed");
+    assert!(h.state()["context"]["referenceImages"]
+        .as_array()
+        .unwrap()
+        .is_empty());
+    assert!(!fake.requests()[2]["input"]
+        .to_string()
+        .contains("data:image/"));
+    h.configure(&json!({"sendImages":false})).unwrap();
+    assert!(h
+        .message(&json!({"prompt":"按图做","referenceIds":["builtin:chair"]}))
+        .unwrap_err()
+        .to_string()
+        .contains("关闭"));
+}
+
+#[tokio::test]
+async fn a_reference_image_cannot_replace_a_real_current_revision_capture() {
+    let fake = FakeResponses::start(vec![
+        completed(vec![function_call(
+            "finish",
+            "finish_artwork",
+            json!({"title":"test","summary":"不应成功"}),
+        )]),
+        completed(vec![]),
+    ])
+    .await;
+    let dir = TempDir::new().unwrap();
+    let w = workspace(&dir);
+    let h = harness(w.clone(), &fake.base);
+    h.message(&json!({"prompt":"看图搭建","referenceIds":["builtin:chair"]}))
+        .unwrap();
+    assert_eq!(terminal_run(&h).await.status, "completed");
+    assert!(w.lock().unwrap().library().unwrap().is_empty());
+    assert!(
+        w.lock()
+            .unwrap()
+            .events
+            .iter()
+            .any(|e| e.kind == "tool.result"
+                && e.data.to_string().contains("FINISH_CAPTURE_REQUIRED"))
     );
 }
