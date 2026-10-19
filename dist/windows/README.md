@@ -9,3 +9,5 @@ SHA-256 见 `SHA256SUMS`。验收和使用入口见 `docs/DELIVERY.md`、`docs/U
 0.1.0安装器保留用于历史复现；新安装使用0.2.0。
 
 完整Git历史将在客户端诊断收尾后附上 `MorphForge-0.2.0.bundle` 与对应 `.bundle.sha256`。可在新目录执行 `git clone MorphForge-0.2.0.bundle MorphForge-source` 查看源码及阶段提交；Unity工作区本身保持原目录结构。
+
+当前可审查源码快照已提供：`MorphForge-review-a9e2c08.bundle`，使用和校验见 [REVIEW-SOURCE.md](REVIEW-SOURCE.md)。
