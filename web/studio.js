@@ -67,6 +67,8 @@ let currentPreviewRequestId = "";
 let currentPreviewRequest = null;
 let textApplyBusy = false;
 let groupSettingsBusy = false;
+let providerDraftDirty = false;
+let providerSaveBusy = false;
 
 window.__morphforge = {
   ready: false,
@@ -645,6 +647,55 @@ function updateState() {
   setChecked("level", connection.placement.level);
   setValue("scale", connection.placement.scale);
   $("scaleValue").value = Number(connection.placement.scale).toFixed(2) + "×";
+  for (const id of [
+    "preset",
+    "contextWindowTokens",
+    "goalMinReviewRounds",
+    "goalMaxContinuations",
+    "detailInstructions",
+    "goalCriteria",
+  ]) {
+    if (harness.settings[id] !== undefined) setValue(id, harness.settings[id]);
+  }
+  setChecked("sendImages", harness.settings.sendImages ?? true);
+  setChecked("goalMode", harness.settings.goalMode ?? false);
+  $("presetHint").textContent = {
+    sketch: "优先轮廓和大形；默认最多12步 / 10分钟，选定后仍可调整。",
+    standard: "兼顾结构与细节；默认最多24步 / 15分钟，选定后仍可调整。",
+    detailed:
+      "分阶段细化与3轮不同几何复核；默认最多128步 / 2小时 / 200万Token，实际消耗取决于模型。",
+  }[harness.settings.preset || "standard"];
+  const goal = harness.context.goal;
+  const goalLabels = {
+    active: "进行中",
+    achieved: "已保存完成",
+    blocked: "等待调整",
+    budget_exhausted: "预算已用尽",
+    stopped: "已停止",
+  };
+  $("goalStatus").textContent = goal
+    ? `${goalLabels[goal.status] || goal.status} · 复核 ${goal.reviewedGeometryHashes.length}/${goal.minReviewRounds} · 自动续作 ${goal.continuations}\n${goal.objective}\n${goal.assessment || ""}`
+    : "尚无创作目标";
+  $("saveProvider").disabled =
+    normalizeHarness(harness).active || providerSaveBusy;
+  if (!providerDraftDirty) {
+    const provider = harness.provider;
+    for (const [id, key] of [
+      ["providerBase", "baseUrl"],
+      ["providerApi", "apiType"],
+      ["providerImages", "imageDelivery"],
+      ["providerTokenField", "chatTokenField"],
+    ]) {
+      if (provider[key] !== undefined) setValue(id, provider[key]);
+    }
+    for (const [id, key] of [
+      ["providerStream", "stream"],
+      ["providerReasoning", "sendReasoning"],
+      ["providerRequiresKey", "requiresApiKey"],
+    ]) {
+      if (provider[key] !== undefined) setChecked(id, provider[key]);
+    }
+  }
   setValue("model", harness.settings.model);
   setValue("reasoning", harness.settings.reasoning);
   setValue("maxSteps", harness.settings.maxSteps);
@@ -656,8 +707,8 @@ function updateState() {
   setChecked("autoCompact", harness.settings.autoCompact);
   setValue("pinnedNotes", s.project.pinnedNotes);
   $("providerState").textContent = harness.provider.configured
-    ? "Key已配置"
-    : "需要Key";
+    ? "连接已配置"
+    : "需要配置Key";
   $("providerState").classList.toggle("live", harness.provider.configured);
   $("contextStats").textContent =
     `上下文约 ${fmt(harness.context.estimatedTokens)} Token\n` +
@@ -1177,6 +1228,12 @@ for (const [id, key] of [
   ["maxRunTokens", "maxRunTokens"],
   ["maxOutputTokens", "maxOutputTokens"],
   ["language", "language"],
+  ["preset", "preset"],
+  ["contextWindowTokens", "contextWindowTokens"],
+  ["goalMinReviewRounds", "goalMinReviewRounds"],
+  ["goalMaxContinuations", "goalMaxContinuations"],
+  ["detailInstructions", "detailInstructions"],
+  ["goalCriteria", "goalCriteria"],
 ]) {
   $(id).onchange = () => {
     const numeric = [
@@ -1185,10 +1242,66 @@ for (const [id, key] of [
       "maxRunSeconds",
       "maxRunTokens",
       "maxOutputTokens",
+      "contextWindowTokens",
+      "goalMinReviewRounds",
+      "goalMaxContinuations",
     ].includes(key);
     configHarness({ [key]: numeric ? Number($(id).value) : $(id).value });
   };
 }
+for (const key of ["sendImages", "goalMode"]) {
+  $(key).onchange = () => configHarness({ [key]: $(key).checked });
+}
+for (const id of [
+  "providerBase",
+  "providerApi",
+  "providerImages",
+  "providerKey",
+  "providerStream",
+  "providerReasoning",
+  "providerRequiresKey",
+  "providerClearKey",
+  "providerTokenField",
+]) {
+  $(id).addEventListener("input", () => {
+    providerDraftDirty = true;
+  });
+}
+$("providerApi").addEventListener("change", () => {
+  if ($("providerApi").value === "chat") $("providerImages").value = "inline";
+});
+$("providerBase").addEventListener("change", () => {
+  try {
+    if (new URL($("providerBase").value).hostname !== "api.deepseek.com")
+      $("providerReasoning").checked = false;
+  } catch {}
+});
+$("saveProvider").onclick = async () => {
+  providerSaveBusy = true;
+  $("saveProvider").disabled = true;
+  try {
+    await api("provider/config", {
+      baseUrl: $("providerBase").value,
+      apiType: $("providerApi").value,
+      imageDelivery: $("providerImages").value,
+      apiKey: $("providerKey").value,
+      sendReasoning: $("providerReasoning").checked,
+      stream: $("providerStream").checked,
+      requiresApiKey: $("providerRequiresKey").checked,
+      chatTokenField: $("providerTokenField").value,
+      clearKey: $("providerClearKey").checked,
+    });
+    $("providerKey").value = "";
+    $("providerClearKey").checked = false;
+    providerDraftDirty = false;
+    toast("API连接已保存");
+  } catch (cause) {
+    error(cause);
+  } finally {
+    providerSaveBusy = false;
+    await refresh();
+  }
+};
 $("autoCompact").onchange = () =>
   configHarness({ autoCompact: $("autoCompact").checked });
 

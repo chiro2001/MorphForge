@@ -14,9 +14,11 @@ use std::{
     sync::{Arc, Mutex},
     time::Duration,
 };
+mod goal;
 mod prompts;
-pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/2.3";
-pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/2.3";
+pub use goal::GoalProgress;
+pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/3.1";
+pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/3.0";
 
 #[derive(Clone, Debug)]
 struct PendingPrompt {
@@ -52,6 +54,8 @@ pub struct Conversation {
     pub summary: String,
     pub boundaries: Vec<usize>,
     pub compact_count: u32,
+    #[serde(default)]
+    pub goal: Option<GoalProgress>,
 }
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -229,27 +233,48 @@ impl Harness {
                 "messages":s.conversation.input.len(),
                 "compactCount":s.conversation.compact_count,
                 "summary":s.conversation.summary,
-                "goals":s.conversation.goals
+                "goals":s.conversation.goals,
+                "goal":s.conversation.goal
             }
         })
     }
     pub fn configure(&self, v: &Value) -> Result<Value> {
         let mut s = self.inner.lock().unwrap();
         let mut settings = serde_json::to_value(&s.settings)?;
+        if let Some(name) = v["preset"].as_str() {
+            let patch = prompts::preset_patch(name).context("未知创作预设")?;
+            for (key, value) in patch.as_object().unwrap() {
+                settings[key] = value.clone();
+            }
+        }
         for (k, v) in v.as_object().context("设置须为对象")? {
             if settings.get(k).is_none() {
                 bail!("未知Harness设置 {k}")
             }
             settings[k] = v.clone();
         }
-        let next: ProviderSettings = serde_json::from_value(settings)?;
-        if !["deepseek-flash", "deepseek-v4-pro"].contains(&next.model.as_str())
+        let mut next: ProviderSettings = serde_json::from_value(settings)?;
+        next.model = next.model.trim().into();
+        if next.model.trim().is_empty()
+            || next.model.len() > 256
+            || next.model.chars().any(char::is_control)
             || !["none", "low", "high", "max"].contains(&next.reasoning.as_str())
             || next.max_steps == 0
-            || next.max_steps > 100
+            || next.max_steps > 4096
             || next.max_output_tokens < 512
-            || next.max_output_tokens > 65536
+            || next.max_output_tokens > 262144
             || next.compact_tokens < 1000
+            || next.context_window_tokens < 8192
+            || next.context_window_tokens > 4_194_304
+            || next.max_output_tokens as usize + 4096 >= next.context_window_tokens
+            || next.compact_tokens >= next.context_window_tokens - next.max_output_tokens as usize
+            || next.detail_instructions.len() > 32000
+            || next.goal_criteria.len() > 32000
+            || next.goal_min_review_rounds == 0
+            || next.goal_min_review_rounds > 16
+            || next.goal_max_continuations == 0
+            || next.goal_max_continuations > 128
+            || prompts::preset_patch(&next.preset).is_none()
             || next.max_run_tokens < 1000
             || next.max_run_seconds == 0
             || next.max_run_seconds > 86400
@@ -519,7 +544,9 @@ impl Harness {
             }
             "reset_context" => {
                 let mut s = self.inner.lock().unwrap();
-                if !["idle", "completed", "failed", "stopped"].contains(&s.phase.as_str()) {
+                if !["idle", "completed", "failed", "stopped", "blocked"]
+                    .contains(&s.phase.as_str())
+                {
                     bail!("请先停止当前运行")
                 };
                 s.conversation = Conversation::default();
@@ -664,6 +691,14 @@ impl Harness {
             state.epoch = state.epoch.saturating_add(1);
             let epoch = state.epoch;
             state.phase = "stopping".into();
+            if let Some(goal) = state
+                .conversation
+                .goal
+                .as_mut()
+                .filter(|g| g.status == "active")
+            {
+                goal.status = "stopped".into();
+            }
             state.paused = false;
             state.run_deadline = None;
             state.active_budget_remaining = None;
@@ -787,7 +822,34 @@ impl Harness {
                 } else {
                     let stopped =
                         state.cancel.stopped() || result_error.as_deref() == Some("RUN_CANCELLED");
-                    state.phase = if timed_out {
+                    if let Some(goal) = state
+                        .conversation
+                        .goal
+                        .as_mut()
+                        .filter(|g| g.status == "active")
+                    {
+                        goal.status = if result_error
+                            .as_ref()
+                            .is_some_and(|e| e.starts_with("GOAL_BLOCKED"))
+                        {
+                            "blocked"
+                        } else if result_error.as_ref().is_some_and(|e| {
+                            e.starts_with("RUN_BUDGET") || e.starts_with("RUN_TIME_BUDGET")
+                        }) {
+                            "budget_exhausted"
+                        } else if stopped {
+                            "stopped"
+                        } else {
+                            "active"
+                        }
+                        .into();
+                    }
+                    state.phase = if result_error
+                        .as_ref()
+                        .is_some_and(|e| e.starts_with("GOAL_BLOCKED"))
+                    {
+                        "blocked"
+                    } else if timed_out {
                         "failed"
                     } else if stopped {
                         "stopped"
@@ -895,10 +957,12 @@ impl Harness {
 
             let previous_input_tokens =
                 latest_provider_input_tokens(&self.workspace.lock().unwrap(), &guard.id);
+            let estimated_history = estimate(&self.inner.lock().unwrap().conversation.input);
             if force_compact
                 || (settings.auto_compact
-                    && previous_input_tokens
-                        .is_some_and(|tokens| tokens > settings.compact_tokens as u64))
+                    && (previous_input_tokens
+                        .is_some_and(|tokens| tokens > settings.compact_tokens as u64)
+                        || estimated_history > settings.compact_tokens))
             {
                 self.compact_with_guard(&guard, force_compact).await?;
                 let mut state = self.inner.lock().unwrap();
@@ -936,7 +1000,7 @@ impl Harness {
                 state.queue_turn_complete = false;
             }
 
-            let (input, settings, steps_used, tokens_used) = {
+            let (mut input, settings, steps_used, tokens_used) = {
                 let state = self.inner.lock().unwrap();
                 let run = state.run.as_ref().context("没有活动run")?;
                 (
@@ -946,8 +1010,16 @@ impl Harness {
                     run.tokens,
                 )
             };
+            if !settings.send_images {
+                omit_images(&mut input);
+            }
             let context = self.context();
-            let system = prompts::system_prompt(&settings.language);
+            let system = format!(
+                "{}\n{}\n{}",
+                prompts::system_prompt(&settings.language),
+                prompts::preset_prompt(&settings.preset, &settings.language),
+                settings.detail_instructions
+            );
             let tool_schemas = tools_for_language(&settings.language);
             let remaining_steps = settings.max_steps.saturating_sub(steps_used);
             let remaining_tokens = settings.max_run_tokens.saturating_sub(tokens_used);
@@ -957,8 +1029,12 @@ impl Harness {
                 .saturating_add(estimate(std::slice::from_ref(&context)))
                 .saturating_add(estimate(std::slice::from_ref(&tool_schemas)))
                 .saturating_add(system.len() / 3)
-                .saturating_mul(2)
                 .saturating_add(2048);
+            if estimated_input_tokens.saturating_add(settings.max_output_tokens as usize)
+                > settings.context_window_tokens
+            {
+                bail!("CONTEXT_BUDGET：估算上下文与输出预留超过窗口，请compact或调高上下文窗口；原始历史已保留")
+            }
             let estimated_input_tokens_u64 =
                 u64::try_from(estimated_input_tokens).unwrap_or(u64::MAX);
             if remaining_tokens == 0 {
@@ -971,9 +1047,8 @@ impl Harness {
                 .deadline
                 .saturating_duration_since(tokio::time::Instant::now())
                 .as_secs_f64();
-            let request_budget_estimate = estimated_input_tokens_u64
-                .saturating_add(settings.max_output_tokens as u64)
-                .saturating_mul(3);
+            let request_budget_estimate =
+                estimated_input_tokens_u64.saturating_add(settings.max_output_tokens as u64);
             let near_budget = remaining_steps <= 3
                 || remaining_tokens <= request_budget_estimate
                 || remaining_seconds <= 120.0;
@@ -1040,6 +1115,9 @@ impl Harness {
                         "remainingSeconds":remaining_seconds,
                         "estimatedInputTokens":estimated_input_tokens,
                         "effectiveMaxOutputTokens":effective_output_tokens,
+                        "preset":settings.preset,
+                        "contextWindowTokens":settings.context_window_tokens,
+                        "goalMode":settings.goal_mode,
                     }),
                 )?;
             }
@@ -1076,7 +1154,13 @@ impl Harness {
                     return Err(error);
                 }
             };
-            let usage = response["usage"]["total_tokens"].as_u64().unwrap_or(0);
+            let usage = response["usage"]["total_tokens"].as_u64().unwrap_or_else(|| {
+                // Some compatible servers omit usage. Count a conservative local estimate
+                // rather than treating requests as free under a cumulative token budget.
+                let estimate = estimated_input_tokens_u64.saturating_add(estimate(std::slice::from_ref(&response)) as u64);
+                let _ = self.workspace.lock().unwrap().event("harness.usage.estimated",Some(&guard.id),json!({"requestId":request_id,"tokens":estimate,"reason":"Provider未报告usage；使用本地估算"}));
+                estimate
+            });
             self.record_request_attempt(&guard, &request_id, usage);
 
             if response["status"] == "incomplete" {
@@ -1228,40 +1312,14 @@ impl Harness {
                     "type":"input_text",
                     "text":serde_json::to_string(&value)?,
                 })];
-                if !cancelled && settings.model == "deepseek-flash" {
-                    if let Some(images) = value["images"].as_array() {
-                        for image in images {
-                            if let Some(artifact) = image["artifact"].as_str() {
-                                if !self.guard_is_current(&guard) {
-                                    cancel_remaining = true;
-                                    break;
-                                }
-                                match tokio::select! {
-                                    biased;
-                                    result = self.provider.image_part(
-                                        self.workspace.clone(),
-                                        artifact,
-                                        settings.upload_images,
-                                        &guard.cancel,
-                                    ) => result,
-                                    _ = guard.cancel.wait() => Err(anyhow::anyhow!("RUN_CANCELLED")),
-                                    _ = tokio::time::sleep_until(guard.deadline) => {
-                                        guard.cancel.stop();
-                                        budget_expired = true;
-                                        Err(anyhow::anyhow!("RUN_TIME_BUDGET"))
-                                    }
-                                } {
-                                    Ok(part) => parts.push(part),
-                                    Err(_) => {
-                                        cancel_remaining = true;
-                                        parts.push(json!({
-                                            "type":"input_text",
-                                            "text":"截图附件未能在中断前送达；后续可重新捕获。"
-                                        }));
-                                        break;
-                                    }
-                                }
-                            }
+                if !cancelled && settings.send_images {
+                    for image in value["images"].as_array().into_iter().flatten() {
+                        if let Some(artifact) = image["artifact"].as_str() {
+                            // Persist local references, resolve delivery only at the provider boundary.
+                            parts.push(json!({"type":"input_text","text":format!("真实截图视角：{}",image["view"].as_str().unwrap_or("view"))}));
+                            parts.push(
+                                json!({"type":"input_image","artifact":artifact,"detail":"high"}),
+                            );
                         }
                     }
                 }
@@ -1287,6 +1345,9 @@ impl Harness {
                 return Ok(());
             }
             if !called {
+                if self.continue_goal(&guard)? {
+                    continue;
+                }
                 let state = self.inner.lock().unwrap();
                 let has_next_work = !state.pending_interrupts.is_empty()
                     || !state.pending_steers.is_empty()
@@ -1347,6 +1408,46 @@ impl Harness {
             return Ok(());
         }
         for message in pending {
+            if state.settings.goal_mode && !message.prompt.trim().is_empty() {
+                let workspace = self.workspace.lock().unwrap();
+                let new_goal = state.conversation.goal.as_ref().is_none_or(|goal| {
+                    goal.project_id != workspace.project.id
+                        || goal.status == "achieved"
+                        || message.mode == "queue"
+                });
+                if new_goal {
+                    state.conversation.goal = Some(GoalProgress {
+                        id: uuid::Uuid::new_v4().to_string(),
+                        project_id: workspace.project.id.clone(),
+                        objective: message.prompt.clone(),
+                        criteria: state.settings.goal_criteria.clone(),
+                        status: "active".into(),
+                        min_review_rounds: state.settings.goal_min_review_rounds,
+                        reviewed_geometry_hashes: Vec::new(),
+                        continuations: 0,
+                        no_progress_attempts: 0,
+                        last_progress_signature: String::new(),
+                        assessment: String::new(),
+                    });
+                } else {
+                    let criteria = state.settings.goal_criteria.clone();
+                    let rounds = state.settings.goal_min_review_rounds;
+                    let goal = state.conversation.goal.as_mut().unwrap();
+                    goal.objective.push_str(&format!("\n{}", message.prompt));
+                    goal.criteria = criteria;
+                    goal.min_review_rounds = rounds;
+                    goal.status = "active".into();
+                    goal.continuations = 0;
+                    goal.no_progress_attempts = 0;
+                }
+                // Log objective and acceptance settings for iteration; no credentials are involved.
+                drop(workspace);
+                self.workspace.lock().unwrap().event(
+                    "goal.updated",
+                    Some(&guard.id),
+                    json!(state.conversation.goal),
+                )?;
+            }
             state.conversation.goals.push(message.prompt.clone());
             state
                 .conversation
@@ -1393,6 +1494,7 @@ impl Harness {
         self.context_with_options(&json!({}))
     }
     fn context_with_options(&self, args: &Value) -> Value {
+        let active_goal = self.inner.lock().unwrap().conversation.goal.clone();
         let workspace = self.workspace.lock().unwrap();
         let query = args["styleQuery"].as_str().unwrap_or("").to_lowercase();
         let offset = args["styleOffset"].as_u64().unwrap_or(0) as usize;
@@ -1468,6 +1570,7 @@ impl Harness {
             "styles":styles,
             "catalog":catalog,
             "pinnedNotes":workspace.project.pinned_notes,
+            "goal":active_goal,
             "sync":self.transport.state(),
             "sdkVersion":recipe::SDK_VERSION,
             "sdk":"mf.box(min,[w,h,d],{style:'wood',tint:0,motion:0}); mf.erase(min,size); mf.paint(min,size,{style}) recolors existing voxels only and never creates them; use mf.box to add voxels. mf.clear(); mf.group(name,()=>{}); mf.repeat(n,(i)=>{}); mf.mirror('x',()=>{}); mf.translate([x,y,z],()=>{}); mf.line(a,b,{thickness:1,style}); mf.stairs(origin,n,{width:3,depth:1,rise:1,style}); mf.wall(origin,w,h,{thickness:1,style}); mf.roof(origin,w,d,h,{style}); Math.random()/mf.random() deterministic by seed. All coordinates integer signed grid. Y is height. VRC target requires X/Z[-128,128),Y[0,256). Styles are catalog IDs/UID names. mode apply preserves current geometry; replace starts from empty."
@@ -1507,20 +1610,28 @@ impl Harness {
             }
             "voxel_text" => self.voxel_text(args, run, guard.as_ref()).await,
             "capture_views" => {
+                let (project_id, signature) = {
+                    let workspace = self.workspace.lock().unwrap();
+                    (workspace.project.id.clone(),goal::geometry_hash(&workspace))
+                };
                 let request = self.capture.request(self.workspace.clone(), args, run);
-                if let Some(guard) = guard {
+                let result = if let Some(guard) = guard {
                     tokio::select! {
                         biased;
                         result = request => result,
                         _ = guard.cancel.wait() => bail!("RUN_CANCELLED"),
                         _ = tokio::time::sleep_until(guard.deadline) => {
-                            guard.cancel.stop();
-                            bail!("RUN_TIME_BUDGET：截图超过运行时限")
+                            guard.cancel.stop(); bail!("RUN_TIME_BUDGET：截图超过运行时限")
                         }
                     }
-                } else {
-                    request.await
-                }
+                } else { request.await }?;
+                let matches = {
+                    let workspace = self.workspace.lock().unwrap();
+                    workspace.project.id == project_id && goal::geometry_hash(&workspace) == signature
+                        && result["revision"].as_u64() == Some(workspace.project.scene.revision)
+                };
+                if matches { self.record_goal_capture(&project_id,signature,&result)?; }
+                Ok(result)
             }
             "inspect_region" => {
                 let workspace = self.workspace.lock().unwrap();
@@ -1638,7 +1749,15 @@ impl Harness {
                 bail!("RUN_CANCELLED")
             }
             let mut workspace = self.workspace.lock().unwrap();
+            goal::check_goal_finish(&state, &workspace, args)?;
             let result = finish_artwork_in_workspace(&mut workspace, args, title, summary, run)?;
+            if state.settings.goal_mode {
+                if let Some(goal) = state.conversation.goal.as_mut() {
+                    goal.status = "achieved".into();
+                    goal.assessment = args["goalAssessment"].as_str().unwrap_or("").into();
+                    workspace.event("goal.achieved", run, json!(&goal))?;
+                }
+            }
             let run_state = state
                 .run
                 .as_mut()
@@ -1647,13 +1766,21 @@ impl Harness {
             run_state.message = summary.to_owned();
             Ok(result)
         } else {
-            finish_artwork_in_workspace(
-                &mut self.workspace.lock().unwrap(),
-                args,
-                title,
-                summary,
-                run,
-            )
+            let mut state = self.inner.lock().unwrap();
+            let mut workspace = self.workspace.lock().unwrap();
+            goal::check_goal_finish(&state, &workspace, args)?;
+            let result = finish_artwork_in_workspace(&mut workspace, args, title, summary, run)?;
+            if state.settings.goal_mode {
+                if let Some(goal) = state.conversation.goal.as_mut() {
+                    goal.status = "achieved".into();
+                    goal.assessment = args["goalAssessment"].as_str().unwrap_or("").into();
+                    workspace.event("goal.achieved", run, json!(&goal))?;
+                }
+            }
+            drop(workspace);
+            drop(state);
+            self.persist()?;
+            Ok(result)
         }
     }
 
@@ -1950,7 +2077,7 @@ impl Harness {
         };
         let before = latest_provider_input_tokens(&self.workspace.lock().unwrap(), &guard.id)
             .unwrap_or_default() as usize;
-        if before < 500 && !force {
+        if before.max(estimate(&conversation.input)) < 500 && !force {
             return Ok(());
         }
         let cut = conversation
@@ -2007,12 +2134,18 @@ impl Harness {
                     run.active_request_id = Some(request_id.clone());
                 }
             }
+            let remaining_tokens = {
+                let state = self.inner.lock().unwrap();
+                settings.max_run_tokens.saturating_sub(state.run.as_ref().map(|r|r.tokens).unwrap_or(0))
+            };
+            if remaining_tokens == 0 { bail!("RUN_BUDGET：compact前已无Token预算") }
+            let compact_output_cap = settings.max_output_tokens.min(4096).min(remaining_tokens.min(u32::MAX as u64) as u32);
             let payload = json!({
                 "model":settings.model,
                 "instructions":format!("{}\n{}",prompts::system_prompt(&settings.language),compact_prompt),
                 "input":[{"role":"user","content":prompt}],
                 "reasoning":{"effort":"none"},
-                "max_output_tokens":4096,
+                "max_output_tokens":compact_output_cap,
                 "stream":true
             });
             let trace = ProviderRequestTrace {
@@ -2022,6 +2155,10 @@ impl Harness {
                 language: Some(settings.language.clone()),
                 epoch: Some(guard.epoch),
             };
+            let compact_estimate = estimate(std::slice::from_ref(&payload));
+            if compact_estimate.saturating_add(compact_output_cap as usize) > settings.context_window_tokens {
+                bail!("CONTEXT_BUDGET：compact输入超过配置窗口，请提高窗口或重置上下文；原始历史仍保留")
+            }
             let response_result = tokio::select! {
                 biased;
                 result = self.provider.response_with_trace(
@@ -2041,7 +2178,7 @@ impl Harness {
             record_run_tokens(
                 &mut self.inner.lock().unwrap(),
                 &guard.id,
-                response["usage"]["total_tokens"].as_u64().unwrap_or(0),
+                response["usage"]["total_tokens"].as_u64().unwrap_or_else(||compact_estimate.saturating_add(estimate(std::slice::from_ref(&response))) as u64),
             );
             if response["status"] != "completed" {
                 bail!("RESPONSE_INCOMPLETE：compact响应未完整完成，旧上下文保留")
@@ -2065,6 +2202,7 @@ impl Harness {
                 "revisionAtCompact":revision,
                 "pinnedRequirements":pinned,
                 "userGoals":conversation.goals,
+                "creationGoal":conversation.goal,
                 "summary":summary,
                 "stateAuthority":"调用get_context重新读取当前工程/发布状态"
             });
@@ -2270,8 +2408,44 @@ fn validate_completed_output(output: &[Value]) -> Result<()> {
     Ok(())
 }
 
+fn omit_images(input: &mut Vec<Value>) {
+    fn visit(value: &mut Value) {
+        match value {
+            Value::Array(values) => {
+                values.retain(|v| v["type"] != "input_image");
+                for value in values {
+                    visit(value);
+                }
+            }
+            Value::Object(values) => {
+                for value in values.values_mut() {
+                    visit(value);
+                }
+            }
+            _ => {}
+        }
+    }
+    for value in input {
+        visit(value);
+    }
+}
+
 fn estimate(input: &[Value]) -> usize {
-    serde_json::to_vec(input).map(|b| b.len() / 3).unwrap_or(0)
+    fn cost(value: &Value) -> usize {
+        if value["type"] == "input_image" {
+            return 2048;
+        }
+        match value {
+            Value::String(text) => text.len().div_ceil(3),
+            Value::Array(items) => items.iter().map(cost).sum(),
+            Value::Object(items) => items
+                .iter()
+                .map(|(key, value)| key.len().div_ceil(3) + cost(value) + 4)
+                .sum(),
+            _ => 1,
+        }
+    }
+    input.iter().map(cost).sum()
 }
 
 fn latest_capture_images(workspace: &Workspace) -> Option<Vec<(String, String)>> {
@@ -2588,7 +2762,8 @@ pub fn tools_for_language(language: &str) -> Value {
                 "summary":{"type":"string","minLength":1,"maxLength":16000},
                 "tags":{"type":"array","items":{"type":"string","maxLength":128},"maxItems":64},
                 "views":{"type":"array","items":{"type":"string"},"maxItems":5},
-                "thumbnail":{"type":"string"}
+                "thumbnail":{"type":"string"},
+                "goalAssessment":{"type":"string","maxLength":16000,"description":"Goal模式必填；逐项对照目标说明结果及限制。Required in Goal mode: assess each criterion and disclose limitations."}
             }),
             vec!["title", "summary"]
         ),

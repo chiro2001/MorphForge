@@ -27,3 +27,7 @@ dist/**/*.zip
 desktop/src-tauri/binaries/
 dist/**/*.bundle
 dist/**/*.bundle.sha256
+
+# Local provider secrets (also excluded from diagnostics).
+provider-connection.json
+provider-connection.*.tmp

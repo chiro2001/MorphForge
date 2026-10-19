@@ -29,6 +29,16 @@ fn diagnostics_omit_credentials_and_binary_browser_data() {
     )
     .unwrap();
     fs::write(folder.path().join("provider.env"), "key=must-never-export").unwrap();
+    fs::write(
+        folder.path().join("provider-connection.json"),
+        "local-secret-must-not-export",
+    )
+    .unwrap();
+    fs::write(
+        folder.path().join("harness.json"),
+        "{\"preset\":\"detailed\"}",
+    )
+    .unwrap();
     fs::create_dir(folder.path().join("capture-browser")).unwrap();
     fs::write(folder.path().join("capture-browser/Cookies"), "private").unwrap();
     let bytes = morphforge_app::diagnostics::bundle(folder.path(), |s| {
@@ -37,6 +47,8 @@ fn diagnostics_omit_credentials_and_binary_browser_data() {
     .unwrap();
     let mut archive = zip::ZipArchive::new(std::io::Cursor::new(bytes)).unwrap();
     assert!(archive.by_name("provider.env").is_err());
+    assert!(archive.by_name("provider-connection.json").is_err());
+    assert!(archive.by_name("harness.json").is_ok());
     assert!(archive.by_name("capture-browser/Cookies").is_err());
     let mut text = String::new();
     archive

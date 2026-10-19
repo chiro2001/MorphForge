@@ -139,6 +139,7 @@ impl App {
             .route("/api/harness/control", post(harness_control))
             .route("/api/harness/tool", post(harness_tool))
             .route("/api/provider/models", get(models))
+            .route("/api/provider/config", post(provider_config))
             .route("/api/capture/jobs", get(capture_jobs))
             .route("/api/capture/result", post(capture_result))
             .route("/artifacts/{id}", get(artifact))
@@ -431,6 +432,9 @@ async fn pack_import(State(a): State<App>, mut multipart: Multipart) -> ApiResul
 }
 async fn harness_state(State(a): State<App>) -> ApiResult {
     Ok(Json(a.harness.state()))
+}
+async fn provider_config(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    Ok(Json(a.harness.configure_provider(&v)?))
 }
 async fn harness_config(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     Ok(Json(a.harness.configure(&v)?))

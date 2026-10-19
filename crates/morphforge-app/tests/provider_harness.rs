@@ -54,6 +54,7 @@ impl FakeResponses {
         };
         let router = Router::new()
             .route("/responses", post(responses_handler))
+            .route("/chat/completions", post(responses_handler))
             .with_state(state.clone());
         let task = tokio::spawn(async move {
             let _ = axum::serve(listener, router).await;
@@ -1217,6 +1218,7 @@ async fn failed_compact_keeps_old_context_and_records_failure() {
     let dir = tempfile::tempdir().unwrap();
     let workspace = workspace(&dir);
     let original = Conversation {
+        goal: None,
         input: vec![
             json!({"role":"user","content":"请保留整件作品的轮廓"}),
             json!({"type":"message","content":[{"type":"output_text","text":"目前完成底座"}]}),
@@ -1379,4 +1381,226 @@ fn old_harness_settings_default_to_a_900_second_run_budget() {
     }))
     .unwrap();
     assert_eq!(settings.max_run_seconds, 900);
+}
+
+#[test]
+fn presets_apply_budgets_and_explicit_overrides_without_restricting_models() {
+    let dir = TempDir::new().unwrap();
+    let harness = harness(workspace(&dir), "http://127.0.0.1:1");
+    let response = harness
+        .configure(&json!({"preset":"detailed","model":"my-local-vision-model","maxSteps":96}))
+        .unwrap();
+    assert_eq!(response["settings"]["maxSteps"], 96);
+    assert_eq!(response["settings"]["maxRunTokens"], 2000000);
+    assert_eq!(response["settings"]["goalMinReviewRounds"], 3);
+    assert_eq!(response["settings"]["goalMode"], true);
+    let sketch = harness.configure(&json!({"preset":"sketch"})).unwrap();
+    assert_eq!(sketch["settings"]["maxSteps"], 12);
+    assert_eq!(sketch["settings"]["goalMode"], false);
+    assert!(harness
+        .configure(&json!({"contextWindowTokens":8192}))
+        .is_err());
+    assert!(harness.configure(&json!({"preset":"unknown"})).is_err());
+}
+
+#[tokio::test]
+async fn goal_continues_until_no_progress_is_bounded_and_persisted() {
+    let fake = FakeResponses::start((0..4).map(|_|completed(vec![json!({"type":"message","role":"assistant","content":[{"type":"output_text","text":"完成了"}]} )])).collect()).await;
+    let dir = TempDir::new().unwrap();
+    let h = harness(workspace(&dir), &fake.base);
+    h.configure(&json!({"goalMode":true})).unwrap();
+    h.start("创建精细的作品").unwrap();
+    let run = terminal_run(&h).await;
+    assert_eq!(run.status, "blocked");
+    assert_eq!(fake.request_count(), 4);
+    assert_eq!(h.state()["context"]["goal"]["noProgressAttempts"], 3);
+    let persisted: Value =
+        serde_json::from_slice(&std::fs::read(dir.path().join("runs/conversation.json")).unwrap())
+            .unwrap();
+    assert_eq!(persisted["goal"]["status"], "blocked");
+    let before_goal = h.state()["context"]["goal"].clone();
+    fake.state.replies.lock().unwrap().push_back(completed(vec![json!({"type":"message","role":"assistant","content":[{"type":"output_text","text":"保留目标和未完成原因的摘要。"}]} )]));
+    h.control("compact").unwrap();
+    assert_eq!(terminal_run(&h).await.status, "completed");
+    assert_eq!(
+        h.state()["context"]["goal"],
+        before_goal,
+        "compact must preserve independent Goal progress and acceptance criteria"
+    );
+}
+
+#[tokio::test]
+async fn goal_requires_changed_geometry_captures_then_saves_and_keeps_images_local() {
+    let call = |id, name, args| completed(vec![function_call(id, name, args)]);
+    let fake = FakeResponses::start(vec![]).await;
+    let dir = TempDir::new().unwrap();
+    let w = workspace(&dir);
+    let h = harness(w.clone(), &fake.base);
+    h.configure(&json!({"goalMode":true,"goalMinReviewRounds":2}))
+        .unwrap();
+    let preview = h
+        .tool(
+            "voxel_text",
+            &json!({"mode":"preview","text":"A","fontSize":8,"styleId":1}),
+            None,
+        )
+        .await
+        .unwrap();
+    let first = preview["applyTemplate"].clone();
+    let preview = h
+        .tool(
+            "voxel_text",
+            &json!({"mode":"preview","text":"B","fontSize":8,"origin":[12,0,0],"styleId":1}),
+            None,
+        )
+        .await
+        .unwrap();
+    let mut second = preview["applyTemplate"].clone();
+    second["baseRevision"] = json!(1);
+    *fake.state.replies.lock().unwrap() = vec![
+        call("build-1","voxel_text",first),
+        call("capture-1","capture_views",json!({"revision":1,"views":["hero"]})),
+        call("capture-repeat","capture_views",json!({"revision":1,"views":["hero"]})),
+        call("finish-early","finish_artwork",json!({"title":"作品","summary":"应被拒绝","goalAssessment":"检查了结构"})),
+        call("build-2","voxel_text",second),
+        call("capture-2","capture_views",json!({"revision":2,"views":["hero"]})),
+        call("finish-final","finish_artwork",json!({"title":"作品","summary":"完成两轮检查与修改","goalAssessment":"主体已建立，并根据截图补充连接结构；无声称额外细节。"})),
+    ].into();
+    let capture = h.capture.clone();
+    let capture_workspace = w.clone();
+    let worker = tokio::spawn(async move {
+        for _ in 0..3 {
+            complete_pending_capture(capture.clone(), capture_workspace.clone()).await;
+        }
+    });
+    h.start("搭建有细节的体素作品").unwrap();
+    let run = terminal_run(&h).await;
+    worker.await.unwrap();
+    assert_eq!(run.status, "completed", "{}", run.error);
+    assert_eq!(fake.request_count(), 7);
+    let state = h.state();
+    let goal = &state["context"]["goal"];
+    assert_eq!(goal["status"], "achieved");
+    assert_eq!(goal["reviewedGeometryHashes"].as_array().unwrap().len(), 2);
+    assert!(w
+        .lock()
+        .unwrap()
+        .events
+        .iter()
+        .any(|e| e.kind == "tool.result" && e.data.to_string().contains("GOAL_REVIEW_REQUIRED")));
+    let history = std::fs::read_to_string(dir.path().join("runs/conversation.json")).unwrap();
+    assert!(!history.contains("data:image/"));
+    assert!(history.contains("artifact"));
+    assert!(fake
+        .requests()
+        .iter()
+        .any(|v| v.to_string().contains("data:image/png;base64,")));
+}
+
+#[tokio::test]
+async fn chat_json_and_sse_providers_keep_tool_loop_and_usage() {
+    for streaming in [false, true] {
+        let first = json!({"id":"chat-1","choices":[{"index":0,"message":{"role":"assistant","tool_calls":[{"id":"ctx-1","type":"function","function":{"name":"get_context","arguments":"{}"}}]},"finish_reason":"tool_calls"}],"usage":{"prompt_tokens":10,"completion_tokens":4,"total_tokens":14}});
+        let second = json!({"id":"chat-2","choices":[{"index":0,"message":{"role":"assistant","content":"中文完成"},"finish_reason":"stop"}],"usage":{"prompt_tokens":15,"completion_tokens":5,"total_tokens":20}});
+        let replies = if streaming {
+            vec![
+                Reply::Sse(format!(
+                    "data: {}\r\n\r\ndata: {}\n\ndata: [DONE]\r\n\r\n",
+                    json!({"id":"chat-1","choices":[{"index":0,"delta":{"tool_calls":[{"index":0,"id":"ctx-1","function":{"name":"get_context","arguments":"{}"}}]},"finish_reason":"tool_calls"}]}),
+                    json!({"choices":[],"usage":first["usage"]})
+                )),
+                Reply::Sse(format!(
+                    "data: {}\r\n\r\ndata: [DONE]\n\n",
+                    json!({"id":"chat-2","choices":[{"index":0,"delta":{"content":"中文完成"},"finish_reason":"stop"}],"usage":second["usage"]})
+                )),
+            ]
+        } else {
+            vec![Reply::Http(200, first), Reply::Http(200, second)]
+        };
+        let fake = FakeResponses::start(replies).await;
+        let dir = TempDir::new().unwrap();
+        let h = harness(workspace(&dir), &fake.base);
+        h.configure_provider(&json!({"apiType":"chat","stream":streaming,"sendReasoning":false}))
+            .unwrap();
+        h.configure(&json!({"model":"custom-model"})).unwrap();
+        h.start("读取当前状态").unwrap();
+        let run = terminal_run(&h).await;
+        assert_eq!(run.status, "completed", "{}", run.error);
+        assert_eq!(run.tokens, 34);
+        let requests = fake.requests();
+        assert_eq!(requests[0]["model"], "custom-model");
+        assert!(requests[0].get("reasoning_effort").is_none());
+        assert!(requests[1]["messages"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|m| m["role"] == "tool" && m["tool_call_id"] == "ctx-1"));
+    }
+}
+
+#[tokio::test]
+async fn chat_stream_without_done_never_executes_partial_tools() {
+    let fake=FakeResponses::start(vec![Reply::Sse(format!("data: {}\n\n",json!({"choices":[{"index":0,"delta":{"tool_calls":[{"index":0,"id":"unsafe","function":{"name":"run_recipe","arguments":"{\"code\":\"mf.clear();\"}"}}]},"finish_reason":"tool_calls"}]})))]).await;
+    let dir = TempDir::new().unwrap();
+    let w = workspace(&dir);
+    let h = harness(w.clone(), &fake.base);
+    h.configure_provider(&json!({"apiType":"chat"})).unwrap();
+    h.start("创建作品").unwrap();
+    let run = terminal_run(&h).await;
+    assert_eq!(run.status, "failed");
+    assert!(!w
+        .lock()
+        .unwrap()
+        .events
+        .iter()
+        .any(|e| e.kind == "tool.request"));
+}
+
+#[tokio::test]
+async fn provider_connection_is_frozen_during_running_and_paused_runs() {
+    let fake = FakeResponses::start(vec![Reply::Delay(
+        Duration::from_millis(1000),
+        Box::new(completed(vec![])),
+    )])
+    .await;
+    let dir = TempDir::new().unwrap();
+    let h = harness(workspace(&dir), &fake.base);
+    h.start("等待检查").unwrap();
+    assert!(h.configure_provider(&json!({"apiType":"chat"})).is_err());
+    h.control("pause").unwrap();
+    tokio::time::sleep(Duration::from_millis(25)).await;
+    assert!(h.configure_provider(&json!({"apiType":"chat"})).is_err());
+    h.control("stop").unwrap();
+}
+
+#[tokio::test]
+async fn missing_usage_is_estimated_and_sensitive_provider_echoes_are_redacted() {
+    let fake=FakeResponses::start(vec![sse([
+        json!({"type":"response.output_text.delta","delta":"local-secret-fixture"}),
+        json!({"type":"response.completed","response":{"id":"echo","status":"completed","output":[{"type":"message","role":"assistant","content":[{"type":"output_text","text":"local-secret-fixture"}]}]}}),
+    ])]).await;
+    let dir = TempDir::new().unwrap();
+    let w = workspace(&dir);
+    let h = harness(w.clone(), &fake.base);
+    h.configure_provider(&json!({"apiKey":"local-secret-fixture"}))
+        .unwrap();
+    h.start("读取当前状态").unwrap();
+    let run = terminal_run(&h).await;
+    assert_eq!(run.status, "completed");
+    assert!(
+        run.tokens > 1000,
+        "missing usage must not be counted as zero"
+    );
+    assert_eq!(run.message, "[REDACTED]");
+    assert!(
+        !std::fs::read_to_string(dir.path().join("events/events.jsonl"))
+            .unwrap()
+            .contains("local-secret-fixture")
+    );
+    assert!(w
+        .lock()
+        .unwrap()
+        .events
+        .iter()
+        .any(|e| e.kind == "harness.usage.estimated"));
 }

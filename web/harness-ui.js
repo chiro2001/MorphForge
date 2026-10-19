@@ -5,6 +5,7 @@ const TERMINAL_PHASES = new Set([
   "stopped",
   "cancelled",
   "rejected",
+  "blocked",
 ]);
 
 export function normalizeHarness(h = {}) {
@@ -25,6 +26,7 @@ export function normalizeHarness(h = {}) {
     "stopped",
     "cancelled",
     "rejected",
+    "blocked",
   ].includes(status);
   const active = !!run && !terminalStatus && !TERMINAL_PHASES.has(phase);
   return {
@@ -70,6 +72,7 @@ export function phaseLabel(snapshot) {
     paused: "已暂停",
     compacting: "整理上下文",
     completed: "已完成",
+    blocked: "等待调整",
     failed: "运行中断",
     stopped: "已停止",
     cancelled: "已取消",

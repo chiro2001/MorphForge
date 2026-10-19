@@ -1,0 +1,36 @@
+{
+  "checks": [
+    {
+      "name": "rust-tests",
+      "logSha256": "c45753459b580bdf9707e8ecf5d64ca654628fe7903ef43278ec4837018f81da",
+      "passed": true,
+      "rustPassed": 86,
+      "nodeSummary": []
+    },
+    {
+      "name": "goal-compact",
+      "logSha256": "8e9b404041a46b7c54e82d99dd164cffc5c692f07f77230dcbe15f9ca97e7882",
+      "passed": true,
+      "rustPassed": 1,
+      "nodeSummary": []
+    },
+    {
+      "name": "node-tests",
+      "logSha256": "9a8e3ece713a4eef22d9a48ba13d35fe4f0a5fb7fd939220b4ef75775998fcc7",
+      "passed": true,
+      "rustPassed": 0,
+      "nodeSummary": [
+        "\u2139 tests 24",
+        "\u2139 pass 24",
+        "\u2139 fail 0"
+      ]
+    },
+    {
+      "name": "clippy",
+      "logSha256": "445ff6433ebd1ae294318de89da292e798038e5a58e8cb4d40b515a323cece95",
+      "passed": true,
+      "rustPassed": 0,
+      "nodeSummary": []
+    }
+  ]
+}

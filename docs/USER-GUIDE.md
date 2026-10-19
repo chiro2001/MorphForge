@@ -15,7 +15,7 @@
 
 ## 1. 安装与启动
 
-使用 `dist/windows/MorphForge Desktop_0.2.0_x64-setup.exe`，以当前用户模式安装。默认安装目录是：
+使用 `dist/windows/MorphForge Desktop_0.3.0_x64-setup.exe`，以当前用户模式安装。默认安装目录是：
 
 ```text
 %LOCALAPPDATA%\MorphForge Desktop
@@ -52,42 +52,15 @@ http://127.0.0.1:8766
 
 安装器目前没有代码签名。安装目录与作品数据目录分离；升级或卸载前，建议备份 `%LOCALAPPDATA%\MorphForge`。
 
-## 2. 配置 DeepSeek
+## 2. 配置模型与创作档位
 
-在默认数据根创建或编辑：
+在「AI创作 → API连接」填写服务 Base URL、Chat Completions / Responses 类型和本机 Key；模型栏可直接输入服务支持的模型名。保存后输入框清空，Key 仅存于用户数据目录的 `provider-connection.json`，状态接口和诊断包不会返回 Key。更换地址时需重新填写对应 Key；活跃运行或暂停期间先停止再换连接。
 
-```text
-%LOCALAPPDATA%\MorphForge\provider.env
-```
+默认内嵌截图，无需服务提供文件上传接口。只支持文字的模型可关闭「向模型发送真实截图」。普通兼容服务建议关闭扩展推理参数；可切换流式/JSON 响应以及 Chat 输出字段。原 DeepSeek 环境文件仍作为没有本机连接配置时的回退，`~/litellm/.env` 也继续支持。
 
-内容格式：
+创作预设分为快速草图、标准创作、精细作品。选择时会应用不同提示词与预算，随后可逐项调整。精细档默认要求3轮不同几何的真实截图复核；额外细化要求和 Goal 验收要求可单独填写。上下文窗口需要与所选模型实际能力相符，预设不是耗时/质量承诺。
 
-```dotenv
-DEEPSEEK_API_KEY=你的密钥
-MORPHFORGE_DEEPSEEK_BASE_URL=https://api.deepseek.com
-```
-
-`MORPHFORGE_DEEPSEEK_BASE_URL` 可省略，默认使用官方接口。不要把真实密钥写进工程、截图、README 或聊天记录。
-
-建议将该文件限制为当前 Windows 用户访问。先在这个用户的桌面会话中执行：
-
-```powershell
-$data = Join-Path $env:LOCALAPPDATA 'MorphForge'
-$envFile = Join-Path $data 'provider.env'
-New-Item -ItemType Directory -Force $data | Out-Null
-notepad $envFile
-$me = [Security.Principal.WindowsIdentity]::GetCurrent().Name
-icacls $envFile /inheritance:r /grant:r ($me + ':(R,W)')
-```
-
-文件内容编辑完成并保存后，重启 MorphForge。AI 页签右侧应显示“Key已配置”。
-
-当前模型：
-
-- `deepseek-flash`：支持图片输入，适合搭建、截图检查、修正的完整循环。
-- `deepseek-v4-pro`：用于模型文字和工具调用；当前 Harness 不会把截图图片回传给该模型。
-
-`provider.env` 不会被工程导出、材质目录 ZIP 或诊断包带出。诊断导出会排除该文件，并替换已知 Key。不要手动把密钥放进 `pinnedNotes`、Prompt 或作品标签。
+完整设置、默认预算、Goal续作与compact机制见 [兼容 API、预设与 Goal](PROVIDERS-PRESETS-GOALS.md)。不要把 Key 放入固定要求、Prompt、作品标签或截图。
 
 ## 3. 工作台总览
 

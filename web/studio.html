@@ -140,13 +140,98 @@
         <section id="tab-ai">
           <div class="row">
             <label
-              >模型<select id="model">
-                <option>deepseek-flash</option>
-                <option>deepseek-v4-pro</option>
-              </select></label
-            >
+              >模型<input
+                id="model"
+                list="modelSuggestions"
+                placeholder="输入服务支持的模型名"
+              />
+              <datalist id="modelSuggestions">
+                <option value="deepseek-flash"></option>
+                <option value="deepseek-v4-pro"></option>
+              </datalist>
+            </label>
             <span id="providerState" class="badge">检查配置</span>
           </div>
+          <details id="providerConnection">
+            <summary>API 连接 · Chat / Responses</summary>
+            <label
+              >Base URL<input
+                id="providerBase"
+                type="url"
+                placeholder="https://服务地址/v1"
+                autocomplete="off"
+            /></label>
+            <div class="double">
+              <label
+                >协议<select id="providerApi">
+                  <option value="responses">Responses</option>
+                  <option value="chat">Chat Completions</option>
+                </select></label
+              >
+              <label
+                >图片传递<select id="providerImages">
+                  <option value="inline">内嵌图片（无需上传接口）</option>
+                  <option value="files">
+                    Files 引用（仅支持的 Responses 服务）
+                  </option>
+                </select></label
+              >
+            </div>
+            <label
+              >API Key<input
+                id="providerKey"
+                type="password"
+                autocomplete="new-password"
+                placeholder="留空保留当前 Key；更换地址需重新填写"
+            /></label>
+            <div class="double">
+              <label
+                ><input
+                  id="providerStream"
+                  type="checkbox"
+                  checked
+                />流式响应</label
+              >
+              <label
+                ><input
+                  id="providerReasoning"
+                  type="checkbox"
+                />发送推理强度参数</label
+              >
+              <label
+                ><input
+                  id="providerRequiresKey"
+                  type="checkbox"
+                  checked
+                />服务需要 Key</label
+              >
+              <label
+                ><input id="providerClearKey" type="checkbox" />清除已存
+                Key</label
+              >
+            </div>
+            <label
+              >Chat 输出字段<select id="providerTokenField">
+                <option value="max_tokens">max_tokens</option>
+                <option value="max_completion_tokens">
+                  max_completion_tokens
+                </option>
+              </select></label
+            >
+            <p class="caption">
+              仅保存在本机数据目录；状态和诊断包不包含
+              Key。模型需支持工具调用；不支持图片时可在预算设置中关闭图片。
+            </p>
+            <button id="saveProvider" class="wide">保存连接</button>
+          </details>
+          <label
+            >创作预设<select id="preset">
+              <option value="sketch">快速草图 · 轮廓优先</option>
+              <option value="standard">标准创作 · 结构与细节</option>
+              <option value="detailed">精细作品 · 多轮复核</option>
+            </select></label
+          >
+          <p id="presetHint" class="caption"></p>
           <div class="double">
             <label
               >思考<select id="reasoning">
@@ -161,7 +246,7 @@
                 id="maxSteps"
                 type="number"
                 min="1"
-                max="100"
+                max="4096"
                 value="24"
             /></label>
           </div>
@@ -187,9 +272,34 @@
                 id="maxOutputTokens"
                 type="number"
                 min="512"
-                max="65536"
+                max="262144"
                 value="16384"
             /></label>
+            <label
+              >模型上下文窗口（Token）<input
+                id="contextWindowTokens"
+                type="number"
+                min="8192"
+                max="4194304"
+                value="131072"
+            /></label>
+            <label
+              ><input
+                id="sendImages"
+                type="checkbox"
+                checked
+              />向模型发送真实截图</label
+            >
+            <label
+              >额外细化要求<textarea
+                id="detailInstructions"
+                rows="3"
+                placeholder="例如：细化主体结构、连接件与边缘层次；优先前景，避免随机装饰"
+              ></textarea>
+            </label>
+            <p class="caption">
+              预设预算是上限，不是耗时或质量保证。请按所选模型实际支持的上下文与输出窗口调整。
+            </p>
             <label
               >提示词工具语言<select id="language">
                 <option value="zh-CN">简体中文</option>
@@ -198,6 +308,39 @@
             >
           </details>
 
+          <details id="goalPanel">
+            <summary>创作 Goal · 有界续作与复核</summary>
+            <label><input id="goalMode" type="checkbox" />启用 Goal 续作</label>
+            <div class="double">
+              <label
+                >最少复核轮数<input
+                  id="goalMinReviewRounds"
+                  type="number"
+                  min="1"
+                  max="16"
+                  value="1"
+              /></label>
+              <label
+                >最多自动续作<input
+                  id="goalMaxContinuations"
+                  type="number"
+                  min="1"
+                  max="128"
+                  value="6"
+              /></label>
+            </div>
+            <label
+              >验收要求<textarea
+                id="goalCriteria"
+                rows="3"
+                placeholder="例如：主体比例清晰；完成屋顶、入口、标牌；检查至少三个视角"
+              ></textarea>
+            </label>
+            <p id="goalStatus" class="caption">尚无创作目标</p>
+            <p class="caption">
+              相同几何的重复截图不增加轮数。续作共用本次预算；连续三次无进展会停止并保留草稿。恢复后输入新要求可继续，重启不会自动调用模型。
+            </p>
+          </details>
           <div class="chat-heading">
             <span>对话</span>
             <span class="caption">消息按顺序保留，刷新不会重复。</span>

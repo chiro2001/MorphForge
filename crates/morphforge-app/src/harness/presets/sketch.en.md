@@ -1,0 +1,1 @@
+Quick sketch: prioritize speed, silhouette, proportions and negative space. Use large cuboids and a small coherent palette. Avoid per-voxel sculpting, repeated ornaments and unrelated props. Capture the recognizable composition, fix obvious structural issues, then finish_artwork. Explicit user requirements take precedence.

@@ -11,7 +11,11 @@ param(
 
     [string]$ReportPath = "",
 
-    [string]$FreezeManifest = ""
+    [string]$FreezeManifest = "",
+
+    [string]$ExpectedToolsVersion = "morphforge-tools/2.3",
+
+    [string]$ExpectedPromptVersion = "morphforge-system/2.3"
 )
 
 $ErrorActionPreference = "Stop"
@@ -558,8 +562,8 @@ try {
         ($enNames -join ",") -eq ($expectedNames -join ",") -and
         $zh.version -eq $en.version -and
         $zh.promptVersion -eq $en.promptVersion -and
-        $zh.version -eq "morphforge-tools/2.3" -and
-        $zh.promptVersion -eq "morphforge-system/2.3"
+        $zh.version -eq $ExpectedToolsVersion -and
+        $zh.promptVersion -eq $ExpectedPromptVersion
     ) -Details @{
         toolCount = $zhNames.Count
         version = $zh.version

@@ -26,3 +26,7 @@ Windows新克隆需保留仓库的`.gitattributes`。它让源码使用LF，即�
 
 真实客户端验收仍待用户确认；[最终Avatar](security-check-failure/FINAL-FULLFT.md)
 已通过实际上传和服务端三项分析，候选源码版本不代表客户端/多人已验收。
+
+## 0.3 软件候选更新
+
+新功能分支 `feat/provider-presets-and-goals` 提供兼容 API、三档创作预设和有界 Goal。对应安装器为0.3.0，新的构建冻结清单与验证在 [quality-v3](quality-v3/RESULTS.md)。0.2 的Avatar验收状态与历史标签保持独立，软件升级不代表已完成客户端现场验证。

@@ -40,6 +40,7 @@ pub fn bundle(root: &Path, redact: impl Fn(&str) -> String) -> Result<Vec<u8>> {
         "project.json",
         "connection.json",
         "harness-settings.json",
+        "harness.json",
         "conversation.json",
     ] {
         let p = root.join(name);

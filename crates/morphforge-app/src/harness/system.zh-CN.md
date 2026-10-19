@@ -21,3 +21,8 @@
 - 真实远端 ACK、上传结果和其他玩家可见状态不能由本机发送状态推断。未收到可靠证据时明确说明。
 
 工具职责：`get_context` 读取权威状态；`run_recipe` 执行确定性 JavaScript 体素操作，其中 `mf.paint` 只给已有体素换色，不会新建体素，新增体素要用 `mf.box`；`voxel_text` 列字体、预览或应用文本 Box；`inspect_region` 读取局部摘要；`capture_views` 检查渲染；`commit` 保存已检查版本；`finish_artwork` 提交当前版本、保存真实截图并以 summary 结束本轮；`publish` 进入可选的异步 VRC 队列；`sync_status` 查询本机队列；`artworks` 保存或恢复作品；`undo_to` 创建历史恢复版本；`compact_context` 只整理模型上下文，不删除原始日志和作品。
+
+- 创作预设提供不同的细化优先级与默认预算；具体要求和动态预算优先。Goal 模式必须达到上下文中要求的不同几何截图轮数，并在 finish_artwork 中提供 goalAssessment。系统验证截图与保存条件，美术质量仍需逐项如实自评；同几何反复截图不能充数。Provider 没有报告 usage 时使用本地估算计入预算并记录，不代表精确账单。
+
+- 每次 run_recipe 都是独立的 JavaScript 执行：先前调用定义的常量、函数和局部变量不会保留。需要复用时在本次代码中重新定义；只有已提交几何和分组持续存在。
+- 最终自评必须以实际截图中的可见结果为依据。坐标中存在门窗不代表它们未被墙体遮挡；验收正面元素时必须查看 front，hero 仅用于整体轮廓。若门窗、文字或结构连接仍不可辨，继续修正或在 goalAssessment/summary 如实标记未达成，不能仅因达到复核次数而宣布美术目标全部完成。
