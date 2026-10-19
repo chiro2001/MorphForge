@@ -1,0 +1,27 @@
+{
+  "success": true,
+  "generatedAtUtc": "2026-10-19T02:13:45.0326473Z",
+  "changes": [
+    {
+      "path": "Assets/MorphForge/FullFT/MorphForge_FullFT.unity",
+      "beforeName": "Avatar",
+      "afterName": "MorphForge_FullFT_Avatar",
+      "beforeSha256": "335ccf4f416548571b01abf91c6e818c4d71a2c37b5ddd204db63a1466466926",
+      "afterSha256": "eae24c544d8867c8829297d6a54e92601185be1b912259c5206f90b45c520f31",
+      "profileMatches": true,
+      "placementUnchanged": true
+    },
+    {
+      "path": "Assets/MorphForge/Diagnostics/FinalFullFT/MorphForge_FinalFullFT_Diagnostic.unity",
+      "beforeName": "Avatar",
+      "afterName": "MorphForge_FullFT_Avatar",
+      "beforeSha256": "c90540a76714190e3f4978b65882c995e459ecb982d8d132f8309119fb3ed7de",
+      "afterSha256": "4517b86cedad385aacec629bc9a8e7478ae63d7f1a3d78badefe3346f2912153",
+      "profileMatches": true,
+      "placementUnchanged": true
+    }
+  ],
+  "originalStage3Changed": false,
+  "prefabWritten": false,
+  "uploaded": false
+}

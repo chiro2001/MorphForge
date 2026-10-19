@@ -1,0 +1,97 @@
+{
+  "success": true,
+  "scope": "Read-only saved scene dependency and prefab-instance override audit",
+  "generatedAtUtc": "2026-10-19T02:15:58.7718733Z",
+  "scenePath": "Assets/MorphForge/FullFT/MorphForge_FullFT.unity",
+  "sceneSha256": "eae24c544d8867c8829297d6a54e92601185be1b912259c5206f90b45c520f31",
+  "sceneLastWriteTimeUtc": "2026-10-19T02:13:44.6006015Z",
+  "prefabPath": "Assets/MorphForge/FullFT/Avatar.prefab",
+  "prefabGuid": "ebbdec8ebe6c9dc438ca91015d71355a",
+  "oldControllerPath": "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller",
+  "oldControllerGuid": "f076f0ea1d85fa146813fa93fc12f722",
+  "newControllerPath": "Assets/MorphForge/FullFT/Nemesis_Locomotion_NoSleep.controller",
+  "newControllerGuid": "cc9d4768eb604ee4b90c59e0bddddff3",
+  "dependencyCount": 1029,
+  "controllerDependencies": [
+    "Assets/MoeWhite/VRCFT/Anim/FX - AutoToggle.controller",
+    "Assets/MoeWhite/VRCFT/Anim/FX - FaceTrackinExtend.controller",
+    "Assets/MoeWhite/VRCFT/Anim/FX - MixExpressions.controller",
+    "Assets/MoeWhite/VRCFT/EyeLinkEar/EyeLinkEar_FX.controller",
+    "Assets/MoeWhite/VRCFT/adjerry91.vrcft.templates/Animators/Eye Rotation/Additive - Eye Tracking - Eye Rotation.controller",
+    "Assets/MoeWhite/VRCFT/adjerry91.vrcft.templates/Animators/FX - Face Tracking - Shared.controller",
+    "Assets/MoeWhite/VRCFT/adjerry91.vrcft.templates/Animators/Unified Expressions Blendshapes/FX - Face Tracking - UE Blendshapes TongueSteps.controller",
+    "Assets/MoeWhite/VRCFT/adjerry91.vrcft.templates/Face Tracking Debug/Animations/FT_UE_Debug.controller",
+    "Assets/MorphForge/FullFT/Nemesis_Locomotion_NoSleep.controller",
+    "Assets/MorphForge/Stage4/Geometry/FX.controller",
+    "Assets/MorphForge/Stage4/Placement/Placement.controller",
+    "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Action.controller",
+    "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_FX_v_1_1_0.controller",
+    "Assets/Nemesis/Nemesis_Lod/Animation/WandController.controller",
+    "Assets/Nemesis/Nemesis_Lod/Gimic/Fire/Menu/DarkFIRE.controller",
+    "Assets/Nemesis/Nemesis_Lod/Gimic/LaserBit/WL36_Contoroller.controller",
+    "Assets/Nemesis/Nemesis_Lod/Gimic/RailGun/LRG_FX.controller",
+    "Assets/Nemesis/Nemesis_Lod/Gimic/Reticle/Reticle.controller",
+    "Assets/Nemesis/Nemesis_Lod/Gimic/Shield/Shield_FX.controller",
+    "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/Controllers/vrc_AvatarV3LocomotionLayer.controller"
+  ],
+  "usesNoSleepController": true,
+  "usesOriginalLocomotionController": false,
+  "packageDependencies": [],
+  "prefabInstanceModificationCount": 137,
+  "baseLayerOrControllerModificationPaths": [],
+  "oldControllerGuidInSceneText": false,
+  "newControllerGuidInSceneText": false,
+  "forbiddenTextHits": [
+    {
+      "text": "minminmean",
+      "count": 0
+    },
+    {
+      "text": "VRCSupine",
+      "count": 0
+    },
+    {
+      "text": "Supine",
+      "count": 0
+    }
+  ],
+  "interpretation": "The saved scene inherits the repaired prefab and has no Base layer controller override.",
+  "activeScenesBefore": [
+    {
+      "path": "Assets/MorphForge/Diagnostics/FinalFullFT/MorphForge_FinalFullFT_Diagnostic.unity",
+      "name": "MorphForge_FinalFullFT_Diagnostic",
+      "isLoaded": true,
+      "isDirty": true,
+      "isActive": true
+    },
+    {
+      "path": "Packages/nadena.dev.ndmf/Runtime/___NDMF Preview___.unity",
+      "name": "___NDMF Preview___",
+      "isLoaded": true,
+      "isDirty": false,
+      "isActive": false
+    }
+  ],
+  "activeScenesAfter": [
+    {
+      "path": "Assets/MorphForge/Diagnostics/FinalFullFT/MorphForge_FinalFullFT_Diagnostic.unity",
+      "name": "MorphForge_FinalFullFT_Diagnostic",
+      "isLoaded": true,
+      "isDirty": true,
+      "isActive": true
+    },
+    {
+      "path": "Packages/nadena.dev.ndmf/Runtime/___NDMF Preview___.unity",
+      "name": "___NDMF Preview___",
+      "isLoaded": true,
+      "isDirty": false,
+      "isActive": false
+    }
+  ],
+  "activeSceneStateChanged": false,
+  "nonActions": [
+    "No scene was opened, switched, saved, closed, or marked clean.",
+    "No asset was created, modified, imported, or deleted.",
+    "No Play Mode, build, upload, VRChat launch, or OSC send occurred."
+  ]
+}

@@ -1,0 +1,279 @@
+{
+  "success": true,
+  "scope": "read-only Unity audit; no asset, prefab, scene, play mode, build, or VRChat action",
+  "generatedAtUtc": "2026-10-19T02:15:56.8985084Z",
+  "prefabPath": "Assets/MorphForge/FullFT/Avatar.prefab",
+  "prefabGuid": "ebbdec8ebe6c9dc438ca91015d71355a",
+  "activeScenesBefore": [
+    {
+      "path": "Assets/MorphForge/Diagnostics/FinalFullFT/MorphForge_FinalFullFT_Diagnostic.unity",
+      "name": "MorphForge_FinalFullFT_Diagnostic",
+      "isLoaded": true,
+      "isDirty": true,
+      "isActive": true
+    },
+    {
+      "path": "Packages/nadena.dev.ndmf/Runtime/___NDMF Preview___.unity",
+      "name": "___NDMF Preview___",
+      "isLoaded": true,
+      "isDirty": false,
+      "isActive": false
+    }
+  ],
+  "installedMatchingPackages": [
+    {
+      "name": "minminmean.supine",
+      "displayName": "Gorone System (Supine)",
+      "version": "5.1.0",
+      "source": "Embedded",
+      "resolvedPath": "D:\\Projects\\VRChatProjects2\\MorphForge\\Packages\\minminmean.supine"
+    }
+  ],
+  "prefab": {
+    "root": "Avatar",
+    "sha256": "669dd8fe902c60055dcc616d26edbeada8c98a114b900f399d7d2cbb7329e328",
+    "prefabAssetType": "Regular",
+    "gameObjectCount": 665,
+    "componentCount": 1183,
+    "missingScriptCount": 0,
+    "missingScripts": []
+  },
+  "keywordComponentHits": [],
+  "keywordGameObjectHits": [],
+  "serializedPropertyHits": [
+    {
+      "gameObject": "Avatar[0]",
+      "component": "VRC.SDK3.Avatars.Components.VRCAvatarDescriptor",
+      "propertyPath": "baseAnimationLayers.Array.data[0].animatorController",
+      "value": null,
+      "referencedPath": "Assets/MorphForge/FullFT/Nemesis_Locomotion_NoSleep.controller",
+      "referencedName": "Nemesis_Locomotion_NoSleep",
+      "reason": "object reference"
+    }
+  ],
+  "dependencyAudit": {
+    "directCount": 29,
+    "recursiveCount": 1023,
+    "sortedPathsSha256": "19b8624a3f7b7b39d2cbc76f1fcf691fd6d19739553a750ddea760eb26e000d5",
+    "keywordMatches": [
+      "Assets/MorphForge/FullFT/Nemesis_Locomotion_NoSleep.controller",
+      "Assets/Nemesis/Nemesis_Avatar/OtherAnimation/nemesis_CrouchingLocomotion.asset",
+      "Assets/Nemesis/Nemesis_Avatar/OtherAnimation/nemesys_crouch_still.anim",
+      "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/BlendTrees/vrc_CrouchingLocomotion.asset",
+      "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_crouch_still.anim",
+      "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_crouch_walk_forward.anim",
+      "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_crouch_walk_right.anim",
+      "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_crouch_walk_right_135.anim",
+      "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_crouch_walk_right_45.anim",
+      "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_supine_getup.anim"
+    ],
+    "supineNamedMatches": [
+      "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_supine_getup.anim"
+    ],
+    "officialVrchatSupineSamples": [
+      "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_supine_getup.anim"
+    ],
+    "unexplainedSupineNames": [],
+    "packageMatches": []
+  },
+  "controllerAudit": {
+    "controllersInspected": 20,
+    "matchingParameters": [
+      "Assets/MorphForge/FullFT/Nemesis_Locomotion_NoSleep.controller :: VRCLockPose",
+      "Assets/MorphForge/FullFT/Nemesis_Locomotion_NoSleep.controller :: VRCFootAnchor",
+      "Assets/MorphForge/FullFT/Nemesis_Locomotion_NoSleep.controller :: VRCFootAnchorHandSwitchable"
+    ],
+    "matchingStates": [
+      "Assets/MorphForge/FullFT/Nemesis_Locomotion_NoSleep.controller :: Locomotion/state:Crouching",
+      "Assets/MorphForge/FullFT/Nemesis_Locomotion_NoSleep.controller :: Locomotion/motion:nemesis_CrouchingLocomotion @ Assets/Nemesis/Nemesis_Avatar/OtherAnimation/nemesis_CrouchingLocomotion.asset",
+      "Assets/MorphForge/FullFT/Nemesis_Locomotion_NoSleep.controller :: Foot Anchor/state:LockPose Disabling",
+      "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Action.controller :: Action/motion:proxy_supine_getup @ Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_supine_getup.anim",
+      "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/Controllers/vrc_AvatarV3LocomotionLayer.controller :: Locomotion/state:Crouching",
+      "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/Controllers/vrc_AvatarV3LocomotionLayer.controller :: Locomotion/motion:vrc_CrouchingLocomotion @ Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/BlendTrees/vrc_CrouchingLocomotion.asset"
+    ],
+    "relevantControllers": [
+      {
+        "path": "Assets/MorphForge/FullFT/Nemesis_Locomotion_NoSleep.controller",
+        "loaded": true,
+        "parameterCount": 21,
+        "matchingParameters": [
+          "VRCLockPose",
+          "VRCFootAnchor",
+          "VRCFootAnchorHandSwitchable"
+        ],
+        "matchingStates": [
+          "Locomotion/state:Crouching",
+          "Locomotion/motion:nemesis_CrouchingLocomotion @ Assets/Nemesis/Nemesis_Avatar/OtherAnimation/nemesis_CrouchingLocomotion.asset",
+          "Foot Anchor/state:LockPose Disabling"
+        ]
+      },
+      {
+        "path": "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Action.controller",
+        "loaded": true,
+        "parameterCount": 9,
+        "matchingParameters": [],
+        "matchingStates": [
+          "Action/motion:proxy_supine_getup @ Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/ProxyAnim/proxy_supine_getup.anim"
+        ]
+      },
+      {
+        "path": "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/Controllers/vrc_AvatarV3LocomotionLayer.controller",
+        "loaded": true,
+        "parameterCount": 9,
+        "matchingParameters": [],
+        "matchingStates": [
+          "Locomotion/state:Crouching",
+          "Locomotion/motion:vrc_CrouchingLocomotion @ Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/BlendTrees/vrc_CrouchingLocomotion.asset"
+        ]
+      }
+    ]
+  },
+  "expressionParameterAudit": {
+    "parameters": [],
+    "assets": [],
+    "propertyHits": []
+  },
+  "avatarDescriptor": {
+    "found": true,
+    "customizeAnimationLayers": true,
+    "expressionParameters": "Assets/Nemesis/Nemesis_Avatar/ExMenu&Param/Nemesis_Parameters_v_1_1_0.asset",
+    "expressionsMenu": "Assets/Nemesis/Nemesis_Avatar/ExMenu&Param/Nemesis_MainMenu.asset",
+    "baseAnimationLayers": [
+      {
+        "index": 0,
+        "type": "Base",
+        "enabled": false,
+        "isDefault": false,
+        "controllerPath": "Assets/MorphForge/FullFT/Nemesis_Locomotion_NoSleep.controller",
+        "controllerName": "Nemesis_Locomotion_NoSleep",
+        "layers": [
+          "Locomotion",
+          "Foot Anchor",
+          "Desktop Mode",
+          "Pose Observer",
+          "Foot Anchor Switch"
+        ],
+        "matchingLayers": []
+      },
+      {
+        "index": 1,
+        "type": "Additive",
+        "enabled": false,
+        "isDefault": true,
+        "controllerPath": "",
+        "controllerName": ""
+      },
+      {
+        "index": 2,
+        "type": "Gesture",
+        "enabled": false,
+        "isDefault": true,
+        "controllerPath": "",
+        "controllerName": ""
+      },
+      {
+        "index": 3,
+        "type": "Action",
+        "enabled": false,
+        "isDefault": false,
+        "controllerPath": "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Action.controller",
+        "controllerName": "Nemesis_Action",
+        "layers": [
+          "Action"
+        ],
+        "matchingLayers": []
+      },
+      {
+        "index": 4,
+        "type": "FX",
+        "enabled": false,
+        "isDefault": false,
+        "controllerPath": "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_FX_v_1_1_0.controller",
+        "controllerName": "Nemesis_FX_v_1_1_0",
+        "layers": [
+          "FasialSet1",
+          "FasialSet0",
+          "Fasial",
+          "GestureNumLocal",
+          "CopyFaceSetNum",
+          "LipSyncBlocker",
+          "Tail",
+          "Ear",
+          "Wing",
+          "KneeSox",
+          "Shoes",
+          "Tops",
+          "Beret",
+          "EyeLight",
+          "ColliderJump",
+          "TailCollider",
+          "AFK",
+          "Toe",
+          "ToeR",
+          "ToeL",
+          "ToeBoth"
+        ],
+        "matchingLayers": []
+      }
+    ],
+    "specialAnimationLayers": [
+      {
+        "index": 0,
+        "type": "Sitting",
+        "enabled": false,
+        "isDefault": true,
+        "controllerPath": "",
+        "controllerName": ""
+      },
+      {
+        "index": 1,
+        "type": "TPose",
+        "enabled": false,
+        "isDefault": true,
+        "controllerPath": "",
+        "controllerName": ""
+      },
+      {
+        "index": 2,
+        "type": "IKPose",
+        "enabled": false,
+        "isDefault": true,
+        "controllerPath": "",
+        "controllerName": ""
+      }
+    ]
+  },
+  "verdict": {
+    "dependsOnSleepOrSupinePlugin": false,
+    "dependsOnMinminmeanSupinePackage": false,
+    "hasSupineComponent": false,
+    "hasSupineGenerator": false,
+    "hasKnownSleepSupineParameters": false,
+    "officialVrchatSupineSampleCount": 1,
+    "retainedGeneralPoseParameters": [
+      "Assets/MorphForge/FullFT/Nemesis_Locomotion_NoSleep.controller :: VRCLockPose",
+      "Assets/MorphForge/FullFT/Nemesis_Locomotion_NoSleep.controller :: VRCFootAnchor",
+      "Assets/MorphForge/FullFT/Nemesis_Locomotion_NoSleep.controller :: VRCFootAnchorHandSwitchable"
+    ],
+    "findings": [
+      "Supine-named animation samples remain in the official VRChat avatars package; they are stock action clips and do not depend on minminmean.supine."
+    ]
+  },
+  "activeScenesAfter": [
+    {
+      "path": "Assets/MorphForge/Diagnostics/FinalFullFT/MorphForge_FinalFullFT_Diagnostic.unity",
+      "name": "MorphForge_FinalFullFT_Diagnostic",
+      "isLoaded": true,
+      "isDirty": true,
+      "isActive": true
+    },
+    {
+      "path": "Packages/nadena.dev.ndmf/Runtime/___NDMF Preview___.unity",
+      "name": "___NDMF Preview___",
+      "isLoaded": true,
+      "isDirty": false,
+      "isActive": false
+    }
+  ],
+  "sceneStateChanged": false
+}

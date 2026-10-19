@@ -426,6 +426,9 @@ namespace MorphForge.Editor
                 if (!replacement)
                     throw new InvalidOperationException(
                         "PrefabUtility 未能实例化 FullFT Avatar。");
+                // A prefab named Avatar.prefab may instantiate as "Avatar".
+                // The build profile intentionally opts in by root-name prefix.
+                replacement.name = FullFTBudgetUtil.LoadProfile().avatarNamePrefix + "_Avatar";
                 if (replacement.scene != copiedScene)
                     SceneManager.MoveGameObjectToScene(replacement, copiedScene);
                 replacement.transform.SetParent(oldParent, false);
@@ -714,6 +717,10 @@ namespace MorphForge.Editor
             if (descriptor.gameObject != expectedAvatar)
                 throw new InvalidOperationException(
                     "FullFT 场景中的唯一 Avatar 不是新实例化的 Prefab。");
+            if (!FullFTBudgetUtil.IsFullFTTarget(
+                    descriptor.gameObject, FullFTBudgetUtil.LoadProfile()))
+                throw new InvalidOperationException(
+                    "FullFT Avatar 根名称不匹配同步 profile；实际 Play/上传将跳过参数精简。");
             var prefabPath =
                 PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(
                     descriptor.gameObject);

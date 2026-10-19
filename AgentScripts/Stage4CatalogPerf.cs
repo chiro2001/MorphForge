@@ -16,7 +16,13 @@ public static class Stage4CatalogPerf
     const string Evidence = "Docs/Materials/native";
     const string ReportPath = "Docs/Materials/catalog-16k-performance.json";
 
-    public static async Task<string> Run()
+    public static Task<string> Run() => RunAt(Evidence, ReportPath);
+
+    public static Task<string> RunGrid() => RunAt(
+        "Docs/Security/catalog-grid-performance",
+        "Docs/Security/catalog-grid-performance/report.json");
+
+    static async Task<string> RunAt(string evidenceDirectory, string reportPath)
     {
         if (!EditorApplication.isPlaying)
             throw new InvalidOperationException("Stage4CatalogPerf requires Editor Play Mode.");
@@ -149,7 +155,7 @@ public static class Stage4CatalogPerf
             var p95 = samples[(int)((samples.Count - 1) * .95)];
             var max = samples.Last();
             var pixels = Render(camera, 1280, 720);
-            SavePng("catalog-16k-performance.png", pixels, 1280, 720);
+            SavePng(evidenceDirectory, "catalog-16k-performance.png", pixels, 1280, 720);
             var visible = renderer.isVisible;
             var count = system.particleCount;
             var report = new
@@ -166,7 +172,11 @@ public static class Stage4CatalogPerf
                 p95Ms = p95,
                 maxMs = max,
                 frameSeconds = 6,
-                image = Evidence + "/catalog-16k-performance.png",
+                image = evidenceDirectory + "/catalog-16k-performance.png",
+                metadataSize = new[] {
+                    material.GetTexture("_CatalogMeta").width,
+                    material.GetTexture("_CatalogMeta").height
+                },
                 rendererBounds = new
                 {
                     center = new[] { renderer.bounds.center.x, renderer.bounds.center.y, renderer.bounds.center.z },
@@ -174,7 +184,7 @@ public static class Stage4CatalogPerf
                 },
                 note = "VRChat client GPU cost, per-particle sorting and user filtering remain separate."
             };
-            WriteJson(report);
+            WriteJson(reportPath, report);
             return Newtonsoft.Json.JsonConvert.SerializeObject(report, Newtonsoft.Json.Formatting.Indented);
         }
         finally
@@ -235,14 +245,14 @@ public static class Stage4CatalogPerf
         }
     }
 
-    static void SavePng(string relative, Color32[] pixels, int width, int height)
+    static void SavePng(string evidenceDirectory, string relative, Color32[] pixels, int width, int height)
     {
         var texture = new Texture2D(width, height, TextureFormat.RGB24, false);
         try
         {
             texture.SetPixels32(pixels);
             texture.Apply();
-            var path = Path.GetFullPath(Path.Combine(Application.dataPath, "..", Evidence, relative));
+            var path = Path.GetFullPath(Path.Combine(Application.dataPath, "..", evidenceDirectory, relative));
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             File.WriteAllBytes(path, texture.EncodeToPNG());
         }
@@ -252,9 +262,9 @@ public static class Stage4CatalogPerf
         }
     }
 
-    static void WriteJson(object value)
+    static void WriteJson(string reportPath, object value)
     {
-        var path = Path.GetFullPath(Path.Combine(Application.dataPath, "..", ReportPath));
+        var path = Path.GetFullPath(Path.Combine(Application.dataPath, "..", reportPath));
         Directory.CreateDirectory(Path.GetDirectoryName(path));
         File.WriteAllText(path, Newtonsoft.Json.JsonConvert.SerializeObject(value, Newtonsoft.Json.Formatting.Indented) + Environment.NewLine);
     }
