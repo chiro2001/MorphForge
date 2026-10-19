@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "rustPassed": 107,
+  "clippyWarningsDenied": true,
+  "browserChecks": 27,
+  "proxyChecks": 49,
+  "positiveProxyRequests": 33,
+  "negativeControlRewrites": 6,
+  "negativeControlDetected": true,
+  "actualVllmCacheHitVerified": false,
+  "binarySha256": "00e16820cbd4778e3ce37b30cffe25b6a0276fa5608ad2b02fd8c49d95d98aa1",
+  "logsSha256": {
+    "v042-final-tests.txt": "0e2c04a2ab9816c40112c0269bfac8222af7116452862519ecb193db3206b31e",
+    "v042-final-clippy.txt": "c246b2318ce6f27c1eeba6842f92b747634edc0d7975c14da2e64b01aa6574d0"
+  }
+}

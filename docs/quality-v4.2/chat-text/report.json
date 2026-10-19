@@ -1,0 +1,416 @@
+{
+  "success": true,
+  "api": "chat",
+  "images": false,
+  "stream": false,
+  "checks": [
+    {
+      "name": "disposable empty scene and OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "run completes",
+      "passed": true
+    },
+    {
+      "name": "real Recipe/capture/finish loop ran",
+      "passed": true
+    },
+    {
+      "name": "run completes",
+      "passed": true
+    },
+    {
+      "name": "run completes",
+      "passed": true
+    },
+    {
+      "name": "eight actual requests captured",
+      "passed": true
+    },
+    {
+      "name": "every ordinary wire prefix appends",
+      "passed": true
+    },
+    {
+      "name": "request bytes unchanged by relay",
+      "passed": true
+    },
+    {
+      "name": "official text template inspected for all consecutive requests",
+      "passed": true
+    },
+    {
+      "name": "rendered text and token IDs preserve complete prefix",
+      "passed": true
+    },
+    {
+      "name": "run completes",
+      "passed": true
+    },
+    {
+      "name": "run completes",
+      "passed": true
+    },
+    {
+      "name": "compact is the explicit reset boundary",
+      "passed": true
+    },
+    {
+      "name": "new context resumes append-only",
+      "passed": true
+    },
+    {
+      "name": "all request bodies were forwarded unchanged",
+      "passed": true
+    },
+    {
+      "name": "upstream JSON or SSE bytes reached relay output unchanged",
+      "passed": true
+    },
+    {
+      "name": "OSC remains disabled",
+      "passed": true
+    }
+  ],
+  "relay": {
+    "scope": "transparent HTTP relay; no claim of server KV-cache hit",
+    "templateFiles": {
+      "tokenizer_config.json": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101",
+      "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+    },
+    "requests": [
+      {
+        "number": 1,
+        "path": "/chat/completions",
+        "requestSha256": "ab0045e68a4df78adb177adc97895d6806906ff38cf02b0cceb66f73d9f9ac65",
+        "requestBytes": 18643,
+        "staticSha256": "154644a80443d033c9d42a81dbbfc3262a3b27724cf5460f75d7eb3476409ffa",
+        "messages": 2,
+        "images": 0,
+        "comparison": null,
+        "responseSha256": "17168a350510607d5cb0309938655a98e60039a9b99cf46d7653631310532f78",
+        "responseBytes": 344,
+        "status": 200
+      },
+      {
+        "number": 2,
+        "path": "/chat/completions",
+        "requestSha256": "d7bb68fe96ad0d2326b6685a43697fc84517dd2d120ec659e10921d5fdc85b52",
+        "requestBytes": 25567,
+        "staticSha256": "154644a80443d033c9d42a81dbbfc3262a3b27724cf5460f75d7eb3476409ffa",
+        "messages": 4,
+        "images": 0,
+        "comparison": {
+          "appendOnly": true,
+          "staticPrefixUnchanged": true,
+          "sharedMessages": 2,
+          "previousMessages": 2,
+          "firstChangedMessage": null
+        },
+        "template": {
+          "scope": "local_text_chat_template",
+          "appendOnlyText": true,
+          "previousCharacters": 12489,
+          "commonCharacters": 12489,
+          "previousTokens": 5003,
+          "commonTokens": 5003,
+          "currentTokens": 7738,
+          "tokenPrefixUnchanged": true
+        },
+        "responseSha256": "8326102343ca2bb58f6f03c87fcf398d3207848e8be456cf194e68415ed05d16",
+        "responseBytes": 484,
+        "status": 200
+      },
+      {
+        "number": 3,
+        "path": "/chat/completions",
+        "requestSha256": "1d68cd1de9c94fd56702ba7273c4c38f3a492b0f3c658e6069a7eb893e166d6f",
+        "requestBytes": 27142,
+        "staticSha256": "154644a80443d033c9d42a81dbbfc3262a3b27724cf5460f75d7eb3476409ffa",
+        "messages": 6,
+        "images": 0,
+        "comparison": {
+          "appendOnly": true,
+          "staticPrefixUnchanged": true,
+          "sharedMessages": 4,
+          "previousMessages": 4,
+          "firstChangedMessage": null
+        },
+        "template": {
+          "scope": "local_text_chat_template",
+          "appendOnlyText": true,
+          "previousCharacters": 18255,
+          "commonCharacters": 18255,
+          "previousTokens": 7738,
+          "commonTokens": 7738,
+          "currentTokens": 8183,
+          "tokenPrefixUnchanged": true
+        },
+        "responseSha256": "b2809ac719d8bd071d094776b1d0c5095a111344623ed28fab6bc49addb041df",
+        "responseBytes": 397,
+        "status": 200
+      },
+      {
+        "number": 4,
+        "path": "/chat/completions",
+        "requestSha256": "a8d7fffd386b0fe7db5bf746cff3c8aaaab4f889d50133ca3d14536ae8cd26dc",
+        "requestBytes": 28705,
+        "staticSha256": "154644a80443d033c9d42a81dbbfc3262a3b27724cf5460f75d7eb3476409ffa",
+        "messages": 8,
+        "images": 0,
+        "comparison": {
+          "appendOnly": true,
+          "staticPrefixUnchanged": true,
+          "sharedMessages": 6,
+          "previousMessages": 6,
+          "firstChangedMessage": null
+        },
+        "template": {
+          "scope": "local_text_chat_template",
+          "appendOnlyText": true,
+          "previousCharacters": 19408,
+          "commonCharacters": 19408,
+          "previousTokens": 8183,
+          "commonTokens": 8183,
+          "currentTokens": 8834,
+          "tokenPrefixUnchanged": true
+        },
+        "responseSha256": "0468ec01e48fe941f82cbc471f3b35e61026aebe7f6466df40d61b634d085456",
+        "responseBytes": 457,
+        "status": 200
+      },
+      {
+        "number": 5,
+        "path": "/chat/completions",
+        "requestSha256": "bcc0eb6870821fba1b716d05a5d6b43222441563f310d9758f73971ce4f06c4e",
+        "requestBytes": 30257,
+        "staticSha256": "154644a80443d033c9d42a81dbbfc3262a3b27724cf5460f75d7eb3476409ffa",
+        "messages": 10,
+        "images": 0,
+        "comparison": {
+          "appendOnly": true,
+          "staticPrefixUnchanged": true,
+          "sharedMessages": 8,
+          "previousMessages": 8,
+          "firstChangedMessage": null
+        },
+        "template": {
+          "scope": "local_text_chat_template",
+          "appendOnlyText": true,
+          "previousCharacters": 20579,
+          "commonCharacters": 20579,
+          "previousTokens": 8834,
+          "commonTokens": 8834,
+          "currentTokens": 9268,
+          "tokenPrefixUnchanged": true
+        },
+        "responseSha256": "bf25fa5ef05aca900746026a25a45c98472a0601975fcfd4f4fba7a79e40b2bf",
+        "responseBytes": 397,
+        "status": 200
+      },
+      {
+        "number": 6,
+        "path": "/chat/completions",
+        "requestSha256": "2510285ec8bba4c07185d64e7113f47db2acc9018115f1ed724fbf5ef943cf01",
+        "requestBytes": 31824,
+        "staticSha256": "154644a80443d033c9d42a81dbbfc3262a3b27724cf5460f75d7eb3476409ffa",
+        "messages": 12,
+        "images": 0,
+        "comparison": {
+          "appendOnly": true,
+          "staticPrefixUnchanged": true,
+          "sharedMessages": 10,
+          "previousMessages": 10,
+          "firstChangedMessage": null
+        },
+        "template": {
+          "scope": "local_text_chat_template",
+          "appendOnlyText": true,
+          "previousCharacters": 21707,
+          "commonCharacters": 21707,
+          "previousTokens": 9268,
+          "commonTokens": 9268,
+          "currentTokens": 9915,
+          "tokenPrefixUnchanged": true
+        },
+        "responseSha256": "a092279765f75c7ffcdb4c9da0be50dddd7f44a768f5fc30e6d0d1aeb09a0f3b",
+        "responseBytes": 452,
+        "status": 200
+      },
+      {
+        "number": 7,
+        "path": "/chat/completions",
+        "requestSha256": "778a0781422e12055f2310109f23688b3b70d2a6260e20e96fa6c7dc72604385",
+        "requestBytes": 33539,
+        "staticSha256": "154644a80443d033c9d42a81dbbfc3262a3b27724cf5460f75d7eb3476409ffa",
+        "messages": 15,
+        "images": 0,
+        "comparison": {
+          "appendOnly": true,
+          "staticPrefixUnchanged": true,
+          "sharedMessages": 12,
+          "previousMessages": 12,
+          "firstChangedMessage": null
+        },
+        "template": {
+          "scope": "local_text_chat_template",
+          "appendOnlyText": true,
+          "previousCharacters": 22882,
+          "commonCharacters": 22882,
+          "previousTokens": 9915,
+          "commonTokens": 9915,
+          "currentTokens": 10561,
+          "tokenPrefixUnchanged": true
+        },
+        "responseSha256": "fa1fbae30986209d856bdabc0ba722a51e3442db5e73e9c0fdb63d6cc50fe6d2",
+        "responseBytes": 282,
+        "status": 200
+      },
+      {
+        "number": 8,
+        "path": "/chat/completions",
+        "requestSha256": "f8618d2be2ce923ff1c56058fe6f6d16d78f57014f28b9a69ab8a1354513421d",
+        "requestBytes": 34180,
+        "staticSha256": "154644a80443d033c9d42a81dbbfc3262a3b27724cf5460f75d7eb3476409ffa",
+        "messages": 17,
+        "images": 0,
+        "comparison": {
+          "appendOnly": true,
+          "staticPrefixUnchanged": true,
+          "sharedMessages": 15,
+          "previousMessages": 15,
+          "firstChangedMessage": null
+        },
+        "template": {
+          "scope": "local_text_chat_template",
+          "appendOnlyText": true,
+          "previousCharacters": 24175,
+          "commonCharacters": 24175,
+          "previousTokens": 10561,
+          "commonTokens": 10561,
+          "currentTokens": 10703,
+          "tokenPrefixUnchanged": true
+        },
+        "responseSha256": "bddd7357ab48bb5d9aa6e06325eec341a7a9487e0e6355800bdd931d96386d16",
+        "responseBytes": 282,
+        "status": 200
+      },
+      {
+        "number": 9,
+        "path": "/chat/completions",
+        "requestSha256": "cc513627846276a867b7523bd99b58d434874344b9565e26ac9078456ab6caa7",
+        "requestBytes": 28711,
+        "staticSha256": "fcf17f41f2807c143b7dca60fb72c04d2739e28e5ddd2ed38c9d9392fdb4dc2c",
+        "messages": 2,
+        "images": 0,
+        "comparison": {
+          "appendOnly": false,
+          "staticPrefixUnchanged": false,
+          "sharedMessages": 0,
+          "previousMessages": 17,
+          "firstChangedMessage": 0
+        },
+        "template": {
+          "scope": "local_text_chat_template",
+          "appendOnlyText": false,
+          "previousCharacters": 24483,
+          "commonCharacters": 4125,
+          "previousTokens": 10703,
+          "commonTokens": 2249,
+          "currentTokens": 8619,
+          "tokenPrefixUnchanged": false
+        },
+        "responseSha256": "a2e9b274d8d120275aa1abf4d6915e0aeb114bead96daf72ecdec9d97f3a67ac",
+        "responseBytes": 324,
+        "status": 200
+      },
+      {
+        "number": 10,
+        "path": "/chat/completions",
+        "requestSha256": "fe13a22527bdeefee55c89aa4e6fd0ce18e7645b2ebc67a7a82b6e749747a0b5",
+        "requestBytes": 20501,
+        "staticSha256": "154644a80443d033c9d42a81dbbfc3262a3b27724cf5460f75d7eb3476409ffa",
+        "messages": 7,
+        "images": 0,
+        "comparison": {
+          "appendOnly": false,
+          "staticPrefixUnchanged": false,
+          "sharedMessages": 0,
+          "previousMessages": 2,
+          "firstChangedMessage": 0
+        },
+        "template": {
+          "scope": "local_text_chat_template",
+          "appendOnlyText": false,
+          "previousCharacters": 18218,
+          "commonCharacters": 4125,
+          "previousTokens": 8619,
+          "commonTokens": 2249,
+          "currentTokens": 5452,
+          "tokenPrefixUnchanged": false
+        },
+        "responseSha256": "b4cf4b55a3cf15cfe3e258c12d4a31d548bfc41f1cdd2352dbcd5bbda0ab47ea",
+        "responseBytes": 353,
+        "status": 200
+      },
+      {
+        "number": 11,
+        "path": "/chat/completions",
+        "requestSha256": "a015b019331461e343c9bf9a14ba52b0df79551e4a7dff4ccf9dde2ad93c8b4a",
+        "requestBytes": 27520,
+        "staticSha256": "154644a80443d033c9d42a81dbbfc3262a3b27724cf5460f75d7eb3476409ffa",
+        "messages": 9,
+        "images": 0,
+        "comparison": {
+          "appendOnly": true,
+          "staticPrefixUnchanged": true,
+          "sharedMessages": 7,
+          "previousMessages": 7,
+          "firstChangedMessage": null
+        },
+        "template": {
+          "scope": "local_text_chat_template",
+          "appendOnlyText": true,
+          "previousCharacters": 13512,
+          "commonCharacters": 13512,
+          "previousTokens": 5452,
+          "commonTokens": 5452,
+          "currentTokens": 8224,
+          "tokenPrefixUnchanged": true
+        },
+        "responseSha256": "8b6627ff6aba32c9cb16b34d3beed467c2ae53e2335d82fb1a5f95ac3b6eca9f",
+        "responseBytes": 283,
+        "status": 200
+      }
+    ]
+  },
+  "upstreamRequestSha256": [
+    "ab0045e68a4df78adb177adc97895d6806906ff38cf02b0cceb66f73d9f9ac65",
+    "d7bb68fe96ad0d2326b6685a43697fc84517dd2d120ec659e10921d5fdc85b52",
+    "1d68cd1de9c94fd56702ba7273c4c38f3a492b0f3c658e6069a7eb893e166d6f",
+    "a8d7fffd386b0fe7db5bf746cff3c8aaaab4f889d50133ca3d14536ae8cd26dc",
+    "bcc0eb6870821fba1b716d05a5d6b43222441563f310d9758f73971ce4f06c4e",
+    "2510285ec8bba4c07185d64e7113f47db2acc9018115f1ed724fbf5ef943cf01",
+    "778a0781422e12055f2310109f23688b3b70d2a6260e20e96fa6c7dc72604385",
+    "f8618d2be2ce923ff1c56058fe6f6d16d78f57014f28b9a69ab8a1354513421d",
+    "cc513627846276a867b7523bd99b58d434874344b9565e26ac9078456ab6caa7",
+    "fe13a22527bdeefee55c89aa4e6fd0ce18e7645b2ebc67a7a82b6e749747a0b5",
+    "a015b019331461e343c9bf9a14ba52b0df79551e4a7dff4ccf9dde2ad93c8b4a"
+  ],
+  "upstreamResponseSha256": [
+    "17168a350510607d5cb0309938655a98e60039a9b99cf46d7653631310532f78",
+    "8326102343ca2bb58f6f03c87fcf398d3207848e8be456cf194e68415ed05d16",
+    "b2809ac719d8bd071d094776b1d0c5095a111344623ed28fab6bc49addb041df",
+    "0468ec01e48fe941f82cbc471f3b35e61026aebe7f6466df40d61b634d085456",
+    "bf25fa5ef05aca900746026a25a45c98472a0601975fcfd4f4fba7a79e40b2bf",
+    "a092279765f75c7ffcdb4c9da0be50dddd7f44a768f5fc30e6d0d1aeb09a0f3b",
+    "fa1fbae30986209d856bdabc0ba722a51e3442db5e73e9c0fdb63d6cc50fe6d2",
+    "bddd7357ab48bb5d9aa6e06325eec341a7a9487e0e6355800bdd931d96386d16",
+    "a2e9b274d8d120275aa1abf4d6915e0aeb114bead96daf72ecdec9d97f3a67ac",
+    "b4cf4b55a3cf15cfe3e258c12d4a31d548bfc41f1cdd2352dbcd5bbda0ab47ea",
+    "8b6627ff6aba32c9cb16b34d3beed467c2ae53e2335d82fb1a5f95ac3b6eca9f"
+  ],
+  "boxCount": 5,
+  "compactCount": 1
+}
