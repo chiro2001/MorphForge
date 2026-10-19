@@ -1,0 +1,301 @@
+{
+  "window": {
+    "processId": 165312,
+    "sessionId": 1,
+    "windowHandle": 15471482,
+    "title": "MorphForge - 开发测试副本 0.6.1",
+    "dpi": 120,
+    "processDpiAwarenessSet": true,
+    "previousThreadDpiAwarenessContext": 2147483682,
+    "boundsSource": "dwm-extended-frame",
+    "dwmResult": 0,
+    "windowRect": {
+      "left": 371,
+      "top": 96,
+      "right": 2189,
+      "bottom": 1293,
+      "width": 1818,
+      "height": 1197
+    },
+    "screenshotRect": {
+      "left": 379,
+      "top": 96,
+      "right": 2181,
+      "bottom": 1285
+    },
+    "width": 1802,
+    "height": 1189,
+    "screenshot": "C:\\Users\\Chiro\\tmp\\morphforge\\preview-window.png",
+    "screenshotBytes": 893744,
+    "screenshotSha256": "2b899ee145a157ef821ba76a91078c1aa7295ea762480eaade1bb3df34d8188f",
+    "capturedAt": "2026-10-19T23:04:17.0586758+08:00"
+  },
+  "validation": {
+    "success": true,
+    "checks": [
+      {
+        "name": "acceptance and preview desktop run together",
+        "passed": true
+      },
+      {
+        "name": "independent loopback listeners",
+        "passed": true
+      },
+      {
+        "name": "both report 0.6.1",
+        "passed": true
+      },
+      {
+        "name": "copied geometry matches the acceptance artwork",
+        "passed": true
+      },
+      {
+        "name": "contexts are independent and preview starts empty",
+        "passed": true
+      },
+      {
+        "name": "preview starts with OSC off",
+        "passed": true
+      },
+      {
+        "name": "provider credentials are persisted only in preview data",
+        "passed": true
+      },
+      {
+        "name": "preview retains the same provider connection without exposing credentials",
+        "passed": true
+      },
+      {
+        "name": "editing preview metadata leaves acceptance project unchanged",
+        "passed": true
+      },
+      {
+        "name": "preview WebView uses its own profile directory",
+        "passed": true
+      },
+      {
+        "name": "updating preview leaves both running processes alive",
+        "passed": true
+      },
+      {
+        "name": "running core binary is immutable across update",
+        "passed": true
+      },
+      {
+        "name": "preview data survives an update without reseeding",
+        "passed": true
+      },
+      {
+        "name": "real recipe child works from immutable preview runtime",
+        "passed": true
+      },
+      {
+        "name": "preview screenshot worker renders current artwork",
+        "passed": true
+      }
+    ],
+    "paidRequests": 0,
+    "oscEnabled": false,
+    "error": null,
+    "previewProcessId": 165312,
+    "acceptanceProcessId": 157048,
+    "previewBaseUrl": "http://127.0.0.1:57511",
+    "acceptanceBaseUrl": "http://127.0.0.1:54541",
+    "previewRoot": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Preview",
+    "capture": {
+      "id": "906c1a61-0e32-45c0-b39e-4613651d5e32",
+      "images": [
+        {
+          "artifact": "d47ee643eeb635a22741ec62760c2c29c6ee077f3ec3449ca1d82cff1ce99191.png",
+          "camera": {
+            "coordinateSpace": "render-world",
+            "fov": 42,
+            "position": [
+              43.13351365237939,
+              44.35013523928455,
+              53.91689206547425
+            ],
+            "projection": "perspective",
+            "target": [
+              0,
+              12,
+              0
+            ]
+          },
+          "height": 480,
+          "url": "/artifacts/d47ee643eeb635a22741ec62760c2c29c6ee077f3ec3449ca1d82cff1ce99191.png",
+          "view": "hero",
+          "width": 640
+        }
+      ],
+      "ok": true,
+      "revision": 17,
+      "stats": {
+        "boxCount": 791
+      }
+    },
+    "finishedAt": "2026-10-19T23:02:44.6816093+08:00"
+  },
+  "launchTask": 0,
+  "parseErrorCount": 0,
+  "processes": [
+    {
+      "ProcessId": 157048,
+      "ExecutablePath": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Desktop\\morphforge-desktop.exe"
+    },
+    {
+      "ProcessId": 165312,
+      "ExecutablePath": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Preview\\versions\\0.6.1-7daa2a9ab502\\morphforge-desktop.exe"
+    }
+  ],
+  "deployment": {
+    "success": true,
+    "scope": "Side-by-side portable deployment; never runs NSIS, stops an app, or replaces a running runtime",
+    "checks": [
+      {
+        "name": "preview root is separate from stable runtime and data",
+        "passed": true
+      },
+      {
+        "name": "package contains morphforge-desktop.exe",
+        "passed": true
+      },
+      {
+        "name": "package contains morphforge.exe",
+        "passed": true
+      },
+      {
+        "name": "package contains licenses",
+        "passed": true
+      },
+      {
+        "name": "package reports expected core version",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: morphforge-desktop.exe",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: morphforge.exe",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: licenses\\EXAMPLE-ATTRIBUTION.md",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: licenses\\examples\\CC-BY-NC-SA-4.0.txt",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: licenses\\examples\\MIT.txt",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: licenses\\OFL-NotoSansSC.txt",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: licenses\\REFERENCE-ATTRIBUTION.md",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: licenses\\references\\CC-BY-NC-SA-4.0.txt",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: licenses\\references\\MIT.txt",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: licenses\\references\\SELF-AUTHORED.txt",
+        "passed": true
+      }
+    ],
+    "error": null,
+    "version": "0.6.1",
+    "previewRoot": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Preview",
+    "runtime": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Preview\\versions\\0.6.1-7daa2a9ab502",
+    "dataDir": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Preview\\Data",
+    "shortcut": "C:\\Users\\Chiro\\OneDrive\\Desktop\\MorphForge - 开发测试副本.lnk",
+    "payloadSha256": "7daa2a9ab502f84bebba9f450b8616b699da08cf02f1666279d95914284853f8",
+    "finishedAt": "2026-10-19T23:04:15.6891854+08:00"
+  },
+  "finalAtomicDeployment": {
+    "success": true,
+    "scope": "Side-by-side portable deployment; never runs NSIS, stops an app, or replaces a running runtime",
+    "checks": [
+      {
+        "name": "preview root is separate from stable runtime and data",
+        "passed": true
+      },
+      {
+        "name": "package contains morphforge-desktop.exe",
+        "passed": true
+      },
+      {
+        "name": "package contains morphforge.exe",
+        "passed": true
+      },
+      {
+        "name": "package contains licenses",
+        "passed": true
+      },
+      {
+        "name": "package reports expected core version",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: morphforge-desktop.exe",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: morphforge.exe",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: licenses\\EXAMPLE-ATTRIBUTION.md",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: licenses\\examples\\CC-BY-NC-SA-4.0.txt",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: licenses\\examples\\MIT.txt",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: licenses\\OFL-NotoSansSC.txt",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: licenses\\REFERENCE-ATTRIBUTION.md",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: licenses\\references\\CC-BY-NC-SA-4.0.txt",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: licenses\\references\\MIT.txt",
+        "passed": true
+      },
+      {
+        "name": "immutable runtime payload: licenses\\references\\SELF-AUTHORED.txt",
+        "passed": true
+      }
+    ],
+    "error": null,
+    "version": "0.6.1",
+    "previewRoot": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Preview",
+    "runtime": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Preview\\versions\\0.6.1-7daa2a9ab502",
+    "dataDir": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Preview\\Data",
+    "shortcut": "C:\\Users\\Chiro\\OneDrive\\Desktop\\MorphForge - 开发测试副本.lnk",
+    "payloadSha256": "7daa2a9ab502f84bebba9f450b8616b699da08cf02f1666279d95914284853f8",
+    "finishedAt": "2026-10-19T15:05:37.8073515+00:00"
+  },
+  "launcherSourceSha256": "362ceffa5ea776a4644441f8df8cae4dbf26dd1fac1b3ff9545e3e337602f8c0",
+  "installerSourceSha256": "3d85b9dafe8b802e474fca8256f2f968eb4529c5b93021cc3dffe4c4303396fe"
+}

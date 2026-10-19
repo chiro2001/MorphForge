@@ -10,3 +10,11 @@
 - Nemesis 使用用户已有资源，原模型与商业资产留在 Windows 工程，不公开发布。
 - 当前范围是 Avatar + OSC 几何显示方案；研究文档见相邻 `../vrc-ai-world/`。暂不做语音识别。
 - 不自动上传 Avatar、启动真实 VRChat 客户端或改动其他项目场景。
+
+## gamepc 软件更新约定
+
+- 用户验收版保持在 `%LOCALAPPDATA%\MorphForge Desktop`，数据为 `%LOCALAPPDATA%\MorphForge`。用户可能持续使用，不因开发更新而关闭或覆盖它。
+- 默认更新独立开发测试副本 `%LOCALAPPDATA%\MorphForge Preview`，使用 `tools/install_preview.ps1` 部署；桌面入口为“MorphForge - 开发测试副本”。数据、对话、日志及 WebView2 缓存独立。
+- 副本以内容哈希保存不可变版本目录，更新只切换 `current.json`；已经运行的旧副本继续使用旧目录，用户关闭重开后进入新版本。不要覆盖仍在运行的 `morphforge.exe`，recipe 子进程依赖 `current_exe()`。
+- 首次可复制当前作品、作品库和配置；后续保留副本自己的数据，不自动和验收版合并或双向同步。
+- 仅在用户明确要求发布时创建 GitHub Release。

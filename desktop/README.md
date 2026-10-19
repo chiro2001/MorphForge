@@ -100,3 +100,32 @@ Official Tauri v2 references used for this shell:
 - <https://docs.rs/tauri/latest/tauri/webview/struct.WebviewWindowBuilder.html>
 - <https://docs.rs/tauri-plugin-shell/latest/tauri_plugin_shell/process/struct.Command.html>
 
+
+## gamepc side-by-side preview
+
+Keep the user's current acceptance install running. Deploy future development builds to
+`%LOCALAPPDATA%\MorphForge Preview`, using a packaged directory containing
+`morphforge-desktop.exe`, `morphforge.exe` and `licenses/`:
+
+```powershell
+.\tools\install_preview.ps1 -PackageDir 'C:\path\to\packaged-runtime' -ExpectedVersion '0.6.1'
+```
+
+For the first deployment only, optionally provide `-SeedDataFrom` and `-SeedBaseUrl`
+(the running acceptance backend's loopback URL). The current project is read through
+`/api/export`; assets, artwork library, source files, snapshots and configuration are copied.
+Model conversations, queued work, usage/prefix/cache ledgers, connection state and browser
+profiles are not cloned. Existing preview data is never reseeded during an update.
+
+The desktop shortcut **MorphForge - 开发测试副本** runs `Launch-Preview.vbs` and
+`Launch-Preview.ps1`. The process environment selects a separate `Data/` directory,
+launcher log, roaming profile and WebView2 user-data folder under `Profile/`. The native
+window title includes “开发测试副本” and its version. Launching again focuses an existing
+preview instance. Screenshots remain enabled.
+
+Each payload is placed under `versions/<version>-<payload-hash>/`; `current.json` is
+replaced atomically. Updating never stops an acceptance or preview process, runs NSIS,
+or changes installer registration. Already-running previews keep their immutable runtime
+and switch only after closing/reopening. Retain old version directories while in use.
+This also preserves `current_exe()` for recipe workers. Neither channel is automatically
+published as a GitHub Release.
