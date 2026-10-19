@@ -15,7 +15,9 @@ param(
 
     [string]$ExpectedToolsVersion = "morphforge-tools/2.3",
 
-    [string]$ExpectedPromptVersion = "morphforge-system/2.3"
+    [string]$ExpectedPromptVersion = "morphforge-system/2.3",
+
+    [int]$ExpectedInputCount = 69
 )
 
 $ErrorActionPreference = "Stop"
@@ -350,7 +352,7 @@ try {
     $freeze = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
     Add-Check -Name "freeze manifest format is valid" -Passed (
         $freeze.format -eq "MorphForgeBuildInputs/1" -and
-        @($freeze.files.PSObject.Properties).Count -eq 69
+        @($freeze.files.PSObject.Properties).Count -eq $ExpectedInputCount
     ) -Details @{
         path = $manifestPath
         aggregate = $freeze.sha256

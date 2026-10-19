@@ -9,7 +9,7 @@
 - Rust 核心、HTTP API、共享前端、AI 工具循环、Recipe、作品库和材质资源包导入已经实现。
 - MF3 的 `Box / UnitVoxel / Brush / Erase / Remove / Clear`、序号回绕和单 Avatar 原生 UDP 接收已有测试证据。
 - 16,384 Box 首遍缺失192个；0.5秒补发后达16384个唯一方块，满池删除、补回、区域擦除、清空通过。新时序256条0.25秒首次漏1/第二次完整，0.5秒对照完整；不承诺无损，详见实施状态。
-- Windows 0.2.0 安装包已从冻结源码重新构建；本轮原生、桌面与 HTTP 验证记录见 [Windows 0.2 验收](quality-v2/WINDOWS-V2.md)，旧版证据保留在 `docs/desktop/`。
+- 当前软件候选为 Windows 0.3.0，原生测试、隔离桌面与HTTP检查通过，见 [0.3验证](quality-v3/RESULTS.md)；[0.2历史验收](quality-v2/WINDOWS-V2.md)保留。
 - Unity原生100材质、40项像素与新版16k显示夹具通过；FullFT实际SDK联合构建256/256bit通过，FT161与MF70全部直通；新场景与166项API烟测、远端FT分支检查也已通过。
 - P2 高级折射、物理体积云以及任意 Minecraft 异形几何不在当前支持范围内。
 

@@ -1,0 +1,100 @@
+{
+  "schema": "MorphForgeWindowsV2Validation/1",
+  "success": false,
+  "startedAt": "2026-10-19T03:53:34.1874303+00:00",
+  "finishedAt": "2026-10-19T03:53:35.7591562+00:00",
+  "host": {
+    "os": "Microsoft Windows NT 10.0.26200.0",
+    "powershell": "7.6.7",
+    "pwsh": "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+  },
+  "core": {
+    "path": "C:\\Users\\Chiro\\tmp\\morphforge\\v3-native\\morphforge.exe",
+    "sha256": "07eb85446a2c39cfeff63f51cde69ffb20225ff1b3c5f08ec9a600476e0d2246",
+    "version": "morphforge 0.3.0"
+  },
+  "isolation": {
+    "dataDirectory": "C:\\Users\\Chiro\\tmp\\morphforge\\v3-native\\data",
+    "randomLoopbackPort": 54728,
+    "baseUrl": "http://127.0.0.1:54728",
+    "noCapture": true,
+    "providerEnvironment": "mock-local-only-no-provider-call"
+  },
+  "checks": [
+    {
+      "name": "core executable exists",
+      "passed": true
+    },
+    {
+      "name": "core executable is morphforge.exe",
+      "passed": true
+    },
+    {
+      "name": "core version is available",
+      "passed": true
+    },
+    {
+      "name": "data directory initialized empty",
+      "passed": true
+    },
+    {
+      "name": "owned core process started",
+      "passed": true
+    },
+    {
+      "name": "core reported random loopback port",
+      "passed": true,
+      "details": {
+        "port": 54728
+      }
+    },
+    {
+      "name": "random port avoids reserved and known test ports",
+      "passed": true
+    },
+    {
+      "name": "core emits no-capture OSC-disabled ready line",
+      "passed": true
+    },
+    {
+      "name": "OSC disabled: initial",
+      "passed": true,
+      "details": {
+        "enabled": false
+      }
+    },
+    {
+      "name": "Capture browser absent: initial",
+      "passed": true
+    },
+    {
+      "name": "fresh isolated project starts with zero boxes",
+      "passed": true
+    },
+    {
+      "name": "fresh isolated project starts with no harness run",
+      "passed": true
+    },
+    {
+      "name": "freeze manifest format is valid",
+      "passed": false,
+      "details": {
+        "aggregate": "6e75b32328e1ccf38205edfa4b1a22951051eedb6267e1d19eea9cfa2c207308",
+        "files": 78,
+        "path": "D:\\Projects\\VRChatProjects2\\MorphForge\\docs\\quality-v3\\source-freeze.json"
+      }
+    },
+    {
+      "name": "owned core process stopped",
+      "passed": true
+    }
+  ],
+  "embeddedResources": {},
+  "finalState": null,
+  "fatalError": "CHECK_FAILED: freeze manifest format is valid",
+  "cleanup": {
+    "ownedProcessOnly": true,
+    "exited": true,
+    "exitCode": -1
+  }
+}

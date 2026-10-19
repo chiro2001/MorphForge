@@ -1,4 +1,8 @@
-# MorphForge 0.2.0 交付记录
+# MorphForge 交付记录
+
+当前软件候选为 **0.3.0**，增加自定义 Chat/Responses、内嵌图像、三档预设与有界 Goal。安装器在 `dist/windows/MorphForge Desktop_0.3.0_x64-setup.exe`，校验和在同目录；[本轮验证与边界](quality-v3/RESULTS.md)、[使用说明](PROVIDERS-PRESETS-GOALS.md)。默认安装与用户作品未被测试覆盖。
+
+## 0.2.0 历史交付
 
 日期：2026-10-19。Rust独立核心、共享体素工作台、DeepSeek Harness、可选MF3发布适配器及Windows Tauri安装器已交付。GitHub私有仓库为`chiro2001/MorphForge`，默认`main`，保留开发分支`feat/harness-interaction-and-voxel-text`，基线tag为 `v0.1.0-baseline`，源码候选tag为 `v0.2.0-rc.2`，最终 `v0.2.0` 等待客户端现场确认；代码与历史已同步GitHub私有仓库。
 

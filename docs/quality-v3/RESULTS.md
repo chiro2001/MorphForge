@@ -23,6 +23,11 @@
 
 ## Windows与交付
 
-Windows x64的0.3.0 NSIS候选安装器已构建；最终冻结输入、原生测试和HTTP资源核对将记录于本目录。默认用户安装及既有作品未在本轮覆盖。
+Windows x64的0.3.0 NSIS候选安装器已构建。78项冻结输入在构建前后及最终检查中完全一致；[冻结清单](source-freeze.json)对应运行时代码提交 `08072cf`。
+
+- Windows核心86项、桌面2项测试通过；[构建摘要](windows-build.json)。
+- 隔离原生HTTP验收59项通过，包含Recipe子进程、字体、16k几何、嵌入前端和许可hash；[报告](windows-native.json)。首次检查被旧脚本固定69输入拦住，改成可配置预期数量后重跑通过；[初次报告](windows-native-initial-failure.json)。
+- 隔离Tauri副本13项通过：真实交互会话窗口、0.3.0核心、预设/Goal、连接Key不回显、本机私有配置、最终system3.1/tools3.0、正常关闭与子进程清理；[报告](desktop-candidate.json)、[截图](desktop-candidate.png)。测试未运行安装器或修改既有用户安装。
+- NSIS通过解包核对：包内核心SHA256与已验收原生核心一致，字体OFL许可与冻结来源一致。包大小13,714,846字节，SHA256为 `2932050758575efe2029ff2f16436bccc43f38c4dbb95155a2f1f81bff75d7ae`。保留0.2历史安装器；没有冒充本版进行了全新安装/卸载验收。
 
 本轮不重传Avatar，也不将软件验证替代仍待用户完成的客户端、多人与抓取验收。
