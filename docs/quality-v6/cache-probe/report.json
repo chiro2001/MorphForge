@@ -1,0 +1,67 @@
+{
+  "status": "completed",
+  "error": "",
+  "steps": 2,
+  "tokens": 15799,
+  "cacheMonitor": {
+    "alert": null,
+    "cacheReportedRequests": 2,
+    "cacheRequired": true,
+    "clientPrefixIsNotCacheHit": true,
+    "lastCachedTokens": 6656,
+    "lastHitRate": 0.733766949619667,
+    "lastInputTokens": 9071,
+    "mode": "strict",
+    "prefix": {
+      "appendOnly": true,
+      "contextEpoch": 0,
+      "currentMessages": 3,
+      "expectedReset": false,
+      "field": "input",
+      "firstChangedMessage": null,
+      "previousMessages": 1,
+      "reason": "append_only",
+      "resetAuthorization": null,
+      "scope": "wire_messages",
+      "sharedMessages": 1,
+      "staticPrefixUnchanged": true
+    },
+    "recentHitRate": 0.4226031746031746,
+    "requests": 2,
+    "source": "upstream_usage",
+    "status": "observing",
+    "windowRequests": 2
+  },
+  "usage": {
+    "prefixDenominator": "cache_reported_input_tokens",
+    "run": {
+      "cacheReportedInputTokens": 15750,
+      "cacheReportedRequests": 2,
+      "cachedInputTokens": 6656,
+      "inputTokens": 15750,
+      "outputTokens": 49,
+      "prefixHitRate": 0.4226031746031746,
+      "reportedRequests": 2,
+      "requests": 2,
+      "totalTokens": 15799,
+      "unreportedRequests": 0
+    },
+    "scope": "workspace",
+    "source": "upstream_reported_usage",
+    "total": {
+      "cacheReportedInputTokens": 15750,
+      "cacheReportedRequests": 2,
+      "cachedInputTokens": 6656,
+      "inputTokens": 15750,
+      "outputTokens": 49,
+      "prefixHitRate": 0.4226031746031746,
+      "reportedRequests": 2,
+      "requests": 2,
+      "totalTokens": 15799,
+      "unreportedRequests": 0
+    }
+  },
+  "seconds": 2.01,
+  "scope": "Actual official DeepSeek metadata + limited paid cache probe; no geometry or OSC",
+  "binarySha256": "55661e9e7c23e9a9b471cd3fe77a7f287679803be1beb72d1c0f1afa305ede6e"
+}

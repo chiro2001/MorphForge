@@ -1,0 +1,179 @@
+{
+  "case": "v6-r1-whale-submarine",
+  "caseSha256": "0f858ef27458adc18edf4bb19b38ad85c95157ace118ddffb8546bbdee473515",
+  "backend": "http://127.0.0.1:18831",
+  "initialRunId": "f0b28209-0211-4faa-ab7c-57202c58656a",
+  "settings": {
+    "maxSteps": 16,
+    "maxRunTokens": 160000,
+    "maxRunSeconds": 900,
+    "maxOutputTokens": 32768,
+    "cacheGuard": "strict"
+  },
+  "versions": {
+    "software": {
+      "apiVersion": "mf-http/2",
+      "name": "MorphForge",
+      "version": "0.5.0"
+    },
+    "tools": "morphforge-tools/3.3",
+    "prompt": "morphforge-system/4.6",
+    "language": "zh-CN",
+    "schemaSha256": "abd891cf70363297870a4cd3055329f0903c533294eb71b69bab2d3c99ec6352"
+  },
+  "actions": [],
+  "success": false,
+  "checks": {
+    "runCompleted": false,
+    "allActionsExercised": true,
+    "nonemptyScene": true,
+    "boxCapacity": true,
+    "modelUsedVisualFeedback": false,
+    "modelCommitted": false,
+    "modelSavedArtwork": false,
+    "oscRemainsDisabled": true,
+    "geometryRevisedAfterVisualFeedback": false,
+    "savedArtworkHasActualViews": false
+  },
+  "run": {
+    "activeRequestId": null,
+    "epoch": 1,
+    "error": "RUN_BUDGET：达到步骤或Token预算，已提交版本仍保留",
+    "finishedAt": "2026-10-19T10:58:40.344Z",
+    "id": "f0b28209-0211-4faa-ab7c-57202c58656a",
+    "language": "zh-CN",
+    "message": "我会分阶段处理：先定义调色板，再把参数化源码写成文件，先搭建几何，再渲染检查，然后修正，最后保存。",
+    "prompt": "从零制作精细体素艺术《珊瑚湾·鲸鱼潜航器》，不要载入内置作品。主体总长约120～150格，鲸鱼形船体要有连续饱满的曲面轮廓、自然头身比例、明显分叉的尾鳍和宽大的侧鳍；鱼头朝-X，尾巴朝+X，主要可见侧面朝+Z。蓝白船体配暖铜结构和柔和灯光，侧面有可辨的圆舷窗、细致舱门、鳃状格栅，顶部有精巧驾驶舱、天线和管道。下方用适量珊瑚、海床和小型系泊设施营造场景，保持主次，不用大块配景遮住主体。优先轮廓、比例、负空间和有意义细节，不为Box数量填充装饰，总量不超过16384。使用参数化源码文件保存复杂部件，便于之后修改。至少用完整hero/front和主体局部正交截图检查，在后续响应看图后修正一个真实可见问题，再复核保存；不要只用局部图宣称全局无问题。无需体素文字，无需发布VRChat，不启用OSC。最终简短说明可见成果及不足。",
+    "promptVersion": "morphforge-system/4.6",
+    "startedAt": "2026-10-19T10:56:00.302Z",
+    "status": "failed",
+    "steps": 5,
+    "tokens": 201441,
+    "toolsVersion": "morphforge-tools/3.3"
+  },
+  "interaction": {
+    "activeRequestId": null,
+    "activeSecondsRemaining": null,
+    "epoch": 1,
+    "paused": false,
+    "phase": "failed",
+    "queue": [],
+    "runId": "f0b28209-0211-4faa-ab7c-57202c58656a"
+  },
+  "scene": {
+    "revision": 2,
+    "boxes": 1615,
+    "styles": 18,
+    "groups": [
+      "deck",
+      "fins",
+      "hull",
+      "scene",
+      "side"
+    ]
+  },
+  "eventCounts": {
+    "harness.started": 1,
+    "harness.message.accepted": 1,
+    "harness.message.applied": 1,
+    "harness.request.prepared": 5,
+    "provider.request": 5,
+    "provider.attempt": 5,
+    "provider.first_byte": 5,
+    "provider.reasoning_delta": 143,
+    "provider.text_delta": 32,
+    "provider.response": 5,
+    "cache.guard.status": 5,
+    "tool.request": 5,
+    "geometry.replaced": 1,
+    "palette.defined": 1,
+    "tool.result": 5,
+    "source.changed": 1,
+    "geometry.applied": 1,
+    "recipe.completed": 1,
+    "harness.finished": 1
+  },
+  "toolCalls": 5,
+  "usage": {
+    "prefixDenominator": "cache_reported_input_tokens",
+    "run": {
+      "cacheReportedInputTokens": 162474,
+      "cacheReportedRequests": 5,
+      "cachedInputTokens": 149632,
+      "inputTokens": 162474,
+      "outputTokens": 38967,
+      "prefixHitRate": 0.9209596612381058,
+      "reportedRequests": 5,
+      "requests": 5,
+      "totalTokens": 201441,
+      "unreportedRequests": 0
+    },
+    "scope": "workspace",
+    "source": "upstream_reported_usage",
+    "total": {
+      "cacheReportedInputTokens": 178224,
+      "cacheReportedRequests": 7,
+      "cachedInputTokens": 156288,
+      "inputTokens": 178224,
+      "outputTokens": 39016,
+      "prefixHitRate": 0.8769189334769728,
+      "reportedRequests": 7,
+      "requests": 7,
+      "totalTokens": 217240,
+      "unreportedRequests": 0
+    }
+  },
+  "visualContext": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "referenceImages": [],
+  "toolNames": {
+    "define_palette": 1,
+    "recipe_sources": 3,
+    "run_recipe": 1
+  },
+  "toolErrors": [
+    {
+      "name": "recipe_sources",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "recipe worker异常退出 exit status: 1: \nthread 'recipe-engine' (4087534) panicked at /home/chiro/tmp/morphforge/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/boa_engine-0.21.1/src/vm/opcode/define/mod.rs:82:33:\nmust be declarative environment\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\nError: recipe引擎线程异常\n"
+        },
+        "ok": false
+      }
+    },
+    {
+      "name": "recipe_sources",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "SOURCE_CONFLICT：请先读取当前源码hash"
+        },
+        "ok": false
+      }
+    }
+  ],
+  "images": [
+    {
+      "view": "hero",
+      "file": "hero.png",
+      "sha256": "5a25ee2ca71748cf6801d571f34bab60c1413bca5ee05be45bdc6a9370b061a8"
+    },
+    {
+      "view": "front",
+      "file": "front.png",
+      "sha256": "d61a22e8c342f7d2f975c6cfc92960641a6f90ef4bb6a4989a2a284bc8d1ccae"
+    },
+    {
+      "view": "top",
+      "file": "top.png",
+      "sha256": "bb0862e36e7eb6793e77175f3c956658e1fa149e26cc643efa94c3158ba8b149"
+    }
+  ],
+  "seconds": 164.5841252086684
+}

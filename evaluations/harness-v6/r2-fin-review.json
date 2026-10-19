@@ -1,0 +1,16 @@
+{
+  "id": "v06-r2-fin-review",
+  "continue": true,
+  "settings": {
+    "maxSteps": 8,
+    "maxRunTokens": 80365,
+    "maxRunSeconds": 480,
+    "maxOutputTokens": 8192,
+    "cacheGuard": "strict"
+  },
+  "referenceIds": [],
+  "maxBoxes": 16384,
+  "requireVisualIteration": true,
+  "requireSavedViews": true,
+  "prompt": "当前是已生成的《珊瑚湾·鲸鱼潜航器》草稿，刚才get_context已给出最新版本、分组和调色板。请只做一次短的看图精修并收尾：先直接capture_views看hero/front和fins组局部正交图，也可同批inspect_region读取fins位置。根据真实画面，把像直角支架的侧鳍改得更流线、自然，保留船体、舷窗、驾驶舱和海床构图，沿用现有颜色。只用apply局部修改，不重建、不重写全部源码。推荐run_recipe带capture:{views:[\"hero\",\"front\",\"top\"]}，绘制后自动返回截图，下一响应实际看图再finish_artwork保存。最多处理一个主要问题，不追加配景或文字，不再长篇规划；如有未解决问题如实说明。不要载入内置作品，不启用或发送OSC。"
+}

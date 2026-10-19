@@ -1,0 +1,164 @@
+{
+  "case": "v06-r2-fin-review",
+  "caseSha256": "5c70417b0f5f66c9a3c2de449d35e8bb11665e999f329ef4ac69bf0f1090f294",
+  "backend": "http://127.0.0.1:18837",
+  "initialRunId": "cd776622-d472-4193-8dc6-8daaf4feb31d",
+  "settings": {
+    "maxSteps": 8,
+    "maxRunTokens": 80365,
+    "maxRunSeconds": 480,
+    "maxOutputTokens": 8192,
+    "cacheGuard": "strict"
+  },
+  "versions": {
+    "software": {
+      "apiVersion": "mf-http/2",
+      "name": "MorphForge",
+      "version": "0.6.0"
+    },
+    "tools": "morphforge-tools/3.4",
+    "prompt": "morphforge-system/4.7",
+    "language": "zh-CN",
+    "schemaSha256": "05627a53c824a46dde87d7c88f21a9888b936319f5b15002e9495428bec5001b"
+  },
+  "actions": [],
+  "success": false,
+  "checks": {
+    "runCompleted": false,
+    "allActionsExercised": true,
+    "nonemptyScene": true,
+    "boxCapacity": true,
+    "modelUsedVisualFeedback": true,
+    "modelCommitted": false,
+    "modelSavedArtwork": false,
+    "oscRemainsDisabled": true,
+    "geometryRevisedAfterVisualFeedback": true,
+    "savedArtworkHasActualViews": false
+  },
+  "run": {
+    "activeRequestId": null,
+    "epoch": 2,
+    "error": "RUN_BUDGET：剩余Token不足以预留下一请求的估计输入和输出；已保留草稿",
+    "finishedAt": "2026-10-19T11:57:31.557Z",
+    "id": "cd776622-d472-4193-8dc6-8daaf4feb31d",
+    "language": "zh-CN",
+    "message": "",
+    "prompt": "当前是已生成的《珊瑚湾·鲸鱼潜航器》草稿，刚才get_context已给出最新版本、分组和调色板。请只做一次短的看图精修并收尾：先直接capture_views看hero/front和fins组局部正交图，也可同批inspect_region读取fins位置。根据真实画面，把像直角支架的侧鳍改得更流线、自然，保留船体、舷窗、驾驶舱和海床构图，沿用现有颜色。只用apply局部修改，不重建、不重写全部源码。推荐run_recipe带capture:{views:[\"hero\",\"front\",\"top\"]}，绘制后自动返回截图，下一响应实际看图再finish_artwork保存。最多处理一个主要问题，不追加配景或文字，不再长篇规划；如有未解决问题如实说明。不要载入内置作品，不启用或发送OSC。",
+    "promptVersion": "morphforge-system/4.7",
+    "startedAt": "2026-10-19T11:56:49.429Z",
+    "status": "failed",
+    "steps": 3,
+    "tokens": 53064,
+    "toolsVersion": "morphforge-tools/3.4"
+  },
+  "interaction": {
+    "activeRequestId": null,
+    "activeSecondsRemaining": null,
+    "epoch": 2,
+    "paused": false,
+    "phase": "failed",
+    "queue": [],
+    "runId": "cd776622-d472-4193-8dc6-8daaf4feb31d"
+  },
+  "scene": {
+    "revision": 4,
+    "boxes": 1661,
+    "styles": 18,
+    "groups": [
+      "deck",
+      "fins",
+      "hull",
+      "scene",
+      "side-detail"
+    ]
+  },
+  "eventCounts": {
+    "harness.started": 1,
+    "harness.message.accepted": 1,
+    "harness.message.applied": 1,
+    "harness.request.prepared": 3,
+    "provider.request": 3,
+    "provider.attempt": 3,
+    "provider.first_byte": 3,
+    "provider.reasoning_delta": 43,
+    "provider.response": 3,
+    "cache.guard.status": 3,
+    "tool.request": 4,
+    "tool.result": 4,
+    "capture.completed": 2,
+    "geometry.applied": 1,
+    "recipe.completed": 1,
+    "harness.finished": 1
+  },
+  "toolCalls": 4,
+  "usage": {
+    "prefixDenominator": "cache_reported_input_tokens",
+    "run": {
+      "cacheReportedInputTokens": 45474,
+      "cacheReportedRequests": 3,
+      "cachedInputTokens": 39040,
+      "inputTokens": 45474,
+      "outputTokens": 7590,
+      "prefixHitRate": 0.8585125566257642,
+      "reportedRequests": 3,
+      "requests": 3,
+      "totalTokens": 53064,
+      "unreportedRequests": 0
+    },
+    "scope": "workspace",
+    "source": "upstream_reported_usage",
+    "total": {
+      "cacheReportedInputTokens": 65039,
+      "cacheReportedRequests": 5,
+      "cachedInputTokens": 47872,
+      "inputTokens": 65039,
+      "outputTokens": 7660,
+      "prefixHitRate": 0.7360506772859361,
+      "reportedRequests": 5,
+      "requests": 5,
+      "totalTokens": 72699,
+      "unreportedRequests": 0
+    }
+  },
+  "visualContext": [
+    null,
+    null,
+    null
+  ],
+  "referenceImages": [],
+  "toolNames": {
+    "capture_views": 2,
+    "inspect_region": 1,
+    "run_recipe": 1
+  },
+  "toolErrors": [
+    {
+      "name": "capture_views",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "views与shots只能选择一个"
+        },
+        "ok": false
+      }
+    }
+  ],
+  "images": [
+    {
+      "view": "hero",
+      "file": "hero.png",
+      "sha256": "9ee88e7908f25044eca488aa3614f440977a362340eb62933150a7069838cde3"
+    },
+    {
+      "view": "front",
+      "file": "front.png",
+      "sha256": "a979b7417fedeb70ec4731fc9351d0a38d601ae31727bdaf3774ec8b9dc7942c"
+    },
+    {
+      "view": "top",
+      "file": "top.png",
+      "sha256": "fcbe10fe1175261773dabd8ecee9e79a73baf901f2621b2e2775935ba15d849f"
+    }
+  ],
+  "seconds": 45.86934889527038
+}

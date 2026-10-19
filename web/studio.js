@@ -1,3 +1,4 @@
+import { TimelineView } from "/timeline-ui.js";
 import { ReferencePicker } from "/reference-ui.js";
 import { usageDisplay, supportsFileUpload } from "/usage-ui.js";
 import { VoxelRenderer } from "/renderer.js";
@@ -48,6 +49,7 @@ let polling = false;
 let edits = Promise.resolve();
 let lastSeq = 0;
 let eventRows = [];
+let timelineView = null;
 let toastTimer;
 let pointerStart = null;
 let loading = false;
@@ -674,12 +676,13 @@ function updateState() {
   $("usageRun").hidden = !usage.run;
   setChecked("sendImages", harness.settings.sendImages ?? true);
   setChecked("goalMode", harness.settings.goalMode ?? false);
-  $("presetHint").textContent = {
-    sketch: "优先轮廓和大形；默认最多12步 / 10分钟，选定后仍可调整。",
-    standard: "兼顾结构与细节；默认最多24步 / 15分钟，选定后仍可调整。",
-    detailed:
-      "分阶段细化与3轮不同几何复核；默认最多128步 / 2小时 / 200万Token，实际消耗取决于模型。",
-  }[harness.settings.preset || "standard"];
+  $("presetHint").textContent =
+    ({
+      sketch: "轮廓与大形优先",
+      standard: "结构、材质与有限细节",
+      detailed: "分阶段细化与多轮复核",
+    }[harness.settings.preset] || "创作预设") +
+    ` · 当前最多${harness.settings.maxSteps}步 / ${Math.round(harness.settings.maxRunSeconds / 60)}分钟，可在预算范围内调整。`;
   const goal = harness.context.goal;
   const goalLabels = {
     active: "进行中",
@@ -715,13 +718,22 @@ function updateState() {
   updateProviderImagePolicy();
   setValue("model", harness.settings.model);
   setValue("reasoning", harness.settings.reasoning);
+  setValue("cacheGuard", harness.settings.cacheGuard || "auto");
+  const monitor = harness.cacheMonitor || {};
+  $("cacheMonitorStatus").textContent =
+    `前缀 ${monitor.prefix?.appendOnly === false ? "发生重置/变化" : monitor.prefix?.appendOnly === true ? "保持追加" : "待观察"} · 最近缓存 ${typeof monitor.recentHitRate === "number" ? (monitor.recentHitRate * 100).toFixed(1) + "%" : "未报告"} · ${monitor.alert || (monitor.mode ? (monitor.cacheRequired ? "严格监测" : "观察模式") : "等待首次请求；保护按配置启用")}`;
+  $("cacheMonitorStatus").classList.toggle("kind-error", !!monitor.alert);
+  $("cacheLiveStatus").textContent = $("cacheMonitorStatus").textContent;
+  $("cacheLiveStatus").classList.toggle("kind-error", !!monitor.alert);
+  $("cacheShowConfig").hidden = !monitor.alert;
   setValue("maxSteps", harness.settings.maxSteps);
   setValue("maxRunSeconds", harness.settings.maxRunSeconds);
   setValue("maxRunTokens", harness.settings.maxRunTokens);
   setValue("maxOutputTokens", harness.settings.maxOutputTokens);
   if (harness.modelLimits) {
-    const limits=harness.modelLimits;
-    $("modelLimitsInfo").textContent=`有效上下文 ${fmt(limits.effectiveContextWindow)} · 输出上限 ${fmt(limits.effectiveOutputCeiling)} Token（${limits.source==="upstream_models"?"已读取上游 /models":"按当前配置；尚未获取上游限制"}，单次输出按剩余窗口裁剪）`;
+    const limits = harness.modelLimits;
+    $("modelLimitsInfo").textContent =
+      `有效上下文 ${fmt(limits.effectiveContextWindow)} · 输出上限 ${fmt(limits.effectiveOutputCeiling)} Token（${limits.source === "upstream_models" ? "已读取上游 /models" : "按当前配置；尚未获取上游限制"}，单次输出按剩余窗口裁剪）`;
   }
   setValue("compactTokens", harness.settings.compactTokens);
   setValue("language", harness.settings.language || "zh-CN");
@@ -1243,6 +1255,7 @@ async function configHarness(value) {
 for (const [id, key] of [
   ["model", "model"],
   ["reasoning", "reasoning"],
+  ["cacheGuard", "cacheGuard"],
   ["maxSteps", "maxSteps"],
   ["compactTokens", "compactTokens"],
   ["maxRunSeconds", "maxRunSeconds"],
@@ -1673,7 +1686,7 @@ async function library() {
   const value = await api("artworks");
   const query = $("librarySearch").value.toLowerCase();
   $("libraryGrid").replaceChildren();
-  for (const artwork of [...value.artworks,...(value.examples||[])]) {
+  for (const artwork of [...value.artworks, ...(value.examples || [])]) {
     if (
       query &&
       !`${artwork.title} ${artwork.tags.join(" ")}`
@@ -1684,8 +1697,8 @@ async function library() {
     }
     const card = document.createElement("article");
     card.className = "artwork";
-    card.dataset.artworkId=artwork.id;
-    card.dataset.origin=artwork.origin||"user";
+    card.dataset.artworkId = artwork.id;
+    card.dataset.origin = artwork.origin || "user";
     const img = document.createElement("img");
     if (artwork.thumbnail)
       img.src = "/artifacts/" + encodeURIComponent(artwork.thumbnail);
@@ -1694,11 +1707,23 @@ async function library() {
     const info = document.createElement("p");
     const load = document.createElement("button");
     name.textContent = artwork.title;
-    info.textContent = `${artwork.origin==="builtin"?"内置示例":"我的作品"} · ${fmt(artwork.boxCount)} Box · ${fmt(artwork.voxelCount)} 格`;
-    load.textContent = artwork.origin==="builtin"?"载入可编辑副本":"载入并继续";
-    body.append(name,info);
-    if (artwork.description) {const description=document.createElement("p");description.textContent=artwork.description;body.append(description);}
-    if (artwork.sourceCredits?.length) {const credits=document.createElement("p");credits.className="caption";credits.textContent=artwork.sourceCredits.map(credit=>`${credit.author} · ${credit.license}`).join("；");body.append(credits);}
+    info.textContent = `${artwork.origin === "builtin" ? "内置示例" : "我的作品"} · ${fmt(artwork.boxCount)} Box · ${fmt(artwork.voxelCount)} 格`;
+    load.textContent =
+      artwork.origin === "builtin" ? "载入可编辑副本" : "载入并继续";
+    body.append(name, info);
+    if (artwork.description) {
+      const description = document.createElement("p");
+      description.textContent = artwork.description;
+      body.append(description);
+    }
+    if (artwork.sourceCredits?.length) {
+      const credits = document.createElement("p");
+      credits.className = "caption";
+      credits.textContent = artwork.sourceCredits
+        .map((credit) => `${credit.author} · ${credit.license}`)
+        .join("；");
+      body.append(credits);
+    }
     if (artwork.views?.length) {
       const preview = document.createElement("button");
       preview.textContent = "多视图";
@@ -1716,7 +1741,11 @@ async function library() {
     }
     load.onclick = async () => {
       try {
-        await api("artworks", { action: "fork", id: artwork.id, baseRevision:state.revision });
+        await api("artworks", {
+          action: "fork",
+          id: artwork.id,
+          baseRevision: state.revision,
+        });
         await refresh(true);
         renderer.view();
         $("libraryDialog").close();
@@ -1748,55 +1777,31 @@ $("diagnosticsExport").onclick = () => {
 };
 $("timelineToggle").onclick = () => {
   $("timeline").hidden = !$("timeline").hidden;
+  if (!timelineView) timelineView = new TimelineView(api, error);
+  if (!$("timeline").hidden) timelineView.reload().catch(error);
   setTimeout(() => renderer.resize(), 30);
 };
-$("eventFilter").onchange = drawEvents;
-$("eventRunFilter").oninput = drawEvents;
-$("eventRevisionFilter").oninput = drawEvents;
-
-function drawEvents() {
-  $("events").replaceChildren();
-  const filter = $("eventFilter").value;
-  const run = $("eventRunFilter").value.trim();
-  const revision = $("eventRevisionFilter").value;
-  for (const event of eventRows
-    .filter(
-      (item) =>
-        (!filter || item.kind.startsWith(filter)) &&
-        (!run || item.runId?.includes(run)) &&
-        (revision === "" || item.revision === Number(revision)),
-    )
-    .slice(-250)
-    .reverse()) {
-    const row = document.createElement("div");
-    row.className =
-      "event" + (event.kind.includes("error") ? " kind-error" : "");
-    const timeElement = document.createElement("time");
-    timeElement.textContent = event.time.slice(11, 23);
-    const kind = document.createElement("span");
-    kind.textContent = event.kind;
-    const detail = document.createElement("details");
-    const summary = document.createElement("summary");
-    const pre = document.createElement("pre");
-    summary.textContent =
-      `#${event.seq} · v${event.revision}` +
-      (event.runId ? " · " + event.runId.slice(0, 8) : "");
-    pre.textContent = JSON.stringify(event.data, null, 2);
-    detail.append(summary, pre);
-    row.append(timeElement, kind, detail);
-    $("events").append(row);
+$("cacheShowConfig").onclick = () => $("settingsOpen").click();
+$("cacheAcknowledge").onclick = async () => {
+  try {
+    await api("harness/control", { action: "ack_cache_warning" });
+    await refresh();
+    toast("已确认告警；恢复运行后将继续监测");
+  } catch (cause) {
+    error(cause);
   }
-}
+};
 
 async function pollEvents() {
   try {
-    const value = await api("events?after=" + lastSeq);
+    const value = await api("events?brief=true&after=" + lastSeq);
     if (value.events.length) {
       lastSeq = value.events.at(-1).seq;
       eventRows.push(...value.events);
       eventRows = eventRows.slice(-1500);
       applyHarnessEvents(value.events);
-      drawEvents();
+      if (timelineView && !$("timeline").hidden)
+        timelineView.load().catch(error);
     }
   } catch {
     // The main refresh loop reports backend availability.
@@ -2134,7 +2139,12 @@ if (captureMode) {
           mode: job.mode,
           scale: 1,
         });
-        const images = await renderer.capture(job.views, job.width, job.height);
+        const images = await renderer.capture(
+          job.views,
+          job.width,
+          job.height,
+          job.shots,
+        );
         await api("capture/result", {
           id: job.id,
           revision: renderer.renderRevision,

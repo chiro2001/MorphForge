@@ -1,0 +1,92 @@
+{
+  "success": true,
+  "scope": "Real Rust + Chromium; LOCAL fixture reasoning only, no paid generation or OSC",
+  "checks": [
+    {
+      "name": "isolated empty scene and OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "virtual CommonJS modules execute through actual recipe worker",
+      "passed": true
+    },
+    {
+      "name": "dry run retains current revision",
+      "passed": true
+    },
+    {
+      "name": "draw and capture share one tool result",
+      "passed": true
+    },
+    {
+      "name": "source edits and parameter changes continue the project",
+      "passed": true
+    },
+    {
+      "name": "slice inspection returns real one-voxel sections",
+      "passed": true
+    },
+    {
+      "name": "custom shots are distinct and contain camera receipts",
+      "passed": true
+    },
+    {
+      "name": "image crop is labeled reinspection without scene edits",
+      "passed": true
+    },
+    {
+      "name": "reasoning is visible while request is still streaming",
+      "passed": true
+    },
+    {
+      "name": "fixture finishes and saves artwork",
+      "passed": true
+    },
+    {
+      "name": "upstream hit rate is separate from prefix checks",
+      "passed": true
+    },
+    {
+      "name": "ordinary outgoing context is append only",
+      "passed": true
+    },
+    {
+      "name": "model text is rendered safely without HTML execution",
+      "passed": true
+    },
+    {
+      "name": "known provider key is redacted",
+      "passed": true
+    },
+    {
+      "name": "historical preview does not edit current project",
+      "passed": true
+    },
+    {
+      "name": "engine fault pauses without a paid-model retry",
+      "passed": true
+    },
+    {
+      "name": "established cache loss pauses before another request",
+      "passed": true
+    },
+    {
+      "name": "cached-zero warning is always visible beside input",
+      "passed": true
+    },
+    {
+      "name": "partial/final reasoning and tools remain queryable",
+      "passed": true
+    },
+    {
+      "name": "OSC remains off",
+      "passed": true
+    },
+    {
+      "name": "no browser or WebGL errors",
+      "passed": true
+    }
+  ],
+  "requests": 5,
+  "boxCount": 80
+}

@@ -13,7 +13,13 @@ pub(super) struct VisualContextStats {
 pub(super) fn retain_latest_views(input: &mut [Value]) -> VisualContextStats {
     let captures: HashSet<String> = input
         .iter()
-        .filter(|item| item["type"] == "function_call" && item["name"] == "capture_views")
+        .filter(|item| {
+            item["type"] == "function_call"
+                && matches!(
+                    item["name"].as_str(),
+                    Some("capture_views" | "run_recipe" | "recipe_sources")
+                )
+        })
         .filter_map(|item| item["call_id"].as_str().map(str::to_owned))
         .collect();
     let mut seen_views = HashSet::new();

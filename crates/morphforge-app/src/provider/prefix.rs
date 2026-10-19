@@ -1,8 +1,10 @@
 //! Observe the actual wire-message prefix after protocol and image conversion.
 //! Store hashes only; this is a structural diagnostic, not a token/cache estimate.
 use super::{config::Connection, ProviderRequestTrace};
+use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 
+#[derive(Clone, Serialize, Deserialize)]
 struct Snapshot {
     connection: String,
     static_hash: String,
@@ -11,12 +13,18 @@ struct Snapshot {
     image_policy: Option<bool>,
 }
 
-#[derive(Default)]
+#[derive(Clone, Default, Serialize, Deserialize)]
 pub(super) struct PrefixTracker {
     previous: Option<Snapshot>,
+    #[serde(default)]
+    authorized_reset: Option<String>,
 }
 
 impl PrefixTracker {
+    pub fn authorize(&mut self, reason: &str) {
+        self.authorized_reset = Some(reason.into());
+    }
+
     pub(super) fn observe(
         &mut self,
         payload: &Value,
@@ -39,12 +47,15 @@ impl PrefixTracker {
             .iter()
             .map(|message| crate::store::hash(&serde_json::to_vec(message).unwrap()))
             .collect::<Vec<_>>();
-        let static_config = json!({
+        let mut static_config = json!({
             "model":payload["model"],"instructions":payload["instructions"],"tools":payload["tools"],
             "reasoning":payload["reasoning"],"reasoningEffort":payload["reasoning_effort"],
             "chatTemplateKwargs":payload["chat_template_kwargs"],"toolChoice":payload["tool_choice"],
             "leadingInstructions":messages.iter().take_while(|item|matches!(item["role"].as_str(),Some("system"|"developer"))).collect::<Vec<_>>()
         });
+        if !payload["thinking"].is_null() {
+            static_config["thinking"] = payload["thinking"].clone();
+        }
         let current = Snapshot {
             connection: connection.identity(),
             static_hash: crate::store::hash(&serde_json::to_vec(&static_config).unwrap()),
@@ -77,7 +88,8 @@ impl PrefixTracker {
             };
             json!({
                 "scope":"wire_messages","field":field,"appendOnly":append_only,"reason":reason,
-                "expectedReset":!matches!(reason,"history_rewrite"|"append_only"),
+                "expectedReset":self.authorized_reset.is_some() || reason=="compact_or_context_reset",
+                "resetAuthorization":self.authorized_reset,
                 "staticPrefixUnchanged":same_static,"sharedMessages":common,
                 "previousMessages":previous.messages.len(),"currentMessages":current.messages.len(),
                 "firstChangedMessage":if common<previous.messages.len(){Some(common)}else{None},
@@ -87,6 +99,7 @@ impl PrefixTracker {
             json!({"scope":"wire_messages","field":field,"appendOnly":null,"reason":"first_request",
                    "currentMessages":current.messages.len(),"expectedReset":false,"contextEpoch":trace.context_epoch})
         };
+        self.authorized_reset = None;
         self.previous = Some(current);
         report
     }

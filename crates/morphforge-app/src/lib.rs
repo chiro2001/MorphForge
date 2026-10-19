@@ -9,5 +9,7 @@ pub mod recipe;
 pub mod references;
 pub mod resources;
 pub mod server;
+pub mod sources;
 pub mod store;
+pub mod timeline;
 pub mod transport;

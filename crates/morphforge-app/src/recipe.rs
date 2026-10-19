@@ -45,7 +45,7 @@ struct WorkerText {
     mirrors: [i32; 3],
 }
 const SDK: &str = include_str!("recipe_sdk.js");
-pub const SDK_VERSION: &str = "morphforge-recipe/2";
+pub const SDK_VERSION: &str = "morphforge-recipe/3";
 pub fn worker(input: WorkerInput) -> Result<Value> {
     if input.request.code.len() > 1_000_000 || input.request.max_ops > 100000 {
         bail!("recipe资源预算越界")
@@ -53,7 +53,7 @@ pub fn worker(input: WorkerInput) -> Result<Value> {
     let mut context = JsContext::default();
     context
         .runtime_limits_mut()
-        .set_loop_iteration_limit(1_000_000);
+        .set_loop_iteration_limit(4_000_000);
     context.runtime_limits_mut().set_recursion_limit(128);
     let settings =
         json!({"seed":input.request.seed,"maxOps":input.request.max_ops,"styles":input.styles});
@@ -149,6 +149,9 @@ pub async fn execute(
     };
     if bytes.len() > 32 * 1024 * 1024 {
         bail!("RECIPE_OUTPUT_LIMIT")
+    }
+    if !status.success() && status.code() != Some(2) {
+        bail!("RECIPE_ENGINE_FAULT：工作子进程异常退出 {status}；已保留源码，请修复执行器后再恢复。{}",String::from_utf8_lossy(&errors).chars().take(1000).collect::<String>());
     }
     let value: Value = serde_json::from_slice(&bytes).with_context(|| {
         format!(

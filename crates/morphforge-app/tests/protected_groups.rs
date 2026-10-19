@@ -45,6 +45,9 @@ fn protected_group_blocks_all_geometry_transactions_and_text_receipts() {
             tint_id: 1,
         },
         Operation::Clear,
+        Operation::RemoveGroup {
+            name: "plaque".into(),
+        },
     ] {
         let error = apply_one(&mut workspace, operation, 2).unwrap_err();
         assert!(error.starts_with("PROTECTED_GROUP_CONFLICT"));

@@ -1,7 +1,9 @@
 mod compat;
 mod config;
+mod guard;
 mod limits;
 mod prefix;
+mod progress;
 mod usage;
 pub use config::{ApiType, Connection, ImageDelivery};
 pub use limits::{
@@ -54,6 +56,7 @@ pub struct ProviderSettings {
     pub goal_min_review_rounds: usize,
     pub goal_max_continuations: u32,
     pub goal_criteria: String,
+    pub cache_guard: String,
 }
 impl Default for ProviderSettings {
     fn default() -> Self {
@@ -77,6 +80,7 @@ impl Default for ProviderSettings {
             goal_min_review_rounds: 1,
             goal_max_continuations: 6,
             goal_criteria: String::new(),
+            cache_guard: "auto".into(),
         }
     }
 }
@@ -90,6 +94,7 @@ pub struct Provider {
     usage: Arc<Mutex<usage::UsageLedger>>,
     prefix: Arc<Mutex<prefix::PrefixTracker>>,
     limits: Arc<Mutex<limits::LimitCache>>,
+    guard: Arc<Mutex<guard::CacheGuard>>,
     file_path: PathBuf,
 }
 struct CancellationInner {
@@ -145,6 +150,8 @@ pub struct ProviderRequestTrace {
     pub context_epoch: Option<u32>,
     pub image_policy: Option<bool>,
     pub compact: bool,
+    pub cache_guard: String,
+    pub estimated_input_tokens: u64,
 }
 
 impl ProviderRequestTrace {
@@ -212,7 +219,13 @@ impl Provider {
             redaction_keys: Arc::new(Mutex::new(redaction_keys)),
             files: Arc::new(Mutex::new(files)),
             usage: Arc::new(Mutex::new(usage::UsageLedger::load(root)?)),
-            prefix: Arc::new(Mutex::new(prefix::PrefixTracker::default())),
+            prefix: Arc::new(Mutex::new(if root.join("provider-prefix.json").exists() {
+                serde_json::from_slice(&std::fs::read(root.join("provider-prefix.json"))?)
+                    .context("PREFIX_STATE_INVALID：前缀记录损坏；未自动清空检查基线")?
+            } else {
+                prefix::PrefixTracker::default()
+            })),
+            guard: Arc::new(Mutex::new(guard::CacheGuard::load(root)?)),
             limits: Arc::new(Mutex::new(limits::LimitCache::default())),
             file_path,
         })
@@ -227,15 +240,58 @@ impl Provider {
                 keys.push(key.clone());
             }
         }
+        let connection_changed = current.identity() != next.identity();
+        let prefix_changed = connection_changed
+            || current.status()["imageDelivery"] != next.status()["imageDelivery"]
+            || current.send_reasoning != next.send_reasoning;
         *current = next;
+        if prefix_changed {
+            let mut guard = self.guard.lock().unwrap();
+            *guard = guard::CacheGuard::default();
+            guard.save(&self.root)?;
+            drop(guard);
+            self.authorize_prefix_reset("provider_configuration");
+        }
         *self.limits.lock().unwrap() = limits::LimitCache::default();
         Ok(current.status())
+    }
+    pub fn cache_required(&self, policy: &str) -> bool {
+        policy == "strict"
+            || policy == "auto"
+                && reqwest::Url::parse(&self.connection().base_url)
+                    .ok()
+                    .and_then(|url| url.host_str().map(str::to_owned))
+                    .as_deref()
+                    == Some("api.deepseek.com")
+    }
+    pub fn cache_status(&self) -> Value {
+        self.guard.lock().unwrap().status()
+    }
+    pub fn acknowledge_cache_warning(&self) -> Result<()> {
+        let mut guard = self.guard.lock().unwrap();
+        guard.acknowledge();
+        guard.save(&self.root)
+    }
+    pub fn authorize_prefix_reset(&self, reason: &str) {
+        let mut prefix = self.prefix.lock().unwrap();
+        prefix.authorize(reason);
+        let _ = crate::store::write_json(&self.root.join("provider-prefix.json"), &*prefix);
+        if reason == "harness_configuration" {
+            let mut guard = self.guard.lock().unwrap();
+            *guard = guard::CacheGuard::default();
+            let _ = guard.save(&self.root);
+        }
     }
     pub fn usage(&self, run: Option<&str>) -> Value {
         self.usage.lock().unwrap().value(run)
     }
     pub(crate) fn reset_prefix_trace(&self) {
-        *self.prefix.lock().unwrap() = prefix::PrefixTracker::default();
+        let mut prefix = self.prefix.lock().unwrap();
+        *prefix = prefix::PrefixTracker::default();
+        let _ = crate::store::write_json(&self.root.join("provider-prefix.json"), &*prefix);
+        let mut guard = self.guard.lock().unwrap();
+        *guard = guard::CacheGuard::default();
+        let _ = guard.save(&self.root);
     }
     fn record_event(
         &self,
@@ -245,6 +301,26 @@ impl Provider {
         data: Value,
     ) -> Result<()> {
         let event = workspace.lock().unwrap().event(kind, run, data)?;
+        if matches!(
+            kind,
+            "provider.incomplete" | "provider.cancelled" | "provider.transport_error"
+        ) {
+            if let Some(id) = event.data["requestId"].as_str() {
+                let status = {
+                    let mut guard = self.guard.lock().unwrap();
+                    let status = guard.unfinished(id, &event.data);
+                    guard.save(&self.root)?;
+                    status
+                };
+                if let Some(status) = status {
+                    workspace
+                        .lock()
+                        .unwrap()
+                        .event("cache.guard.status", run, status)?;
+                }
+            }
+        }
+
         if usage::UsageLedger::relevant(kind) {
             self.usage.lock().unwrap().observe(&event);
         }
@@ -537,11 +613,31 @@ impl Provider {
         };
         let identity = connection.identity();
         let start = std::time::Instant::now();
-        let prefix = self
-            .prefix
-            .lock()
-            .unwrap()
-            .observe(&payload, &connection, &trace);
+        let mut candidate = self.prefix.lock().unwrap().clone();
+        let prefix = candidate.observe(&payload, &connection, &trace);
+        if prefix["appendOnly"] == false && prefix["expectedReset"] != true {
+            {
+                let mut guard = self.guard.lock().unwrap();
+                guard.block_prefix(&prefix);
+                guard.save(&self.root)?;
+            }
+            self.record_event(
+                &workspace,
+                "cache.guard.blocked",
+                Some(run),
+                json!({"reason":"unexpected_prefix_rewrite","prefix":prefix}),
+            )?;
+            bail!("CACHE_GUARD_PAUSED：出站上下文出现未经授权的前缀改写，已在发送前拦截")
+        }
+        {
+            let mut guard = self.guard.lock().unwrap();
+            if let Err(error) = guard.prepare(&connection, &payload["model"], &trace, &prefix) {
+                let status = guard.status();
+                drop(guard);
+                self.record_event(&workspace, "cache.guard.blocked", Some(run), status)?;
+                return Err(error);
+            }
+        }
         let request_id = trace
             .request_id
             .clone()
@@ -561,6 +657,11 @@ impl Provider {
                 )?;
                 bail!("RUN_CANCELLED")
             }
+            if attempt == 0 && !trace.compact {
+                crate::store::write_json(&self.root.join("provider-prefix.json"), &candidate)?;
+                *self.prefix.lock().unwrap() = candidate.clone();
+            }
+            self.record_event(&workspace,"provider.attempt",Some(run),json!({"requestId":request_id,"attempt":attempt,"attemptId":format!("{request_id}:{attempt}")}))?;
             let request = Self::auth(
                 &connection,
                 self.client
@@ -569,7 +670,7 @@ impl Provider {
             .json(&payload);
             let response = tokio::select! {
                 biased;
-                r=request.send()=>r?,
+                r=request.send()=>r,
                 _=cancel.wait()=>{
                     self.record_event(&workspace,
                         "provider.cancelled",
@@ -577,6 +678,18 @@ impl Provider {
                         json!({"requestId":request_id,"epoch":trace.epoch,"phase":"sending"}),
                     )?;
                     bail!("RUN_CANCELLED")
+                }
+            };
+            let response = match response {
+                Ok(response) => response,
+                Err(error) => {
+                    self.record_event(
+                        &workspace,
+                        "provider.transport_error",
+                        Some(run),
+                        json!({"requestId":request_id,"message":self.redact(&error.to_string())}),
+                    )?;
+                    return Err(error.into());
                 }
             };
             let status = response.status();
@@ -614,6 +727,7 @@ impl Provider {
                     &request_id,
                     &value,
                     start.elapsed().as_secs_f64(),
+                    &trace,
                 )?;
                 if value["status"] == "incomplete" {
                     self.record_event(&workspace,
@@ -634,6 +748,7 @@ impl Provider {
             let mut first = true;
             let mut chat = compat::ChatStream::default();
             let mut bytes_total = 0usize;
+            let mut reasoning_progress = progress::ReasoningProgress::default();
             loop {
                 let chunk = tokio::select! {
                     biased;
@@ -677,13 +792,22 @@ impl Provider {
                         continue;
                     }
                     if connection.api_type == ApiType::Chat && data.trim() == "[DONE]" {
-                        let result = self.log_value(&self.tag_reasoning(chat.finish()?, &identity));
+                        self.flush_reasoning(
+                            &workspace,
+                            run,
+                            &request_id,
+                            &mut reasoning_progress,
+                        )?;
+                        let mut result =
+                            self.log_value(&self.tag_reasoning(chat.finish()?, &identity));
+                        result["_mfStreamReasoningReturned"] = json!(reasoning_progress.part > 0);
                         self.record_response(
                             &workspace,
                             run,
                             &request_id,
                             &result,
                             start.elapsed().as_secs_f64(),
+                            &trace,
                         )?;
                         return Ok(result);
                     }
@@ -691,6 +815,26 @@ impl Provider {
                         continue;
                     }
                     let event: Value = serde_json::from_str(&data)?;
+                    if let Some(text) = reasoning_progress.push(&event) {
+                        self.record_event(&workspace,"provider.reasoning_delta",Some(run),json!({"requestId":request_id,"part":reasoning_progress.part,"text":self.redact(&text),"source":"upstream_stream","partial":true}))?;
+                    }
+                    if matches!(
+                        event["type"].as_str(),
+                        Some(
+                            "response.completed"
+                                | "response.failed"
+                                | "response.incomplete"
+                                | "error"
+                        )
+                    ) {
+                        self.flush_reasoning(
+                            &workspace,
+                            run,
+                            &request_id,
+                            &mut reasoning_progress,
+                        )?;
+                    }
+
                     if connection.api_type == ApiType::Chat {
                         if let Some(delta) = chat
                             .push(&event)
@@ -719,14 +863,16 @@ impl Provider {
                         )?;
                     }
                     if kind == "response.completed" {
-                        let result = self
+                        let mut result = self
                             .log_value(&self.tag_reasoning(event["response"].clone(), &identity));
+                        result["_mfStreamReasoningReturned"] = json!(reasoning_progress.part > 0);
                         self.record_response(
                             &workspace,
                             run,
                             &request_id,
                             &result,
                             start.elapsed().as_secs_f64(),
+                            &trace,
                         )?;
                         return Ok(result);
                     }
@@ -756,6 +902,7 @@ impl Provider {
                     bail!("Provider单个SSE帧超过16MiB保护值")
                 }
             }
+            self.flush_reasoning(&workspace, run, &request_id, &mut reasoning_progress)?;
             self.record_event(
                 &workspace,
                 "provider.incomplete",
@@ -771,6 +918,18 @@ impl Provider {
         }
         bail!("Provider重试耗尽")
     }
+    fn flush_reasoning(
+        &self,
+        workspace: &Arc<Mutex<Workspace>>,
+        run: &str,
+        id: &str,
+        progress: &mut progress::ReasoningProgress,
+    ) -> Result<()> {
+        if let Some(text) = progress.flush() {
+            self.record_event(workspace,"provider.reasoning_delta",Some(run),json!({"requestId":id,"part":progress.part,"text":self.redact(&text),"source":"upstream_stream","partial":true}))?;
+        }
+        Ok(())
+    }
     fn record_response(
         &self,
         workspace: &Arc<Mutex<Workspace>>,
@@ -778,6 +937,7 @@ impl Provider {
         id: &str,
         value: &Value,
         seconds: f64,
+        trace: &ProviderRequestTrace,
     ) -> Result<()> {
         self.record_event(
             workspace,
@@ -785,6 +945,15 @@ impl Provider {
             Some(run),
             json!({"requestId":id,"latencySeconds":seconds,"body":self.log_value(value)}),
         )?;
+        if !trace.compact {
+            let status = {
+                let mut guard = self.guard.lock().unwrap();
+                let status = guard.record(id, value);
+                guard.save(&self.root)?;
+                status
+            };
+            self.record_event(workspace, "cache.guard.status", Some(run), status)?;
+        }
         Ok(())
     }
 }

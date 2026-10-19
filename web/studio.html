@@ -215,6 +215,10 @@
             </div>
           </div>
           <div id="usageRun" class="caption usage-run" hidden></div>
+          <div class="row">
+            <span id="cacheLiveStatus" class="caption" role="status"></span
+            ><button id="cacheShowConfig" hidden>查看缓存告警</button>
+          </div>
           <textarea
             id="prompt"
             rows="4"
@@ -593,6 +597,15 @@ mf.group('main', () => {
                 <option value="detailed">精细作品 · 多轮复核</option>
               </select></label
             >
+            <label
+              >缓存保护<select id="cacheGuard">
+                <option value="auto">自动（官方严格，兼容服务观察）</option>
+                <option value="strict">严格（异常暂停）</option>
+                <option value="observe">观察（不上报缓存的服务）</option>
+              </select></label
+            >
+            <p id="cacheMonitorStatus" class="caption"></p>
+            <button id="cacheAcknowledge">已检查上游，确认缓存告警</button>
             <p id="presetHint" class="caption"></p>
             <div class="double">
               <label
@@ -665,7 +678,9 @@ mf.group('main', () => {
             <p class="caption">
               预设预算是上限，不是耗时或质量保证。请按所选模型实际支持的上下文与输出窗口调整。
             </p>
-            <p class="caption" id="modelLimitsInfo">默认上下文 1M、输出上限 384K；有效输出还受上游与剩余窗口限制。</p>
+            <p class="caption" id="modelLimitsInfo">
+              默认上下文 1M、输出上限 384K；有效输出还受上游与剩余窗口限制。
+            </p>
             <label
               >提示词工具语言<select id="language">
                 <option value="zh-CN">简体中文</option>
@@ -732,16 +747,30 @@ mf.group('main', () => {
       <span id="voxelCount">0格</span>
       <span id="bounds">范围为空</span>
       <span class="grow"></span>
-      <button id="timelineToggle">运行记录 ▴</button>
+      <button id="timelineToggle">创作时间轴 ▴</button>
     </footer>
     <section id="timeline" hidden>
       <div class="row">
-        <b>完整运行记录</b>
+        <b>创作时间轴</b>
+        <button id="timelineOlder">更早记录</button
+        ><button id="timelineLatest">最近记录</button>
+        <label
+          ><input id="timelineFollow" type="checkbox" checked />跟随最新</label
+        >
+        <input
+          id="timelineSearch"
+          placeholder="搜索思考、工具或错误"
+          aria-label="搜索时间轴"
+        />
         <select id="eventFilter">
           <option value="">全部事件</option>
           <option value="harness.message.">Harness消息</option>
           <option value="tool.">工具调用</option>
           <option value="provider.">模型交互</option>
+          <option value="provider.reasoning_">思考片段</option>
+          <option value="cache.guard.">缓存与止损</option>
+          <option value="source.">源码变更</option>
+          <option value="capture.">截图</option>
           <option value="compact.">Compact</option>
           <option value="osc.">OSC</option>
           <option value="geometry.">几何</option>
@@ -761,9 +790,19 @@ mf.group('main', () => {
         <button id="historyOpen">版本历史</button>
         <button id="diagnosticsExport">导出诊断记录</button>
       </div>
+      <p id="timelineStatus" class="caption">
+        思考内容仅来自上游实际返回；查看历史不会修改当前工程。
+      </p>
       <div id="events"></div>
     </section>
 
+    <dialog id="timelinePreview">
+      <div class="row">
+        <b id="timelinePreviewTitle">只读历史预览</b><span class="grow"></span
+        ><button id="timelinePreviewClose">关闭</button>
+      </div>
+      <div id="timelinePreviewViewport"></div>
+    </dialog>
     <dialog id="referenceDialog" aria-labelledby="referenceTitle">
       <div class="row">
         <h2 id="referenceTitle">参考图库</h2>

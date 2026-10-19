@@ -4,7 +4,7 @@
 
 - [用户指南](docs/USER-GUIDE.md)：安装、配置、编辑、AI、compact、作品库与 OSC 发布。
 - [交付记录](docs/DELIVERY.md) · [实施状态及证据](docs/plan/STATUS.md) · [已确认设计](docs/plan/README.md) · [验收标准](docs/plan/ACCEPTANCE.md)。
-- Windows **0.5.0 候选版**：`dist/windows/MorphForge Desktop_0.5.0_x64-setup.exe`；校验和在同目录。[本轮验证](docs/quality-v5/RESULTS.md) · [前缀缓存修复](docs/quality-v4.2/RESULTS.md) · [参考图建模迭代](docs/quality-v4.1/RESULTS.md)。
+- Windows **0.6.0 候选版**：`dist/windows/MorphForge Desktop_0.6.0_x64-setup.exe`；校验和在同目录。[Harness强化验证](docs/quality-v6/RESULTS.md) · [前缀缓存修复](docs/quality-v4.2/RESULTS.md) · [参考图建模迭代](docs/quality-v4.1/RESULTS.md)。
 
 GitHub私有仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支与完整历史保留。
 [获取源码和Windows克隆验证](docs/GIT-SOURCE.md)。
@@ -57,6 +57,18 @@ GitHub私有仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支�
 作品库已离线内置6个完整示例：铜灯塔与树（49 Box）、Leviathan灯塔（7,459）、云港驿站（766）、星砂港（791）、鲸鱼娘（223）和木椅（16）。点击“载入可编辑副本”即可继续手工或AI修改；几何、材质与18张真实视图随程序附带，无需重新生成或覆盖示例原件。[示例署名与许可](examples/ATTRIBUTION.md)。
 
 ![离线内置作品库](docs/media/builtin-artworks.webp)
+
+## 创作时间轴与强化工具
+
+底部「创作时间轴」可查看上游实际返回的思考文本/摘要、工具参数与代码、截图、用量、暂停和错误；支持按运行筛选、历史分页和只读3D版本回看。查看记录不调用模型、不修改当前工程。
+
+![创作时间轴](docs/media/harness-timeline.webp)
+
+图为真实模型实验记录的离线回放；包括真实失败，运行时修复与验收见本轮报告。
+
+新增自由/局部/正交相机、曲面/管线/挤出助手、持久CommonJS源码与精确patch，以及绘制后直接返回截图。缓存与前缀常驻检查：官方接口默认严格，兼容服务可在配置页选择「严格」；异常和执行器崩溃会暂停后续调用。严格模式预留预计输入预算，不把缓存命中率当作没有费用。[工具与用法](docs/HARNESS-QUALITY-TOOLS.md)。
+
+真实生成实验的失败、Token消耗和修复均保留；尚未完成与用户dsh的同条件配对，不能宣称质量已追平或超过。
 
 ## 图片参考
 

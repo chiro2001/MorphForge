@@ -1,0 +1,28 @@
+{
+  "scope": "Local manual save after human inspection, NOT model finish_artwork; zero model calls",
+  "result": {
+    "artwork": {
+      "boxCount": 1661,
+      "createdAt": "2026-10-19T12:06:15.475Z",
+      "description": "",
+      "id": "1a13f214-3598-4c0b-a8a9-ce85cf431141",
+      "origin": "user",
+      "sourceCredits": [],
+      "sourceRun": null,
+      "tags": [
+        "harness-v6",
+        "draft",
+        "manual-save"
+      ],
+      "thumbnail": "9ee88e7908f25044eca488aa3614f440977a362340eb62933150a7069838cde3.png",
+      "title": "珊瑚湾·鲸鱼潜航器 · 侧鳍修正草稿（人工保存）",
+      "views": [
+        "9ee88e7908f25044eca488aa3614f440977a362340eb62933150a7069838cde3.png",
+        "a979b7417fedeb70ec4731fc9351d0a38d601ae31727bdaf3774ec8b9dc7942c.png",
+        "fcbe10fe1175261773dabd8ecee9e79a73baf901f2621b2e2775935ba15d849f.png"
+      ],
+      "voxelCount": 405009
+    },
+    "ok": true
+  }
+}

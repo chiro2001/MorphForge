@@ -1,0 +1,19 @@
+{
+  "revision": 3,
+  "views": [
+    "hero",
+    "front"
+  ],
+  "shots": [
+    {
+      "id": "fins-ortho",
+      "fit": {
+        "group": "fins"
+      },
+      "projection": "orthographic",
+      "yaw": 0,
+      "pitch": 0,
+      "margin": 0.12
+    }
+  ]
+}

@@ -254,3 +254,37 @@ fn import_rejects_non_scene_json_and_unwraps_exported_projects() {
     assert_eq!(imported.stats(&limits).voxel_count, 8);
     assert_eq!(imported.boxes[0].min, [2, 1, 3]);
 }
+
+#[test]
+fn removing_a_group_keeps_neighboring_geometry_exact() {
+    let limits = Limits::default();
+    let mut a = Box3::new([0, 0, 0], [8, 4, 2], 1);
+    a.group = "body".into();
+    let mut b = Box3::new([8, 0, 0], [2, 4, 2], 2);
+    b.group = "face".into();
+    let scene = Scene::default()
+        .apply(
+            &[Operation::Box { value: a }, Operation::Box { value: b }],
+            &limits,
+        )
+        .unwrap();
+    let face = scene
+        .boxes
+        .iter()
+        .find(|b| b.group == "face")
+        .unwrap()
+        .clone();
+    let next = scene
+        .apply(
+            &[Operation::RemoveGroup {
+                name: "body".into(),
+            }],
+            &limits,
+        )
+        .unwrap();
+    assert_eq!(next.boxes.len(), 1);
+    assert_eq!(
+        serde_json::to_value(&next.boxes[0]).unwrap(),
+        serde_json::to_value(face).unwrap()
+    );
+}

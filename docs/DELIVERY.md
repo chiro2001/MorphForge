@@ -1,6 +1,6 @@
 # MorphForge 交付记录
 
-当前软件候选为 **0.5.0**，默认开放1M上下文与384K输出，读取上游模型上限并按剩余窗口裁剪，保留追加式上下文与compact边界；离线内置6个完整作品、18张视图，可载入副本、编辑与另存，来源与许可随作品保留。安装器在 `dist/windows/MorphForge Desktop_0.5.0_x64-setup.exe`，校验和在同目录；[本轮验证与边界](quality-v5/RESULTS.md)、[使用说明](PROVIDERS-PRESETS-GOALS.md)。默认安装与用户作品未被测试覆盖。新色板发布VRC前仍需更新Avatar材质目录。
+当前软件候选为 **0.6.0**：创作时间轴、常驻缓存/前缀保护、严格输入预算预留、执行器崩溃暂停；自由/局部/正交截图、绘制+截图、持久源码/patch与曲面助手。1M/384K、6份离线作品及既有参考图库保留。安装器 `dist/windows/MorphForge Desktop_0.6.0_x64-setup.exe`，校验和在同目录。[本轮真实失败、修复和验收](quality-v6/RESULTS.md)、[用法](HARNESS-QUALITY-TOOLS.md)。尚未完成与dsh的同条件美术对照；不把工程通过当作质量追平。旧交付证据保留在后文。
 
 ## 0.2.0 历史交付
 

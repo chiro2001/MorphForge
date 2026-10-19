@@ -149,7 +149,17 @@ pub(super) fn chat_request(payload: &Value, connection: &Connection) -> Result<V
     }
     if connection.send_reasoning {
         if let Some(effort) = payload["reasoning"]["effort"].as_str() {
-            request["reasoning_effort"] = json!(effort);
+            let official = reqwest::Url::parse(&connection.base_url)
+                .ok()
+                .and_then(|u| u.host_str().map(str::to_owned))
+                .as_deref()
+                == Some("api.deepseek.com");
+            if official {
+                request["thinking"] = json!({"type":if effort=="none"{"disabled"}else{"enabled"}});
+            }
+            if !official || effort != "none" {
+                request["reasoning_effort"] = json!(effort);
+            }
         }
     }
     Ok(request)
@@ -309,5 +319,18 @@ mod tests {
         )
         .unwrap();
         assert_eq!(truncated["status"], "incomplete");
+    }
+    #[test]
+    fn official_chat_thinking_toggle_is_explicit_and_none_is_not_an_effort() {
+        let connection = Connection::default();
+        let base = json!({"model":"deepseek-flash","input":[],"max_output_tokens":2048,"reasoning":{"effort":"none"}});
+        let none = chat_request(&base, &connection).unwrap();
+        assert_eq!(none["thinking"]["type"], "disabled");
+        assert!(none.get("reasoning_effort").is_none());
+        let mut high = base;
+        high["reasoning"]["effort"] = json!("high");
+        let high = chat_request(&high, &connection).unwrap();
+        assert_eq!(high["thinking"]["type"], "enabled");
+        assert_eq!(high["reasoning_effort"], "high");
     }
 }

@@ -1,0 +1,69 @@
+{
+  "scope": "Actual official DeepSeek requests only; excludes local fixtures/offline replay/manual saves",
+  "runs": {
+    "ab1adc10-8fc5-4898-bd6a-1135daa08feb": {
+      "requests": 2,
+      "input": 15750,
+      "output": 49,
+      "cached": 6656,
+      "reasoning": 0,
+      "uncachedInput": 9094,
+      "total": 15799,
+      "hitRate": 0.4226031746031746
+    },
+    "f0b28209-0211-4faa-ab7c-57202c58656a": {
+      "requests": 5,
+      "input": 162474,
+      "output": 38967,
+      "cached": 149632,
+      "reasoning": 23635,
+      "uncachedInput": 12842,
+      "total": 201441,
+      "hitRate": 0.9209596612381058
+    },
+    "43df117e-7376-405c-8e2a-1d306a808d02": {
+      "requests": 2,
+      "input": 19565,
+      "output": 70,
+      "cached": 8832,
+      "reasoning": 0,
+      "uncachedInput": 10733,
+      "total": 19635,
+      "hitRate": 0.4514183490927677
+    },
+    "cd776622-d472-4193-8dc6-8daaf4feb31d": {
+      "requests": 3,
+      "input": 45474,
+      "output": 7590,
+      "cached": 39040,
+      "reasoning": 6473,
+      "uncachedInput": 6434,
+      "total": 53064,
+      "hitRate": 0.8585125566257642
+    }
+  },
+  "ordinaryPrefixChecks": 10,
+  "ordinaryPrefixesAllAppendOnly": true,
+  "total": {
+    "requests": 12,
+    "input": 243263,
+    "output": 46676,
+    "cached": 204160,
+    "reasoning": 30108,
+    "uncachedInput": 39103,
+    "total": 289939
+  },
+  "currencyCost": null,
+  "currencyNote": "No verified price configuration; token totals are not a currency bill.",
+  "firstCreationRunBudget": 160000,
+  "firstCreationRunActualTokens": 201441,
+  "reviewProbeAndRunCeiling": 100000,
+  "reviewProbeAndRunActualTokens": 72699,
+  "reviewSdkMethods": [
+    "box",
+    "group",
+    "removeGroup",
+    "voxelize"
+  ],
+  "knownBudgetDefectFixed": "Strict mode reserves estimated input before output; second review stopped before an unaffordable next request."
+}

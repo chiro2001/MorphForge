@@ -1103,3 +1103,16 @@ body.settings-page #timeline {
     flex-wrap: wrap;
   }
 }
+
+#timeline { height: min(48vh, 540px); min-height: 220px; resize: vertical; }
+#timeline > .row { flex-wrap:wrap; }
+.timeline-card { margin:8px 0; padding:12px; border:1px solid var(--border); border-radius:8px; background:#101923; }
+.timeline-card pre { white-space:pre-wrap; overflow-wrap:anywhere; max-height:340px; overflow:auto; font-size:12px; }
+.timeline-card img { width:180px; max-height:150px; object-fit:contain; margin:8px; }
+.timeline-card summary { cursor:pointer; padding:5px 0; }
+#timelinePreview { width:min(1000px,92vw); }
+#timelinePreviewViewport { height:65vh; position:relative; }
+#timelineSearch { width:200px; }
+
+.timeline-card { scroll-margin-top: 95px; }
+.timeline-card > details[open] > pre { max-height:180px; }

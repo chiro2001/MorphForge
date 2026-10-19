@@ -151,6 +151,9 @@ pub enum Operation {
         tint_id: u8,
     },
     Clear,
+    RemoveGroup {
+        name: String,
+    },
     Transform {
         ids: Vec<u64>,
         #[serde(default)]
@@ -421,6 +424,21 @@ impl Scene {
         }
         for op in operations {
             match op {
+                Operation::RemoveGroup { name } => {
+                    if name.is_empty() || name.len() > 128 {
+                        return Err(GeometryError("无效分组名称".into()));
+                    }
+                    let ids = all
+                        .iter()
+                        .filter(|(_, b)| b.group == *name)
+                        .map(|(id, _)| *id)
+                        .collect::<Vec<_>>();
+                    for id in ids {
+                        if let Some(old) = all.remove(&id) {
+                            index.remove(&old);
+                        }
+                    }
+                }
                 Operation::Clear => {
                     all.clear();
                     index = Index::default();

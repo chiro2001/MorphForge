@@ -253,6 +253,10 @@ fn seed_capture(workspace: &Arc<Mutex<Workspace>>) -> String {
     artifact
 }
 
+fn attach_capture_to_the_next_request(h: &Harness, artifact: &str) {
+    h.inner.lock().unwrap().conversation.input.push(json!({"role":"user","content":[{"type":"input_text","text":"请查看当前版本的真实截图"},{"type":"input_image","artifact":artifact,"detail":"high"}]}));
+}
+
 fn inert_transport() -> Transport {
     Transport {
         inner: Arc::new(Mutex::new(TransportState {
@@ -1176,6 +1180,7 @@ async fn finish_artwork_commits_saves_summary_and_skips_a_followup_request() {
     let workspace = workspace(&dir);
     let hero = seed_capture(&workspace);
     let harness = harness(workspace.clone(), &fake.base);
+    attach_capture_to_the_next_request(&harness, &hero);
     {
         let mut state = harness.inner.lock().unwrap();
         state.settings.max_run_tokens = 1000;
@@ -1249,10 +1254,30 @@ async fn failed_finish_artwork_stays_active_and_can_be_retried_after_capture() {
             }
         })])),
     );
-    let fake = FakeResponses::start(vec![sse([failed_finish]), retry_finish]).await;
+    let fake = FakeResponses::start(vec![
+        sse([failed_finish]),
+        Reply::Delay(
+            Duration::from_millis(250),
+            Box::new(completed(vec![function_call(
+                "capture-recovery",
+                "capture_views",
+                json!({"revision":0,"views":["hero"]}),
+            )])),
+        ),
+        retry_finish,
+    ])
+    .await;
     let dir = tempfile::tempdir().unwrap();
     let workspace = workspace(&dir);
-    let harness = harness(workspace.clone(), &fake.base);
+    let broker = CaptureBroker::new();
+    let provider = Provider::new_for_loopback_test(dir.path(), &fake.base).unwrap();
+    let harness = Harness::new(
+        workspace.clone(),
+        provider,
+        broker.clone(),
+        inert_transport(),
+    );
+    let capture_task = tokio::spawn(complete_pending_capture(broker, workspace.clone()));
 
     harness.start("检查后保存作品").unwrap();
     tokio::time::timeout(Duration::from_secs(3), async {
@@ -1282,12 +1307,12 @@ async fn failed_finish_artwork_stays_active_and_can_be_retried_after_capture() {
         assert!(workspace.library().unwrap().is_empty());
     }
 
-    seed_capture(&workspace);
+    capture_task.await.unwrap();
     let run = terminal_run(&harness).await;
 
     assert_eq!(run.status, "completed");
     assert_eq!(run.message, summary);
-    assert_eq!(fake.request_count(), 2);
+    assert_eq!(fake.request_count(), 3);
     assert_eq!(workspace.lock().unwrap().project.commits.len(), 1);
 }
 
@@ -1321,8 +1346,9 @@ async fn queue_and_steer_messages_continue_after_finish_artwork() {
         .await;
         let dir = tempfile::tempdir().unwrap();
         let workspace = workspace(&dir);
-        seed_capture(&workspace);
+        let hero = seed_capture(&workspace);
         let harness = harness(workspace.clone(), &fake.base);
+        attach_capture_to_the_next_request(&harness, &hero);
 
         harness.start("完成并保存当前作品").unwrap();
         tokio::time::timeout(Duration::from_secs(2), async {
@@ -2045,4 +2071,159 @@ async fn a_reference_image_cannot_replace_a_real_current_revision_capture() {
             .any(|e| e.kind == "tool.result"
                 && e.data.to_string().contains("FINISH_CAPTURE_REQUIRED"))
     );
+}
+
+#[tokio::test]
+async fn unexpected_prefix_rewrite_is_blocked_before_network_and_survives_restart() {
+    let fake = FakeResponses::start(vec![completed(vec![]), completed(vec![])]).await;
+    let dir = TempDir::new().unwrap();
+    let w = workspace(&dir);
+    let p = Provider::new_for_loopback_test(dir.path(), &fake.base).unwrap();
+    let c = Cancellation::new();
+    let first = json!({"model":"test","instructions":"fixed","input":[{"role":"user","content":"one"}],"max_output_tokens":1024,"stream":true});
+    p.response(first.clone(), w.clone(), "r", &c).await.unwrap();
+    let mut changed = first.clone();
+    changed["instructions"] = json!("accidental system rewrite");
+    assert!(p
+        .response(changed.clone(), w.clone(), "r", &c)
+        .await
+        .unwrap_err()
+        .to_string()
+        .starts_with("CACHE_GUARD_PAUSED"));
+    assert_eq!(fake.request_count(), 1);
+    let p = Provider::new_for_loopback_test(dir.path(), &fake.base).unwrap();
+    assert!(p
+        .response(changed.clone(), w.clone(), "r", &c)
+        .await
+        .is_err());
+    assert_eq!(fake.request_count(), 1);
+    p.authorize_prefix_reset("explicit test configuration");
+    p.response(changed, w, "r", &c).await.unwrap();
+    assert_eq!(fake.request_count(), 2);
+}
+#[tokio::test]
+async fn strict_zero_cache_pauses_same_run_without_spending_the_next_request() {
+    let reply = |id: &str, cached: u64, output: Vec<Value>| {
+        sse([
+            json!({"type":"response.completed","response":{"id":id,"status":"completed","output":output,"usage":{"input_tokens":20000,"output_tokens":10,"total_tokens":20010,"input_tokens_details":{"cached_tokens":cached}}}}),
+        ])
+    };
+    let replies = (0..3)
+        .map(|i| {
+            reply(
+                &i.to_string(),
+                0,
+                vec![function_call(&format!("ctx-{i}"), "get_context", json!({}))],
+            )
+        })
+        .chain([reply("done", 19000, vec![])])
+        .collect();
+    let fake = FakeResponses::start(replies).await;
+    let dir = TempDir::new().unwrap();
+    let h = harness(workspace(&dir), &fake.base);
+    h.configure(&json!({"cacheGuard":"strict","maxRunTokens":200000}))
+        .unwrap();
+    h.start("检查缓存").unwrap();
+    let run = terminal_run(&h).await;
+    assert_eq!(run.status, "paused");
+    assert!(run.error.starts_with("CACHE_GUARD_PAUSED"));
+    assert_eq!(fake.request_count(), 3);
+    assert_eq!(run.tokens, 60030);
+    h.control("resume").unwrap();
+    assert_eq!(terminal_run(&h).await.status, "paused");
+    assert_eq!(fake.request_count(), 3);
+    h.control("ack_cache_warning").unwrap();
+    h.control("resume").unwrap();
+    assert_eq!(terminal_run(&h).await.status, "completed");
+    assert_eq!(fake.request_count(), 4);
+}
+#[tokio::test]
+async fn streaming_reasoning_is_visible_and_is_not_fabricated_when_absent() {
+    let fake=FakeResponses::start(vec![sse([json!({"type":"response.reasoning_summary_text.delta","delta":"实际返回的思考"}),json!({"type":"response.completed","response":{"status":"completed","output":[],"usage":{"input_tokens":12,"output_tokens":4,"total_tokens":16}}})])]).await;
+    let dir = TempDir::new().unwrap();
+    let w = workspace(&dir);
+    let h = harness(w.clone(), &fake.base);
+    h.start("观察思考").unwrap();
+    terminal_run(&h).await;
+    let guard = w.lock().unwrap();
+    let thoughts = guard
+        .events
+        .iter()
+        .filter(|e| e.kind == "provider.reasoning_delta")
+        .collect::<Vec<_>>();
+    assert_eq!(thoughts.len(), 1);
+    assert_eq!(thoughts[0].data["text"], "实际返回的思考");
+}
+
+#[tokio::test]
+async fn strict_budget_reserves_input_before_sending_any_paid_request() {
+    let fake = FakeResponses::start(vec![completed(vec![])]).await;
+    let dir = TempDir::new().unwrap();
+    let h = harness(workspace(&dir), &fake.base);
+    h.configure(&json!({"cacheGuard":"strict","maxRunTokens":1000}))
+        .unwrap();
+    h.start("输入预算应在发送前被阻止").unwrap();
+    let run = terminal_run(&h).await;
+    assert_eq!(run.status, "failed");
+    assert!(run.error.starts_with("RUN_BUDGET"));
+    assert_eq!(fake.request_count(), 0);
+    assert_eq!(run.tokens, 0);
+}
+
+#[tokio::test]
+async fn finishing_in_the_same_batch_as_an_unseen_capture_is_rejected() {
+    let fake = FakeResponses::start(vec![
+        completed(vec![
+            function_call(
+                "shot",
+                "capture_views",
+                json!({"revision":0,"views":["hero"]}),
+            ),
+            function_call(
+                "too-soon",
+                "finish_artwork",
+                json!({"title":"unseen","summary":"must be rejected"}),
+            ),
+        ]),
+        completed(vec![function_call(
+            "seen",
+            "finish_artwork",
+            json!({"title":"seen","summary":"reviewed in a later response"}),
+        )]),
+    ])
+    .await;
+    let dir = TempDir::new().unwrap();
+    let w = workspace(&dir);
+    let broker = CaptureBroker::new();
+    let provider = Provider::new_for_loopback_test(dir.path(), &fake.base).unwrap();
+    let h = Harness::new(w.clone(), provider, broker.clone(), inert_transport());
+    let completion = tokio::spawn(complete_pending_capture(broker, w.clone()));
+    h.start("验证先看图再完成").unwrap();
+    assert_eq!(terminal_run(&h).await.status, "completed");
+    completion.await.unwrap();
+    let lock = w.lock().unwrap();
+    assert!(lock.events.iter().any(|e| e.kind == "tool.result"
+        && e.data["callId"] == "too-soon"
+        && e.data["result"]["error"]["message"]
+            .as_str()
+            .is_some_and(|s| s.starts_with("FINISH_REVIEW_REQUIRED"))));
+    assert_eq!(fake.request_count(), 2);
+}
+
+#[tokio::test]
+async fn cache_readiness_is_invalidated_only_when_prompt_or_provider_semantics_change() {
+    let fake=FakeResponses::start(vec![sse([json!({"type":"response.completed","response":{"status":"completed","output":[],"usage":{"input_tokens":9000,"output_tokens":10,"input_tokens_details":{"cached_tokens":8000}}}})])]).await;
+    let dir = TempDir::new().unwrap();
+    let h = harness(workspace(&dir), &fake.base);
+    h.configure(&json!({"cacheGuard":"strict"})).unwrap();
+    h.start("仅检查状态").unwrap();
+    assert_eq!(terminal_run(&h).await.status, "completed");
+    assert_eq!(h.state()["cacheMonitor"]["lastCachedTokens"], 8000);
+    h.configure(&json!({"maxSteps":30})).unwrap();
+    assert_eq!(h.state()["cacheMonitor"]["lastCachedTokens"], 8000);
+    h.configure_provider(&json!({"stream":false})).unwrap();
+    assert_eq!(h.state()["cacheMonitor"]["lastCachedTokens"], 8000);
+    h.configure(&json!({"model":"another-model"})).unwrap();
+    assert!(h.state()["cacheMonitor"]["lastCachedTokens"].is_null());
+    assert_eq!(fake.request_count(), 1);
 }

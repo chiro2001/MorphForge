@@ -21,8 +21,8 @@ mod palette;
 mod prompts;
 mod visual_context;
 pub use goal::GoalProgress;
-pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/4.5";
-pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/3.2";
+pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/4.8";
+pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/3.5";
 
 #[derive(Clone, Debug)]
 struct PendingPrompt {
@@ -241,6 +241,7 @@ impl Harness {
             "usage":self.provider.usage(s.run.as_ref().map(|run|run.id.as_str())),
             "run":s.run,
             "paused":s.paused,
+            "cacheMonitor":self.provider.cache_status(),
             "queued":queued_prompts,
             "interaction":{
                 "phase":s.phase,
@@ -261,6 +262,9 @@ impl Harness {
                 "referenceImages":s.conversation.reference_images
             }
         })
+    }
+    pub fn redact_display(&self, value: Value) -> Value {
+        serde_json::from_str(&self.provider.redact(&value.to_string())).unwrap_or(Value::Null)
     }
     pub fn configure(&self, v: &Value) -> Result<Value> {
         let mut s = self.inner.lock().unwrap();
@@ -283,6 +287,7 @@ impl Harness {
             || next.model.len() > 256
             || next.model.chars().any(char::is_control)
             || !["none", "low", "high", "max"].contains(&next.reasoning.as_str())
+            || !["auto", "strict", "observe"].contains(&next.cache_guard.as_str())
             || next.max_steps == 0
             || next.max_steps > 4096
             || next.max_output_tokens < 512
@@ -305,6 +310,16 @@ impl Harness {
         {
             bail!("Harness预算配置越界")
         };
+        if s.settings.model != next.model
+            || s.settings.reasoning != next.reasoning
+            || s.settings.language != next.language
+            || s.settings.preset != next.preset
+            || s.settings.detail_instructions != next.detail_instructions
+            || s.settings.send_images != next.send_images
+        {
+            self.provider
+                .authorize_prefix_reset("harness_configuration");
+        }
         s.settings = next;
         let settings = s.settings.clone();
         drop(s);
@@ -584,6 +599,21 @@ impl Harness {
                     self.spawn_worker(id, epoch);
                 }
             }
+            "ack_cache_warning" => {
+                self.provider.acknowledge_cache_warning()?;
+                let run = self
+                    .inner
+                    .lock()
+                    .unwrap()
+                    .run
+                    .as_ref()
+                    .map(|run| run.id.clone());
+                self.workspace.lock().unwrap().event(
+                    "cache.guard.acknowledged",
+                    run.as_deref(),
+                    json!({"action":"explicit_acknowledgement","nextResponseStillMonitored":true}),
+                )?;
+            }
             "reset_context" => {
                 let mut s = self.inner.lock().unwrap();
                 if !["idle", "completed", "failed", "stopped", "blocked"]
@@ -600,6 +630,14 @@ impl Harness {
             _ => bail!("未知运行控制"),
         };
         self.persist()?;
+        let run = self
+            .inner
+            .lock()
+            .unwrap()
+            .run
+            .as_ref()
+            .map(|run| run.id.clone());
+        self.workspace.lock().unwrap().event("harness.control",run.as_deref(),json!({"action":action,"source":"explicit_control","changesModelHistory":action=="reset_context"}))?;
         Ok(self.state())
     }
 
@@ -692,6 +730,23 @@ impl Harness {
         let h = self.clone();
         tokio::spawn(async move {
             let result = h.run_loop_with_budget(&id, epoch).await;
+            if let Some(error) = result
+                .as_ref()
+                .err()
+                .filter(|error| error.to_string().starts_with("CACHE_GUARD_PAUSED"))
+            {
+                let mut state = h.inner.lock().unwrap();
+                if state
+                    .run
+                    .as_ref()
+                    .is_some_and(|run| run.id == id && run.epoch == epoch)
+                {
+                    if let Some(run) = state.run.as_mut() {
+                        run.error = error.to_string();
+                    }
+                    let _ = h.pause_locked(&mut state);
+                }
+            }
             h.finish(&id, epoch, result);
         });
     }
@@ -1117,8 +1172,16 @@ impl Harness {
                     .unwrap_or_default()
                     .min(usize::MAX as u64) as usize,
             );
+            let output_run_budget = if self.provider.cache_required(&settings.cache_guard) {
+                remaining_tokens.saturating_sub(input_for_headroom as u64)
+            } else {
+                remaining_tokens
+            };
+            if output_run_budget < 512 {
+                bail!("RUN_BUDGET：剩余Token不足以预留下一请求的估计输入和输出；已保留草稿")
+            }
             let effective_output_tokens =
-                model_limits.output_allowance(&settings, input_for_headroom, remaining_tokens)?;
+                model_limits.output_allowance(&settings, input_for_headroom, output_run_budget)?;
             let remaining_seconds = guard
                 .deadline
                 .saturating_duration_since(tokio::time::Instant::now())
@@ -1134,7 +1197,7 @@ impl Harness {
                 || remaining_seconds <= 120.0;
             let budget_note = if settings.language == "en" {
                 format!(
-                    "\nCurrent run budget: {remaining_steps} steps, {remaining_tokens} provider-reported total tokens, and {remaining_seconds:.0} active seconds remain. Effective output cap for this request: {effective_output_tokens}; it never exceeds the configured cap or remaining token budget. Local input estimates are advisory only. Provider input usage can exceed the remaining budget unexpectedly; at most one complete response may cross it, and no later model request will start.{}",
+                    "\nCurrent run budget: {remaining_steps} steps, {remaining_tokens} provider-reported total tokens, and {remaining_seconds:.0} active seconds remain. Effective output cap for this request: {effective_output_tokens}; it never exceeds the configured cap or remaining token budget. Strict cache mode reserves estimated input tokens before calculating output allowance; estimates are not exact billing. Provider input usage can exceed the remaining budget unexpectedly; at most one complete response may cross it, and no later model request will start.{}",
                     if near_budget {
                         " Enter completion now: reserve the remaining requests for at most one necessary correction, capture_views of the resulting revision, then finish_artwork after inspecting that capture in a later response. If the current revision is already captured, review it and finish directly. Do not add optional detail or finish in the same response that first captures an unseen revision. Report unresolved visual issues honestly."
                     } else {
@@ -1241,6 +1304,8 @@ impl Harness {
                 context_epoch: Some(context_epoch),
                 image_policy: Some(settings.send_images),
                 compact: false,
+                cache_guard: settings.cache_guard.clone(),
+                estimated_input_tokens: estimated_input_tokens_u64,
             };
             let response_result = tokio::select! {
                 biased;
@@ -1265,6 +1330,13 @@ impl Harness {
                 Ok(response) => response,
                 Err(error) => {
                     self.clear_active_request(&guard, &request_id);
+                    if error.to_string().starts_with("CACHE_GUARD_PAUSED") {
+                        let mut state = self.inner.lock().unwrap();
+                        if let Some(run) = state.run.as_mut() {
+                            run.error = error.to_string();
+                        }
+                        self.pause_locked(&mut state)?;
+                    }
                     return Err(error);
                 }
             };
@@ -1334,6 +1406,7 @@ impl Harness {
             let mut budget_expired = false;
             let mut cancel_remaining = false;
             let mut finish_succeeded = false;
+            let mut engine_fault = false;
             for item in &output {
                 if item["type"] != "function_call" {
                     continue;
@@ -1367,7 +1440,8 @@ impl Harness {
                 } else {
                     match serde_json::from_str::<Value>(&arguments_raw) {
                         Ok(mut arguments) => {
-                            if name == "run_recipe"
+                            if name == "recipe_sources" && arguments["action"] == "run"
+                                || name == "run_recipe"
                                 || (name == "voxel_text" && arguments["mode"] == "apply")
                             {
                                 arguments["requestId"] = json!(call_id);
@@ -1386,7 +1460,7 @@ impl Harness {
                         Err(error) => Err(error.into()),
                     }
                 };
-                let value = match result {
+                let mut value = match result {
                     Ok(value) => value,
                     Err(error)
                         if error.to_string().starts_with("RUN_CANCELLED")
@@ -1399,11 +1473,30 @@ impl Harness {
                         }
                         json!({"ok":false,"error":{"code":"CANCELLED","message":"工具在提交前被取消；没有应用未完成的操作。"}})
                     }
+                    Err(error) if error.to_string().starts_with("RECIPE_ENGINE_FAULT") => {
+                        engine_fault = true;
+                        cancel_remaining = true;
+                        let message = self.provider.redact(&error.to_string());
+                        {
+                            let mut state = self.inner.lock().unwrap();
+                            if let Some(run) = state.run.as_mut() {
+                                run.error = message.clone();
+                            }
+                            self.pause_locked(&mut state)?;
+                        }
+                        json!({"ok":false,"error":{"code":"RECIPE_ENGINE_FAULT","message":message},"paused":true})
+                    }
                     Err(error) => json!({
                         "ok":false,
                         "error":{"code":"TOOL_ERROR","message":self.provider.redact(&error.to_string())}
                     }),
                 };
+                if value["images"]
+                    .as_array()
+                    .is_some_and(|images| !images.is_empty())
+                {
+                    value["visualInput"] = json!({"attached":settings.send_images,"note":if settings.send_images{"图片会附在本工具结果之后；下一响应才可查看"}else{"当前设置不向模型发送图片，不能声称已经看过"}});
+                }
                 if name == "finish_artwork" && !cancelled && value["finished"] == true {
                     finish_succeeded = true;
                 }
@@ -1430,7 +1523,7 @@ impl Harness {
                     for image in value["images"].as_array().into_iter().flatten() {
                         if let Some(artifact) = image["artifact"].as_str() {
                             // Persist local references, resolve delivery only at the provider boundary.
-                            parts.push(json!({"type":"input_text","text":format!("真实作品截图 / Scene capture: revision={}，view={}；用于复核几何，不是参考图。",value["revision"],image["view"].as_str().unwrap_or("view"))}));
+                            parts.push(json!({"type":"input_text","text":format!("真实作品截图 / Scene capture: role={}，revision={}，view={}。{}",value["imageRole"].as_str().unwrap_or("scene_capture"),value["revision"],image["view"].as_str().unwrap_or("view"),if value["imageRole"]=="reinspection"{"重读历史/参考图片，不能作为当前场景完成证据。"}else{"真实场景截图，用于复核当前标注版本。"})}));
                             parts.push(
                                 json!({"type":"input_image","artifact":artifact,"detail":"high"}),
                             );
@@ -1449,6 +1542,9 @@ impl Harness {
                 tool_outputs,
                 !called || finish_succeeded,
             )?;
+            if engine_fault {
+                bail!("RUN_CANCELLED")
+            };
             if budget_expired {
                 bail!("RUN_TIME_BUDGET：run超过配置时长，已保存已提交内容")
             }
@@ -1700,8 +1796,9 @@ impl Harness {
             "referenceImages":reference_images,
             "viewConventions":{"front":{"cameraFrom":"+Z","looksToward":"-Z"},"hero":{"cameraFrom":"+X,+Y,+Z"},"placementHint":"脸、眼睛、围裙、门窗、正面文字应位于主体的+Z外表面；更大的Z更靠近front相机。"},
             "sync":self.transport.state(),
+            "recipeSources":crate::sources::list(&workspace).unwrap_or(Value::Null),
             "sdkVersion":recipe::SDK_VERSION,
-            "sdk":"mf.box(min,[w,h,d],{style:'wood',tint:0,motion:0}); mf.erase(min,size); mf.paint(min,size,{style}) recolors existing voxels only and never creates them; use mf.box to add voxels. mf.clear(); mf.group(name,()=>{}); mf.repeat(n,(i)=>{}); mf.mirror('x',()=>{}); mf.translate([x,y,z],()=>{}); mf.line(a,b,{thickness:1,style}); mf.stairs(origin,n,{width:3,depth:1,rise:1,style}); mf.wall(origin,w,h,{thickness:1,style}); mf.roof(origin,w,d,h,{style}); Math.random()/mf.random() deterministic by seed. All coordinates integer signed grid. Y is height. VRC target requires X/Z[-128,128),Y[0,256). Styles are catalog IDs/UID names. mode apply preserves current geometry; replace starts from empty."
+            "sdk":"mf.box(min,[w,h,d],{style:'wood',tint:0,motion:0}); mf.erase(min,size); mf.paint(min,size,{style}) recolors existing voxels only and never creates them; use mf.box to add voxels. mf.clear(); mf.removeGroup(name); mf.replaceGroup(name,()=>{}); mf.ellipsoid(center,radii,options); mf.sphere(center,radius,options); mf.capsule(a,b,radius,options); mf.cylinder(base,height,radius,options) Y-axis; mf.tube(points,radius,options); mf.extrude(points2d,origin,depth,{plane:\"xy\",style}); mf.voxelize({min,max},(x,y,z)=>boolean_or_style,options) samples cell centers, max2M cells; mf.group(name,()=>{}); mf.repeat(n,(i)=>{}); mf.mirror('x',()=>{}); mf.translate([x,y,z],()=>{}); mf.line(a,b,{thickness:1,style}); mf.stairs(origin,n,{width:3,depth:1,rise:1,style}); mf.wall(origin,w,h,{thickness:1,style}); mf.roof(origin,w,d,h,{style}); Math.random()/mf.random() deterministic by seed. All coordinates integer signed grid. Y is height. VRC target requires X/Z[-128,128),Y[0,256). Styles are catalog IDs/UID names. mode apply preserves current geometry; replace starts from empty."
         })
     }
     pub async fn tool(&self, name: &str, args: &Value, run: Option<&str>) -> Result<Value> {
@@ -1758,40 +1855,85 @@ impl Harness {
             }
             return Ok(result);
         }
+        if name == "read_artifact" {
+            return self.with_workspace_guard(guard.as_ref(),|workspace|{
+                let artifact=args["artifact"].as_str().context("需要artifact文件名")?;
+                if artifact.len()>100||artifact.contains("..")||!artifact.bytes().all(|b|b.is_ascii_alphanumeric()||matches!(b,b'.'|b'_'|b'-')){bail!("无效artifact")}
+                let bytes=std::fs::read(workspace.root.join("artifacts").join(artifact))?;
+                if bytes.len()>24*1024*1024{bail!("artifact超过24MiB")}
+                let ext=artifact.rsplit('.').next().unwrap_or("");
+                if ["png","webp","jpg","jpeg"].contains(&ext) {
+                    let mut shown=artifact.to_owned();
+                    if let Some(crop)=args.get("crop") {
+                        let format=image::guess_format(&bytes)?;
+                        let reader=||image::ImageReader::with_format(std::io::Cursor::new(&bytes),format);
+                        let (image_width,image_height)=reader().into_dimensions()?;
+                        if u64::from(image_width)*u64::from(image_height)>16_777_216{bail!("图片像素超过16M保护值")}
+                        let image=reader().decode()?;
+                        let number=|key:&str|->Result<u32>{Ok(u32::try_from(crop[key].as_u64().context("裁剪需要非负整数")?)?)};
+                        let (x,y,width,height)=(number("x")?,number("y")?,number("width")?,number("height")?);
+                        if width==0||height==0||x.checked_add(width).is_none_or(|n|n>image.width())||y.checked_add(height).is_none_or(|n|n>image.height()){bail!("裁剪超出图片范围")}
+                        let mut output=std::io::Cursor::new(Vec::new());image.crop_imm(x,y,width,height).write_to(&mut output,image::ImageFormat::Png)?;shown=workspace.artifact(output.get_ref(),"png")?;
+                    }
+                    return Ok(json!({"ok":true,"imageRole":"reinspection","sourceArtifact":artifact,"crop":args["crop"],"images":[{"view":"historical-reinspection","artifact":shown}],"note":"重读历史/参考图片；不增加当前场景截图或Goal复核次数，不是当前revision完成证据。"}));
+                }
+                if !["js","json","txt","md"].contains(&ext){bail!("不支持的artifact类型")}
+                let text=String::from_utf8(bytes)?;let content=text.chars().take(64_000).collect::<String>();
+                Ok(json!({"ok":true,"artifact":artifact,"content":content,"truncated":text.chars().count()>64_000}))
+            });
+        }
+        if name == "recipe_sources" {
+            if args["action"] == "run" {
+                Self::validate_recipe_capture(args)?;
+                let (code, source_hash) = {
+                    let w = self.workspace.lock().unwrap();
+                    crate::sources::program(&w, args)?
+                };
+                let request = RecipeRequest {
+                    code,
+                    seed: match args.get("seed") {
+                        None => 1,
+                        Some(value) => {
+                            u32::try_from(value.as_u64().context("seed需要0至4294967295整数")?)
+                                .context("seed超过uint32")?
+                        }
+                    },
+                    mode: args["mode"].as_str().unwrap_or("apply").into(),
+                    base_revision: Some(
+                        args["baseRevision"]
+                            .as_u64()
+                            .context("run需要baseRevision")?,
+                    ),
+                    request_id: args["requestId"].as_str().map(str::to_owned),
+                    max_ops: 100_000,
+                    dry_run: match args.get("dryRun") {
+                        None => false,
+                        Some(value) => value.as_bool().context("dryRun必须是布尔值")?,
+                    },
+                };
+                let mut result = self
+                    .run_recipe_with_guard(request, run, guard.as_ref())
+                    .await?;
+                result["sourceHash"] = json!(source_hash);
+                return self.capture_after_recipe(result, args, run, guard).await;
+            }
+            return self.with_workspace_guard(guard.as_ref(), |workspace| {
+                crate::sources::action(workspace, args, run)
+            });
+        }
         match name {
             "get_context" => Ok(self.context_with_options(args)),
             "define_palette" => self.with_workspace_guard(guard.as_ref(), |workspace| {
                 palette::define(workspace, args, run)
             }),
             "run_recipe" => {
+                Self::validate_recipe_capture(args)?;
                 let request: RecipeRequest = serde_json::from_value(args.clone())?;
-                self.run_recipe_with_guard(request, run, guard.as_ref()).await
+                let result=self.run_recipe_with_guard(request, run, guard.as_ref()).await?;
+                self.capture_after_recipe(result,args,run,guard).await
             }
             "voxel_text" => self.voxel_text(args, run, guard.as_ref()).await,
-            "capture_views" => {
-                let (project_id, signature) = {
-                    let workspace = self.workspace.lock().unwrap();
-                    (workspace.project.id.clone(),goal::geometry_hash(&workspace))
-                };
-                let request = self.capture.request(self.workspace.clone(), args, run);
-                let result = if let Some(guard) = guard {
-                    tokio::select! {
-                        biased;
-                        result = request => result,
-                        _ = guard.cancel.wait() => bail!("RUN_CANCELLED"),
-                        _ = tokio::time::sleep_until(guard.deadline) => {
-                            guard.cancel.stop(); bail!("RUN_TIME_BUDGET：截图超过运行时限")
-                        }
-                    }
-                } else { request.await }?;
-                let matches = {
-                    let workspace = self.workspace.lock().unwrap();
-                    workspace.project.id == project_id && goal::geometry_hash(&workspace) == signature
-                        && result["revision"].as_u64() == Some(workspace.project.scene.revision)
-                };
-                if matches { self.record_goal_capture(&project_id,signature,&result)?; }
-                Ok(result)
-            }
+            "capture_views" => self.capture_views_tool(args,run,guard).await,
             "inspect_region" => {
                 let workspace = self.workspace.lock().unwrap();
                 let mut scene = workspace.project.scene.clone();
@@ -1802,14 +1944,21 @@ impl Harness {
                     region.validate(&workspace.project.limits)?;
                     scene.boxes.retain(|box3| box3.intersects(&region));
                 }
-                if let Some(group) = args["group"].as_str() {
-                    scene.boxes.retain(|box3| box3.group == group)
+                if let Some(group) = args["group"].as_str() {scene.boxes.retain(|box3|box3.group==group);}
+                if let Some(slice)=args.get("slice") {
+                    let axis=match slice["axis"].as_str(){Some("x")=>0,Some("y")=>1,Some("z")=>2,_=>bail!("slice轴需要x/y/z")};
+                    let index=i32::try_from(slice["index"].as_i64().context("slice需要index")?).context("slice坐标越界")?;
+                    scene.boxes.retain_mut(|box3|{if index>=box3.min[axis]&&index<box3.end()[axis]{box3.min[axis]=index;box3.size[axis]=1;true}else{false}});
                 }
+                let offset=args["offset"].as_u64().unwrap_or(0).min(usize::MAX as u64) as usize;
+                let limit=args["limit"].as_u64().unwrap_or(20).clamp(1,128) as usize;
                 Ok(json!({
                     "ok":true,
                     "revision":scene.revision,
                     "stats":scene.stats(&workspace.project.limits),
-                    "sample":scene.boxes.iter().take(20).collect::<Vec<_>>(),
+                    "sample":scene.boxes.iter().skip(offset).take(limit).collect::<Vec<_>>(),
+                    "offset":offset,"limit":limit,"nextOffset":if offset.saturating_add(limit)<scene.boxes.len(){Some(offset+limit)}else{None},
+                    "statsScope":if args.get("slice").is_some(){"one_voxel_slice"}else{"intersecting_boxes"},
                 }))
             }
             "commit" => self.with_workspace_guard(guard.as_ref(), |workspace| {
@@ -1871,6 +2020,81 @@ impl Harness {
         }
     }
 
+    async fn capture_views_tool(
+        &self,
+        args: &Value,
+        run: Option<&str>,
+        guard: Option<RunGuard>,
+    ) -> Result<Value> {
+        let (project_id, signature) = {
+            let workspace = self.workspace.lock().unwrap();
+            (
+                workspace.project.id.clone(),
+                goal::geometry_hash(&workspace),
+            )
+        };
+        let request = self.capture.request(self.workspace.clone(), args, run);
+        let result = if let Some(guard) = guard {
+            tokio::select! {
+                biased;
+                result = request => result,
+                _ = guard.cancel.wait() => bail!("RUN_CANCELLED"),
+                _ = tokio::time::sleep_until(guard.deadline) => {
+                    guard.cancel.stop(); bail!("RUN_TIME_BUDGET：截图超过运行时限")
+                }
+            }
+        } else {
+            request.await
+        }?;
+        let matches = {
+            let workspace = self.workspace.lock().unwrap();
+            workspace.project.id == project_id
+                && goal::geometry_hash(&workspace) == signature
+                && result["revision"].as_u64() == Some(workspace.project.scene.revision)
+        };
+        if matches {
+            self.record_goal_capture(&project_id, signature, &result)?;
+        }
+        Ok(result)
+    }
+    async fn capture_after_recipe(
+        &self,
+        mut result: Value,
+        args: &Value,
+        run: Option<&str>,
+        guard: Option<RunGuard>,
+    ) -> Result<Value> {
+        if let Some(options) = args.get("capture") {
+            if args["dryRun"] == true {
+                result["captureSkipped"] = json!("dryRun");
+                return Ok(result);
+            }
+            let mut options = options.clone();
+            options["revision"] = result["revision"].clone();
+            match self.capture_views_tool(&options, run, guard).await {
+                Ok(capture) => {
+                    result["images"] = capture["images"].clone();
+                    result["captureId"] = capture["id"].clone();
+                }
+                Err(error) if error.to_string().starts_with("RUN_") => return Err(error),
+                Err(error) => {
+                    result["geometryCommitted"] = json!(true);
+                    result["captureError"] = json!(self.provider.redact(&error.to_string()));
+                    result["captureRecovery"] = json!("绘制已经提交；只重试截图，不要重复绘制");
+                }
+            }
+        }
+        Ok(result)
+    }
+    fn validate_recipe_capture(args: &Value) -> Result<()> {
+        if let Some(capture) = args.get("capture") {
+            if !capture.is_object() {
+                bail!("capture必须是对象")
+            };
+            crate::capture::view_options(capture)?;
+        }
+        Ok(())
+    }
     fn with_workspace_guard<T>(
         &self,
         guard: Option<&RunGuard>,
@@ -1910,6 +2134,38 @@ impl Harness {
             }
             let mut workspace = self.workspace.lock().unwrap();
             goal::check_goal_finish(&state, &workspace, args)?;
+            if state.settings.send_images {
+                if let Some(images) = latest_capture_images(&workspace) {
+                    let artifacts = images
+                        .iter()
+                        .map(|(_, artifact)| artifact.as_str())
+                        .collect::<HashSet<_>>();
+                    fn contains_image(value: &Value, artifacts: &HashSet<&str>) -> bool {
+                        if value["type"] == "input_image"
+                            && value["artifact"]
+                                .as_str()
+                                .is_some_and(|a| artifacts.contains(a))
+                        {
+                            return true;
+                        }
+                        match value {
+                            Value::Array(a) => a.iter().any(|v| contains_image(v, artifacts)),
+                            Value::Object(o) => o.values().any(|v| contains_image(v, artifacts)),
+                            _ => false,
+                        }
+                    }
+                    let sent = state
+                        .conversation
+                        .input
+                        .iter()
+                        .take(state.conversation.requested_input_length)
+                        .any(|item| contains_image(item, &artifacts));
+                    if !sent {
+                        bail!("FINISH_REVIEW_REQUIRED：当前截图尚未发送给模型；先在下一响应看图，再finish_artwork")
+                    }
+                }
+            }
+
             workspace.event(
                 "artwork.reference_sources",
                 run,
@@ -2304,7 +2560,10 @@ impl Harness {
             };
             if remaining_tokens == 0 { bail!("RUN_BUDGET：compact前已无Token预算") }
             let model_limits=self.provider.model_limits(&settings.model);
-            let compact_output_cap = model_limits.output(settings.max_output_tokens).min(4096).min(remaining_tokens.min(u32::MAX as u64) as u32);
+            let compact_input_estimate=estimate(&[json!({"role":"user","content":prompt})]).saturating_add(prompts::system_prompt(&settings.language).len()/3).saturating_add(2048);
+            let compact_run_budget=if self.provider.cache_required(&settings.cache_guard){remaining_tokens.saturating_sub(compact_input_estimate as u64)}else{remaining_tokens};
+            if compact_run_budget<512 {bail!("RUN_BUDGET：剩余Token不足以预留compact输入，未发起摘要请求")}
+            let compact_output_cap = model_limits.output(settings.max_output_tokens).min(4096).min(compact_run_budget.min(u32::MAX as u64) as u32);
             let payload = json!({
                 "model":settings.model,
                 "instructions":format!("{}\n{}",prompts::system_prompt(&settings.language),compact_prompt),
@@ -2322,6 +2581,8 @@ impl Harness {
                 context_epoch: Some(conversation.compact_count),
                 image_policy: Some(settings.send_images),
                 compact: true,
+                cache_guard: settings.cache_guard.clone(),
+                estimated_input_tokens: compact_input_estimate as u64,
             };
             let compact_estimate = estimate(std::slice::from_ref(&payload));
             if compact_estimate.saturating_add(compact_output_cap as usize) > model_limits.context(settings.context_window_tokens) {
@@ -2800,7 +3061,7 @@ pub fn tools_for_language(language: &str) -> Value {
             "Read the authoritative revision, project limits, target capabilities, pinned requirements, and a page of available materials.",
             "Run deterministic JavaScript voxel geometry as one transaction. Use compact functions and loops; apply to continue, replace only for a new scene. Include the exact baseRevision.",
             "Read a bounded region or group summary without returning the full box array.",
-            "Capture fixed rendered views of a specific revision for visual review. The result images list maps each view to its real artifact filename and URL; reuse those values when saving an artwork.",
+            "Capture real views of a revision. Combine views presets with shots for arbitrary angles, group/region framing and orthographic projection; at most five distinct names, custom shots override same-name presets. The result images list maps each view to its real artifact filename and URL; reuse those values when saving an artwork.",
             "Commit a reviewed draft revision.",
             "Queue an already committed revision for optional asynchronous VRChat publishing.",
             "Read local send progress; a local send is not a remote acknowledgement.",
@@ -2815,7 +3076,7 @@ pub fn tools_for_language(language: &str) -> Value {
             "读取权威 revision、工程限制、目标能力、固定要求和一页可用材质。",
             "把确定性 JavaScript 体素几何作为一个事务执行。用紧凑函数和循环；apply 用于续作，replace 仅用于新场景，并传准确 baseRevision。",
             "读取局部区域或分组摘要，不返回完整 Box 数组。",
-            "对指定 revision 捕获固定视角的真实渲染，用于检查作品。结果 images 会把每个视角映射到真实 artifact 文件名和 URL；保存作品时复用返回值。",
+            "对指定revision捕获真实渲染。views用预设视角，shots用自由/局部/正交取景；可组合，最多5个不同名字，同名shots覆盖预设。结果 images 会把每个视角映射到真实 artifact 文件名和 URL；保存作品时复用返回值。",
             "提交已检查的草稿 revision。",
             "把已提交 revision 放入可选的异步 VRChat 发布队列。",
             "读取本机发送进度；本机发送不等于远端 ACK。",
@@ -2850,7 +3111,7 @@ pub fn tools_for_language(language: &str) -> Value {
         "baseRevision":{"type":"integer","minimum":0},
         "requestId":{"type":"string","description":"Optional; model tool calls inject their call_id automatically."}
     });
-    json!([
+    let mut schemas = json!([
         tool(
             "get_context",
             descriptions[0],
@@ -2892,25 +3153,54 @@ pub fn tools_for_language(language: &str) -> Value {
             vec!["code", "mode", "baseRevision", "seed"],
         ),
         tool(
+            "recipe_sources",
+            if en {
+                "List/read/write/patch/delete virtual JS files, or run an entry with params. CommonJS require resolves only saved project files. Existing writes/deletes need expectedHash from read; writes and runs need baseRevision. Source files survive compact and restart. Exports: module.exports=(mf,params)=>{...}. No host filesystem access."
+            } else {
+                "列出/读取/写入/精确patch/删除虚拟JS文件，或带params运行入口。支持CommonJS require，仅访问已保存的工程文件；修改/删除已有文件需read/write返回的file.hash作为expectedHash；patch.edits用唯一find/replace，只传变更片段，写入和run需baseRevision。源码跨compact/重启保留。导出示例：module.exports=(mf,params)=>{...}。不提供主机文件系统。"
+            },
+            json!({
+                "action":{"type":"string","enum":["list","read","write","patch","delete","run"]},"path":{"type":"string"},"content":{"type":"string"},"expectedHash":{"type":"string","description":"read/write返回的file.hash，不是工作区sourceHash。"},"edits":{"type":"array","minItems":1,"maxItems":32,"items":{"type":"object","properties":{"find":{"type":"string","minLength":1},"replace":{"type":"string"},"all":{"type":"boolean"}},"required":["find","replace"],"additionalProperties":false}},"baseRevision":{"type":"integer","minimum":0},"params":{"type":"object"},"mode":{"type":"string","enum":["apply","replace"]},"seed":{"type":"integer","minimum":0},"dryRun":{"type":"boolean"},"requestId":{"type":"string"}
+            }),
+            vec!["action"]
+        ),
+        tool(
             "inspect_region",
             descriptions[2],
             json!({
                 "min":{"type":"array","items":{"type":"integer"},"minItems":3,"maxItems":3},
                 "size":{"type":"array","items":{"type":"integer"},"minItems":3,"maxItems":3},
-                "group":{"type":"string"}
+                "group":{"type":"string"},"offset":{"type":"integer","minimum":0},"limit":{"type":"integer","minimum":1,"maximum":128},
+                "slice":{"type":"object","properties":{"axis":{"type":"string","enum":["x","y","z"]},"index":{"type":"integer"}},"required":["axis","index"],"additionalProperties":false}
             }),
             vec![],
+        ),
+        tool(
+            "read_artifact",
+            if en {
+                "Reread a saved image or JS/JSON/text artifact. Optional pixel crop zooms an image without changing the scene. Historical/reference rereads do not count as current-revision captures or Goal review."
+            } else {
+                "重新查看已保存图片或JS/JSON/文本artifact，可用像素crop放大局部，不改变场景。历史/参考图片重读不算当前revision截图或Goal复核。"
+            },
+            json!({"artifact":{"type":"string"},"crop":{"type":"object","properties":{"x":{"type":"integer","minimum":0},"y":{"type":"integer","minimum":0},"width":{"type":"integer","minimum":1},"height":{"type":"integer","minimum":1}},"required":["x","y","width","height"],"additionalProperties":false}}),
+            vec!["artifact"]
         ),
         tool(
             "capture_views",
             descriptions[3],
             json!({
                 "revision":{"type":"integer","minimum":0},
+                "shots":{"type":"array","minItems":1,"maxItems":5,"description":"自由/局部取景；可与views组合，同名覆盖预设，合计最多5个视角。坐标为体素格。yaw=0从+Z看正面；pitch=0为平视。","items":{"type":"object","properties":{
+                    "id":{"type":"string","pattern":"^[A-Za-z0-9_-]{1,64}$"},"projection":{"type":"string","enum":["perspective","orthographic"]},
+                    "yaw":{"type":"number","minimum":-360,"maximum":360},"pitch":{"type":"number","minimum":-90,"maximum":90},"fov":{"type":"number","minimum":10,"maximum":120},"margin":{"type":"number","minimum":0,"maximum":1},
+                    "position":{"type":"array","items":{"type":"number"},"minItems":3,"maxItems":3},"target":{"type":"array","items":{"type":"number"},"minItems":3,"maxItems":3},
+                    "fit":{"type":"object","properties":{"group":{"type":"string"},"bounds":{"type":"object","properties":{"min":{"type":"array","items":{"type":"number"},"minItems":3,"maxItems":3},"max":{"type":"array","items":{"type":"number"},"minItems":3,"maxItems":3}},"required":["min","max"],"additionalProperties":false}},"additionalProperties":false}
+                },"required":["id"],"additionalProperties":false}},
                 "views":{"type":"array","items":{"type":"string","enum":["hero","front","top","side","detail"]}},
                 "width":{"type":"integer","minimum":128,"maximum":2048},
                 "height":{"type":"integer","minimum":128,"maximum":2048}
             }),
-            vec!["revision", "views"],
+            vec!["revision"],
         ),
         tool(
             "commit",
@@ -2966,7 +3256,34 @@ pub fn tools_for_language(language: &str) -> Value {
             }),
             vec!["title", "summary"]
         ),
-    ])
+    ]);
+    let mut capture = schemas
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|tool| tool["name"] == "capture_views")
+        .unwrap()["parameters"]
+        .clone();
+    capture["properties"]
+        .as_object_mut()
+        .unwrap()
+        .remove("revision");
+    capture["required"] = json!([]);
+    for tool in schemas.as_array_mut().unwrap() {
+        if matches!(tool["name"].as_str(), Some("run_recipe" | "recipe_sources")) {
+            tool["parameters"]["properties"]["capture"] = capture.clone();
+            let suffix = if en {
+                " Optional capture auto-renders the committed revision in the same tool result, saving a model round trip. Inspect images in the next response before finishing. If rendering fails, geometryCommitted/captureError says to retry only capture."
+            } else {
+                " 可选capture在成功绘制后自动截图并返回图片，省去一次模型请求；下一响应看图后才能完成。截图失败返回geometryCommitted/captureError，只重试截图，勿重复绘制。"
+            };
+            tool["description"] = json!(format!(
+                "{}{suffix}",
+                tool["description"].as_str().unwrap_or("")
+            ));
+        }
+    }
+    schemas
 }
 
 #[cfg(test)]

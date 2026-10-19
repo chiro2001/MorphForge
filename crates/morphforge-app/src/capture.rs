@@ -49,19 +49,7 @@ impl CaptureBroker {
             .and_then(Value::as_u64)
             .unwrap_or(640)
             .clamp(128, 2048);
-        let views = options
-            .get("views")
-            .cloned()
-            .unwrap_or(json!(["hero", "front", "top"]));
-        if !views.as_array().is_some_and(|a| {
-            !a.is_empty()
-                && a.len() <= 5
-                && a.iter().all(|x| {
-                    ["hero", "front", "top", "side", "detail"].contains(&x.as_str().unwrap_or(""))
-                })
-        }) {
-            bail!("无效截图视角")
-        }
+        let (views, shots) = view_options(options)?;
         let id = uuid::Uuid::new_v4().to_string();
         let value = {
             let w = workspace.lock().unwrap();
@@ -69,7 +57,7 @@ impl CaptureBroker {
                 .get("revision")
                 .and_then(Value::as_u64)
                 .unwrap_or(w.project.scene.revision);
-            json!({"id":id,"revision":rev,"scene":w.scene_at(rev)?,"materials":w.materials_at(rev)?,"views":views,"width":width,"height":height,"mode":options.get("mode").and_then(Value::as_str).unwrap_or("art")})
+            json!({"id":id,"revision":rev,"scene":w.scene_at(rev)?,"materials":w.materials_at(rev)?,"views":views,"shots":shots,"width":width,"height":height,"mode":options.get("mode").and_then(Value::as_str).unwrap_or("art")})
         };
         let (tx, rx) = oneshot::channel();
         self.jobs.lock().unwrap().insert(
@@ -128,9 +116,10 @@ impl CaptureBroker {
             bail!("截图数量不匹配")
         }
         let mut artifacts = vec![];
+        let mut returned = std::collections::BTreeSet::new();
         for image in images {
             let view = image["view"].as_str().context("图片无视角")?;
-            if !expected.iter().any(|x| x.as_str() == Some(view)) {
+            if !returned.insert(view) || !expected.iter().any(|x| x.as_str() == Some(view)) {
                 bail!("截图视角不匹配")
             };
             let data = image["data"]
@@ -190,5 +179,145 @@ mod tests {
             broker.jobs.lock().unwrap().is_empty(),
             "cancelled capture must not remain claimable"
         );
+    }
+}
+
+pub fn view_options(options: &Value) -> Result<(Value, Value)> {
+    let shots = options
+        .get("shots")
+        .filter(|v| !v.is_null())
+        .cloned()
+        .unwrap_or(json!([]));
+    if !shots.is_array() {
+        bail!("shots必须是数组")
+    }
+    if !shots.as_array().unwrap().is_empty() {
+        validate_shots(&shots)?;
+    }
+    let defaults = if shots.as_array().unwrap().is_empty() {
+        json!(["hero", "front", "top"])
+    } else {
+        json!([])
+    };
+    let views = options
+        .get("views")
+        .filter(|v| !v.is_null())
+        .cloned()
+        .unwrap_or(defaults);
+    let views = views.as_array().context("views必须是数组")?;
+    let mut names = Vec::new();
+    for view in views {
+        if !["hero", "front", "top", "side", "detail"].contains(&view.as_str().unwrap_or("")) {
+            bail!("无效预设视角")
+        }
+        if !names.contains(view) {
+            names.push(view.clone());
+        }
+    }
+    for shot in shots.as_array().unwrap() {
+        if !names.contains(&shot["id"]) {
+            names.push(shot["id"].clone());
+        }
+    }
+    if names.is_empty() || names.len() > 5 {
+        bail!("每次截图需要1至5个不同视角")
+    }
+    Ok((json!(names), shots))
+}
+
+fn validate_shots(value: &Value) -> Result<()> {
+    let shots = value.as_array().context("shots必须是数组")?;
+    if shots.is_empty() || shots.len() > 5 {
+        bail!("每次截图需要1至5个shots")
+    }
+    let mut ids = std::collections::BTreeSet::new();
+    for shot in shots {
+        let id = shot["id"].as_str().context("shot需要id")?;
+        if id.is_empty()
+            || id.len() > 64
+            || !id
+                .bytes()
+                .all(|b| b.is_ascii_alphanumeric() || b == b'-' || b == b'_')
+            || !ids.insert(id)
+        {
+            bail!("shot id无效或重复")
+        }
+        if shot
+            .get("projection")
+            .is_some_and(|p| !matches!(p.as_str(), Some("perspective" | "orthographic")))
+        {
+            bail!("无效相机投影")
+        }
+        for (key, min, max) in [
+            ("yaw", -360., 360.),
+            ("pitch", -90., 90.),
+            ("margin", 0., 1.),
+            ("fov", 10., 120.),
+        ] {
+            if let Some(v) = shot.get(key) {
+                if !v
+                    .as_f64()
+                    .is_some_and(|v| v.is_finite() && v >= min && v <= max)
+                {
+                    bail!("相机参数越界：{key}")
+                }
+            }
+        }
+        for key in ["position", "target"] {
+            if let Some(v) = shot.get(key) {
+                if !valid_point(v) {
+                    bail!("相机坐标需要三个有限数：{key}")
+                }
+            }
+        }
+        if shot.get("position").is_some() && shot["position"] == shot["target"] {
+            bail!("相机position和target不能相同")
+        }
+        if let Some(fit) = shot.get("fit") {
+            if let Some(group) = fit.get("group") {
+                if !group
+                    .as_str()
+                    .is_some_and(|s| !s.is_empty() && s.len() <= 128)
+                {
+                    bail!("无效取景分组")
+                }
+            }
+            if let Some(bounds) = fit.get("bounds") {
+                if !valid_point(&bounds["min"]) || !valid_point(&bounds["max"]) {
+                    bail!("无效取景bounds")
+                }
+                for i in 0..3 {
+                    if bounds["min"][i].as_f64().unwrap() >= bounds["max"][i].as_f64().unwrap() {
+                        bail!("取景bounds必须有正体积")
+                    }
+                }
+            }
+        }
+    }
+    Ok(())
+}
+fn valid_point(value: &Value) -> bool {
+    value.as_array().is_some_and(|a| {
+        a.len() == 3
+            && a.iter().all(|v| {
+                v.as_f64()
+                    .is_some_and(|n| n.is_finite() && n.abs() <= 1_000_000.)
+            })
+    })
+}
+#[cfg(test)]
+mod shot_tests {
+    use super::*;
+    #[test]
+    fn validates_free_camera_and_rejects_duplicates_or_bad_numbers() {
+        assert!(validate_shots(&json!([{"id":"face","fit":{"group":"face"},"projection":"orthographic","yaw":0,"pitch":0}])).is_ok());
+        assert!(validate_shots(&json!([{"id":"a"},{"id":"a"}])).is_err());
+        assert!(validate_shots(&json!([{"id":"a","pitch":91}])).is_err());
+    }
+    #[test]
+    fn presets_mix_with_custom_shots_and_same_name_overrides_without_duplicates() {
+        let (views,shots)=view_options(&json!({"views":["hero","front"],"shots":[{"id":"front","projection":"orthographic"},{"id":"fin","fit":{"group":"fins"}}]})).unwrap();
+        assert_eq!(views, json!(["hero", "front", "fin"]));
+        assert_eq!(shots.as_array().unwrap().len(), 2);
     }
 }

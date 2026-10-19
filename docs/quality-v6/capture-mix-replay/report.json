@@ -1,0 +1,119 @@
+{
+  "success": true,
+  "scope": "Exact formerly rejected model arguments, offline rendering only; no new model request",
+  "input": {
+    "revision": 3,
+    "views": [
+      "hero",
+      "front"
+    ],
+    "shots": [
+      {
+        "id": "fins-ortho",
+        "fit": {
+          "group": "fins"
+        },
+        "projection": "orthographic",
+        "yaw": 0,
+        "pitch": 0,
+        "margin": 0.12
+      }
+    ]
+  },
+  "images": [
+    {
+      "artifact": "5a8ed1029834cfa530bd54699ea1af2e04f0bc5900ea5348eeaef717c1a3410c.png",
+      "camera": {
+        "coordinateSpace": "render-world",
+        "fov": 42,
+        "position": [
+          57.318542494923825,
+          53.301406871192846,
+          70.71067811865474
+        ],
+        "projection": "perspective",
+        "target": [
+          0.75,
+          10.875,
+          0
+        ]
+      },
+      "height": 640,
+      "url": "/artifacts/5a8ed1029834cfa530bd54699ea1af2e04f0bc5900ea5348eeaef717c1a3410c.png",
+      "view": "hero",
+      "width": 768
+    },
+    {
+      "artifact": "bb0b5779ae19ea64aed2f68770f3aa35f3bf1731bc9e77ca4fc0f9ea946109aa.png",
+      "camera": {
+        "coordinateSpace": "render-world",
+        "fov": 42,
+        "position": [
+          0.7500000000000122,
+          22.78952206184306,
+          99.28768384869224
+        ],
+        "projection": "perspective",
+        "target": [
+          0.75,
+          10.875,
+          0
+        ]
+      },
+      "height": 640,
+      "url": "/artifacts/bb0b5779ae19ea64aed2f68770f3aa35f3bf1731bc9e77ca4fc0f9ea946109aa.png",
+      "view": "front",
+      "width": 768
+    },
+    {
+      "artifact": "19504c14af215e4255d074ae7ed31c2d29de2957939c2d9bde35ed5a90b4f284.png",
+      "camera": {
+        "bounds": {
+          "max": [
+            85,
+            78,
+            50
+          ],
+          "min": [
+            -35,
+            27,
+            -50
+          ]
+        },
+        "coordinateSpace": "voxel-grid",
+        "far": 5000,
+        "fov": 42,
+        "near": 0.001,
+        "orthographic": {
+          "bottom": -56.00000000000001,
+          "left": -67.2,
+          "right": 67.2,
+          "top": 56.00000000000001
+        },
+        "position": [
+          25,
+          52.5,
+          195.88498762285292
+        ],
+        "projection": "orthographic",
+        "target": [
+          25,
+          52.5,
+          0
+        ],
+        "up": [
+          0,
+          1,
+          0
+        ]
+      },
+      "height": 640,
+      "url": "/artifacts/19504c14af215e4255d074ae7ed31c2d29de2957939c2d9bde35ed5a90b4f284.png",
+      "view": "fins-ortho",
+      "width": 768
+    }
+  ],
+  "timelineRevision": 3,
+  "recordedRevision": 4,
+  "projectRevisionUnchanged": true
+}

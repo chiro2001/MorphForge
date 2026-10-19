@@ -207,6 +207,8 @@ impl Workspace {
             Project::default()
         };
         project.scene.validate(&project.limits)?;
+        let mut timeline_writer =
+            std::io::BufWriter::new(fs::File::create(root.join("events/timeline.jsonl"))?);
         let mut events = VecDeque::with_capacity(5000);
         let mut last_seq = 0u64;
         let log = root.join("events/events.jsonl");
@@ -214,6 +216,7 @@ impl Workspace {
             for line in BufReader::new(fs::File::open(log)?).lines() {
                 let Ok(line) = line else { continue };
                 if let Ok(event) = serde_json::from_str::<Event>(&line) {
+                    crate::timeline::write_row(&mut timeline_writer, &event)?;
                     last_seq = event.seq;
                     if events.len() == 5000 {
                         events.pop_front();
@@ -222,6 +225,8 @@ impl Workspace {
                 }
             }
         }
+        timeline_writer.flush()?;
+        drop(timeline_writer);
         let next_seq = last_seq.saturating_add(1).max(1);
         let mut revisions = load_snapshots(&root, &project.id)?;
         revisions.entry(project.scene.revision).or_insert(());
@@ -359,6 +364,7 @@ impl Workspace {
         serde_json::to_writer(&mut f, &event)?;
         f.write_all(b"\n")?;
         f.flush()?;
+        let _ = crate::timeline::append(&self.root, &event);
         self.next_seq += 1;
         self.events.push(event.clone());
         if self.events.len() > 5000 {

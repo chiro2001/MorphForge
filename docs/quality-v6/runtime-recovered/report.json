@@ -1,0 +1,115 @@
+{
+  "success": true,
+  "scope": "Offline execution of UNMODIFIED original model source with fixed static module loader; no model request or OSC",
+  "result": {
+    "changed": {
+      "after": 1636,
+      "before": 1615
+    },
+    "generationMs": 246.16486400000002,
+    "ok": true,
+    "revision": 3,
+    "sourceHash": "ceef653dbe348e5e3ca2561a1e3025c57b911a605cc094eccd2757b9dc3f7534",
+    "stats": {
+      "bounds": {
+        "max": [
+          108,
+          93,
+          64
+        ],
+        "min": [
+          -102,
+          -6,
+          -64
+        ]
+      },
+      "boxCount": 1636,
+      "groups": {
+        "deck": 194,
+        "fins": 74,
+        "hull": 825,
+        "scene": 380,
+        "side-detail": 163
+      },
+      "styleIds": [
+        1,
+        2,
+        5,
+        6,
+        7,
+        9,
+        11,
+        12,
+        13,
+        18,
+        21,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "targetBoxes": 16384,
+      "voxelCount": 406858,
+      "warnings": []
+    }
+  },
+  "stats": {
+    "bounds": {
+      "max": [
+        108,
+        93,
+        64
+      ],
+      "min": [
+        -102,
+        -6,
+        -64
+      ]
+    },
+    "boxCount": 1636,
+    "groups": {
+      "deck": 194,
+      "fins": 74,
+      "hull": 825,
+      "scene": 380,
+      "side-detail": 163
+    },
+    "styleIds": [
+      1,
+      2,
+      5,
+      6,
+      7,
+      9,
+      11,
+      12,
+      13,
+      18,
+      21,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31
+    ],
+    "targetBoxes": 16384,
+    "voxelCount": 406858,
+    "warnings": []
+  },
+  "sourceFiles": {
+    "files": [
+      {
+        "bytes": 11989,
+        "hash": "e2026e5427b0e5fa6acc673847649b8f6e6d68c800842c6a46378c53a8e30acb",
+        "path": "coral-whale/main.js"
+      }
+    ],
+    "sourceHash": "ceef653dbe348e5e3ca2561a1e3025c57b911a605cc094eccd2757b9dc3f7534"
+  },
+  "oscEnabled": false
+}

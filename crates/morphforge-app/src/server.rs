@@ -79,6 +79,7 @@ pub struct Revision {
     revision: Option<u64>,
     after: Option<u64>,
     run: Option<String>,
+    brief: Option<bool>,
 }
 #[derive(Default, Deserialize)]
 pub struct ToolQuery {
@@ -131,6 +132,8 @@ impl App {
             .route("/api/text/preview", post(text_preview))
             .route("/api/text/apply", post(text_apply))
             .route("/api/events", get(events))
+            .route("/api/timeline", get(timeline_page))
+            .route("/api/timeline/{seq}", get(timeline_detail))
             .route("/api/artworks", get(artworks).post(artwork_action))
             .route("/api/artworks/{id}", get(artwork_get))
             .route("/api/packs/import", post(pack_import))
@@ -406,8 +409,25 @@ async fn events(State(a): State<App>, Query(q): Query<Revision>) -> ApiResult {
                 && q.run.as_ref().is_none_or(|r| e.run_id.as_ref() == Some(r))
         })
         .take(500)
+        .map(|e| {
+            if q.brief == Some(true) {
+                crate::timeline::brief(e)
+            } else {
+                serde_json::to_value(e).unwrap_or(Value::Null)
+            }
+        })
         .collect();
     Ok(Json(json!({"events":values,"lastSeq":w.next_seq-1})))
+}
+async fn timeline_page(State(a): State<App>, Query(q): Query<crate::timeline::Query>) -> ApiResult {
+    let root = a.workspace.lock().unwrap().root.clone();
+    let value = tokio::task::spawn_blocking(move || crate::timeline::page(&root, &q)).await??;
+    Ok(Json(a.harness.redact_display(value)))
+}
+async fn timeline_detail(State(a): State<App>, AxPath(seq): AxPath<u64>) -> ApiResult {
+    let root = a.workspace.lock().unwrap().root.clone();
+    let value = tokio::task::spawn_blocking(move || crate::timeline::detail(&root, seq)).await??;
+    Ok(Json(a.harness.redact_display(value)))
 }
 async fn artworks(State(a): State<App>) -> ApiResult {
     let mut workspace = a.workspace.lock().unwrap();

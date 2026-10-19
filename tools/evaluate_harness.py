@@ -24,6 +24,8 @@ def main() -> None:
     parser.add_argument('--case', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--timeout', type=float, default=960)
+    parser.add_argument('--require-cache-hit', action='store_true', help='Refuse paid evaluation until the current stable configuration has reported a real cache hit.')
+    parser.add_argument('--lifetime-token-limit', type=int, default=0, help='Cap this data directory including prior probe usage; 0 leaves the case budget unchanged.')
     options = parser.parse_args()
     address = urllib.parse.urlsplit(options.url)
     if address.scheme != 'http' or address.hostname is None or address.port is None:
@@ -53,7 +55,20 @@ def main() -> None:
     if case.get('enforceProtection'):
         api('project', {'protectedGroups': case['protectedGroups'],
                         'baseRevision': initial['revision']})
-    settings = case.get('settings', {})
+    settings = dict(case.get('settings', {}))
+    if options.require_cache_hit:
+        current = initial['harness']['settings']
+        changed = [key for key in ('model','reasoning','language','preset','detailInstructions','sendImages') if key in settings and settings[key] != current.get(key)]
+        monitor = initial['harness'].get('cacheMonitor', {})
+        if changed or monitor.get('alert') or not (monitor.get('lastCachedTokens') or 0) > 0:
+            raise RuntimeError('No paid evaluation: apply stable model/prompt settings and confirm an actual upstream cache hit first. Changed fields: '+','.join(changed))
+    if options.lifetime_token_limit:
+        spent = initial['harness']['usage']['total']['totalTokens']
+        remaining = options.lifetime_token_limit - spent
+        if remaining < 1000:
+            raise RuntimeError('No paid evaluation: data-directory token limit is already exhausted')
+        settings['maxRunTokens'] = min(settings.get('maxRunTokens', initial['harness']['settings']['maxRunTokens']), remaining)
+
     api('harness/config', settings)
     schema = api('harness/tools')
     versions = {'software': initial.get('software'), 'tools': schema.get('version'),
@@ -100,11 +115,14 @@ def main() -> None:
     last_state = started
     report = {'case': case.get('id'), 'caseSha256': hashlib.sha256(case_bytes).hexdigest(),
               'backend': origin, 'initialRunId': initial_run, 'settings': settings, 'versions': versions,
-              'actions': actions, 'success': False}
+              'actions': actions, 'success': False, 'requireCacheHit': options.require_cache_hit, 'lifetimeTokenLimit': options.lifetime_token_limit}
     try:
         while time.monotonic() - start < options.timeout:
             last_state = api('harness/state')
             refresh_events()
+            if options.lifetime_token_limit and last_state['usage']['total']['totalTokens'] > options.lifetime_token_limit:
+                api('harness/control', {'action': 'stop'})
+                raise RuntimeError('evaluation data-directory token ceiling reached; stopped further requests')
             results = [e for e in events if e['kind'] == 'tool.result' and e.get('runId')]
             run = last_state.get('run') or {}
             phase = last_state.get('interaction', {}).get('phase', '')
@@ -171,7 +189,7 @@ def main() -> None:
         counts = collections.Counter(e['kind'] for e in model_events)
         tools = [e for e in model_events if e['kind'] == 'tool.result']
         errors = [e for e in tools if e['data'].get('result', {}).get('ok') is False]
-        captures = [e for e in tools if e['data'].get('name') == 'capture_views'
+        captures = [e for e in tools if e['data'].get('name') in ('capture_views','run_recipe','recipe_sources')
                     and bool(e['data'].get('result', {}).get('images'))]
         final = api('harness/tool', {'name': 'capture_views', 'arguments': {
             'revision': scene['revision'], 'views': ['hero', 'front', 'top']}})

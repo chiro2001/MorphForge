@@ -1,0 +1,78 @@
+{
+  "scope": "Actual official DeepSeek limited probe, restored draft unchanged",
+  "run": {
+    "activeRequestId": null,
+    "epoch": 1,
+    "error": "",
+    "finishedAt": "2026-10-19T11:56:49.205Z",
+    "id": "43df117e-7376-405c-8e2a-1d306a808d02",
+    "language": "zh-CN",
+    "message": "已就绪：工程 revision 3，共 1,636 个 Box，包含 hull 825、deck 194、fins 74、scene 380、side-detail 163；未做任何修改。",
+    "prompt": "这不是建模任务，只验证接续状态和缓存：调用一次get_context，然后只回复一句已就绪。不要创建、修改、截图或保存作品，不要调用其他工具。",
+    "promptVersion": "morphforge-system/4.7",
+    "startedAt": "2026-10-19T11:56:46.904Z",
+    "status": "completed",
+    "steps": 2,
+    "tokens": 19635,
+    "toolsVersion": "morphforge-tools/3.4"
+  },
+  "cacheMonitor": {
+    "alert": null,
+    "cacheReportedRequests": 2,
+    "cacheRequired": true,
+    "clientPrefixIsNotCacheHit": true,
+    "lastCachedTokens": 8192,
+    "lastHitRate": 0.7253408889675934,
+    "lastInputTokens": 11294,
+    "mode": "strict",
+    "prefix": {
+      "appendOnly": true,
+      "contextEpoch": 0,
+      "currentMessages": 3,
+      "expectedReset": false,
+      "field": "input",
+      "firstChangedMessage": null,
+      "previousMessages": 1,
+      "reason": "append_only",
+      "resetAuthorization": null,
+      "scope": "wire_messages",
+      "sharedMessages": 1,
+      "staticPrefixUnchanged": true
+    },
+    "recentHitRate": 0.4514183490927677,
+    "requests": 2,
+    "source": "upstream_usage",
+    "status": "observing",
+    "windowRequests": 2
+  },
+  "usage": {
+    "prefixDenominator": "cache_reported_input_tokens",
+    "run": {
+      "cacheReportedInputTokens": 19565,
+      "cacheReportedRequests": 2,
+      "cachedInputTokens": 8832,
+      "inputTokens": 19565,
+      "outputTokens": 70,
+      "prefixHitRate": 0.4514183490927677,
+      "reportedRequests": 2,
+      "requests": 2,
+      "totalTokens": 19635,
+      "unreportedRequests": 0
+    },
+    "scope": "workspace",
+    "source": "upstream_reported_usage",
+    "total": {
+      "cacheReportedInputTokens": 19565,
+      "cacheReportedRequests": 2,
+      "cachedInputTokens": 8832,
+      "inputTokens": 19565,
+      "outputTokens": 70,
+      "prefixHitRate": 0.4514183490927677,
+      "reportedRequests": 2,
+      "requests": 2,
+      "totalTokens": 19635,
+      "unreportedRequests": 0
+    }
+  },
+  "additionalTotalTokenCeiling": 100000
+}

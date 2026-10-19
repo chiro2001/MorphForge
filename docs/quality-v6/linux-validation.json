@@ -1,0 +1,17 @@
+{
+  "success": true,
+  "rustPassed": 143,
+  "nodePassed": 36,
+  "browserQualityPassed": 23,
+  "browserProviderPassed": 27,
+  "prefixChatPassed": 16,
+  "prefixResponsesPassed": 16,
+  "prefixRequestsPerApi": 11,
+  "mixedOriginalModelArgsOfflineReplay": true,
+  "clippy": "--workspace --all-targets -- -D warnings",
+  "linuxBinarySha256": "54524b5200d65ddafc2355b8ab19f76a75b7183f10ce9ffd44b785e75e50bc75",
+  "software": "0.6.0",
+  "prompt": "morphforge-system/4.8",
+  "tools": "morphforge-tools/3.5",
+  "scope": "Fixtures/Chromium and offline replay separate from 12 recorded paid official requests"
+}
