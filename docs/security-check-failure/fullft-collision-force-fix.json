@@ -1,0 +1,33 @@
+{
+  "success": true,
+  "scope": "Only final FullFT prefab particle colliderForce changed; commercial Nemesis source remains untouched.",
+  "generatedAtUtc": "2026-10-19T02:32:26.8729171Z",
+  "nemesisSourceModified": false,
+  "fullFtSourceModified": true,
+  "prefabPath": "Assets/MorphForge/FullFT/Avatar.prefab",
+  "prefabSha256Before": "669dd8fe902c60055dcc616d26edbeada8c98a114b900f399d7d2cbb7329e328",
+  "prefabSha256After": "a822389956a7bdb38b5cff91b97b42e94d3435dce09ee3f627b94b659e09acfb",
+  "targetPath": "NemesisWandPrefab/WandMenu/LusterRailGun/LusterRailGun_Toggle/Shot/Coin/Light",
+  "colliderForceBefore": 1.0,
+  "colliderForceAfter": 0.0,
+  "pickupForceDisabled": true,
+  "disabledPickupLayers": false,
+  "collisionMask": 4188439,
+  "collisionEnabled": true,
+  "otherParticleSettingsPreserved": true,
+  "cleanup": {
+    "changed": 1,
+    "changes": [
+      {
+        "path": "NemesisWandPrefab/WandMenu/LusterRailGun/LusterRailGun_Toggle/Shot/Coin/Light",
+        "forceBefore": 1.0,
+        "forceAfter": 0.0,
+        "collisionEnabled": true,
+        "collisionMask": 4188439
+      }
+    ],
+    "sourceNemesisAssetsWritten": false
+  },
+  "nemesisSourceSha256Before": "c4151830701f937773a80cbeefc1217ca878182728bffa883d3c1e8f34fd25ab",
+  "nemesisSourceSha256After": "c4151830701f937773a80cbeefc1217ca878182728bffa883d3c1e8f34fd25ab"
+}

@@ -164,6 +164,7 @@ namespace MorphForge.Editor
             EnsureFolder(FullFTRoot);
             var contents = PrefabUtility.LoadPrefabContents(BaseAvatarPath);
             Dictionary<string, object> noSleepCleanup = null;
+            object particleCollisionCleanup = null;
             try
             {
                 contents.name = "MorphForge_FullFT_Avatar";
@@ -183,6 +184,7 @@ namespace MorphForge.Editor
                 InstantiateChild(MixExpressionsPath, contents.transform, "MixExpressions");
                 InstantiateChild(PlacementPath, contents.transform, "MorphForgePlacement");
                 noSleepCleanup = FullFTNoSleepController.Apply(contents);
+                particleCollisionCleanup = SanitizePickupParticleForces(contents);
 
                 var ftRenderer = contents.GetComponentsInChildren<SkinnedMeshRenderer>(true)
                     .FirstOrDefault(renderer => renderer.sharedMesh &&
@@ -219,6 +221,7 @@ namespace MorphForge.Editor
                 ftMesh = FtMeshPath,
                 derivedLocomotion = NoSleepLocomotionPath,
                 noSleepCleanup,
+                particleCollisionCleanup,
                 excluded = new[]
                 {
                     "outfits",
@@ -231,6 +234,37 @@ namespace MorphForge.Editor
             };
             FullFTBudgetUtil.WriteReport("Docs/FullFT/avatar-build.json", report);
             return Newtonsoft.Json.JsonConvert.SerializeObject(report);
+        }
+
+        /// <summary>
+        /// SDK validation rejects particles that apply collision forces to pickup layers.
+        /// Apply only to our final avatar copy; retain particle visuals and collision events.
+        /// </summary>
+        public static object SanitizePickupParticleForces(GameObject avatar)
+        {
+            if (!avatar) throw new ArgumentNullException(nameof(avatar));
+            int pickupLayers = VRC.Utility.LayerHelper.Mask_ParticleCollisionForceForbiddenLayerMask;
+            var changes = new List<object>();
+            foreach (var system in avatar.GetComponentsInChildren<ParticleSystem>(true))
+            {
+                var collision = system.collision;
+                if (collision.type != ParticleSystemCollisionType.World ||
+                    collision.colliderForce == 0f || (collision.collidesWith.value & pickupLayers) == 0)
+                    continue;
+                changes.Add(new
+                {
+                    path = AnimationUtility.CalculateTransformPath(system.transform, avatar.transform),
+                    forceBefore = collision.colliderForce,
+                    forceAfter = 0f,
+                    collisionEnabled = collision.enabled,
+                    collisionMask = collision.collidesWith.value
+                });
+                collision.colliderForce = 0f;
+                EditorUtility.SetDirty(system);
+                if (PrefabUtility.IsPartOfPrefabInstance(system))
+                    PrefabUtility.RecordPrefabInstancePropertyModifications(system);
+            }
+            return new { changed = changes.Count, changes, sourceNemesisAssetsWritten = false };
         }
 
         /// <summary>
