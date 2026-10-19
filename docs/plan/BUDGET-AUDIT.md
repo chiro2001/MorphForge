@@ -590,6 +590,11 @@ Button 临时覆盖、菜单恢复、压缩候选排除和最终结果均由实�
 
 ## 11. 验收边界
 
-联合构建通过只能证明 Editor 中的 SDK preprocess 产物满足预算和参数保护。完整 FT 视觉、VRCFT OSC 驱动、远端同步、舌头材质和真实客户端上传仍需后续验证。
+联合构建通过证明 Editor 中的 SDK preprocess 产物满足预算和参数保护。Unity 的 `IsLocal=0` 远端面捕分支已验证，18 项输出变化；2026-10-19 在修复真实场景根名前缀后再次通过，见[最新烟测](../security-check-failure/fullft-final-remote-smoke.json)。这不等于真实玩家间同步或硬件面捕驱动验收；实际客户端表现和舌头材质仍由现场观察确认。
+
+FullFT 场景 Avatar 根名须以当前 Profile 的 `avatarNamePrefix` 开头，默认
+`MorphForge_FullFT`。生成器与最终上传预检会验证这一约定；原 `Avatar` 根名曾导致
+真实 Play 跳过同步精简，已迁移两个正式/诊断场景并验证实际场景 clone，见
+[修复说明](../security-check-failure/FULLFT-NAME-FIX.md)。
 
 如果 `Max-200` 或 `Max-50` 任一报告失败，禁止上传。不得用公式结果替代最终报告，也不得为了凑 256 bit 关闭未知参数。

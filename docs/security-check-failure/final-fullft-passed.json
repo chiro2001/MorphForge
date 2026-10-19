@@ -1,0 +1,171 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAtUtc": "2026-10-19T02:37:58.776778+00:00",
+  "status": "uploaded-private-server-analysis-passed-client-pending",
+  "avatar": {
+    "id": "avtr_df2ff222-b6ff-47fb-80be-e060868596a2",
+    "displayName": "MorphForge FullFT 16K",
+    "version": 10,
+    "releaseStatus": "private",
+    "pendingUpload": false
+  },
+  "file": {
+    "id": "file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf",
+    "version": 8
+  },
+  "operation": {
+    "id": "final-fullft-20261019T023521763Z-fa9915d4",
+    "status": "success",
+    "completedAtUtc": "2026-10-19T02:36:53.5426872Z",
+    "bundleSha256": "9db310813431e0e85744beec22cfbc58494c7e5f70aacc2af1360b1da4c0cbfc",
+    "bundleBytes": 11072116
+  },
+  "actualBundle": {
+    "path": "/tmp/final-fullft-uploaded.vrca",
+    "bytes": 11072116,
+    "sha256": "9db310813431e0e85744beec22cfbc58494c7e5f70aacc2af1360b1da4c0cbfc"
+  },
+  "vrcaAudit": {
+    "success": true,
+    "failedChecks": [],
+    "store": {
+      "pathId": -9104767706147956156,
+      "gameObjectId": -7606328567722734302,
+      "name": "Store",
+      "capacity": 16384,
+      "startLifetime": "Infinity",
+      "infinityLifetime": true,
+      "size3D": true,
+      "burstCount": 1
+    },
+    "pump": {
+      "pathId": 2514004321638297085,
+      "gameObjectId": -2327249300037770667,
+      "name": "Pump",
+      "capacity": 1,
+      "startLifetime": 0.5,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    "otherCharacterEffects": {
+      "count": 151,
+      "totalCapacity": 41750,
+      "separateFromStoreLimit": true
+    },
+    "expressionParameterTotalBits": 256,
+    "expressionParameterSyncedCount": 144,
+    "groups": {
+      "ft": {
+        "count": 112,
+        "bits": 161,
+        "failures": []
+      },
+      "controls": {
+        "count": 8,
+        "bits": 8,
+        "failures": []
+      },
+      "geometry": {
+        "count": 7,
+        "bits": 56,
+        "failures": []
+      },
+      "placement": {
+        "count": 7,
+        "bits": 14,
+        "failures": []
+      }
+    },
+    "metadata": {
+      "pathId": -1213621359205545928,
+      "name": "CatalogMetadata",
+      "width": 256,
+      "height": 64,
+      "format": 20,
+      "mipCount": 1,
+      "colorSpace": 0
+    },
+    "atlas": {
+      "pathId": -347633513603144029,
+      "name": "CatalogAtlas",
+      "width": 384,
+      "height": 96,
+      "format": 4,
+      "mipCount": 1,
+      "colorSpace": 1
+    },
+    "storeMaterial": {
+      "pathId": -8194106025869569609,
+      "name": "ParticleBoxCatalog",
+      "shaderPathId": 4641559875580322477,
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "metaWidth": 256.0,
+      "metaHeight": 64.0,
+      "textures": [
+        "_CatalogAtlas",
+        "_CatalogMeta"
+      ]
+    },
+    "forbiddenCollisionForceSystems": []
+  },
+  "sdkFinalBudget": {
+    "success": true,
+    "finalBits": 256,
+    "maxBits": 256,
+    "remainingBits": 0,
+    "ftBits": 161,
+    "controlsBits": 8,
+    "geometryBits": 56,
+    "placementBits": 14
+  },
+  "serverAnalysis": {
+    "success": true,
+    "terminal": true,
+    "allEndpointsPassed": true,
+    "fileVersion": "8",
+    "endpoints": [
+      {
+        "endpoint": "analysis/file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf/8",
+        "passed": true,
+        "fileSize": 11072116,
+        "uncompressedSize": 92494368,
+        "performanceRating": "VeryPoor",
+        "totalMaxParticles": 58135,
+        "particleSystemCount": 153
+      },
+      {
+        "endpoint": "analysis/file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf/8/standard",
+        "passed": true,
+        "fileSize": 11072116,
+        "uncompressedSize": 92494368,
+        "performanceRating": "VeryPoor",
+        "totalMaxParticles": 58135,
+        "particleSystemCount": 153
+      },
+      {
+        "endpoint": "analysis/file_0e05d9cd-e04f-4bb2-9267-e01fad2fd7bf/8/security",
+        "passed": true,
+        "fileSize": 10967626,
+        "uncompressedSize": 92494368,
+        "performanceRating": "VeryPoor",
+        "totalMaxParticles": 58135,
+        "particleSystemCount": 153
+      }
+    ]
+  },
+  "boundaries": {
+    "realVrChatClientLaunchedByAgent": false,
+    "multiplayerVerified": false,
+    "originalStage3IdChanged": false,
+    "clientLoadStillNeedsUser": true,
+    "serverVeryPoorAccepted": true
+  },
+  "evidence": [
+    "final-fullft-upload.json",
+    "final-fullft-vrca.json",
+    "final-fullft-analysis.json",
+    "final-fullft-upload-final-budget.json",
+    "fullft-collision-force-fix.json"
+  ]
+}

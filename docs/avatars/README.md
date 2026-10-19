@@ -6,9 +6,16 @@ SDK 预处理后的同步预算仍为 256 bit。
 完整交叉检查见 [no-sleep-audit.json](no-sleep-audit.json)。修复前的问题证据保留在
 [no-sleep-audit-before-fix.json](no-sleep-audit-before-fix.json)。
 
+2026-10-19 后续实际上传校验发现人物 RailGun 粒子的 Pickup 碰撞力，已仅在最终
+FullFT 副本中置0，并加入生成器。最新 Prefab SHA-256 为
+`a822389956a7bdb38b5cff91b97b42e94d3435dce09ee3f627b94b659e09acfb`；
+[最新无睡眠审计](../security-check-failure/fullft-collision-fixed-nosleep.json)和
+[最新预算](../security-check-failure/fullft-collision-fixed-final-budget.json)仍通过。
+下文保留此前无睡眠修复阶段的独立证据。另见[SDK碰撞力修复](../security-check-failure/FULLFT-COLLISION-FIX.md)。
+
 ## 最终结果
 
-- `Assets/MorphForge/FullFT/Avatar.prefab` 最终 SHA-256：
+- 完成无睡眠修复时的 `Assets/MorphForge/FullFT/Avatar.prefab` SHA-256：
   `669dd8fe902c60055dcc616d26edbeada8c98a114b900f399d7d2cbb7329e328`。
 - 已保存的 `Assets/MorphForge/FullFT/MorphForge_FullFT.unity` 同样通过只读依赖
   审计：Base 层继承新 prefab 的 `Nemesis_Locomotion_NoSleep.controller`，场景

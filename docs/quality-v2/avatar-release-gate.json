@@ -1,0 +1,99 @@
+{
+  "format": "MorphForgeAvatarReleaseGate/1",
+  "generatedAtUtc": "2026-10-19T02:42:49.369167+00:00",
+  "automatedAndServerChecksPassed": true,
+  "checks": [
+    {
+      "name": "same private diagnostic Avatar, upload complete",
+      "pass": true,
+      "evidence": "final-fullft-passed.json"
+    },
+    {
+      "name": "bundle hash and bytes agree across upload and actual package",
+      "pass": true,
+      "evidence": "final-fullft-vrca.json"
+    },
+    {
+      "name": "actual package audit all checks passed",
+      "pass": true,
+      "evidence": "final-fullft-vrca.json"
+    },
+    {
+      "name": "actual bundle exact 256-bit FT/MF groups",
+      "pass": true,
+      "evidence": "final-fullft-vrca.json"
+    },
+    {
+      "name": "official SDK budget and direct parameters agree",
+      "pass": true,
+      "evidence": "final-fullft-upload-final-budget.json"
+    },
+    {
+      "name": "Store 16384 Infinity and Pump1 separate from character effects",
+      "pass": true,
+      "evidence": "final-fullft-passed.json"
+    },
+    {
+      "name": "server all three endpoints terminal pass for uploaded file",
+      "pass": true,
+      "evidence": "final-fullft-analysis.json"
+    },
+    {
+      "name": "all style bytes and asset GUIDs preserved",
+      "pass": true,
+      "evidence": "catalog-production-migration.json"
+    },
+    {
+      "name": "production native visual 16 checks",
+      "pass": true,
+      "evidence": "catalog-production-visual/report.json"
+    },
+    {
+      "name": "native 16384 mixed particle display",
+      "pass": true,
+      "evidence": "catalog-grid-performance/report.json"
+    },
+    {
+      "name": "actual Play remote FT branch responds",
+      "pass": true,
+      "evidence": "fullft-final-remote-smoke.json"
+    },
+    {
+      "name": "collision repair limited to final copy, zero violations",
+      "pass": true,
+      "evidence": "fullft-collision-force-fix.json"
+    },
+    {
+      "name": "fullft-collision-fixed-nosleep",
+      "pass": true,
+      "evidence": "fullft-collision-fixed-nosleep.json"
+    },
+    {
+      "name": "fullft-collision-fixed-scene-nosleep",
+      "pass": true,
+      "evidence": "fullft-collision-fixed-scene-nosleep.json"
+    }
+  ],
+  "evidenceSha256": {
+    "catalog-grid-performance/report.json": "27b95dec8a94ed3b03ad5267629458d7037ef264346f8ed63c363c0102430b11",
+    "catalog-production-migration.json": "174e19630604c6dc43a247c295a2e8db360c7f3264ce6434356d377e1fd76934",
+    "catalog-production-visual/report.json": "20e0bf522479913da34321db54751d8ef787817dceebd4572eae2627181a6115",
+    "final-fullft-analysis.json": "5b99a901d6b1cb99f209e3ac1e7ec31b9441f7e6aafd193bb39743385320127f",
+    "final-fullft-passed.json": "0da2f34d973c0b741cfdeb52e5f47cc2fd0a897ce41f90f59d0d0a53829c87eb",
+    "final-fullft-upload-final-budget.json": "9b6ce68b1f1583d8f2f3485b54e9cad96e4ba0273a31cbdae66008e732532fac",
+    "final-fullft-upload.json": "5eaaf6b7fa4a23c4f4c0d1158d84b7e74804f15d9299e581011f6989ea6b31a8",
+    "final-fullft-vrca.json": "0d612c9bec9e329fad3befda1473480cc4a212fbcbc1191475fe245403a20884",
+    "fullft-collision-fixed-nosleep.json": "841df7957c81ed680f774bb0c8ca117bde822e122f9a1264beb6c081b88eea80",
+    "fullft-collision-fixed-scene-nosleep.json": "cf16f12479c9db66fa710ea00422fd65cb72b4449667bb2c631ba81ee15d2695",
+    "fullft-collision-force-fix.json": "7433c9f74f83649fff6e87c1ac89c24960b1b7ca2ca839a3e3edaa2837eb639c",
+    "fullft-final-remote-smoke.json": "6e291c7b918d9c5b42e7efa37551024d69488c94a999300c7add9ac0afa6e4a7"
+  },
+  "sourceCandidateTag": "v0.2.0-rc.1",
+  "clientAcceptance": {
+    "status": "pending-user",
+    "clientLoad": false,
+    "multiplayer": false,
+    "hardwareGrab": false
+  },
+  "scope": "Code/Editor/actual SDK upload/server verification complete. Human VRChat client acceptance remains pending; not recorded as passed."
+}

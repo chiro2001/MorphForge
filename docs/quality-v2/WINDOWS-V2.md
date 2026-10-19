@@ -2,6 +2,10 @@
 
 状态：2026-10-19 已执行并通过 Windows 原生、NSIS 载荷和隔离安装生命周期验收。冻结业务源码在构建前后保持一致。
 
+后续 Avatar 修复不改变这69个软件构建输入或安装器。源码候选版本还包含Unity材质、
+FullFT场景及SDK校验修复；[实际上传通过记录](../security-check-failure/FINAL-FULLFT.md)
+与本节的Windows软件验收分别计量。
+
 ## 冻结输入
 
 Windows 工程：

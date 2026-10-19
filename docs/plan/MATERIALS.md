@@ -44,3 +44,10 @@ Material.color 为归一化 sRGB 三通道；渲染器转线性空间后着色�
 Catalog已在Unity中完成构建和原生验证：100材质、Atlas 384×96、metadata 16384×1；严格视觉40项通过，覆盖三帧动画、六面方向、金属/水/云/cutout、缩放及根刚体变换。16,384个混合材质的临时原生fixture可见，Editor p50 8.92ms/p95 11.80ms，但不是VRChat客户端、UDP或产品Avatar Store基准。
 
 当前单个`ParticleSystemRenderer`仍不保证逐粒子透明排序，水与云是表面近似；独立透明池、折射和体积效果尚未实现。证据与限制见[native-validation](../materials/native-validation.md)、[native-strict-validation.json](../materials/native-strict-validation.json)和[catalog-16k-performance.json](../materials/catalog-16k-performance.json)。
+
+## 2026-10-19 服务端布局修复
+
+上文原生验证使用的16384×1 metadata已被完整256×64布局取代，全部4096样式的
+原始字节和资源GUID保持不变。100目录材质像素对照MAE=0、16项新视觉验证、
+16k显示夹具及实际FullFT上传的服务端三项检查都通过。原布局失败及对照记录见
+[安全诊断](../security-check-failure/README.md)。本轮没有缩减材质编号空间或改为旧LocalUV显示。

@@ -1,21 +1,35 @@
 # 执行状态
 
-更新时间：2026-10-19。软件质量迭代及Windows自动验收已完成；新增Stage3客户端安全检查失败正在诊断，整体交付尚未收尾。完成项以测试证据为准。完整入口见 [交付记录](../DELIVERY.md)。
+更新时间：2026-10-19。软件质量迭代、Windows自动验收及最终FullFT服务端复核已完成；真实客户端/多人/硬件验收仍待用户现场确认。完成项以测试证据为准。完整入口见 [交付记录](../DELIVERY.md)。
 
 ## 0.2.0 质量迭代
 
 本节为当前交付入口；后文保留0.1.0的协议、容量与材质证据。
 
-- Git建立基线与阶段提交，开发分支 `feat/harness-interaction-and-voxel-text`；发布版本0.2.0，源码未推送远端。
+- Git建立基线与阶段提交，开发分支 `feat/harness-interaction-and-voxel-text`；安装器版本0.2.0，源码候选标签`v0.2.0-rc.1`；最终`v0.2.0`标签待客户端确认，源码未推送远端。
 - Harness安全点插话、立即打断并同run续接、排队、暂停冻结活跃预算、恢复与停止；严格工具配对、部分SSE拒绝、epoch提交守卫及幂等回放。
 - 真字体转普通体素Box，内置许可完整的Noto Sans SC，支持只读系统字体、三平面/挤出/排版、预览/应用/撤销、跨重启回执。中英文system/tools版本2.3，中文优先。
 - 用户可保护分组，所有几何修改与历史/作品载入均验证；`finish_artwork`提交当前版本、关联真实截图、入库并形成完成摘要。Token预算以Provider实际usage计量。
 - Linux核心74项、Node24项、浏览器mock31项；真实文字预览24项、Harness UI17项、保护25项及手工5k/16k回归14项通过。
 - 多轮真实DeepSeek评测保留失败与修正：R2c收尾766 Box、R3c正面修字791 Box通过；不能称为复杂艺术一次提示自动完成。两份作品及三视图已加入Windows作品库，原项目未变。
-- 最终FullFT prefab/上传场景/生成入口无睡眠插件依赖；预算保持256/256，FT161、几何56、定位14。未上传、未启动VRChat，原dirty场景保留。
+- 最终FullFT prefab/场景/生成入口无睡眠插件依赖，已修复场景根名和Pickup粒子碰撞力；实包256/256，FT161、控制8、几何56、定位14。私有`MorphForge FullFT 16K`已上传并获三项200；未启动VRChat或发送9000OSC。原Stage3文件和ID未改，依用户允许关闭旧现场。
 - Windows69个冻结输入与NSIS安装器对应；原生74项、桌面2项通过，隔离原生HTTP59项、桌面安装/启动/实际嵌入资源/正常退出/卸载26项均通过，清理结果逐项记录。
 
 [质量结果](../quality-v2/RESULTS.md) · [真实模型迭代](../harness-v2/evals/README.md) · [Windows 0.2验收](../quality-v2/WINDOWS-V2.md) · [无睡眠审计](../avatars/README.md)
+
+## 追加的Avatar修复与实际上传
+
+原16384×1 metadata在64/4096容量都被服务端拒绝；换完整256×64后64/4096/16384均通过。
+生产生成器已迁移且4096样式字节/GUID保留，100目录材质对照像素差0，16项显示回归通过。
+真实FullFT场景根名及原人物RailGun的Pickup碰撞力已经修正，并在生成入口防止复发。
+
+最终私有`MorphForge FullFT 16K`（Avatar v10/file v8）实际包11,072,116字节，
+参数逐项解析为FT112项/161bit、控制8、几何56、定位14及总256bit；Store16384/Infinity。
+服务端generic/standard/security均终态200。其它人物特效151套/41750容量单独统计，
+总58135不等于体素Store上限。
+
+[最终证据](../security-check-failure/FINAL-FULLFT.md) · [完整对照](../security-check-failure/README.md)
+· [待用户客户端复核](../security-check-failure/CLIENT-RETEST.md)。以下0.1.0/旧阶段记录保留历史现场和测试边界。
 
 ## 0.1.0 已实现并验证
 

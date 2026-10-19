@@ -1,0 +1,7047 @@
+{
+  "schemaVersion": "1.0",
+  "scope": "Actual VRCA bundle audit; no download, VRChat launch, or OSC",
+  "success": false,
+  "bundle": {
+    "path": "/tmp/final-fullft-validation-failed.vrca",
+    "bytes": 11067360,
+    "sha256": "983cd57fbe95ec136cc61cd4f0422f90c871693e11c4a69a0c1c16bf4249fc88"
+  },
+  "expectations": {
+    "capacity": 16384,
+    "shader": "MorphForge/ParticleBoxCatalog",
+    "metadata": [
+      256,
+      64
+    ],
+    "atlas": [
+      384,
+      96
+    ],
+    "parameters": [
+      "EyeTrackingActive",
+      "FT/AutoToggle",
+      "FT/v2/EyeLeftX",
+      "FT/v2/EyeRightX",
+      "FT/v2/JawOpen",
+      "FT/v2/MouthClosed",
+      "LipTrackingActive",
+      "MF3_Ctl",
+      "MF3_D00",
+      "MF3_D01",
+      "MF3_D02",
+      "MF3_D03",
+      "MF3_D04",
+      "MF3_D05",
+      "MF_GrabL",
+      "MF_GrabR",
+      "MF_Handle",
+      "MF_Level",
+      "MF_Reset",
+      "MF_Scale",
+      "MF_World"
+    ]
+  },
+  "particleSystems": [
+    {
+      "pathId": -9189820148379251958,
+      "gameObjectId": 1330819363086288512,
+      "name": "Finish",
+      "capacity": 600,
+      "startLifetime": 0.4000000059604645,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -9071222562373226674,
+      "gameObjectId": 2246091508312568105,
+      "name": "RotationEffect",
+      "capacity": 1,
+      "startLifetime": 1.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -9065585185152111500,
+      "gameObjectId": -4018686366836966236,
+      "name": "Spyral2",
+      "capacity": 5,
+      "startLifetime": 1.0,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 1
+    },
+    {
+      "pathId": -9061545430443187349,
+      "gameObjectId": -8833436223961796404,
+      "name": "3_Impact_B",
+      "capacity": 60,
+      "startLifetime": 0.20000000298023224,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -9014880467771903518,
+      "gameObjectId": -9110387722736127675,
+      "name": "2_Impact_B",
+      "capacity": 60,
+      "startLifetime": 0.20000000298023224,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -8573654155455256810,
+      "gameObjectId": -2505973917904092324,
+      "name": "DarkParticle",
+      "capacity": 45,
+      "startLifetime": 0.699999988079071,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -8228722084835262248,
+      "gameObjectId": 6198543726355632471,
+      "name": "2_Aim",
+      "capacity": 50,
+      "startLifetime": 0.05000000074505806,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -8211897546787403137,
+      "gameObjectId": -4870802547880640907,
+      "name": "Pillar1",
+      "capacity": 600,
+      "startLifetime": 0.4000000059604645,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -8124962438357818506,
+      "gameObjectId": -3252826229781688967,
+      "name": "2_Hit",
+      "capacity": 50,
+      "startLifetime": 0.10000000149011612,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -8079089001970827714,
+      "gameObjectId": 8019365189230758817,
+      "name": "SonicBoom (5)",
+      "capacity": 600,
+      "startLifetime": 2.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -7995358987889382543,
+      "gameObjectId": -3634735601478173158,
+      "name": "Impact_B (1)",
+      "capacity": 60,
+      "startLifetime": 0.20000000298023224,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -7672898654729533093,
+      "gameObjectId": -1432477930196767794,
+      "name": "Elect (1)",
+      "capacity": 100,
+      "startLifetime": 0.20000000298023224,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -7634804212258195716,
+      "gameObjectId": -7935998682918660178,
+      "name": "Sphere (6)",
+      "capacity": 25,
+      "startLifetime": 1.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -7627271670221606079,
+      "gameObjectId": -2887494381770224822,
+      "name": "1_Impact_A",
+      "capacity": 60,
+      "startLifetime": 0.15000000596046448,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -7484337728790586459,
+      "gameObjectId": -7516198946312732526,
+      "name": "Light (1)",
+      "capacity": 3,
+      "startLifetime": 1.7999999523162842,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -7343397425898303876,
+      "gameObjectId": -1176005957805137829,
+      "name": "Petal1",
+      "capacity": 1000,
+      "startLifetime": 2.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -7309179590507632948,
+      "gameObjectId": -3420341202207123383,
+      "name": "Shine",
+      "capacity": 1000,
+      "startLifetime": 0.30000001192092896,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 1
+    },
+    {
+      "pathId": -7183084229486583274,
+      "gameObjectId": 7511139003754017849,
+      "name": "Damage (1)",
+      "capacity": 350,
+      "startLifetime": 2.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -7172191334964293112,
+      "gameObjectId": -597324675929823572,
+      "name": "Spark (2)",
+      "capacity": 200,
+      "startLifetime": 0.10000000149011612,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -7109590033293758223,
+      "gameObjectId": 6581893262946766463,
+      "name": "Light",
+      "capacity": 2,
+      "startLifetime": 0.5600000023841858,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -6778856270565389443,
+      "gameObjectId": 3938672520689490828,
+      "name": "2_Laser_Sub",
+      "capacity": 2000,
+      "startLifetime": 0.5,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 0
+    },
+    {
+      "pathId": -6723609613715882713,
+      "gameObjectId": -7440798483571351299,
+      "name": "Hit_Spark (1)",
+      "capacity": 1000,
+      "startLifetime": 0.10000000149011612,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -6709744336214768926,
+      "gameObjectId": -3726303934863592908,
+      "name": "Pump",
+      "capacity": 1,
+      "startLifetime": 0.5,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -6480772673194552691,
+      "gameObjectId": -9022559018373867231,
+      "name": "MagicCircle",
+      "capacity": 2,
+      "startLifetime": 5.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -6411131399222307327,
+      "gameObjectId": -1614438145675490224,
+      "name": "Pillar2",
+      "capacity": 600,
+      "startLifetime": 0.4000000059604645,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -6203124786639503528,
+      "gameObjectId": 2733913410095726971,
+      "name": "Spyral",
+      "capacity": 5,
+      "startLifetime": 1.7999999523162842,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 1
+    },
+    {
+      "pathId": -6187778857583185832,
+      "gameObjectId": 6756277637664638996,
+      "name": "1_Elect",
+      "capacity": 100,
+      "startLifetime": 0.25,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -6091825195728580798,
+      "gameObjectId": 4343539960046029645,
+      "name": "Elect",
+      "capacity": 100,
+      "startLifetime": 0.20000000298023224,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -6055115187092798204,
+      "gameObjectId": 658839357336399658,
+      "name": "Reticle",
+      "capacity": 100,
+      "startLifetime": 1.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -5970867094305297473,
+      "gameObjectId": -7952522430295889291,
+      "name": "Impact_A (1)",
+      "capacity": 60,
+      "startLifetime": 0.15000000596046448,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -5782204126926544661,
+      "gameObjectId": -3410009890092761961,
+      "name": "Sphere (4)",
+      "capacity": 6,
+      "startLifetime": 1.2000000476837158,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -5741888771303881626,
+      "gameObjectId": -3567575410289835677,
+      "name": "BrackCircle",
+      "capacity": 1,
+      "startLifetime": 1.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -5601769167188543196,
+      "gameObjectId": -2627883277730890705,
+      "name": "ChargeElect",
+      "capacity": 100,
+      "startLifetime": 1.5,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -5407487828237915495,
+      "gameObjectId": -6208989422686852545,
+      "name": "BlackCircle",
+      "capacity": 1,
+      "startLifetime": 0.20000000298023224,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -5355708910509757200,
+      "gameObjectId": 7797296410840846328,
+      "name": "Sphere (7)",
+      "capacity": 60,
+      "startLifetime": 0.25,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -5068732804193390048,
+      "gameObjectId": 7373964833441083277,
+      "name": "1_Hit_Spark",
+      "capacity": 1000,
+      "startLifetime": 0.10000000149011612,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -4993749955910291591,
+      "gameObjectId": 2991549886493158769,
+      "name": "BlightElect",
+      "capacity": 100,
+      "startLifetime": 0.4000000059604645,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -4981475633477525160,
+      "gameObjectId": -8412576110463490060,
+      "name": "Main",
+      "capacity": 300,
+      "startLifetime": 1.850000023841858,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -4732596210798400282,
+      "gameObjectId": -6128457753110185800,
+      "name": "Store",
+      "capacity": 16384,
+      "startLifetime": "Infinity",
+      "infinityLifetime": true,
+      "size3D": true,
+      "burstCount": 1
+    },
+    {
+      "pathId": -4559429889527144324,
+      "gameObjectId": 7160111129348491478,
+      "name": "Exprosion",
+      "capacity": 225,
+      "startLifetime": 4.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -4528793807815297750,
+      "gameObjectId": -2608190020660190849,
+      "name": "Hit (1)",
+      "capacity": 50,
+      "startLifetime": 0.10000000149011612,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -4207441302146217206,
+      "gameObjectId": -8978175062835522409,
+      "name": "2_Elect",
+      "capacity": 100,
+      "startLifetime": 0.25,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -4178477410019387529,
+      "gameObjectId": -4490930791532676946,
+      "name": "Lance",
+      "capacity": 1000,
+      "startLifetime": 0.05000000074505806,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -3916378255733922813,
+      "gameObjectId": 782795119378734006,
+      "name": "3_Impact_A",
+      "capacity": 60,
+      "startLifetime": 0.15000000596046448,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -3903607575845012450,
+      "gameObjectId": 6295750635561338700,
+      "name": "Exprosion (2)",
+      "capacity": 60,
+      "startLifetime": 1.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -3770827071974717763,
+      "gameObjectId": -3001643768875834143,
+      "name": "DarkParticle (1)",
+      "capacity": 42,
+      "startLifetime": 1.5,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -3717860091898633895,
+      "gameObjectId": -585081824342678348,
+      "name": "3_Spark",
+      "capacity": 600,
+      "startLifetime": 0.30000001192092896,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -3652394005534477401,
+      "gameObjectId": -1221193757136292605,
+      "name": "1_Damage",
+      "capacity": 200,
+      "startLifetime": 0.800000011920929,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -3598346794472678298,
+      "gameObjectId": 4427831477636047577,
+      "name": "Elect2",
+      "capacity": 5,
+      "startLifetime": 1.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -3588247154646551637,
+      "gameObjectId": -6647632020642180618,
+      "name": "RedParticle",
+      "capacity": 1000,
+      "startLifetime": 1.7999999523162842,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -3423920012933996629,
+      "gameObjectId": -6204037364083616864,
+      "name": "1_Bit",
+      "capacity": 60,
+      "startLifetime": 0.800000011920929,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -3381354365898999398,
+      "gameObjectId": -7275814727333378390,
+      "name": "Particle",
+      "capacity": 1000,
+      "startLifetime": 5.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -3373227360010846213,
+      "gameObjectId": -1242559619241129819,
+      "name": "Reticle_Hit_Sub",
+      "capacity": 400,
+      "startLifetime": 0.15000000596046448,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -3338482825601168583,
+      "gameObjectId": 7932211477969534314,
+      "name": "SonicBoom (4)",
+      "capacity": 600,
+      "startLifetime": 0.30000001192092896,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -3182442142913241822,
+      "gameObjectId": 7117563893448899174,
+      "name": "1_Spark",
+      "capacity": 600,
+      "startLifetime": 0.30000001192092896,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -3047434054909567240,
+      "gameObjectId": 7843085887808636158,
+      "name": "AFK_Action",
+      "capacity": 0,
+      "startLifetime": 5.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -2972267541276237875,
+      "gameObjectId": -1646918599072959203,
+      "name": "Idle",
+      "capacity": 3,
+      "startLifetime": 1.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -2968134292298344601,
+      "gameObjectId": -7477211829951995724,
+      "name": "SonicBoom (1)",
+      "capacity": 600,
+      "startLifetime": 0.6499999761581421,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -2961634837208220462,
+      "gameObjectId": -5503100669932351061,
+      "name": "Throw",
+      "capacity": 2,
+      "startLifetime": 1.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -2848699643437698984,
+      "gameObjectId": -6220056273197969323,
+      "name": "1_Emitter",
+      "capacity": 60,
+      "startLifetime": 3.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -2786381502905448763,
+      "gameObjectId": -6452606296777331228,
+      "name": "Coin",
+      "capacity": 1,
+      "startLifetime": 1.2000000476837158,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -2716673637555125195,
+      "gameObjectId": -1169412138873732305,
+      "name": "Spyral (1)",
+      "capacity": 60,
+      "startLifetime": 0.5,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 0
+    },
+    {
+      "pathId": -2562630473352054272,
+      "gameObjectId": -7179960558452955293,
+      "name": "RedParticle",
+      "capacity": 1000,
+      "startLifetime": 3.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -2451590732151195146,
+      "gameObjectId": -5876817450842868990,
+      "name": "2_Damage",
+      "capacity": 200,
+      "startLifetime": 0.800000011920929,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -2373557099638601255,
+      "gameObjectId": 4535046449133495977,
+      "name": "Sphere (5)",
+      "capacity": 1000,
+      "startLifetime": 1.600000023841858,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -2335761761313309820,
+      "gameObjectId": -79268710083943912,
+      "name": "MagicCircle",
+      "capacity": 1,
+      "startLifetime": 1.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -2211143681945621794,
+      "gameObjectId": 3099795550318218197,
+      "name": "1_Move",
+      "capacity": 50,
+      "startLifetime": 0.20000000298023224,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -2127612125778400139,
+      "gameObjectId": 6904696985215453485,
+      "name": "GameObject (14)",
+      "capacity": 1000,
+      "startLifetime": 0.3499999940395355,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 1
+    },
+    {
+      "pathId": -1931730423697330700,
+      "gameObjectId": -5016894586881215637,
+      "name": "Elect (1)",
+      "capacity": 100,
+      "startLifetime": 0.6000000238418579,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -1895586031140675432,
+      "gameObjectId": 5806150390920398185,
+      "name": "Lance_sub",
+      "capacity": 2000,
+      "startLifetime": 0.5,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 0
+    },
+    {
+      "pathId": -1452170428892672776,
+      "gameObjectId": 3318706554089704084,
+      "name": "Light",
+      "capacity": 5,
+      "startLifetime": 0.3499999940395355,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 1
+    },
+    {
+      "pathId": -1388400446182833857,
+      "gameObjectId": 1720772743131951750,
+      "name": "Shine",
+      "capacity": 1,
+      "startLifetime": 1.75,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -1375337762310554040,
+      "gameObjectId": 650256622183737676,
+      "name": "GameObject (6)",
+      "capacity": 1000,
+      "startLifetime": 1.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -1338236572609269217,
+      "gameObjectId": 7234314393652197561,
+      "name": "1_Hit",
+      "capacity": 50,
+      "startLifetime": 0.10000000149011612,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -1287837842667290665,
+      "gameObjectId": -6726867619528943850,
+      "name": "Sphere (7)",
+      "capacity": 60,
+      "startLifetime": 0.25,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -1281843587119251774,
+      "gameObjectId": 3464210416317573284,
+      "name": "3_Damage",
+      "capacity": 200,
+      "startLifetime": 0.800000011920929,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -1056420565032811723,
+      "gameObjectId": 6415626200857719957,
+      "name": "2_Bit",
+      "capacity": 60,
+      "startLifetime": 0.800000011920929,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -1005203125791883097,
+      "gameObjectId": -6970880943020584401,
+      "name": "1_Impact_B",
+      "capacity": 60,
+      "startLifetime": 0.20000000298023224,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -946913756265781581,
+      "gameObjectId": 5723843641360210910,
+      "name": "AFK_Finish",
+      "capacity": 0,
+      "startLifetime": 5.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -923438526908604515,
+      "gameObjectId": 824303930933101580,
+      "name": "LanceElect",
+      "capacity": 100,
+      "startLifetime": 0.800000011920929,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -610751148828454272,
+      "gameObjectId": 8729681516288031668,
+      "name": "Main2",
+      "capacity": 100,
+      "startLifetime": 1.2000000476837158,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -530799170088604392,
+      "gameObjectId": 3460842280821277409,
+      "name": "Shot",
+      "capacity": 3,
+      "startLifetime": 0.009999999776482582,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -322173233380458252,
+      "gameObjectId": 6891330305210043013,
+      "name": "3_Hit",
+      "capacity": 50,
+      "startLifetime": 0.10000000149011612,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -202685549282395875,
+      "gameObjectId": 728108220857470580,
+      "name": "Elect",
+      "capacity": 100,
+      "startLifetime": 0.20000000298023224,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": -62623868608476332,
+      "gameObjectId": -5323770034195326129,
+      "name": "AFK_Effects",
+      "capacity": 0,
+      "startLifetime": 5.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": -26954058687195031,
+      "gameObjectId": -2274677156258683396,
+      "name": "Spark",
+      "capacity": 60,
+      "startLifetime": 2.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": 36578014765868597,
+      "gameObjectId": 5892616599477527565,
+      "name": "2_Laser_Main",
+      "capacity": 20,
+      "startLifetime": 0.800000011920929,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 419434626355395605,
+      "gameObjectId": -4253947111137504916,
+      "name": "DarkParticle1",
+      "capacity": 100,
+      "startLifetime": 0.699999988079071,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 431144213587826633,
+      "gameObjectId": 430130610082672276,
+      "name": "3_Move",
+      "capacity": 50,
+      "startLifetime": 0.20000000298023224,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 529400079310639389,
+      "gameObjectId": -6087411756631700412,
+      "name": "Spark (3)",
+      "capacity": 100,
+      "startLifetime": 0.10000000149011612,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": 943247200753998720,
+      "gameObjectId": -5126481208606211220,
+      "name": "2_Impact_A",
+      "capacity": 60,
+      "startLifetime": 0.15000000596046448,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 1287428538962758322,
+      "gameObjectId": 8280496713309962025,
+      "name": "Exprosion (1)",
+      "capacity": 150,
+      "startLifetime": 1.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 1448588908440248091,
+      "gameObjectId": 3960431431510550243,
+      "name": "Spark (1)",
+      "capacity": 100,
+      "startLifetime": 0.25,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 1543214611406166417,
+      "gameObjectId": 1108896859274931784,
+      "name": "Spyral2",
+      "capacity": 3,
+      "startLifetime": 1.100000023841858,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 1
+    },
+    {
+      "pathId": 1615497185087352737,
+      "gameObjectId": -4240821012788481350,
+      "name": "LanceElect (1)",
+      "capacity": 150,
+      "startLifetime": 0.800000011920929,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": 1746741740433560014,
+      "gameObjectId": 6605768452339419692,
+      "name": "AFK_Idle",
+      "capacity": 0,
+      "startLifetime": 5.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": 1859707362470274808,
+      "gameObjectId": -8927222376538384443,
+      "name": "BlackMist",
+      "capacity": 1,
+      "startLifetime": 1.5,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 1
+    },
+    {
+      "pathId": 2220685204216263093,
+      "gameObjectId": 7097710951605175399,
+      "name": "Petal2",
+      "capacity": 150,
+      "startLifetime": 1.5,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 2256311463255183527,
+      "gameObjectId": 3183471271126535428,
+      "name": "Hit",
+      "capacity": 2,
+      "startLifetime": 1.25,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 2277567180428878161,
+      "gameObjectId": -9079544791873691204,
+      "name": "Light",
+      "capacity": 1,
+      "startLifetime": 1.75,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 2299241294813874652,
+      "gameObjectId": -6063167793564705586,
+      "name": "2_Spark",
+      "capacity": 600,
+      "startLifetime": 0.30000001192092896,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 2332177772953014687,
+      "gameObjectId": 8062202571921382714,
+      "name": "Particle",
+      "capacity": 120,
+      "startLifetime": 2.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 2646040542360084646,
+      "gameObjectId": -1179713266344186470,
+      "name": "Spyral",
+      "capacity": 3,
+      "startLifetime": 0.8999999761581421,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 1
+    },
+    {
+      "pathId": 2847352016169904670,
+      "gameObjectId": -700078170734203263,
+      "name": "2_Move",
+      "capacity": 50,
+      "startLifetime": 0.20000000298023224,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 2894399969551036420,
+      "gameObjectId": -6756033482514894457,
+      "name": "Sphere (1)",
+      "capacity": 6,
+      "startLifetime": 1.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": 3040938761876684535,
+      "gameObjectId": -2944365261899146,
+      "name": "Light",
+      "capacity": 5,
+      "startLifetime": 2.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": 3043040568050560187,
+      "gameObjectId": -3939823701195780730,
+      "name": "Blackmist2",
+      "capacity": 2,
+      "startLifetime": 1.0,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 1
+    },
+    {
+      "pathId": 3071448464960726858,
+      "gameObjectId": 4426326221202686529,
+      "name": "SonicBoom (2)",
+      "capacity": 600,
+      "startLifetime": 2.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 3080365084215297951,
+      "gameObjectId": -2864760587616549838,
+      "name": "Elect (1)",
+      "capacity": 100,
+      "startLifetime": 0.20000000298023224,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 3097083769679254799,
+      "gameObjectId": 4294258644361665200,
+      "name": "ChargeElect (1)",
+      "capacity": 100,
+      "startLifetime": 1.5,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 3318451158906068358,
+      "gameObjectId": -8036368202865261448,
+      "name": "Petal",
+      "capacity": 1000,
+      "startLifetime": 1.5,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 3519444210267192520,
+      "gameObjectId": -3219264600867070465,
+      "name": "Spyral (2)",
+      "capacity": 80,
+      "startLifetime": 0.20000000298023224,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 0
+    },
+    {
+      "pathId": 3601281745383461255,
+      "gameObjectId": 3846088573775082919,
+      "name": "Start",
+      "capacity": 1,
+      "startLifetime": 0.4000000059604645,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": 3628989095111140729,
+      "gameObjectId": 1534491574360692130,
+      "name": "Sphere (6)",
+      "capacity": 25,
+      "startLifetime": 1.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": 3811323618741376400,
+      "gameObjectId": -6256294980228897783,
+      "name": "3_Laser_Main",
+      "capacity": 20,
+      "startLifetime": 0.800000011920929,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 3968169034888835263,
+      "gameObjectId": 2349208989433494390,
+      "name": "Shine",
+      "capacity": 1000,
+      "startLifetime": 0.30000001192092896,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 1
+    },
+    {
+      "pathId": 4017902253283977521,
+      "gameObjectId": -2526471726226086731,
+      "name": "Sphere (6)",
+      "capacity": 6,
+      "startLifetime": 1.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": 4217519129804232454,
+      "gameObjectId": -3138913747129689630,
+      "name": "3_Laser_Sub",
+      "capacity": 2000,
+      "startLifetime": 0.5,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 0
+    },
+    {
+      "pathId": 4250061145229426688,
+      "gameObjectId": -2309961047727855489,
+      "name": "Spark (1)",
+      "capacity": 600,
+      "startLifetime": 0.4000000059604645,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 4253956416327810273,
+      "gameObjectId": 5265059789008760,
+      "name": "Sphere (3)",
+      "capacity": 1000,
+      "startLifetime": 0.5,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": 4255908079172566062,
+      "gameObjectId": 4959542705296302075,
+      "name": "3_Aim",
+      "capacity": 50,
+      "startLifetime": 0.05000000074505806,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 4439448407248368669,
+      "gameObjectId": -8460590118046371245,
+      "name": "Pillar1",
+      "capacity": 600,
+      "startLifetime": 0.4000000059604645,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 4445648466267708551,
+      "gameObjectId": -96351932768827078,
+      "name": "2_Emitter",
+      "capacity": 60,
+      "startLifetime": 3.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 4595246145402689487,
+      "gameObjectId": -7798025469968446962,
+      "name": "Main (1)",
+      "capacity": 100,
+      "startLifetime": 3.0,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 0
+    },
+    {
+      "pathId": 4609661413749281928,
+      "gameObjectId": -7384231843978244271,
+      "name": "DarkParticle2",
+      "capacity": 100,
+      "startLifetime": 1.5,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": 4992197391230684485,
+      "gameObjectId": -3600196527956338023,
+      "name": "Blackmist",
+      "capacity": 1,
+      "startLifetime": 1.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 5070155126027877963,
+      "gameObjectId": 6408473032433641374,
+      "name": "Light (1)",
+      "capacity": 5,
+      "startLifetime": 0.3499999940395355,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 1
+    },
+    {
+      "pathId": 5182410381051138288,
+      "gameObjectId": 4221072351206090188,
+      "name": "Hit",
+      "capacity": 500,
+      "startLifetime": 1.7999999523162842,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 5237701446383194210,
+      "gameObjectId": 7910710022699423837,
+      "name": "Shine (1)",
+      "capacity": 1,
+      "startLifetime": 1.75,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 5277849957756519730,
+      "gameObjectId": -4458569403225103115,
+      "name": "1_Laser_Sub",
+      "capacity": 2000,
+      "startLifetime": 0.5,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 0
+    },
+    {
+      "pathId": 5336069436633160703,
+      "gameObjectId": 9049646448326502177,
+      "name": "DarkCircle",
+      "capacity": 4,
+      "startLifetime": 1.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": 5447938235460869441,
+      "gameObjectId": -5882147187052242243,
+      "name": "Pillar0",
+      "capacity": 600,
+      "startLifetime": 0.4000000059604645,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 5515458064779431055,
+      "gameObjectId": -5934899077635842062,
+      "name": "MagicCircle",
+      "capacity": 1,
+      "startLifetime": 0.20000000298023224,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 5580786955120390255,
+      "gameObjectId": -7235034212384114329,
+      "name": "SonicBoom",
+      "capacity": 600,
+      "startLifetime": 0.6499999761581421,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 5928668853757516526,
+      "gameObjectId": -4711949234711668754,
+      "name": "3_Spark",
+      "capacity": 100,
+      "startLifetime": 0.25,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 5954947965374774889,
+      "gameObjectId": 4049847335403537208,
+      "name": "AFK_Start",
+      "capacity": 0,
+      "startLifetime": 5.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": 5980648513841366136,
+      "gameObjectId": 2917144189872903281,
+      "name": "AFK_Charge",
+      "capacity": 0,
+      "startLifetime": 5.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": 6223363975267553939,
+      "gameObjectId": 4675700106278416791,
+      "name": "3_Emitter",
+      "capacity": 60,
+      "startLifetime": 3.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 6358612065331483905,
+      "gameObjectId": 8761817535833558645,
+      "name": "Main3",
+      "capacity": 100,
+      "startLifetime": 1.850000023841858,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 0
+    },
+    {
+      "pathId": 6764961243310882383,
+      "gameObjectId": 6890225668230788298,
+      "name": "1_Laser_Main",
+      "capacity": 20,
+      "startLifetime": 0.800000011920929,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 7324356754475356744,
+      "gameObjectId": 8922038792240537014,
+      "name": "3_Bit",
+      "capacity": 60,
+      "startLifetime": 0.800000011920929,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 7335899957577768941,
+      "gameObjectId": 6677253793670029025,
+      "name": "Finish",
+      "capacity": 1,
+      "startLifetime": 0.25,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": 7518355672992976154,
+      "gameObjectId": -5803343670284824738,
+      "name": "Elect",
+      "capacity": 33,
+      "startLifetime": 0.25,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 7577021577786643924,
+      "gameObjectId": -8736749475179107529,
+      "name": "Sphere (2)",
+      "capacity": 15,
+      "startLifetime": 1.0,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": 7838393253738050180,
+      "gameObjectId": -7454088179232888782,
+      "name": "3_Hit_Spark",
+      "capacity": 1000,
+      "startLifetime": 0.10000000149011612,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 7881180752006894457,
+      "gameObjectId": 2393483978439378172,
+      "name": "Pillar0",
+      "capacity": 600,
+      "startLifetime": 0.4000000059604645,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 7905013156801472265,
+      "gameObjectId": 6168095269485678612,
+      "name": "2_Hit_Spark",
+      "capacity": 1000,
+      "startLifetime": 0.10000000149011612,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 8126629051914436946,
+      "gameObjectId": -1323328369597797343,
+      "name": "Reticle_Hit_Center",
+      "capacity": 400,
+      "startLifetime": 0.10000000149011612,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 8387500256620090232,
+      "gameObjectId": -4422935348317501463,
+      "name": "Elect (2)",
+      "capacity": 100,
+      "startLifetime": 1.2000000476837158,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    },
+    {
+      "pathId": 8657562488588841592,
+      "gameObjectId": 4072839230829603786,
+      "name": "BlightElect",
+      "capacity": 100,
+      "startLifetime": 0.4000000059604645,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 8860843965860509643,
+      "gameObjectId": 5745065056381553040,
+      "name": "1_Aim",
+      "capacity": 50,
+      "startLifetime": 0.05000000074505806,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 1
+    },
+    {
+      "pathId": 8938837017199626728,
+      "gameObjectId": -6442568288377051680,
+      "name": "Trail",
+      "capacity": 800,
+      "startLifetime": 0.25,
+      "infinityLifetime": false,
+      "size3D": true,
+      "burstCount": 1
+    },
+    {
+      "pathId": 9103286133805762139,
+      "gameObjectId": 27135259816947631,
+      "name": "Elect",
+      "capacity": 150,
+      "startLifetime": 0.30000001192092896,
+      "infinityLifetime": false,
+      "size3D": false,
+      "burstCount": 0
+    }
+  ],
+  "particleCollisionForceSystems": [
+    {
+      "pathId": 2277567180428878161,
+      "gameObjectId": -9079544791873691204,
+      "name": "Light",
+      "collisionEnabled": true,
+      "collisionType": 1,
+      "colliderForce": 1.0,
+      "collidesWith": 4188439,
+      "collisionMessages": true
+    }
+  ],
+  "forbiddenCollisionForceSystems": [
+    {
+      "pathId": 2277567180428878161,
+      "gameObjectId": -9079544791873691204,
+      "name": "Light",
+      "collisionEnabled": true,
+      "collisionType": 1,
+      "colliderForce": 1.0,
+      "collidesWith": 4188439,
+      "collisionMessages": true
+    }
+  ],
+  "forbiddenCollisionMask": 24576,
+  "otherCharacterEffects": {
+    "count": 151,
+    "totalCapacity": 41750,
+    "systems": [
+      {
+        "pathId": -9189820148379251958,
+        "gameObjectId": 1330819363086288512,
+        "name": "Finish",
+        "capacity": 600,
+        "startLifetime": 0.4000000059604645,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -9071222562373226674,
+        "gameObjectId": 2246091508312568105,
+        "name": "RotationEffect",
+        "capacity": 1,
+        "startLifetime": 1.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -9065585185152111500,
+        "gameObjectId": -4018686366836966236,
+        "name": "Spyral2",
+        "capacity": 5,
+        "startLifetime": 1.0,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 1
+      },
+      {
+        "pathId": -9061545430443187349,
+        "gameObjectId": -8833436223961796404,
+        "name": "3_Impact_B",
+        "capacity": 60,
+        "startLifetime": 0.20000000298023224,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -9014880467771903518,
+        "gameObjectId": -9110387722736127675,
+        "name": "2_Impact_B",
+        "capacity": 60,
+        "startLifetime": 0.20000000298023224,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -8573654155455256810,
+        "gameObjectId": -2505973917904092324,
+        "name": "DarkParticle",
+        "capacity": 45,
+        "startLifetime": 0.699999988079071,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -8228722084835262248,
+        "gameObjectId": 6198543726355632471,
+        "name": "2_Aim",
+        "capacity": 50,
+        "startLifetime": 0.05000000074505806,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -8211897546787403137,
+        "gameObjectId": -4870802547880640907,
+        "name": "Pillar1",
+        "capacity": 600,
+        "startLifetime": 0.4000000059604645,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -8124962438357818506,
+        "gameObjectId": -3252826229781688967,
+        "name": "2_Hit",
+        "capacity": 50,
+        "startLifetime": 0.10000000149011612,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -8079089001970827714,
+        "gameObjectId": 8019365189230758817,
+        "name": "SonicBoom (5)",
+        "capacity": 600,
+        "startLifetime": 2.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -7995358987889382543,
+        "gameObjectId": -3634735601478173158,
+        "name": "Impact_B (1)",
+        "capacity": 60,
+        "startLifetime": 0.20000000298023224,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -7672898654729533093,
+        "gameObjectId": -1432477930196767794,
+        "name": "Elect (1)",
+        "capacity": 100,
+        "startLifetime": 0.20000000298023224,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -7634804212258195716,
+        "gameObjectId": -7935998682918660178,
+        "name": "Sphere (6)",
+        "capacity": 25,
+        "startLifetime": 1.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -7627271670221606079,
+        "gameObjectId": -2887494381770224822,
+        "name": "1_Impact_A",
+        "capacity": 60,
+        "startLifetime": 0.15000000596046448,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -7484337728790586459,
+        "gameObjectId": -7516198946312732526,
+        "name": "Light (1)",
+        "capacity": 3,
+        "startLifetime": 1.7999999523162842,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -7343397425898303876,
+        "gameObjectId": -1176005957805137829,
+        "name": "Petal1",
+        "capacity": 1000,
+        "startLifetime": 2.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -7309179590507632948,
+        "gameObjectId": -3420341202207123383,
+        "name": "Shine",
+        "capacity": 1000,
+        "startLifetime": 0.30000001192092896,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 1
+      },
+      {
+        "pathId": -7183084229486583274,
+        "gameObjectId": 7511139003754017849,
+        "name": "Damage (1)",
+        "capacity": 350,
+        "startLifetime": 2.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -7172191334964293112,
+        "gameObjectId": -597324675929823572,
+        "name": "Spark (2)",
+        "capacity": 200,
+        "startLifetime": 0.10000000149011612,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -7109590033293758223,
+        "gameObjectId": 6581893262946766463,
+        "name": "Light",
+        "capacity": 2,
+        "startLifetime": 0.5600000023841858,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -6778856270565389443,
+        "gameObjectId": 3938672520689490828,
+        "name": "2_Laser_Sub",
+        "capacity": 2000,
+        "startLifetime": 0.5,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 0
+      },
+      {
+        "pathId": -6723609613715882713,
+        "gameObjectId": -7440798483571351299,
+        "name": "Hit_Spark (1)",
+        "capacity": 1000,
+        "startLifetime": 0.10000000149011612,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -6480772673194552691,
+        "gameObjectId": -9022559018373867231,
+        "name": "MagicCircle",
+        "capacity": 2,
+        "startLifetime": 5.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -6411131399222307327,
+        "gameObjectId": -1614438145675490224,
+        "name": "Pillar2",
+        "capacity": 600,
+        "startLifetime": 0.4000000059604645,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -6203124786639503528,
+        "gameObjectId": 2733913410095726971,
+        "name": "Spyral",
+        "capacity": 5,
+        "startLifetime": 1.7999999523162842,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 1
+      },
+      {
+        "pathId": -6187778857583185832,
+        "gameObjectId": 6756277637664638996,
+        "name": "1_Elect",
+        "capacity": 100,
+        "startLifetime": 0.25,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -6091825195728580798,
+        "gameObjectId": 4343539960046029645,
+        "name": "Elect",
+        "capacity": 100,
+        "startLifetime": 0.20000000298023224,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -6055115187092798204,
+        "gameObjectId": 658839357336399658,
+        "name": "Reticle",
+        "capacity": 100,
+        "startLifetime": 1.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -5970867094305297473,
+        "gameObjectId": -7952522430295889291,
+        "name": "Impact_A (1)",
+        "capacity": 60,
+        "startLifetime": 0.15000000596046448,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -5782204126926544661,
+        "gameObjectId": -3410009890092761961,
+        "name": "Sphere (4)",
+        "capacity": 6,
+        "startLifetime": 1.2000000476837158,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -5741888771303881626,
+        "gameObjectId": -3567575410289835677,
+        "name": "BrackCircle",
+        "capacity": 1,
+        "startLifetime": 1.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -5601769167188543196,
+        "gameObjectId": -2627883277730890705,
+        "name": "ChargeElect",
+        "capacity": 100,
+        "startLifetime": 1.5,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -5407487828237915495,
+        "gameObjectId": -6208989422686852545,
+        "name": "BlackCircle",
+        "capacity": 1,
+        "startLifetime": 0.20000000298023224,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -5355708910509757200,
+        "gameObjectId": 7797296410840846328,
+        "name": "Sphere (7)",
+        "capacity": 60,
+        "startLifetime": 0.25,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -5068732804193390048,
+        "gameObjectId": 7373964833441083277,
+        "name": "1_Hit_Spark",
+        "capacity": 1000,
+        "startLifetime": 0.10000000149011612,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -4993749955910291591,
+        "gameObjectId": 2991549886493158769,
+        "name": "BlightElect",
+        "capacity": 100,
+        "startLifetime": 0.4000000059604645,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -4981475633477525160,
+        "gameObjectId": -8412576110463490060,
+        "name": "Main",
+        "capacity": 300,
+        "startLifetime": 1.850000023841858,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -4559429889527144324,
+        "gameObjectId": 7160111129348491478,
+        "name": "Exprosion",
+        "capacity": 225,
+        "startLifetime": 4.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -4528793807815297750,
+        "gameObjectId": -2608190020660190849,
+        "name": "Hit (1)",
+        "capacity": 50,
+        "startLifetime": 0.10000000149011612,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -4207441302146217206,
+        "gameObjectId": -8978175062835522409,
+        "name": "2_Elect",
+        "capacity": 100,
+        "startLifetime": 0.25,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -4178477410019387529,
+        "gameObjectId": -4490930791532676946,
+        "name": "Lance",
+        "capacity": 1000,
+        "startLifetime": 0.05000000074505806,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -3916378255733922813,
+        "gameObjectId": 782795119378734006,
+        "name": "3_Impact_A",
+        "capacity": 60,
+        "startLifetime": 0.15000000596046448,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -3903607575845012450,
+        "gameObjectId": 6295750635561338700,
+        "name": "Exprosion (2)",
+        "capacity": 60,
+        "startLifetime": 1.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -3770827071974717763,
+        "gameObjectId": -3001643768875834143,
+        "name": "DarkParticle (1)",
+        "capacity": 42,
+        "startLifetime": 1.5,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -3717860091898633895,
+        "gameObjectId": -585081824342678348,
+        "name": "3_Spark",
+        "capacity": 600,
+        "startLifetime": 0.30000001192092896,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -3652394005534477401,
+        "gameObjectId": -1221193757136292605,
+        "name": "1_Damage",
+        "capacity": 200,
+        "startLifetime": 0.800000011920929,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -3598346794472678298,
+        "gameObjectId": 4427831477636047577,
+        "name": "Elect2",
+        "capacity": 5,
+        "startLifetime": 1.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -3588247154646551637,
+        "gameObjectId": -6647632020642180618,
+        "name": "RedParticle",
+        "capacity": 1000,
+        "startLifetime": 1.7999999523162842,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -3423920012933996629,
+        "gameObjectId": -6204037364083616864,
+        "name": "1_Bit",
+        "capacity": 60,
+        "startLifetime": 0.800000011920929,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -3381354365898999398,
+        "gameObjectId": -7275814727333378390,
+        "name": "Particle",
+        "capacity": 1000,
+        "startLifetime": 5.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -3373227360010846213,
+        "gameObjectId": -1242559619241129819,
+        "name": "Reticle_Hit_Sub",
+        "capacity": 400,
+        "startLifetime": 0.15000000596046448,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -3338482825601168583,
+        "gameObjectId": 7932211477969534314,
+        "name": "SonicBoom (4)",
+        "capacity": 600,
+        "startLifetime": 0.30000001192092896,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -3182442142913241822,
+        "gameObjectId": 7117563893448899174,
+        "name": "1_Spark",
+        "capacity": 600,
+        "startLifetime": 0.30000001192092896,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -3047434054909567240,
+        "gameObjectId": 7843085887808636158,
+        "name": "AFK_Action",
+        "capacity": 0,
+        "startLifetime": 5.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -2972267541276237875,
+        "gameObjectId": -1646918599072959203,
+        "name": "Idle",
+        "capacity": 3,
+        "startLifetime": 1.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -2968134292298344601,
+        "gameObjectId": -7477211829951995724,
+        "name": "SonicBoom (1)",
+        "capacity": 600,
+        "startLifetime": 0.6499999761581421,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -2961634837208220462,
+        "gameObjectId": -5503100669932351061,
+        "name": "Throw",
+        "capacity": 2,
+        "startLifetime": 1.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -2848699643437698984,
+        "gameObjectId": -6220056273197969323,
+        "name": "1_Emitter",
+        "capacity": 60,
+        "startLifetime": 3.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -2786381502905448763,
+        "gameObjectId": -6452606296777331228,
+        "name": "Coin",
+        "capacity": 1,
+        "startLifetime": 1.2000000476837158,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -2716673637555125195,
+        "gameObjectId": -1169412138873732305,
+        "name": "Spyral (1)",
+        "capacity": 60,
+        "startLifetime": 0.5,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 0
+      },
+      {
+        "pathId": -2562630473352054272,
+        "gameObjectId": -7179960558452955293,
+        "name": "RedParticle",
+        "capacity": 1000,
+        "startLifetime": 3.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -2451590732151195146,
+        "gameObjectId": -5876817450842868990,
+        "name": "2_Damage",
+        "capacity": 200,
+        "startLifetime": 0.800000011920929,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -2373557099638601255,
+        "gameObjectId": 4535046449133495977,
+        "name": "Sphere (5)",
+        "capacity": 1000,
+        "startLifetime": 1.600000023841858,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -2335761761313309820,
+        "gameObjectId": -79268710083943912,
+        "name": "MagicCircle",
+        "capacity": 1,
+        "startLifetime": 1.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -2211143681945621794,
+        "gameObjectId": 3099795550318218197,
+        "name": "1_Move",
+        "capacity": 50,
+        "startLifetime": 0.20000000298023224,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -2127612125778400139,
+        "gameObjectId": 6904696985215453485,
+        "name": "GameObject (14)",
+        "capacity": 1000,
+        "startLifetime": 0.3499999940395355,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 1
+      },
+      {
+        "pathId": -1931730423697330700,
+        "gameObjectId": -5016894586881215637,
+        "name": "Elect (1)",
+        "capacity": 100,
+        "startLifetime": 0.6000000238418579,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -1895586031140675432,
+        "gameObjectId": 5806150390920398185,
+        "name": "Lance_sub",
+        "capacity": 2000,
+        "startLifetime": 0.5,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 0
+      },
+      {
+        "pathId": -1452170428892672776,
+        "gameObjectId": 3318706554089704084,
+        "name": "Light",
+        "capacity": 5,
+        "startLifetime": 0.3499999940395355,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 1
+      },
+      {
+        "pathId": -1388400446182833857,
+        "gameObjectId": 1720772743131951750,
+        "name": "Shine",
+        "capacity": 1,
+        "startLifetime": 1.75,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -1375337762310554040,
+        "gameObjectId": 650256622183737676,
+        "name": "GameObject (6)",
+        "capacity": 1000,
+        "startLifetime": 1.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -1338236572609269217,
+        "gameObjectId": 7234314393652197561,
+        "name": "1_Hit",
+        "capacity": 50,
+        "startLifetime": 0.10000000149011612,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -1287837842667290665,
+        "gameObjectId": -6726867619528943850,
+        "name": "Sphere (7)",
+        "capacity": 60,
+        "startLifetime": 0.25,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -1281843587119251774,
+        "gameObjectId": 3464210416317573284,
+        "name": "3_Damage",
+        "capacity": 200,
+        "startLifetime": 0.800000011920929,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -1056420565032811723,
+        "gameObjectId": 6415626200857719957,
+        "name": "2_Bit",
+        "capacity": 60,
+        "startLifetime": 0.800000011920929,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -1005203125791883097,
+        "gameObjectId": -6970880943020584401,
+        "name": "1_Impact_B",
+        "capacity": 60,
+        "startLifetime": 0.20000000298023224,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -946913756265781581,
+        "gameObjectId": 5723843641360210910,
+        "name": "AFK_Finish",
+        "capacity": 0,
+        "startLifetime": 5.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -923438526908604515,
+        "gameObjectId": 824303930933101580,
+        "name": "LanceElect",
+        "capacity": 100,
+        "startLifetime": 0.800000011920929,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -610751148828454272,
+        "gameObjectId": 8729681516288031668,
+        "name": "Main2",
+        "capacity": 100,
+        "startLifetime": 1.2000000476837158,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -530799170088604392,
+        "gameObjectId": 3460842280821277409,
+        "name": "Shot",
+        "capacity": 3,
+        "startLifetime": 0.009999999776482582,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -322173233380458252,
+        "gameObjectId": 6891330305210043013,
+        "name": "3_Hit",
+        "capacity": 50,
+        "startLifetime": 0.10000000149011612,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -202685549282395875,
+        "gameObjectId": 728108220857470580,
+        "name": "Elect",
+        "capacity": 100,
+        "startLifetime": 0.20000000298023224,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": -62623868608476332,
+        "gameObjectId": -5323770034195326129,
+        "name": "AFK_Effects",
+        "capacity": 0,
+        "startLifetime": 5.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": -26954058687195031,
+        "gameObjectId": -2274677156258683396,
+        "name": "Spark",
+        "capacity": 60,
+        "startLifetime": 2.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": 36578014765868597,
+        "gameObjectId": 5892616599477527565,
+        "name": "2_Laser_Main",
+        "capacity": 20,
+        "startLifetime": 0.800000011920929,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 419434626355395605,
+        "gameObjectId": -4253947111137504916,
+        "name": "DarkParticle1",
+        "capacity": 100,
+        "startLifetime": 0.699999988079071,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 431144213587826633,
+        "gameObjectId": 430130610082672276,
+        "name": "3_Move",
+        "capacity": 50,
+        "startLifetime": 0.20000000298023224,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 529400079310639389,
+        "gameObjectId": -6087411756631700412,
+        "name": "Spark (3)",
+        "capacity": 100,
+        "startLifetime": 0.10000000149011612,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": 943247200753998720,
+        "gameObjectId": -5126481208606211220,
+        "name": "2_Impact_A",
+        "capacity": 60,
+        "startLifetime": 0.15000000596046448,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 1287428538962758322,
+        "gameObjectId": 8280496713309962025,
+        "name": "Exprosion (1)",
+        "capacity": 150,
+        "startLifetime": 1.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 1448588908440248091,
+        "gameObjectId": 3960431431510550243,
+        "name": "Spark (1)",
+        "capacity": 100,
+        "startLifetime": 0.25,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 1543214611406166417,
+        "gameObjectId": 1108896859274931784,
+        "name": "Spyral2",
+        "capacity": 3,
+        "startLifetime": 1.100000023841858,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 1
+      },
+      {
+        "pathId": 1615497185087352737,
+        "gameObjectId": -4240821012788481350,
+        "name": "LanceElect (1)",
+        "capacity": 150,
+        "startLifetime": 0.800000011920929,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": 1746741740433560014,
+        "gameObjectId": 6605768452339419692,
+        "name": "AFK_Idle",
+        "capacity": 0,
+        "startLifetime": 5.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": 1859707362470274808,
+        "gameObjectId": -8927222376538384443,
+        "name": "BlackMist",
+        "capacity": 1,
+        "startLifetime": 1.5,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 1
+      },
+      {
+        "pathId": 2220685204216263093,
+        "gameObjectId": 7097710951605175399,
+        "name": "Petal2",
+        "capacity": 150,
+        "startLifetime": 1.5,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 2256311463255183527,
+        "gameObjectId": 3183471271126535428,
+        "name": "Hit",
+        "capacity": 2,
+        "startLifetime": 1.25,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 2277567180428878161,
+        "gameObjectId": -9079544791873691204,
+        "name": "Light",
+        "capacity": 1,
+        "startLifetime": 1.75,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 2299241294813874652,
+        "gameObjectId": -6063167793564705586,
+        "name": "2_Spark",
+        "capacity": 600,
+        "startLifetime": 0.30000001192092896,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 2332177772953014687,
+        "gameObjectId": 8062202571921382714,
+        "name": "Particle",
+        "capacity": 120,
+        "startLifetime": 2.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 2646040542360084646,
+        "gameObjectId": -1179713266344186470,
+        "name": "Spyral",
+        "capacity": 3,
+        "startLifetime": 0.8999999761581421,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 1
+      },
+      {
+        "pathId": 2847352016169904670,
+        "gameObjectId": -700078170734203263,
+        "name": "2_Move",
+        "capacity": 50,
+        "startLifetime": 0.20000000298023224,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 2894399969551036420,
+        "gameObjectId": -6756033482514894457,
+        "name": "Sphere (1)",
+        "capacity": 6,
+        "startLifetime": 1.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": 3040938761876684535,
+        "gameObjectId": -2944365261899146,
+        "name": "Light",
+        "capacity": 5,
+        "startLifetime": 2.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": 3043040568050560187,
+        "gameObjectId": -3939823701195780730,
+        "name": "Blackmist2",
+        "capacity": 2,
+        "startLifetime": 1.0,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 1
+      },
+      {
+        "pathId": 3071448464960726858,
+        "gameObjectId": 4426326221202686529,
+        "name": "SonicBoom (2)",
+        "capacity": 600,
+        "startLifetime": 2.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 3080365084215297951,
+        "gameObjectId": -2864760587616549838,
+        "name": "Elect (1)",
+        "capacity": 100,
+        "startLifetime": 0.20000000298023224,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 3097083769679254799,
+        "gameObjectId": 4294258644361665200,
+        "name": "ChargeElect (1)",
+        "capacity": 100,
+        "startLifetime": 1.5,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 3318451158906068358,
+        "gameObjectId": -8036368202865261448,
+        "name": "Petal",
+        "capacity": 1000,
+        "startLifetime": 1.5,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 3519444210267192520,
+        "gameObjectId": -3219264600867070465,
+        "name": "Spyral (2)",
+        "capacity": 80,
+        "startLifetime": 0.20000000298023224,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 0
+      },
+      {
+        "pathId": 3601281745383461255,
+        "gameObjectId": 3846088573775082919,
+        "name": "Start",
+        "capacity": 1,
+        "startLifetime": 0.4000000059604645,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": 3628989095111140729,
+        "gameObjectId": 1534491574360692130,
+        "name": "Sphere (6)",
+        "capacity": 25,
+        "startLifetime": 1.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": 3811323618741376400,
+        "gameObjectId": -6256294980228897783,
+        "name": "3_Laser_Main",
+        "capacity": 20,
+        "startLifetime": 0.800000011920929,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 3968169034888835263,
+        "gameObjectId": 2349208989433494390,
+        "name": "Shine",
+        "capacity": 1000,
+        "startLifetime": 0.30000001192092896,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 1
+      },
+      {
+        "pathId": 4017902253283977521,
+        "gameObjectId": -2526471726226086731,
+        "name": "Sphere (6)",
+        "capacity": 6,
+        "startLifetime": 1.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": 4217519129804232454,
+        "gameObjectId": -3138913747129689630,
+        "name": "3_Laser_Sub",
+        "capacity": 2000,
+        "startLifetime": 0.5,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 0
+      },
+      {
+        "pathId": 4250061145229426688,
+        "gameObjectId": -2309961047727855489,
+        "name": "Spark (1)",
+        "capacity": 600,
+        "startLifetime": 0.4000000059604645,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 4253956416327810273,
+        "gameObjectId": 5265059789008760,
+        "name": "Sphere (3)",
+        "capacity": 1000,
+        "startLifetime": 0.5,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": 4255908079172566062,
+        "gameObjectId": 4959542705296302075,
+        "name": "3_Aim",
+        "capacity": 50,
+        "startLifetime": 0.05000000074505806,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 4439448407248368669,
+        "gameObjectId": -8460590118046371245,
+        "name": "Pillar1",
+        "capacity": 600,
+        "startLifetime": 0.4000000059604645,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 4445648466267708551,
+        "gameObjectId": -96351932768827078,
+        "name": "2_Emitter",
+        "capacity": 60,
+        "startLifetime": 3.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 4595246145402689487,
+        "gameObjectId": -7798025469968446962,
+        "name": "Main (1)",
+        "capacity": 100,
+        "startLifetime": 3.0,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 0
+      },
+      {
+        "pathId": 4609661413749281928,
+        "gameObjectId": -7384231843978244271,
+        "name": "DarkParticle2",
+        "capacity": 100,
+        "startLifetime": 1.5,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": 4992197391230684485,
+        "gameObjectId": -3600196527956338023,
+        "name": "Blackmist",
+        "capacity": 1,
+        "startLifetime": 1.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 5070155126027877963,
+        "gameObjectId": 6408473032433641374,
+        "name": "Light (1)",
+        "capacity": 5,
+        "startLifetime": 0.3499999940395355,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 1
+      },
+      {
+        "pathId": 5182410381051138288,
+        "gameObjectId": 4221072351206090188,
+        "name": "Hit",
+        "capacity": 500,
+        "startLifetime": 1.7999999523162842,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 5237701446383194210,
+        "gameObjectId": 7910710022699423837,
+        "name": "Shine (1)",
+        "capacity": 1,
+        "startLifetime": 1.75,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 5277849957756519730,
+        "gameObjectId": -4458569403225103115,
+        "name": "1_Laser_Sub",
+        "capacity": 2000,
+        "startLifetime": 0.5,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 0
+      },
+      {
+        "pathId": 5336069436633160703,
+        "gameObjectId": 9049646448326502177,
+        "name": "DarkCircle",
+        "capacity": 4,
+        "startLifetime": 1.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": 5447938235460869441,
+        "gameObjectId": -5882147187052242243,
+        "name": "Pillar0",
+        "capacity": 600,
+        "startLifetime": 0.4000000059604645,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 5515458064779431055,
+        "gameObjectId": -5934899077635842062,
+        "name": "MagicCircle",
+        "capacity": 1,
+        "startLifetime": 0.20000000298023224,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 5580786955120390255,
+        "gameObjectId": -7235034212384114329,
+        "name": "SonicBoom",
+        "capacity": 600,
+        "startLifetime": 0.6499999761581421,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 5928668853757516526,
+        "gameObjectId": -4711949234711668754,
+        "name": "3_Spark",
+        "capacity": 100,
+        "startLifetime": 0.25,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 5954947965374774889,
+        "gameObjectId": 4049847335403537208,
+        "name": "AFK_Start",
+        "capacity": 0,
+        "startLifetime": 5.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": 5980648513841366136,
+        "gameObjectId": 2917144189872903281,
+        "name": "AFK_Charge",
+        "capacity": 0,
+        "startLifetime": 5.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": 6223363975267553939,
+        "gameObjectId": 4675700106278416791,
+        "name": "3_Emitter",
+        "capacity": 60,
+        "startLifetime": 3.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 6358612065331483905,
+        "gameObjectId": 8761817535833558645,
+        "name": "Main3",
+        "capacity": 100,
+        "startLifetime": 1.850000023841858,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 0
+      },
+      {
+        "pathId": 6764961243310882383,
+        "gameObjectId": 6890225668230788298,
+        "name": "1_Laser_Main",
+        "capacity": 20,
+        "startLifetime": 0.800000011920929,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 7324356754475356744,
+        "gameObjectId": 8922038792240537014,
+        "name": "3_Bit",
+        "capacity": 60,
+        "startLifetime": 0.800000011920929,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 7335899957577768941,
+        "gameObjectId": 6677253793670029025,
+        "name": "Finish",
+        "capacity": 1,
+        "startLifetime": 0.25,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": 7518355672992976154,
+        "gameObjectId": -5803343670284824738,
+        "name": "Elect",
+        "capacity": 33,
+        "startLifetime": 0.25,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 7577021577786643924,
+        "gameObjectId": -8736749475179107529,
+        "name": "Sphere (2)",
+        "capacity": 15,
+        "startLifetime": 1.0,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": 7838393253738050180,
+        "gameObjectId": -7454088179232888782,
+        "name": "3_Hit_Spark",
+        "capacity": 1000,
+        "startLifetime": 0.10000000149011612,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 7881180752006894457,
+        "gameObjectId": 2393483978439378172,
+        "name": "Pillar0",
+        "capacity": 600,
+        "startLifetime": 0.4000000059604645,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 7905013156801472265,
+        "gameObjectId": 6168095269485678612,
+        "name": "2_Hit_Spark",
+        "capacity": 1000,
+        "startLifetime": 0.10000000149011612,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 8126629051914436946,
+        "gameObjectId": -1323328369597797343,
+        "name": "Reticle_Hit_Center",
+        "capacity": 400,
+        "startLifetime": 0.10000000149011612,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 8387500256620090232,
+        "gameObjectId": -4422935348317501463,
+        "name": "Elect (2)",
+        "capacity": 100,
+        "startLifetime": 1.2000000476837158,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      },
+      {
+        "pathId": 8657562488588841592,
+        "gameObjectId": 4072839230829603786,
+        "name": "BlightElect",
+        "capacity": 100,
+        "startLifetime": 0.4000000059604645,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 8860843965860509643,
+        "gameObjectId": 5745065056381553040,
+        "name": "1_Aim",
+        "capacity": 50,
+        "startLifetime": 0.05000000074505806,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 1
+      },
+      {
+        "pathId": 8938837017199626728,
+        "gameObjectId": -6442568288377051680,
+        "name": "Trail",
+        "capacity": 800,
+        "startLifetime": 0.25,
+        "infinityLifetime": false,
+        "size3D": true,
+        "burstCount": 1
+      },
+      {
+        "pathId": 9103286133805762139,
+        "gameObjectId": 27135259816947631,
+        "name": "Elect",
+        "capacity": 150,
+        "startLifetime": 0.30000001192092896,
+        "infinityLifetime": false,
+        "size3D": false,
+        "burstCount": 0
+      }
+    ],
+    "separateFromStoreLimit": true
+  },
+  "storeRenderer": {
+    "pathId": 2693046080968763277,
+    "gameObjectId": -6128457753110185800,
+    "name": "Store",
+    "materialIds": [
+      -8194106025869569609
+    ]
+  },
+  "storeMaterial": {
+    "pathId": -8194106025869569609,
+    "name": "ParticleBoxCatalog",
+    "shaderPathId": 4641559875580322477,
+    "shader": "MorphForge/ParticleBoxCatalog",
+    "metaWidth": 256.0,
+    "metaHeight": 64.0,
+    "textures": [
+      "_CatalogAtlas",
+      "_CatalogMeta"
+    ]
+  },
+  "metadata": {
+    "pathId": -1213621359205545928,
+    "name": "CatalogMetadata",
+    "width": 256,
+    "height": 64,
+    "format": 20,
+    "mipCount": 1,
+    "colorSpace": 0
+  },
+  "atlas": {
+    "pathId": -347633513603144029,
+    "name": "CatalogAtlas",
+    "width": 384,
+    "height": 96,
+    "format": 4,
+    "mipCount": 1,
+    "colorSpace": 1
+  },
+  "textures": [
+    {
+      "pathId": -9058899205912456470,
+      "name": "ネメシス魔法陣 (6)",
+      "width": 1024,
+      "height": 1024,
+      "format": 12
+    },
+    {
+      "pathId": -8735687176962412331,
+      "name": "Nemesis_Cloth2_EmissionMask",
+      "width": 2048,
+      "height": 2048,
+      "format": 10
+    },
+    {
+      "pathId": -8513330727243623717,
+      "name": "transition_01",
+      "width": 256,
+      "height": 256,
+      "format": 10
+    },
+    {
+      "pathId": -8447349612172985496,
+      "name": "FaceTrackingIcon2",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": -7959243577327934775,
+      "name": "Nemesis_Eye_EmissionMask",
+      "width": 2048,
+      "height": 2048,
+      "format": 10
+    },
+    {
+      "pathId": -7884300851468916201,
+      "name": "FaceTrackingIcon1",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": -7804765734924631727,
+      "name": "ネメシス腕バナー (4)",
+      "width": 2048,
+      "height": 2048,
+      "format": 12
+    },
+    {
+      "pathId": -7406056705975321825,
+      "name": "noise_06",
+      "width": 256,
+      "height": 256,
+      "format": 10
+    },
+    {
+      "pathId": -7185549853898351427,
+      "name": "circleglow_00",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": -6980369025629026725,
+      "name": "Settings",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": -6853978730292698561,
+      "name": "tex_eff_glow02",
+      "width": 128,
+      "height": 128,
+      "format": 10
+    },
+    {
+      "pathId": -6736792342375745757,
+      "name": "イラスト154 (20)",
+      "width": 512,
+      "height": 512,
+      "format": 12
+    },
+    {
+      "pathId": -6643600713899953597,
+      "name": "tex_eff_hit05",
+      "width": 128,
+      "height": 128,
+      "format": 10
+    },
+    {
+      "pathId": -5808319173261367036,
+      "name": "Lod_23",
+      "width": 2048,
+      "height": 2048,
+      "format": 10
+    },
+    {
+      "pathId": -5713968603343119228,
+      "name": "FireTex",
+      "width": 1024,
+      "height": 1024,
+      "format": 12
+    },
+    {
+      "pathId": -5367896220133921404,
+      "name": "noise_17",
+      "width": 256,
+      "height": 256,
+      "format": 10
+    },
+    {
+      "pathId": -4946229266967554046,
+      "name": "FaceExpand",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": -4772727866456561997,
+      "name": "noise_08",
+      "width": 256,
+      "height": 256,
+      "format": 10
+    },
+    {
+      "pathId": -4706154248791462260,
+      "name": "flash_00",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": -4211273262332428522,
+      "name": "Nemesis_Eye (22)",
+      "width": 2048,
+      "height": 2048,
+      "format": 10
+    },
+    {
+      "pathId": -3843541781086715218,
+      "name": "tex_eff_glass02",
+      "width": 128,
+      "height": 128,
+      "format": 10
+    },
+    {
+      "pathId": -2767744231438315391,
+      "name": "tex_eff_line03",
+      "width": 256,
+      "height": 256,
+      "format": 10
+    },
+    {
+      "pathId": -2217821206130266705,
+      "name": "tex_eff_prism_aura01",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": -2103976600005920978,
+      "name": "star_00",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": -2019369443658526095,
+      "name": "WhiteMask",
+      "width": 64,
+      "height": 64,
+      "format": 10
+    },
+    {
+      "pathId": -1957858464121864296,
+      "name": "noizu",
+      "width": 2048,
+      "height": 2048,
+      "format": 10
+    },
+    {
+      "pathId": -1645619338984794761,
+      "name": "GesturesDisabled",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": -1213621359205545928,
+      "name": "CatalogMetadata",
+      "width": 256,
+      "height": 64,
+      "format": 20
+    },
+    {
+      "pathId": -347633513603144029,
+      "name": "CatalogAtlas",
+      "width": 384,
+      "height": 96,
+      "format": 4
+    },
+    {
+      "pathId": -288870261547456889,
+      "name": "Dilation",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": -224080482388392135,
+      "name": "Constraint",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": -172065030632483273,
+      "name": "circle_02",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": 19620017379323436,
+      "name": "Emulate",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": 417828896598732063,
+      "name": "particle1001 (6) 1",
+      "width": 512,
+      "height": 512,
+      "format": 12
+    },
+    {
+      "pathId": 505914963856824529,
+      "name": "noise_00",
+      "width": 256,
+      "height": 256,
+      "format": 10
+    },
+    {
+      "pathId": 1273150440256388503,
+      "name": "noise_16",
+      "width": 256,
+      "height": 256,
+      "format": 10
+    },
+    {
+      "pathId": 1376570077256281546,
+      "name": "Nemesis_Alpha_edit",
+      "width": 1024,
+      "height": 1024,
+      "format": 12
+    },
+    {
+      "pathId": 1821763789082999286,
+      "name": "Lod_22",
+      "width": 2048,
+      "height": 2048,
+      "format": 12
+    },
+    {
+      "pathId": 2331103862766546874,
+      "name": "noise_23",
+      "width": 256,
+      "height": 256,
+      "format": 10
+    },
+    {
+      "pathId": 3328053822440598606,
+      "name": "texture 1",
+      "width": 512,
+      "height": 512,
+      "format": 12
+    },
+    {
+      "pathId": 3696980689174745028,
+      "name": "Nemesis_Hairs (17)",
+      "width": 2048,
+      "height": 2048,
+      "format": 10
+    },
+    {
+      "pathId": 3811308673490253448,
+      "name": "Remote",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": 3841901860003067201,
+      "name": "Nemesis_Skin (32)",
+      "width": 2048,
+      "height": 2048,
+      "format": 12
+    },
+    {
+      "pathId": 3859194707307327417,
+      "name": "tex_eff_loop_buff02",
+      "width": 128,
+      "height": 128,
+      "format": 10
+    },
+    {
+      "pathId": 4316916209117303495,
+      "name": "tex_eff_flame_pattern_01",
+      "width": 128,
+      "height": 128,
+      "format": 10
+    },
+    {
+      "pathId": 4320046502108980954,
+      "name": "noise_18",
+      "width": 256,
+      "height": 256,
+      "format": 10
+    },
+    {
+      "pathId": 4338698967763860871,
+      "name": "Feather",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": 4564752297195144918,
+      "name": "tex_eff_fire02",
+      "width": 128,
+      "height": 128,
+      "format": 12
+    },
+    {
+      "pathId": 4649193371579319906,
+      "name": "Nemesis_Cloth1 (29)",
+      "width": 2048,
+      "height": 2048,
+      "format": 10
+    },
+    {
+      "pathId": 4669620559335130278,
+      "name": "aura_03",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": 4735340826040126564,
+      "name": "ネメシス魔法陣 (3)",
+      "width": 1024,
+      "height": 1024,
+      "format": 12
+    },
+    {
+      "pathId": 4865124168856559711,
+      "name": "EyeSync",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": 4958561448623931854,
+      "name": "SharkMouth",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": 5065586903704081215,
+      "name": "FT_UE_Debug",
+      "width": 1024,
+      "height": 1024,
+      "format": 12
+    },
+    {
+      "pathId": 5594090587371938109,
+      "name": "FaceEnabled",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": 5957166957455721428,
+      "name": "EyeEnabled",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": 6057134728927325103,
+      "name": "noise_15",
+      "width": 256,
+      "height": 256,
+      "format": 10
+    },
+    {
+      "pathId": 7722630172331054501,
+      "name": "noizu2",
+      "width": 2048,
+      "height": 2048,
+      "format": 10
+    },
+    {
+      "pathId": 8099405139272245034,
+      "name": "aura_04",
+      "width": 256,
+      "height": 256,
+      "format": 12
+    },
+    {
+      "pathId": 8183624302524194227,
+      "name": "Blank",
+      "width": 8,
+      "height": 8,
+      "format": 12
+    },
+    {
+      "pathId": 8786719750754358963,
+      "name": "Nemesis_Cloth2 (29)",
+      "width": 2048,
+      "height": 2048,
+      "format": 12
+    },
+    {
+      "pathId": 9141175172635128550,
+      "name": "noise_05",
+      "width": 256,
+      "height": 256,
+      "format": 10
+    }
+  ],
+  "monoScripts": [
+    "PipelineManager",
+    "VRCAimConstraint",
+    "VRCAnimatorLayerControl",
+    "VRCAnimatorLocomotionControl",
+    "VRCAnimatorTemporaryPoseSpace",
+    "VRCAnimatorTrackingControl",
+    "VRCAvatarDescriptor",
+    "VRCAvatarParameterDriver",
+    "VRCContactReceiver",
+    "VRCContactSender",
+    "VRCExpressionParameters",
+    "VRCExpressionsMenu",
+    "VRCParentConstraint",
+    "VRCPhysBone",
+    "VRCPhysBoneCollider",
+    "VRCPlayableLayerControl",
+    "VRCPositionConstraint",
+    "VRCRotationConstraint",
+    "VRCScaleConstraint"
+  ],
+  "morphForgeRuntimeScripts": [],
+  "expressionParameters": {
+    "asset": {
+      "pathId": -5592258200134368420,
+      "name": "Nemesis_Parameters_v_1_1_0(Clone)",
+      "isEmpty": 0
+    },
+    "totalParameterCount": 226,
+    "syncedParameterCount": 144,
+    "syncedBits": 256,
+    "groups": {
+      "ft": {
+        "count": 112,
+        "bits": 161,
+        "failures": [],
+        "entries": [
+          {
+            "name": "FT/AutoToggle",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/EyeSync",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/BrowExpressionLeft1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/BrowExpressionLeft2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/BrowExpressionLeft4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/BrowExpressionLeftNegative",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/BrowExpressionRight1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/BrowExpressionRight2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/BrowExpressionRight4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/BrowExpressionRightNegative",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/CheekPuffSuckLeft1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/CheekPuffSuckLeft2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/CheekPuffSuckLeft4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/CheekPuffSuckLeftNegative",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/CheekPuffSuckRight1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/CheekPuffSuckRight2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/CheekPuffSuckRight4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/CheekPuffSuckRightNegative",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/EyeLeftX",
+            "type": "Float",
+            "bits": 8,
+            "networkSynced": true,
+            "expectedType": "Float",
+            "expectedBits": 8
+          },
+          {
+            "name": "FT/v2/EyeLidLeft",
+            "type": "Float",
+            "bits": 8,
+            "networkSynced": true,
+            "expectedType": "Float",
+            "expectedBits": 8
+          },
+          {
+            "name": "FT/v2/EyeLidRight",
+            "type": "Float",
+            "bits": 8,
+            "networkSynced": true,
+            "expectedType": "Float",
+            "expectedBits": 8
+          },
+          {
+            "name": "FT/v2/EyeRightX",
+            "type": "Float",
+            "bits": 8,
+            "networkSynced": true,
+            "expectedType": "Float",
+            "expectedBits": 8
+          },
+          {
+            "name": "FT/v2/EyeSquintLeft1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/EyeSquintLeft2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/EyeSquintLeft4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/EyeSquintRight1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/EyeSquintRight2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/EyeSquintRight4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/EyeY",
+            "type": "Float",
+            "bits": 8,
+            "networkSynced": true,
+            "expectedType": "Float",
+            "expectedBits": 8
+          },
+          {
+            "name": "FT/v2/JawForward1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/JawForward2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/JawForward4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/JawOpen",
+            "type": "Float",
+            "bits": 8,
+            "networkSynced": true,
+            "expectedType": "Float",
+            "expectedBits": 8
+          },
+          {
+            "name": "FT/v2/JawX1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/JawX2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/JawX4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/JawXNegative",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/LipFunnel1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/LipFunnel2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/LipFunnel4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/LipPucker1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/LipPucker2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/LipPucker4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/LipSuckLower1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/LipSuckLower2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/LipSuckLower4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/LipSuckUpper1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/LipSuckUpper2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/LipSuckUpper4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthClosed",
+            "type": "Float",
+            "bits": 8,
+            "networkSynced": true,
+            "expectedType": "Float",
+            "expectedBits": 8
+          },
+          {
+            "name": "FT/v2/MouthLowerDown1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthLowerDown2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthLowerDown4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthPress1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthPress2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthPress4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthRaiserLower1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthRaiserLower2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthRaiserLower4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthRaiserUpper1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthRaiserUpper2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthRaiserUpper4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthStretchLeft1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthStretchLeft2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthStretchLeft4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthStretchRight1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthStretchRight2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthStretchRight4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthTightenerLeft1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthTightenerLeft2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthTightenerLeft4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthTightenerRight1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthTightenerRight2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthTightenerRight4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthUpperUpLeft1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthUpperUpLeft2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthUpperUpLeft4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthUpperUpRight1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthUpperUpRight2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthUpperUpRight4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthX1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthX2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthX4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/MouthXNegative",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/NoseSneer1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/NoseSneer2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/NoseSneer4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/PupilDilation1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/PupilDilation2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/PupilDilation4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/SmileFrownLeft1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/SmileFrownLeft2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/SmileFrownLeft4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/SmileFrownLeftNegative",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/SmileFrownRight1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/SmileFrownRight2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/SmileFrownRight4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/SmileFrownRightNegative",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/TongueOut1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/TongueOut2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/TongueOut4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/TongueRoll1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/TongueRoll2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/TongueRoll4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/TongueX1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/TongueX2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/TongueX4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/TongueXNegative",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/TongueY1",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/TongueY2",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/TongueY4",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FT/v2/TongueYNegative",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          }
+        ]
+      },
+      "controls": {
+        "count": 8,
+        "bits": 8,
+        "failures": [],
+        "entries": [
+          {
+            "name": "EyeTrackingActive",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "LipTrackingActive",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "EyeDilationEnable",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "VisemesEnable",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FacialExpressionsDisabled",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FaceTrackingEmulation",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "FaceTrackingLimits",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "MixExpressions",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          }
+        ]
+      },
+      "geometry": {
+        "count": 7,
+        "bits": 56,
+        "failures": [],
+        "entries": [
+          {
+            "name": "MF3_Ctl",
+            "type": "Int",
+            "bits": 8,
+            "networkSynced": true,
+            "expectedType": "Int",
+            "expectedBits": 8
+          },
+          {
+            "name": "MF3_D00",
+            "type": "Int",
+            "bits": 8,
+            "networkSynced": true,
+            "expectedType": "Int",
+            "expectedBits": 8
+          },
+          {
+            "name": "MF3_D01",
+            "type": "Int",
+            "bits": 8,
+            "networkSynced": true,
+            "expectedType": "Int",
+            "expectedBits": 8
+          },
+          {
+            "name": "MF3_D02",
+            "type": "Int",
+            "bits": 8,
+            "networkSynced": true,
+            "expectedType": "Int",
+            "expectedBits": 8
+          },
+          {
+            "name": "MF3_D03",
+            "type": "Int",
+            "bits": 8,
+            "networkSynced": true,
+            "expectedType": "Int",
+            "expectedBits": 8
+          },
+          {
+            "name": "MF3_D04",
+            "type": "Int",
+            "bits": 8,
+            "networkSynced": true,
+            "expectedType": "Int",
+            "expectedBits": 8
+          },
+          {
+            "name": "MF3_D05",
+            "type": "Int",
+            "bits": 8,
+            "networkSynced": true,
+            "expectedType": "Int",
+            "expectedBits": 8
+          }
+        ]
+      },
+      "placement": {
+        "count": 7,
+        "bits": 14,
+        "failures": [],
+        "entries": [
+          {
+            "name": "MF_World",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "MF_Handle",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "MF_Scale",
+            "type": "Float",
+            "bits": 8,
+            "networkSynced": true,
+            "expectedType": "Float",
+            "expectedBits": 8
+          },
+          {
+            "name": "MF_Reset",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "MF_GrabL",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "MF_GrabR",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          },
+          {
+            "name": "MF_Level",
+            "type": "Bool",
+            "bits": 1,
+            "networkSynced": true,
+            "expectedType": "Bool",
+            "expectedBits": 1
+          }
+        ]
+      }
+    },
+    "parameters": [
+      {
+        "name": "VF WN",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "VF 2022.3.22f1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "VF 3.10.5",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "VF 1.1430.0",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "NemesisVersion",
+        "valueType": 0,
+        "type": "Int",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 2.0,
+        "networkSynced": false
+      },
+      {
+        "name": "VRCEmote",
+        "valueType": 0,
+        "type": "Int",
+        "bits": 8,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "Fasial",
+        "valueType": 0,
+        "type": "Int",
+        "bits": 8,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Tops",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "Shirt",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "KneeSox",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "Inner",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "Socks",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "Shoes",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "Toe",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "ConstToggle",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Beret",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "NadeNadeHeadToggle",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 1.0,
+        "networkSynced": false
+      },
+      {
+        "name": "NadeNadeHead",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "NadeNadeFace",
+        "valueType": 0,
+        "type": "Int",
+        "bits": 8,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "ColliderJump",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "TailColliderDisable",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "IsAshiyubiControllR",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "AshiyubiRX",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "AshiyubiRY",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "IsAshiyubiControllL",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "AshiyubiLX",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "AshiyubiLY",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "IsAshiyubiControllBoth",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FaceLock",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "GestureNum",
+        "valueType": 0,
+        "type": "Int",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FasialSetNumGlobal",
+        "valueType": 0,
+        "type": "Int",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FasialSetNum",
+        "valueType": 0,
+        "type": "Int",
+        "bits": 8,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "IsAFKFinished",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "Nem/WavingDetectParam",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/WavingDirectionDetectParam",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/ThrowDetectParam",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/ThrowDirectionDetectParam",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/WavingWand",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/WavingReverce",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/ReverceGrip",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/IsLightWand",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/Reload",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/TakeWand",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/CloseFlag",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/AllowTakeWand",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/Enhancement",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/Enhancementing",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/Enhancemented",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/NeedReload",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/ShotParticle",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/WandWorldFix",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/ReverceFloat",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 1.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/SelectParticle",
+        "valueType": 0,
+        "type": "Int",
+        "bits": 8,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/ShotCount",
+        "valueType": 0,
+        "type": "Int",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Nem/Reticle",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "AllowShield",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "MF_World",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 1.0,
+        "networkSynced": true
+      },
+      {
+        "name": "MF_Handle",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 1.0,
+        "networkSynced": true
+      },
+      {
+        "name": "MF_Scale",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": true,
+        "defaultValue": 1.0,
+        "networkSynced": true
+      },
+      {
+        "name": "MF_Reset",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "MF_GrabL",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "MF_GrabR",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "MF_Level",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 1.0,
+        "networkSynced": true
+      },
+      {
+        "name": "MF_Grab",
+        "valueType": 0,
+        "type": "Int",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "MF3_Ctl",
+        "valueType": 0,
+        "type": "Int",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "MF3_D00",
+        "valueType": 0,
+        "type": "Int",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "MF3_D01",
+        "valueType": 0,
+        "type": "Int",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "MF3_D02",
+        "valueType": 0,
+        "type": "Int",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "MF3_D03",
+        "valueType": 0,
+        "type": "Int",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "MF3_D04",
+        "valueType": 0,
+        "type": "Int",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "MF3_D05",
+        "valueType": 0,
+        "type": "Int",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "EyeTrackingActive",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "LipTrackingActive",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "EyeDilationEnable",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "VisemesEnable",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 1.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FacialExpressionsDisabled",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FaceTrackingEmulation",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 1.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FaceTrackingLimits",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 1.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/EyeSync",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "RemoteModeActive",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "State/TrackingActive",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "Smoothing/Local",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": true,
+        "defaultValue": 0.25,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/EyeLeftX",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/EyeRightX",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/EyeY",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/EyeLidLeft",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.75,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/EyeLidRight",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.75,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/EyeSquintLeft",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/EyeSquintLeft1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/EyeSquintLeft2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/EyeSquintLeft4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/EyeSquintRight",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/EyeSquintRight1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/EyeSquintRight2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/EyeSquintRight4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/PupilDilation",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.5,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/PupilDilation1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 1.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/PupilDilation2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 1.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/PupilDilation4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/BrowExpressionLeft",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/BrowExpressionLeft1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/BrowExpressionLeft2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/BrowExpressionLeft4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/BrowExpressionLeftNegative",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/BrowExpressionRight",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/BrowExpressionRight1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/BrowExpressionRight2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/BrowExpressionRight4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/BrowExpressionRightNegative",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/NoseSneer",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/NoseSneer1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/NoseSneer2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/NoseSneer4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/CheekPuffSuckLeft",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/CheekPuffSuckLeft1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/CheekPuffSuckLeft2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/CheekPuffSuckLeft4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/CheekPuffSuckLeftNegative",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/CheekPuffSuckRight",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/CheekPuffSuckRight1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/CheekPuffSuckRight2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/CheekPuffSuckRight4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/CheekPuffSuckRightNegative",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/JawOpen",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthClosed",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/JawX",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/JawX1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/JawX2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/JawX4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/JawXNegative",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/JawForward",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/JawForward1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/JawForward2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/JawForward4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/LipSuckUpper",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/LipSuckUpper1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/LipSuckUpper2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/LipSuckUpper4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/LipSuckLower",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/LipSuckLower1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/LipSuckLower2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/LipSuckLower4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/LipFunnel",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/LipFunnel1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/LipFunnel2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/LipFunnel4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/LipPucker",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/LipPucker1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/LipPucker2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/LipPucker4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthUpperUpRight",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/MouthUpperUpRight1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthUpperUpRight2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthUpperUpRight4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthUpperUpLeft",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/MouthUpperUpLeft1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthUpperUpLeft2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthUpperUpLeft4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthLowerDown",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/MouthLowerDown1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthLowerDown2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthLowerDown4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthX",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/MouthX1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthX2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthX4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthXNegative",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/SmileFrownRight",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/SmileFrownRight1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/SmileFrownRight2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/SmileFrownRight4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/SmileFrownRightNegative",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/SmileFrownLeft",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/SmileFrownLeft1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/SmileFrownLeft2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/SmileFrownLeft4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/SmileFrownLeftNegative",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthStretchLeft",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/MouthStretchLeft1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthStretchLeft2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthStretchLeft4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthStretchRight",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/MouthStretchRight1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthStretchRight2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthStretchRight4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthRaiserUpper",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/MouthRaiserUpper1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthRaiserUpper2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthRaiserUpper4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthRaiserLower",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/MouthRaiserLower1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthRaiserLower2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthRaiserLower4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthPress",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/MouthPress1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthPress2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthPress4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthTightenerLeft",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/MouthTightenerLeft1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthTightenerLeft2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthTightenerLeft4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthTightenerRight",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/MouthTightenerRight1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthTightenerRight2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/MouthTightenerRight4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/TongueOut",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/TongueOut1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/TongueOut2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/TongueOut4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/Debug",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/TongueX",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/TongueX1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/TongueX2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/TongueX4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/TongueXNegative",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/TongueY",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/TongueY1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/TongueY2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/TongueY4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/TongueYNegative",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/TongueRoll",
+        "valueType": 1,
+        "type": "Float",
+        "bits": 8,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": false
+      },
+      {
+        "name": "FT/v2/TongueRoll1",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/TongueRoll2",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/v2/TongueRoll4",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": false,
+        "defaultValue": 0.0,
+        "networkSynced": true
+      },
+      {
+        "name": "FT/AutoToggle",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 1.0,
+        "networkSynced": true
+      },
+      {
+        "name": "MixExpressions",
+        "valueType": 2,
+        "type": "Bool",
+        "bits": 1,
+        "saved": true,
+        "defaultValue": 1.0,
+        "networkSynced": true
+      }
+    ]
+  },
+  "serializedParameterNames": [
+    "EyeTrackingActive",
+    "FT/AutoToggle",
+    "FT/v2/EyeLeftX",
+    "FT/v2/EyeRightX",
+    "FT/v2/JawOpen",
+    "FT/v2/MouthClosed",
+    "LipTrackingActive",
+    "MF3_Ctl",
+    "MF3_D00",
+    "MF3_D01",
+    "MF3_D02",
+    "MF3_D03",
+    "MF3_D04",
+    "MF3_D05",
+    "MF_GrabL",
+    "MF_GrabR",
+    "MF_Handle",
+    "MF_Level",
+    "MF_Reset",
+    "MF_Scale",
+    "MF_World"
+  ],
+  "missingParameterNames": [],
+  "checks": [
+    {
+      "name": "exactly one Store",
+      "pass": true,
+      "actual": 1,
+      "expected": 1
+    },
+    {
+      "name": "Store capacity",
+      "pass": true,
+      "actual": 16384,
+      "expected": 16384
+    },
+    {
+      "name": "Store lifetime is +Infinity",
+      "pass": true,
+      "actual": "Infinity",
+      "expected": "Infinity"
+    },
+    {
+      "name": "Store uses 3D particle size",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "Store has one burst",
+      "pass": true,
+      "actual": 1,
+      "expected": 1
+    },
+    {
+      "name": "Store renderer exists",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "Store shader",
+      "pass": true,
+      "actual": "MorphForge/ParticleBoxCatalog",
+      "expected": "MorphForge/ParticleBoxCatalog"
+    },
+    {
+      "name": "Material _CatalogMeta texture",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "Material _CatalogAtlas texture",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "_MetaWidth property",
+      "pass": true,
+      "actual": 256.0,
+      "expected": 256
+    },
+    {
+      "name": "_MetaHeight property",
+      "pass": true,
+      "actual": 64.0,
+      "expected": 64
+    },
+    {
+      "name": "metadata dimensions",
+      "pass": true,
+      "actual": [
+        256,
+        64
+      ],
+      "expected": [
+        256,
+        64
+      ]
+    },
+    {
+      "name": "metadata RGBAFloat format 20",
+      "pass": true,
+      "actual": 20,
+      "expected": 20
+    },
+    {
+      "name": "atlas dimensions",
+      "pass": true,
+      "actual": [
+        384,
+        96
+      ],
+      "expected": [
+        384,
+        96
+      ]
+    },
+    {
+      "name": "no 16384x1 metadata texture",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "no MorphForge runtime MonoScript",
+      "pass": true,
+      "actual": [],
+      "expected": []
+    },
+    {
+      "name": "exactly one VRCExpressionParameters asset",
+      "pass": true,
+      "actual": {
+        "pathId": -5592258200134368420,
+        "name": "Nemesis_Parameters_v_1_1_0(Clone)",
+        "isEmpty": 0
+      },
+      "expected": "one"
+    },
+    {
+      "name": "ft exact manifest, types, sync and bits",
+      "pass": true,
+      "actual": {
+        "count": 112,
+        "bits": 161,
+        "failures": []
+      },
+      "expected": {
+        "count": 112,
+        "bits": 161,
+        "failures": []
+      }
+    },
+    {
+      "name": "controls exact manifest, types, sync and bits",
+      "pass": true,
+      "actual": {
+        "count": 8,
+        "bits": 8,
+        "failures": []
+      },
+      "expected": {
+        "count": 8,
+        "bits": 8,
+        "failures": []
+      }
+    },
+    {
+      "name": "geometry exact manifest, types, sync and bits",
+      "pass": true,
+      "actual": {
+        "count": 7,
+        "bits": 56,
+        "failures": []
+      },
+      "expected": {
+        "count": 7,
+        "bits": 56,
+        "failures": []
+      }
+    },
+    {
+      "name": "placement exact manifest, types, sync and bits",
+      "pass": true,
+      "actual": {
+        "count": 7,
+        "bits": 14,
+        "failures": []
+      },
+      "expected": {
+        "count": 7,
+        "bits": 14,
+        "failures": []
+      }
+    },
+    {
+      "name": "actual expression parameter total is 256 bits",
+      "pass": true,
+      "actual": 256,
+      "expected": 256
+    },
+    {
+      "name": "SDK final budget reports 256 bits",
+      "pass": true,
+      "actual": {
+        "finalBits": 256,
+        "maxBits": 256,
+        "remainingBits": 0
+      },
+      "expected": {
+        "finalBits": 256,
+        "maxBits": 256,
+        "remainingBits": 0
+      }
+    },
+    {
+      "name": "required parameter names serialized",
+      "pass": true,
+      "actual": {
+        "present": [
+          "EyeTrackingActive",
+          "FT/AutoToggle",
+          "FT/v2/EyeLeftX",
+          "FT/v2/EyeRightX",
+          "FT/v2/JawOpen",
+          "FT/v2/MouthClosed",
+          "LipTrackingActive",
+          "MF3_Ctl",
+          "MF3_D00",
+          "MF3_D01",
+          "MF3_D02",
+          "MF3_D03",
+          "MF3_D04",
+          "MF3_D05",
+          "MF_GrabL",
+          "MF_GrabR",
+          "MF_Handle",
+          "MF_Level",
+          "MF_Reset",
+          "MF_Scale",
+          "MF_World"
+        ]
+      },
+      "expected": {
+        "missing": []
+      }
+    },
+    {
+      "name": "exactly one Pump",
+      "pass": true,
+      "actual": 1,
+      "expected": 1
+    },
+    {
+      "name": "Pump capacity is 1",
+      "pass": true,
+      "actual": 1,
+      "expected": 1
+    },
+    {
+      "name": "no World particle collision force on forbidden Pickup/Item layers",
+      "pass": false,
+      "actual": [
+        {
+          "pathId": 2277567180428878161,
+          "gameObjectId": -9079544791873691204,
+          "name": "Light",
+          "collisionEnabled": true,
+          "collisionType": 1,
+          "colliderForce": 1.0,
+          "collidesWith": 4188439,
+          "collisionMessages": true
+        }
+      ],
+      "expected": []
+    }
+  ],
+  "failedChecks": [
+    "no World particle collision force on forbidden Pickup/Item layers"
+  ]
+}

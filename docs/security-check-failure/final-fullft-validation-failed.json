@@ -1,0 +1,1224 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAtUtc": "2026-10-19T02:31:29.446079+00:00",
+  "status": "sdk-build-validation-failed-no-upload",
+  "avatar": {
+    "id": "avtr_df2ff222-b6ff-47fb-80be-e060868596a2",
+    "versionBefore": 8,
+    "versionAfter": 8,
+    "releaseStatus": "private"
+  },
+  "operation": {
+    "id": "final-fullft-20261019T022027773Z-846e54e0",
+    "status": "failure",
+    "phase": "failed",
+    "networkUploadStarted": false,
+    "sdkBuildCompleted": true
+  },
+  "rootName": {
+    "actual": "MorphForge_FullFT_Avatar",
+    "buildClone": "MorphForge_FullFT_Avatar(Clone)",
+    "profileMatches": true,
+    "cloneNameRewritten": false
+  },
+  "budgetFromActualVrca": {
+    "finalBits": 256,
+    "syncedParameterCount": 144,
+    "totalParameterCount": 226,
+    "ft": {
+      "count": 112,
+      "bits": 161,
+      "failures": [],
+      "entries": [
+        {
+          "name": "FT/AutoToggle",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/EyeSync",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/BrowExpressionLeft1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/BrowExpressionLeft2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/BrowExpressionLeft4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/BrowExpressionLeftNegative",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/BrowExpressionRight1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/BrowExpressionRight2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/BrowExpressionRight4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/BrowExpressionRightNegative",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/CheekPuffSuckLeft1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/CheekPuffSuckLeft2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/CheekPuffSuckLeft4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/CheekPuffSuckLeftNegative",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/CheekPuffSuckRight1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/CheekPuffSuckRight2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/CheekPuffSuckRight4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/CheekPuffSuckRightNegative",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/EyeLeftX",
+          "type": "Float",
+          "bits": 8,
+          "networkSynced": true,
+          "expectedType": "Float",
+          "expectedBits": 8
+        },
+        {
+          "name": "FT/v2/EyeLidLeft",
+          "type": "Float",
+          "bits": 8,
+          "networkSynced": true,
+          "expectedType": "Float",
+          "expectedBits": 8
+        },
+        {
+          "name": "FT/v2/EyeLidRight",
+          "type": "Float",
+          "bits": 8,
+          "networkSynced": true,
+          "expectedType": "Float",
+          "expectedBits": 8
+        },
+        {
+          "name": "FT/v2/EyeRightX",
+          "type": "Float",
+          "bits": 8,
+          "networkSynced": true,
+          "expectedType": "Float",
+          "expectedBits": 8
+        },
+        {
+          "name": "FT/v2/EyeSquintLeft1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/EyeSquintLeft2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/EyeSquintLeft4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/EyeSquintRight1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/EyeSquintRight2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/EyeSquintRight4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/EyeY",
+          "type": "Float",
+          "bits": 8,
+          "networkSynced": true,
+          "expectedType": "Float",
+          "expectedBits": 8
+        },
+        {
+          "name": "FT/v2/JawForward1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/JawForward2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/JawForward4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/JawOpen",
+          "type": "Float",
+          "bits": 8,
+          "networkSynced": true,
+          "expectedType": "Float",
+          "expectedBits": 8
+        },
+        {
+          "name": "FT/v2/JawX1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/JawX2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/JawX4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/JawXNegative",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/LipFunnel1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/LipFunnel2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/LipFunnel4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/LipPucker1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/LipPucker2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/LipPucker4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/LipSuckLower1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/LipSuckLower2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/LipSuckLower4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/LipSuckUpper1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/LipSuckUpper2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/LipSuckUpper4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthClosed",
+          "type": "Float",
+          "bits": 8,
+          "networkSynced": true,
+          "expectedType": "Float",
+          "expectedBits": 8
+        },
+        {
+          "name": "FT/v2/MouthLowerDown1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthLowerDown2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthLowerDown4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthPress1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthPress2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthPress4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthRaiserLower1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthRaiserLower2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthRaiserLower4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthRaiserUpper1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthRaiserUpper2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthRaiserUpper4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthStretchLeft1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthStretchLeft2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthStretchLeft4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthStretchRight1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthStretchRight2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthStretchRight4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthTightenerLeft1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthTightenerLeft2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthTightenerLeft4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthTightenerRight1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthTightenerRight2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthTightenerRight4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthUpperUpLeft1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthUpperUpLeft2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthUpperUpLeft4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthUpperUpRight1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthUpperUpRight2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthUpperUpRight4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthX1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthX2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthX4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/MouthXNegative",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/NoseSneer1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/NoseSneer2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/NoseSneer4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/PupilDilation1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/PupilDilation2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/PupilDilation4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/SmileFrownLeft1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/SmileFrownLeft2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/SmileFrownLeft4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/SmileFrownLeftNegative",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/SmileFrownRight1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/SmileFrownRight2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/SmileFrownRight4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/SmileFrownRightNegative",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/TongueOut1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/TongueOut2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/TongueOut4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/TongueRoll1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/TongueRoll2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/TongueRoll4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/TongueX1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/TongueX2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/TongueX4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/TongueXNegative",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/TongueY1",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/TongueY2",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/TongueY4",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FT/v2/TongueYNegative",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        }
+      ]
+    },
+    "controls": {
+      "count": 8,
+      "bits": 8,
+      "failures": [],
+      "entries": [
+        {
+          "name": "EyeTrackingActive",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "LipTrackingActive",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "EyeDilationEnable",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "VisemesEnable",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FacialExpressionsDisabled",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FaceTrackingEmulation",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "FaceTrackingLimits",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "MixExpressions",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        }
+      ]
+    },
+    "geometry": {
+      "count": 7,
+      "bits": 56,
+      "failures": [],
+      "entries": [
+        {
+          "name": "MF3_Ctl",
+          "type": "Int",
+          "bits": 8,
+          "networkSynced": true,
+          "expectedType": "Int",
+          "expectedBits": 8
+        },
+        {
+          "name": "MF3_D00",
+          "type": "Int",
+          "bits": 8,
+          "networkSynced": true,
+          "expectedType": "Int",
+          "expectedBits": 8
+        },
+        {
+          "name": "MF3_D01",
+          "type": "Int",
+          "bits": 8,
+          "networkSynced": true,
+          "expectedType": "Int",
+          "expectedBits": 8
+        },
+        {
+          "name": "MF3_D02",
+          "type": "Int",
+          "bits": 8,
+          "networkSynced": true,
+          "expectedType": "Int",
+          "expectedBits": 8
+        },
+        {
+          "name": "MF3_D03",
+          "type": "Int",
+          "bits": 8,
+          "networkSynced": true,
+          "expectedType": "Int",
+          "expectedBits": 8
+        },
+        {
+          "name": "MF3_D04",
+          "type": "Int",
+          "bits": 8,
+          "networkSynced": true,
+          "expectedType": "Int",
+          "expectedBits": 8
+        },
+        {
+          "name": "MF3_D05",
+          "type": "Int",
+          "bits": 8,
+          "networkSynced": true,
+          "expectedType": "Int",
+          "expectedBits": 8
+        }
+      ]
+    },
+    "placement": {
+      "count": 7,
+      "bits": 14,
+      "failures": [],
+      "entries": [
+        {
+          "name": "MF_World",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "MF_Handle",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "MF_Scale",
+          "type": "Float",
+          "bits": 8,
+          "networkSynced": true,
+          "expectedType": "Float",
+          "expectedBits": 8
+        },
+        {
+          "name": "MF_Reset",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "MF_GrabL",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "MF_GrabR",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        },
+        {
+          "name": "MF_Level",
+          "type": "Bool",
+          "bits": 1,
+          "networkSynced": true,
+          "expectedType": "Bool",
+          "expectedBits": 1
+        }
+      ]
+    }
+  },
+  "sdkValidationFailure": {
+    "message": "This avatar contains one or more particle systems configured to apply collision forces to Pickups and/or Items. This is not allowed. Please either disable collision against these layers, or set the collider force to zero.",
+    "offendingSystems": [
+      {
+        "pathId": 2277567180428878161,
+        "gameObjectId": -9079544791873691204,
+        "name": "Light",
+        "colliderForce": 1.0,
+        "collidesWith": 4188439,
+        "collisionMessages": true
+      }
+    ],
+    "exactPath": "MorphForge_FullFT_Avatar(Clone)/Armature/Hips/Spine/Chest/Shoulder_R/UpperArm_R/LowerArm_R/Hand_R/NemesisWandPrefab/WandMenu/LusterRailGun/LusterRailGun_Toggle/Shot/Coin/Light",
+    "collidesWithBits": 4188439,
+    "collidesWithLayers": {
+      "13": "Pickup",
+      "14": "PickupNoEnvironment"
+    },
+    "fixContract": {
+      "colliderForceAfter": 0,
+      "pickupForceDisabled": true,
+      "disabledPickupLayers": false,
+      "collisionLayersPreserved": true
+    }
+  },
+  "failedVrca": {
+    "path": "/tmp/final-fullft-validation-failed.vrca",
+    "bytes": 11067360,
+    "sha256": "983cd57fbe95ec136cc61cd4f0422f90c871693e11c4a69a0c1c16bf4249fc88"
+  },
+  "packageChecks": {
+    "store": {
+      "capacity": 16384,
+      "lifetime": "Infinity",
+      "size3D": true
+    },
+    "pump": {
+      "capacity": 1,
+      "verifiedSeparately": true
+    },
+    "otherCharacterEffects": {
+      "count": 151,
+      "totalCapacity": 41750,
+      "separateFromStoreLimit": true
+    },
+    "metadata": {
+      "pathId": -1213621359205545928,
+      "name": "CatalogMetadata",
+      "width": 256,
+      "height": 64,
+      "format": 20,
+      "mipCount": 1,
+      "colorSpace": 0
+    },
+    "atlas": {
+      "pathId": -347633513603144029,
+      "name": "CatalogAtlas",
+      "width": 384,
+      "height": 96,
+      "format": 4,
+      "mipCount": 1,
+      "colorSpace": 1
+    },
+    "storeMaterial": {
+      "pathId": -8194106025869569609,
+      "name": "ParticleBoxCatalog",
+      "shaderPathId": 4641559875580322477,
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "metaWidth": 256.0,
+      "metaHeight": 64.0,
+      "textures": [
+        "_CatalogAtlas",
+        "_CatalogMeta"
+      ]
+    },
+    "failedChecks": [
+      "no World particle collision force on forbidden Pickup/Item layers"
+    ],
+    "forbiddenCollisionMask": 24576,
+    "allNonCollisionChecksPassed": true
+  },
+  "writeDefaultsPrompt": {
+    "present": true,
+    "action": "exact Skip",
+    "autoFix": false,
+    "stopAsking": false
+  },
+  "nextAction": "Set colliderForce to zero on the identified FullFT build-copy particle system while preserving its collision layers; rerun JointBuild/preflight, then upload once more to the same private diagnostic Avatar ID.",
+  "safetyBoundary": {
+    "originalStage3Changed": false,
+    "sourceFullFtChangedByPublisher": false,
+    "vrChatLaunched": false,
+    "oscSent": false,
+    "secretsIncluded": false
+  }
+}

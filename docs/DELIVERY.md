@@ -1,6 +1,6 @@
 # MorphForge 0.2.0 交付记录
 
-日期：2026-10-19。Rust独立核心、共享体素工作台、DeepSeek Harness、可选MF3发布适配器及Windows Tauri安装器已交付。Git分支为 `feat/harness-interaction-and-voxel-text`，基线tag为 `v0.1.0-baseline`，计划发布tag为 `v0.2.0`，客户端诊断收尾后建立；没有推送远端。
+日期：2026-10-19。Rust独立核心、共享体素工作台、DeepSeek Harness、可选MF3发布适配器及Windows Tauri安装器已交付。Git分支为 `feat/harness-interaction-and-voxel-text`，基线tag为 `v0.1.0-baseline`，源码候选tag为 `v0.2.0-rc.1`，最终 `v0.2.0` 等待客户端现场确认；没有推送远端。
 
 ## 安装与使用
 
@@ -16,7 +16,7 @@ D:\Projects\VRChatProjects2\MorphForge\dist\windows\MorphForge Desktop_0.2.0_x64
 CE30B61609FF93C250840560D14AB4278709E7BBD37EACDA63F736B4FCCBEF03
 ```
 
-Linux工作区有相同副本 `dist/windows/`，该目录保留安装器校验清单；完整Git历史bundle将在本轮客户端诊断收尾后生成。安装器未代码签名。
+Linux工作区有相同副本 `dist/windows/`，该目录保留安装器校验清单；完整Git历史bundle为 `dist/windows/MorphForge-0.2.0-rc.1.bundle`，附独立SHA-256；包含本轮Avatar修复及实际上传证据。安装器未代码签名。
 
 用户数据位于 `%LOCALAPPDATA%\MorphForge`。现有DeepSeek配置保留，API Key不进入源码、安装器或Git bundle。新增两份带三视图的样例作品与独立原始运行档案，未覆盖当前工程及原有三份作品。
 
@@ -64,8 +64,20 @@ MA注入几何与定位，VRCFury集成完整面捕，通过精简本体同步�
 
 当前为PC/PCVR、Very Poor定位。云水是表面近似，Minecraft仅支持常见Java立方体、六面和动画纹理；高级折射、物理体积云、任意异形模型及实体运动扩展没有宣称实现。文字暂不支持复杂RTL/shaping。Token预算按Provider实际usage门限计量，最多可能多出一个完整响应，不能作为账单硬上限。
 
-本轮没有自动上传Avatar、启动VRChat或向9000发包。用户原Stage3场景仍打开且有未保存修改，未保存、关闭或丢弃。
+用户明确授权本轮SDK上传/更新私有诊断Avatar和窗口操作，并允许不保存旧场景。已完成上述授权内的实际上传与服务端检查；没有启动VRChat或向9000发包。原Stage3文件与Avatar ID保持不变。FullFT源场景和独立诊断场景已保存根名修复，最终FullFT副本已保存Pickup粒子碰撞力修复；商业Nemesis源未改。
 
-## 新增客户端问题（待定位）
+## Avatar安全检查已修复并通过服务端复核
 
-2026-10-19用户手动上传`MorphForge_Stage3_Avatar`后，客户端报告`AssetBundleFailedServerSideChecks`。这是Stage3实际上传包的服务端检查失败，不能由FullFT的Editor/SDK验收排除。详见[诊断证据](security-check-failure/client-evidence.json)；具体命中项尚不明确，完整客户端验收暂未通过。桌面0.2.0已安装供用户手测，保持运行。
+原Stage3的`AssetBundleFailedServerSideChecks`由原16384×1 Catalog metadata布局关联触发；改成完整256×64后，同一私有诊断Avatar在64、4096、16384容量都通过服务端分析。生产生成器保留全部4096样式、数据字节和资源GUID。
+
+完整FullFT验证额外修复了场景根名未匹配Profile和人物RailGun粒子向Pickup施加碰撞力的问题。实际场景SDK/Play、16k显示、无睡眠审计通过后，最终Avatar已更新为 **MorphForge FullFT 16K**：
+
+- ID：`avtr_df2ff222-b6ff-47fb-80be-e060868596a2`，private，Avatar v10/file v8，pending=false。
+- 实际包11,072,116字节；总256bit、FT112项/161bit全部direct、控制8、几何56、定位14。
+- Store16384/Infinity、Pump1；其它人物特效151套/41750容量单列。
+- generic/standard/security三项终态200，VeryPoor；Pickup/Item碰撞力违规0。
+
+[最终通过证据](security-check-failure/final-fullft-passed.json) · [逐项实包审计](security-check-failure/final-fullft-vrca.json) · [完整说明](security-check-failure/FINAL-FULLFT.md)。
+
+真实客户端加载、多人同步与硬件抓取尚待用户现场确认，不能由服务端200代替。
+[最小复核步骤](security-check-failure/CLIENT-RETEST.md)。因此源码先标记候选版本`v0.2.0-rc.1`，最终标签留待该项确认；桌面0.2.0安装器不变，Unity修复不属于69个软件构建输入。

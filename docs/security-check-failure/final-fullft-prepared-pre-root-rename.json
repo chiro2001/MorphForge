@@ -1,0 +1,156 @@
+{
+  "success": true,
+  "scope": "Independent FullFT diagnostic scene; no build or upload.",
+  "generatedAtUtc": "2026-10-19T02:06:25.8466358Z",
+  "sourceScene": "Assets/MorphForge/FullFT/MorphForge_FullFT.unity",
+  "sourceSceneSha256": "335ccf4f416548571b01abf91c6e818c4d71a2c37b5ddd204db63a1466466926",
+  "sourceSceneUnchanged": true,
+  "sourceSceneStillOpen": true,
+  "sourceSceneSavedOrDiscarded": false,
+  "targetScene": "Assets/MorphForge/Diagnostics/FinalFullFT/MorphForge_FinalFullFT_Diagnostic.unity",
+  "targetSceneSha256": "c90540a76714190e3f4978b65882c995e459ecb982d8d132f8309119fb3ed7de",
+  "avatarPrefab": "Assets/MorphForge/FullFT/Avatar.prefab",
+  "avatarPrefabSha256": "669dd8fe902c60055dcc616d26edbeada8c98a114b900f399d7d2cbb7329e328",
+  "targetAvatarId": "avtr_df2ff222-b6ff-47fb-80be-e060868596a2",
+  "avatarCount": 1,
+  "gestureManagerCount": 1,
+  "receiverCount": 1,
+  "receivePort": 9012,
+  "sendPort": 9013,
+  "preflight": {
+    "preflightFailures": [],
+    "targetAvatarId": "avtr_df2ff222-b6ff-47fb-80be-e060868596a2",
+    "expectedUserId": "usr_c0dd064e-ac42-47a7-a17e-da6540382c55",
+    "targetMustBePrivate": true,
+    "originalAvatarIdChanged": false,
+    "sourcePrefabWillBeModified": false,
+    "sourceSceneWillBeModified": false,
+    "autoUploadInPrepare": false,
+    "jointBuild": {
+      "success": true,
+      "prefabSha256": "669DD8FE902C60055DCC616D26EDBEADA8C98A114B900F399D7D2CBB7329E328",
+      "finalBudgetSha256": "B57BA6EA37C114D38743C729566ED3FA4DAFD90485CFB9BF1C1B796745058B3F",
+      "finalBits": 256
+    },
+    "budget": {
+      "finalBits": 256,
+      "ftBits": 161,
+      "ftAllDirect": true,
+      "controlsBits": 8,
+      "controlsAllDirect": true,
+      "geometryBits": 56,
+      "geometryAllDirect": true,
+      "placementBits": 14,
+      "placementAllDirect": true
+    },
+    "sceneBuild": {
+      "targetScene": "Assets/MorphForge/FullFT/MorphForge_FullFT.unity",
+      "creationSceneSha256": "9817A4239DF4DF52806F17F5CBCBE3AC60B0FE08C041DD1DB7EF1E4304AE39C8",
+      "currentSceneSha256": "335ccf4f416548571b01abf91c6e818c4d71a2c37b5ddd204db63a1466466926",
+      "creationHashMatchesCurrent": false,
+      "sourceSceneSha256": "B09F22C2F830ADF876DB8FE2754C6AD0F81221706B71534BA9FA012F82092FED",
+      "proofPrefabSha256": "A0C1C4446E8E0C313E030416B5A501675364505395B8A31B2C49848BBD4C21F6",
+      "proofMatchesCurrentPrefab": false,
+      "interpretation": "The scene was created before the latest in-place prefab build. Live scene and prefab validation remain authoritative for the diagnostic copy."
+    },
+    "catalogMigration": {
+      "metadataGuid": "ec0707e246447504f903f97ef8fad854",
+      "materialGuid": "da5a36723d577ce4397c6b1a6efd98cd",
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "allDataPreserved": true
+    },
+    "productionVisual": {
+      "checkCount": 16,
+      "failedCheckCount": 0,
+      "allPassed": true
+    },
+    "material": {
+      "path": "Assets/MorphForge/MaterialsCatalog/ParticleBoxCatalog.mat",
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "metaWidth": 256,
+      "metaHeight": 64,
+      "metaFormat": "RGBAFloat",
+      "metadataPath": "Assets/MorphForge/MaterialsCatalog/CatalogMetadata.asset",
+      "metadataGuid": "ec0707e246447504f903f97ef8fad854",
+      "materialGuid": "da5a36723d577ce4397c6b1a6efd98cd",
+      "atlasWidth": 384,
+      "atlasHeight": 96,
+      "metaWidthProperty": 256.0,
+      "metaHeightProperty": 64.0
+    },
+    "files": {
+      "Assets/MorphForge/FullFT/Avatar.prefab": {
+        "path": "Assets/MorphForge/FullFT/Avatar.prefab",
+        "exists": true,
+        "bytes": 926764,
+        "sha256": "669dd8fe902c60055dcc616d26edbeada8c98a114b900f399d7d2cbb7329e328"
+      },
+      "Assets/MorphForge/FullFT/MorphForge_FullFT.unity": {
+        "path": "Assets/MorphForge/FullFT/MorphForge_FullFT.unity",
+        "exists": true,
+        "bytes": 42393,
+        "sha256": "335ccf4f416548571b01abf91c6e818c4d71a2c37b5ddd204db63a1466466926"
+      },
+      "Assets/MorphForge/MaterialsCatalog/ParticleBoxCatalog.mat": {
+        "path": "Assets/MorphForge/MaterialsCatalog/ParticleBoxCatalog.mat",
+        "exists": true,
+        "bytes": 1224,
+        "sha256": "a4a857ecb2e9f1c826faf16194f878d6aecfc3cc6ce12cc86ba4f1f90e1cbadc"
+      },
+      "Assets/MorphForge/Shaders/ParticleBoxCatalog.shader": {
+        "path": "Assets/MorphForge/Shaders/ParticleBoxCatalog.shader",
+        "exists": true,
+        "bytes": 10940,
+        "sha256": "bb30c28fbcffcc7b47ed4a50791d4b4aac2a2dc76377e87cd979dba8c9de2604"
+      },
+      "Docs/FullFT/joint-build.json": {
+        "path": "Docs/FullFT/joint-build.json",
+        "exists": true,
+        "bytes": 567,
+        "sha256": "70d4f78b4eadb058d6056bed9c965f4f9419d53c1bc60c60f3df8975b5b00f5f"
+      },
+      "Docs/FullFT/final-budget.json": {
+        "path": "Docs/FullFT/final-budget.json",
+        "exists": true,
+        "bytes": 96950,
+        "sha256": "b57ba6ea37c114d38743c729566ed3fa4dafd90485cfb9bf1c1b796745058b3f"
+      },
+      "Docs/FullFT/scene-build.json": {
+        "path": "Docs/FullFT/scene-build.json",
+        "exists": true,
+        "bytes": 2074,
+        "sha256": "6dc7a53d818645ef6a3621e721accd7939557d1c8cec7b213380bc29e2769634"
+      },
+      "Docs/Security/catalog-production-migration.json": {
+        "path": "Docs/Security/catalog-production-migration.json",
+        "exists": true,
+        "bytes": 2125,
+        "sha256": "174e19630604c6dc43a247c295a2e8db360c7f3264ce6434356d377e1fd76934"
+      },
+      "Docs/Security/catalog-production-visual/report.json": {
+        "path": "Docs/Security/catalog-production-visual/report.json",
+        "exists": true,
+        "bytes": 6289,
+        "sha256": "20e0bf522479913da34321db54751d8ef787817dceebd4572eae2627181a6115"
+      }
+    },
+    "prefab": {
+      "avatarDescriptorCount": 1,
+      "storeCount": 1,
+      "missingScripts": 0,
+      "morphForgeRuntimeScriptCount": 0,
+      "capacity": [
+        16384
+      ],
+      "lifetime": [
+        "Infinity"
+      ],
+      "materialsMatchProduction": true,
+      "hasPlacement": true,
+      "geometryModuleCount": 1
+    }
+  },
+  "networkUploadStarted": false,
+  "vrChatLaunched": false,
+  "sourcePrefabWritten": false
+}

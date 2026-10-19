@@ -1,3 +1,21 @@
+# 当前候选源码与完整历史
+
+2026-10-19最新包为`MorphForge-0.2.0-rc.1.bundle`，附同名`.bundle.sha256`。
+它包含所有阶段提交、Avatar材质/场景/SDK校验修复及最终FullFT上传通过证据。
+候选标签`v0.2.0-rc.1`；真实客户端确认后再建立最终`v0.2.0`。
+
+在独立新目录执行：
+
+```powershell
+git clone .\MorphForge-0.2.0-rc.1.bundle MorphForge-source
+cd MorphForge-source
+git checkout v0.2.0-rc.1
+```
+
+不覆盖当前Unity工作区。商业Nemesis资产与生成的完整Avatar继续只在Windows工程中。
+
+下面保留较早的局部历史快照说明；它不包含后续修复。
+
 # 可审查源码快照
 
 快照：`a9e2c08e9ef37397114f73c87ff97101547ff6bd`，分支`feat/harness-interaction-and-voxel-text`。

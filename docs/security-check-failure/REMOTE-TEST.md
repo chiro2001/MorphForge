@@ -17,3 +17,11 @@
 上传前诊断脚本曾错误地在主线程对包含`Task.Yield`的账号只读任务执行同步`GetAwaiter().GetResult`，导致旧Editor等待自身的continuation。此时尚未建立upload操作或新AvatarRecord。已修正为async/await，并将纯账号快照改为`Task.FromResult`，不再强制Yield。
 
 恢复过程：Session1窗口枚举只发现主窗口；截图未能取得Unity自身画面，不能作为Unity内部UI检查的证据。向该窗口发送WM_CLOSE后原PID46280仍未退出。依用户明确不保存授权，仅结束此已核实项目路径的PID，重新启动同一MorphForge工程（新PID141832）。没有执行线程Interrupt、原生注入或进程内存dump，没有启动VRChat。新Editor通过Pipeline报告ready、compiling=false、playMode=stopped，后续从已保存4096测试场景继续正常SDK流程。
+
+## 正式资源修复与场景迁移
+
+同一私有诊断Avatar已完成64/4096/16384的Catalog对照：原16384×1布局失败，完整256×64布局通过。随后生产生成器和共享材质已迁移，原始metadata字节、GUID和四个产品Prefab保持一致。
+
+最终FullFT直接Play又发现根名`Avatar`不匹配profile前缀的问题。本轮仅对本项目FullFT源场景和独立诊断场景进行根名修复并保存，保留位置/旋转/缩放和源Prefab；这属于用户要求修复与上传的已授权范围。原Stage3文件未保存或改写。源场景准备时仍打开的记录是历史快照，后来为单Avatar测试关闭了其它loaded场景。
+
+修复后的实际场景clone SDK链、真实Play面捕分支、16k显示夹具及无睡眠审计均通过。所有上传只用既有SDK会话和同一个私有诊断ID；没有启动VRChat客户端，没有向9000发送OSC。最终服务端结果见`FINAL-FULLFT.md`。

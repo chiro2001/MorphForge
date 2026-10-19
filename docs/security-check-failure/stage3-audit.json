@@ -3126,5 +3126,13 @@
     "A server verdict cannot be reproduced locally; only structural risk factors and differential changes are observable.",
     "The current dirty scene may continue to change; all source-scene figures refer to the captured snapshot and hash above.",
     "The local predecessor VRCA is the nearest prior build, not proof of the exact cloud bytes that loaded at 02:29:27."
-  ]
+  ],
+  "historical": true,
+  "supersededBy": [
+    "upload64-catalog.json",
+    "upload64-metadata-narrow.json",
+    "upload64-metadata-grid.json",
+    "upload16384-grid-capacity.json"
+  ],
+  "currentInterpretation": "Initial hypotheses only. Subsequent same-avatar controls isolated the original 16384x1 metadata layout; 16384 capacity with Infinity and 256x64 metadata passed server analysis. See README.md."
 }

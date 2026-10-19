@@ -59,6 +59,12 @@ Windows使用69个冻结构建输入，manifest与聚合hash见[source-freeze.js
 
 两份新作品已成功加入Windows默认作品库，包含三视图与独立原始run/Recipe/archive，旧工程与作品保留；见[library-seed.json](library-seed.json)。原始事件流单独归档，不把不同工程revision混进当前用户日志。
 
+## 追加的 Avatar 修复（同日）
+
+完整对照和实际SDK上传已完成，[最终通过摘要](../security-check-failure/final-fullft-passed.json)。原16384×1 metadata改为256×64，4096样式字节/GUID全部保留；生产视觉16项和16k显示夹具通过。FullFT真实场景根名前缀与人物RailGun粒子的Pickup碰撞力已修复并进入生成器；最终副本无睡眠、SDK和实包都为256bit，FT112项/161bit完整直通。
+
+私有Avatar **MorphForge FullFT 16K**，版本10/file8，服务端generic/standard/security均200。实际包11,072,116字节；Store16384、Pump1、其它人物特效151套/41750容量。Source候选标签`v0.2.0-rc.1`及Git bundle包含修复与证据；此前软件69输入和安装器未变。真实客户端、多人和硬件仍待现场确认；此前各阶段“未上传/保留dirty现场”是当时的边界快照，后续操作按用户明确授权进行。
+
 ## 实际边界
 
 软件闭环通过不等于任意艺术任务都能一次自动完成。真实测试仍出现数学/语法、空间遮挡判断、参数重抄与预算耗尽；保护、版本、预览指纹、检查点与连续输入使这些错误可观察和恢复。中文与拉丁文字已验证，复杂RTL/shaping暂不支持。VRC网络无远端ACK等既有限制保持，未以本轮软件测试代替真实多人验证。
