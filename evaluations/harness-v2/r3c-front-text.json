@@ -1,0 +1,35 @@
+{
+  "id": "r3c-front-facing-text-repair",
+  "continue": true,
+  "enforceProtection": true,
+  "settings": {
+    "model": "deepseek-flash",
+    "reasoning": "none",
+    "language": "zh-CN",
+    "maxSteps": 10,
+    "maxOutputTokens": 8192,
+    "maxRunTokens": 200000,
+    "maxRunSeconds": 650,
+    "autoCompact": true,
+    "compactTokens": 18000
+  },
+  "protectedGroups": [
+    "island",
+    "lighthouse",
+    "pavilion",
+    "bridge",
+    "details",
+    "sea",
+    "sign"
+  ],
+  "requiredGroups": [
+    "island",
+    "lighthouse",
+    "pavilion",
+    "bridge",
+    "sign_front"
+  ],
+  "targetVrc": true,
+  "requireSavedViews": true,
+  "prompt": "从安全检查点继续收尾。上一轮造型已经完成，VRC坐标也合规，但文字放到木牌背后，被木板遮挡。现在七个旧分组已软件保护，全部保留不要修改。请读取context与sign边界；正面相机位于+Z，Z越大越靠前，因此新文字origin.z应等于木牌最大Z再+1（从当前数据看木牌约在z37..38，新字可在z39），不能再放z29。新加一组sign_front的真正字体Box“星港”，字号至少16、XY positive，选黄金或发光浅色，居中放在木牌正面。为了本次无损收尾，旧背后字体暂保留不删除，不再修改建筑或其它细节。预览时就指定完整origin/group/align，直接复用applyTemplate。只复核一次hero/front/top，然后用finish_artwork保存为“星砂港 · 正面体素文字修正版”并完成。不要发布OSC或VRC。"
+}

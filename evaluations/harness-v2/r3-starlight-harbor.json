@@ -1,0 +1,26 @@
+{
+  "id": "r3-budgeted-vrc-starlight-harbor",
+  "settings": {
+    "model": "deepseek-flash",
+    "reasoning": "none",
+    "language": "zh-CN",
+    "maxSteps": 22,
+    "maxOutputTokens": 16384,
+    "maxRunTokens": 350000,
+    "maxRunSeconds": 900,
+    "autoCompact": true,
+    "compactTokens": 32000
+  },
+  "maxBoxes": 16384,
+  "targetVrc": true,
+  "requireVisualIteration": true,
+  "requiredGroups": [
+    "island",
+    "lighthouse",
+    "pavilion",
+    "bridge",
+    "sign"
+  ],
+  "prompt": "中文标牌字号至少16，保持字形可读。制作完整体素艺术《星砂港》：一个蓝铜配色的海岛灯塔、带半开放拱廊的小亭、一条有栏杆及负空间的桥、局部水面，以及真正由字体生成的体素中文标牌“星港”。分别放在island/lighthouse/pavilion/bridge/sign组，装饰可另分details。目标VRChat，全部几何包括云底、水面、亭柱、字牌都必须满足X/Z[-128,128)、Y[0,256)，建议把地面放Y=24，云或水底从Y=8以上开始，主体放在X/Z[-80,80]内。用合理长方体和少量有意义的细节，不为数量堆盒子。先直接读取get_context再简短规划；先搭大形并commit检查点，然后完成真字体标牌。做hero/front/top截图检查后至少实际修正一处，再复核。总共最多两轮截图，完成即调用finish_artwork，一次commit并保存作品库和实际三视图（可直接用默认最新capture映射），在summary中简短说明成品，不要无限润色。请预留入库和最终回答所需预算，不要启用或发布OSC。用中文简述完成情况与仍有的限制。",
+  "requireSavedViews": true
+}

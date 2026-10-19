@@ -1,0 +1,164 @@
+{
+  "case": "r3-budgeted-vrc-starlight-harbor",
+  "caseSha256": "03a1080d961901442d5ceb8c68a02d8fc0ee6d0c7f7841e54b858538fda414a0",
+  "backend": "http://127.0.0.1:8783",
+  "initialRunId": "a20e72b9-ab84-4b08-938e-4d03ca7f9c16",
+  "settings": {
+    "model": "deepseek-flash",
+    "reasoning": "none",
+    "language": "zh-CN",
+    "maxSteps": 22,
+    "maxOutputTokens": 16384,
+    "maxRunTokens": 350000,
+    "maxRunSeconds": 900,
+    "autoCompact": true,
+    "compactTokens": 32000
+  },
+  "versions": {
+    "software": {
+      "apiVersion": "mf-http/2",
+      "name": "MorphForge",
+      "version": "0.2.0"
+    },
+    "tools": "morphforge-tools/2.3",
+    "prompt": "morphforge-system/2.3",
+    "language": "zh-CN",
+    "schemaSha256": "e94c4d021da386f9d8913d43069c8dd3d2521cb1f9a16f687782a17ea61d1efa"
+  },
+  "actions": [],
+  "success": false,
+  "checks": {
+    "runCompleted": false,
+    "allActionsExercised": true,
+    "nonemptyScene": true,
+    "boxCapacity": true,
+    "modelUsedVisualFeedback": true,
+    "modelCommitted": true,
+    "modelSavedArtwork": false,
+    "oscRemainsDisabled": true,
+    "group:island": true,
+    "group:lighthouse": true,
+    "group:pavilion": true,
+    "group:bridge": true,
+    "group:sign": true,
+    "geometryRevisedAfterVisualFeedback": true,
+    "vrcCoordinateRange": true,
+    "savedArtworkHasActualViews": false
+  },
+  "run": {
+    "activeRequestId": null,
+    "epoch": 1,
+    "error": "RUN_BUDGET：达到步骤或Token预算，已提交版本仍保留",
+    "finishedAt": "2026-10-18T23:42:07.820Z",
+    "id": "a20e72b9-ab84-4b08-938e-4d03ca7f9c16",
+    "language": "zh-CN",
+    "message": "现在字形位于 z=29，背板在 z=37–38，前方没有遮挡物。应用后立即复核。",
+    "prompt": "中文标牌字号至少16，保持字形可读。制作完整体素艺术《星砂港》：一个蓝铜配色的海岛灯塔、带半开放拱廊的小亭、一条有栏杆及负空间的桥、局部水面，以及真正由字体生成的体素中文标牌“星港”。分别放在island/lighthouse/pavilion/bridge/sign组，装饰可另分details。目标VRChat，全部几何包括云底、水面、亭柱、字牌都必须满足X/Z[-128,128)、Y[0,256)，建议把地面放Y=24，云或水底从Y=8以上开始，主体放在X/Z[-80,80]内。用合理长方体和少量有意义的细节，不为数量堆盒子。先直接读取get_context再简短规划；先搭大形并commit检查点，然后完成真字体标牌。做hero/front/top截图检查后至少实际修正一处，再复核。总共最多两轮截图，完成即调用finish_artwork，一次commit并保存作品库和实际三视图（可直接用默认最新capture映射），在summary中简短说明成品，不要无限润色。请预留入库和最终回答所需预算，不要启用或发布OSC。用中文简述完成情况与仍有的限制。",
+    "promptVersion": "morphforge-system/2.3",
+    "startedAt": "2026-10-18T23:41:11.327Z",
+    "status": "failed",
+    "steps": 18,
+    "tokens": 369315,
+    "toolsVersion": "morphforge-tools/2.3"
+  },
+  "interaction": {
+    "activeRequestId": null,
+    "activeSecondsRemaining": null,
+    "epoch": 1,
+    "paused": false,
+    "phase": "failed",
+    "queue": [],
+    "runId": "a20e72b9-ab84-4b08-938e-4d03ca7f9c16"
+  },
+  "scene": {
+    "revision": 7,
+    "boxes": 745,
+    "styles": 14,
+    "groups": [
+      "bridge",
+      "details",
+      "island",
+      "lighthouse",
+      "pavilion",
+      "sea",
+      "sign"
+    ]
+  },
+  "eventCounts": {
+    "harness.started": 1,
+    "harness.message.accepted": 1,
+    "harness.message.applied": 1,
+    "harness.request.prepared": 18,
+    "provider.request": 18,
+    "provider.first_byte": 18,
+    "provider.text_delta": 415,
+    "provider.response": 18,
+    "tool.request": 19,
+    "tool.result": 19,
+    "geometry.applied": 7,
+    "recipe.completed": 5,
+    "revision.committed": 1,
+    "text.applied": 2,
+    "capture.completed": 4,
+    "harness.finished": 1
+  },
+  "toolCalls": 19,
+  "toolNames": {
+    "get_context": 1,
+    "run_recipe": 7,
+    "commit": 1,
+    "voxel_text": 5,
+    "capture_views": 4,
+    "inspect_region": 1
+  },
+  "toolErrors": [
+    {
+      "name": "run_recipe",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "RECIPE_ERROR: Error: size must be positive; op=box min=[22,38,-2] size=[0,1,2] group=pavilion operation=281"
+        },
+        "ok": false
+      }
+    },
+    {
+      "name": "run_recipe",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "RECIPE_ERROR: SyntaxError: expected one of ',' or ')', got ']' in argument list at line 40, col 37"
+        },
+        "ok": false
+      }
+    },
+    {
+      "name": "voxel_text",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "PREVIEW_CONFLICT：文字设置已改变，请重新预览"
+        },
+        "ok": false
+      }
+    }
+  ],
+  "images": [
+    {
+      "view": "hero",
+      "file": "hero.png",
+      "sha256": "7aa5f2494ffbcd82259a9cb6bd1feef81d9dc2b11886f7728fa0f98f7b9f3481"
+    },
+    {
+      "view": "front",
+      "file": "front.png",
+      "sha256": "56a23af1f8de3e92d425204f64de2c9cb27a644db7b905b415f29741394e7df2"
+    },
+    {
+      "view": "top",
+      "file": "top.png",
+      "sha256": "46223987ba8663fdf1b471b8418e9b9481d69e049688bb1cff7e3c219236f966"
+    }
+  ],
+  "seconds": 60.94885117514059
+}

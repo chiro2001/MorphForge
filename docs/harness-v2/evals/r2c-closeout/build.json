@@ -1,0 +1,8 @@
+{
+  "softwareVersion": "0.2.0",
+  "binarySha256": "e198fe8611acda8037148518a4980d04c7a80c898476141e4249e338dbc21ab6",
+  "developmentBuild": true,
+  "systemVersion": "morphforge-system/2.3",
+  "toolsVersion": "morphforge-tools/2.3",
+  "note": "实际usage累计阈值与显式finish_artwork；从R2b安全检查点收尾，锁全部8组。"
+}

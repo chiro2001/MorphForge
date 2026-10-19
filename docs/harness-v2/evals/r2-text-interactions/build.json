@@ -1,0 +1,8 @@
+{
+  "softwareVersion": "0.2.0",
+  "binarySha256": "b5ae581e40d7cc5ee6982cd2a822cfe17d84cdadde4353e248f18e388be4fd43",
+  "developmentBuild": true,
+  "systemVersion": "morphforge-system/2.1",
+  "toolsVersion": "morphforge-tools/2.1",
+  "note": "第二轮冻结二进制，450k预算/32k compact，保存R1全部几何后继续；最终发布另做源码冻结。"
+}

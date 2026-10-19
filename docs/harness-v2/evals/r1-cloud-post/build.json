@@ -1,0 +1,6 @@
+{
+  "softwareVersion": "0.2.0",
+  "binarySha256": "7f47637a9142667e2bc47514d237f06b606d1446e76f9ff2055d60deda414982",
+  "developmentBuild": true,
+  "note": "独立冻结的评测二进制；后续交互测试修正不会改变本次运行，最终发布另做源码冻结。"
+}

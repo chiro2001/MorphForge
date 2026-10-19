@@ -1,0 +1,3 @@
+    Checking morphforge-core v0.2.0 (/home/chiro/projects/vrc-projects/morphforge/crates/morphforge-core)
+    Checking morphforge-app v0.2.0 (/home/chiro/projects/vrc-projects/morphforge/crates/morphforge-app)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.87s

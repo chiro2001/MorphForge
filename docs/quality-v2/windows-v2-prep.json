@@ -1,0 +1,94 @@
+{
+  "schema": "MorphForgeWindowsV2Prep/1",
+  "success": true,
+  "date": "2026-10-19",
+  "scriptExecuted": false,
+  "scope": "Prepared and syntax-checked only; no Windows deployment or core launch.",
+  "script": {
+    "path": "tools/check_windows_v2.ps1",
+    "sha256": "e74fc618b1f15aaa3e0be78c8be204ff1b77655cb95a80c170ecf1890b15e89c",
+    "encoding": "UTF-8 without BOM",
+    "requiresPowerShell": "7.0"
+  },
+  "guide": {
+    "path": "docs/quality-v2/WINDOWS-V2.md",
+    "sha256": "b53a3be96131dfb41078fce9e18518474927040f792f77090f1450f139c08711"
+  },
+  "windowsAccess": {
+    "host": "192.168.101.5",
+    "transport": "SSH BatchMode, direct pwsh EncodedCommand",
+    "powershell": "7.6.7",
+    "powershellPath": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+    "os": "Microsoft Windows NT 10.0.26200.0"
+  },
+  "syntaxCheck": {
+    "passed": true,
+    "method": "PowerShell 7 System.Management.Automation.Language.Parser through SSH stdin",
+    "filesWrittenToWindows": false,
+    "coreCopiedToWindows": false,
+    "backendStarted": false
+  },
+  "toolchainProbe": {
+    "invokeWebRequestParameters": {
+      "MaximumRedirection": true,
+      "NoProxy": true,
+      "SkipHttpErrorCheck": true
+    },
+    "processStartInfoProperties": {
+      "ArgumentList": true,
+      "Environment": true,
+      "StandardOutputEncoding": true,
+      "StandardErrorEncoding": true
+    }
+  },
+  "runtimeBoundary": {
+    "explicitCoreExe": true,
+    "explicitEmptyDataDir": true,
+    "randomLoopbackPort": true,
+    "noCapture": true,
+    "ownedProcessCleanupOnly": true,
+    "providerBaseUrl": "http://127.0.0.1:1",
+    "forbiddenHarnessEndpoints": [
+      "/api/harness/start",
+      "/api/harness/message",
+      "/api/harness/control",
+      "/api/provider/*"
+    ],
+    "oscWritesInvoked": false
+  },
+  "plannedChecks": [
+    "builtin font catalog and license",
+    "Chinese text preview and fingerprint",
+    "typed missing glyph response",
+    "text apply",
+    "text apply requestId replay",
+    "text undo",
+    "zh-CN and en tool schemas",
+    "mf.text Recipe dry-run",
+    "16384 operation Recipe dry-run",
+    "OSC disabled throughout",
+    "no provider or Harness model-loop events",
+    "owned process cleanup"
+  ],
+  "limitations": [
+    "The actual Windows v2 acceptance run is pending the root freeze and explicit core/data paths.",
+    "Tauri installer launch and uninstall are separate follow-up work.",
+    "This preparation report is not evidence that Windows v2 acceptance passed."
+  ],
+  "linuxUiRegression": {
+    "label": "ui-v2-regression",
+    "report": "docs/workbench/ui-v2-regression-validation.json",
+    "checks": 14,
+    "failures": 0,
+    "backend": "/home/chiro/tmp/morphforge/bin/morphforge-v0.2-r1",
+    "provider": "http://127.0.0.1:8799 mock-local-only",
+    "oscEnabled": false,
+    "measurements": {
+      "stress5kInstances": 5000,
+      "stress5kDrawCalls": 7,
+      "stress16kInstances": 16384,
+      "stress16kDrawCalls": 7
+    },
+    "note": "The earlier mutable target/debug failure is preserved separately."
+  }
+}

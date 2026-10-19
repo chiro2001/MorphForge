@@ -1,0 +1,4 @@
+
+# Preserve original Windows report bytes and command output in release evidence.
+docs/quality-v2/*.json whitespace=cr-at-eol
+docs/quality-v2/core-tests.txt whitespace=-blank-at-eof

@@ -1,0 +1,159 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.18s
+     Running unittests src/lib.rs (target/debug/deps/morphforge_app-0697416a0f0bfd60)
+
+running 15 tests
+test harness::tests::completed_output_validation_rejects_duplicate_call_ids_before_dispatch ... ok
+test harness::tests::finish_artwork_must_be_the_last_function_call_in_its_batch ... ok
+test harness::tests::compact_usage_counts_toward_the_active_run_budget ... ok
+test harness::tests::reasoning_is_replayed_but_never_used_as_user_visible_run_text ... ok
+test harness::tests::localized_tool_schemas_keep_the_same_domain_surface ... ok
+test capture::tests::cancelling_capture_request_removes_pending_job ... ok
+test store::tests::same_revision_persist_preserves_snapshot_and_rejects_changed_scene ... ok
+test store::tests::reopen_restores_snapshot_history_and_undo_stack ... ok
+test recipe::tests::invalid_computed_dimensions_identify_the_failed_geometry ... ok
+test fonts::tests::wrapping_alignment_spacing_and_missing_glyphs_are_deterministic ... ok
+test fonts::tests::positive_facing_matches_the_renderer_view_basis ... ok
+test fonts::tests::mask_and_boxes_are_identical_after_plane_transform ... ok
+test recipe::tests::text_markers_preserve_order_materials_translation_and_mirror ... ok
+test recipe::tests::text_marker_rejects_bad_arguments_and_expanded_budget ... ok
+test fonts::tests::builtin_catalog_has_stable_identity_and_renders_cjk ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.03s
+
+     Running unittests src/main.rs (target/debug/deps/morphforge-82be7098102896b6)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/catalog_history.rs (target/debug/deps/catalog_history-3dfb2ccd560e84c6)
+
+running 2 tests
+test diagnostics_omit_credentials_and_binary_browser_data ... ok
+test historical_materials_are_immutable_and_undo_restores_the_catalog ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/context_catalog.rs (target/debug/deps/context_catalog-00accd5f35d9443a)
+
+running 1 test
+test large_catalog_is_bounded_searchable_and_paginated_for_the_model ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.84s
+
+     Running tests/protected_groups.rs (target/debug/deps/protected_groups-d4c940689fe8fb2f)
+
+running 5 tests
+test protection_persistence_failure_rolls_back_revision_and_new_snapshots ... ok
+test protection_revision_is_idempotent_persistent_and_does_not_replay_on_undo ... ok
+test future_empty_groups_are_strict_and_unprotected_groups_remain_editable ... ok
+test protected_group_blocks_all_geometry_transactions_and_text_receipts ... ok
+test history_and_artwork_loads_cannot_remove_protected_geometry ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/provider_harness.rs (target/debug/deps/provider_harness-1c994061c32fa6be)
+
+running 20 tests
+test old_harness_settings_default_to_a_900_second_run_budget ... ok
+test provider_retries_429_then_accepts_completed_sse ... ok
+test duplicate_recipe_request_id_returns_cached_result_before_validation ... ok
+test artworks_save_resolves_latest_current_capture_images ... ok
+test failed_compact_keeps_old_context_and_records_failure ... ok
+test reset_context_is_rejected_while_manual_compact_is_running ... ok
+test incomplete_sse_tool_call_never_reaches_tool_executor ... ok
+test max_output_incomplete_retries_compactly_without_dispatching_partial_tools ... ok
+test invalid_tool_arguments_are_reported_and_the_harness_recovers ... ok
+test finish_artwork_commits_saves_summary_and_skips_a_followup_request ... ok
+test interrupt_during_tool_batch_records_cancelled_result_before_continuation ... ok
+test stop_during_tool_call_keeps_logs_and_pairs_the_call_without_late_geometry ... ok
+test token_budget_uses_provider_usage_and_allows_one_input_overrun ... ok
+test interrupt_cancels_inflight_provider_request_and_continues_same_run ... ok
+test steer_applies_after_tool_batch_while_queue_waits_for_turn_end ... ok
+test failed_finish_artwork_stays_active_and_can_be_retried_after_capture ... ok
+test queue_and_steer_messages_continue_after_finish_artwork ... ok
+test run_deadline_cancels_a_slow_provider_request ... ok
+test pause_freezes_active_budget_and_resume_continues_the_same_run ... ok
+test voxel_text_tool_previews_compactly_and_applies_with_durable_receipt ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 14.64s
+
+     Running tests/resources.rs (target/debug/deps/resources-4432fa78cf7d2f9f)
+
+running 7 tests
+test rejects_zip_path_traversal_symlinks_and_backslashes ... ok
+test bakes_interpolated_ticks ... ok
+test imports_static_cube_and_is_idempotent ... ok
+test normalizes_different_face_cycles_to_shared_tick_timeline ... ok
+test reports_invalid_animation_frame_but_keeps_fallback_frames ... ok
+test follows_model_parent_chain_and_keeps_six_face_order ... ok
+test bakes_explicit_frame_order_and_per_frame_timing ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/text_http.rs (target/debug/deps/text_http-a3fd6c2ba67e34d6)
+
+running 4 tests
+test validation_exposes_missing_glyphs_without_geometry_and_rejects_id_reuse ... ok
+test project_protection_rejects_overwrites_and_stale_unlocks_over_http ... ok
+test stale_or_changed_previews_and_concurrent_edits_cannot_overwrite_drafts ... ok
+test preview_apply_undo_and_durable_idempotent_receipt ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.99s
+
+     Running tests/text_receipts.rs (target/debug/deps/text_receipts-04a31daf37f596c7)
+
+running 5 tests
+test receipt_survives_event_log_failure_and_replays_after_restart ... ok
+test ordinary_apply_rejects_text_request_id_after_restart ... ok
+test receipt_lookup_does_not_depend_on_current_font_or_material_catalog ... ok
+test failed_project_persistence_rolls_back_scene_and_receipt ... ok
+test receipt_survives_more_than_the_event_window_and_rejects_id_reuse ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/transport.rs (target/debug/deps/transport-f0217b44d2d1447f)
+
+running 1 test
+test periodic_refresh_waits_until_the_entire_previous_rebuild_was_sent ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.95s
+
+     Running unittests src/lib.rs (target/debug/deps/morphforge_core-b345048aea1fc119)
+
+running 4 tests
+test text::tests::budgets_and_complex_scripts_are_rejected ... ok
+test text::tests::positive_facing_has_explicit_renderer_basis ... ok
+test text::tests::all_planes_and_depth_stay_inside_origin_bbox ... ok
+test text::tests::rectangle_merge_is_exact_and_does_not_fill_holes ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/geometry.rs (target/debug/deps/geometry-6d8f12c70d45a8e5)
+
+running 10 tests
+test brush_is_sent_only_at_changes_and_remove_uses_old_geometry ... ok
+test failed_transaction_preserves_original ... ok
+test legacy_import_shifts_only_xz ... ok
+test geometry_beyond_vrc_is_valid_art ... ok
+test group_prevents_semantic_merge_and_transform_is_exact ... ok
+test import_rejects_non_scene_json_and_unwraps_exported_projects ... ok
+test mf3_byte_layout_and_opcode_range ... ok
+test huge_cube_is_sparse_and_hole_has_exact_volume ... ok
+test random_operations_match_independent_dense_oracle ... ok
+test independent_16k_boxes_fit_without_quadratic_validation ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.60s
+
+   Doc-tests morphforge_app
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests morphforge_core
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

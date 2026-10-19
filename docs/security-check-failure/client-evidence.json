@@ -1,0 +1,46 @@
+{
+  "observedAtLocal": "2026-10-19 08:07:25..08:07:37 +08:00",
+  "avatarObjectConfirmedByUser": "MorphForge_Stage3_Avatar",
+  "avatarId": "avtr_3ba403cb-569d-4198-8de6-678e59c4440f",
+  "fileId": "file_d68d4ea2-015f-40cd-bd19-444a2e49b24a",
+  "fileVersion": 5,
+  "logFile": "output_log_2026-10-19_02-29-02.txt",
+  "failures": [
+    {
+      "line": 4434,
+      "time": "08:07:25",
+      "code": "AssetBundleFailedServerSideChecks"
+    },
+    {
+      "line": 4463,
+      "time": "08:07:35",
+      "code": "AssetBundleFailedServerSideChecks"
+    },
+    {
+      "line": 4466,
+      "time": "08:07:37",
+      "code": "AssetBundleFailedServerSideChecks"
+    }
+  ],
+  "precedingHttp": {
+    "status": 403,
+    "host": "api.vrchat.cloud",
+    "path": "/api/1/analysis/file_d68d4ea2-015f-40cd-bd19-444a2e49b24a/5/security"
+  },
+  "downloadPrevented": true,
+  "clientMessage": "An error occured while checking analysis results. | 10",
+  "earlierSameAvatarId": {
+    "time": "2026-10-19 02:29:27 +08:00",
+    "status": "Avatar is Ready, Initializing",
+    "particleSystemCount": 2,
+    "note": "Earlier client instance had loaded the same avatar ID before this upload; file version and pool capacity of that earlier instance are not proven."
+  },
+  "scope": "Read-only client logs and package manifests. No cache clearing, reupload, VRChat restart, or avatar modification. User IDs and unrelated world/chat events omitted.",
+  "packageVersions": {
+    "com.vrchat.avatars": "3.10.5",
+    "com.vrchat.base": "3.10.5",
+    "com.vrcfury.vrcfury": "1.1430.0",
+    "nadena.dev.modular-avatar": "1.18.7",
+    "nadena.dev.ndmf": "1.14.8"
+  }
+}

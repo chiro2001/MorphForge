@@ -1,0 +1,31 @@
+{
+  "processId": 143260,
+  "sessionId": 1,
+  "windowHandle": 26354140,
+  "title": "MorphForge",
+  "dpi": 120,
+  "processDpiAwarenessSet": true,
+  "previousThreadDpiAwarenessContext": 2147483682,
+  "boundsSource": "dwm-extended-frame",
+  "dwmResult": 0,
+  "windowRect": {
+    "left": 371,
+    "top": 96,
+    "right": 2189,
+    "bottom": 1293,
+    "width": 1818,
+    "height": 1197
+  },
+  "screenshotRect": {
+    "left": 379,
+    "top": 96,
+    "right": 2181,
+    "bottom": 1285
+  },
+  "width": 1802,
+  "height": 1189,
+  "screenshot": "D:\\Projects\\VRChatProjects2\\MorphForge\\docs\\quality-v2\\desktop-v2-window.png",
+  "screenshotBytes": 275612,
+  "screenshotSha256": "b2c3b9968843e48ff81ada08635efe60818cd4dd6507aadfad5e3cbda05fe9b2",
+  "capturedAt": "2026-10-19T00:02:24.9926635+00:00"
+}

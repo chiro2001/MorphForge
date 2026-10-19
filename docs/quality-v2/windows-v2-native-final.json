@@ -1,0 +1,551 @@
+{
+  "schema": "MorphForgeWindowsV2Validation/1",
+  "success": true,
+  "startedAt": "2026-10-18T23:48:35.7970263+00:00",
+  "finishedAt": "2026-10-18T23:48:38.3944324+00:00",
+  "host": {
+    "os": "Microsoft Windows NT 10.0.26200.0",
+    "powershell": "7.6.7",
+    "pwsh": "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+  },
+  "core": {
+    "path": "D:\\Projects\\VRChatProjects2\\MorphForge\\target\\x86_64-pc-windows-msvc\\release\\morphforge.exe",
+    "sha256": "cc34fd94473dc25961db3bc6e8fa91e01a32704a03f78929362ad9032996f9f7",
+    "version": "morphforge 0.2.0"
+  },
+  "isolation": {
+    "dataDirectory": "C:\\Users\\Chiro\\tmp\\morphforge\\windows-v2-native-e56ddbbadf4d4362a9a086742a9f2c77",
+    "randomLoopbackPort": 58600,
+    "baseUrl": "http://127.0.0.1:58600",
+    "noCapture": true,
+    "providerEnvironment": "mock-local-only-no-provider-call"
+  },
+  "checks": [
+    {
+      "name": "core executable exists",
+      "passed": true
+    },
+    {
+      "name": "core executable is morphforge.exe",
+      "passed": true
+    },
+    {
+      "name": "core version is available",
+      "passed": true
+    },
+    {
+      "name": "data directory initialized empty",
+      "passed": true
+    },
+    {
+      "name": "owned core process started",
+      "passed": true
+    },
+    {
+      "name": "core reported random loopback port",
+      "passed": true,
+      "details": {
+        "port": 58600
+      }
+    },
+    {
+      "name": "random port avoids reserved and known test ports",
+      "passed": true
+    },
+    {
+      "name": "core emits no-capture OSC-disabled ready line",
+      "passed": true
+    },
+    {
+      "name": "OSC disabled: initial",
+      "passed": true,
+      "details": {
+        "enabled": false
+      }
+    },
+    {
+      "name": "Capture browser absent: initial",
+      "passed": true
+    },
+    {
+      "name": "fresh isolated project starts with zero boxes",
+      "passed": true
+    },
+    {
+      "name": "fresh isolated project starts with no harness run",
+      "passed": true
+    },
+    {
+      "name": "freeze manifest format is valid",
+      "passed": true,
+      "details": {
+        "files": 69,
+        "path": "D:\\Projects\\VRChatProjects2\\MorphForge\\docs\\quality-v2\\source-freeze.json",
+        "aggregate": "91a91fd5022a4c57173dc837d350f4fc67be9ef0c8c018ff0c08a4cba8af42b0"
+      }
+    },
+    {
+      "name": "embedded resource exists on disk: web/studio.html",
+      "passed": true
+    },
+    {
+      "name": "embedded HTTP bytes match disk and freeze: web/studio.html",
+      "passed": true,
+      "details": {
+        "diskSha256": "4b5625c4fdea995d77c69a0f3c143abe864c8102f35d147d1094a640b7feb906",
+        "httpSha256": "4b5625c4fdea995d77c69a0f3c143abe864c8102f35d147d1094a640b7feb906",
+        "manifestSha256": "4b5625c4fdea995d77c69a0f3c143abe864c8102f35d147d1094a640b7feb906",
+        "bytes": 21030
+      }
+    },
+    {
+      "name": "embedded resource exists on disk: web/studio.js",
+      "passed": true
+    },
+    {
+      "name": "embedded HTTP bytes match disk and freeze: web/studio.js",
+      "passed": true,
+      "details": {
+        "diskSha256": "dab5f183ff0793d936ad08f26c56746324510491a2933e8f4c4afb1d8bd1c178",
+        "httpSha256": "dab5f183ff0793d936ad08f26c56746324510491a2933e8f4c4afb1d8bd1c178",
+        "manifestSha256": "dab5f183ff0793d936ad08f26c56746324510491a2933e8f4c4afb1d8bd1c178",
+        "bytes": 59159
+      }
+    },
+    {
+      "name": "embedded resource exists on disk: web/group-ui.js",
+      "passed": true
+    },
+    {
+      "name": "embedded HTTP bytes match disk and freeze: web/group-ui.js",
+      "passed": true,
+      "details": {
+        "diskSha256": "57ba9e8bfb28c63d543065c08ed01650e75b0c34cde3a1b89c8dfff974a64b18",
+        "httpSha256": "57ba9e8bfb28c63d543065c08ed01650e75b0c34cde3a1b89c8dfff974a64b18",
+        "manifestSha256": "57ba9e8bfb28c63d543065c08ed01650e75b0c34cde3a1b89c8dfff974a64b18",
+        "bytes": 1669
+      }
+    },
+    {
+      "name": "embedded resource exists on disk: web/harness-ui.js",
+      "passed": true
+    },
+    {
+      "name": "embedded HTTP bytes match disk and freeze: web/harness-ui.js",
+      "passed": true,
+      "details": {
+        "diskSha256": "5aa8d4861713777fe02ea0b0fd28fa65265983880dec80a5f71edb767e0e3a7f",
+        "httpSha256": "5aa8d4861713777fe02ea0b0fd28fa65265983880dec80a5f71edb767e0e3a7f",
+        "manifestSha256": "5aa8d4861713777fe02ea0b0fd28fa65265983880dec80a5f71edb767e0e3a7f",
+        "bytes": 6915
+      }
+    },
+    {
+      "name": "embedded resource exists on disk: web/text-ui.js",
+      "passed": true
+    },
+    {
+      "name": "embedded HTTP bytes match disk and freeze: web/text-ui.js",
+      "passed": true,
+      "details": {
+        "diskSha256": "c89456b75fd4d74c4ca68cb2cfd04e1f09dce089d3cb0ea2475bfc57d60f4e86",
+        "httpSha256": "c89456b75fd4d74c4ca68cb2cfd04e1f09dce089d3cb0ea2475bfc57d60f4e86",
+        "manifestSha256": "c89456b75fd4d74c4ca68cb2cfd04e1f09dce089d3cb0ea2475bfc57d60f4e86",
+        "bytes": 5796
+      }
+    },
+    {
+      "name": "embedded resource exists on disk: web/workbench.css",
+      "passed": true
+    },
+    {
+      "name": "embedded HTTP bytes match disk and freeze: web/workbench.css",
+      "passed": true,
+      "details": {
+        "diskSha256": "339200f5f4b5e57c9f95f68edd8a7869b45761b5e63d08a3231364d562b95c51",
+        "httpSha256": "339200f5f4b5e57c9f95f68edd8a7869b45761b5e63d08a3231364d562b95c51",
+        "manifestSha256": "339200f5f4b5e57c9f95f68edd8a7869b45761b5e63d08a3231364d562b95c51",
+        "bytes": 12770
+      }
+    },
+    {
+      "name": "embedded resource exists on disk: web/licenses/OFL-NotoSansSC.txt",
+      "passed": true
+    },
+    {
+      "name": "embedded HTTP bytes match disk and freeze: web/licenses/OFL-NotoSansSC.txt",
+      "passed": true,
+      "details": {
+        "diskSha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+        "httpSha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+        "manifestSha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+        "bytes": 4301
+      }
+    },
+    {
+      "name": "builtin Chinese font exposed",
+      "passed": true,
+      "details": {
+        "defaultFontId": "builtin:noto-sans-sc",
+        "fontCount": 523
+      }
+    },
+    {
+      "name": "builtin font license and hash are present",
+      "passed": true
+    },
+    {
+      "name": "material catalog is available",
+      "passed": true
+    },
+    {
+      "name": "Chinese text preview returns canonical boxes",
+      "passed": true,
+      "details": {
+        "layout": {
+          "bounds": {
+            "max": [
+              30,
+              7,
+              1
+            ],
+            "min": [
+              0,
+              0,
+              0
+            ]
+          },
+          "boxCount": 26,
+          "depth": 1,
+          "height": 7,
+          "missingGlyphs": [],
+          "voxelCount": 55,
+          "width": 30
+        },
+        "boxCount": 26,
+        "requestId": "71c56e45-6506-46ea-8afa-dcfc6afef840"
+      }
+    },
+    {
+      "name": "OSC disabled: after text preview",
+      "passed": true,
+      "details": {
+        "enabled": false
+      }
+    },
+    {
+      "name": "Capture browser absent: after text preview",
+      "passed": true
+    },
+    {
+      "name": "text preview does not change revision",
+      "passed": true
+    },
+    {
+      "name": "missing glyph is a typed top-level error",
+      "passed": true,
+      "details": {
+        "status": 400,
+        "missingGlyphs": [
+          "😀"
+        ],
+        "code": "FONT_MISSING_GLYPHS"
+      }
+    },
+    {
+      "name": "text apply creates one revision",
+      "passed": true,
+      "details": {
+        "boxCount": 26,
+        "revision": 1
+      }
+    },
+    {
+      "name": "OSC disabled: after text apply",
+      "passed": true,
+      "details": {
+        "enabled": false
+      }
+    },
+    {
+      "name": "Capture browser absent: after text apply",
+      "passed": true
+    },
+    {
+      "name": "text apply requestId replays the durable receipt",
+      "passed": true,
+      "details": {
+        "requestId": "c05e60e1-2801-43cd-85f6-950e7c5fd2b3",
+        "revision": 1
+      }
+    },
+    {
+      "name": "OSC disabled: after idempotent apply",
+      "passed": true,
+      "details": {
+        "enabled": false
+      }
+    },
+    {
+      "name": "Capture browser absent: after idempotent apply",
+      "passed": true
+    },
+    {
+      "name": "text apply can be undone",
+      "passed": true,
+      "details": {
+        "finalRevision": 2,
+        "boxCount": 0,
+        "undoResponseRevision": 2
+      }
+    },
+    {
+      "name": "OSC disabled: after text undo",
+      "passed": true,
+      "details": {
+        "enabled": false
+      }
+    },
+    {
+      "name": "Capture browser absent: after text undo",
+      "passed": true
+    },
+    {
+      "name": "Chinese and English tool schemas have the same complete names",
+      "passed": true,
+      "details": {
+        "promptVersion": "morphforge-system/2.3",
+        "toolCount": 12,
+        "version": "morphforge-tools/2.3"
+      }
+    },
+    {
+      "name": "Chinese and English tool descriptions are language-specific",
+      "passed": true
+    },
+    {
+      "name": "Chinese and English tool parameter schemas are identical",
+      "passed": true,
+      "details": {
+        "mismatches": []
+      }
+    },
+    {
+      "name": "voxel_text schema exposes font preview apply fields",
+      "passed": true
+    },
+    {
+      "name": "mf.text Recipe dry-run expands to boxes without applying",
+      "passed": true,
+      "details": {
+        "revision": 2,
+        "voxelCount": 22,
+        "boxCount": 11
+      }
+    },
+    {
+      "name": "OSC disabled: after mf.text Recipe dry-run",
+      "passed": true,
+      "details": {
+        "enabled": false
+      }
+    },
+    {
+      "name": "Capture browser absent: after mf.text Recipe dry-run",
+      "passed": true
+    },
+    {
+      "name": "16384 operation Recipe dry-run returns exact count without applying",
+      "passed": true,
+      "details": {
+        "revision": 2,
+        "voxelCount": 16384,
+        "boxCount": 16384
+      }
+    },
+    {
+      "name": "OSC disabled: after 16384 Recipe dry-run",
+      "passed": true,
+      "details": {
+        "enabled": false
+      }
+    },
+    {
+      "name": "Capture browser absent: after 16384 Recipe dry-run",
+      "passed": true
+    },
+    {
+      "name": "no provider or Harness model-loop events were produced",
+      "passed": true,
+      "details": {
+        "forbiddenKinds": [],
+        "eventCount": 8
+      }
+    },
+    {
+      "name": "OSC disabled: final",
+      "passed": true,
+      "details": {
+        "enabled": false
+      }
+    },
+    {
+      "name": "Capture browser absent: final",
+      "passed": true
+    },
+    {
+      "name": "final Harness state has no run or queued model work",
+      "passed": true
+    },
+    {
+      "name": "owned core process stopped",
+      "passed": true
+    }
+  ],
+  "embeddedResources": {
+    "web/studio.html": {
+      "diskSha256": "4b5625c4fdea995d77c69a0f3c143abe864c8102f35d147d1094a640b7feb906",
+      "httpSha256": "4b5625c4fdea995d77c69a0f3c143abe864c8102f35d147d1094a640b7feb906",
+      "manifestSha256": "4b5625c4fdea995d77c69a0f3c143abe864c8102f35d147d1094a640b7feb906",
+      "bytes": 21030
+    },
+    "web/studio.js": {
+      "diskSha256": "dab5f183ff0793d936ad08f26c56746324510491a2933e8f4c4afb1d8bd1c178",
+      "httpSha256": "dab5f183ff0793d936ad08f26c56746324510491a2933e8f4c4afb1d8bd1c178",
+      "manifestSha256": "dab5f183ff0793d936ad08f26c56746324510491a2933e8f4c4afb1d8bd1c178",
+      "bytes": 59159
+    },
+    "web/group-ui.js": {
+      "diskSha256": "57ba9e8bfb28c63d543065c08ed01650e75b0c34cde3a1b89c8dfff974a64b18",
+      "httpSha256": "57ba9e8bfb28c63d543065c08ed01650e75b0c34cde3a1b89c8dfff974a64b18",
+      "manifestSha256": "57ba9e8bfb28c63d543065c08ed01650e75b0c34cde3a1b89c8dfff974a64b18",
+      "bytes": 1669
+    },
+    "web/harness-ui.js": {
+      "diskSha256": "5aa8d4861713777fe02ea0b0fd28fa65265983880dec80a5f71edb767e0e3a7f",
+      "httpSha256": "5aa8d4861713777fe02ea0b0fd28fa65265983880dec80a5f71edb767e0e3a7f",
+      "manifestSha256": "5aa8d4861713777fe02ea0b0fd28fa65265983880dec80a5f71edb767e0e3a7f",
+      "bytes": 6915
+    },
+    "web/text-ui.js": {
+      "diskSha256": "c89456b75fd4d74c4ca68cb2cfd04e1f09dce089d3cb0ea2475bfc57d60f4e86",
+      "httpSha256": "c89456b75fd4d74c4ca68cb2cfd04e1f09dce089d3cb0ea2475bfc57d60f4e86",
+      "manifestSha256": "c89456b75fd4d74c4ca68cb2cfd04e1f09dce089d3cb0ea2475bfc57d60f4e86",
+      "bytes": 5796
+    },
+    "web/workbench.css": {
+      "diskSha256": "339200f5f4b5e57c9f95f68edd8a7869b45761b5e63d08a3231364d562b95c51",
+      "httpSha256": "339200f5f4b5e57c9f95f68edd8a7869b45761b5e63d08a3231364d562b95c51",
+      "manifestSha256": "339200f5f4b5e57c9f95f68edd8a7869b45761b5e63d08a3231364d562b95c51",
+      "bytes": 12770
+    },
+    "web/licenses/OFL-NotoSansSC.txt": {
+      "diskSha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+      "httpSha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+      "manifestSha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+      "bytes": 4301
+    }
+  },
+  "finalState": {
+    "canRedo": true,
+    "canUndo": false,
+    "capture": {
+      "browserPid": null
+    },
+    "commits": [],
+    "connection": {
+      "ack": false,
+      "auto": false,
+      "capacity": 16384,
+      "desiredRevision": 0,
+      "enabled": false,
+      "error": "",
+      "etaSeconds": 0.0,
+      "interval": 0.25,
+      "pending": 0,
+      "placement": {
+        "level": true,
+        "scale": 1.0,
+        "visible": true,
+        "world": true
+      },
+      "port": 9012,
+      "profile": "mf3",
+      "refreshSeconds": 0,
+      "sending": false,
+      "sentCommands": 0,
+      "sentRevision": null,
+      "syncedBits": 56
+    },
+    "eventSeq": 8,
+    "harness": {
+      "context": {
+        "compactCount": 0,
+        "estimatedTokens": 0,
+        "goals": [],
+        "messages": 0,
+        "summary": ""
+      },
+      "interaction": {
+        "activeRequestId": null,
+        "activeSecondsRemaining": null,
+        "epoch": 0,
+        "paused": false,
+        "phase": "idle",
+        "queue": [],
+        "runId": null
+      },
+      "paused": false,
+      "provider": {
+        "baseUrl": "http://127.0.0.1:1",
+        "configured": true,
+        "fileUpload": true,
+        "interface": "responses",
+        "visionModel": "deepseek-flash"
+      },
+      "queued": [],
+      "run": null,
+      "settings": {
+        "autoCompact": true,
+        "compactTokens": 60000,
+        "language": "zh-CN",
+        "maxOutputTokens": 16384,
+        "maxRunSeconds": 900,
+        "maxRunTokens": 250000,
+        "maxSteps": 24,
+        "model": "deepseek-flash",
+        "reasoning": "high",
+        "uploadImages": true
+      }
+    },
+    "project": {
+      "cellSize": 0.25,
+      "id": "3af2cdb5-a2e5-4275-a4b1-54ca19e3ca58",
+      "name": "未命名作品",
+      "pinnedNotes": "",
+      "protectedGroups": [],
+      "size": 256
+    },
+    "revision": 2,
+    "software": {
+      "apiVersion": "mf-http/2",
+      "name": "MorphForge",
+      "version": "0.2.0"
+    },
+    "stats": {
+      "bounds": null,
+      "boxCount": 0,
+      "groups": {},
+      "styleIds": [],
+      "targetBoxes": 16384,
+      "voxelCount": 0,
+      "warnings": []
+    }
+  },
+  "fatalError": null,
+  "cleanup": {
+    "ownedProcessOnly": true,
+    "exited": true,
+    "exitCode": -1
+  }
+}

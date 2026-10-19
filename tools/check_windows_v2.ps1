@@ -9,7 +9,9 @@ param(
     [ValidateNotNullOrEmpty()]
     [string]$DataDir,
 
-    [string]$ReportPath = ""
+    [string]$ReportPath = "",
+
+    [string]$FreezeManifest = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -32,6 +34,11 @@ if ([string]::IsNullOrWhiteSpace($ReportPath)) {
         (Join-Path $scriptRoot "..\docs\quality-v2\windows-v2-validation.json")
     )
 }
+if ([string]::IsNullOrWhiteSpace($FreezeManifest)) {
+    $FreezeManifest = [IO.Path]::GetFullPath(
+        (Join-Path $scriptRoot "..\docs\quality-v2\source-freeze.json")
+    )
+}
 
 $checks = [Collections.Generic.List[object]]::new()
 $ownedProcess = $null
@@ -43,6 +50,7 @@ $fatalError = $null
 $finalState = $null
 $coreHash = $null
 $coreVersion = $null
+$resourceResult = [ordered]@{}
 
 function Add-Check {
     param(
@@ -117,6 +125,35 @@ function Get-State {
     return (Invoke-JsonHttp -Method GET -Path "/api/state").Value
 }
 
+function Get-RemoteResourceHash {
+    param([Parameter(Mandatory)][string]$Path)
+
+    $handler = [Net.Http.HttpClientHandler]::new()
+    $handler.UseProxy = $false
+    $client = [Net.Http.HttpClient]::new($handler)
+    try {
+        $response = $client.GetAsync($baseUrl + $Path).GetAwaiter().GetResult()
+        [byte[]]$bytes = $response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult()
+        $status = [int]$response.StatusCode
+        $sha256 = [Security.Cryptography.SHA256]::Create()
+        try {
+            $hash = [Convert]::ToHexString($sha256.ComputeHash($bytes)).ToLowerInvariant()
+        }
+        finally {
+            $sha256.Dispose()
+        }
+        return [pscustomobject]@{
+            Status = $status
+            Bytes = $bytes.Length
+            Sha256 = $hash
+        }
+    }
+    finally {
+        $client.Dispose()
+        $handler.Dispose()
+    }
+}
+
 function Assert-OscDisabled {
     param(
         [Parameter(Mandatory)][string]$Stage,
@@ -185,6 +222,7 @@ function Write-ValidationReport {
             providerEnvironment = "mock-local-only-no-provider-call"
         }
         checks = @($checks)
+        embeddedResources = $resourceResult
         finalState = $finalState
         fatalError = $fatalError
         cleanup = [ordered]@{
@@ -292,7 +330,7 @@ try {
     )
     Add-Check -Name "core emits no-capture OSC-disabled ready line" -Passed (
         $stdoutLines.Count -gt 0 -and
-        ($stdoutLines | Where-Object { $_ -like "$readyPrefix*" }).Count -eq 1
+        @($stdoutLines | Where-Object { $_ -like "$readyPrefix*" }).Count -eq 1
     )
 
     $stateInitial = Get-State
@@ -303,6 +341,53 @@ try {
     Add-Check -Name "fresh isolated project starts with no harness run" -Passed (
         $stateInitial.harness.run -eq $null
     )
+
+    $manifestPath = (Resolve-Path -LiteralPath $FreezeManifest).Path
+    $freeze = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
+    Add-Check -Name "freeze manifest format is valid" -Passed (
+        $freeze.format -eq "MorphForgeBuildInputs/1" -and
+        @($freeze.files.PSObject.Properties).Count -eq 69
+    ) -Details @{
+        path = $manifestPath
+        aggregate = $freeze.sha256
+        files = @($freeze.files.PSObject.Properties).Count
+    }
+    $repoRoot = [IO.Path]::GetFullPath((Join-Path $scriptRoot ".."))
+    $embeddedResources = @(
+        "studio.html",
+        "studio.js",
+        "group-ui.js",
+        "harness-ui.js",
+        "text-ui.js",
+        "workbench.css",
+        "licenses/OFL-NotoSansSC.txt"
+    )
+    foreach ($relative in $embeddedResources) {
+        $manifestKey = "web/" + $relative
+        $manifestProperty = $freeze.files.PSObject.Properties[$manifestKey]
+        $diskPath = Join-Path $repoRoot ("web\" + $relative.Replace("/", "\"))
+        Add-Check -Name "embedded resource exists on disk: $manifestKey" -Passed (
+            $null -ne $manifestProperty -and
+            (Test-Path -LiteralPath $diskPath -PathType Leaf)
+        )
+        $diskHash = (
+            Get-FileHash -LiteralPath $diskPath -Algorithm SHA256
+        ).Hash.ToLowerInvariant()
+        $remote = Get-RemoteResourceHash -Path ("/" + $relative)
+        $manifestHash = ([string]$manifestProperty.Value).ToLowerInvariant()
+        $resourceResult[$manifestKey] = [ordered]@{
+            diskSha256 = $diskHash
+            httpSha256 = $remote.Sha256
+            manifestSha256 = $manifestHash
+            bytes = $remote.Bytes
+        }
+        Add-Check -Name "embedded HTTP bytes match disk and freeze: $manifestKey" -Passed (
+            $remote.Status -eq 200 -and
+            $remote.Bytes -gt 0 -and
+            $remote.Sha256 -eq $diskHash -and
+            $diskHash -eq $manifestHash
+        ) -Details $resourceResult[$manifestKey]
+    }
 
     $fontsResponse = Invoke-JsonHttp -Method GET -Path "/api/fonts"
     $fonts = $fontsResponse.Value
@@ -462,8 +547,8 @@ try {
     $en = $enResponse.Value
     $requiredToolNames = @(
         "get_context", "run_recipe", "inspect_region", "capture_views",
-        "commit", "publish", "sync_status", "undo_to", "artworks",
-        "compact_context", "voxel_text"
+        "commit", "finish_artwork", "publish", "sync_status", "undo_to",
+        "artworks", "compact_context", "voxel_text"
     )
     $zhNames = @($zh.tools | ForEach-Object { $_.name } | Sort-Object)
     $enNames = @($en.tools | ForEach-Object { $_.name } | Sort-Object)
@@ -472,7 +557,9 @@ try {
         ($zhNames -join ",") -eq ($expectedNames -join ",") -and
         ($enNames -join ",") -eq ($expectedNames -join ",") -and
         $zh.version -eq $en.version -and
-        $zh.promptVersion -eq $en.promptVersion
+        $zh.promptVersion -eq $en.promptVersion -and
+        $zh.version -eq "morphforge-tools/2.3" -and
+        $zh.promptVersion -eq "morphforge-system/2.3"
     ) -Details @{
         toolCount = $zhNames.Count
         version = $zh.version

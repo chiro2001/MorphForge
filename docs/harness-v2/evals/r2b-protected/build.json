@@ -1,0 +1,8 @@
+{
+  "softwareVersion": "0.2.0",
+  "binarySha256": "4a4664b035baf739664d3a6a5b7cfd46a799da5fdb00f100aa9421534df96b45",
+  "developmentBuild": true,
+  "systemVersion": "morphforge-system/2.2",
+  "toolsVersion": "morphforge-tools/2.2",
+  "note": "硬保护分组、applyTemplate、实际截图关联保存；R1初始几何与Conversation在新data恢复。"
+}

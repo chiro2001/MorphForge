@@ -1,0 +1,32 @@
+{
+  "artworks": [
+    {
+      "id": "a2053206-5e9c-44fe-a225-7dab096ccef8",
+      "title": "云港信使驿站 · 中文标牌与双铜灯 · 保护版",
+      "boxes": 766,
+      "views": 3,
+      "sourceRun": "46e9bc87-d236-40c1-9d70-46198b3978fa",
+      "archive": "artwork-archives/a2053206-5e9c-44fe-a225-7dab096ccef8/"
+    },
+    {
+      "id": "d1fe108b-29c1-4ca9-8966-a28f1660dc7e",
+      "title": "星砂港 · 正面体素文字修正版",
+      "boxes": 791,
+      "views": 3,
+      "sourceRun": "25113d22-2cc0-4d41-9ed5-0c038e183d88",
+      "archive": "artwork-archives/d1fe108b-29c1-4ca9-8966-a28f1660dc7e/"
+    }
+  ],
+  "files": 89,
+  "zipSha256": "d5c687d8aa8fe4a48d1b5e31f9aece06ad6fca7916952534c9b0866cd10601a0",
+  "preservesExistingFiles": true,
+  "containsCredentials": false,
+  "originalEventStreamsKeptSeparate": true,
+  "windowsImport": {
+    "success": true,
+    "added": 89,
+    "unchanged": 0,
+    "projectUnchanged": true,
+    "destination": "%LOCALAPPDATA%/MorphForge"
+  }
+}

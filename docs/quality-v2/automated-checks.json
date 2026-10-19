@@ -1,0 +1,61 @@
+{
+  "generatedAt": "2026-10-19T00:08:56.211961+00:00",
+  "success": true,
+  "checks": [
+    {
+      "name": "core-tests",
+      "command": [
+        "./tools/cargo_local.sh",
+        "test",
+        "--workspace"
+      ],
+      "exitCode": 0,
+      "log": "core-tests.txt",
+      "sha256": "8c98770d606befd691401ff77d1179bcd2c920c47b7006ab70e0f37d41a0243a",
+      "passedTests": 74
+    },
+    {
+      "name": "clippy",
+      "command": [
+        "./tools/cargo_local.sh",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exitCode": 0,
+      "log": "clippy.txt",
+      "sha256": "2b00b8f3e4489fd64dc443878838152603eb477f7aa6d20576490ac35a729b03"
+    },
+    {
+      "name": "rust-format",
+      "command": [
+        "./tools/cargo_local.sh",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exitCode": 0,
+      "log": "rust-format.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "frontend-tests",
+      "command": [
+        "node",
+        "--test",
+        "web/group-ui.test.mjs",
+        "web/harness-ui.test.mjs",
+        "web/renderer-resources.test.mjs",
+        "web/text-ui.test.mjs"
+      ],
+      "exitCode": 0,
+      "log": "frontend-tests.txt",
+      "sha256": "cdeb6005a643b8275e0488719d61f5b73924780e693921b1afd84b1af7e6d0df",
+      "passedTests": 24
+    }
+  ]
+}

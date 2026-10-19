@@ -163,7 +163,7 @@ POST /api/project
 纯函数测试：
 
 ```bash
-node --test web/harness-ui.test.mjs web/text-ui.test.mjs web/renderer-resources.test.mjs
+node --test web/harness-ui.test.mjs web/text-ui.test.mjs web/group-ui.test.mjs web/renderer-resources.test.mjs
 ```
 
 真实 Chromium 契约流程：
@@ -185,7 +185,7 @@ python3 tools/check_ui_v2.py --url http://127.0.0.1:<port> --label ui-v2-real
 
 真实全链路测试仍应单独检查服务端 ACK 幂等、409 runId、事件持久化、字体预览指纹与文字事务。
 
-当前 `crates/morphforge-app/src/server.rs` 已接线 `fonts`、`text/preview` 和 `text/apply`；`harness/message` 仍由 Harness worker/root 的 WIP 接线。前端在消息路由缺席时保留旧 `harness/start` 的启动兼容，字体页会显示服务未就绪，不会伪装成已完成。文字 apply 的响应包含 `ok/revision/scene/stats/font/layout/requestFingerprint`，并接受 `previewRequestId` 与 `previewFingerprint`；前端已按该形状校验。
+当前 `crates/morphforge-app/src/server.rs` 已接线 `fonts`、`text/preview`、`text/apply` 和 `harness/message`，真实交互已由前述17项检查覆盖。前端仍保留旧 `harness/start` 的启动兼容；服务不可用时明确显示错误。文字 apply 的响应包含 `ok/revision/scene/stats/font/layout/requestFingerprint`，并接受 `previewRequestId` 与 `previewFingerprint`；前端已按该形状校验。
 
 ### 真实字体与渲染方向
 
@@ -205,7 +205,7 @@ python3 tools/check_ui_v2.py --url http://127.0.0.1:<port> --label ui-v2-real
 python3 tools/check_text_ui_real.py --mock --label text-mock
 ```
 
-真实服务结果见 [text-real-text-rust-validation.json](text-real-text-rust-validation.json)，26 项通过。`L` 在三平面的四区占用分别为：
+真实服务结果见 [text-real-text-rust-validation.json](text-real-text-rust-validation.json)，24 项通过（该次报告为预览与方向验证）。`L` 在三平面的四区占用分别为：
 
 | 平面 |  左上 | 右上 |  左下 |  右下 |
 | ---- | ----: | ---: | ----: | ----: |
@@ -219,7 +219,7 @@ python3 tools/check_text_ui_real.py --mock --label text-mock
 - [XZ：FL 与云港](text-real-text-rust-content-xz.png)
 - [YZ：FL 与云港](text-real-text-rust-content-yz.png)
 
-三张 24px 展示图都可读为从左到右的 `FL`，下一行“云港”保持正向且完整入画留边。真实方向测试的像素 bbox 与 canonical Box 投影覆盖率为 99.1% 至 99.5%。该测试还完成一次真实 apply 和 undo。mock 自检保留在 [text-real-text-mock-validation.json](text-real-text-mock-validation.json)，用于在没有服务时复现测试流程。
+三张 24px 展示图都可读为从左到右的 `FL`，下一行“云港”保持正向且完整入画留边。真实方向测试的像素 bbox 与 canonical Box 投影覆盖率为 99.1% 至 99.5%。文字 apply、durable receipt 和 undo 另由 [Windows 原生59项报告](../quality-v2/windows-v2-native-final.json)验证，不将预览报告计为应用验证。mock 自检保留在 [text-real-text-mock-validation.json](text-real-text-mock-validation.json)，用于在没有服务时复现测试流程。
 
 运行结束后真实测试实例为 revision 6、0 Box、Harness `completed`，没有停留在活动运行或未完成预览。
 

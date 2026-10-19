@@ -25,3 +25,5 @@ dist/**/*.msi
 dist/**/*.zip
 *.pdb
 desktop/src-tauri/binaries/
+dist/**/*.bundle
+dist/**/*.bundle.sha256

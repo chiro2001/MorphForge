@@ -1,0 +1,305 @@
+{
+  "schema": "MorphForgeDesktopV2Validation/1",
+  "success": true,
+  "startedAt": "2026-10-19T00:02:17.3513016+00:00",
+  "installer": {
+    "path": "D:\\Projects\\VRChatProjects2\\MorphForge\\desktop\\target\\x86_64-pc-windows-msvc\\release\\bundle\\nsis\\MorphForge Desktop_0.2.0_x64-setup.exe",
+    "bytes": 13613538,
+    "sha256": "ce30b61609ff93c250840560d14ab4278709e7bbd37eacda63f736b4fccbef03"
+  },
+  "installDir": "C:\\Users\\Chiro\\tmp\\morphforge\\desktop-v2-install-2a167b08a9554e4fbce6e85388004c8e",
+  "dataDir": "C:\\Users\\Chiro\\tmp\\morphforge\\desktop-v2-data-2a167b08a9554e4fbce6e85388004c8e",
+  "checks": [
+    {
+      "name": "installer is a nonempty executable",
+      "passed": true,
+      "details": {
+        "path": "D:\\Projects\\VRChatProjects2\\MorphForge\\desktop\\target\\x86_64-pc-windows-msvc\\release\\bundle\\nsis\\MorphForge Desktop_0.2.0_x64-setup.exe",
+        "bytes": 13613538,
+        "sha256": "ce30b61609ff93c250840560d14ab4278709e7bbd37eacda63f736b4fccbef03"
+      }
+    },
+    {
+      "name": "silent NSIS install exited zero",
+      "passed": true,
+      "details": {
+        "exitCode": 0
+      }
+    },
+    {
+      "name": "installed payload exists: morphforge-desktop.exe",
+      "passed": true
+    },
+    {
+      "name": "installed payload exists: morphforge.exe",
+      "passed": true
+    },
+    {
+      "name": "installed payload exists: uninstall.exe",
+      "passed": true
+    },
+    {
+      "name": "installed payload exists: OFL-NotoSansSC.txt",
+      "passed": true
+    },
+    {
+      "name": "installed sidecar matches release core",
+      "passed": true,
+      "details": {
+        "expected": "cc34fd94473dc25961db3bc6e8fa91e01a32704a03f78929362ad9032996f9f7",
+        "actual": "cc34fd94473dc25961db3bc6e8fa91e01a32704a03f78929362ad9032996f9f7"
+      }
+    },
+    {
+      "name": "installed OFL license matches frozen font license",
+      "passed": true,
+      "details": {
+        "expected": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+        "actual": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2"
+      }
+    },
+    {
+      "name": "Tauri app process launched in Session 1",
+      "passed": true,
+      "details": {
+        "sessionId": 1,
+        "windowTitle": "",
+        "processId": 143260
+      }
+    },
+    {
+      "name": "installed desktop core reported random loopback URL",
+      "passed": true,
+      "details": {
+        "baseUrl": "http://127.0.0.1:59189"
+      }
+    },
+    {
+      "name": "installed desktop core reports 0.2.0 and OSC disabled",
+      "passed": true,
+      "details": {
+        "revision": 0
+      }
+    },
+    {
+      "name": "installed WebView serves frozen resource: studio.html",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "bytes": 21030,
+        "servedSha256": "4b5625c4fdea995d77c69a0f3c143abe864c8102f35d147d1094a640b7feb906",
+        "diskSha256": "4b5625c4fdea995d77c69a0f3c143abe864c8102f35d147d1094a640b7feb906",
+        "manifestSha256": "4b5625c4fdea995d77c69a0f3c143abe864c8102f35d147d1094a640b7feb906"
+      }
+    },
+    {
+      "name": "installed WebView serves frozen resource: studio.js",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "bytes": 59159,
+        "servedSha256": "dab5f183ff0793d936ad08f26c56746324510491a2933e8f4c4afb1d8bd1c178",
+        "diskSha256": "dab5f183ff0793d936ad08f26c56746324510491a2933e8f4c4afb1d8bd1c178",
+        "manifestSha256": "dab5f183ff0793d936ad08f26c56746324510491a2933e8f4c4afb1d8bd1c178"
+      }
+    },
+    {
+      "name": "installed WebView serves frozen resource: group-ui.js",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "bytes": 1669,
+        "servedSha256": "57ba9e8bfb28c63d543065c08ed01650e75b0c34cde3a1b89c8dfff974a64b18",
+        "diskSha256": "57ba9e8bfb28c63d543065c08ed01650e75b0c34cde3a1b89c8dfff974a64b18",
+        "manifestSha256": "57ba9e8bfb28c63d543065c08ed01650e75b0c34cde3a1b89c8dfff974a64b18"
+      }
+    },
+    {
+      "name": "installed WebView serves frozen resource: harness-ui.js",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "bytes": 6915,
+        "servedSha256": "5aa8d4861713777fe02ea0b0fd28fa65265983880dec80a5f71edb767e0e3a7f",
+        "diskSha256": "5aa8d4861713777fe02ea0b0fd28fa65265983880dec80a5f71edb767e0e3a7f",
+        "manifestSha256": "5aa8d4861713777fe02ea0b0fd28fa65265983880dec80a5f71edb767e0e3a7f"
+      }
+    },
+    {
+      "name": "installed WebView serves frozen resource: text-ui.js",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "bytes": 5796,
+        "servedSha256": "c89456b75fd4d74c4ca68cb2cfd04e1f09dce089d3cb0ea2475bfc57d60f4e86",
+        "diskSha256": "c89456b75fd4d74c4ca68cb2cfd04e1f09dce089d3cb0ea2475bfc57d60f4e86",
+        "manifestSha256": "c89456b75fd4d74c4ca68cb2cfd04e1f09dce089d3cb0ea2475bfc57d60f4e86"
+      }
+    },
+    {
+      "name": "installed WebView serves frozen resource: workbench.css",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "bytes": 12770,
+        "servedSha256": "339200f5f4b5e57c9f95f68edd8a7869b45761b5e63d08a3231364d562b95c51",
+        "diskSha256": "339200f5f4b5e57c9f95f68edd8a7869b45761b5e63d08a3231364d562b95c51",
+        "manifestSha256": "339200f5f4b5e57c9f95f68edd8a7869b45761b5e63d08a3231364d562b95c51"
+      }
+    },
+    {
+      "name": "installed frontend contains font, protection and finish-summary UI",
+      "passed": true
+    },
+    {
+      "name": "installed Harness exposes tools/system 2.3 and finish_artwork",
+      "passed": true,
+      "details": {
+        "version": "morphforge-tools/2.3",
+        "promptVersion": "morphforge-system/2.3"
+      }
+    },
+    {
+      "name": "real Tauri window screenshot captured",
+      "passed": true,
+      "details": {
+        "path": "D:\\Projects\\VRChatProjects2\\MorphForge\\docs\\quality-v2\\desktop-v2-window.png",
+        "bytes": 275612
+      }
+    },
+    {
+      "name": "Session 1 window has a live handle, title and dimensions",
+      "passed": true,
+      "details": {
+        "processId": 143260,
+        "sessionId": 1,
+        "windowHandle": 26354140,
+        "title": "MorphForge",
+        "dpi": 120,
+        "processDpiAwarenessSet": true,
+        "previousThreadDpiAwarenessContext": 2147483682,
+        "boundsSource": "dwm-extended-frame",
+        "dwmResult": 0,
+        "windowRect": {
+          "left": 371,
+          "top": 96,
+          "right": 2189,
+          "bottom": 1293,
+          "width": 1818,
+          "height": 1197
+        },
+        "screenshotRect": {
+          "left": 379,
+          "top": 96,
+          "right": 2181,
+          "bottom": 1285
+        },
+        "width": 1802,
+        "height": 1189,
+        "screenshot": "D:\\Projects\\VRChatProjects2\\MorphForge\\docs\\quality-v2\\desktop-v2-window.png",
+        "screenshotBytes": 275612,
+        "screenshotSha256": "b2c3b9968843e48ff81ada08635efe60818cd4dd6507aadfad5e3cbda05fe9b2",
+        "capturedAt": "2026-10-19T08:02:24.9926635+08:00"
+      }
+    },
+    {
+      "name": "Tauri app exits after WM_CLOSE",
+      "passed": true,
+      "details": {
+        "closeStatus": {
+          "processId": 143260,
+          "windowHandle": 26354140,
+          "postMessage": true,
+          "lastWin32Error": 203,
+          "closeMainWindow": false,
+          "sessionId": 1,
+          "time": "2026-10-19T08:02:26.2307572+08:00"
+        }
+      }
+    },
+    {
+      "name": "desktop shell and isolated core cleaned after normal close",
+      "passed": true
+    },
+    {
+      "name": "silent uninstall exited zero",
+      "passed": true,
+      "details": {
+        "exitCode": 0
+      }
+    },
+    {
+      "name": "uninstall removed installed executables",
+      "passed": true
+    },
+    {
+      "name": "uninstall removed matching HKCU entry",
+      "passed": true
+    }
+  ],
+  "tasks": [
+    "MorphForge-v2-desktop-e3e08eb4ab834c2b9a2cfcb3fe57c18c-launch",
+    "MorphForge-v2-desktop-e3e08eb4ab834c2b9a2cfcb3fe57c18c-capture",
+    "MorphForge-v2-desktop-e3e08eb4ab834c2b9a2cfcb3fe57c18c-close"
+  ],
+  "cleanup": {
+    "validationTasksRemaining": 0,
+    "trackedDesktopAlive": false
+  },
+  "error": null,
+  "window": {
+    "processId": 143260,
+    "screenshotSha256": "b2c3b9968843e48ff81ada08635efe60818cd4dd6507aadfad5e3cbda05fe9b2",
+    "screenshotInfo": "docs/quality-v2/desktop-v2-window.json",
+    "title": "MorphForge",
+    "screenshot": "docs/quality-v2/desktop-v2-window.png",
+    "windowHandle": 26354140,
+    "sessionId": 1
+  },
+  "resources": {
+    "studio.html": {
+      "status": 200,
+      "bytes": 21030,
+      "servedSha256": "4b5625c4fdea995d77c69a0f3c143abe864c8102f35d147d1094a640b7feb906",
+      "diskSha256": "4b5625c4fdea995d77c69a0f3c143abe864c8102f35d147d1094a640b7feb906",
+      "manifestSha256": "4b5625c4fdea995d77c69a0f3c143abe864c8102f35d147d1094a640b7feb906"
+    },
+    "studio.js": {
+      "status": 200,
+      "bytes": 59159,
+      "servedSha256": "dab5f183ff0793d936ad08f26c56746324510491a2933e8f4c4afb1d8bd1c178",
+      "diskSha256": "dab5f183ff0793d936ad08f26c56746324510491a2933e8f4c4afb1d8bd1c178",
+      "manifestSha256": "dab5f183ff0793d936ad08f26c56746324510491a2933e8f4c4afb1d8bd1c178"
+    },
+    "group-ui.js": {
+      "status": 200,
+      "bytes": 1669,
+      "servedSha256": "57ba9e8bfb28c63d543065c08ed01650e75b0c34cde3a1b89c8dfff974a64b18",
+      "diskSha256": "57ba9e8bfb28c63d543065c08ed01650e75b0c34cde3a1b89c8dfff974a64b18",
+      "manifestSha256": "57ba9e8bfb28c63d543065c08ed01650e75b0c34cde3a1b89c8dfff974a64b18"
+    },
+    "harness-ui.js": {
+      "status": 200,
+      "bytes": 6915,
+      "servedSha256": "5aa8d4861713777fe02ea0b0fd28fa65265983880dec80a5f71edb767e0e3a7f",
+      "diskSha256": "5aa8d4861713777fe02ea0b0fd28fa65265983880dec80a5f71edb767e0e3a7f",
+      "manifestSha256": "5aa8d4861713777fe02ea0b0fd28fa65265983880dec80a5f71edb767e0e3a7f"
+    },
+    "text-ui.js": {
+      "status": 200,
+      "bytes": 5796,
+      "servedSha256": "c89456b75fd4d74c4ca68cb2cfd04e1f09dce089d3cb0ea2475bfc57d60f4e86",
+      "diskSha256": "c89456b75fd4d74c4ca68cb2cfd04e1f09dce089d3cb0ea2475bfc57d60f4e86",
+      "manifestSha256": "c89456b75fd4d74c4ca68cb2cfd04e1f09dce089d3cb0ea2475bfc57d60f4e86"
+    },
+    "workbench.css": {
+      "status": 200,
+      "bytes": 12770,
+      "servedSha256": "339200f5f4b5e57c9f95f68edd8a7869b45761b5e63d08a3231364d562b95c51",
+      "diskSha256": "339200f5f4b5e57c9f95f68edd8a7869b45761b5e63d08a3231364d562b95c51",
+      "manifestSha256": "339200f5f4b5e57c9f95f68edd8a7869b45761b5e63d08a3231364d562b95c51"
+    }
+  },
+  "baseUrl": "http://127.0.0.1:59189",
+  "finishedAt": "2026-10-19T00:02:34.9780687+00:00"
+}

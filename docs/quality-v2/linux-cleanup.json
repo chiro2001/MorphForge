@@ -1,0 +1,31 @@
+{
+  "success": true,
+  "ownedServices": [
+    {
+      "pid": 3443676,
+      "kind": "mock-provider",
+      "signal": "SIGINT",
+      "exited": true
+    },
+    {
+      "pid": 3521257,
+      "kind": "ui-test",
+      "signal": "SIGINT",
+      "exited": true
+    },
+    {
+      "pid": 3542678,
+      "kind": "eval-r2b-r2c",
+      "signal": "SIGINT",
+      "exited": true
+    },
+    {
+      "pid": 3545101,
+      "kind": "eval-r3-r3c",
+      "signal": "SIGINT",
+      "exited": true
+    }
+  ],
+  "ownedCaptureProcessesRemaining": [],
+  "unrelatedProcessesUntouched": true
+}

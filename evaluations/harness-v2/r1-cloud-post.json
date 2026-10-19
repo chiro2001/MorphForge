@@ -1,0 +1,24 @@
+{
+  "id": "r1-chinese-staged-cloud-post",
+  "settings": {
+    "model": "deepseek-flash",
+    "reasoning": "low",
+    "language": "zh-CN",
+    "maxSteps": 24,
+    "maxOutputTokens": 16384,
+    "maxRunTokens": 240000,
+    "maxRunSeconds": 900,
+    "autoCompact": true,
+    "compactTokens": 60000
+  },
+  "maxBoxes": 16384,
+  "requiredGroups": [
+    "island",
+    "building",
+    "tower",
+    "bridge",
+    "dock"
+  ],
+  "prompt": "请制作完整的体素艺术作品《云港信使驿站》。要有能一眼认出的主建筑剪影、带可见钟面的钟楼、拱形入口、铜色机械细节、屋顶层次、悬空云岛、右侧小码头和一条有负空间的连接桥。采用蓝色屋顶、暖铜、浅色石材、少量发光窗；分组名分别为 island、building、tower、bridge、dock、details，便于后续继续。目标可发布VRChat，X/Z在[-128,128)、Y在[0,256)；合理利用长方体，不用为凑数量堆重复体素。先搭大形并保存进度，hero/front/top截图检查后至少修正一轮（务必实际修改，不只口头评价），再次截图复核。控制每阶段推理和代码长度，优先完成可交付作品。最终commit并保存到作品库。不要启用或发布OSC，暂不需要文字。用中文说明完成情况。",
+  "requireVisualIteration": true
+}

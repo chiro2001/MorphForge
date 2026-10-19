@@ -9,13 +9,13 @@
 - Rust 核心、HTTP API、共享前端、AI 工具循环、Recipe、作品库和材质资源包导入已经实现。
 - MF3 的 `Box / UnitVoxel / Brush / Erase / Remove / Clear`、序号回绕和单 Avatar 原生 UDP 接收已有测试证据。
 - 16,384 Box 首遍缺失192个；0.5秒补发后达16384个唯一方块，满池删除、补回、区域擦除、清空通过。新时序256条0.25秒首次漏1/第二次完整，0.5秒对照完整；不承诺无损，详见实施状态。
-- 最终 Windows 安装包已经重建，安装、启动、退出、卸载及 HTTP 10 项回归通过，见 `docs/desktop/validation.json`。
+- Windows 0.2.0 安装包已从冻结源码重新构建；本轮原生、桌面与 HTTP 验证记录见 [Windows 0.2 验收](quality-v2/WINDOWS-V2.md)，旧版证据保留在 `docs/desktop/`。
 - Unity原生100材质、40项像素与新版16k显示夹具通过；FullFT实际SDK联合构建256/256bit通过，FT161与MF70全部直通；新场景与166项API烟测、远端FT分支检查也已通过。
 - P2 高级折射、物理体积云以及任意 Minecraft 异形几何不在当前支持范围内。
 
 ## 1. 安装与启动
 
-使用 `dist/windows/MorphForge Desktop_0.1.0_x64-setup.exe`，以当前用户模式安装。默认安装目录是：
+使用 `dist/windows/MorphForge Desktop_0.2.0_x64-setup.exe`，以当前用户模式安装。默认安装目录是：
 
 ```text
 %LOCALAPPDATA%\MorphForge Desktop
@@ -229,6 +229,8 @@ AI 与手动编辑使用同一份工程状态。生成、人工修改、截图�
 
 “提示词工具语言”控制模型收到的系统提示词和工具说明语言，默认简体中文。它不会把整个界面强制改成英文。
 
+本轮评测中，`deepseek-flash` 配合“无”推理强度完成了接续修正与入库；高强度推理曾把整个单步输出额度耗在reasoning中。首次体验可选“无”或“低”，先做一个小作品，再逐步加细节。各轮任务和设置并不完全相同，这只是本项目的实际使用经验。
+
 运行预算：
 
 - 最大步骤数：`1..100`；
@@ -246,6 +248,8 @@ AI 与手动编辑使用同一份工程状态。生成、人工修改、截图�
 ```
 
 达到时间、步骤或 Token 预算时，运行会停止，已生成版本仍保留；不要假定 Harness 会自动替你 commit 或完成剩余检查。
+
+累计 Token 以 Provider 返回的实际 usage 记账，在完整响应后检查门限；下一次输入的真实成本无法提前精确得知，因此最多可能超出一个响应。界面上下文估算只用于提前提醒收尾和compact，不作为账单上限。AI可用 `finish_artwork` 在一次工具调用中完成最终commit、关联真实截图保存作品，并直接显示完成总结，减少收尾往返。
 
 ## 8. 字体文字
 
@@ -281,7 +285,7 @@ AI 与手动编辑使用同一份工程状态。生成、人工修改、截图�
 “上下文”页展示估算 Token、消息条数、compact 次数和最近摘要。
 
 - “Compact 上下文”立即请求压缩模型活跃上下文；
-- “自动compact”在估算 Token 超过阈值时自动执行；
+- “自动compact”结合本地估算和最近一次 Provider 实际输入 usage 判断是否超过阈值；
 - 默认阈值是 `60000`；
 - “固定要求”保存到工程，不依赖摘要记忆。
 
@@ -513,7 +517,7 @@ Docs/Materials/catalog.json
 Docs/Materials/artifacts/*.png
 ```
 
-长测结束并得到 Unity 操作许可后，执行：
+按 Unity 操作规范在隔离构建对象中执行：
 
 ```powershell
 python tools/unity_remote.py --check-result run_script --file AgentScripts/CatalogEntry.cs --entry CatalogEntry.Validate --timeout_ms 60000
@@ -618,7 +622,7 @@ morphforge.exe benchmark --count 16384
 - 自动测试只发9012，未上传Avatar或启动VRChat。客户端多人、VR手势、Particle Limiter及GPU性能尚无新版实测结论。
 - 单粒子池不保证严格透明排序。水云是表面效果；高级折射、体积云、Minecraft异形模型和逐面染色遮罩仍属后续扩展。
 - `motionPhase`仅用于材质时间相位，不是逐Box实体运动API。
-- 安装器未代码签名，哈希及验证记录见 `docs/desktop/validation.json`。
+- 安装器未代码签名，哈希见 `dist/windows/SHA256SUMS`，当前版本验证记录见 [Windows 0.2 验收](quality-v2/WINDOWS-V2.md)。
 
 新的FullFT验证场景位于：
 

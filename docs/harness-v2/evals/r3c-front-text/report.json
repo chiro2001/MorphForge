@@ -1,0 +1,141 @@
+{
+  "case": "r3c-front-facing-text-repair",
+  "caseSha256": "d113d669cc7b5a408c6b303b73a627164fa2b99dbc3a12cf0540112290c5b9c1",
+  "backend": "http://127.0.0.1:8783",
+  "initialRunId": "25113d22-2cc0-4d41-9ed5-0c038e183d88",
+  "settings": {
+    "model": "deepseek-flash",
+    "reasoning": "none",
+    "language": "zh-CN",
+    "maxSteps": 10,
+    "maxOutputTokens": 8192,
+    "maxRunTokens": 200000,
+    "maxRunSeconds": 650,
+    "autoCompact": true,
+    "compactTokens": 18000
+  },
+  "versions": {
+    "software": {
+      "apiVersion": "mf-http/2",
+      "name": "MorphForge",
+      "version": "0.2.0"
+    },
+    "tools": "morphforge-tools/2.3",
+    "prompt": "morphforge-system/2.3",
+    "language": "zh-CN",
+    "schemaSha256": "e94c4d021da386f9d8913d43069c8dd3d2521cb1f9a16f687782a17ea61d1efa"
+  },
+  "actions": [],
+  "success": true,
+  "checks": {
+    "runCompleted": true,
+    "allActionsExercised": true,
+    "nonemptyScene": true,
+    "boxCapacity": true,
+    "modelUsedVisualFeedback": true,
+    "modelCommitted": true,
+    "modelSavedArtwork": true,
+    "oscRemainsDisabled": true,
+    "group:island": true,
+    "group:lighthouse": true,
+    "group:pavilion": true,
+    "group:bridge": true,
+    "group:sign_front": true,
+    "preserved:island": true,
+    "preserved:lighthouse": true,
+    "preserved:pavilion": true,
+    "preserved:bridge": true,
+    "preserved:details": true,
+    "preserved:sea": true,
+    "preserved:sign": true,
+    "vrcCoordinateRange": true,
+    "savedArtworkHasActualViews": true
+  },
+  "run": {
+    "activeRequestId": null,
+    "epoch": 2,
+    "error": "",
+    "finishedAt": "2026-10-18T23:46:09.139Z",
+    "id": "25113d22-2cc0-4d41-9ed5-0c038e183d88",
+    "language": "zh-CN",
+    "message": "《星砂港 · 正面体素文字修正版》已收尾入库，未启用或发布 OSC/VRC。\n\n修正内容：读取权威 revision 8 与 sign 组边界，确认木牌背面木板最大 Z 为 38。重新预览并应用真正字体 Box「星港」（Noto Sans SC，字号 20，XY 平面 positive 朝向，居中，暖灯发光材质）到新组 sign_front，origin Z=39，位于木板正前方 1 格，不再被遮挡。应用后 boxCount 791，sign_front 46 盒，原有七个受保护分组（island/lighthouse/pavilion/bridge/sea/details/sign）全部保持原样、未删除未覆盖。\n\n成品构成：蓝铜配色海岛（草地顶面 Y=24、沙岩岸坡）、蓝陶瓷+旧铜的灯塔（玻璃灯室、金顶）、四坡蓝铜顶带金色檐饰的半开放拱廊小亭、带栏杆与负空间的木桥、局部半透明水面与水面点缀、高空体素白云，以及黄金/暖灯高光的「星港」正反两面木牌。全部几何 bounds 为 X/Z[-80,80]、Y[8,88]，VRChat 坐标兼容且越界盒数为 0。\n\n仍有限制：按无损收尾要求，旧木牌背面的同字组（z=29 处）保留未删除，从背面看会看到一组无背板支撑的发光字迹；顶部视角中标牌板面遮挡了大部分桥面，桥的负空间主要在 hero/front 视角可见；受一轮截图预算限制，仅做了一次 hero/front/top 复核，未再追加细化。",
+    "prompt": "从安全检查点继续收尾。上一轮造型已经完成，VRC坐标也合规，但文字放到木牌背后，被木板遮挡。现在七个旧分组已软件保护，全部保留不要修改。请读取context与sign边界；正面相机位于+Z，Z越大越靠前，因此新文字origin.z应等于木牌最大Z再+1（从当前数据看木牌约在z37..38，新字可在z39），不能再放z29。新加一组sign_front的真正字体Box“星港”，字号至少16、XY positive，选黄金或发光浅色，居中放在木牌正面。为了本次无损收尾，旧背后字体暂保留不删除，不再修改建筑或其它细节。预览时就指定完整origin/group/align，直接复用applyTemplate。只复核一次hero/front/top，然后用finish_artwork保存为“星砂港 · 正面体素文字修正版”并完成。不要发布OSC或VRC。",
+    "promptVersion": "morphforge-system/2.3",
+    "startedAt": "2026-10-18T23:45:52.007Z",
+    "status": "completed",
+    "steps": 5,
+    "tokens": 110828,
+    "toolsVersion": "morphforge-tools/2.3"
+  },
+  "interaction": {
+    "activeRequestId": null,
+    "activeSecondsRemaining": null,
+    "epoch": 2,
+    "paused": false,
+    "phase": "completed",
+    "queue": [],
+    "runId": "25113d22-2cc0-4d41-9ed5-0c038e183d88"
+  },
+  "scene": {
+    "revision": 9,
+    "boxes": 791,
+    "styles": 14,
+    "groups": [
+      "bridge",
+      "details",
+      "island",
+      "lighthouse",
+      "pavilion",
+      "sea",
+      "sign",
+      "sign_front"
+    ]
+  },
+  "eventCounts": {
+    "harness.started": 1,
+    "harness.message.accepted": 1,
+    "harness.message.applied": 1,
+    "harness.request.prepared": 5,
+    "provider.request": 6,
+    "provider.first_byte": 6,
+    "provider.text_delta": 1662,
+    "provider.response": 6,
+    "tool.request": 6,
+    "tool.result": 6,
+    "compact.started": 1,
+    "compact.completed": 1,
+    "geometry.applied": 1,
+    "text.applied": 1,
+    "capture.completed": 1,
+    "revision.committed": 1,
+    "artwork.saved": 1,
+    "harness.finished": 1
+  },
+  "toolCalls": 6,
+  "toolNames": {
+    "get_context": 1,
+    "inspect_region": 1,
+    "voxel_text": 2,
+    "capture_views": 1,
+    "finish_artwork": 1
+  },
+  "toolErrors": [],
+  "images": [
+    {
+      "view": "hero",
+      "file": "hero.png",
+      "sha256": "3bda970c50f41c9b4c078f45196df00addb19680c055678f35b190f12b59fb92"
+    },
+    {
+      "view": "front",
+      "file": "front.png",
+      "sha256": "38cd7a5c83d583e43c18a5d4ca20883e4dcc51e537971d5b3c0ca43df8ea613b"
+    },
+    {
+      "view": "top",
+      "file": "top.png",
+      "sha256": "d4e80ae411e644f2d204c699cd791c203186b42520182ab96d238353576ba38a"
+    }
+  ],
+  "seconds": 21.6767833721824
+}

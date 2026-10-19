@@ -1,0 +1,10 @@
+{
+  "sceneSource": "../r1-cloud-post/scene.json",
+  "sceneSha256": "569705c2190cd55d4c8a3f8932e841631f35b47ff03f5fefbdeaddde28bbfc47",
+  "conversationBeforeArtifact": "e2b09248b52501b3c94d160724207af2fbccddfd87c9b786ab7bb6e4d15e9e5a.json",
+  "sourceRevision": 3,
+  "boxes": 687,
+  "initialCompactCount": 0,
+  "newIsolatedData": "/home/chiro/tmp/morphforge/quality-v2-eval-r2b",
+  "sourceUntouched": true
+}

@@ -1,0 +1,32 @@
+✔ protected groups are normalized without losing names (5.740624ms)
+✔ protection toggling is independent and idempotent (0.206595ms)
+✔ protection save always carries the current baseRevision (0.32898ms)
+✔ future protected empty groups remain visible and unlockable (4.310053ms)
+✔ interaction exposes epoch, active request, queue and live run (0.774771ms)
+✔ primary action names the boundary for every mode (0.311028ms)
+✔ ACK merging is explicit and queue position survives (0.508967ms)
+✔ message events map to durable terminal states (0.162213ms)
+✔ completed harness.finished exposes the Run summary by runId (0.569438ms)
+✔ identical final summary is found across stored chat entries (0.138398ms)
+✔ user-facing errors translate protocol identifiers (0.318663ms)
+✔ interrupting remains a visible active phase (0.133528ms)
+✔ rapid messages are deduplicated by requestId and keep the latest state (0.247921ms)
+✔ material frame count overrides a static source image (0.983027ms)
+✔ animated source strips remain visible without material metadata (4.037498ms)
+✔ explicit single-frame material keeps a tall static image static (0.163304ms)
+✔ large timelines reduce atlas resolution to stay inside WebGL limits (0.190805ms)
+✔ frame selection is cyclic and honors material frame time (0.136484ms)
+✔ text request uses the confirmed canonical fields without axis flipping (1.079807ms)
+✔ preview boxes come from canonical box operations (0.196235ms)
+✔ stale or invalid previews cannot be applied (0.432163ms)
+✔ missing glyph errors remain actionable and block apply (0.324393ms)
+✔ real apply response normalizes revision, scene and audit fields (0.420611ms)
+✔ typed missing glyph response from the HTTP layer is accepted (0.110046ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 61.064684

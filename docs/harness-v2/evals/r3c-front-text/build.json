@@ -1,0 +1,8 @@
+{
+  "softwareVersion": "0.2.0",
+  "binarySha256": "e198fe8611acda8037148518a4980d04c7a80c898476141e4249e338dbc21ab6",
+  "developmentBuild": true,
+  "systemVersion": "morphforge-system/2.3",
+  "toolsVersion": "morphforge-tools/2.3",
+  "note": "与R2c使用同一冻结二进制；从R3检查点接续修正正面字体，原七组硬保护。"
+}

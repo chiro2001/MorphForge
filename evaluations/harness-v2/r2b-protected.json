@@ -1,0 +1,75 @@
+{
+  "id": "r2b-protected-text-and-interactions",
+  "continue": true,
+  "settings": {
+    "model": "deepseek-flash",
+    "reasoning": "low",
+    "language": "zh-CN",
+    "maxSteps": 28,
+    "maxOutputTokens": 16384,
+    "maxRunTokens": 450000,
+    "maxRunSeconds": 1000,
+    "autoCompact": true,
+    "compactTokens": 32000
+  },
+  "requiredGroups": [
+    "sign",
+    "lantern"
+  ],
+  "protectedGroups": [
+    "island",
+    "building",
+    "tower",
+    "bridge",
+    "dock"
+  ],
+  "requireCompact": true,
+  "prompt": "中文标牌字号至少16，按返回layout扩大独立牌匾，不把汉字缩到8像素；先用完整group/origin/align预览，再直接复用applyTemplate应用。原始工程和上下文已恢复到R1末尾，本轮还没有任何sign或lantern。本体已有五个分组已被软件保护，不允许覆盖；若碰撞报错请整体把新标牌或灯具向外移动到空处，不要试图删除、重建、解锁旧组。本轮只在独立艺术空间中续作，不发布VRC；保留所有现有位置，负Y兼容性留给后续整体平移版本处理。在现有云港驿站上继续细化，保留island/building/tower/bridge/dock分组的每个现有Box及原位置不动，不要replace或clear。请用内置字体生成普通体素Box文字标牌“云港”，归入sign组，放在建筑正面合适可读的位置，检查真实文字布局与正面截图，不要用文字贴图。可先查局部包围盒。等后续插话；先开始本次标牌任务。最终commit并存为一个新作品，不发布OSC。",
+  "actions": [
+    {
+      "endpoint": "harness/message",
+      "when": {
+        "toolResults": 2,
+        "phase": [
+          "running"
+        ],
+        "awaitingProvider": true
+      },
+      "repeat": true,
+      "request": {
+        "mode": "steer",
+        "prompt": "增加两盏独立悬挂的小铜灯，归入lantern组；保留所有旧Box，灯不要挡住中文标牌。最终先看hero/front/top并做一轮必要位置修正，再commit和存新作品。"
+      }
+    },
+    {
+      "endpoint": "harness/message",
+      "when": {
+        "afterAction": 0,
+        "delay": 2,
+        "phase": [
+          "running"
+        ],
+        "awaitingProvider": true
+      },
+      "request": {
+        "mode": "interrupt",
+        "prompt": "请接续目前已完成的修改。最终标牌仍用“云港”两个中文字，保留sign和lantern任务与原五个分组所有Box不变；先检查已有几何，避免重复添加已经完成的文字和灯。尽快完成多视角检查、commit和保存到新作品。"
+      }
+    },
+    {
+      "endpoint": "harness/control",
+      "when": {
+        "afterAction": 1,
+        "delay": 2,
+        "status": [
+          "running"
+        ]
+      },
+      "request": {
+        "action": "compact"
+      }
+    }
+  ],
+  "enforceProtection": true,
+  "requireSavedViews": true
+}

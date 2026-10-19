@@ -1,39 +1,47 @@
-# MorphForge 0.1.0 交付记录
+# MorphForge 0.2.0 交付记录
 
-日期：2026-10-19。软件核心、共享工作台、DeepSeek Harness、VRC/MF3 适配器及 Windows Tauri 安装包已完成；后续高级材质和实体运动扩展不计为本版已实现。
+日期：2026-10-19。Rust独立核心、共享体素工作台、DeepSeek Harness、可选MF3发布适配器及Windows Tauri安装器已交付。Git分支为 `feat/harness-interaction-and-voxel-text`，基线tag为 `v0.1.0-baseline`，计划发布tag为 `v0.2.0`，客户端诊断收尾后建立；没有推送远端。
 
-## 入口
+## 安装与使用
 
-- [设计与实施方案](plan/README.md)
-- [使用指南](USER-GUIDE.md)
-- [执行状态与验证索引](plan/STATUS.md)
-- [Windows安装与构建验收](desktop/README.md)
-- [FullFT预算、场景和功能验证](fullft/README.md)
-- [16k容量与真实UDP记录](stage4/README.md)
-
-Windows安装器：
+Windows x64安装器：
 
 ```text
-D:\Projects\VRChatProjects2\MorphForge\dist\windows\MorphForge Desktop_0.1.0_x64-setup.exe
+D:\Projects\VRChatProjects2\MorphForge\dist\windows\MorphForge Desktop_0.2.0_x64-setup.exe
 ```
 
-Linux工作区副本：`dist/windows/`，含安装器、README及SHA256SUMS。安装器SHA-256：
+大小13,613,538字节，SHA-256：
 
 ```text
-CC535107346818E150E95F71519015B48FEC478BA4DB0B123073D29AFE50F3FF
+CE30B61609FF93C250840560D14AB4278709E7BBD37EACDA63F736B4FCCBEF03
 ```
 
-用户数据：`%LOCALAPPDATA%\MorphForge`。已准备DeepSeek配置及三份作品、九张多视图；密钥不在安装器、源码或诊断包中。原始作品库和现有工程未覆盖。
+Linux工作区有相同副本 `dist/windows/`，该目录保留安装器校验清单；完整Git历史bundle将在本轮客户端诊断收尾后生成。安装器未代码签名。
 
-## 软件能力
+用户数据位于 `%LOCALAPPDATA%\MorphForge`。现有DeepSeek配置保留，API Key不进入源码、安装器或Git bundle。新增两份带三视图的样例作品与独立原始运行档案，未覆盖当前工程及原有三份作品。
 
-Rust核心独立提供CLI/HTTP；共享前端支持人工绘制、精确切割、分组变换、撤销重做、版本和作品库。DeepSeek工具循环支持受限Recipe、多视角反馈、连续修改、详细日志与compact。Tauri负责窗口和进程生命周期，创作无需Unity或VRChat。
+- [用户指南](USER-GUIDE.md)：安装、编辑、文字、AI交互、compact、作品库与发布。
+- [本轮质量结果](quality-v2/RESULTS.md)：实现、测试、失败记录及使用边界。
+- [Windows 0.2验收](quality-v2/WINDOWS-V2.md)：原生、安装、实际嵌入资源与清理。
+- [实施状态](plan/STATUS.md) · [设计方案](plan/README.md) · [0.1.0历史交付](history/DELIVERY-0.1.0.md)。
 
-真实AI验证产生42 Box灯塔作品；compact估算上下文从8937降至1568 Token，续写保留全部旧几何并新增树，达到49 Box。原完整艺术精确转换为70,286个唯一体素、7,459个Box，可从作品库直接加载。
+## 本版能力
 
-Windows原生核心35项、桌面2项、HTTP10项检查通过，安装、启动、退出和卸载已实测。发布包与44个冻结源文件的哈希一致。Linux核心36项测试通过。
+工作台可独立于Unity/VRChat运行，统一手工编辑、模型生成、作品浏览、材质、快照和撤销重做。Rust核心可独立运行在Windows；Tauri只负责桌面窗口与进程生命周期。
 
-## Avatar与预算
+Harness支持安全点插话、立即打断后同run续接、排队下一轮、暂停/恢复/停止，以及保留原始日志与图片的compact。取消、工具调用配对、幂等与过期提交都有守卫。提示词和工具说明提供中英文，优先中文；版本迭代到2.3。`finish_artwork`完成提交、当前版本截图关联、入库和完成摘要。
+
+字体文字由内置Noto Sans SC或只读系统字体生成普通体素Box，支持三平面、排版、挤出、预览、应用和撤销。应用回执跨重启持久化。用户可保护分组，几何修改、历史恢复及作品载入都不能隐式破坏受保护内容；此能力不增加Avatar同步参数。
+
+## 验证与模型表现
+
+Linux核心74项、Clippy与格式检查通过，Node24项、浏览器mock31项通过。真实字体预览24项、Harness UI17项、保护25项、手工5k/16k回归14项通过；16,384个实例为7次绘制调用。Windows原生核心74项、桌面2项通过；本版真实安装、窗口启动、实际嵌入资源哈希、正常退出与卸载均已验证。69个冻结构建输入与最终产物对应。
+
+真实DeepSeek评测保留R0至R3c的全部失败与修正。R2c完成766 Box作品收尾、R3c完成791 Box作品的正面体素中文修正与三视图入库；旧组全部保留。[原始评测](harness-v2/evals/README.md)含输入、事件、Token用量、场景和图片。复杂作品仍可能发生空间判断错误或预算耗尽，本次证明的是可观察、可打断、可修正并完成入库的连续创作闭环。
+
+## Avatar、预算与既有限制
+
+最终资源入口：
 
 ```text
 Assets/MorphForge/FullFT/Avatar.prefab
@@ -42,34 +50,22 @@ Assets/MorphForge/FullFT/MorphForge_FullFT.unity
 
 实际SDK联合构建为 **256 / 256 bit**：
 
-| 项目 | bit | 同步方式 |
-|---|---:|---|
-| 完整面捕112项（105 Bool、7 Float） | 161 | 直通 |
-| MF3几何（6数据Int + Ctl） | 56 | 直通 |
-| 定位、缩放、水平与抓放 | 14 | 直通 |
-| 8个必要面捕控制Bool | 8 | 直通 |
-| 其余本体 | 17 | 直通 |
-| 合计 | **256** | 无压缩carrier |
+| 项目 | bit |
+|---|---:|
+| 完整面捕112项（105 Bool、7 Float） | 161 |
+| MF3几何（6数据Int + Ctl） | 56 |
+| 定位、缩放、水平与抓放 | 14 |
+| 必要面捕控制Bool | 8 |
+| 其余本体 | 17 |
 
-MA注入几何与定位，VRCFury集成完整面捕。通过本体参数本地化腾出预算，保留全部高频FT数据；具体关闭组及远端影响见FullFT文档与profile。其余本体17bit保留衣装7 Bool、摸头状态与AFK完成各1 Bool、VRCEmote Int8。
+MA注入几何与定位，VRCFury集成完整面捕，通过精简本体同步实现，无压缩carrier。最终prefab、上传场景与生成入口均已排除睡眠插件依赖；[资源审计](avatars/README.md)给出递归依赖与哈希证据。Nemesis商业资产只留在Windows工程。
 
-FullFT新场景真实UDP9012完整API回归通过：50条有效命令、166项检查；包括Box、Unit、Brush、覆盖、重复序号、Remove、区域Erase、Clear和40条连续命令的序号回绕。远端分支`IsLocal=0`的眼口输入改变了18个面部BlendShape/骨骼输出。
+此前16,384 Box真实UDP首遍缺192个，0.5秒补发后达到16,384个唯一Box；满池回收通过。最终FullFT协议166项、材质像素40项证据见[实施状态](plan/STATUS.md)。无远端ACK，不能将本机发送完成等同其他玩家显示完成；本轮没有把软件测试当作真实多人验证。
 
-用户原Stage3场景文件保持不变，原未保存内容已复制到新场景；源场景仍保留未保存状态。Play期间的对象禁用只用于隔离测试，退出后恢复；新FullFT场景已单独保存。
+当前为PC/PCVR、Very Poor定位。云水是表面近似，Minecraft仅支持常见Java立方体、六面和动画纹理；高级折射、物理体积云、任意异形模型及实体运动扩展没有宣称实现。文字暂不支持复杂RTL/shaping。Token预算按Provider实际usage门限计量，最多可能多出一个完整响应，不能作为账单硬上限。
 
-## 显示容量与材质
+本轮没有自动上传Avatar、启动VRChat或向9000发包。用户原Stage3场景仍打开且有未保存修改，未保存、关闭或丢弃。
 
-真实16,384条绘制完整发送后首遍16,192个，缺192；以0.5秒补发后达到16,384唯一Box，零位置、尺寸和metadata错误。满池删除16、补回16、区域擦除64及清空均通过。
+## 新增客户端问题（待定位）
 
-原生100材质目录、六面、三帧动画、云水金属/cutout可见性、0.5缩放及根刚体变换共40项严格像素检查通过。新双Pass材质16k混合显示夹具p50约8.92ms、p95约11.80ms，仅代表当时Editor整体帧时间。
-
-## 保留的限制
-
-- 无远端ACK，已发送不等于所有玩家已显示。0.25秒的256条短回归首次漏1个Birth、第二次完整；0.5秒对照完整。报告保留失败，不承诺任意负载下无损。
-- 最终版本未再跑一整轮16k无损长测；容量/补发、材质夹具和最终FullFT功能回归分别给出证据。
-- 自动测试仅发9012，未上传Avatar，未启动VRChat。真实多人、VR手势、客户端Particle Limiter及GPU成本仍需客户端观察。
-- 当前PC/PCVR接受Very Poor。一个持久粒子池、双Pass不保证严格透明排序；水云是表面近似。
-- Minecraft支持常见Java立方体、六面和动画纹理；不支持任意异形模型、PBR扩展、逐面染色遮罩、物理体积云或折射。新纹理用于Avatar时需要预打包并上传。
-- `motionPhase`为6bit材质时间相位，实体位置/速度/骨骼运动属于后续扩展。
-
-原始日志、Recipe、图片、不可变版本及失败证据均保留，compact不删除这些资料。
+2026-10-19用户手动上传`MorphForge_Stage3_Avatar`后，客户端报告`AssetBundleFailedServerSideChecks`。这是Stage3实际上传包的服务端检查失败，不能由FullFT的Editor/SDK验收排除。详见[诊断证据](security-check-failure/client-evidence.json)；具体命中项尚不明确，完整客户端验收暂未通过。桌面0.2.0已安装供用户手测，保持运行。

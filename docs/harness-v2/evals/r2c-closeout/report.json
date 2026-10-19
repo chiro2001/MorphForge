@@ -1,0 +1,135 @@
+{
+  "case": "r2c-closeout-existing-checkpoint",
+  "caseSha256": "cd1baeadbf7a8a310d841e260f48412d838dba92dd88500303748c62181291ac",
+  "backend": "http://127.0.0.1:8782",
+  "initialRunId": "46e9bc87-d236-40c1-9d70-46198b3978fa",
+  "settings": {
+    "model": "deepseek-flash",
+    "reasoning": "none",
+    "language": "zh-CN",
+    "maxSteps": 8,
+    "maxOutputTokens": 8192,
+    "maxRunTokens": 150000,
+    "maxRunSeconds": 500,
+    "autoCompact": true,
+    "compactTokens": 18000
+  },
+  "versions": {
+    "software": {
+      "apiVersion": "mf-http/2",
+      "name": "MorphForge",
+      "version": "0.2.0"
+    },
+    "tools": "morphforge-tools/2.3",
+    "prompt": "morphforge-system/2.3",
+    "language": "zh-CN",
+    "schemaSha256": "e94c4d021da386f9d8913d43069c8dd3d2521cb1f9a16f687782a17ea61d1efa"
+  },
+  "actions": [],
+  "success": true,
+  "checks": {
+    "runCompleted": true,
+    "allActionsExercised": true,
+    "nonemptyScene": true,
+    "boxCapacity": true,
+    "modelUsedVisualFeedback": true,
+    "modelCommitted": true,
+    "modelSavedArtwork": true,
+    "oscRemainsDisabled": true,
+    "group:sign": true,
+    "group:lantern": true,
+    "preserved:island": true,
+    "preserved:building": true,
+    "preserved:tower": true,
+    "preserved:bridge": true,
+    "preserved:dock": true,
+    "preserved:details": true,
+    "preserved:sign": true,
+    "preserved:lantern": true,
+    "contextCompacted": true,
+    "savedArtworkHasActualViews": true
+  },
+  "run": {
+    "activeRequestId": null,
+    "epoch": 1,
+    "error": "",
+    "finishedAt": "2026-10-18T23:40:11.752Z",
+    "id": "46e9bc87-d236-40c1-9d70-46198b3978fa",
+    "language": "zh-CN",
+    "message": "收尾完成，本轮未做任何几何修改：所有八组（island/building/tower/bridge/dock/details/sign/lantern）均保持受保护状态，766 盒、9.78 万体素原样保留。\n\n检查结果（revision 8 真实渲染）：\n- hero 与 front：正面木框石匾上的\"云港\"两字完整可读，31×14 像素、39 盒、无缺字，暖橡木字压在浅石匾上，铜框、石匾立柱与金色顶饰层次清晰，未遮挡两侧窗户与拱形入口。\n- 两盏悬挂铜灯位于拱门上方墙面左右对称，铜帽、笼身、暖光芯与外伸悬臂在 hero 视角可见，均未压住标牌。\n- top：云岛、右侧小码头、带负空间的连接桥与主建筑屋顶层次布局正常。\n\n说明：\n- 全部为普通体素 Box 文字（内置字体 builtin:noto-sans-sc），未使用文字贴图。\n- 本次唯一动作是 finish_artwork 的提交与作品库保存，未启用 OSC，未发布 VRChat。\n- 当前几何仍有 bridge/dock 共 9 盒 y 低于 0（最低 -14），VRChat 兼容为 false；按你的要求保留现状，负 Y 兼容留待后续整体平移版本处理。",
+    "prompt": "上一轮所有造型工作已经完成并commit为安全检查点，本轮只做收尾，全部八个分组均已软件保护。请直接get_context读取当前revision，拍hero/front/top确认当前版本的中文“云港”和两盏铜灯，不再做任何几何修改或添加。然后调用finish_artwork，一次完成当前版本的commit、保存作品（含真实截图）并给出简短完成摘要。作品标题“云港信使驿站 · 中文标牌与双铜灯 · 保护版”，tags含云港、字体、保护验证。不要发布OSC或VRC。",
+    "promptVersion": "morphforge-system/2.3",
+    "startedAt": "2026-10-18T23:39:56.370Z",
+    "status": "completed",
+    "steps": 3,
+    "tokens": 79626,
+    "toolsVersion": "morphforge-tools/2.3"
+  },
+  "interaction": {
+    "activeRequestId": null,
+    "activeSecondsRemaining": null,
+    "epoch": 1,
+    "paused": false,
+    "phase": "completed",
+    "queue": [],
+    "runId": "46e9bc87-d236-40c1-9d70-46198b3978fa"
+  },
+  "scene": {
+    "revision": 8,
+    "boxes": 766,
+    "styles": 15,
+    "groups": [
+      "bridge",
+      "building",
+      "details",
+      "dock",
+      "island",
+      "lantern",
+      "sign",
+      "tower"
+    ]
+  },
+  "eventCounts": {
+    "harness.started": 1,
+    "harness.message.accepted": 1,
+    "harness.message.applied": 1,
+    "harness.request.prepared": 3,
+    "provider.request": 4,
+    "provider.first_byte": 4,
+    "provider.response": 4,
+    "tool.request": 3,
+    "tool.result": 3,
+    "capture.completed": 1,
+    "compact.started": 1,
+    "provider.text_delta": 1883,
+    "compact.completed": 1,
+    "revision.committed": 1,
+    "artwork.saved": 1,
+    "harness.finished": 1
+  },
+  "toolCalls": 3,
+  "toolNames": {
+    "get_context": 1,
+    "capture_views": 1,
+    "finish_artwork": 1
+  },
+  "toolErrors": [],
+  "images": [
+    {
+      "view": "hero",
+      "file": "hero.png",
+      "sha256": "f8eb9c122019d0e30675e08c59591185ad3d56ef09d43e78a4d56427bdd87bb7"
+    },
+    {
+      "view": "front",
+      "file": "front.png",
+      "sha256": "4ebcbd48bb3e00061cab23ee2481c8bc08287a274b31c7ab57e9f3de120aa78c"
+    },
+    {
+      "view": "top",
+      "file": "top.png",
+      "sha256": "43ddd4a2548efb28106f4093a3e1694b8af328de2949b1c343e418b3d549f4fd"
+    }
+  ],
+  "seconds": 19.620413452386856
+}

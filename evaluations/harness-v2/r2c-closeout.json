@@ -1,0 +1,33 @@
+{
+  "id": "r2c-closeout-existing-checkpoint",
+  "continue": true,
+  "enforceProtection": true,
+  "settings": {
+    "model": "deepseek-flash",
+    "reasoning": "none",
+    "language": "zh-CN",
+    "maxSteps": 8,
+    "maxOutputTokens": 8192,
+    "maxRunTokens": 150000,
+    "maxRunSeconds": 500,
+    "autoCompact": true,
+    "compactTokens": 18000
+  },
+  "protectedGroups": [
+    "island",
+    "building",
+    "tower",
+    "bridge",
+    "dock",
+    "details",
+    "sign",
+    "lantern"
+  ],
+  "requiredGroups": [
+    "sign",
+    "lantern"
+  ],
+  "requireCompact": true,
+  "requireSavedViews": true,
+  "prompt": "上一轮所有造型工作已经完成并commit为安全检查点，本轮只做收尾，全部八个分组均已软件保护。请直接get_context读取当前revision，拍hero/front/top确认当前版本的中文“云港”和两盏铜灯，不再做任何几何修改或添加。然后调用finish_artwork，一次完成当前版本的commit、保存作品（含真实截图）并给出简短完成摘要。作品标题“云港信使驿站 · 中文标牌与双铜灯 · 保护版”，tags含云港、字体、保护验证。不要发布OSC或VRC。"
+}
