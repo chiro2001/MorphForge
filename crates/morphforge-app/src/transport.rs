@@ -54,6 +54,8 @@ pub struct State {
     pub desired_revision: u64,
     pub sent_revision: Option<u64>,
     pub seq: u8,
+    pub wide_seqs: [u8; 3],
+    pub lanes: BTreeMap<protocol::GeometryKey, usize>,
     pub brush: Option<(u32, u8, u8)>,
     pub resets: u8,
     pub connected: bool,
@@ -94,6 +96,12 @@ impl Transport {
             .and_then(|b| serde_json::from_slice::<Connection>(&b).ok())
             .unwrap_or_default();
         config.enabled = false;
+        if avatar_catalog
+            .as_ref()
+            .is_some_and(crate::target::AvatarCatalog::wide_protocol)
+        {
+            config.profile = "mf4".into();
+        }
         let t = Self {
             inner: Arc::new(Mutex::new(State {
                 config,
@@ -104,6 +112,8 @@ impl Transport {
                 desired_revision: 0,
                 sent_revision: None,
                 seq: 1,
+                wide_seqs: [1; 3],
+                lanes: BTreeMap::new(),
                 brush: None,
                 resets: 0,
                 connected: false,
@@ -125,12 +135,27 @@ impl Transport {
     }
     pub fn state(&self) -> Value {
         let s = self.inner.lock().unwrap();
-        let commands = protocol::plan(&s.sent, &s.desired, s.brush, s.config.profile == "mf2");
-        let pending = commands.len()
+        let planning_sent = if s.resets > 0 { &[][..] } else { &s.sent[..] };
+        let commands = protocol::plan(
+            planning_sent,
+            &s.desired,
+            s.brush,
+            s.config.profile == "mf2",
+        );
+        let command_batches = if s.config.profile == "mf4" {
+            protocol::wide_plan(planning_sent, &s.desired, &s.lanes)
+                .iter()
+                .map(Vec::len)
+                .max()
+                .unwrap_or(0)
+        } else {
+            commands.len()
+        };
+        let pending = command_batches
             + s.resets as usize
             + usize::from(!s.controls.is_empty())
             + s.reset_pulse as usize;
-        json!({"enabled":s.config.enabled,"sending":s.connected,"port":s.config.port,"interval":s.config.interval,"profile":s.config.profile,"auto":s.config.auto,"capacity":s.config.capacity,"refreshSeconds":s.config.refresh_seconds,"pending":pending,"etaSeconds":pending as f64*s.config.interval,"desiredRevision":s.desired_revision,"sentRevision":s.sent_revision,"sentCommands":s.sent_count,"error":s.last_error,"ack":false,"syncedBits":if s.config.profile=="mf3"{56}else{88},"placement":{"world":s.config.world,"visible":s.config.visible,"scale":s.config.scale,"level":s.config.level}})
+        json!({"enabled":s.config.enabled,"sending":s.connected,"port":s.config.port,"interval":s.config.interval,"profile":s.config.profile,"auto":s.config.auto,"capacity":s.config.capacity,"refreshSeconds":s.config.refresh_seconds,"pending":pending,"etaSeconds":pending as f64*s.config.interval,"desiredRevision":s.desired_revision,"sentRevision":s.sent_revision,"sentCommands":s.sent_count,"error":s.last_error,"ack":false,"syncedBits":if s.config.profile=="mf4"{240}else if s.config.profile=="mf3"{56}else{88},"placement":{"world":s.config.world,"visible":s.config.visible,"scale":s.config.scale,"level":s.config.level}})
     }
     pub fn configure(&self, v: &Value, workspace: &mut Workspace) -> Result<Value> {
         let mut s = self.inner.lock().unwrap();
@@ -148,11 +173,31 @@ impl Transport {
             || !(0.05..=5.).contains(&config.interval)
             || !config.scale.is_finite()
             || !(0.05..=1.).contains(&config.scale)
-            || !["mf3", "mf2"].contains(&config.profile.as_str())
+            || !["mf4", "mf3", "mf2"].contains(&config.profile.as_str())
             || config.capacity == 0
             || config.capacity > 50000
         {
             bail!("连接配置越界")
+        }
+        if config.profile == "mf4" && config.capacity > 16384 {
+            bail!("MF4_CAPACITY：三通道头像总容量为16384 Box");
+        }
+        if config.enabled
+            && config.profile != "mf4"
+            && s.avatar_catalog
+                .as_ref()
+                .is_some_and(crate::target::AvatarCatalog::wide_protocol)
+        {
+            bail!("PROTOCOL_MISMATCH：目标目录为MF4三通道头像，不能使用MF3/MF2发送");
+        }
+        if config.enabled
+            && config.profile == "mf4"
+            && !s
+                .avatar_catalog
+                .as_ref()
+                .is_some_and(crate::target::AvatarCatalog::wide_protocol)
+        {
+            bail!("MF4_CATALOG_REQUIRED：请导入配套的MF4头像目录（240bit三通道），确认头像版本后再连接");
         }
         if config.enabled && !s.avatar_catalog_error.is_empty() {
             bail!("MATERIAL_CATALOG_INVALID：{}", s.avatar_catalog_error);
@@ -171,6 +216,7 @@ impl Transport {
         if restart {
             s.generation += 1;
             s.sent.clear();
+            s.lanes.clear();
             s.sent_revision = None;
             s.brush = None;
             s.resets = 2;
@@ -182,7 +228,7 @@ impl Transport {
                 .insert("MF_Handle".into(), Control::Bool(c.visible));
             s.controls
                 .insert("MF_Scale".into(), Control::Float(c.scale));
-            if c.profile == "mf3" {
+            if c.profile != "mf2" {
                 s.controls.insert("MF_Level".into(), Control::Bool(c.level));
             }
             protocol::validate_target(&workspace.project.scene, s.config.capacity)?;
@@ -380,6 +426,7 @@ impl Transport {
                 continue;
             }
             enum Job {
+                Batch(Vec<(usize, Command)>),
                 Command(Command),
                 Controls(Vec<(String, Control)>),
                 Pulse(u8),
@@ -398,7 +445,15 @@ impl Transport {
                     s.last_refresh = Instant::now();
                 }
                 if s.resets > 0 {
-                    Some(Job::Command(Command::Clear))
+                    Some(if s.config.profile == "mf4" {
+                        Job::Batch(
+                            (0..protocol::WIDE_LANES)
+                                .map(|i| (i, Command::Clear))
+                                .collect(),
+                        )
+                    } else {
+                        Job::Command(Command::Clear)
+                    })
                 } else if s.reset_pulse > 0 {
                     Some(Job::Pulse(s.reset_pulse))
                 } else if !s.controls.is_empty() {
@@ -409,17 +464,30 @@ impl Transport {
                             .collect(),
                     ))
                 } else {
-                    let command =
+                    let command = if s.config.profile == "mf4" {
+                        let batch: Vec<_> = protocol::wide_plan(&s.sent, &s.desired, &s.lanes)
+                            .into_iter()
+                            .enumerate()
+                            .filter_map(|(i, q)| q.into_iter().next().map(|c| (i, c)))
+                            .collect();
+                        if batch.is_empty() {
+                            None
+                        } else {
+                            Some(Job::Batch(batch))
+                        }
+                    } else {
                         protocol::plan(&s.sent, &s.desired, s.brush, s.config.profile == "mf2")
                             .into_iter()
-                            .next();
+                            .next()
+                            .map(Job::Command)
+                    };
                     if command.is_none() {
                         if s.sent_revision != Some(s.desired_revision) {
                             s.last_refresh = Instant::now();
                         }
                         s.sent_revision = Some(s.desired_revision);
                     }
-                    command.map(Job::Command)
+                    command
                 }
             };
             let Some(job) = job else {
@@ -435,6 +503,13 @@ impl Transport {
             );
             let encoded = match &job {
                 Job::Command(c) => protocol::packet(c, seq, legacy),
+                Job::Batch(batch) => batch
+                    .iter()
+                    .try_fold(Vec::new(), |mut values, (lane, c)| {
+                        values.extend(protocol::wide_values(c, s.wide_seqs[*lane], *lane)?);
+                        Ok(values)
+                    })
+                    .map(|values| protocol::bundle(&values)),
                 Job::Controls(v) => Ok(protocol::bundle(
                     &v.iter()
                         .map(|(k, v)| {
@@ -480,6 +555,34 @@ impl Transport {
                 }
             }
             match &job {
+                Job::Batch(batch) => {
+                    for (lane, _) in batch {
+                        s.wide_seqs[*lane] = (s.wide_seqs[*lane] + 1) % 16;
+                    }
+                    let clear = batch.iter().any(|(_, c)| matches!(c, Command::Clear));
+                    if clear {
+                        s.sent.clear();
+                        s.lanes.clear();
+                        s.sent_revision = None;
+                        s.brush = None;
+                        s.resets = s.resets.saturating_sub(1);
+                    } else {
+                        for (lane, c) in batch {
+                            match c {
+                                Command::Remove { value } => {
+                                    s.sent.retain(|b| key(b) != key(value));
+                                    s.lanes.remove(&key(value));
+                                }
+                                Command::Box { value } | Command::Voxel { value } => {
+                                    s.sent.retain(|b| key(b) != key(value));
+                                    s.sent.push(value.clone());
+                                    s.lanes.insert(key(value), *lane);
+                                }
+                                _ => {}
+                            }
+                        }
+                    }
+                }
                 Job::Command(c) => {
                     s.seq = (seq + 1) % if legacy { 32 } else { 16 };
                     match c {
@@ -514,6 +617,7 @@ impl Transport {
             }
             let event = match &job {
                 Job::Command(c) => json!({"seq":seq,"port":port,"command":c}),
+                Job::Batch(batch) => json!({"seq":seq,"port":port,"lanes":batch}),
                 Job::Controls(_) => json!({"port":port,"placement":true}),
                 Job::Pulse(_) => json!({"port":port,"resetPulse":true}),
             };

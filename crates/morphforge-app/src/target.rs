@@ -72,6 +72,9 @@ impl AvatarCatalog {
         )?);
         Ok(value)
     }
+    pub fn wide_protocol(&self) -> bool {
+        self.capabilities.iter().any(|c| c == "mf4-three-lane/1")
+    }
     pub fn surface_masks(&self) -> bool {
         self.capabilities.iter().any(|c| c == SURFACE_CAPABILITY)
     }
@@ -83,6 +86,10 @@ pub fn compatibility(
 ) -> Value {
     let used: BTreeSet<_> = scene.boxes.iter().map(|b| b.style_id).collect();
     let Some(profile) = profile else {
+        let missing: Vec<_> = used.iter().copied().filter(|id| *id > 24).collect();
+        if !missing.is_empty() {
+            return json!({"status":"unverified_custom","matched":false,"missingIds":missing,"differentIds":[],"remoteVerified":false,"note":"自定义材质不能只按编号发送：请导入实际上传头像的材质目录，避免编号碰撞和动画闪烁。"});
+        }
         return json!({"status":"unknown","matched":null,"usedStyles":used.len(),"note":"未导入目标Avatar目录；OSC不传贴图，未核实上传的Avatar。","remoteVerified":false});
     };
     let lookup: BTreeMap<_, _> = profile.materials.iter().map(|m| (m.id, m)).collect();

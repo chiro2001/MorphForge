@@ -199,3 +199,78 @@ pub fn plan(
 pub fn used_styles(scene: &Scene) -> BTreeSet<u32> {
     scene.boxes.iter().map(|b| b.style_id).collect()
 }
+
+/// MF4: three independent, self-contained 80-bit lanes. Appearance is RGB24
+/// particle *data*, not a rendered color: style12 | tint6 | motion6.
+pub const WIDE_LANES: usize = 3;
+pub const WIDE_LANE_CAPACITY: usize = 5462;
+pub type GeometryKey = ([i32; 3], [u32; 3]);
+pub fn packed_appearance(b: &Box3) -> [u8; 3] {
+    let bits = b.style_id | ((b.tint_id as u32) << 12) | ((b.motion_phase as u32) << 18);
+    [bits as u8, (bits >> 8) as u8, (bits >> 16) as u8]
+}
+pub fn wide_values(c: &Command, seq: u8, lane: usize) -> Result<Vec<(String, OscValue)>> {
+    if seq >= 16 || lane >= WIDE_LANES || matches!(c, Command::Brush { .. }) {
+        return Err(GeometryError("MF4通道/序号/命令越界".into()));
+    }
+    let (op, geometry) = payload(c)?;
+    let mut bytes = [0; 9];
+    bytes[..6].copy_from_slice(&geometry);
+    if let Command::Box { value } | Command::Voxel { value } = c {
+        bytes[6..].copy_from_slice(&packed_appearance(value));
+    }
+    let mut values: Vec<_> = bytes
+        .into_iter()
+        .enumerate()
+        .map(|(i, b)| (format!("MF4_L{lane}_D{i:02}"), OscValue::Int(b as i32)))
+        .collect();
+    values.push((
+        format!("MF4_L{lane}_Ctl"),
+        OscValue::Int(((seq << 4) | op) as i32),
+    ));
+    Ok(values)
+}
+/// Retain the lane of every live Box. Balance additions across pools, counting
+/// removals first. Each lane's erases precede its draws, including replacements.
+pub fn wide_plan(
+    sent: &[Box3],
+    target: &[Box3],
+    assignments: &BTreeMap<GeometryKey, usize>,
+) -> [Vec<Command>; WIDE_LANES] {
+    let old: BTreeMap<_, _> = sent.iter().map(|b| (key(b), b)).collect();
+    let new: BTreeMap<_, _> = target.iter().map(|b| (key(b), b)).collect();
+    let mut queues: [Vec<Command>; WIDE_LANES] = Default::default();
+    let mut counts = [0usize; WIDE_LANES];
+    for (k, b) in &old {
+        let lane = assignments.get(k).copied().unwrap_or(0);
+        if new.contains_key(k) {
+            counts[lane] += 1;
+        } else {
+            queues[lane].push(Command::Remove {
+                value: (*b).clone(),
+            });
+        }
+    }
+    for (k, b) in &new {
+        if old.get(k).is_some_and(|v| appearance(v) == appearance(b)) {
+            continue;
+        }
+        let lane = if old.contains_key(k) {
+            assignments.get(k).copied().unwrap_or(0)
+        } else {
+            let lane = (0..WIDE_LANES).min_by_key(|i| counts[*i]).unwrap();
+            counts[lane] += 1;
+            lane
+        };
+        queues[lane].push(if b.size == [1; 3] {
+            Command::Voxel {
+                value: (*b).clone(),
+            }
+        } else {
+            Command::Box {
+                value: (*b).clone(),
+            }
+        });
+    }
+    queues
+}

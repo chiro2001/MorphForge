@@ -1,0 +1,56 @@
+{
+  "success": true,
+  "intervalSeconds": 0.25,
+  "checks": [
+    {
+      "phase": "empty",
+      "expected": 0,
+      "actual": 0,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "phase": "48 mixed-size packed-color boxes after 16 sequence steps",
+      "expected": 48,
+      "actual": 48,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "phase": "appearance replacements and byte 255",
+      "expected": 48,
+      "actual": 48,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "phase": "erase half across three pools",
+      "expected": 24,
+      "actual": 24,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "phase": "redraw erased boxes",
+      "expected": 48,
+      "actual": 48,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "phase": "retained immutable colors while idle",
+      "expected": 48,
+      "actual": 48,
+      "passed": true,
+      "errors": []
+    },
+    {
+      "phase": "broadcast clear",
+      "expected": 0,
+      "actual": 0,
+      "passed": true,
+      "errors": []
+    }
+  ],
+  "scope": "Real UDP 9012 into GestureManager, native animator/ParameterDriver/particle systems; no runtime script creates particles. Not a multiplayer network test."
+}

@@ -1,0 +1,9 @@
+{
+  "oscEnabled": false,
+  "catalogMatched": true,
+  "success": true,
+  "bits": 240,
+  "uiHandlerFixed": true,
+  "scope": "Actual packaged Windows core; isolated workspace; no paid API or OSC",
+  "version": null
+}

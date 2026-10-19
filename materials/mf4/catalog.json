@@ -1,0 +1,1143 @@
+{
+  "capabilities": [
+    "virtual-light/1",
+    "transparent-face-mask/1",
+    "mf4-three-lane/1"
+  ],
+  "cellSize": 0.25,
+  "colorSpace": "sRGB",
+  "format": "MorphForgeMaterialCatalog/1",
+  "materials": [
+    {
+      "color": [
+        0.6200000047683716,
+        0.6700000166893005,
+        0.7300000190734863
+      ],
+      "emission": 0.0,
+      "family": "natural",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 1,
+      "metallic": 0.0,
+      "name": "石灰岩",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "opaque",
+      "roughness": 0.8999999761581421,
+      "source": null,
+      "textures": [],
+      "uid": "mf:stone"
+    },
+    {
+      "color": [
+        0.6399999856948853,
+        0.3100000023841858,
+        0.11999999731779099
+      ],
+      "emission": 0.0,
+      "family": "wood",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 2,
+      "metallic": 0.0,
+      "name": "暖橡木",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "opaque",
+      "roughness": 0.800000011920929,
+      "source": null,
+      "textures": [],
+      "uid": "mf:wood"
+    },
+    {
+      "color": [
+        0.11999999731779099,
+        0.550000011920929,
+        0.9200000166893005
+      ],
+      "emission": 0.0,
+      "family": "matte",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 3,
+      "metallic": 0.0,
+      "name": "湖蓝陶瓷",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "opaque",
+      "roughness": 0.3499999940395355,
+      "source": null,
+      "textures": [],
+      "uid": "mf:blue"
+    },
+    {
+      "color": [
+        0.23999999463558197,
+        0.7799999713897705,
+        0.3799999952316284
+      ],
+      "emission": 0.0,
+      "family": "natural",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 4,
+      "metallic": 0.0,
+      "name": "草地",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "opaque",
+      "roughness": 0.8999999761581421,
+      "source": null,
+      "textures": [],
+      "uid": "mf:grass"
+    },
+    {
+      "color": [
+        0.3499999940395355,
+        0.20999999344348907,
+        0.11999999731779099
+      ],
+      "emission": 0.0,
+      "family": "natural",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 5,
+      "metallic": 0.0,
+      "name": "泥土",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "opaque",
+      "roughness": 1.0,
+      "source": null,
+      "textures": [],
+      "uid": "mf:soil"
+    },
+    {
+      "color": [
+        0.800000011920929,
+        0.6800000071525574,
+        0.4300000071525574
+      ],
+      "emission": 0.0,
+      "family": "natural",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 6,
+      "metallic": 0.0,
+      "name": "沙岩",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "opaque",
+      "roughness": 0.8999999761581421,
+      "source": null,
+      "textures": [],
+      "uid": "mf:sand"
+    },
+    {
+      "color": [
+        0.8999999761581421,
+        0.9599999785423279,
+        1.0
+      ],
+      "emission": 0.0,
+      "family": "natural",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 7,
+      "metallic": 0.0,
+      "name": "积雪",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "opaque",
+      "roughness": 0.800000011920929,
+      "source": null,
+      "textures": [],
+      "uid": "mf:snow"
+    },
+    {
+      "color": [
+        0.550000011920929,
+        0.1899999976158142,
+        0.11999999731779099
+      ],
+      "emission": 0.0,
+      "family": "building",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 8,
+      "metallic": 0.0,
+      "name": "砖墙",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "opaque",
+      "roughness": 0.8999999761581421,
+      "source": null,
+      "textures": [],
+      "uid": "mf:brick"
+    },
+    {
+      "color": [
+        0.4399999976158142,
+        0.46000000834465027,
+        0.4699999988079071
+      ],
+      "emission": 0.0,
+      "family": "building",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 9,
+      "metallic": 0.0,
+      "name": "混凝土",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "opaque",
+      "roughness": 0.8999999761581421,
+      "source": null,
+      "textures": [],
+      "uid": "mf:concrete"
+    },
+    {
+      "color": [
+        0.6499999761581421,
+        0.7200000286102295,
+        0.7699999809265137
+      ],
+      "emission": 0.0,
+      "family": "metal",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 10,
+      "metallic": 0.949999988079071,
+      "name": "拉丝钢",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "opaque",
+      "roughness": 0.25,
+      "source": null,
+      "textures": [],
+      "uid": "mf:steel"
+    },
+    {
+      "color": [
+        0.949999988079071,
+        0.6299999952316284,
+        0.18000000715255737
+      ],
+      "emission": 0.0,
+      "family": "metal",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 11,
+      "metallic": 0.949999988079071,
+      "name": "黄金",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "opaque",
+      "roughness": 0.18000000715255737,
+      "source": null,
+      "textures": [],
+      "uid": "mf:gold"
+    },
+    {
+      "color": [
+        0.6499999761581421,
+        0.33000001311302185,
+        0.18000000715255737
+      ],
+      "emission": 0.0,
+      "family": "metal",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 12,
+      "metallic": 0.8500000238418579,
+      "name": "旧铜",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "opaque",
+      "roughness": 0.5,
+      "source": null,
+      "textures": [],
+      "uid": "mf:copper"
+    },
+    {
+      "color": [
+        1.0,
+        0.6499999761581421,
+        0.2199999988079071
+      ],
+      "emission": 1.5,
+      "family": "emissive",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 13,
+      "metallic": 0.0,
+      "name": "暖灯",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "opaque",
+      "roughness": 0.5,
+      "source": null,
+      "textures": [],
+      "uid": "mf:lamp"
+    },
+    {
+      "color": [
+        0.11999999731779099,
+        0.8999999761581421,
+        1.0
+      ],
+      "emission": 2.0,
+      "family": "emissive",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 14,
+      "metallic": 0.0,
+      "name": "青色霓虹",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "opaque",
+      "roughness": 0.30000001192092896,
+      "source": null,
+      "textures": [],
+      "uid": "mf:neon"
+    },
+    {
+      "color": [
+        1.0,
+        0.2199999988079071,
+        0.02500000037252903
+      ],
+      "emission": 1.7999999523162842,
+      "family": "emissive",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 15,
+      "metallic": 0.0,
+      "name": "熔岩",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "opaque",
+      "roughness": 0.800000011920929,
+      "source": null,
+      "textures": [],
+      "uid": "mf:lava"
+    },
+    {
+      "color": [
+        0.05999999865889549,
+        0.4300000071525574,
+        0.6700000166893005
+      ],
+      "emission": 0.0,
+      "family": "water",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 16,
+      "metallic": 0.20000000298023224,
+      "name": "浅海水",
+      "opacity": 0.6499999761581421,
+      "pack": null,
+      "renderMode": "transparent",
+      "roughness": 0.11999999731779099,
+      "source": null,
+      "textures": [],
+      "uid": "mf:water"
+    },
+    {
+      "color": [
+        0.6499999761581421,
+        0.8600000143051147,
+        0.9100000262260437
+      ],
+      "emission": 0.0,
+      "family": "glass",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 17,
+      "metallic": 0.30000001192092896,
+      "name": "清玻璃",
+      "opacity": 0.2199999988079071,
+      "pack": null,
+      "renderMode": "transparent",
+      "roughness": 0.05000000074505806,
+      "source": null,
+      "textures": [],
+      "uid": "mf:glass"
+    },
+    {
+      "color": [
+        0.5299999713897705,
+        0.800000011920929,
+        0.949999988079071
+      ],
+      "emission": 0.0,
+      "family": "glass",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 18,
+      "metallic": 0.15000000596046448,
+      "name": "冰",
+      "opacity": 0.6499999761581421,
+      "pack": null,
+      "renderMode": "transparent",
+      "roughness": 0.2199999988079071,
+      "source": null,
+      "textures": [],
+      "uid": "mf:ice"
+    },
+    {
+      "color": [
+        0.9200000166893005,
+        0.9399999976158142,
+        0.9800000190734863
+      ],
+      "emission": 0.0,
+      "family": "cloud",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 19,
+      "metallic": 0.0,
+      "name": "体素白云",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "opaque",
+      "roughness": 1.0,
+      "source": null,
+      "textures": [],
+      "uid": "mf:cloud"
+    },
+    {
+      "color": [
+        0.3499999940395355,
+        0.38999998569488525,
+        0.47999998927116394
+      ],
+      "emission": 0.0,
+      "family": "cloud",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 20,
+      "metallic": 0.0,
+      "name": "暴风云",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "opaque",
+      "roughness": 1.0,
+      "source": null,
+      "textures": [],
+      "uid": "mf:storm"
+    },
+    {
+      "color": [
+        0.18000000715255737,
+        0.4699999988079071,
+        0.20000000298023224
+      ],
+      "emission": 0.0,
+      "family": "foliage",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 21,
+      "metallic": 0.0,
+      "name": "树叶",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "cutout",
+      "roughness": 1.0,
+      "source": null,
+      "textures": [],
+      "uid": "mf:leaves"
+    },
+    {
+      "color": [
+        0.41999998688697815,
+        0.4399999976158142,
+        0.47999998927116394
+      ],
+      "emission": 0.0,
+      "family": "cloud",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 22,
+      "metallic": 0.0,
+      "name": "烟雾",
+      "opacity": 0.3499999940395355,
+      "pack": null,
+      "renderMode": "transparent",
+      "roughness": 1.0,
+      "source": null,
+      "textures": [],
+      "uid": "mf:smoke"
+    },
+    {
+      "color": [
+        0.699999988079071,
+        0.6600000262260437,
+        0.5799999833106995
+      ],
+      "emission": 0.0,
+      "family": "matte",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 23,
+      "metallic": 0.0,
+      "name": "羊毛",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "opaque",
+      "roughness": 1.0,
+      "source": null,
+      "textures": [],
+      "uid": "mf:wool"
+    },
+    {
+      "color": [
+        0.04500000178813934,
+        0.054999999701976776,
+        0.06499999761581421
+      ],
+      "emission": 0.0,
+      "family": "matte",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 24,
+      "metallic": 0.0,
+      "name": "橡胶",
+      "opacity": 1.0,
+      "pack": null,
+      "renderMode": "opaque",
+      "roughness": 0.949999988079071,
+      "source": null,
+      "textures": [],
+      "uid": "mf:rubber"
+    },
+    {
+      "id": 25,
+      "uid": "mf:palette-ffd23f",
+      "name": "贴吧黄",
+      "family": "matte",
+      "color": [
+        1.0,
+        0.8235294,
+        0.24705882
+      ],
+      "metallic": 0.0,
+      "roughness": 0.9,
+      "opacity": 1.0,
+      "emission": 0.0,
+      "renderMode": "opaque",
+      "textures": [],
+      "frames": 0,
+      "frameTime": 0.0,
+      "pack": null,
+      "source": "MorphForge palette/1"
+    },
+    {
+      "id": 26,
+      "uid": "mf:palette-2b2622",
+      "name": "墨黑",
+      "family": "matte",
+      "color": [
+        0.16862746,
+        0.14901961,
+        0.13333334
+      ],
+      "metallic": 0.0,
+      "roughness": 0.9,
+      "opacity": 1.0,
+      "emission": 0.0,
+      "renderMode": "opaque",
+      "textures": [],
+      "frames": 0,
+      "frameTime": 0.0,
+      "pack": null,
+      "source": "MorphForge palette/1"
+    },
+    {
+      "id": 27,
+      "uid": "mf:palette-ffffff",
+      "name": "高光白",
+      "family": "matte",
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.9,
+      "opacity": 1.0,
+      "emission": 0.0,
+      "renderMode": "opaque",
+      "textures": [],
+      "frames": 0,
+      "frameTime": 0.0,
+      "pack": null,
+      "source": "MorphForge palette/1"
+    },
+    {
+      "id": 28,
+      "uid": "mf:palette-e9a32b",
+      "name": "暖影黄",
+      "family": "matte",
+      "color": [
+        0.9137255,
+        0.6392157,
+        0.16862746
+      ],
+      "metallic": 0.0,
+      "roughness": 0.9,
+      "opacity": 1.0,
+      "emission": 0.0,
+      "renderMode": "opaque",
+      "textures": [],
+      "frames": 0,
+      "frameTime": 0.0,
+      "pack": null,
+      "source": "MorphForge palette/1"
+    },
+    {
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission": 0.0,
+      "family": "natural",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 64,
+      "metallic": 0.0,
+      "name": "像素石材",
+      "opacity": 1.0,
+      "pack": "pixel-workshop/1.0",
+      "renderMode": "opaque",
+      "roughness": 0.8999999761581421,
+      "source": "MorphForge original procedural pixel textures; MIT",
+      "textures": [
+        "/artifacts/b3de694ec0b8e0489a0aa724443fd0df926bf3b1bd94ff2fdaf07bbf90078e13.png",
+        "/artifacts/b3de694ec0b8e0489a0aa724443fd0df926bf3b1bd94ff2fdaf07bbf90078e13.png",
+        "/artifacts/b3de694ec0b8e0489a0aa724443fd0df926bf3b1bd94ff2fdaf07bbf90078e13.png",
+        "/artifacts/b3de694ec0b8e0489a0aa724443fd0df926bf3b1bd94ff2fdaf07bbf90078e13.png",
+        "/artifacts/b3de694ec0b8e0489a0aa724443fd0df926bf3b1bd94ff2fdaf07bbf90078e13.png",
+        "/artifacts/b3de694ec0b8e0489a0aa724443fd0df926bf3b1bd94ff2fdaf07bbf90078e13.png"
+      ],
+      "uid": "mf-pixel:stone"
+    },
+    {
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission": 0.0,
+      "family": "wood",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 65,
+      "metallic": 0.0,
+      "name": "像素原木",
+      "opacity": 1.0,
+      "pack": "pixel-workshop/1.0",
+      "renderMode": "opaque",
+      "roughness": 0.800000011920929,
+      "source": "MorphForge original procedural pixel textures; MIT",
+      "textures": [
+        "/artifacts/1437b36850f4757baa839003ad7491d7ba79ac9797d08e03e7e39d69b370237f.png",
+        "/artifacts/1437b36850f4757baa839003ad7491d7ba79ac9797d08e03e7e39d69b370237f.png",
+        "/artifacts/112a4483355b48e9111b20708df6aae79df21633ab8384525597f7e2741e4a8b.png",
+        "/artifacts/112a4483355b48e9111b20708df6aae79df21633ab8384525597f7e2741e4a8b.png",
+        "/artifacts/1437b36850f4757baa839003ad7491d7ba79ac9797d08e03e7e39d69b370237f.png",
+        "/artifacts/1437b36850f4757baa839003ad7491d7ba79ac9797d08e03e7e39d69b370237f.png"
+      ],
+      "uid": "mf-pixel:wood"
+    },
+    {
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission": 0.0,
+      "family": "natural",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 66,
+      "metallic": 0.0,
+      "name": "像素草地",
+      "opacity": 1.0,
+      "pack": "pixel-workshop/1.0",
+      "renderMode": "opaque",
+      "roughness": 0.8999999761581421,
+      "source": "MorphForge original procedural pixel textures; MIT",
+      "textures": [
+        "/artifacts/f05b6c9f289a125d30e8c6fe1e2262e86dcb3137e8c9389239de450782d431e1.png",
+        "/artifacts/f05b6c9f289a125d30e8c6fe1e2262e86dcb3137e8c9389239de450782d431e1.png",
+        "/artifacts/68bb96c35348e79bea54248989a69b15e756f6fec0c2efa7638ad2b9c372c24e.png",
+        "/artifacts/59314933ea9d093ea921a14509fbce21132c6afc79f54a8ba17c085c61bc92ab.png",
+        "/artifacts/f05b6c9f289a125d30e8c6fe1e2262e86dcb3137e8c9389239de450782d431e1.png",
+        "/artifacts/f05b6c9f289a125d30e8c6fe1e2262e86dcb3137e8c9389239de450782d431e1.png"
+      ],
+      "uid": "mf-pixel:grass"
+    },
+    {
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission": 0.0,
+      "family": "natural",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 67,
+      "metallic": 0.0,
+      "name": "像素泥土",
+      "opacity": 1.0,
+      "pack": "pixel-workshop/1.0",
+      "renderMode": "opaque",
+      "roughness": 1.0,
+      "source": "MorphForge original procedural pixel textures; MIT",
+      "textures": [
+        "/artifacts/37692fe184584a31d527438522ff26100215b9908247a4ffa3b82bc91d560418.png",
+        "/artifacts/37692fe184584a31d527438522ff26100215b9908247a4ffa3b82bc91d560418.png",
+        "/artifacts/37692fe184584a31d527438522ff26100215b9908247a4ffa3b82bc91d560418.png",
+        "/artifacts/37692fe184584a31d527438522ff26100215b9908247a4ffa3b82bc91d560418.png",
+        "/artifacts/37692fe184584a31d527438522ff26100215b9908247a4ffa3b82bc91d560418.png",
+        "/artifacts/37692fe184584a31d527438522ff26100215b9908247a4ffa3b82bc91d560418.png"
+      ],
+      "uid": "mf-pixel:soil"
+    },
+    {
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission": 0.0,
+      "family": "natural",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 68,
+      "metallic": 0.0,
+      "name": "像素细沙",
+      "opacity": 1.0,
+      "pack": "pixel-workshop/1.0",
+      "renderMode": "opaque",
+      "roughness": 0.8999999761581421,
+      "source": "MorphForge original procedural pixel textures; MIT",
+      "textures": [
+        "/artifacts/312992362a41d26c97aff5364d9ef0a32db9364651603b888a4998aa6037640e.png",
+        "/artifacts/312992362a41d26c97aff5364d9ef0a32db9364651603b888a4998aa6037640e.png",
+        "/artifacts/312992362a41d26c97aff5364d9ef0a32db9364651603b888a4998aa6037640e.png",
+        "/artifacts/312992362a41d26c97aff5364d9ef0a32db9364651603b888a4998aa6037640e.png",
+        "/artifacts/312992362a41d26c97aff5364d9ef0a32db9364651603b888a4998aa6037640e.png",
+        "/artifacts/312992362a41d26c97aff5364d9ef0a32db9364651603b888a4998aa6037640e.png"
+      ],
+      "uid": "mf-pixel:sand"
+    },
+    {
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission": 0.0,
+      "family": "natural",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 69,
+      "metallic": 0.0,
+      "name": "像素积雪",
+      "opacity": 1.0,
+      "pack": "pixel-workshop/1.0",
+      "renderMode": "opaque",
+      "roughness": 0.800000011920929,
+      "source": "MorphForge original procedural pixel textures; MIT",
+      "textures": [
+        "/artifacts/e7818adedcad63c4afee81e4879da4da082721e99938da16b6d76d62d73f6aa3.png",
+        "/artifacts/e7818adedcad63c4afee81e4879da4da082721e99938da16b6d76d62d73f6aa3.png",
+        "/artifacts/e7818adedcad63c4afee81e4879da4da082721e99938da16b6d76d62d73f6aa3.png",
+        "/artifacts/e7818adedcad63c4afee81e4879da4da082721e99938da16b6d76d62d73f6aa3.png",
+        "/artifacts/e7818adedcad63c4afee81e4879da4da082721e99938da16b6d76d62d73f6aa3.png",
+        "/artifacts/e7818adedcad63c4afee81e4879da4da082721e99938da16b6d76d62d73f6aa3.png"
+      ],
+      "uid": "mf-pixel:snow"
+    },
+    {
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission": 0.0,
+      "family": "building",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 70,
+      "metallic": 0.0,
+      "name": "像素红砖",
+      "opacity": 1.0,
+      "pack": "pixel-workshop/1.0",
+      "renderMode": "opaque",
+      "roughness": 0.8999999761581421,
+      "source": "MorphForge original procedural pixel textures; MIT",
+      "textures": [
+        "/artifacts/9a7d9aade135ba33cbc19d928e3634a512263088a0be3dc69aa4fc9be86fecb5.png",
+        "/artifacts/9a7d9aade135ba33cbc19d928e3634a512263088a0be3dc69aa4fc9be86fecb5.png",
+        "/artifacts/9a7d9aade135ba33cbc19d928e3634a512263088a0be3dc69aa4fc9be86fecb5.png",
+        "/artifacts/9a7d9aade135ba33cbc19d928e3634a512263088a0be3dc69aa4fc9be86fecb5.png",
+        "/artifacts/9a7d9aade135ba33cbc19d928e3634a512263088a0be3dc69aa4fc9be86fecb5.png",
+        "/artifacts/9a7d9aade135ba33cbc19d928e3634a512263088a0be3dc69aa4fc9be86fecb5.png"
+      ],
+      "uid": "mf-pixel:brick"
+    },
+    {
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission": 0.0,
+      "family": "building",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 71,
+      "metallic": 0.0,
+      "name": "像素白石",
+      "opacity": 1.0,
+      "pack": "pixel-workshop/1.0",
+      "renderMode": "opaque",
+      "roughness": 0.8500000238418579,
+      "source": "MorphForge original procedural pixel textures; MIT",
+      "textures": [
+        "/artifacts/0fb58238cd5df1fc05fe799dd1f9b4a740253a816c10af59b1cc4da2701ee340.png",
+        "/artifacts/0fb58238cd5df1fc05fe799dd1f9b4a740253a816c10af59b1cc4da2701ee340.png",
+        "/artifacts/0fb58238cd5df1fc05fe799dd1f9b4a740253a816c10af59b1cc4da2701ee340.png",
+        "/artifacts/0fb58238cd5df1fc05fe799dd1f9b4a740253a816c10af59b1cc4da2701ee340.png",
+        "/artifacts/0fb58238cd5df1fc05fe799dd1f9b4a740253a816c10af59b1cc4da2701ee340.png",
+        "/artifacts/0fb58238cd5df1fc05fe799dd1f9b4a740253a816c10af59b1cc4da2701ee340.png"
+      ],
+      "uid": "mf-pixel:concrete"
+    },
+    {
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission": 0.0,
+      "family": "wood",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 72,
+      "metallic": 0.0,
+      "name": "像素木板",
+      "opacity": 1.0,
+      "pack": "pixel-workshop/1.0",
+      "renderMode": "opaque",
+      "roughness": 0.800000011920929,
+      "source": "MorphForge original procedural pixel textures; MIT",
+      "textures": [
+        "/artifacts/7463f825d0b9ab9febe38196e965903aabee2942d67c55973927130d9dbcfa44.png",
+        "/artifacts/7463f825d0b9ab9febe38196e965903aabee2942d67c55973927130d9dbcfa44.png",
+        "/artifacts/7463f825d0b9ab9febe38196e965903aabee2942d67c55973927130d9dbcfa44.png",
+        "/artifacts/7463f825d0b9ab9febe38196e965903aabee2942d67c55973927130d9dbcfa44.png",
+        "/artifacts/7463f825d0b9ab9febe38196e965903aabee2942d67c55973927130d9dbcfa44.png",
+        "/artifacts/7463f825d0b9ab9febe38196e965903aabee2942d67c55973927130d9dbcfa44.png"
+      ],
+      "uid": "mf-pixel:planks"
+    },
+    {
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission": 0.0,
+      "family": "natural",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 73,
+      "metallic": 0.0,
+      "name": "像素卵石",
+      "opacity": 1.0,
+      "pack": "pixel-workshop/1.0",
+      "renderMode": "opaque",
+      "roughness": 1.0,
+      "source": "MorphForge original procedural pixel textures; MIT",
+      "textures": [
+        "/artifacts/5b215c686e429db624a059db2ff34fe9f02899e4fd56d6af11b650893ed391ca.png",
+        "/artifacts/5b215c686e429db624a059db2ff34fe9f02899e4fd56d6af11b650893ed391ca.png",
+        "/artifacts/5b215c686e429db624a059db2ff34fe9f02899e4fd56d6af11b650893ed391ca.png",
+        "/artifacts/5b215c686e429db624a059db2ff34fe9f02899e4fd56d6af11b650893ed391ca.png",
+        "/artifacts/5b215c686e429db624a059db2ff34fe9f02899e4fd56d6af11b650893ed391ca.png",
+        "/artifacts/5b215c686e429db624a059db2ff34fe9f02899e4fd56d6af11b650893ed391ca.png"
+      ],
+      "uid": "mf-pixel:cobble"
+    },
+    {
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission": 0.0,
+      "family": "metal",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 74,
+      "metallic": 0.8500000238418579,
+      "name": "像素铁块",
+      "opacity": 1.0,
+      "pack": "pixel-workshop/1.0",
+      "renderMode": "opaque",
+      "roughness": 0.2800000011920929,
+      "source": "MorphForge original procedural pixel textures; MIT",
+      "textures": [
+        "/artifacts/134cde6c11b45ab575e7c7d4f0f2d8d2a860be12aac087adaa9fa218850dbd87.png",
+        "/artifacts/134cde6c11b45ab575e7c7d4f0f2d8d2a860be12aac087adaa9fa218850dbd87.png",
+        "/artifacts/134cde6c11b45ab575e7c7d4f0f2d8d2a860be12aac087adaa9fa218850dbd87.png",
+        "/artifacts/134cde6c11b45ab575e7c7d4f0f2d8d2a860be12aac087adaa9fa218850dbd87.png",
+        "/artifacts/134cde6c11b45ab575e7c7d4f0f2d8d2a860be12aac087adaa9fa218850dbd87.png",
+        "/artifacts/134cde6c11b45ab575e7c7d4f0f2d8d2a860be12aac087adaa9fa218850dbd87.png"
+      ],
+      "uid": "mf-pixel:iron"
+    },
+    {
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission": 0.0,
+      "family": "metal",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 75,
+      "metallic": 0.800000011920929,
+      "name": "像素铜块",
+      "opacity": 1.0,
+      "pack": "pixel-workshop/1.0",
+      "renderMode": "opaque",
+      "roughness": 0.3499999940395355,
+      "source": "MorphForge original procedural pixel textures; MIT",
+      "textures": [
+        "/artifacts/44c425a01c78c3e42985008f51aed27c09e58787bd611697b0e3d2e16ee2cfb0.png",
+        "/artifacts/44c425a01c78c3e42985008f51aed27c09e58787bd611697b0e3d2e16ee2cfb0.png",
+        "/artifacts/44c425a01c78c3e42985008f51aed27c09e58787bd611697b0e3d2e16ee2cfb0.png",
+        "/artifacts/44c425a01c78c3e42985008f51aed27c09e58787bd611697b0e3d2e16ee2cfb0.png",
+        "/artifacts/44c425a01c78c3e42985008f51aed27c09e58787bd611697b0e3d2e16ee2cfb0.png",
+        "/artifacts/44c425a01c78c3e42985008f51aed27c09e58787bd611697b0e3d2e16ee2cfb0.png"
+      ],
+      "uid": "mf-pixel:copper"
+    },
+    {
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission": 0.0,
+      "family": "metal",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 76,
+      "metallic": 0.8999999761581421,
+      "name": "像素金块",
+      "opacity": 1.0,
+      "pack": "pixel-workshop/1.0",
+      "renderMode": "opaque",
+      "roughness": 0.20000000298023224,
+      "source": "MorphForge original procedural pixel textures; MIT",
+      "textures": [
+        "/artifacts/b4bc81409352debc30264fa96d3dce0f158ec6abb66f804d4c12717b7e5d3e13.png",
+        "/artifacts/b4bc81409352debc30264fa96d3dce0f158ec6abb66f804d4c12717b7e5d3e13.png",
+        "/artifacts/b4bc81409352debc30264fa96d3dce0f158ec6abb66f804d4c12717b7e5d3e13.png",
+        "/artifacts/b4bc81409352debc30264fa96d3dce0f158ec6abb66f804d4c12717b7e5d3e13.png",
+        "/artifacts/b4bc81409352debc30264fa96d3dce0f158ec6abb66f804d4c12717b7e5d3e13.png",
+        "/artifacts/b4bc81409352debc30264fa96d3dce0f158ec6abb66f804d4c12717b7e5d3e13.png"
+      ],
+      "uid": "mf-pixel:gold"
+    },
+    {
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission": 0.0,
+      "family": "water",
+      "frameTime": 0.10000000149011612,
+      "frames": 4,
+      "id": 77,
+      "metallic": 0.05000000074505806,
+      "name": "像素流水",
+      "opacity": 0.550000011920929,
+      "pack": "pixel-workshop/1.0",
+      "renderMode": "transparent",
+      "roughness": 0.18000000715255737,
+      "source": "MorphForge original procedural pixel textures; MIT",
+      "textures": [
+        "/artifacts/d4a4cdb8d912c184183b2c17c782b2dd4d1ebf9c0969c88267ce5f34c0f921bf.png",
+        "/artifacts/d4a4cdb8d912c184183b2c17c782b2dd4d1ebf9c0969c88267ce5f34c0f921bf.png",
+        "/artifacts/d4a4cdb8d912c184183b2c17c782b2dd4d1ebf9c0969c88267ce5f34c0f921bf.png",
+        "/artifacts/d4a4cdb8d912c184183b2c17c782b2dd4d1ebf9c0969c88267ce5f34c0f921bf.png",
+        "/artifacts/d4a4cdb8d912c184183b2c17c782b2dd4d1ebf9c0969c88267ce5f34c0f921bf.png",
+        "/artifacts/d4a4cdb8d912c184183b2c17c782b2dd4d1ebf9c0969c88267ce5f34c0f921bf.png"
+      ],
+      "uid": "mf-pixel:water"
+    },
+    {
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission": 0.0,
+      "family": "glass",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 78,
+      "metallic": 0.05000000074505806,
+      "name": "像素玻璃",
+      "opacity": 0.2800000011920929,
+      "pack": "pixel-workshop/1.0",
+      "renderMode": "transparent",
+      "roughness": 0.15000000596046448,
+      "source": "MorphForge original procedural pixel textures; MIT",
+      "textures": [
+        "/artifacts/330d210d53c1798c0c4d4f8ce7f83790c7bbd8ae2824891a4c92d2f2609e7647.png",
+        "/artifacts/330d210d53c1798c0c4d4f8ce7f83790c7bbd8ae2824891a4c92d2f2609e7647.png",
+        "/artifacts/330d210d53c1798c0c4d4f8ce7f83790c7bbd8ae2824891a4c92d2f2609e7647.png",
+        "/artifacts/330d210d53c1798c0c4d4f8ce7f83790c7bbd8ae2824891a4c92d2f2609e7647.png",
+        "/artifacts/330d210d53c1798c0c4d4f8ce7f83790c7bbd8ae2824891a4c92d2f2609e7647.png",
+        "/artifacts/330d210d53c1798c0c4d4f8ce7f83790c7bbd8ae2824891a4c92d2f2609e7647.png"
+      ],
+      "uid": "mf-pixel:glass"
+    },
+    {
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission": 0.0,
+      "family": "foliage",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 79,
+      "metallic": 0.0,
+      "name": "像素树叶",
+      "opacity": 1.0,
+      "pack": "pixel-workshop/1.0",
+      "renderMode": "cutout",
+      "roughness": 0.8999999761581421,
+      "source": "MorphForge original procedural pixel textures; MIT",
+      "textures": [
+        "/artifacts/d29f5efce7820438e73306422aa2ef9cf56ff8915faed49fc5375308c29661bf.png",
+        "/artifacts/d29f5efce7820438e73306422aa2ef9cf56ff8915faed49fc5375308c29661bf.png",
+        "/artifacts/d29f5efce7820438e73306422aa2ef9cf56ff8915faed49fc5375308c29661bf.png",
+        "/artifacts/d29f5efce7820438e73306422aa2ef9cf56ff8915faed49fc5375308c29661bf.png",
+        "/artifacts/d29f5efce7820438e73306422aa2ef9cf56ff8915faed49fc5375308c29661bf.png",
+        "/artifacts/d29f5efce7820438e73306422aa2ef9cf56ff8915faed49fc5375308c29661bf.png"
+      ],
+      "uid": "mf-pixel:leaves"
+    },
+    {
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission": 1.7999999523162842,
+      "family": "emissive",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 80,
+      "metallic": 0.0,
+      "name": "像素灯石",
+      "opacity": 1.0,
+      "pack": "pixel-workshop/1.0",
+      "renderMode": "opaque",
+      "roughness": 0.550000011920929,
+      "source": "MorphForge original procedural pixel textures; MIT",
+      "textures": [
+        "/artifacts/d38b07bb5e23a9759ffd0b6fd6aeea86a30d1c371367fef0d3965fec132dccc7.png",
+        "/artifacts/d38b07bb5e23a9759ffd0b6fd6aeea86a30d1c371367fef0d3965fec132dccc7.png",
+        "/artifacts/d38b07bb5e23a9759ffd0b6fd6aeea86a30d1c371367fef0d3965fec132dccc7.png",
+        "/artifacts/d38b07bb5e23a9759ffd0b6fd6aeea86a30d1c371367fef0d3965fec132dccc7.png",
+        "/artifacts/d38b07bb5e23a9759ffd0b6fd6aeea86a30d1c371367fef0d3965fec132dccc7.png",
+        "/artifacts/d38b07bb5e23a9759ffd0b6fd6aeea86a30d1c371367fef0d3965fec132dccc7.png"
+      ],
+      "uid": "mf-pixel:glow"
+    },
+    {
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission": 0.0,
+      "family": "cloud",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 81,
+      "metallic": 0.0,
+      "name": "像素云团",
+      "opacity": 0.7200000286102295,
+      "pack": "pixel-workshop/1.0",
+      "renderMode": "transparent",
+      "roughness": 1.0,
+      "source": "MorphForge original procedural pixel textures; MIT",
+      "textures": [
+        "/artifacts/289d4ff11a53cd319631e0c13504827114895556b88381b1de35fe883c3194d2.png",
+        "/artifacts/289d4ff11a53cd319631e0c13504827114895556b88381b1de35fe883c3194d2.png",
+        "/artifacts/289d4ff11a53cd319631e0c13504827114895556b88381b1de35fe883c3194d2.png",
+        "/artifacts/289d4ff11a53cd319631e0c13504827114895556b88381b1de35fe883c3194d2.png",
+        "/artifacts/289d4ff11a53cd319631e0c13504827114895556b88381b1de35fe883c3194d2.png",
+        "/artifacts/289d4ff11a53cd319631e0c13504827114895556b88381b1de35fe883c3194d2.png"
+      ],
+      "uid": "mf-pixel:cloud"
+    },
+    {
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission": 0.0,
+      "family": "natural",
+      "frameTime": 0.10000000149011612,
+      "frames": 1,
+      "id": 82,
+      "metallic": 0.15000000596046448,
+      "name": "像素黑曜石",
+      "opacity": 1.0,
+      "pack": "pixel-workshop/1.0",
+      "renderMode": "opaque",
+      "roughness": 0.3499999940395355,
+      "source": "MorphForge original procedural pixel textures; MIT",
+      "textures": [
+        "/artifacts/410ae6c23ba057bc9b4a47c78a4fe42f291e225d87a6b74a572728e9f3fb5c50.png",
+        "/artifacts/410ae6c23ba057bc9b4a47c78a4fe42f291e225d87a6b74a572728e9f3fb5c50.png",
+        "/artifacts/410ae6c23ba057bc9b4a47c78a4fe42f291e225d87a6b74a572728e9f3fb5c50.png",
+        "/artifacts/410ae6c23ba057bc9b4a47c78a4fe42f291e225d87a6b74a572728e9f3fb5c50.png",
+        "/artifacts/410ae6c23ba057bc9b4a47c78a4fe42f291e225d87a6b74a572728e9f3fb5c50.png",
+        "/artifacts/410ae6c23ba057bc9b4a47c78a4fe42f291e225d87a6b74a572728e9f3fb5c50.png"
+      ],
+      "uid": "mf-pixel:obsidian"
+    }
+  ],
+  "sourceProject": "73909a44-a130-4cfa-a8b2-0ab827127d63",
+  "sourceRevision": 6,
+  "version": "MF4-0.8.0-20261020",
+  "virtualLighting": {
+    "direction": [
+      0.4,
+      0.8,
+      0.6
+    ],
+    "voxelGrid": false
+  }
+}

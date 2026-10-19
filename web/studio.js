@@ -670,6 +670,7 @@ function updateState() {
     (!connection.enabled
       ? "发送已关闭；可继续独立创作。"
       : `本机发包中 · 无远端ACK
+${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${connection.profile==="mf4"?" · 3 Box/批（本体仅本地）":""}
 目标 v${connection.desiredRevision} / 已发送 v${connection.sentRevision ?? "—"}
 待发 ${fmt(connection.pending)} 批 · 预计 ${time(connection.etaSeconds)}
 累计 ${fmt(connection.sentCommands)} 批`);
@@ -1206,6 +1207,7 @@ $("pixelThemeClose").onclick=()=>$("pixelThemeDialog").close();
 $("applyPixelTheme").onclick=async()=>{try{const result=await api("harness/tool",{name:"builtin_materials",arguments:{action:"apply",id:"pixel-workshop",baseRevision:state.revision,replaceBaseMaterials:$("pixelThemeReplace").checked}});await refresh(true);$("pixelThemeDialog").close();toast(`像素主题已加入 · 新增${result.materialsAdded}种材质`);}catch(cause){error(cause);}};
 $("avatarCatalogImport").onclick=()=>$("avatarCatalogFile").click();
 $("avatarCatalogFile").onchange=async(event)=>{try{const file=event.target.files[0];if(!file)return;const form=new FormData();form.append("file",file);const r=await fetch("/api/vrc/profile/import",{method:"POST",body:form});const value=await r.json();if(!r.ok)throw new Error(value.error);await refresh();toast(value.matched?"目标目录与已用材质匹配":"已记录目标目录，存在材质差异");}catch(cause){error(cause);}event.target.value="";};
+$("avatarCatalogBundled").onclick=async()=>{try{await api("vrc/profile",{action:"bundled_mf4"});await api("connect",{profile:"mf4",enabled:false});await refresh();toast("已载入MF4 0.8目录；请切换到配套头像后开启发送");}catch(cause){error(cause);}};
 $("avatarCatalogClear").onclick=async()=>{try{await api("vrc/profile",{action:"clear"});await refresh();}catch(cause){error(cause);}};
 
 $("exportProject").onclick = async () => {

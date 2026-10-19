@@ -2,6 +2,7 @@ Shader "MorphForge/ParticleBoxCatalog"
 {
     Properties
     {
+        _WireEncoding("Particle metadata wire format (0=MF3,4=MF4)", Float) = 0
         _VoxelGrid("Debug voxel grid", Float) = 0
         _UseLayeredTextures("Mipmapped texture layers", Float) = 0
         _CatalogLayers("Catalog texture layers", 2DArray) = "" {}
@@ -29,6 +30,7 @@ Shader "MorphForge/ParticleBoxCatalog"
         UNITY_DECLARE_TEX2DARRAY(_CatalogLayers);
         float _UseLayeredTextures;
         float _VoxelGrid;
+        float _WireEncoding;
         sampler2D _CatalogAtlas;
         sampler2D _CatalogMeta;
         float4 _AtlasSize;
@@ -47,7 +49,7 @@ Shader "MorphForge/ParticleBoxCatalog"
         {
             float4 vertex : POSITION;
             float3 normal : NORMAL;
-            fixed4 color : COLOR;
+            float4 color : COLOR;
             float4 uvFace : TEXCOORD0; // xy=face-local tile UV, z=axis, w=unused legacy sign
             float3 size : TEXCOORD1;   // particle birth SizeXYZ
             UNITY_VERTEX_INPUT_INSTANCE_ID
@@ -59,7 +61,7 @@ Shader "MorphForge/ParticleBoxCatalog"
             float3 world : TEXCOORD0;
             float3 local : TEXCOORD1;
             float3 normal : TEXCOORD2;
-            fixed4 data : COLOR;
+            nointerpolation float4 data : TEXCOORD5;
             float4 uvFace : TEXCOORD3;
             float3 size : TEXCOORD4;
             UNITY_VERTEX_OUTPUT_STEREO
@@ -122,6 +124,13 @@ Shader "MorphForge/ParticleBoxCatalog"
         fixed4 SampleCatalog(v2f i, out float3 baseColor, out float opacity, out float flags)
         {
             float4 codes = floor(saturate(i.data) * 63.0 + 0.5);
+            if (_WireEncoding > 3.5)
+            {
+                float3 bytes = floor(saturate(i.data.rgb) * 255.0 + 0.5);
+                float style = bytes.r + 256.0 * fmod(bytes.g, 16.0);
+                codes = float4(fmod(style, 64.0), floor(style / 64.0),
+                    floor(bytes.g / 16.0) + 16.0 * fmod(bytes.b, 4.0), floor(bytes.b / 4.0));
+            }
             float styleId = codes.r + 64.0 * codes.g;
             float tint = codes.b;
             float motion = codes.a / 64.0;

@@ -268,6 +268,8 @@ fn inert_transport() -> Transport {
             desired_revision: 0,
             sent_revision: None,
             seq: 0,
+            wide_seqs: [1; 3],
+            lanes: Default::default(),
             brush: None,
             resets: 0,
             connected: false,

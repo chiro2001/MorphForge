@@ -262,10 +262,17 @@ async fn scene(State(a): State<App>, Query(q): Query<Revision>) -> ApiResult {
 }
 async fn avatar_profile(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     let w = a.workspace.lock().unwrap();
-    if v["action"] != "clear" {
-        bail_api("仅支持清除目录；请通过文件导入目标目录")?;
-    }
-    a.transport.set_catalog(None, &w.root)?;
+    let catalog = match v["action"].as_str() {
+        Some("clear") => None,
+        Some("bundled_mf4") => Some(crate::target::AvatarCatalog::from_bytes(include_bytes!(
+            "../../../materials/mf4/catalog.json"
+        ))?),
+        _ => {
+            bail_api("请选择清除、配套MF4目录，或通过文件导入目录")?;
+            None
+        }
+    };
+    a.transport.set_catalog(catalog, &w.root)?;
     Ok(Json(
         a.transport
             .material_report(&w.project.scene, &w.project.materials),

@@ -1,0 +1,12 @@
+{
+  "success": true,
+  "targetAvatarId": "avtr_df2ff222-b6ff-47fb-80be-e060868596a2",
+  "scene": "Assets/MorphForge/MF4/MorphForge_MF4.unity",
+  "root": "MorphForge_MF4_Avatar",
+  "dependencyHash": "6234d0661a4d333f73cd13680dc467a0",
+  "timeUtc": "2026-10-19T17:47:24.1084973Z",
+  "bits": 254,
+  "stores": 3,
+  "maxParticlesTotal": 16386,
+  "customColorsStable": true
+}

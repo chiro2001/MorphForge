@@ -397,7 +397,8 @@ mf.group('main', () => {
           </p>
           <label
             >协议<select id="profile">
-              <option value="mf3">MF3 · 56bit主档</option>
+              <option value="mf4">MF4 · 240bit三通道（无面捕）</option>
+              <option value="mf3">MF3 · 56bit兼容档</option>
               <option value="mf2">MF2 · Stage3兼容</option>
             </select></label
           >
@@ -452,6 +453,7 @@ mf.group('main', () => {
           <button id="avatarCatalogImport" class="wide">导入目标 Avatar 材质目录</button>
           <input id="avatarCatalogFile" type="file" accept=".json,.zip" hidden />
           <div id="materialCompatibility" class="status"></div>
+          <button id="avatarCatalogBundled" class="wide">使用配套 MF4 0.8 头像目录</button>
           <button id="avatarCatalogClear" class="wide">清除目标目录声明</button>
           <div id="syncStatus" class="status">发送已关闭</div>
           <div class="section-title">定位球</div>
@@ -479,7 +481,7 @@ mf.group('main', () => {
           />
           <button id="resetAnchor" class="wide">移到面前</button>
           <div class="caption">
-            MF3几何56bit；完整面捕固定161bit；定位目标14bit；其余本体与压缩carrier预算25bit。实际以联合构建报告为准。
+            MF4几何240bit（三路各80bit，命令自带材质）＋定位14bit＝254bit；本体参数仅本地使用，不含面捕。MF3兼容档56bit。需导入对应头像目录，实际以联合构建报告为准。
           </div>
         </section>
 

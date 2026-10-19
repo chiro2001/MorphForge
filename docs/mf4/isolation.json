@@ -1,0 +1,33 @@
+{
+  "suspended": false,
+  "records": [
+    {
+      "objectId": -325624,
+      "globalId": "GlobalObjectId_V1-2-f3eed961163c5a94b9a886dd8e03a1e3-1196135828297054-596603422",
+      "scene": "Assets/MorphForge/FullFT/MorphForge_FullFT.unity",
+      "sceneWasDirty": false,
+      "active": true
+    },
+    {
+      "objectId": -321736,
+      "globalId": "GlobalObjectId_V1-2-5d5ac13c2ff02c04ebd50916d777ed0e-1196135828297054-596603422",
+      "scene": "Assets/MorphForge/Diagnostics/FinalFullFT/MorphForge_FinalFullFT_Diagnostic.unity",
+      "sceneWasDirty": true,
+      "active": true
+    },
+    {
+      "objectId": -321742,
+      "globalId": "GlobalObjectId_V1-2-5d5ac13c2ff02c04ebd50916d777ed0e-4753792520517706511-2094474485",
+      "scene": "Assets/MorphForge/Diagnostics/FinalFullFT/MorphForge_FinalFullFT_Diagnostic.unity",
+      "sceneWasDirty": true,
+      "active": true
+    },
+    {
+      "objectId": -325630,
+      "globalId": "GlobalObjectId_V1-2-f3eed961163c5a94b9a886dd8e03a1e3-4753792520517706511-2094474485",
+      "scene": "Assets/MorphForge/FullFT/MorphForge_FullFT.unity",
+      "sceneWasDirty": false,
+      "active": true
+    }
+  ]
+}

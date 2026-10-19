@@ -1,0 +1,43 @@
+{
+  "success": true,
+  "version": "0.8.0",
+  "runtime": "versions/0.8.0-af1f9fde86c6",
+  "projectIdAndRevisionPreserved": true,
+  "connection": {
+    "ack": false,
+    "auto": false,
+    "capacity": 16384,
+    "desiredRevision": 0,
+    "enabled": false,
+    "error": "",
+    "etaSeconds": 0.0,
+    "interval": 0.25,
+    "pending": 0,
+    "placement": {
+      "level": true,
+      "scale": 0.05000000074505806,
+      "visible": true,
+      "world": true
+    },
+    "port": 9000,
+    "profile": "mf4",
+    "refreshSeconds": 0,
+    "sending": false,
+    "sentCommands": 0,
+    "sentRevision": null,
+    "syncedBits": 240
+  },
+  "materials": {
+    "differentIds": [],
+    "fingerprint": "90c216a04e950cb15ab088ca7fbb191b6140bb074980a6e234180396d7a094f4",
+    "matched": true,
+    "missingIds": [],
+    "note": "匹配用户导入的目录；没有远端Avatar确认。新增材质需导出并重新打包Avatar。",
+    "remoteVerified": false,
+    "status": "matched",
+    "surfaceMasks": true,
+    "targetStyles": 47,
+    "usedStyles": 5
+  },
+  "originalAcceptanceCoreSha256": "23c86a41b05a8a61a67850dfbf180a9400d4cb4d9cfbfa7457c1b9198ee74d8a"
+}

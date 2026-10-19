@@ -1,0 +1,159 @@
+{
+  "success": true,
+  "totalBits": 254,
+  "geometryBits": 240,
+  "placementBits": 14,
+  "faceTrackingBits": 0,
+  "bodySyncedBits": 0,
+  "remainingBits": 2,
+  "parameters": [
+    {
+      "name": "MF_World",
+      "type": "Bool"
+    },
+    {
+      "name": "MF_Handle",
+      "type": "Bool"
+    },
+    {
+      "name": "MF_Scale",
+      "type": "Float"
+    },
+    {
+      "name": "MF_Reset",
+      "type": "Bool"
+    },
+    {
+      "name": "MF_GrabL",
+      "type": "Bool"
+    },
+    {
+      "name": "MF_GrabR",
+      "type": "Bool"
+    },
+    {
+      "name": "MF_Level",
+      "type": "Bool"
+    },
+    {
+      "name": "MF4_L0_Ctl",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L0_D00",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L0_D01",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L0_D02",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L0_D03",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L0_D04",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L0_D05",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L0_D06",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L0_D07",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L0_D08",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L1_Ctl",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L1_D00",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L1_D01",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L1_D02",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L1_D03",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L1_D04",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L1_D05",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L1_D06",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L1_D07",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L1_D08",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L2_Ctl",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L2_D00",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L2_D01",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L2_D02",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L2_D03",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L2_D04",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L2_D05",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L2_D06",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L2_D07",
+      "type": "Int"
+    },
+    {
+      "name": "MF4_L2_D08",
+      "type": "Int"
+    }
+  ]
+}

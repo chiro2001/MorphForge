@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "operation": "ef54a063d15f4ce499b0e8f19718bd7b",
+  "targetAvatarId": "avtr_df2ff222-b6ff-47fb-80be-e060868596a2",
+  "versionBefore": 11,
+  "startedUtc": "2026-10-19T17:47:43.4781908Z",
+  "displayName": "MorphForge MF4 16K",
+  "geometryBits": 240,
+  "totalBits": 254,
+  "phase": "sdk-invoked",
+  "invokedUtc": "2026-10-19T17:53:09.4983033Z",
+  "unfocusedDelayCallRecovered": true,
+  "avatarVersion": 13,
+  "pendingUpload": false,
+  "completedUtc": "2026-10-19T17:54:17.8024523Z"
+}
