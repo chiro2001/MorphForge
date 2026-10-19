@@ -6,6 +6,9 @@
 - [交付记录](docs/DELIVERY.md) · [实施状态及证据](docs/plan/STATUS.md) · [已确认设计](docs/plan/README.md) · [验收标准](docs/plan/ACCEPTANCE.md)。
 - Windows **0.2.0** 安装器：`dist/windows/MorphForge Desktop_0.2.0_x64-setup.exe`；同目录保存 SHA-256。[本轮质量与验收记录](docs/quality-v2/RESULTS.md)保留真实模型多轮迭代、Windows 与前端验证证据。
 
+GitHub私有仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支与完整历史保留。
+[获取源码和Windows克隆验证](docs/GIT-SOURCE.md)。
+
 ## 当前实现
 
 共享工作台支持稀疏 Box 几何、精确切割、分组变换、撤销重做、版本快照和资源包材质。Harness 提供受限 Recipe、多视角截图、工具调用循环、插话、打断续接、排队、暂停恢复、详细日志和上下文 compact；compact 保留原始日志、图片、Recipe 与作品版本。提示词与工具说明优先中文，并提供英文版本。字体文字栅格化为普通可编辑 Box，支持预览与撤销；保护分组可锁住既有作品。真实 DeepSeek 多轮创作、交互、compact 和收尾入库已验证，失败与接续修正记录一并保留。
@@ -16,7 +19,7 @@ VRC 主档为 **MF3：56 bit 几何通道 + 14 bit 定位**。完整面捕固定
 
 默认回归只向9012发送，不向9000发包或启动VRChat。2026-10-19经用户明确授权，已上传并核验私有 **MorphForge FullFT 16K**：实际包总256bit、完整FT161、Store16384，服务端三项分析均200。修复了Catalog metadata布局、FullFT场景根名和人物特效Pickup碰撞力；[最终证据](docs/security-check-failure/FINAL-FULLFT.md)与[客户端复核步骤](docs/security-check-failure/CLIENT-RETEST.md)。
 
-网络发布没有远端ACK；本机发送进度不能证明其他玩家已经显示。真实客户端加载、多人及VR手势仍待现场确认。源码候选版本`v0.2.0-rc.1`包含本轮修复，最终`v0.2.0`标签等待客户端确认。
+网络发布没有远端ACK；本机发送进度不能证明其他玩家已经显示。真实客户端加载、多人及VR手势仍待现场确认。源码候选版本`v0.2.0-rc.2`包含本轮修复，最终`v0.2.0`标签等待客户端确认。
 
 ## 开发入口
 

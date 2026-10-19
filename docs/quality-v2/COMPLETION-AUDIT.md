@@ -4,7 +4,7 @@
 
 | 要求 | 实际实现与直接证据 | 结论 |
 |---|---|---|
-| Git基线及阶段提交 | `v0.1.0-baseline`，字体、Avatar、Harness、共享前端、收尾工具及Windows构建分别提交；候选tag `v0.2.0-rc.1`及完整Git bundle包含本轮修复；最终`v0.2.0`等待客户端确认 | 源码候选交付完成，正式客户端验收待完成 |
+| Git基线及阶段提交 | `v0.1.0-baseline`，字体、Avatar、Harness、共享前端、收尾工具及Windows构建分别提交；候选tag `v0.2.0-rc.2`及完整Git bundle包含本轮修复；最终`v0.2.0`等待客户端确认 | 源码候选交付完成，正式客户端验收待完成 |
 | 最终模型不依赖睡眠插件 | `FullFTBuild.cs`生成NoSleep控制器、JointBuild前置拒绝；[prefab审计](../avatars/no-sleep-audit.json)、[已保存场景审计](../avatars/fullft-scene-no-sleep-audit.json)、[SDK预算](../avatars/final-budget-post-fix.json) | prefab/场景/生成入口均覆盖，161bit完整FT保留 |
 | DeepSeek官方Harness对齐及独立Windows核心 | [固定上游commit调研](../harness-v2/upstream-research.md)，Responses有序output与call ID结果配对；Rust HTTP/CLI独立，Tauri壳仅管理生命周期；[Windows原生报告](windows-v2-native-final.json) | 实现与Windows二进制通过 |
 | 插话、打断、排队、暂停恢复、compact与日志 | `provider_harness.rs`测试分别覆盖安全点/批次取消/过期提交/同run续接/暂停冻结/compact失败与保留；[真实UI17项](../ui-v2/ui-v2-real-validation.json)；[R2b真实交互](../harness-v2/evals/r2b-protected/report.json) | 功能通过；R2b整体仍失败于旧估算预算，失败记录未删 |

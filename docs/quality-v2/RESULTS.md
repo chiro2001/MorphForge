@@ -63,7 +63,7 @@ Windows使用69个冻结构建输入，manifest与聚合hash见[source-freeze.js
 
 完整对照和实际SDK上传已完成，[最终通过摘要](../security-check-failure/final-fullft-passed.json)。原16384×1 metadata改为256×64，4096样式字节/GUID全部保留；生产视觉16项和16k显示夹具通过。FullFT真实场景根名前缀与人物RailGun粒子的Pickup碰撞力已修复并进入生成器；最终副本无睡眠、SDK和实包都为256bit，FT112项/161bit完整直通。
 
-私有Avatar **MorphForge FullFT 16K**，版本10/file8，服务端generic/standard/security均200。实际包11,072,116字节；Store16384、Pump1、其它人物特效151套/41750容量。Source候选标签`v0.2.0-rc.1`及Git bundle包含修复与证据；此前软件69输入和安装器未变。真实客户端、多人和硬件仍待现场确认；此前各阶段“未上传/保留dirty现场”是当时的边界快照，后续操作按用户明确授权进行。
+私有Avatar **MorphForge FullFT 16K**，版本10/file8，服务端generic/standard/security均200。实际包11,072,116字节；Store16384、Pump1、其它人物特效151套/41750容量。Source候选标签`v0.2.0-rc.2`及Git bundle包含修复与证据；此前软件69输入和安装器未变。真实客户端、多人和硬件仍待现场确认；此前各阶段“未上传/保留dirty现场”是当时的边界快照，后续操作按用户明确授权进行。
 
 ## 实际边界
 

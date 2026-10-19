@@ -1,6 +1,6 @@
 # MorphForge 0.2.0 交付记录
 
-日期：2026-10-19。Rust独立核心、共享体素工作台、DeepSeek Harness、可选MF3发布适配器及Windows Tauri安装器已交付。Git分支为 `feat/harness-interaction-and-voxel-text`，基线tag为 `v0.1.0-baseline`，源码候选tag为 `v0.2.0-rc.1`，最终 `v0.2.0` 等待客户端现场确认；没有推送远端。
+日期：2026-10-19。Rust独立核心、共享体素工作台、DeepSeek Harness、可选MF3发布适配器及Windows Tauri安装器已交付。GitHub私有仓库为`chiro2001/MorphForge`，默认`main`，保留开发分支`feat/harness-interaction-and-voxel-text`，基线tag为 `v0.1.0-baseline`，源码候选tag为 `v0.2.0-rc.2`，最终 `v0.2.0` 等待客户端现场确认；代码与历史已同步GitHub私有仓库。
 
 ## 安装与使用
 
@@ -16,7 +16,7 @@ D:\Projects\VRChatProjects2\MorphForge\dist\windows\MorphForge Desktop_0.2.0_x64
 CE30B61609FF93C250840560D14AB4278709E7BBD37EACDA63F736B4FCCBEF03
 ```
 
-Linux工作区有相同副本 `dist/windows/`，该目录保留安装器校验清单；完整Git历史bundle为 `dist/windows/MorphForge-0.2.0-rc.1.bundle`，附独立SHA-256；包含本轮Avatar修复及实际上传证据。安装器未代码签名。
+Linux工作区有相同副本 `dist/windows/`，该目录保留安装器校验清单；完整Git历史bundle为 `dist/windows/MorphForge-0.2.0-rc.2.bundle`，附独立SHA-256；包含本轮Avatar修复及实际上传证据。安装器未代码签名。
 
 用户数据位于 `%LOCALAPPDATA%\MorphForge`。现有DeepSeek配置保留，API Key不进入源码、安装器或Git bundle。新增两份带三视图的样例作品与独立原始运行档案，未覆盖当前工程及原有三份作品。
 
@@ -80,4 +80,12 @@ MA注入几何与定位，VRCFury集成完整面捕，通过精简本体同步�
 [最终通过证据](security-check-failure/final-fullft-passed.json) · [逐项实包审计](security-check-failure/final-fullft-vrca.json) · [完整说明](security-check-failure/FINAL-FULLFT.md)。
 
 真实客户端加载、多人同步与硬件抓取尚待用户现场确认，不能由服务端200代替。
-[最小复核步骤](security-check-failure/CLIENT-RETEST.md)。因此源码先标记候选版本`v0.2.0-rc.1`，最终标签留待该项确认；桌面0.2.0安装器不变，Unity修复不属于69个软件构建输入。
+[最小复核步骤](security-check-failure/CLIENT-RETEST.md)。因此源码先标记候选版本`v0.2.0-rc.2`，最终标签留待该项确认；桌面0.2.0安装器不变，Unity修复不属于69个软件构建输入。
+
+## GitHub与Windows源码复核
+
+源码获取方式见[GIT-SOURCE](GIT-SOURCE.md)。RC1交付复核发现Windows Git的
+`core.autocrlf=true`会改变冻结构建输入；已通过`.gitattributes`统一代码LF并保留
+报告原始字节。修正后的独立Windows克隆中，69项输入和安装器冻结清单完全一致，
+[验证报告](quality-v2/windows-git-clone-validation.json)。该交付修正升级源码候选标签到
+`v0.2.0-rc.2`，桌面安装器和Avatar上传包保持不变；RC1及失败证据保留。

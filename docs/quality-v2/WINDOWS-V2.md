@@ -189,3 +189,11 @@ MorphForge core 进程：0
 ## 结论
 
 Windows 冻结源码构建、原生 HTTP 验收、NSIS 载荷、字体许可证、隔离安装、Session 1 启动、完整窗口截图、正常退出与卸载均已通过。验收创建的进程、计划和临时目录已清理。
+
+## Git克隆后的输入字节复核
+
+首次RC1源码包在Windows默认`core.autocrlf=true`下，Git自动换行导致构建输入哈希
+不一致，[失败报告](windows-git-clone-rc1-failure.json)保留。增加仓库行尾规则后，
+独立临时克隆在同样设置下全部69项输入与冻结清单一致，工作区干净，临时目录已清理，
+见[通过报告](windows-git-clone-validation.json)。因此源码候选版本升级为`v0.2.0-rc.2`。
+此修复不改变业务源码或已安装的0.2.0程序。

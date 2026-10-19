@@ -1,0 +1,18 @@
+{
+  "startedAtUtc": "2026-10-19T02:51:44.1142662Z",
+  "bundle": "C:\\Users\\Chiro\\tmp\\morphforge\\windows-source-check.bundle",
+  "temporaryClone": "C:\\Users\\Chiro\\tmp\\morphforge\\source-lf-check-2d8ad44472244f65ac3f2fc07a7570c2",
+  "checkoutCommit": "9d73161984895cdaf748034b1a470787ca45ea42",
+  "autoCrlf": "true",
+  "sourceManifest": {
+    "ok": true,
+    "files": 69,
+    "sha256": "91a91fd5022a4c57173dc837d350f4fc67be9ef0c8c018ff0c08a4cba8af42b0",
+    "mismatches": []
+  },
+  "manifestExit": 0,
+  "worktreeStatus": [],
+  "success": true,
+  "temporaryCloneRemoved": true,
+  "completedAtUtc": "2026-10-19T02:51:45.2935628Z"
+}

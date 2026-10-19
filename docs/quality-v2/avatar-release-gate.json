@@ -88,7 +88,7 @@
     "fullft-collision-force-fix.json": "7433c9f74f83649fff6e87c1ac89c24960b1b7ca2ca839a3e3edaa2837eb639c",
     "fullft-final-remote-smoke.json": "6e291c7b918d9c5b42e7efa37551024d69488c94a999300c7add9ac0afa6e4a7"
   },
-  "sourceCandidateTag": "v0.2.0-rc.1",
+  "sourceCandidateTag": "v0.2.0-rc.2",
   "clientAcceptance": {
     "status": "pending-user",
     "clientLoad": false,

@@ -1,0 +1,14 @@
+{
+  "format": "MorphForgeGitPublicationAudit/1",
+  "generatedAtUtc": "2026-10-19T02:49:41.839058+00:00",
+  "reachableBlobs": 910,
+  "bytesScanned": 44418488,
+  "knownDeepSeekValuesChecked": 1,
+  "credentialHits": [],
+  "credentialPaths": [],
+  "nonSourceUnityAssets": [],
+  "passed": true,
+  "scope": "Reachable Git history; common credential patterns and known DeepSeek values. Never prints credential values.",
+  "auditedCommit": "a547905551c730ece814b4f9e060618f78cf220d",
+  "assetPathCheck": "Blob entries only; tree directory names excluded."
+}
