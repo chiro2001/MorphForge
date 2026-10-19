@@ -1,0 +1,18 @@
+{
+  "id": "whale-reference-palette-system43",
+  "referenceIds": [
+    "builtin:whale-maid",
+    "builtin:whale-small"
+  ],
+  "prompt": "根据这两张同一角色的参考图，做一尊非官方鲸鱼娘全身彩色体素小雕像。重点是蓝色长发、头侧鲸鳍、蓝白女仆长裙、白围裙和身后的大鲸尾；小头身比例参考第二图。保留完整服装，配一个简洁的底座。先读context，分层搭建，不超过400 Box；不要把参考图片当成已完成作品截图。必须对真实模型capture_views，用front与hero检查识别性和遮挡，再至少做一次有意义的修正并截图，最后finish_artwork入库。不要发布到VRChat。",
+  "settings": {
+    "preset": "standard",
+    "reasoning": "none",
+    "maxSteps": 18,
+    "maxRunTokens": 300000,
+    "maxRunSeconds": 360,
+    "maxOutputTokens": 8192
+  },
+  "maxBoxes": 400,
+  "requireVisualIteration": true
+}

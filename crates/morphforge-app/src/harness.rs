@@ -16,11 +16,12 @@ use std::{
     time::Duration,
 };
 mod goal;
+mod palette;
 mod prompts;
 mod visual_context;
 pub use goal::GoalProgress;
-pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/4.2";
-pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/3.0";
+pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/4.3";
+pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/3.1";
 
 #[derive(Clone, Debug)]
 struct PendingPrompt {
@@ -1670,6 +1671,9 @@ impl Harness {
         }
         match name {
             "get_context" => Ok(self.context_with_options(args)),
+            "define_palette" => self.with_workspace_guard(guard.as_ref(), |workspace| {
+                palette::define(workspace, args, run)
+            }),
             "run_recipe" => {
                 let request: RecipeRequest = serde_json::from_value(args.clone())?;
                 self.run_recipe_with_guard(request, run, guard.as_ref()).await
@@ -2761,6 +2765,24 @@ pub fn tools_for_language(language: &str) -> Value {
                 "styleLimit":{"type":"integer","minimum":1,"maximum":128}
             }),
             vec![],
+        ),
+        tool(
+            "define_palette",
+            if en {
+                "Define 1–32 exact opaque sRGB colors (#RRGGBB) for reference matching. Reuse returned style IDs/UIDs and revision in geometry calls. Adds missing colors without changing existing materials or geometry. New colors require Avatar catalog export/rebuild for VRC."
+            } else {
+                "按#RRGGBB（sRGB）定义1至32个不透明纯色，匹配参考图肤色、藏蓝等。返回材质ID/UID和最新revision，后续几何使用这些返回值；同色复用，不改已有材质或几何。新颜色发布VRC前需导出并更新Avatar目录。"
+            },
+            json!({
+                "baseRevision":{"type":"integer","minimum":0},
+                "colors":{"type":"array","minItems":1,"maxItems":32,"items":{
+                    "type":"object","properties":{
+                        "name":{"type":"string","minLength":1,"maxLength":128},
+                        "color":{"type":"string","pattern":"^#[0-9a-fA-F]{6}$"}
+                    },"required":["name","color"],"additionalProperties":false
+                }}
+            }),
+            vec!["baseRevision", "colors"],
         ),
         tool(
             "run_recipe",

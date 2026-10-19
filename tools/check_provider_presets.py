@@ -20,12 +20,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--url', required=True)
     parser.add_argument('--with-references', action='store_true')
+    parser.add_argument('--with-palette', action='store_true')
     parser.add_argument('--out', type=Path, default=ROOT / 'docs/quality-v3')
     args = parser.parse_args()
     requests = []
     paths = []
     test_key = 'mf-local-browser-fixture-only'
     checks = []
+    creation_requests = 5 if args.with_palette else 4
+    creation_tokens = creation_requests * 1100
 
     def api(path, body=None):
         request = urllib.request.Request(args.url + '/api/' + path,
@@ -51,6 +54,12 @@ def main():
                 ('capture', 'capture_views', {'revision': 1, 'views': ['hero', 'front']}),
                 ('finish', 'finish_artwork', {'title': '兼容接口测试小屋', 'summary': '已通过本机 Chat 接口完成工具循环、真实双视角截图和作品入库。', 'tags': ['fixture', 'house']}),
             ]
+            if args.with_palette:
+                actions.insert(1, ('palette', 'define_palette', {'baseRevision': 0,
+                    'colors': [{'name': '藏蓝', 'color': '#172D59'}]}))
+                actions[2][2]['baseRevision'] = 1
+                actions[2][2]['code'] = actions[2][2]['code'].replace("style:'copper'", "style:'mf:palette-172d59'")
+                actions[3][2]['revision'] = 2
             index = len(requests) - 1
             if index == len(actions) and args.with_references:
                 payload=json.dumps({'id':'clear-reference','choices':[{'index':0,'message':{'role':'assistant','content':'已取消视觉参考，继续当前几何。'},'finish_reason':'stop'}],'usage':{'prompt_tokens':1000,'completion_tokens':100,'total_tokens':1100,'prompt_cache_hit_tokens':600,'prompt_cache_miss_tokens':400}}).encode()
@@ -135,12 +144,20 @@ def main():
         browser.wait("return window.__morphforge.state.harness.run?.status==='completed'||window.__morphforge.state.harness.run?.status==='failed'", timeout=40)
         state = api('state')
         check('real Rust recipe, capture and finish loop completes', state['harness']['run']['status'] == 'completed')
-        check('finish skips unnecessary followup', len(requests) == 4)
+        check('finish skips unnecessary followup', len(requests) == creation_requests)
         check('geometry created and library saved', state['stats']['boxCount'] > 5 and len(api('artworks')['artworks']) == 1)
         messages = requests[-1]['messages']
         images = [p for m in messages if isinstance(m.get('content'), list) for p in m['content'] if p['type'] == 'image_url']
-        check('real screenshots delivered inline without files endpoint', len(images) == (4 if args.with_references else 2) and all(p['image_url']['url'].startswith('data:image/png;base64,') for p in images) and paths == ['/chat/completions'] * 4)
-        check('actual provider usage counted', state['harness']['run']['tokens'] == 4400)
+        check('real screenshots delivered inline without files endpoint', len(images) == (4 if args.with_references else 2) and all(p['image_url']['url'].startswith('data:image/png;base64,') for p in images) and paths == ['/chat/completions'] * creation_requests)
+        check('actual provider usage counted', state['harness']['run']['tokens'] == creation_tokens)
+        if args.with_palette:
+            artwork = api('artworks')['artworks'][0]
+            saved = api('artworks/' + artwork['id'])
+            palette = next(m for m in saved['project']['materials'] if m['uid'] == 'mf:palette-172d59')
+            check('defined RGB palette survives artwork save', all(abs(a-b)<1e-6 for a,b in zip(palette['color'],[23/255,45/255,89/255])))
+            check('real geometry uses returned palette material', any(b['styleId']==palette['id'] for b in saved['project']['scene']['boxes']))
+            labels = [p.get('text','') for m in messages if isinstance(m.get('content'),list) for p in m['content'] if p['type']=='text']
+            check('Chat image blocks retain revision and view labels', any('revision=2' in s and 'view=front' in s for s in labels))
         if args.with_references:
             refs=state['harness']['context']['referenceImages']
             check('selected references reach every model request as images',len(refs)==2 and all('当前用户选中的视觉参考图' in json.dumps(request,ensure_ascii=False) for request in requests))
@@ -154,11 +171,12 @@ def main():
             for id in ['referenceUseLibrary','referenceUseInput']:browser.js("const e=document.getElementById(arguments[0]);e.checked=false;e.dispatchEvent(new Event('change'))",id)
             browser.js("document.getElementById('prompt').value='取消参考，继续当前几何'")
             browser.click('sendMessage')
-            browser.wait("return window.__morphforge.state.harness.run?.status==='completed' && window.__morphforge.state.harness.usage.total.requests===5",timeout=20)
+            browser.wait(f"return window.__morphforge.state.harness.run?.status==='completed' && window.__morphforge.state.harness.usage.total.requests==={creation_requests + 1}",timeout=20)
             check('clearing references removes their next-request image block',api('harness/state')['context']['referenceImages']==[] and '当前用户选中的视觉参考图' not in json.dumps(requests[-1]['messages'],ensure_ascii=False))
 
-        browser.wait("return document.getElementById('usageTokens').textContent.includes('"+('5,500' if args.with_references else '4,400')+"') && document.getElementById('usagePrefix').textContent.includes('60.0%')")
-        check('usage displayed beside composer with weighted cache rate', state['harness']['usage']['total']['totalTokens']==4400 and state['harness']['usage']['total']['prefixHitRate']==0.6)
+        displayed_tokens = format(creation_tokens + (1100 if args.with_references else 0), ',')
+        browser.wait("return document.getElementById('usageTokens').textContent.includes('"+displayed_tokens+"') && document.getElementById('usagePrefix').textContent.includes('60.0%')")
+        check('usage displayed beside composer with weighted cache rate', state['harness']['usage']['total']['totalTokens']==creation_tokens and state['harness']['usage']['total']['prefixHitRate']==0.6)
         check('OSC still disabled after creation' , not state['connection']['enabled'])
         logs = browser.call(browser.path + '/log', {'type': 'browser'})
         errors = [x for x in logs if x['level'] == 'SEVERE' and 'favicon.ico' not in x['message']]

@@ -5,6 +5,7 @@
 | 工具 | 契约 |
 |---|---|
 | get_context | 返回revision、预算、选区、分组、可用材质、相机和目标同步摘要；不倾倒全量Box |
+| define_palette | baseRevision、colors[{name,color:#RRGGBB}]；一次1～32色、sRGB纯色，只追加、同色复用，返回ID/UID和新revision；历史与作品保留色板，发布VRC前导出并更新Avatar目录 |
 | run_recipe | code、seed、mode(replace/apply)、baseRevision、requestId；受限JS SDK批量产出操作，事务校验后提交draft |
 | inspect_region | 区域/分组的数量、占用、bounds、样式和选取摘要 |
 | capture_views | revision、hero/front/top/side/detail、尺寸；返回artifact引用、相机和统计 |
