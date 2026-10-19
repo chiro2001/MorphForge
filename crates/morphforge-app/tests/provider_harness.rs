@@ -1415,13 +1415,14 @@ async fn failed_compact_keeps_old_context_and_records_failure() {
     write_json(&root.join("runs/conversation.json"), &original).unwrap();
     let harness = harness(workspace.clone(), &fake.base);
 
+    let expected = harness.inner.lock().unwrap().conversation.clone();
     harness.control("compact").unwrap();
     let run = terminal_run(&harness).await;
 
     assert_eq!(run.status, "failed");
     assert_eq!(
         serde_json::to_value(&harness.inner.lock().unwrap().conversation).unwrap(),
-        serde_json::to_value(&original).unwrap()
+        serde_json::to_value(&expected).unwrap()
     );
     let workspace = workspace.lock().unwrap();
     assert!(workspace
@@ -1441,7 +1442,7 @@ async fn failed_compact_keeps_old_context_and_records_failure() {
             .unwrap();
     assert_eq!(
         serde_json::to_value(persisted).unwrap(),
-        serde_json::to_value(original).unwrap()
+        serde_json::to_value(expected).unwrap()
     );
     let event_log = std::fs::read_to_string(root.join("events/events.jsonl")).unwrap();
     assert!(event_log.contains("compact.failed"));

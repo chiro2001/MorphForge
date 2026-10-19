@@ -1,0 +1,11 @@
+{
+  "success": true,
+  "rustPassed": 147,
+  "nodePassed": 36,
+  "clippy": "passed",
+  "workspaceTestsWindows": 4,
+  "workspaceTestsLinux": 4,
+  "paidRequests": 0,
+  "oscPackets": 0,
+  "unityAssetsModified": false
+}

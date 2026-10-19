@@ -18,6 +18,8 @@
       <input id="projectName" value="未命名作品" aria-label="工程名称" />
       <span id="saveState">本机保存</span>
       <span class="grow"></span>
+      <button id="newProject">新建项目</button>
+      <button id="workspaceOpen">项目与对话</button>
       <button id="settingsOpen">配置</button>
       <button id="libraryOpen">作品库</button>
       <button id="exportProject">导出工程</button>
@@ -153,7 +155,8 @@
           >
           <p id="goalStatus" class="caption goal-progress" hidden></p>
           <div class="chat-heading">
-            <span>对话</span>
+            <span id="activeSessionTitle">对话</span>
+            <button id="newContext">新开对话</button>
             <span class="caption">消息按顺序保留，刷新不会重复。</span>
           </div>
           <div id="chat" class="chat" aria-live="polite">
@@ -795,6 +798,27 @@ mf.group('main', () => {
       </p>
       <div id="events"></div>
     </section>
+
+    <dialog id="workspaceDialog" aria-labelledby="workspaceTitle">
+      <div class="row">
+        <h2 id="workspaceTitle" class="grow">项目与对话</h2>
+        <button id="workspaceClose" aria-label="关闭项目与对话">关闭</button>
+      </div>
+      <p class="caption">工程保存作品、材质和源码；对话独立保存模型上下文和缓存监测。切换会断开 OSC。运行中的 AI 请先停止。</p>
+      <form id="workspaceCreateForm">
+        <div class="row">
+          <label class="grow">新建类型<select id="workspaceKind"><option value="new_project">空白项目和新对话</option><option value="new_session">当前作品的新对话</option></select></label>
+          <label class="grow">名称（可留空）<input id="workspaceName" maxlength="64" placeholder="未命名作品 / 新对话" /></label>
+          <button id="workspaceCreate" type="submit" class="primary">新建</button>
+        </div>
+      </form>
+      <p class="caption">新对话保留当前几何与源码，不继承旧消息；首次请求可能没有缓存命中，后续仍由缓存保护监测。打开旧对话继续编辑当前作品，不会恢复旧几何版本。</p>
+      <p id="workspaceError" class="caption" role="alert"></p>
+      <h3>本机项目</h3>
+      <div id="workspaceProjects" class="workspace-list"></div>
+      <h3>当前项目的对话</h3>
+      <div id="workspaceSessions" class="workspace-list"></div>
+    </dialog>
 
     <dialog id="timelinePreview">
       <div class="row">

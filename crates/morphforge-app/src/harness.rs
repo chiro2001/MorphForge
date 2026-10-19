@@ -17,6 +17,7 @@ use std::{
 };
 mod context;
 mod goal;
+pub(crate) mod lifecycle;
 mod palette;
 mod prompts;
 mod visual_context;
@@ -55,6 +56,14 @@ struct RunGuard {
 #[derive(Clone, Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Conversation {
+    #[serde(default)]
+    pub id: String,
+    #[serde(default)]
+    pub project_id: String,
+    #[serde(default)]
+    pub created_at: String,
+    #[serde(default)]
+    pub title: String,
     pub input: Vec<Value>,
     pub goals: Vec<String>,
     pub summary: String,
@@ -159,10 +168,31 @@ impl Harness {
             let workspace = workspace.lock().unwrap();
             (workspace.root.clone(), workspace.events.clone())
         };
-        let conversation = std::fs::read(root.join("runs/conversation.json"))
+        let mut conversation: Conversation = std::fs::read(root.join("runs/conversation.json"))
             .ok()
             .and_then(|b| serde_json::from_slice(&b).ok())
             .unwrap_or_default();
+        {
+            let mut w = workspace.lock().unwrap();
+            if conversation.id.is_empty() {
+                conversation.id = w.session_id.clone();
+            }
+            if conversation.project_id.is_empty() {
+                conversation.project_id = w.project.id.clone();
+            }
+            if conversation.created_at.is_empty() {
+                conversation.created_at = now();
+            }
+            w.session_id = conversation.id.clone();
+        }
+        let scoped_events: Vec<_> = events
+            .into_iter()
+            .filter(|e| {
+                e.session_id
+                    .as_deref()
+                    .is_none_or(|id| id == conversation.id)
+            })
+            .collect();
         let (settings, upgraded) = std::fs::read(root.join("harness.json"))
             .ok()
             .and_then(|b| prompts::saved_settings(&b).ok())
@@ -174,7 +204,7 @@ impl Harness {
                 "note":"仅升级仍匹配旧预设默认值的字段；自定义数值保留。"
             }));
         }
-        let (message_acks, restored_queue) = restore_message_state(&events);
+        let (message_acks, restored_queue) = restore_message_state(&scoped_events);
         Self {
             inner: Arc::new(Mutex::new(State {
                 settings,
@@ -253,6 +283,7 @@ impl Harness {
                 "queue":queued,
             },
             "context":{
+                "id":s.conversation.id,"title":s.conversation.title,"createdAt":s.conversation.created_at,
                 "estimatedTokens":estimate(&s.conversation.input),
                 "messages":s.conversation.input.len(),
                 "compactCount":s.conversation.compact_count,
@@ -332,7 +363,7 @@ impl Harness {
     fn persist(&self) -> Result<()> {
         let conversation = self.inner.lock().unwrap().conversation.clone();
         let w = self.workspace.lock().unwrap();
-        write_json(&w.root.join("runs/conversation.json"), &conversation)?;
+        lifecycle::save_conversation(&w, &conversation)?;
         Ok(())
     }
     pub fn start(&self, prompt: &str) -> Result<Value> {
@@ -615,17 +646,9 @@ impl Harness {
                 )?;
             }
             "reset_context" => {
-                let mut s = self.inner.lock().unwrap();
-                if !["idle", "completed", "failed", "stopped", "blocked"]
-                    .contains(&s.phase.as_str())
-                {
-                    bail!("请先停止当前运行")
-                };
-                s.conversation = Conversation::default();
-                self.provider.reset_prefix_trace();
-                s.pending_steers.clear();
-                s.pending_interrupts.clear();
-                s.queued.clear();
+                let current = self.workspace.lock().unwrap().project.id.clone();
+                let session = self.inner.lock().unwrap().conversation.id.clone();
+                return self.workspace_action(&json!({"action":"new_session","baseProjectId":current,"baseSessionId":session}));
             }
             _ => bail!("未知运行控制"),
         };

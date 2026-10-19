@@ -4,9 +4,10 @@
 
 - [用户指南](docs/USER-GUIDE.md)：安装、配置、编辑、AI、compact、作品库与 OSC 发布。
 - [交付记录](docs/DELIVERY.md) · [实施状态及证据](docs/plan/STATUS.md) · [已确认设计](docs/plan/README.md) · [验收标准](docs/plan/ACCEPTANCE.md)。
+- 本机开发补丁 **0.6.1**：新增项目管理和独立对话；新建入口在顶栏与 AI 对话区，可切回旧项目和对话。已发布版本仍见下方链接；补丁按需直接安装到 gamepc。[补丁验证](docs/quality-v6.1/RESULTS.md)。
 - Windows **0.6.0 候选版**：`dist/windows/MorphForge Desktop_0.6.0_x64-setup.exe`；校验和在同目录。[Harness强化验证](docs/quality-v6/RESULTS.md) · [前缀缓存修复](docs/quality-v4.2/RESULTS.md) · [参考图建模迭代](docs/quality-v4.1/RESULTS.md)。
 
-GitHub私有仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支与完整历史保留。
+GitHub公开仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支与完整历史保留。
 [获取源码和Windows克隆验证](docs/GIT-SOURCE.md)。
 
 ## 在 VRChat 中的预期体验

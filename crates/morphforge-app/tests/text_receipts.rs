@@ -71,6 +71,8 @@ fn append_noise_events(workspace: &Workspace, count: u64) {
     let mut writer = BufWriter::new(file);
     for offset in 0..count {
         let event = Event {
+            project_id: None,
+            session_id: None,
             seq: workspace.next_seq + offset,
             time: "2026-10-19T00:00:00.000Z".into(),
             kind: "test.noise".into(),

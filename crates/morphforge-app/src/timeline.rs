@@ -138,7 +138,7 @@ pub fn project(event: &Event, limit: usize) -> Value {
             }
         }
     }
-    json!({"seq":event.seq,"time":event.time,"kind":event.kind,"runId":event.run_id,"revision":revision,"recordedRevision":event.revision,"revisionSource":revision_source,"requestId":d["requestId"],"callId":d.get("callId").or_else(||d.get("call_id")),"title":title,"body":body,"images":images})
+    json!({"projectId":event.project_id,"sessionId":event.session_id,"seq":event.seq,"time":event.time,"kind":event.kind,"runId":event.run_id,"revision":revision,"recordedRevision":event.revision,"revisionSource":revision_source,"requestId":d["requestId"],"callId":d.get("callId").or_else(||d.get("call_id")),"title":title,"body":body,"images":images})
 }
 pub fn write_row(writer: &mut impl Write, event: &Event) -> Result<()> {
     let mut row = project(event, 4096);
@@ -164,6 +164,7 @@ pub struct Query {
     pub before: Option<u64>,
     pub limit: Option<usize>,
     pub run: Option<String>,
+    pub project_id: Option<String>,
     pub kind: Option<String>,
     pub search: Option<String>,
 }
@@ -212,9 +213,12 @@ pub fn page(root: &Path, q: &Query) -> Result<Value> {
         let Ok(mut row) = serde_json::from_str::<Value>(&line) else {
             continue;
         };
-        if q.run
+        if q.project_id
             .as_ref()
-            .is_some_and(|run| row["runId"].as_str().is_none_or(|r| !r.contains(run)))
+            .is_some_and(|id| row["projectId"].as_str() != Some(id))
+            || q.run
+                .as_ref()
+                .is_some_and(|run| row["runId"].as_str().is_none_or(|r| !r.contains(run)))
             || q.kind
                 .as_ref()
                 .is_some_and(|kind| !row["kind"].as_str().unwrap_or("").starts_with(kind))
@@ -272,6 +276,8 @@ mod tests {
     use super::*;
     fn event(seq: u64) -> Event {
         Event {
+            project_id: None,
+            session_id: None,
             seq,
             time: "2026-10-19T00:00:00Z".into(),
             kind: "provider.response".into(),

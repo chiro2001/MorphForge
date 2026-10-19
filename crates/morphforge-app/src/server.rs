@@ -35,6 +35,7 @@ pub struct App {
     pub harness: Harness,
     pub browser: Arc<Mutex<Option<u32>>>,
     pub fonts: Arc<FontCatalog>,
+    workspace_gate: Arc<tokio::sync::RwLock<()>>,
     text_jobs: Arc<tokio::sync::Semaphore>,
     reference_jobs: Arc<tokio::sync::Semaphore>,
 }
@@ -48,6 +49,7 @@ impl IntoResponse for ApiError {
     fn into_response(self) -> Response {
         let message = self.0.to_string();
         let status = if [
+            "WORKSPACE_CONFLICT",
             "REVISION_CONFLICT",
             "RUN_CONFLICT",
             "REQUEST_ID_CONFLICT",
@@ -87,6 +89,13 @@ pub struct ToolQuery {
 }
 impl App {
     pub fn open(root: PathBuf, env: Option<PathBuf>) -> Result<Self> {
+        crate::harness::lifecycle::recover(&root)?;
+        let conversation_path = root.join("runs/conversation.json");
+        if conversation_path.exists() {
+            let _: crate::harness::Conversation =
+                serde_json::from_slice(&std::fs::read(&conversation_path)?)
+                    .context("对话数据损坏；未自动重置上下文")?;
+        }
         let workspace = Arc::new(Mutex::new(Workspace::open(root.clone())?));
         let transport = Transport::new(workspace.clone());
         let capture = CaptureBroker::new();
@@ -99,7 +108,9 @@ impl App {
             transport.clone(),
             fonts.clone(),
         );
+        harness.initialize_workspace()?;
         Ok(Self {
+            workspace_gate: Arc::new(tokio::sync::RwLock::new(())),
             workspace,
             transport,
             capture,
@@ -120,6 +131,7 @@ impl App {
             .route("/api/scene", get(scene))
             .route("/api/export", get(export))
             .route("/api/project", post(project))
+            .route("/api/workspaces", get(workspaces).post(workspace_action))
             .route("/api/edit", post(edit))
             .route("/api/import", post(import))
             .route("/api/history", get(history))
@@ -156,9 +168,31 @@ impl App {
             .route("/artifacts/{id}", get(artifact))
             .fallback(get(asset))
             .layer(DefaultBodyLimit::max(70 * 1024 * 1024))
+            .layer(middleware::from_fn_with_state(self.clone(), workspace_gate))
             .layer(middleware::from_fn(origin_guard))
             .with_state(self.clone())
     }
+}
+async fn workspace_gate(State(a): State<App>, request: Request, next: Next) -> Response {
+    if request.method() == axum::http::Method::POST
+        && ["/api/workspaces", "/api/harness/control"].contains(&request.uri().path())
+    {
+        let _guard = a.workspace_gate.write().await;
+        next.run(request).await
+    } else if request.method() == axum::http::Method::POST
+        && request.uri().path() != "/api/capture/result"
+    {
+        let _guard = a.workspace_gate.read().await;
+        next.run(request).await
+    } else {
+        next.run(request).await
+    }
+}
+async fn workspaces(State(a): State<App>) -> ApiResult {
+    Ok(Json(a.harness.workspaces()?))
+}
+async fn workspace_action(State(a): State<App>, Json(value): Json<Value>) -> ApiResult {
+    Ok(Json(a.harness.workspace_action(&value)?))
 }
 async fn origin_guard(request: Request, next: Next) -> Response {
     let headers = request.headers();
@@ -405,7 +439,9 @@ async fn events(State(a): State<App>, Query(q): Query<Revision>) -> ApiResult {
         .events
         .iter()
         .filter(|e| {
-            e.seq > q.after.unwrap_or(0)
+            e.project_id.as_deref() == Some(&w.project.id)
+                && e.session_id.as_deref() == Some(&w.session_id)
+                && e.seq > q.after.unwrap_or(0)
                 && q.run.as_ref().is_none_or(|r| e.run_id.as_ref() == Some(r))
         })
         .take(500)
@@ -419,8 +455,15 @@ async fn events(State(a): State<App>, Query(q): Query<Revision>) -> ApiResult {
         .collect();
     Ok(Json(json!({"events":values,"lastSeq":w.next_seq-1})))
 }
-async fn timeline_page(State(a): State<App>, Query(q): Query<crate::timeline::Query>) -> ApiResult {
-    let root = a.workspace.lock().unwrap().root.clone();
+async fn timeline_page(
+    State(a): State<App>,
+    Query(mut q): Query<crate::timeline::Query>,
+) -> ApiResult {
+    let root = {
+        let w = a.workspace.lock().unwrap();
+        q.project_id = Some(w.project.id.clone());
+        w.root.clone()
+    };
     let value = tokio::task::spawn_blocking(move || crate::timeline::page(&root, &q)).await??;
     Ok(Json(a.harness.redact_display(value)))
 }

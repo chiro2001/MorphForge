@@ -73,6 +73,8 @@ let textApplyBusy = false;
 let groupSettingsBusy = false;
 let providerDraftDirty = false;
 let providerSaveBusy = false;
+let workspaceBusy = false;
+let loadedProjectId = "";
 
 window.__morphforge = {
   ready: false,
@@ -211,10 +213,11 @@ function safeStorageSet(key, value) {
   }
 }
 
-function switchUiScope(projectId, activeReferences = []) {
-  const next = projectId || "default";
+function switchUiScope(projectId, activeReferences = [], sessionId = "") {
+  const next = (projectId || "default") + (sessionId ? ":" + sessionId : "");
   if (uiScope === next) return;
   uiScope = next;
+  previousHarness = null;
   referencePicker.setScope(uiScope, activeReferences);
   pendingMessages = dedupeMessages(
     safeStorageGet(`morphforge.pending.${uiScope}`, []),
@@ -569,7 +572,15 @@ async function refresh(force = false) {
     const next = await api("state");
     state = next;
     window.__morphforge.state = next;
-    switchUiScope(next.project?.id, next.harness?.context?.referenceImages);
+    switchUiScope(next.project?.id, next.harness?.context?.referenceImages, next.harness?.context?.id);
+    if (loadedProjectId !== next.project?.id) {
+      loadedProjectId = next.project?.id;
+      loadedRevision = -1;
+      selected.clear();
+      renderer.groupsHidden.clear();
+      clearTextPreview();
+      if (timelineView && !$("timeline").hidden) timelineView.reload().catch(error);
+    }
     updateState();
     if ((next.revision !== loadedRevision || force) && !loading) {
       loading = true;
@@ -616,6 +627,7 @@ function updateState() {
   const connection = s.connection;
   const harness = s.harness;
   setValue("projectName", s.project.name);
+  $("activeSessionTitle").textContent = harness.context.title || "对话";
   $("saveState").textContent = "已保存 · v" + s.revision;
   $("boxCount").textContent =
     fmt(s.stats.boxCount) + " Box / 目标 " + fmt(s.stats.targetBoxes);
@@ -1086,6 +1098,67 @@ window.addEventListener("keydown", (event) => {
     });
   }
 });
+
+async function showWorkspaces(kind) {
+  try {
+    $("workspaceError").textContent = "";
+    if (kind) $("workspaceKind").value = kind;
+    await renderWorkspaces();
+    if (!$("workspaceDialog").open) $("workspaceDialog").showModal();
+    if (kind) $("workspaceName").focus();
+  } catch (cause) { error(cause); }
+}
+async function renderWorkspaces() {
+  const data = await api("workspaces");
+  for (const [container, entries, active, action] of [
+    ["workspaceProjects", data.projects, data.projectId, "open_project"],
+    ["workspaceSessions", data.sessions, data.sessionId, "open_session"],
+  ]) {
+    $(container).replaceChildren();
+    for (const item of entries) {
+      const row = document.createElement("div");
+      row.className = "workspace-item";
+      const label = document.createElement("span");
+      label.className = "grow";
+      label.textContent = item.name || item.title || "未命名";
+      const detail = document.createElement("span");
+      detail.className = "caption";
+      detail.textContent = action === "open_project" ? `${fmt(item.boxCount)} Box · v${item.revision}` : `${fmt(item.messages)} 条上下文 · ${new Date(item.createdAt).toLocaleString()}`;
+      const open = document.createElement("button");
+      open.textContent = item.id === active ? "当前" : "打开";
+      open.disabled = item.id === active || workspaceBusy;
+      open.onclick = () => changeWorkspace({ action, id: item.id });
+      row.append(label, detail, open);
+      $(container).append(row);
+    }
+  }
+}
+async function changeWorkspace(request) {
+  if (workspaceBusy) return;
+  workspaceBusy = true;
+  $("workspaceCreate").disabled = true;
+  $("workspaceError").textContent = "";
+  try {
+    await edits;
+    await api("workspaces", { ...request, baseProjectId: state.project.id, baseSessionId: state.harness.context.id });
+    // Reinitialize per-context drafts, selection, history and polling together.
+    location.reload();
+  } catch (cause) {
+    $("workspaceError").textContent = cause.message;
+    error(cause);
+  } finally {
+    workspaceBusy = false;
+    $("workspaceCreate").disabled = false;
+  }
+}
+$("newProject").onclick = () => showWorkspaces("new_project");
+$("newContext").onclick = () => showWorkspaces("new_session");
+$("workspaceOpen").onclick = () => showWorkspaces();
+$("workspaceClose").onclick = () => $("workspaceDialog").close();
+$("workspaceCreateForm").onsubmit = (event) => {
+  event.preventDefault();
+  changeWorkspace({action: $("workspaceKind").value, name: $("workspaceName").value});
+};
 
 $("exportProject").onclick = async () => {
   try {
@@ -2169,7 +2242,7 @@ if (captureMode) {
   if (["steer", "interrupt", "queue"].includes(storedMode))
     $("messageMode").value = storedMode;
   await refresh();
-  switchUiScope(state?.project?.id);
+  switchUiScope(state?.project?.id, state?.harness?.context?.referenceImages, state?.harness?.context?.id);
   restorePromptDraft();
   renderPending();
   renderChat();

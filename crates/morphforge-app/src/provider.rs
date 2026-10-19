@@ -285,13 +285,28 @@ impl Provider {
     pub fn usage(&self, run: Option<&str>) -> Value {
         self.usage.lock().unwrap().value(run)
     }
-    pub(crate) fn reset_prefix_trace(&self) {
-        let mut prefix = self.prefix.lock().unwrap();
-        *prefix = prefix::PrefixTracker::default();
-        let _ = crate::store::write_json(&self.root.join("provider-prefix.json"), &*prefix);
-        let mut guard = self.guard.lock().unwrap();
-        *guard = guard::CacheGuard::default();
-        let _ = guard.save(&self.root);
+    pub(crate) fn context_guard_snapshot(&self) -> Result<Value> {
+        Ok(json!({"prefix":*self.prefix.lock().unwrap(),"guard":*self.guard.lock().unwrap()}))
+    }
+    pub(crate) fn validate_context_guard(&self, value: &Value) -> Result<()> {
+        let _: prefix::PrefixTracker = serde_json::from_value(value["prefix"].clone())?;
+        let _: guard::CacheGuard = serde_json::from_value(value["guard"].clone())?;
+        Ok(())
+    }
+    pub(crate) fn restore_context_guard(&self, value: Option<&Value>) -> Result<()> {
+        let prefix: prefix::PrefixTracker = value
+            .map(|v| serde_json::from_value(v["prefix"].clone()))
+            .transpose()?
+            .unwrap_or_default();
+        let guard: guard::CacheGuard = value
+            .map(|v| serde_json::from_value(v["guard"].clone()))
+            .transpose()?
+            .unwrap_or_default();
+        crate::store::write_json(&self.root.join("provider-prefix.json"), &prefix)?;
+        guard.save(&self.root)?;
+        *self.prefix.lock().unwrap() = prefix;
+        *self.guard.lock().unwrap() = guard;
+        Ok(())
     }
     fn record_event(
         &self,

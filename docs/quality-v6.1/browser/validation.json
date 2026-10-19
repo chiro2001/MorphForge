@@ -1,0 +1,86 @@
+{
+  "success": true,
+  "scope": "Real Chromium clicks, local isolated data, no model requests or OSC",
+  "checks": [
+    {
+      "name": "visible new project and new conversation controls",
+      "passed": true
+    },
+    {
+      "name": "new conversation opens correct creation mode",
+      "passed": true
+    },
+    {
+      "name": "new conversation keeps artwork and starts empty context",
+      "passed": true
+    },
+    {
+      "name": "new conversation changes client storage scope",
+      "passed": true
+    },
+    {
+      "name": "old conversation can be reopened from UI",
+      "passed": true
+    },
+    {
+      "name": "new project shows empty geometry at revision zero",
+      "passed": true
+    },
+    {
+      "name": "reopening project restores geometry and revision in viewport",
+      "passed": true
+    },
+    {
+      "name": "header controls fit at 1440px",
+      "passed": true
+    },
+    {
+      "name": "header controls fit at 1000px",
+      "passed": true
+    },
+    {
+      "name": "header controls fit at 900px",
+      "passed": true
+    },
+    {
+      "name": "no browser errors",
+      "passed": true
+    },
+    {
+      "name": "OSC remains disconnected",
+      "passed": true
+    }
+  ],
+  "browserLogs": [
+    {
+      "level": "DEBUG",
+      "message": "http://127.0.0.1:18771/ - [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o",
+      "source": "recommendation",
+      "timestamp": 1792421060203
+    },
+    {
+      "level": "DEBUG",
+      "message": "http://127.0.0.1:18771/ - [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o",
+      "source": "recommendation",
+      "timestamp": 1792421061817
+    },
+    {
+      "level": "DEBUG",
+      "message": "http://127.0.0.1:18771/ - [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o",
+      "source": "recommendation",
+      "timestamp": 1792421062780
+    },
+    {
+      "level": "DEBUG",
+      "message": "http://127.0.0.1:18771/ - [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o",
+      "source": "recommendation",
+      "timestamp": 1792421063778
+    },
+    {
+      "level": "DEBUG",
+      "message": "http://127.0.0.1:18771/ - [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o",
+      "source": "recommendation",
+      "timestamp": 1792421064533
+    }
+  ]
+}

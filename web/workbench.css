@@ -1116,3 +1116,23 @@ body.settings-page #timeline {
 
 .timeline-card { scroll-margin-top: 95px; }
 .timeline-card > details[open] > pre { max-height:180px; }
+
+#workspaceDialog { width: min(900px, 94vw); }
+.workspace-list { max-height: 24vh; overflow: auto; display: grid; gap: 7px; }
+.workspace-item { display: flex; align-items: center; gap: 12px; padding: 9px; border: 1px solid var(--border); border-radius: 7px; }
+.workspace-item span { min-width: 0; overflow-wrap: anywhere; }
+#workspaceCreateForm .row { flex-wrap: wrap; align-items: end; }
+#workspaceError { color: var(--danger); white-space: pre-wrap; }
+.chat-heading button { padding: 3px 8px; }
+
+@media (max-width: 1400px) {
+  header { gap: 8px; padding: 10px 12px; }
+  header .brand small { display: none; }
+  #projectName { width: 150px; min-width: 80px; }
+  header button { padding: 7px 8px; }
+}
+@media (max-width: 1100px) {
+  header { height: auto; min-height: 64px; flex-wrap: wrap; gap: 6px; }
+  header .grow { display: none; }
+  #saveState { margin-right: auto; }
+}

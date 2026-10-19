@@ -1,0 +1,75 @@
+{
+  "success": true,
+  "version": "0.6.1",
+  "releasePublished": false,
+  "checks": [
+    {
+      "name": "installer exists",
+      "passed": true
+    },
+    {
+      "name": "existing AI is idle before upgrade",
+      "passed": true
+    },
+    {
+      "name": "existing OSC is disconnected before upgrade",
+      "passed": true
+    },
+    {
+      "name": "close request delivered to existing app",
+      "passed": true
+    },
+    {
+      "name": "old app exits cleanly",
+      "passed": true
+    },
+    {
+      "name": "backup preserves current artwork",
+      "passed": true
+    },
+    {
+      "name": "NSIS upgrade exits zero",
+      "passed": true
+    },
+    {
+      "name": "installed core matches tested bundle",
+      "passed": true
+    },
+    {
+      "name": "installed desktop starts version 0.6.1",
+      "passed": true
+    },
+    {
+      "name": "project identity and complete geometry preserved",
+      "passed": true
+    },
+    {
+      "name": "existing settings preserved: harness.json",
+      "passed": true
+    },
+    {
+      "name": "existing project and conversation appear in manager",
+      "passed": true
+    },
+    {
+      "name": "installed UI serves new project and conversation controls",
+      "passed": true
+    },
+    {
+      "name": "connection settings preserved: provider.env",
+      "passed": true
+    }
+  ],
+  "error": null,
+  "backup": "C:\\Users\\Chiro\\tmp\\morphforge\\v061-before-upgrade-20261019-224944",
+  "coreSha256": "23c86a41b05a8a61a67850dfbf180a9400d4cb4d9cfbfa7457c1b9198ee74d8a",
+  "installerSha256": "6f919d68ec6176a3ebf4d6895c063413905c696f3921107d8a4116b14eb60988",
+  "baseUrl": "http://127.0.0.1:54541",
+  "project": {
+    "boxes": 791,
+    "id": "962da9c5-b4ae-4e61-b29f-f798061bc92c",
+    "hash": "a73e8f2206678ee45364ee7343879fbebfcb5b06217053e323b2e8bcad58e3dd",
+    "revision": 17
+  },
+  "finishedAt": "2026-10-19T22:49:55.7684206+08:00"
+}

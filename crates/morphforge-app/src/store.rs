@@ -170,6 +170,10 @@ pub struct Artwork {
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Event {
+    #[serde(default)]
+    pub project_id: Option<String>,
+    #[serde(default)]
+    pub session_id: Option<String>,
     pub seq: u64,
     pub time: String,
     pub kind: String,
@@ -178,6 +182,7 @@ pub struct Event {
     pub data: Value,
 }
 pub struct Workspace {
+    pub session_id: String,
     pub root: PathBuf,
     pub project: Project,
     pub events: Vec<Event>,
@@ -207,6 +212,14 @@ impl Workspace {
             Project::default()
         };
         project.scene.validate(&project.limits)?;
+        let identity_path = root.join("legacy-identity.json");
+        let identity: Value = if identity_path.exists() {
+            serde_json::from_slice(&fs::read(&identity_path)?)?
+        } else {
+            let value = json!({"projectId":project.id,"sessionId":Uuid::new_v4().to_string()});
+            write_json(&identity_path, &value)?;
+            value
+        };
         let mut timeline_writer =
             std::io::BufWriter::new(fs::File::create(root.join("events/timeline.jsonl"))?);
         let mut events = VecDeque::with_capacity(5000);
@@ -215,7 +228,13 @@ impl Workspace {
         if log.exists() {
             for line in BufReader::new(fs::File::open(log)?).lines() {
                 let Ok(line) = line else { continue };
-                if let Ok(event) = serde_json::from_str::<Event>(&line) {
+                if let Ok(mut event) = serde_json::from_str::<Event>(&line) {
+                    event
+                        .project_id
+                        .get_or_insert_with(|| identity["projectId"].as_str().unwrap_or("").into());
+                    event
+                        .session_id
+                        .get_or_insert_with(|| identity["sessionId"].as_str().unwrap_or("").into());
                     crate::timeline::write_row(&mut timeline_writer, &event)?;
                     last_seq = event.seq;
                     if events.len() == 5000 {
@@ -239,6 +258,7 @@ impl Workspace {
             undo.drain(..undo.len() - 128);
         }
         let mut w = Self {
+            session_id: identity["sessionId"].as_str().unwrap_or("").into(),
             root,
             project,
             events: events.into_iter().collect(),
@@ -251,6 +271,34 @@ impl Workspace {
         };
         w.persist()?;
         Ok(w)
+    }
+    pub fn project_archive_path(&self, id: &str) -> PathBuf {
+        self.root
+            .join("projects")
+            .join(format!("{}.project.json", hash(id.as_bytes())))
+    }
+    pub fn activate_project(&mut self, project: Project) -> Result<()> {
+        project.scene.validate(&project.limits)?;
+        let mut revisions = load_snapshots(&self.root, &project.id)?;
+        revisions.entry(project.scene.revision).or_insert(());
+        let mut undo: Vec<_> = revisions
+            .keys()
+            .copied()
+            .filter(|r| *r < project.scene.revision)
+            .collect();
+        if undo.len() > 128 {
+            undo.drain(..undo.len() - 128);
+        }
+        // The durable pointer is written before replacing the in-memory draft.
+        write_json(&self.project_archive_path(&project.id), &project)?;
+        write_json(&self.root.join("project.json"), &project)?;
+        self.project = project;
+        self.revisions = revisions;
+        self.undo = undo;
+        self.redo.clear();
+        self.requests.clear();
+        self.recipes.clear();
+        self.persist()
     }
     pub fn snapshot_path(&self, revision: u64) -> PathBuf {
         self.root
@@ -344,12 +392,15 @@ impl Workspace {
         } else {
             write_json(&credits, &self.project.source_credits)?;
         }
+        write_json(&self.project_archive_path(&self.project.id), &self.project)?;
         write_json(&self.root.join("project.json"), &self.project)?;
         Ok(())
     }
     pub fn event(&mut self, kind: &str, run: Option<&str>, data: Value) -> Result<Event> {
         use std::io::Write;
         let event = Event {
+            project_id: Some(self.project.id.clone()),
+            session_id: Some(self.session_id.clone()),
             seq: self.next_seq,
             time: now(),
             kind: kind.into(),
