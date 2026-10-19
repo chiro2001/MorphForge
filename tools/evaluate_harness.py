@@ -87,7 +87,12 @@ def main() -> None:
             cursor = max(e['seq'] for e in page)
         return events
     start = time.monotonic()
-    started = api('harness/start', {'prompt': case['prompt']})
+    if 'referenceIds' in case:
+        api('harness/message', {'prompt': case['prompt'], 'referenceIds': case['referenceIds'],
+                               'requestId': str(uuid.uuid4())})
+        started = api('harness/state')
+    else:
+        started = api('harness/start', {'prompt': case['prompt']})
     initial_run = started['run']['id']
     actions = []
     seen_status = None
@@ -232,6 +237,10 @@ def main() -> None:
                                  'styles': len({b['styleId'] for b in scene['boxes']}),
                                  'groups': sorted({b.get('group', 'main') for b in scene['boxes']})},
                        'eventCounts': dict(counts), 'toolCalls': len(tools),
+                       'usage': last_state.get('usage'),
+                       'visualContext': [e['data'].get('visualContext') for e in model_events
+                                         if e['kind'] == 'harness.request.prepared'],
+                       'referenceImages': last_state.get('context', {}).get('referenceImages', []),
                        'toolNames': dict(collections.Counter(e['data']['name'] for e in tools)),
                        'toolErrors': [{'name': e['data']['name'], 'result': e['data']['result']}
                                       for e in errors],
@@ -248,6 +257,8 @@ def main() -> None:
         raise
     finally:
         (options.output / 'report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2))
+    if not report['success']:
+        raise SystemExit(1)
 
 
 if __name__ == '__main__':

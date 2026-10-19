@@ -81,11 +81,18 @@ pub(super) fn chat_request(payload: &Value, connection: &Connection) -> Result<V
             "function_call_output" => {
                 flush_assistant(&mut messages, &mut assistant);
                 messages.push(json!({"role":"tool","tool_call_id":item["call_id"],"content":text(&item["output"])}));
+                let mut image_label = None;
                 for part in item["output"].as_array().into_iter().flatten() {
+                    if part["type"] == "input_text" {
+                        image_label = part["text"].as_str();
+                    }
                     if part["type"] == "input_image" {
                         let url = part["image_url"]
                             .as_str()
                             .context("Chat工具图片缺少内嵌数据")?;
+                        if let Some(label) = image_label.take() {
+                            images.push(json!({"type":"text","text":label}));
+                        }
                         images.push(json!({"type":"image_url","image_url":{"url":url,"detail":part.get("detail").and_then(Value::as_str).unwrap_or("high")}}));
                     }
                 }
@@ -281,7 +288,8 @@ mod tests {
         assert_eq!(messages[2]["role"], "tool");
         assert_eq!(messages[3]["tool_call_id"], "b");
         assert_eq!(messages[4]["role"], "user");
-        assert_eq!(messages[4]["content"][1]["type"], "image_url");
+        assert_eq!(messages[4]["content"][1]["text"], "hero");
+        assert_eq!(messages[4]["content"][2]["type"], "image_url");
         assert_eq!(result["max_tokens"], 1234);
     }
 

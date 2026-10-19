@@ -50,6 +50,8 @@ Goal 是有预算的创作续作机制。输入目标后，模型先搭建、调
 
 事件包含预设、提示词/工具版本、请求预算、实际usage或估算来源、Goal建立/续作/复核/完成及工具失败。`runs/conversation.json`使用本地图片 artifact 引用，发送前才按所选协议转换，避免将大段base64当文本上下文保存。换服务时丢弃不兼容的内部推理项；普通文本与工具结果继续沿用。
 
+0.4.1的请求事件增加`completionPhase`、`completionReserveTokens`和`visualContext`（`retainedCaptures`/`omittedCaptures`为请求副本中的作品截图筛选统计，图片发送关闭时不向上游发送）。收尾提醒以本地估算和最近实际输入的较大者加输出上限，按约三次请求预估余量；不改实际usage计费、预算上限或超限停止规则。仅重放每视角最近一次作品截图，参考图独立保留，完整原始会话与artifact不删除。
+
 ## 验证范围
 
 本轮验证记录在 [quality-v3](quality-v3/RESULTS.md)。新增协议测试使用本地可控服务，覆盖 Chat JSON/SSE、工具结果配对、图片顺序、截断保护和 usage。真实 Chromium 流程运行实际 Rust Recipe、双视角渲染与作品入库。已有作品截图来自先前真实 DeepSeek 运行，不冒充本轮三档预设的同题美术对比。

@@ -294,6 +294,133 @@ async fn terminal_run(harness: &Harness) -> Run {
 }
 
 #[tokio::test]
+async fn completion_reserve_uses_observed_visual_input_cost() {
+    let fake = FakeResponses::start(vec![
+        sse([json!({"type":"response.completed","response":{
+            "status":"completed","output":[function_call("ctx", "get_context", json!({}))],
+            "usage":{"input_tokens":120000,"output_tokens":20,"total_tokens":120020}
+        }})]),
+        completed(vec![]),
+    ])
+    .await;
+    let dir = TempDir::new().unwrap();
+    let workspace = workspace(&dir);
+    let h = harness(workspace.clone(), &fake.base);
+    h.configure(&json!({"maxRunTokens":200000,"autoCompact":false}))
+        .unwrap();
+    h.start("检查并保存当前作品").unwrap();
+    assert_eq!(terminal_run(&h).await.status, "completed");
+    let prepared: Vec<_> = workspace
+        .lock()
+        .unwrap()
+        .events
+        .iter()
+        .filter(|event| event.kind == "harness.request.prepared")
+        .map(|event| event.data.clone())
+        .collect();
+    assert_eq!(prepared.len(), 2);
+    assert_eq!(prepared[1]["completionPhase"], true);
+    assert!(prepared[1]["completionReserveTokens"].as_u64().unwrap() >= 360000);
+    assert!(fake.requests()[1]["instructions"]
+        .as_str()
+        .unwrap()
+        .contains("现在进入收尾"));
+    assert_eq!(h.state()["run"]["tokens"], 120036);
+}
+
+#[tokio::test]
+async fn request_replays_latest_capture_per_view_without_mutating_history_or_references() {
+    use base64::{engine::general_purpose::STANDARD, Engine};
+    let fake = FakeResponses::start(vec![
+        completed(vec![function_call(
+            "capture-1",
+            "capture_views",
+            json!({"views":["front","hero"]}),
+        )]),
+        completed(vec![function_call(
+            "capture-2",
+            "capture_views",
+            json!({"views":["front"]}),
+        )]),
+        completed(vec![]),
+    ])
+    .await;
+    let dir = TempDir::new().unwrap();
+    let w = workspace(&dir);
+    let h = harness(w.clone(), &fake.base);
+    let broker = h.capture.clone();
+    let capture_workspace = w.clone();
+    let renderer = tokio::spawn(async move {
+        for round in 0..2 {
+            tokio::time::timeout(Duration::from_secs(5), async {
+                loop {
+                    let job = broker.claim();
+                    if !job.is_null() {
+                        let images: Vec<_> = job["views"].as_array().unwrap().iter().map(|view| {
+                            let bytes = format!("capture-{round}-{view}");
+                            // Fixture captures use the same PNG signature accepted by the broker.
+                            let mut png = b"\x89PNG\r\n\x1a\n".to_vec();
+                            png.extend_from_slice(bytes.as_bytes());
+                            json!({"view":view,"data":format!("data:image/png;base64,{}",STANDARD.encode(png))})
+                        }).collect();
+                        broker.complete(&mut capture_workspace.lock().unwrap(), &json!({
+                            "id":job["id"],"revision":job["revision"],"images":images
+                        })).unwrap();
+                        break;
+                    }
+                    tokio::time::sleep(Duration::from_millis(5)).await;
+                }
+            }).await.unwrap();
+        }
+    });
+    h.message(&json!({"prompt":"查看参考和作品","referenceIds":["builtin:chair"]}))
+        .unwrap();
+    assert_eq!(terminal_run(&h).await.status, "completed");
+    renderer.await.unwrap();
+    let requests = fake.requests();
+    assert_eq!(requests.len(), 3);
+    let final_input = requests[2]["input"].to_string();
+    let history = h.inner.lock().unwrap().conversation.input.clone();
+    let old = history
+        .iter()
+        .find(|item| item["call_id"] == "capture-1" && item["type"] == "function_call_output")
+        .unwrap();
+    let images: Vec<_> = old["output"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|part| part["type"] == "input_image")
+        .collect();
+    assert_eq!(images.len(), 2, "full capture history remains local");
+    for (index, image) in images.iter().enumerate() {
+        let path = dir
+            .path()
+            .join("artifacts")
+            .join(image["artifact"].as_str().unwrap());
+        let encoded = STANDARD.encode(std::fs::read(path).unwrap());
+        assert_eq!(
+            final_input.contains(&encoded),
+            index == 1,
+            "old front removed, hero retained"
+        );
+    }
+    assert_eq!(
+        final_input.matches("data:image/png;base64,").count(),
+        3,
+        "latest front, hero and explicit reference"
+    );
+    let workspace = w.lock().unwrap();
+    let prepared = workspace
+        .events
+        .iter()
+        .rev()
+        .find(|e| e.kind == "harness.request.prepared")
+        .unwrap();
+    assert_eq!(prepared.data["visualContext"]["omittedCaptures"], 1);
+    assert_eq!(prepared.data["visualContext"]["retainedCaptures"], 2);
+}
+
+#[tokio::test]
 async fn token_budget_uses_provider_usage_and_allows_one_input_overrun() {
     let fake = FakeResponses::start(vec![sse([json!({
         "type":"response.completed",

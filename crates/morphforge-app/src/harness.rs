@@ -17,8 +17,9 @@ use std::{
 };
 mod goal;
 mod prompts;
+mod visual_context;
 pub use goal::GoalProgress;
-pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/4.1";
+pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/4.2";
 pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/3.0";
 
 #[derive(Clone, Debug)]
@@ -1036,6 +1037,7 @@ impl Harness {
                     run.tokens,
                 )
             };
+            let visual_context = visual_context::retain_latest_views(&mut input);
             if !settings.send_images {
                 omit_images(&mut input);
             } else {
@@ -1091,16 +1093,20 @@ impl Harness {
                 .deadline
                 .saturating_duration_since(tokio::time::Instant::now())
                 .as_secs_f64();
-            let request_budget_estimate =
-                estimated_input_tokens_u64.saturating_add(settings.max_output_tokens as u64);
+            // Leave room for a final edit, capture, and evidence-based finish.
+            // Actual visual input can cost more than the local image estimate.
+            let request_budget_estimate = estimated_input_tokens_u64
+                .max(previous_input_tokens.unwrap_or_default())
+                .saturating_add(settings.max_output_tokens as u64);
+            let completion_reserve_tokens = request_budget_estimate.saturating_mul(3);
             let near_budget = remaining_steps <= 3
-                || remaining_tokens <= request_budget_estimate
+                || remaining_tokens <= completion_reserve_tokens
                 || remaining_seconds <= 120.0;
             let budget_note = if settings.language == "en" {
                 format!(
                     "\nCurrent run budget: {remaining_steps} steps, {remaining_tokens} provider-reported total tokens, and {remaining_seconds:.0} active seconds remain. Effective output cap for this request: {effective_output_tokens}; it never exceeds the configured cap or remaining token budget. Local input estimates are advisory only. Provider input usage can exceed the remaining budget unexpectedly; at most one complete response may cross it, and no later model request will start.{}",
                     if near_budget {
-                        " Budget is close: stop adding detail, inspect the current result, and use this response's final tool call for finish_artwork so commit and library save happen together. Do not spend the remaining budget on polish."
+                        " Enter completion now: reserve the remaining requests for at most one necessary correction, capture_views of the resulting revision, then finish_artwork after inspecting that capture in a later response. If the current revision is already captured, review it and finish directly. Do not add optional detail or finish in the same response that first captures an unseen revision. Report unresolved visual issues honestly."
                     } else {
                         ""
                     }
@@ -1109,7 +1115,7 @@ impl Harness {
                 format!(
                     "\n当前run预算：剩余{remaining_steps}步、Provider实际统计的总Token余量{remaining_tokens}和{remaining_seconds:.0}秒活动时间。本请求有效输出上限{effective_output_tokens}，不会超过配置上限或实际剩余预算。输入估算仅作提前收尾提示。Provider实际输入用量可能不可预测地超过余量；最多允许一个完整响应越过预算，之后不再发起模型请求。{}",
                     if near_budget {
-                        "预算已接近上限：停止增加细节并检查当前结果；本响应最后一个工具调用用finish_artwork一次完成commit和作品库保存，不要再把余量花在润色上。"
+                        "现在进入收尾：预留后续请求用于至多一次必要修正、capture_views检查最终revision、在下一响应看过该截图后finish_artwork。若当前revision已有截图，检查后直接收尾。不再追加可选细节，不要在首次获取尚未看过的revision截图的同一响应中宣告完成。对仍存在的外观问题如实说明。"
                     } else {
                         ""
                     }
@@ -1159,6 +1165,9 @@ impl Harness {
                         "remainingSeconds":remaining_seconds,
                         "estimatedInputTokens":estimated_input_tokens,
                         "effectiveMaxOutputTokens":effective_output_tokens,
+                        "completionPhase":near_budget,
+                        "completionReserveTokens":completion_reserve_tokens,
+                        "visualContext":visual_context,
                         "preset":settings.preset,
                         "contextWindowTokens":settings.context_window_tokens,
                         "goalMode":settings.goal_mode,
@@ -1361,7 +1370,7 @@ impl Harness {
                     for image in value["images"].as_array().into_iter().flatten() {
                         if let Some(artifact) = image["artifact"].as_str() {
                             // Persist local references, resolve delivery only at the provider boundary.
-                            parts.push(json!({"type":"input_text","text":format!("真实截图视角：{}",image["view"].as_str().unwrap_or("view"))}));
+                            parts.push(json!({"type":"input_text","text":format!("真实作品截图 / Scene capture: revision={}，view={}；用于复核几何，不是参考图。",value["revision"],image["view"].as_str().unwrap_or("view"))}));
                             parts.push(
                                 json!({"type":"input_image","artifact":artifact,"detail":"high"}),
                             );

@@ -1,0 +1,10 @@
+{
+  "id": "chair-reference-system42",
+  "referenceIds": ["builtin:chair"],
+  "prompt": "按照参考图搭建一把木椅体素模型：四条腿、座面、靠背与背板之间的空隙可辨，正面朝+Z。不要添加地面或其它装饰。最多60 Box。先读context，再搭建、capture_views看front和hero，检查腿和靠背遮挡，如有问题局部修正后再截图。最后finish_artwork保存，summary如实描述可见结构。不要发布VRChat。",
+  "settings": {
+    "preset": "sketch", "reasoning": "none", "maxSteps": 12,
+    "maxRunTokens": 120000, "maxRunSeconds": 180, "maxOutputTokens": 8192
+  },
+  "maxBoxes": 60
+}
