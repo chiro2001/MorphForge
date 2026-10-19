@@ -1,0 +1,80 @@
+{
+  "success": true,
+  "scope": "Windows release binary; built-in image bytes and credits; no model requests",
+  "images": [
+    {
+      "author": "上善无形",
+      "license": "CC BY-NC-SA 4.0",
+      "id": "builtin:whale-original",
+      "hashes": {
+        "image": "d41f588a0e467915d7bd97f93181d41b09f2249745092c4c69a293b9aa2404db",
+        "thumbnail": "d0bd428e033079fc5cd0d0894721d1d5ec6c76cf7a2b1b5f6dec0a27aed18f14"
+      }
+    },
+    {
+      "author": "ZipZipPipe；原角色：上善无形",
+      "license": "CC BY-NC-SA 4.0",
+      "id": "builtin:whale-maid",
+      "hashes": {
+        "image": "4985c1ec6c7408472a3e499140eaf49b05b9db8bcfb7786b9a3623d74c93dadd",
+        "thumbnail": "0441f36347b40b600fa55fa6096c979ea5d39c2334ac088776e6db33ba768333"
+      }
+    },
+    {
+      "author": "ZipZipPipe；原角色：上善无形",
+      "license": "CC BY-NC-SA 4.0",
+      "id": "builtin:whale-small",
+      "hashes": {
+        "image": "d78754d43f3bd33306ea480fddc82a4a333eb4a8f0754c4b2388e8da25c27657",
+        "thumbnail": "043828795d497e4bbbd18df4a605b160ee478bae22840aad7fbd303c50e09d0f"
+      }
+    },
+    {
+      "author": "MorphForge 项目自制",
+      "license": "MIT（项目自制参考）",
+      "id": "builtin:chair",
+      "hashes": {
+        "image": "6ded2209203bc97543544203b42b3c2d37667dce288d8bbb437946297123be1d",
+        "thumbnail": "0f366fab5452f4c58cbe680ab1ed5370df2b472b1d99be81f65070f483607e02"
+      }
+    },
+    {
+      "author": "MorphForge 项目自制",
+      "license": "MIT（项目自制参考）",
+      "id": "builtin:pine",
+      "hashes": {
+        "image": "1c241f46375d0e9fa375de010e2b539d4565770d0ce71a48c342b8b68c4ab5ad",
+        "thumbnail": "938d08e184fbf7672f7b464f5955642a6f5b24f651a34d375046685014e9bd3a"
+      }
+    },
+    {
+      "author": "MorphForge 项目自制",
+      "license": "MIT（项目自制参考）",
+      "id": "builtin:cottage",
+      "hashes": {
+        "image": "7806c5789afccdaa913dc4e725d91f77e81896ca5542cc432cea6390de416f53",
+        "thumbnail": "db778a8b5414f4cb6270395b1209274c1a27ce1f424550a753c4d427dc4bf87e"
+      }
+    },
+    {
+      "author": "MorphForge 项目自制",
+      "license": "MIT（项目自制参考）",
+      "id": "builtin:bridge",
+      "hashes": {
+        "image": "ea4e27233645fabd4648d3d1ac750ab9d093948a92ec3dc142c817a8ec719d56",
+        "thumbnail": "2e17009d4a20d64abdc04f41e0ff3bfd79d1073d3f25efed0762f2cefce7dc74"
+      }
+    },
+    {
+      "author": "MorphForge 项目自制",
+      "license": "MIT（项目自制参考）",
+      "id": "builtin:lighthouse",
+      "hashes": {
+        "image": "32b53a39da0154848b135e0e59a939a6276d040bfbac2d651b1337f1a852e32f",
+        "thumbnail": "d904858495746218c5a5ab5c07e0965ea849e266c100a9636e409a0ace754025"
+      }
+    }
+  ],
+  "error": null,
+  "finishedAt": "2026-10-19T05:38:05.3356072+00:00"
+}

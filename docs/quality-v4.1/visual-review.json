@@ -1,0 +1,32 @@
+{
+  "scope": "Manual inspection of real renderer screenshots, independent of model self-assessment",
+  "visualAcceptance": "partial",
+  "whalePalette": {
+    "improved": [
+      "face on +Z exterior",
+      "visible skin tone",
+      "blue hair and navy dress",
+      "white apron",
+      "tail visible in hero"
+    ],
+    "remaining": [
+      "tower-like proportions",
+      "tiered skirt resembles stairs",
+      "blocky fins and tail silhouette",
+      "arm occlusion"
+    ],
+    "firstRunBudgetExhausted": true,
+    "followupSaved": true,
+    "boxCount": 223,
+    "followupGeometryUnchanged": true
+  },
+  "chair": {
+    "recognizable": true,
+    "boxCount": 16,
+    "remaining": [
+      "backrest negative space insufficient compared to reference"
+    ]
+  },
+  "tokenReductionDemonstrated": false,
+  "samplesAreNotStatisticalBenchmark": true
+}

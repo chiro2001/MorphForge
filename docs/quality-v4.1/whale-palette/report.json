@@ -1,0 +1,278 @@
+{
+  "case": "whale-reference-palette-system43",
+  "caseSha256": "aeb67cafe8cfc1f1dfb25d4b2f32b83fd15ba6baac9beb0cbfba6cd840d5d2e2",
+  "backend": "http://127.0.0.1:18784",
+  "initialRunId": "e962b8f4-0f04-427c-90cd-0c0c1def2932",
+  "settings": {
+    "preset": "standard",
+    "reasoning": "none",
+    "maxSteps": 18,
+    "maxRunTokens": 300000,
+    "maxRunSeconds": 360,
+    "maxOutputTokens": 8192
+  },
+  "versions": {
+    "software": {
+      "apiVersion": "mf-http/2",
+      "name": "MorphForge",
+      "version": "0.4.1"
+    },
+    "tools": "morphforge-tools/3.1",
+    "prompt": "morphforge-system/4.3",
+    "language": "zh-CN",
+    "schemaSha256": "b9bb3317630f464c2db151b8e549314a87ddb7e3e20bcd23e001b9fec1d946a7"
+  },
+  "actions": [],
+  "success": false,
+  "checks": {
+    "runCompleted": false,
+    "allActionsExercised": true,
+    "nonemptyScene": true,
+    "boxCapacity": true,
+    "modelUsedVisualFeedback": true,
+    "modelCommitted": false,
+    "modelSavedArtwork": false,
+    "oscRemainsDisabled": true,
+    "geometryRevisedAfterVisualFeedback": true
+  },
+  "run": {
+    "activeRequestId": null,
+    "epoch": 1,
+    "error": "RUN_BUDGET：达到步骤或Token预算，已提交版本仍保留",
+    "finishedAt": "2026-10-19T05:31:28.311Z",
+    "id": "e962b8f4-0f04-427c-90cd-0c0c1def2932",
+    "language": "zh-CN",
+    "message": "对照参考图复核发现：裙摆被白色荷叶边完全盖住，变成白色阶梯台座；浅蓝衬裙只剩零散蓝块；手臂几乎全被围裙和裙身遮住；鲸尾偏细，像细树枝。接下来要针对这些局部问题做一次修正。",
+    "prompt": "根据这两张同一角色的参考图，做一尊非官方鲸鱼娘全身彩色体素小雕像。重点是蓝色长发、头侧鲸鳍、蓝白女仆长裙、白围裙和身后的大鲸尾；小头身比例参考第二图。保留完整服装，配一个简洁的底座。先读context，分层搭建，不超过400 Box；不要把参考图片当成已完成作品截图。必须对真实模型capture_views，用front与hero检查识别性和遮挡，再至少做一次有意义的修正并截图，最后finish_artwork入库。不要发布到VRChat。",
+    "promptVersion": "morphforge-system/4.3",
+    "startedAt": "2026-10-19T05:30:13.664Z",
+    "status": "failed",
+    "steps": 15,
+    "tokens": 321403,
+    "toolsVersion": "morphforge-tools/3.1"
+  },
+  "interaction": {
+    "activeRequestId": null,
+    "activeSecondsRemaining": null,
+    "epoch": 1,
+    "paused": false,
+    "phase": "failed",
+    "queue": [],
+    "runId": "e962b8f4-0f04-427c-90cd-0c0c1def2932"
+  },
+  "scene": {
+    "revision": 6,
+    "boxes": 223,
+    "styles": 9,
+    "groups": [
+      "apron",
+      "arms",
+      "base",
+      "fins",
+      "hair",
+      "head",
+      "shoes",
+      "skirt",
+      "tail",
+      "torso"
+    ]
+  },
+  "eventCounts": {
+    "harness.started": 1,
+    "harness.message.accepted": 1,
+    "harness.message.applied": 1,
+    "harness.request.prepared": 15,
+    "provider.request": 15,
+    "provider.first_byte": 15,
+    "provider.text_delta": 446,
+    "provider.response": 15,
+    "tool.request": 15,
+    "tool.result": 15,
+    "geometry.replaced": 1,
+    "palette.defined": 1,
+    "geometry.applied": 5,
+    "recipe.completed": 5,
+    "capture.completed": 5,
+    "harness.finished": 1
+  },
+  "toolCalls": 15,
+  "usage": {
+    "prefixDenominator": "cache_reported_input_tokens",
+    "run": {
+      "cacheReportedInputTokens": 304130,
+      "cacheReportedRequests": 15,
+      "cachedInputTokens": 54144,
+      "inputTokens": 304130,
+      "outputTokens": 17273,
+      "prefixHitRate": 0.17802913227895967,
+      "reportedRequests": 15,
+      "requests": 15,
+      "totalTokens": 321403,
+      "unreportedRequests": 0
+    },
+    "scope": "workspace",
+    "source": "upstream_reported_usage",
+    "total": {
+      "cacheReportedInputTokens": 304130,
+      "cacheReportedRequests": 15,
+      "cachedInputTokens": 54144,
+      "inputTokens": 304130,
+      "outputTokens": 17273,
+      "prefixHitRate": 0.17802913227895967,
+      "reportedRequests": 15,
+      "requests": 15,
+      "totalTokens": 321403,
+      "unreportedRequests": 0
+    }
+  },
+  "visualContext": [
+    {
+      "omittedCaptures": 0,
+      "retainedCaptures": 0
+    },
+    {
+      "omittedCaptures": 0,
+      "retainedCaptures": 0
+    },
+    {
+      "omittedCaptures": 0,
+      "retainedCaptures": 0
+    },
+    {
+      "omittedCaptures": 0,
+      "retainedCaptures": 0
+    },
+    {
+      "omittedCaptures": 0,
+      "retainedCaptures": 2
+    },
+    {
+      "omittedCaptures": 0,
+      "retainedCaptures": 2
+    },
+    {
+      "omittedCaptures": 2,
+      "retainedCaptures": 2
+    },
+    {
+      "omittedCaptures": 2,
+      "retainedCaptures": 2
+    },
+    {
+      "omittedCaptures": 4,
+      "retainedCaptures": 2
+    },
+    {
+      "omittedCaptures": 4,
+      "retainedCaptures": 2
+    },
+    {
+      "omittedCaptures": 4,
+      "retainedCaptures": 2
+    },
+    {
+      "omittedCaptures": 4,
+      "retainedCaptures": 2
+    },
+    {
+      "omittedCaptures": 4,
+      "retainedCaptures": 2
+    },
+    {
+      "omittedCaptures": 6,
+      "retainedCaptures": 2
+    },
+    {
+      "omittedCaptures": 6,
+      "retainedCaptures": 2
+    }
+  ],
+  "referenceImages": [
+    {
+      "artifact": "4985c1ec6c7408472a3e499140eaf49b05b9db8bcfb7786b9a3623d74c93dadd.png",
+      "author": "ZipZipPipe；原角色：上善无形",
+      "category": "大肥鱼角色",
+      "height": 1024,
+      "id": "builtin:whale-maid",
+      "license": "CC BY-NC-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "notes": "蓝发、鲸鳍与鲸尾、蓝白长裙。 仅等比缩小、去元数据，未裁剪或去水印。非商业；二创请保留署名与许可。",
+      "origin": "builtin",
+      "sourceUrl": "https://www.bilibili.com/opus/1233069202138464289",
+      "thumbnail": "0441f36347b40b600fa55fa6096c979ea5d39c2334ac088776e6db33ba768333.webp",
+      "title": "DeepSeek鲸鱼娘 · 女仆全身",
+      "width": 576
+    },
+    {
+      "artifact": "d78754d43f3bd33306ea480fddc82a4a333eb4a8f0754c4b2388e8da25c27657.png",
+      "author": "ZipZipPipe；原角色：上善无形",
+      "category": "大肥鱼角色",
+      "height": 1024,
+      "id": "builtin:whale-small",
+      "license": "CC BY-NC-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "notes": "较小头身比，适合体素角色比例参考。 仅等比缩小、去元数据，未裁剪或去水印。非商业；二创请保留署名与许可。",
+      "origin": "builtin",
+      "sourceUrl": "https://www.bilibili.com/opus/1236803362705375305",
+      "thumbnail": "043828795d497e4bbbd18df4a605b160ee478bae22840aad7fbd303c50e09d0f.webp",
+      "title": "DeepSeek小肥鱼 · V4F形态",
+      "width": 572
+    }
+  ],
+  "toolNames": {
+    "get_context": 1,
+    "define_palette": 1,
+    "run_recipe": 8,
+    "capture_views": 5
+  },
+  "toolErrors": [
+    {
+      "name": "run_recipe",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "RECIPE_ERROR: Error: min requires 3 bounded integers"
+        },
+        "ok": false
+      }
+    },
+    {
+      "name": "run_recipe",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "RECIPE_ERROR: Error: min requires 3 bounded integers"
+        },
+        "ok": false
+      }
+    },
+    {
+      "name": "run_recipe",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "RECIPE_ERROR: Error: min requires 3 bounded integers"
+        },
+        "ok": false
+      }
+    }
+  ],
+  "images": [
+    {
+      "view": "hero",
+      "file": "hero.png",
+      "sha256": "7d12ddd147e6abfaa1bb419d61eb3c447d31840aeb3bac4642bb0d259e95348b"
+    },
+    {
+      "view": "front",
+      "file": "front.png",
+      "sha256": "cb5c926e5f9678c6523f37fe4248ed532802d42ffb8ffaf45beec212d523c604"
+    },
+    {
+      "view": "top",
+      "file": "top.png",
+      "sha256": "8dcd89abf8d3372c2992f87ab724b02f74fb9dcc71a016d92a99f49e0143c4a3"
+    }
+  ],
+  "seconds": 78.78051576483995
+}

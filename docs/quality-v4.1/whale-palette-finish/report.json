@@ -1,0 +1,195 @@
+{
+  "case": "whale-palette-budget-recovery",
+  "caseSha256": "d836734a7f3f9edc04ff62b82a7ced09f61eee29fd16c6b912351d515256547f",
+  "backend": "http://127.0.0.1:18784",
+  "initialRunId": "602635d9-de16-4d6c-8aa1-b1386dbd0511",
+  "settings": {
+    "preset": "standard",
+    "reasoning": "none",
+    "maxSteps": 6,
+    "maxRunTokens": 180000,
+    "maxRunSeconds": 180,
+    "maxOutputTokens": 4096
+  },
+  "versions": {
+    "software": {
+      "apiVersion": "mf-http/2",
+      "name": "MorphForge",
+      "version": "0.4.1"
+    },
+    "tools": "morphforge-tools/3.1",
+    "prompt": "morphforge-system/4.3",
+    "language": "zh-CN",
+    "schemaSha256": "b9bb3317630f464c2db151b8e549314a87ddb7e3e20bcd23e001b9fec1d946a7"
+  },
+  "actions": [],
+  "success": true,
+  "checks": {
+    "runCompleted": true,
+    "allActionsExercised": true,
+    "nonemptyScene": true,
+    "boxCapacity": true,
+    "modelUsedVisualFeedback": true,
+    "modelCommitted": true,
+    "modelSavedArtwork": true,
+    "oscRemainsDisabled": true
+  },
+  "run": {
+    "activeRequestId": null,
+    "epoch": 2,
+    "error": "",
+    "finishedAt": "2026-10-19T05:32:25.688Z",
+    "id": "602635d9-de16-4d6c-8aa1-b1386dbd0511",
+    "language": "zh-CN",
+    "message": "223 Box 的体素小雕像，revision 6，front 与 hero 真实截图已复核后入库（未发布 VRChat）。\n\n可见识别点：蓝色长发（含鬓发与呆毛）、白色蕾丝头冠、头侧左右各一对鲸鳍、肤色脸配青色眼与粉色嘴、白色荷叶边胸饰加藏蓝马甲、白色围裙（带深蓝小鲸鱼刺绣）、藏蓝团裙配浅蓝前裙片与金色裙摆线、白长袜与蓝鞋、身后上扬的大鲸尾，木质简洁底座。\n\n明显简化与不足，不宣称完全还原：整体偏矮胖的塔形轮廓，裙摆层叠过于块状、白荷叶边在正面显得像阶梯台座；参考图中长及腰下的披散长发、裙侧蝴蝶结细节、荷叶边褶皱层次被大幅简化；手臂被裙身局部遮挡，右侧抬手姿势可辨但不完整；鲸尾体积偏粗短，未做出参考图的分叉尾鳍细部；未表现第二图中的笔记本质感道具。头侧鲸鳍与鲸尾在 front 视角辨识度有限，主要靠 hero 视角确认。\n\n参考素材：DeepSeek鲸鱼娘 · 女仆全身、DeepSeek小肥鱼 · V4F形态；作者 ZipZipPipe，原角色 上善无形；许可 CC BY-NC-SA 4.0（非商业，保留署名与许可）。本作为非官方体素二创，非原创角色。",
+    "prompt": "上一轮预算用尽，当前223 Box草稿和色板已经保存。现在只做收尾，不再改任何几何或色板：get_context确认当前revision，capture_views拍front与hero，看到真实截图后直接finish_artwork保存到作品库。summary简短如实说明肤色、蓝发、藏蓝女仆裙、白围裙、鲸鳍和鲸尾的可见性，以及比例和轮廓仍有的简化；不能宣称完全还原。保留参考图作者和许可，不发布VRChat。",
+    "promptVersion": "morphforge-system/4.3",
+    "startedAt": "2026-10-19T05:32:18.734Z",
+    "status": "completed",
+    "steps": 3,
+    "tokens": 104002,
+    "toolsVersion": "morphforge-tools/3.1"
+  },
+  "interaction": {
+    "activeRequestId": null,
+    "activeSecondsRemaining": null,
+    "epoch": 2,
+    "paused": false,
+    "phase": "completed",
+    "queue": [],
+    "runId": "602635d9-de16-4d6c-8aa1-b1386dbd0511"
+  },
+  "scene": {
+    "revision": 6,
+    "boxes": 223,
+    "styles": 9,
+    "groups": [
+      "apron",
+      "arms",
+      "base",
+      "fins",
+      "hair",
+      "head",
+      "shoes",
+      "skirt",
+      "tail",
+      "torso"
+    ]
+  },
+  "eventCounts": {
+    "harness.started": 1,
+    "harness.message.accepted": 1,
+    "harness.message.applied": 1,
+    "harness.request.prepared": 3,
+    "provider.request": 3,
+    "provider.first_byte": 3,
+    "provider.response": 3,
+    "tool.request": 3,
+    "tool.result": 3,
+    "capture.completed": 1,
+    "artwork.reference_sources": 1,
+    "revision.committed": 1,
+    "artwork.saved": 1,
+    "harness.finished": 1
+  },
+  "toolCalls": 3,
+  "usage": {
+    "prefixDenominator": "cache_reported_input_tokens",
+    "run": {
+      "cacheReportedInputTokens": 103424,
+      "cacheReportedRequests": 3,
+      "cachedInputTokens": 14976,
+      "inputTokens": 103424,
+      "outputTokens": 578,
+      "prefixHitRate": 0.1448019801980198,
+      "reportedRequests": 3,
+      "requests": 3,
+      "totalTokens": 104002,
+      "unreportedRequests": 0
+    },
+    "scope": "workspace",
+    "source": "upstream_reported_usage",
+    "total": {
+      "cacheReportedInputTokens": 407554,
+      "cacheReportedRequests": 18,
+      "cachedInputTokens": 69120,
+      "inputTokens": 407554,
+      "outputTokens": 17851,
+      "prefixHitRate": 0.16959715767726485,
+      "reportedRequests": 18,
+      "requests": 18,
+      "totalTokens": 425405,
+      "unreportedRequests": 0
+    }
+  },
+  "visualContext": [
+    {
+      "omittedCaptures": 8,
+      "retainedCaptures": 2
+    },
+    {
+      "omittedCaptures": 8,
+      "retainedCaptures": 2
+    },
+    {
+      "omittedCaptures": 10,
+      "retainedCaptures": 2
+    }
+  ],
+  "referenceImages": [
+    {
+      "artifact": "4985c1ec6c7408472a3e499140eaf49b05b9db8bcfb7786b9a3623d74c93dadd.png",
+      "author": "ZipZipPipe；原角色：上善无形",
+      "category": "大肥鱼角色",
+      "height": 1024,
+      "id": "builtin:whale-maid",
+      "license": "CC BY-NC-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "notes": "蓝发、鲸鳍与鲸尾、蓝白长裙。 仅等比缩小、去元数据，未裁剪或去水印。非商业；二创请保留署名与许可。",
+      "origin": "builtin",
+      "sourceUrl": "https://www.bilibili.com/opus/1233069202138464289",
+      "thumbnail": "0441f36347b40b600fa55fa6096c979ea5d39c2334ac088776e6db33ba768333.webp",
+      "title": "DeepSeek鲸鱼娘 · 女仆全身",
+      "width": 576
+    },
+    {
+      "artifact": "d78754d43f3bd33306ea480fddc82a4a333eb4a8f0754c4b2388e8da25c27657.png",
+      "author": "ZipZipPipe；原角色：上善无形",
+      "category": "大肥鱼角色",
+      "height": 1024,
+      "id": "builtin:whale-small",
+      "license": "CC BY-NC-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "notes": "较小头身比，适合体素角色比例参考。 仅等比缩小、去元数据，未裁剪或去水印。非商业；二创请保留署名与许可。",
+      "origin": "builtin",
+      "sourceUrl": "https://www.bilibili.com/opus/1236803362705375305",
+      "thumbnail": "043828795d497e4bbbd18df4a605b160ee478bae22840aad7fbd303c50e09d0f.webp",
+      "title": "DeepSeek小肥鱼 · V4F形态",
+      "width": 572
+    }
+  ],
+  "toolNames": {
+    "get_context": 1,
+    "capture_views": 1,
+    "finish_artwork": 1
+  },
+  "toolErrors": [],
+  "images": [
+    {
+      "view": "hero",
+      "file": "hero.png",
+      "sha256": "7d12ddd147e6abfaa1bb419d61eb3c447d31840aeb3bac4642bb0d259e95348b"
+    },
+    {
+      "view": "front",
+      "file": "front.png",
+      "sha256": "cb5c926e5f9678c6523f37fe4248ed532802d42ffb8ffaf45beec212d523c604"
+    },
+    {
+      "view": "top",
+      "file": "top.png",
+      "sha256": "8dcd89abf8d3372c2992f87ab724b02f74fb9dcc71a016d92a99f49e0143c4a3"
+    }
+  ],
+  "seconds": 10.478746078908443
+}

@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "sourceCommit": "cf8bcc7",
+  "windowsCoreAndDesktopPassed": 105,
+  "httpChecksPassed": 62,
+  "referenceImagesVerified": 8,
+  "installerMatchesValidatedCore": true,
+  "buildLogSha256": "cf7e8e3a9aaae03aac61a606d62f9657254784cdcd76fde6b6429545abf83363",
+  "installer": {
+    "file": "MorphForge Desktop_0.4.1_x64-setup.exe",
+    "bytes": 16717091,
+    "sha256": "494bf0f8ca193d5be0758269b7bcdbc0ce00d64948366be066a5f25c9504cae7"
+  },
+  "sourceFreezeSha256": "2f4e914b33ec49562fe0592c3d435441e22dcc9f76e5e8f2aca50b5ca220a250",
+  "sourceFreezeFiles": 113
+}

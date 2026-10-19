@@ -19,7 +19,9 @@ param(
 
     [int]$ExpectedInputCount = 69,
 
-    [string[]]$ExtraResources = @()
+    [string[]]$ExtraResources = @(),
+
+    [string[]]$ExtraTools = @()
 )
 
 $ErrorActionPreference = "Stop"
@@ -559,6 +561,7 @@ try {
         "commit", "finish_artwork", "publish", "sync_status", "undo_to",
         "artworks", "compact_context", "voxel_text"
     )
+    $requiredToolNames += $ExtraTools
     $zhNames = @($zh.tools | ForEach-Object { $_.name } | Sort-Object)
     $enNames = @($en.tools | ForEach-Object { $_.name } | Sort-Object)
     $expectedNames = @($requiredToolNames | Sort-Object)
@@ -699,6 +702,37 @@ for (let i = 0; i < 16384; i++) {
         voxelCount = $bulkRecipe.stats.voxelCount
     }
     Assert-OscDisabled -Stage "after 16384 Recipe dry-run" -State $stateAfterBulkRecipe
+
+    if ($ExtraTools -contains 'define_palette') {
+        $beforePalette = Get-State
+        $palette = (Invoke-JsonHttp -Method POST -Path '/api/harness/tool' -Body @{
+            name = 'define_palette'
+            arguments = @{baseRevision=[int]$beforePalette.revision; colors=@(@{name='skin';color='#FFD6BF'})}
+        }).Value
+        $afterPalette = Get-State
+        Add-Check -Name 'RGB palette adds a version without changing geometry' -Passed (
+            $palette.ok -and $palette.added -eq 1 -and
+            $afterPalette.revision -eq $beforePalette.revision + 1 -and
+            $afterPalette.stats.boxCount -eq $beforePalette.stats.boxCount
+        )
+        $reuse = (Invoke-JsonHttp -Method POST -Path '/api/harness/tool' -Body @{
+            name = 'define_palette'
+            arguments = @{baseRevision=[int]$afterPalette.revision; colors=@(@{name='skin reused';color='#ffd6bf'})}
+        }).Value
+        Add-Check -Name 'exact palette color reuses style and revision' -Passed (
+            $reuse.added -eq 0 -and $reuse.revision -eq $afterPalette.revision -and
+            $reuse.palette[0].id -eq $palette.palette[0].id
+        )
+        $colors = (Invoke-JsonHttp -Method POST -Path '/api/harness/tool' -Body @{
+            name='get_context';arguments=@{styleQuery='mf:palette-ffd6bf'}
+        }).Value
+        Add-Check -Name 'RGB palette is available in authoritative material context' -Passed (
+            $colors.styles.Count -eq 1 -and $colors.styles[0].id -eq $palette.palette[0].id -and
+            [Math]::Abs($colors.styles[0].color[0] - 1.0) -lt 0.00001 -and
+            [Math]::Abs($colors.styles[0].color[1] - 214.0/255.0) -lt 0.00001 -and
+            [Math]::Abs($colors.styles[0].color[2] - 191.0/255.0) -lt 0.00001
+        )
+    }
 
     $eventsResponse = Invoke-JsonHttp -Method GET -Path "/api/events?after=0"
     $eventKinds = @($eventsResponse.Value.events | ForEach-Object { $_.kind })

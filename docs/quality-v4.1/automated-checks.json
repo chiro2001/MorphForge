@@ -1,0 +1,13 @@
+{
+  "success": true,
+  "rustPassed": 103,
+  "rustFailed": 0,
+  "clippyWarningsDenied": true,
+  "logsSha256": {
+    "v041-final-tests.txt": "30374c188630f68413659aa294c39da2e6204fee5cb6a0d9e6355985efb5b5a4",
+    "v041-final-clippy.txt": "aed6175ae618d81dea48bc4f2357ec7995429a23aba038ff10c158986d32e2d2"
+  },
+  "browserChecks": 27,
+  "finalPrompt": "morphforge-system/4.3",
+  "finalTools": "morphforge-tools/3.1"
+}

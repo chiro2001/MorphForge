@@ -1,0 +1,62 @@
+{
+  "success": false,
+  "checks": [
+    {
+      "name": "OSC remains disabled",
+      "passed": true
+    },
+    {
+      "name": "detailed preset applies budget and goal",
+      "passed": true
+    },
+    {
+      "name": "sketch preset applies budget and goal",
+      "passed": true
+    },
+    {
+      "name": "advanced settings have a dedicated page",
+      "passed": true
+    },
+    {
+      "name": "provider form draft survives state polling",
+      "passed": true
+    },
+    {
+      "name": "nonofficial provider hides Files settings",
+      "passed": true
+    },
+    {
+      "name": "key saved locally and never returned by state",
+      "passed": true
+    },
+    {
+      "name": "settings navigation keeps draft and artwork",
+      "passed": true
+    },
+    {
+      "name": "built-in reference selection appears in composer",
+      "passed": true
+    },
+    {
+      "name": "current image uploaded and combined with built-in reference",
+      "passed": true
+    },
+    {
+      "name": "both reference sources can be disabled",
+      "passed": true
+    },
+    {
+      "name": "reference choices survive refresh without upstream submission",
+      "passed": true
+    },
+    {
+      "name": "real Rust recipe, capture and finish loop completes",
+      "passed": true
+    },
+    {
+      "name": "finish skips unnecessary followup",
+      "passed": false
+    }
+  ],
+  "error": "finish skips unnecessary followup"
+}

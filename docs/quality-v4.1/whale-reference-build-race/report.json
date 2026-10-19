@@ -1,0 +1,294 @@
+{
+  "case": "whale-reference-system42",
+  "caseSha256": "48cbd2011f1585d2bf9d1c5dc2fd364b33cad49f038187362e194b204a817bb3",
+  "backend": "http://127.0.0.1:18784",
+  "initialRunId": "381f013f-4ac9-4e03-a9f3-1f4ecf334050",
+  "settings": {
+    "preset": "standard",
+    "reasoning": "none",
+    "maxSteps": 18,
+    "maxRunTokens": 300000,
+    "maxRunSeconds": 360,
+    "maxOutputTokens": 8192
+  },
+  "versions": {
+    "software": {
+      "apiVersion": "mf-http/2",
+      "name": "MorphForge",
+      "version": "0.4.1"
+    },
+    "tools": "morphforge-tools/3.0",
+    "prompt": "morphforge-system/4.2",
+    "language": "zh-CN",
+    "schemaSha256": "e57aadbdeb05aed772b904ee571c48aee26e145dad942b044cdfc672a0ea5afc"
+  },
+  "actions": [],
+  "success": false,
+  "checks": {
+    "runCompleted": false,
+    "allActionsExercised": true,
+    "nonemptyScene": true,
+    "boxCapacity": true,
+    "modelUsedVisualFeedback": true,
+    "modelCommitted": false,
+    "modelSavedArtwork": false,
+    "oscRemainsDisabled": true,
+    "geometryRevisedAfterVisualFeedback": true
+  },
+  "run": {
+    "activeRequestId": null,
+    "epoch": 1,
+    "error": "RUN_BUDGET：达到步骤或Token预算，已提交版本仍保留",
+    "finishedAt": "2026-10-19T05:22:00.784Z",
+    "id": "381f013f-4ac9-4e03-a9f3-1f4ecf334050",
+    "language": "zh-CN",
+    "message": "清晰参考图已确认：**深藏青女仆装＋白色高领衬衫与荷叶边＋白色圆角围裙（带小鲸鱼图案）＋中蓝长发（侧发束到胸前、后方长发）＋白色荷叶发箍＋头侧灰蓝鲸鳍＋深蓝双叶鲸尾＋白袜配深蓝玛丽珍鞋＋酒红蝴蝶结**。我接下来再试一次写入，看写入链路是否恢复。",
+    "prompt": "根据这两张同一角色的参考图，做一尊非官方鲸鱼娘全身彩色体素小雕像。重点是蓝色长发、头侧鲸鳍、蓝白女仆长裙、白围裙和身后的大鲸尾；小头身比例参考第二图。保留完整服装，配一个简洁的底座。先读context，分层搭建，不超过400 Box；不要把参考图片当成已完成作品截图。必须对真实模型capture_views，用front与hero检查识别性和遮挡，再至少做一次有意义的修正并截图，最后finish_artwork入库。不要发布到VRChat。",
+    "promptVersion": "morphforge-system/4.2",
+    "startedAt": "2026-10-19T05:20:58.965Z",
+    "status": "failed",
+    "steps": 16,
+    "tokens": 308729,
+    "toolsVersion": "morphforge-tools/3.0"
+  },
+  "interaction": {
+    "activeRequestId": null,
+    "activeSecondsRemaining": null,
+    "epoch": 1,
+    "paused": false,
+    "phase": "failed",
+    "queue": [],
+    "runId": "381f013f-4ac9-4e03-a9f3-1f4ecf334050"
+  },
+  "scene": {
+    "revision": 7,
+    "boxes": 65,
+    "styles": 10,
+    "groups": [
+      "apron",
+      "base",
+      "head",
+      "skirt",
+      "torso"
+    ]
+  },
+  "eventCounts": {
+    "harness.started": 1,
+    "harness.message.accepted": 1,
+    "harness.message.applied": 1,
+    "harness.request.prepared": 16,
+    "provider.request": 16,
+    "provider.first_byte": 16,
+    "provider.text_delta": 1148,
+    "provider.response": 16,
+    "tool.request": 16,
+    "tool.result": 16,
+    "geometry.applied": 7,
+    "recipe.completed": 7,
+    "capture.completed": 2,
+    "harness.finished": 1
+  },
+  "toolCalls": 16,
+  "usage": {
+    "prefixDenominator": "cache_reported_input_tokens",
+    "run": {
+      "cacheReportedInputTokens": 296196,
+      "cacheReportedRequests": 16,
+      "cachedInputTokens": 51456,
+      "inputTokens": 296196,
+      "outputTokens": 12533,
+      "prefixHitRate": 0.17372280516954988,
+      "reportedRequests": 16,
+      "requests": 16,
+      "totalTokens": 308729,
+      "unreportedRequests": 0
+    },
+    "scope": "workspace",
+    "source": "upstream_reported_usage",
+    "total": {
+      "cacheReportedInputTokens": 296196,
+      "cacheReportedRequests": 16,
+      "cachedInputTokens": 51456,
+      "inputTokens": 296196,
+      "outputTokens": 12533,
+      "prefixHitRate": 0.17372280516954988,
+      "reportedRequests": 16,
+      "requests": 16,
+      "totalTokens": 308729,
+      "unreportedRequests": 0
+    }
+  },
+  "visualContext": [
+    {
+      "omittedCaptures": 0,
+      "retainedCaptures": 0
+    },
+    {
+      "omittedCaptures": 0,
+      "retainedCaptures": 0
+    },
+    {
+      "omittedCaptures": 0,
+      "retainedCaptures": 0
+    },
+    {
+      "omittedCaptures": 0,
+      "retainedCaptures": 0
+    },
+    {
+      "omittedCaptures": 0,
+      "retainedCaptures": 0
+    },
+    {
+      "omittedCaptures": 0,
+      "retainedCaptures": 3
+    },
+    {
+      "omittedCaptures": 0,
+      "retainedCaptures": 3
+    },
+    {
+      "omittedCaptures": 0,
+      "retainedCaptures": 3
+    },
+    {
+      "omittedCaptures": 2,
+      "retainedCaptures": 3
+    },
+    {
+      "omittedCaptures": 2,
+      "retainedCaptures": 3
+    },
+    {
+      "omittedCaptures": 2,
+      "retainedCaptures": 3
+    },
+    {
+      "omittedCaptures": 2,
+      "retainedCaptures": 3
+    },
+    {
+      "omittedCaptures": 2,
+      "retainedCaptures": 3
+    },
+    {
+      "omittedCaptures": 2,
+      "retainedCaptures": 3
+    },
+    {
+      "omittedCaptures": 2,
+      "retainedCaptures": 3
+    },
+    {
+      "omittedCaptures": 2,
+      "retainedCaptures": 3
+    }
+  ],
+  "referenceImages": [
+    {
+      "artifact": "4985c1ec6c7408472a3e499140eaf49b05b9db8bcfb7786b9a3623d74c93dadd.png",
+      "author": "ZipZipPipe；原角色：上善无形",
+      "category": "大肥鱼角色",
+      "height": 1024,
+      "id": "builtin:whale-maid",
+      "license": "CC BY-NC-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "notes": "蓝发、鲸鳍与鲸尾、蓝白长裙。 仅等比缩小、去元数据，未裁剪或去水印。非商业；二创请保留署名与许可。",
+      "origin": "builtin",
+      "sourceUrl": "https://www.bilibili.com/opus/1233069202138464289",
+      "thumbnail": "0441f36347b40b600fa55fa6096c979ea5d39c2334ac088776e6db33ba768333.webp",
+      "title": "DeepSeek鲸鱼娘 · 女仆全身",
+      "width": 576
+    },
+    {
+      "artifact": "d78754d43f3bd33306ea480fddc82a4a333eb4a8f0754c4b2388e8da25c27657.png",
+      "author": "ZipZipPipe；原角色：上善无形",
+      "category": "大肥鱼角色",
+      "height": 1024,
+      "id": "builtin:whale-small",
+      "license": "CC BY-NC-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "notes": "较小头身比，适合体素角色比例参考。 仅等比缩小、去元数据，未裁剪或去水印。非商业；二创请保留署名与许可。",
+      "origin": "builtin",
+      "sourceUrl": "https://www.bilibili.com/opus/1236803362705375305",
+      "thumbnail": "043828795d497e4bbbd18df4a605b160ee478bae22840aad7fbd303c50e09d0f.webp",
+      "title": "DeepSeek小肥鱼 · V4F形态",
+      "width": 572
+    }
+  ],
+  "toolNames": {
+    "get_context": 2,
+    "run_recipe": 12,
+    "capture_views": 2
+  },
+  "toolErrors": [
+    {
+      "name": "run_recipe",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "No such file or directory (os error 2)"
+        },
+        "ok": false
+      }
+    },
+    {
+      "name": "run_recipe",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "No such file or directory (os error 2)"
+        },
+        "ok": false
+      }
+    },
+    {
+      "name": "run_recipe",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "No such file or directory (os error 2)"
+        },
+        "ok": false
+      }
+    },
+    {
+      "name": "run_recipe",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "No such file or directory (os error 2)"
+        },
+        "ok": false
+      }
+    },
+    {
+      "name": "run_recipe",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "No such file or directory (os error 2)"
+        },
+        "ok": false
+      }
+    }
+  ],
+  "images": [
+    {
+      "view": "hero",
+      "file": "hero.png",
+      "sha256": "06db6b1194d41b1c166152897b798b7ff00d31451f4fe7525153c996c798ebda"
+    },
+    {
+      "view": "front",
+      "file": "front.png",
+      "sha256": "6449e859483362120bd837ca530fbe9d794c837ee53d8ff97f89fee548580c2d"
+    },
+    {
+      "view": "top",
+      "file": "top.png",
+      "sha256": "51776717c7366ce2e15ecb9e2c3f5a83581a8b2b32153fef8d5fed6166beb360"
+    }
+  ],
+  "seconds": 65.867643665988
+}

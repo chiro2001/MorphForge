@@ -1,0 +1,11 @@
+{
+  "id": "whale-palette-budget-recovery",
+  "continue": true,
+  "referenceIds": ["builtin:whale-maid", "builtin:whale-small"],
+  "prompt": "上一轮预算用尽，当前223 Box草稿和色板已经保存。现在只做收尾，不再改任何几何或色板：get_context确认当前revision，capture_views拍front与hero，看到真实截图后直接finish_artwork保存到作品库。summary简短如实说明肤色、蓝发、藏蓝女仆裙、白围裙、鲸鳍和鲸尾的可见性，以及比例和轮廓仍有的简化；不能宣称完全还原。保留参考图作者和许可，不发布VRChat。",
+  "settings": {
+    "preset": "standard", "reasoning": "none", "maxSteps": 6,
+    "maxRunTokens": 180000, "maxRunSeconds": 180, "maxOutputTokens": 4096
+  },
+  "maxBoxes": 400
+}

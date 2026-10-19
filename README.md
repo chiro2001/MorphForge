@@ -4,7 +4,7 @@
 
 - [用户指南](docs/USER-GUIDE.md)：安装、配置、编辑、AI、compact、作品库与 OSC 发布。
 - [交付记录](docs/DELIVERY.md) · [实施状态及证据](docs/plan/STATUS.md) · [已确认设计](docs/plan/README.md) · [验收标准](docs/plan/ACCEPTANCE.md)。
-- Windows **0.4.0 候选版**：`dist/windows/MorphForge Desktop_0.4.0_x64-setup.exe`；校验和在同目录。[本轮验证](docs/quality-v4/RESULTS.md) · [0.2 历史验收](docs/quality-v2/RESULTS.md)。
+- Windows **0.4.1 候选版**：`dist/windows/MorphForge Desktop_0.4.1_x64-setup.exe`；校验和在同目录。[本轮验证](docs/quality-v4.1/RESULTS.md) · [参考图库验证](docs/quality-v4/RESULTS.md) · [0.2 历史验收](docs/quality-v2/RESULTS.md)。
 
 GitHub私有仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支与完整历史保留。
 [获取源码和Windows克隆验证](docs/GIT-SOURCE.md)。
@@ -30,6 +30,12 @@ GitHub私有仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支�
 ![内置参考图库](docs/media/reference-library.webp)
 
 [用法、素材出处与许可](docs/references/README.md)。复杂角色的比例、遮挡与配色仍需人工复核，参考图片不等于自动重建保证。
+
+0.4.1增加精确RGB色板工具，缺少肤色、藏蓝等颜色时由模型创建并保存；每个请求只重放各视角最新作品截图，完整历史仍保留。以下为真实参考图生成、预算耗尽后接续保存的223 Box作品，配色与正面识别点已有改善，比例和裙摆仍有简化。
+
+![参考图与RGB色板生成的鲸鱼娘](docs/media/whale-reference-palette.webp)
+
+非官方体素二创；参考图作者ZipZipPipe、原角色上善无形，遵循CC BY-NC-SA 4.0。[原帖与署名](references/ATTRIBUTION.md) · [可直接导入的作品JSON](docs/quality-v4.1/whale-palette-finish/artwork.json) · [完整评测、失败与接续记录](docs/quality-v4.1/RESULTS.md)。
 
 ## 创作速度与精度
 
