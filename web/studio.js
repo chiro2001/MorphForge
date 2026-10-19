@@ -1,3 +1,4 @@
+import { usageDisplay, supportsFileUpload } from "/usage-ui.js";
 import { VoxelRenderer } from "/renderer.js";
 import {
   groupRows,
@@ -657,6 +658,16 @@ function updateState() {
   ]) {
     if (harness.settings[id] !== undefined) setValue(id, harness.settings[id]);
   }
+  setValue("settingsPreset", harness.settings.preset || "standard");
+  $("activeModel").textContent =
+    `${harness.settings.model} · ${harness.provider.apiType === "chat" ? "Chat" : "Responses"}`;
+  const usage = usageDisplay(harness.usage);
+  $("usageTokens").textContent = usage.tokens;
+  $("usageTokens").title = usage.tokenTitle;
+  $("usagePrefix").textContent = usage.prefix;
+  $("usagePrefix").title = usage.prefixTitle;
+  $("usageRun").textContent = usage.run;
+  $("usageRun").hidden = !usage.run;
   setChecked("sendImages", harness.settings.sendImages ?? true);
   setChecked("goalMode", harness.settings.goalMode ?? false);
   $("presetHint").textContent = {
@@ -676,6 +687,7 @@ function updateState() {
   $("goalStatus").textContent = goal
     ? `${goalLabels[goal.status] || goal.status} · 复核 ${goal.reviewedGeometryHashes.length}/${goal.minReviewRounds} · 自动续作 ${goal.continuations}\n${goal.objective}\n${goal.assessment || ""}`
     : "尚无创作目标";
+  $("goalStatus").hidden = !goal;
   $("saveProvider").disabled =
     normalizeHarness(harness).active || providerSaveBusy;
   if (!providerDraftDirty) {
@@ -696,6 +708,7 @@ function updateState() {
       if (provider[key] !== undefined) setChecked(id, provider[key]);
     }
   }
+  updateProviderImagePolicy();
   setValue("model", harness.settings.model);
   setValue("reasoning", harness.settings.reasoning);
   setValue("maxSteps", harness.settings.maxSteps);
@@ -1229,6 +1242,7 @@ for (const [id, key] of [
   ["maxOutputTokens", "maxOutputTokens"],
   ["language", "language"],
   ["preset", "preset"],
+  ["settingsPreset", "preset"],
   ["contextWindowTokens", "contextWindowTokens"],
   ["goalMinReviewRounds", "goalMinReviewRounds"],
   ["goalMaxContinuations", "goalMaxContinuations"],
@@ -1265,10 +1279,61 @@ for (const id of [
 ]) {
   $(id).addEventListener("input", () => {
     providerDraftDirty = true;
+    updateProviderImagePolicy();
   });
 }
+function updateProviderImagePolicy() {
+  const supported = supportsFileUpload(
+    $("providerBase").value,
+    $("providerApi").value,
+  );
+  $("providerImageSetting").hidden = !supported;
+  $("providerImageHint").textContent = supported
+    ? "DeepSeek官方Responses可选择Files引用；默认内嵌图片也可使用。"
+    : "此接口自动内嵌图片，不调用专用上传通道。";
+  if (!supported) $("providerImages").value = "inline";
+}
+
+let enteredSettingsHere = false;
+function renderSettingsPage() {
+  const active = location.hash === "#settings" && !captureMode;
+  $("settingsPage").hidden = !active;
+  $("workbenchMain").hidden = active;
+  document.body.classList.toggle("settings-page", active);
+  $("settingsOpen").classList.toggle("selected", active);
+  $("settingsOpen").setAttribute("aria-expanded", String(active));
+}
+function openSettings() {
+  if (location.hash !== "#settings") {
+    enteredSettingsHere = true;
+    location.hash = "settings";
+  }
+}
+function backToWorkbench() {
+  if (enteredSettingsHere) {
+    enteredSettingsHere = false;
+    history.back();
+  } else {
+    history.replaceState(null, "", location.pathname + location.search);
+    renderSettingsPage();
+  }
+}
+$("settingsOpen").onclick = openSettings;
+$("aiSettingsOpen").onclick = openSettings;
+$("settingsBack").onclick = backToWorkbench;
+window.addEventListener("hashchange", renderSettingsPage);
+document.addEventListener("keydown", (event) => {
+  if (
+    event.key === "Escape" &&
+    !$("settingsPage").hidden &&
+    !document.querySelector("dialog[open]")
+  )
+    backToWorkbench();
+});
+renderSettingsPage();
+
 $("providerApi").addEventListener("change", () => {
-  if ($("providerApi").value === "chat") $("providerImages").value = "inline";
+  updateProviderImagePolicy();
 });
 $("providerBase").addEventListener("change", () => {
   try {

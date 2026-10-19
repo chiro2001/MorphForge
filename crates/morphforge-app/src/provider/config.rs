@@ -172,8 +172,8 @@ impl Connection {
             .to_owned();
         url.set_path(&path);
         self.base_url = url.as_str().trim_end_matches('/').into();
-        if self.api_type == ApiType::Chat && self.image_delivery == ImageDelivery::Files {
-            bail!("Chat接口请使用内嵌图片，不使用Files引用")
+        if !self.supports_file_upload() {
+            self.image_delivery = ImageDelivery::Inline;
         }
         if !["max_tokens", "max_completion_tokens"].contains(&self.chat_token_field.as_str()) {
             bail!("Chat输出字段须为max_tokens或max_completion_tokens")
@@ -190,6 +190,15 @@ impl Connection {
         Ok(())
     }
 
+    pub fn supports_file_upload(&self) -> bool {
+        self.api_type == ApiType::Responses
+            && reqwest::Url::parse(&self.base_url).ok().is_some_and(|url| {
+                url.scheme() == "https"
+                    && url.host_str() == Some("api.deepseek.com")
+                    && url.port_or_known_default() == Some(443)
+            })
+    }
+
     pub fn configured(&self) -> bool {
         self.api_key.is_some()
             || !self.requires_api_key
@@ -201,7 +210,7 @@ impl Connection {
 
     pub fn status(&self) -> Value {
         json!({"configured":self.configured(),"baseUrl":self.base_url,"apiType":self.api_type,
-            "interface":self.api_type,"imageDelivery":self.image_delivery,"fileUpload":self.image_delivery==ImageDelivery::Files,
+            "interface":self.api_type,"imageDelivery":self.image_delivery,"fileUpload":self.image_delivery==ImageDelivery::Files,"supportsFileUpload":self.supports_file_upload(),
             "sendReasoning":self.send_reasoning,"stream":self.stream,"chatTokenField":self.chat_token_field,
             "requiresApiKey":self.requires_api_key,"keyConfigured":self.api_key.is_some()})
     }
@@ -259,9 +268,13 @@ mod tests {
         assert!(original
             .patched(&json!({"baseUrl":"https://user:pass@example.com"}))
             .is_err());
-        assert!(original
-            .patched(&json!({"apiType":"chat","imageDelivery":"files"}))
-            .is_err());
+        assert_eq!(
+            original
+                .patched(&json!({"apiType":"chat","imageDelivery":"files"}))
+                .unwrap()
+                .image_delivery,
+            ImageDelivery::Inline
+        );
         assert!(original.patched(&json!({"unknown":true})).is_err());
     }
     #[test]

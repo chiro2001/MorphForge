@@ -17,7 +17,9 @@ param(
 
     [string]$ExpectedPromptVersion = "morphforge-system/2.3",
 
-    [int]$ExpectedInputCount = 69
+    [int]$ExpectedInputCount = 69,
+
+    [string[]]$ExtraResources = @()
 )
 
 $ErrorActionPreference = "Stop"
@@ -368,6 +370,7 @@ try {
         "workbench.css",
         "licenses/OFL-NotoSansSC.txt"
     )
+    $embeddedResources += $ExtraResources
     foreach ($relative in $embeddedResources) {
         $manifestKey = "web/" + $relative
         $manifestProperty = $freeze.files.PSObject.Properties[$manifestKey]

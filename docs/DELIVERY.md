@@ -1,6 +1,6 @@
 # MorphForge 交付记录
 
-当前软件候选为 **0.3.0**，增加自定义 Chat/Responses、内嵌图像、三档预设与有界 Goal。安装器在 `dist/windows/MorphForge Desktop_0.3.0_x64-setup.exe`，校验和在同目录；[本轮验证与边界](quality-v3/RESULTS.md)、[使用说明](PROVIDERS-PRESETS-GOALS.md)。默认安装与用户作品未被测试覆盖。
+当前软件候选为 **0.3.1**，增加独立配置页与API Token/Prefix统计，保留自定义 Chat/Responses、内嵌图像、三档预设与有界 Goal。安装器在 `dist/windows/MorphForge Desktop_0.3.1_x64-setup.exe`，校验和在同目录；[本轮验证与边界](quality-v3.1/RESULTS.md)、[使用说明](PROVIDERS-PRESETS-GOALS.md)。默认安装与用户作品未被测试覆盖。
 
 ## 0.2.0 历史交付
 

@@ -1,5 +1,6 @@
 mod compat;
 mod config;
+mod usage;
 pub use config::{ApiType, Connection, ImageDelivery};
 
 use crate::store::{now, Workspace};
@@ -77,6 +78,7 @@ pub struct Provider {
     root: PathBuf,
     redaction_keys: Arc<Mutex<Vec<String>>>,
     files: Arc<Mutex<BTreeMap<String, (String, i64)>>>,
+    usage: Arc<Mutex<usage::UsageLedger>>,
     file_path: PathBuf,
 }
 struct CancellationInner {
@@ -183,6 +185,7 @@ impl Provider {
             root: root.into(),
             redaction_keys: Arc::new(Mutex::new(redaction_keys)),
             files: Arc::new(Mutex::new(files)),
+            usage: Arc::new(Mutex::new(usage::UsageLedger::load(root)?)),
             file_path,
         })
     }
@@ -198,6 +201,22 @@ impl Provider {
         }
         *current = next;
         Ok(current.status())
+    }
+    pub fn usage(&self, run: Option<&str>) -> Value {
+        self.usage.lock().unwrap().value(run)
+    }
+    fn record_event(
+        &self,
+        workspace: &Arc<Mutex<Workspace>>,
+        kind: &str,
+        run: Option<&str>,
+        data: Value,
+    ) -> Result<()> {
+        let event = workspace.lock().unwrap().event(kind, run, data)?;
+        if usage::UsageLedger::relevant(kind) {
+            self.usage.lock().unwrap().observe(&event);
+        }
+        Ok(())
     }
     pub fn connection(&self) -> Connection {
         self.connection.lock().unwrap().clone()
@@ -279,7 +298,9 @@ impl Provider {
     ) -> Result<Value> {
         use base64::Engine;
         crate::store::validate_id(artifact)?;
-        let upload = upload && connection.image_delivery == ImageDelivery::Files;
+        let upload = upload
+            && connection.supports_file_upload()
+            && connection.image_delivery == ImageDelivery::Files;
         let cache_key = format!("{}:{artifact}", connection.identity());
         let now = chrono::Utc::now().timestamp();
         if upload {
@@ -332,7 +353,8 @@ impl Provider {
         files.insert(cache_key, (id.clone(), expires));
         crate::store::write_json(&self.file_path, &*files)?;
         drop(files);
-        workspace.lock().unwrap().event(
+        self.record_event(
+            &workspace,
             "provider.file_uploaded",
             None,
             json!({"artifact":artifact,"fileId":id,"expiresAt":expires}),
@@ -477,14 +499,15 @@ impl Provider {
             .request_id
             .clone()
             .unwrap_or_else(|| uuid::Uuid::new_v4().to_string());
-        workspace.lock().unwrap().event(
+        self.record_event(&workspace,
             "provider.request",
             Some(run),
             json!({"requestId":request_id,"time":now(),"apiType":connection.api_type,"baseUrl":connection.base_url,"body":self.log_value(&payload),"trace":trace.event_fields()}),
         )?;
         for attempt in 0..4u32 {
             if cancel.stopped() {
-                workspace.lock().unwrap().event(
+                self.record_event(
+                    &workspace,
                     "provider.cancelled",
                     Some(run),
                     json!({"requestId":request_id,"epoch":trace.epoch,"phase":"before_send"}),
@@ -501,7 +524,7 @@ impl Provider {
                 biased;
                 r=request.send()=>r?,
                 _=cancel.wait()=>{
-                    workspace.lock().unwrap().event(
+                    self.record_event(&workspace,
                         "provider.cancelled",
                         Some(run),
                         json!({"requestId":request_id,"epoch":trace.epoch,"phase":"sending"}),
@@ -518,7 +541,7 @@ impl Provider {
                     .and_then(|v| v["error"]["message"].as_str().map(str::to_owned))
                     .unwrap_or_else(|| format!("HTTP {}", status.as_u16()));
                 let message = self.redact(&message);
-                workspace.lock().unwrap().event("provider.error",Some(run),json!({"requestId":request_id,"status":status.as_u16(),"attempt":attempt,"message":message}))?;
+                self.record_event(&workspace,"provider.error",Some(run),json!({"requestId":request_id,"status":status.as_u16(),"attempt":attempt,"message":message}))?;
                 if [429, 500, 502, 503].contains(&status.as_u16()) && attempt < 3 {
                     tokio::select! {_=tokio::time::sleep(std::time::Duration::from_secs(1<<attempt))=>{},_=cancel.wait()=>bail!("RUN_CANCELLED")};
                     continue;
@@ -546,7 +569,7 @@ impl Provider {
                     start.elapsed().as_secs_f64(),
                 )?;
                 if value["status"] == "incomplete" {
-                    workspace.lock().unwrap().event(
+                    self.record_event(&workspace,
                         "provider.incomplete",
                         Some(run),
                         json!({"requestId":request_id,"trace":trace.event_fields(),"response":self.log_value(&value)}),
@@ -569,7 +592,7 @@ impl Provider {
                     biased;
                     r=stream.next()=>r,
                     _=cancel.wait()=>{
-                        workspace.lock().unwrap().event(
+                        self.record_event(&workspace,
                             "provider.cancelled",
                             Some(run),
                             json!({
@@ -592,7 +615,7 @@ impl Provider {
                 buffer.extend_from_slice(&chunk);
                 if first {
                     first = false;
-                    workspace.lock().unwrap().event("provider.first_byte",Some(run),json!({"requestId":request_id,"latencySeconds":start.elapsed().as_secs_f64()}))?;
+                    self.record_event(&workspace,"provider.first_byte",Some(run),json!({"requestId":request_id,"latencySeconds":start.elapsed().as_secs_f64()}))?;
                 }
                 while let Some((pos, skip)) = frame_boundary(&buffer) {
                     let frame = String::from_utf8(buffer[..pos].to_vec())?;
@@ -626,7 +649,8 @@ impl Provider {
                             .push(&event)
                             .map_err(|e| anyhow::anyhow!(self.redact(&e.to_string())))?
                         {
-                            workspace.lock().unwrap().event(
+                            self.record_event(
+                                &workspace,
                                 "provider.text_delta",
                                 Some(run),
                                 json!({"requestId":request_id,"text":self.redact(&delta)}),
@@ -637,7 +661,8 @@ impl Provider {
                     }
                     let kind = event["type"].as_str().unwrap_or("");
                     if kind == "response.output_text.delta" {
-                        workspace.lock().unwrap().event(
+                        self.record_event(
+                            &workspace,
                             "provider.text_delta",
                             Some(run),
                             json!({"requestId":request_id,"text":self.log_value(&event["delta"])}),
@@ -656,7 +681,8 @@ impl Provider {
                         return Ok(result);
                     }
                     if ["response.failed", "response.incomplete", "error"].contains(&kind) {
-                        workspace.lock().unwrap().event(
+                        self.record_event(
+                            &workspace,
                             "provider.incomplete",
                             Some(run),
                             json!({
@@ -674,7 +700,8 @@ impl Provider {
                     stream_frames.push(self.log_value(&event));
                 }
             }
-            workspace.lock().unwrap().event(
+            self.record_event(
+                &workspace,
                 "provider.incomplete",
                 Some(run),
                 json!({
@@ -696,7 +723,8 @@ impl Provider {
         value: &Value,
         seconds: f64,
     ) -> Result<()> {
-        workspace.lock().unwrap().event(
+        self.record_event(
+            workspace,
             "provider.response",
             Some(run),
             json!({"requestId":id,"latencySeconds":seconds,"body":self.log_value(value)}),

@@ -1,0 +1,19 @@
+{
+  "success": true,
+  "scope": "Replay previous real DeepSeek usage; no new upstream requests",
+  "expectedTokens": 379453,
+  "actual": {
+    "cacheReportedInputTokens": 370337,
+    "cacheReportedRequests": 21,
+    "cachedInputTokens": 37504,
+    "inputTokens": 370337,
+    "outputTokens": 9116,
+    "prefixHitRate": 0.10126992442019025,
+    "reportedRequests": 21,
+    "requests": 21,
+    "totalTokens": 379453,
+    "unreportedRequests": 0
+  },
+  "expectedPrefixHitRate": 0.10126992442019025,
+  "source": "docs/quality-v3/live-goal/events.jsonl"
+}

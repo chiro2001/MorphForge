@@ -1604,3 +1604,58 @@ async fn missing_usage_is_estimated_and_sensitive_provider_echoes_are_redacted()
         .iter()
         .any(|e| e.kind == "harness.usage.estimated"));
 }
+
+#[tokio::test]
+async fn usage_totals_include_incomplete_and_compact_once_and_survive_restart() {
+    let fake=FakeResponses::start(vec![
+        sse([json!({"type":"response.incomplete","response":{"status":"incomplete","incomplete_details":{"reason":"max_output_tokens"},"usage":{"input_tokens":100,"output_tokens":20,"total_tokens":120,"input_tokens_details":{"cached_tokens":50}}}})]),
+        sse([json!({"type":"response.completed","response":{"status":"completed","output":[{"type":"message","role":"assistant","content":[{"type":"output_text","text":"完成"}]}],"usage":{"input_tokens":900,"output_tokens":90,"total_tokens":990,"input_tokens_details":{"cached_tokens":0}}}})]),
+        sse([json!({"type":"response.completed","response":{"status":"completed","output":[{"type":"message","role":"assistant","content":[{"type":"output_text","text":"保留原目标的摘要"}]}],"usage":{"input_tokens":50,"output_tokens":10,"total_tokens":60}}})]),
+    ]).await;
+    let dir = TempDir::new().unwrap();
+    let h = harness(workspace(&dir), &fake.base);
+    h.start("检查状态").unwrap();
+    let run = terminal_run(&h).await;
+    assert_eq!(run.status, "completed");
+    let stats = h.state()["usage"].clone();
+    assert_eq!(stats["total"]["totalTokens"], 1110);
+    assert_eq!(stats["total"]["requests"], 2);
+    assert_eq!(stats["run"]["totalTokens"], 1110);
+    assert_eq!(stats["total"]["prefixHitRate"], 0.05);
+    h.control("compact").unwrap();
+    assert_eq!(terminal_run(&h).await.status, "completed");
+    let stats = h.state()["usage"].clone();
+    assert_eq!(stats["total"]["totalTokens"], 1170);
+    assert_eq!(stats["run"]["totalTokens"], 60);
+    let restored = Provider::new_for_loopback_test(dir.path(), &fake.base).unwrap();
+    assert_eq!(restored.usage(None)["total"], stats["total"]);
+}
+
+#[tokio::test]
+async fn third_party_files_setting_is_forced_inline_and_chat_cache_usage_is_preserved() {
+    let fake=FakeResponses::start(vec![Reply::Http(200,json!({"id":"usage","choices":[{"message":{"content":"ok"},"finish_reason":"stop"}],"usage":{"prompt_tokens":1000,"completion_tokens":100,"total_tokens":1100,"prompt_cache_hit_tokens":600,"prompt_cache_miss_tokens":400}}))]).await;
+    let dir = TempDir::new().unwrap();
+    let w = workspace(&dir);
+    let artifact = seed_capture(&w);
+    let provider = Provider::new_for_loopback_test(dir.path(), &fake.base).unwrap();
+    let status = provider
+        .configure(&json!({"apiType":"responses","imageDelivery":"files"}))
+        .unwrap();
+    assert_eq!(status["imageDelivery"], "inline");
+    assert_eq!(status["supportsFileUpload"], false);
+    provider
+        .configure(&json!({"apiType":"chat","stream":false}))
+        .unwrap();
+    let response=provider.response(json!({"model":"custom","instructions":"test","max_output_tokens":1000,"input":[{"role":"user","content":[{"type":"input_image","artifact":artifact}]}]}),w,"cache-run",&Cancellation::new()).await.unwrap();
+    assert_eq!(
+        response["usage"]["input_tokens_details"]["cached_tokens"],
+        600
+    );
+    assert!(fake.requests()[0]["messages"]
+        .to_string()
+        .contains("data:image/png;base64,"));
+    assert_eq!(
+        provider.usage(Some("cache-run"))["total"]["prefixHitRate"],
+        0.6
+    );
+}

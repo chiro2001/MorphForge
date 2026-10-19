@@ -4,7 +4,7 @@
 
 - [用户指南](docs/USER-GUIDE.md)：安装、配置、编辑、AI、compact、作品库与 OSC 发布。
 - [交付记录](docs/DELIVERY.md) · [实施状态及证据](docs/plan/STATUS.md) · [已确认设计](docs/plan/README.md) · [验收标准](docs/plan/ACCEPTANCE.md)。
-- Windows **0.3.0 候选版**：`dist/windows/MorphForge Desktop_0.3.0_x64-setup.exe`；校验和在同目录。[本轮验证](docs/quality-v3/RESULTS.md) · [0.2 历史验收](docs/quality-v2/RESULTS.md)。
+- Windows **0.3.1 候选版**：`dist/windows/MorphForge Desktop_0.3.1_x64-setup.exe`；校验和在同目录。[本轮验证](docs/quality-v3.1/RESULTS.md) · [0.2 历史验收](docs/quality-v2/RESULTS.md)。
 
 GitHub私有仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支与完整历史保留。
 [获取源码和Windows克隆验证](docs/GIT-SOURCE.md)。
@@ -12,6 +12,10 @@ GitHub私有仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支�
 ## 工作台与已有作品
 
 ![MorphForge 共享工作台](docs/media/workbench.webp)
+
+连接与运行配置集中在独立页面：
+
+![MorphForge 配置页](docs/media/settings.webp)
 
 | 云上邮局 | 星港灯塔 |
 |---|---|
@@ -23,7 +27,9 @@ GitHub私有仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支�
 
 AI创作支持 **快速草图／标准创作／精细作品** 三档 preset，分别偏向轮廓速度、结构与细节平衡、多阶段细化。预设同时设置中英提示词和默认预算，仍可手动调整。精细档默认启用有界 Goal 续作，要求不同几何的真实截图复核；支持插话、打断、暂停和 compact。耗时和质量仍取决于任务及所选模型。
 
-API连接可自定义 **Chat Completions 或 Responses** 服务、Base URL、模型名和 Key。默认内嵌截图，无需图片上传或 file_id 接口；文本模型可关闭图片。连接与作品库独立于 VRC，可作为体素生成器、浏览器和编辑器使用。配置方法、三档预算与验证范围见 [使用说明](docs/PROVIDERS-PRESETS-GOALS.md)。
+连接、预算和Goal等设置集中在独立配置页；输入框旁显示API累计Token、本轮Token和加权Prefix缓存命中率，上游未报告时明确标记。
+
+API连接可自定义 **Chat Completions 或 Responses** 服务、Base URL、模型名和 Key。非DeepSeek官方接口强制内嵌截图，无需图片上传或 file_id 接口；文本模型可关闭图片。连接与作品库独立于 VRC，可作为体素生成器、浏览器和编辑器使用。配置方法、三档预算与验证范围见 [使用说明](docs/PROVIDERS-PRESETS-GOALS.md)。
 
 ## 当前实现
 

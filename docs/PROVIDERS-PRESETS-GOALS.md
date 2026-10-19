@@ -4,9 +4,9 @@ MorphForge 的编辑器、作品库与 Harness 使用同一个工作台。模型
 
 ## 连接兼容服务
 
-在「AI创作 → API连接」设置 Base URL、协议、模型名和本机 Key。Base URL 可以带 `/v1` 等前缀；误粘贴 `/responses` 或 `/chat/completions` 会自动移除该尾缀。模型名直接输入，不限制为 DeepSeek。模型必须支持函数工具调用。
+从顶部「配置」进入独立配置页，设置 Base URL、协议、模型名和本机 Key。Base URL 可以带 `/v1` 等前缀；误粘贴 `/responses` 或 `/chat/completions` 会自动移除该尾缀。模型名直接输入，不限制为 DeepSeek。模型必须支持函数工具调用。
 
-默认通过内嵌 PNG 发送截图：Chat 使用 `image_url.url`，Responses 使用 `input_image.image_url`；均为 data URL，不调用 `/files`。仅在服务明确支持时选择「Files引用」，此模式只适用于 Responses。文本模型可以关闭「向模型发送真实截图」；关闭后也不会继续附带历史图像，截图及作品仍在本机保存。无视觉能力时不能保证模型对渲染结果的视觉判断。
+默认通过内嵌 PNG 发送截图：Chat 使用 `image_url.url`，Responses 使用 `input_image.image_url`；均为 data URL，不调用 `/files`。只有DeepSeek官方HTTPS Responses接口可选择「Files引用」；其余地址和Chat接口强制inline，兼容旧配置时也不调用上传通道。文本模型可以关闭「向模型发送真实截图」；关闭后也不会继续附带历史图像，截图及作品仍在本机保存。无视觉能力时不能保证模型对渲染结果的视觉判断。
 
 可关闭推理强度参数、切换流式/普通 JSON 响应，Chat 输出上限字段可选 `max_tokens` 或 `max_completion_tokens`。Chat 流式请求附带 `stream_options.include_usage`；不支持此字段的服务可切换普通 JSON。兼容服务的具体扩展不统一，本版本验证的是协议路径，不保证每个平台与模型均已实测。
 
@@ -53,3 +53,7 @@ Goal 是有预算的创作续作机制。输入目标后，模型先搭建、调
 ## 验证范围
 
 本轮验证记录在 [quality-v3](quality-v3/RESULTS.md)。新增协议测试使用本地可控服务，覆盖 Chat JSON/SSE、工具结果配对、图片顺序、截断保护和 usage。真实 Chromium 流程运行实际 Rust Recipe、双视角渲染与作品入库。已有作品截图来自先前真实 DeepSeek 运行，不冒充本轮三档预设的同题美术对比。
+
+## 用量与缓存命中率
+
+输入框旁显示当前数据目录累计、当前运行的上游Token用量及加权Prefix命中率，包含compact。统计只使用实际usage；未报告数据不当作0%，缺失用量可能显示已知下限。悬停可看输入/输出、缓存Token分子分母与覆盖请求数；重启后从日志恢复。详见 [0.3.1验证](quality-v3.1/RESULTS.md)。

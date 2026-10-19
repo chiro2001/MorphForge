@@ -1,10 +1,10 @@
-# MorphForge Desktop 0.3.0 候选版
+# MorphForge Desktop 0.3.1 候选版
 
-当前安装器：`MorphForge Desktop_0.3.0_x64-setup.exe`（Windows x64，Tauri 2 + Rust）。
+当前安装器：`MorphForge Desktop_0.3.1_x64-setup.exe`（Windows x64，Tauri 2 + Rust）。
 
-新增自定义 Chat/Responses 连接、三档创作预设、有界 Goal 与更大可配置上下文，保留可打断/插话 Harness、中文/英文工具、字体体素文字、保护分组和作品入库收尾；内置 Noto Sans SC 及完整 OFL 许可。
+新增独立配置页、API累计Token与Prefix命中率；非官方接口强制内嵌图片。保留自定义 Chat/Responses 连接、三档创作预设、有界 Goal 与更大可配置上下文，保留可打断/插话 Harness、中文/英文工具、字体体素文字、保护分组和作品入库收尾；内置 Noto Sans SC 及完整 OFL 许可。
 
-SHA-256 见 `SHA256SUMS`。验收和使用入口见 `docs/DELIVERY.md`、`docs/USER-GUIDE.md` 和 `docs/quality-v3/RESULTS.md`。默认用户数据在 `%LOCALAPPDATA%\MorphForge`，安装器和源码都不含 API Key。
+SHA-256 见 `SHA256SUMS`。验收和使用入口见 `docs/DELIVERY.md`、`docs/USER-GUIDE.md` 和 `docs/quality-v3.1/RESULTS.md`。默认用户数据在 `%LOCALAPPDATA%\MorphForge`，安装器和源码都不含 API Key。
 
 0.1.0、0.2.0安装器保留用于历史复现；新软件候选为0.3.0。
 

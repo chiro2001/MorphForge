@@ -216,6 +216,7 @@ impl Harness {
         json!({
             "settings":s.settings,
             "provider":self.provider.status(),
+            "usage":self.provider.usage(s.run.as_ref().map(|run|run.id.as_str())),
             "run":s.run,
             "paused":s.paused,
             "queued":queued_prompts,

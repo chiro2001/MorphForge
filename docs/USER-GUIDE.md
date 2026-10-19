@@ -9,13 +9,13 @@
 - Rust 核心、HTTP API、共享前端、AI 工具循环、Recipe、作品库和材质资源包导入已经实现。
 - MF3 的 `Box / UnitVoxel / Brush / Erase / Remove / Clear`、序号回绕和单 Avatar 原生 UDP 接收已有测试证据。
 - 16,384 Box 首遍缺失192个；0.5秒补发后达16384个唯一方块，满池删除、补回、区域擦除、清空通过。新时序256条0.25秒首次漏1/第二次完整，0.5秒对照完整；不承诺无损，详见实施状态。
-- 当前软件候选为 Windows 0.3.0，原生测试、隔离桌面与HTTP检查通过，见 [0.3验证](quality-v3/RESULTS.md)；[0.2历史验收](quality-v2/WINDOWS-V2.md)保留。
+- 当前软件候选为 Windows 0.3.1，原生测试、隔离桌面与HTTP检查通过，见 [0.3.1验证](quality-v3.1/RESULTS.md)；[0.2历史验收](quality-v2/WINDOWS-V2.md)保留。
 - Unity原生100材质、40项像素与新版16k显示夹具通过；FullFT实际SDK联合构建256/256bit通过，FT161与MF70全部直通；新场景与166项API烟测、远端FT分支检查也已通过。
 - P2 高级折射、物理体积云以及任意 Minecraft 异形几何不在当前支持范围内。
 
 ## 1. 安装与启动
 
-使用 `dist/windows/MorphForge Desktop_0.3.0_x64-setup.exe`，以当前用户模式安装。默认安装目录是：
+使用 `dist/windows/MorphForge Desktop_0.3.1_x64-setup.exe`，以当前用户模式安装。默认安装目录是：
 
 ```text
 %LOCALAPPDATA%\MorphForge Desktop
@@ -54,11 +54,13 @@ http://127.0.0.1:8766
 
 ## 2. 配置模型与创作档位
 
-在「AI创作 → API连接」填写服务 Base URL、Chat Completions / Responses 类型和本机 Key；模型栏可直接输入服务支持的模型名。保存后输入框清空，Key 仅存于用户数据目录的 `provider-connection.json`，状态接口和诊断包不会返回 Key。更换地址时需重新填写对应 Key；活跃运行或暂停期间先停止再换连接。
+从顶部「配置」进入配置页，填写服务 Base URL、Chat Completions / Responses 类型和本机 Key；模型栏可直接输入服务支持的模型名。保存后输入框清空，Key 仅存于用户数据目录的 `provider-connection.json`，状态接口和诊断包不会返回 Key。更换地址时需重新填写对应 Key；活跃运行或暂停期间先停止再换连接。
 
-默认内嵌截图，无需服务提供文件上传接口。只支持文字的模型可关闭「向模型发送真实截图」。普通兼容服务建议关闭扩展推理参数；可切换流式/JSON 响应以及 Chat 输出字段。原 DeepSeek 环境文件仍作为没有本机连接配置时的回退，`~/litellm/.env` 也继续支持。
+非DeepSeek官方接口强制内嵌截图，无需服务提供文件上传接口。只支持文字的模型可关闭「向模型发送真实截图」。普通兼容服务建议关闭扩展推理参数；可切换流式/JSON 响应以及 Chat 输出字段。原 DeepSeek 环境文件仍作为没有本机连接配置时的回退，`~/litellm/.env` 也继续支持。
 
 创作预设分为快速草图、标准创作、精细作品。选择时会应用不同提示词与预算，随后可逐项调整。精细档默认要求3轮不同几何的真实截图复核；额外细化要求和 Goal 验收要求可单独填写。上下文窗口需要与所选模型实际能力相符，预设不是耗时/质量承诺。
+
+输入框旁显示API累计Token、本轮Token和加权Prefix命中率，悬停可看统计口径；上游未报告的缓存字段不会显示为0%。
 
 完整设置、默认预算、Goal续作与compact机制见 [兼容 API、预设与 Goal](PROVIDERS-PRESETS-GOALS.md)。不要把 Key 放入固定要求、Prompt、作品标签或截图。
 

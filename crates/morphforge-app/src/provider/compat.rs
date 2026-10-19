@@ -171,17 +171,9 @@ pub(super) fn chat_response(value: &Value) -> Result<Value> {
     for call in message["tool_calls"].as_array().into_iter().flatten() {
         output.push(json!({"type":"function_call","call_id":call["id"],"name":call["function"]["name"],"arguments":call["function"]["arguments"]}));
     }
-    let usage = &value["usage"];
-    let total = usage["total_tokens"].as_u64().or_else(|| {
-        Some(
-            usage["prompt_tokens"]
-                .as_u64()?
-                .saturating_add(usage["completion_tokens"].as_u64()?),
-        )
-    });
     Ok(json!({"id":value["id"],"status":status,"output":output,
         "incomplete_details":if status=="incomplete"{json!({"reason":"max_output_tokens"})}else{json!({"reason":reason})},
-        "usage":{"input_tokens":usage["prompt_tokens"],"output_tokens":usage["completion_tokens"],"total_tokens":total}}))
+        "usage":super::usage::normalize_usage(&value["usage"])}))
 }
 
 #[derive(Default)]

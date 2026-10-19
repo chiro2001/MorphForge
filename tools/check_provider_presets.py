@@ -58,7 +58,7 @@ def main():
             value = {'id': f'fixture-{index}', 'choices': [{'index': 0,
                 'message': {'role': 'assistant', 'tool_calls': [{'id': call_id, 'type': 'function',
                     'function': {'name': name, 'arguments': json.dumps(arguments, ensure_ascii=False)}}]},
-                'finish_reason': 'tool_calls'}], 'usage': {'prompt_tokens': 1000, 'completion_tokens': 100, 'total_tokens': 1100}}
+                'finish_reason': 'tool_calls'}], 'usage': {'prompt_tokens': 1000, 'completion_tokens': 100, 'total_tokens': 1100, 'prompt_cache_hit_tokens': 600, 'prompt_cache_miss_tokens': 400}}
             payload = json.dumps(value, ensure_ascii=False).encode()
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')
@@ -89,18 +89,26 @@ def main():
             browser.js("const e=document.getElementById('preset');e.value=arguments[0];e.dispatchEvent(new Event('change',{bubbles:true}));", preset)
             browser.wait(f"return window.__morphforge.state.harness.settings.maxSteps==={steps}")
             check(f'{preset} preset applies budget and goal', api('harness/state')['settings']['goalMode'] == goal)
+        browser.js("document.getElementById('prompt').value='配置页切换保留的草稿'")
+        browser.click('settingsOpen')
+        browser.wait("return !document.getElementById('settingsPage').hidden && document.getElementById('workbenchMain').hidden")
+        check('advanced settings have a dedicated page', browser.js("return document.getElementById('providerBase').closest('#settingsPage')!==null && document.getElementById('goalMode').closest('#settingsPage')!==null"))
         browser.js("document.getElementById('providerConnection').open=true")
         base = f'http://127.0.0.1:{server.server_port}'
         browser.js("const e=document.getElementById('providerBase');e.value=arguments[0];e.dispatchEvent(new Event('input',{bubbles:true}));", base)
         time.sleep(1.5)
         check('provider form draft survives state polling', browser.js("return document.getElementById('providerBase').value") == base)
         browser.js("document.getElementById('providerApi').value='chat';document.getElementById('providerImages').value='inline';document.getElementById('providerStream').checked=false;document.getElementById('providerReasoning').checked=false;document.getElementById('providerKey').value=arguments[0]", test_key)
+        check('nonofficial provider hides Files settings', browser.js("return document.getElementById('providerImageSetting').hidden && document.getElementById('providerImages').value==='inline'"))
         browser.click('saveProvider')
         browser.wait("return document.getElementById('providerKey').value===''")
         status = api('harness/state')['provider']
         check('key saved locally and never returned by state', status['keyConfigured'] and test_key not in json.dumps(status))
         browser.js("const e=document.getElementById('model');e.value='fixture-vision';e.dispatchEvent(new Event('change',{bubbles:true}));document.getElementById('providerConnection').open=false")
         browser.wait("return window.__morphforge.state.harness.settings.model==='fixture-vision'")
+        browser.click('settingsBack')
+        browser.wait("return document.getElementById('settingsPage').hidden && !document.getElementById('workbenchMain').hidden")
+        check('settings navigation keeps draft and artwork', browser.js("return document.getElementById('prompt').value==='配置页切换保留的草稿'"))
         browser.js("document.getElementById('prompt').value='搭建一个小屋并截图检查，最后保存作品。'")
         browser.click('sendMessage')
         browser.wait("return window.__morphforge.state.harness.run?.status==='completed'||window.__morphforge.state.harness.run?.status==='failed'", timeout=40)
@@ -112,7 +120,9 @@ def main():
         images = [p for m in messages if isinstance(m.get('content'), list) for p in m['content'] if p['type'] == 'image_url']
         check('real screenshots delivered inline without files endpoint', len(images) == 2 and all(p['image_url']['url'].startswith('data:image/png;base64,') for p in images) and paths == ['/chat/completions'] * 4)
         check('actual provider usage counted', state['harness']['run']['tokens'] == 4400)
-        check('OSC still disabled after creation', not state['connection']['enabled'])
+        browser.wait("return document.getElementById('usageTokens').textContent.includes('4,400') && document.getElementById('usagePrefix').textContent.includes('60.0%')")
+        check('usage displayed beside composer with weighted cache rate', state['harness']['usage']['total']['totalTokens']==4400 and state['harness']['usage']['total']['prefixHitRate']==0.6)
+        check('OSC still disabled after creation' , not state['connection']['enabled'])
         logs = browser.call(browser.path + '/log', {'type': 'browser'})
         errors = [x for x in logs if x['level'] == 'SEVERE' and 'favicon.ico' not in x['message']]
         check('no browser or WebGL errors', not errors)

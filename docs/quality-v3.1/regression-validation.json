@@ -1,0 +1,191 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "four clear workbench tabs",
+      "pass": true
+    },
+    {
+      "name": "idle primary action is explicit",
+      "pass": true
+    },
+    {
+      "name": "group protection persists independently of visibility",
+      "pass": true
+    },
+    {
+      "name": "group protection request carries the current baseRevision and creates a revision",
+      "pass": true
+    },
+    {
+      "name": "protected group edit is rejected with Chinese guidance and input preserved",
+      "pass": true
+    },
+    {
+      "name": "protected group erase is rejected by the UI contract",
+      "pass": true
+    },
+    {
+      "name": "protected group transform is rejected and input remains",
+      "pass": true
+    },
+    {
+      "name": "unlocking protection permits the next edit",
+      "pass": true
+    },
+    {
+      "name": "accepted start clears exactly the submitted prompt",
+      "pass": true
+    },
+    {
+      "name": "double click and rapid interjections do not duplicate requestIds",
+      "pass": true
+    },
+    {
+      "name": "double click produced one request",
+      "pass": true
+    },
+    {
+      "name": "interrupted assistant fragment remains labelled",
+      "pass": true
+    },
+    {
+      "name": "pause uses the empty interrupt and is visible in the conversation",
+      "pass": true
+    },
+    {
+      "name": "pause and resume expose distinct states",
+      "pass": true
+    },
+    {
+      "name": "pause exposes fast cancel semantics without a duplicate interrupt button",
+      "pass": true
+    },
+    {
+      "name": "completed Run summary is shown once from harness.finished",
+      "pass": true
+    },
+    {
+      "name": "completed summary preserves prior assistant fragments",
+      "pass": true
+    },
+    {
+      "name": "repeated completion state and event do not duplicate summary",
+      "pass": true
+    },
+    {
+      "name": "draft survives browser refresh",
+      "pass": true
+    },
+    {
+      "name": "chat and pending state do not duplicate after refresh",
+      "pass": true
+    },
+    {
+      "name": "completed summary is not duplicated after refresh",
+      "pass": true
+    },
+    {
+      "name": "text preview is an independent translucent overlay",
+      "pass": true
+    },
+    {
+      "name": "text preview does not change the draft revision",
+      "pass": true
+    },
+    {
+      "name": "apply is enabled only after a current preview",
+      "pass": true
+    },
+    {
+      "name": "text apply clears preview and creates one revision",
+      "pass": true
+    },
+    {
+      "name": "text apply is undoable through the shared edit API",
+      "pass": true
+    },
+    {
+      "name": "apply carries preview requestId and server fingerprint",
+      "pass": true
+    },
+    {
+      "name": "late preview response cannot replace the latest preview",
+      "pass": true
+    },
+    {
+      "name": "debounced race sent both previews and used only the latest",
+      "pass": true
+    },
+    {
+      "name": "missing glyph error is listed and apply stays disabled",
+      "pass": true
+    },
+    {
+      "name": "no browser JavaScript or WebGL errors",
+      "pass": true
+    }
+  ],
+  "scope": "Real Chromium UI flow against a contract-compatible mock API",
+  "mock": {
+    "messageCalls": 5,
+    "previewCalls": 5,
+    "applyCalls": 1
+  },
+  "browserLogs": [
+    {
+      "level": "DEBUG",
+      "message": "http://127.0.0.1:46235/ - [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o",
+      "source": "recommendation",
+      "timestamp": 1792383024869
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:46235/api/edit - Failed to load resource: the server responded with a status of 409 (Conflict)",
+      "source": "network",
+      "timestamp": 1792383026079
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:46235/studio.js 141:10 Error: PROTECTED_GROUP_CONFLICT：目标分组已受保护\n    at api (http://127.0.0.1:46235/studio.js:124:19)\n    at async http://127.0.0.1:46235/studio.js:739:22",
+      "source": "console-api",
+      "timestamp": 1792383026079
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:46235/api/edit - Failed to load resource: the server responded with a status of 409 (Conflict)",
+      "source": "network",
+      "timestamp": 1792383026315
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:46235/studio.js 141:10 Error: PROTECTED_GROUP_CONFLICT：目标分组已受保护\n    at api (http://127.0.0.1:46235/studio.js:124:19)\n    at async http://127.0.0.1:46235/studio.js:739:22",
+      "source": "console-api",
+      "timestamp": 1792383026315
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:46235/api/edit - Failed to load resource: the server responded with a status of 409 (Conflict)",
+      "source": "network",
+      "timestamp": 1792383026547
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:46235/studio.js 141:10 Error: PROTECTED_GROUP_CONFLICT：目标分组已受保护\n    at api (http://127.0.0.1:46235/studio.js:124:19)\n    at async http://127.0.0.1:46235/studio.js:739:22",
+      "source": "console-api",
+      "timestamp": 1792383026547
+    },
+    {
+      "level": "DEBUG",
+      "message": "http://127.0.0.1:46235/ - [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o",
+      "source": "recommendation",
+      "timestamp": 1792383029917
+    },
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:46235/api/text/preview - Failed to load resource: the server responded with a status of 400 (Bad Request)",
+      "source": "network",
+      "timestamp": 1792383032601
+    }
+  ]
+}

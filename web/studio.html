@@ -18,6 +18,7 @@
       <input id="projectName" value="未命名作品" aria-label="工程名称" />
       <span id="saveState">本机保存</span>
       <span class="grow"></span>
+      <button id="settingsOpen">配置</button>
       <button id="libraryOpen">作品库</button>
       <button id="exportProject">导出工程</button>
       <button id="importProject">导入</button>
@@ -25,7 +26,7 @@
       <span id="connectionBadge" class="badge">独立创作</span>
     </header>
 
-    <main>
+    <main id="workbenchMain">
       <aside class="tools panel">
         <div class="section-title">绘制</div>
         <div class="segmented">
@@ -138,209 +139,19 @@
         </nav>
 
         <section id="tab-ai">
-          <div class="row">
-            <label
-              >模型<input
-                id="model"
-                list="modelSuggestions"
-                placeholder="输入服务支持的模型名"
-              />
-              <datalist id="modelSuggestions">
-                <option value="deepseek-flash"></option>
-                <option value="deepseek-v4-pro"></option>
-              </datalist>
-            </label>
+          <div class="ai-summary row">
+            <span id="activeModel" class="caption">检查模型配置…</span>
             <span id="providerState" class="badge">检查配置</span>
+            <button id="aiSettingsOpen" title="打开连接与创作配置">配置</button>
           </div>
-          <details id="providerConnection">
-            <summary>API 连接 · Chat / Responses</summary>
-            <label
-              >Base URL<input
-                id="providerBase"
-                type="url"
-                placeholder="https://服务地址/v1"
-                autocomplete="off"
-            /></label>
-            <div class="double">
-              <label
-                >协议<select id="providerApi">
-                  <option value="responses">Responses</option>
-                  <option value="chat">Chat Completions</option>
-                </select></label
-              >
-              <label
-                >图片传递<select id="providerImages">
-                  <option value="inline">内嵌图片（无需上传接口）</option>
-                  <option value="files">
-                    Files 引用（仅支持的 Responses 服务）
-                  </option>
-                </select></label
-              >
-            </div>
-            <label
-              >API Key<input
-                id="providerKey"
-                type="password"
-                autocomplete="new-password"
-                placeholder="留空保留当前 Key；更换地址需重新填写"
-            /></label>
-            <div class="double">
-              <label
-                ><input
-                  id="providerStream"
-                  type="checkbox"
-                  checked
-                />流式响应</label
-              >
-              <label
-                ><input
-                  id="providerReasoning"
-                  type="checkbox"
-                />发送推理强度参数</label
-              >
-              <label
-                ><input
-                  id="providerRequiresKey"
-                  type="checkbox"
-                  checked
-                />服务需要 Key</label
-              >
-              <label
-                ><input id="providerClearKey" type="checkbox" />清除已存
-                Key</label
-              >
-            </div>
-            <label
-              >Chat 输出字段<select id="providerTokenField">
-                <option value="max_tokens">max_tokens</option>
-                <option value="max_completion_tokens">
-                  max_completion_tokens
-                </option>
-              </select></label
-            >
-            <p class="caption">
-              仅保存在本机数据目录；状态和诊断包不包含
-              Key。模型需支持工具调用；不支持图片时可在预算设置中关闭图片。
-            </p>
-            <button id="saveProvider" class="wide">保存连接</button>
-          </details>
           <label
             >创作预设<select id="preset">
               <option value="sketch">快速草图 · 轮廓优先</option>
-              <option value="standard">标准创作 · 结构与细节</option>
+              <option value="standard" selected>标准创作 · 结构与细节</option>
               <option value="detailed">精细作品 · 多轮复核</option>
             </select></label
           >
-          <p id="presetHint" class="caption"></p>
-          <div class="double">
-            <label
-              >思考<select id="reasoning">
-                <option value="high">高</option>
-                <option value="low">低</option>
-                <option value="none">关闭</option>
-                <option value="max">最高</option>
-              </select></label
-            >
-            <label
-              >最大步骤<input
-                id="maxSteps"
-                type="number"
-                min="1"
-                max="4096"
-                value="24"
-            /></label>
-          </div>
-          <details>
-            <summary>运行预算与提示词语言</summary>
-            <label
-              >单次时间上限（秒）<input
-                id="maxRunSeconds"
-                type="number"
-                min="1"
-                max="86400"
-                value="900"
-            /></label>
-            <label
-              >单次累计 Token 上限<input
-                id="maxRunTokens"
-                type="number"
-                min="1000"
-                value="250000"
-            /></label>
-            <label
-              >每步输出 Token 上限<input
-                id="maxOutputTokens"
-                type="number"
-                min="512"
-                max="262144"
-                value="16384"
-            /></label>
-            <label
-              >模型上下文窗口（Token）<input
-                id="contextWindowTokens"
-                type="number"
-                min="8192"
-                max="4194304"
-                value="131072"
-            /></label>
-            <label
-              ><input
-                id="sendImages"
-                type="checkbox"
-                checked
-              />向模型发送真实截图</label
-            >
-            <label
-              >额外细化要求<textarea
-                id="detailInstructions"
-                rows="3"
-                placeholder="例如：细化主体结构、连接件与边缘层次；优先前景，避免随机装饰"
-              ></textarea>
-            </label>
-            <p class="caption">
-              预设预算是上限，不是耗时或质量保证。请按所选模型实际支持的上下文与输出窗口调整。
-            </p>
-            <label
-              >提示词工具语言<select id="language">
-                <option value="zh-CN">简体中文</option>
-                <option value="en">English</option>
-              </select></label
-            >
-          </details>
-
-          <details id="goalPanel">
-            <summary>创作 Goal · 有界续作与复核</summary>
-            <label><input id="goalMode" type="checkbox" />启用 Goal 续作</label>
-            <div class="double">
-              <label
-                >最少复核轮数<input
-                  id="goalMinReviewRounds"
-                  type="number"
-                  min="1"
-                  max="16"
-                  value="1"
-              /></label>
-              <label
-                >最多自动续作<input
-                  id="goalMaxContinuations"
-                  type="number"
-                  min="1"
-                  max="128"
-                  value="6"
-              /></label>
-            </div>
-            <label
-              >验收要求<textarea
-                id="goalCriteria"
-                rows="3"
-                placeholder="例如：主体比例清晰；完成屋顶、入口、标牌；检查至少三个视角"
-              ></textarea>
-            </label>
-            <p id="goalStatus" class="caption">尚无创作目标</p>
-            <p class="caption">
-              相同几何的重复截图不增加轮数。续作共用本次预算；连续三次无进展会停止并保留草稿。恢复后输入新要求可继续，重启不会自动调用模型。
-            </p>
-          </details>
+          <p id="goalStatus" class="caption goal-progress" hidden></p>
           <div class="chat-heading">
             <span>对话</span>
             <span class="caption">消息按顺序保留，刷新不会重复。</span>
@@ -359,6 +170,18 @@
             <div id="pendingMessages" class="pending-list"></div>
           </div>
 
+          <div class="prompt-meta">
+            <label for="prompt">输入</label>
+            <div
+              id="apiUsageStats"
+              class="api-usage"
+              aria-label="上游API使用统计"
+            >
+              <span id="usageTokens">API累计 0 Token</span>
+              <span id="usagePrefix">Prefix 未报告</span>
+            </div>
+          </div>
+          <div id="usageRun" class="caption usage-run" hidden></div>
           <textarea
             id="prompt"
             rows="4"
@@ -611,20 +434,6 @@ mf.group('main', () => {
         <section id="tab-context" hidden>
           <div id="contextStats" class="status"></div>
           <button id="compact" class="wide primary">Compact 上下文</button>
-          <label class="check"
-            ><input
-              id="autoCompact"
-              type="checkbox"
-              checked
-            />自动compact</label
-          >
-          <label
-            >触发阈值（估算Token）<input
-              id="compactTokens"
-              type="number"
-              min="1000"
-              value="60000"
-          /></label>
           <label
             >固定要求<textarea
               id="pinnedNotes"
@@ -642,7 +451,249 @@ mf.group('main', () => {
       </aside>
     </main>
 
-    <footer>
+    <section id="settingsPage" aria-labelledby="settingsTitle" hidden>
+      <div class="settings-heading row">
+        <div>
+          <h1 id="settingsTitle">配置</h1>
+          <p class="caption">
+            创作与预算设置即时保存；API连接修改后点击“保存连接”。
+          </p>
+        </div>
+        <span class="grow"></span><button id="settingsBack">返回工作台</button>
+      </div>
+      <div class="settings-grid">
+        <div class="settings-column">
+          <details id="providerConnection" class="settings-card" open>
+            <summary>API 连接 · Chat / Responses</summary>
+            <label
+              >Base URL<input
+                id="providerBase"
+                type="url"
+                placeholder="https://服务地址/v1"
+                autocomplete="off"
+            /></label>
+            <div class="double">
+              <label
+                >协议<select id="providerApi">
+                  <option value="responses">Responses</option>
+                  <option value="chat">Chat Completions</option>
+                </select></label
+              >
+              <label id="providerImageSetting"
+                >图片传递<select id="providerImages">
+                  <option value="inline">内嵌图片（无需上传接口）</option>
+                  <option value="files">
+                    Files 引用（仅支持的 Responses 服务）
+                  </option>
+                </select></label
+              >
+            </div>
+            <p id="providerImageHint" class="caption">
+              非官方接口自动内嵌图片，无需上传服务。
+            </p>
+            <label
+              >API Key<input
+                id="providerKey"
+                type="password"
+                autocomplete="new-password"
+                placeholder="留空保留当前 Key；更换地址需重新填写"
+            /></label>
+            <div class="double">
+              <label
+                ><input
+                  id="providerStream"
+                  type="checkbox"
+                  checked
+                />流式响应</label
+              >
+              <label
+                ><input
+                  id="providerReasoning"
+                  type="checkbox"
+                />发送推理强度参数</label
+              >
+              <label
+                ><input
+                  id="providerRequiresKey"
+                  type="checkbox"
+                  checked
+                />服务需要 Key</label
+              >
+              <label
+                ><input id="providerClearKey" type="checkbox" />清除已存
+                Key</label
+              >
+            </div>
+            <label
+              >Chat 输出字段<select id="providerTokenField">
+                <option value="max_tokens">max_tokens</option>
+                <option value="max_completion_tokens">
+                  max_completion_tokens
+                </option>
+              </select></label
+            >
+            <p class="caption">
+              仅保存在本机数据目录；状态和诊断包不包含
+              Key。模型需支持工具调用；不支持图片时可在预算设置中关闭图片。
+            </p>
+            <button id="saveProvider" class="wide">保存连接</button>
+          </details>
+          <section class="settings-card">
+            <h2>创作模型与精细度</h2>
+            <div class="row">
+              <label
+                >模型<input
+                  id="model"
+                  list="modelSuggestions"
+                  placeholder="输入服务支持的模型名"
+                />
+                <datalist id="modelSuggestions">
+                  <option value="deepseek-flash"></option>
+                  <option value="deepseek-v4-pro"></option>
+                </datalist>
+              </label>
+            </div>
+            <label
+              >创作预设<select id="settingsPreset">
+                <option value="sketch">快速草图 · 轮廓优先</option>
+                <option value="standard" selected>标准创作 · 结构与细节</option>
+                <option value="detailed">精细作品 · 多轮复核</option>
+              </select></label
+            >
+            <p id="presetHint" class="caption"></p>
+            <div class="double">
+              <label
+                >思考<select id="reasoning">
+                  <option value="high">高</option>
+                  <option value="low">低</option>
+                  <option value="none">关闭</option>
+                  <option value="max">最高</option>
+                </select></label
+              >
+              <label
+                >最大步骤<input
+                  id="maxSteps"
+                  type="number"
+                  min="1"
+                  max="4096"
+                  value="24"
+              /></label>
+            </div>
+          </section>
+        </div>
+        <div class="settings-column">
+          <details class="settings-card" open>
+            <summary>运行预算与提示词语言</summary>
+            <label
+              >单次时间上限（秒）<input
+                id="maxRunSeconds"
+                type="number"
+                min="1"
+                max="86400"
+                value="900"
+            /></label>
+            <label
+              >单次累计 Token 上限<input
+                id="maxRunTokens"
+                type="number"
+                min="1000"
+                value="250000"
+            /></label>
+            <label
+              >每步输出 Token 上限<input
+                id="maxOutputTokens"
+                type="number"
+                min="512"
+                max="262144"
+                value="16384"
+            /></label>
+            <label
+              >模型上下文窗口（Token）<input
+                id="contextWindowTokens"
+                type="number"
+                min="8192"
+                max="4194304"
+                value="131072"
+            /></label>
+            <label
+              ><input
+                id="sendImages"
+                type="checkbox"
+                checked
+              />向模型发送真实截图</label
+            >
+            <label
+              >额外细化要求<textarea
+                id="detailInstructions"
+                rows="3"
+                placeholder="例如：细化主体结构、连接件与边缘层次；优先前景，避免随机装饰"
+              ></textarea>
+            </label>
+            <p class="caption">
+              预设预算是上限，不是耗时或质量保证。请按所选模型实际支持的上下文与输出窗口调整。
+            </p>
+            <label
+              >提示词工具语言<select id="language">
+                <option value="zh-CN">简体中文</option>
+                <option value="en">English</option>
+              </select></label
+            >
+          </details>
+
+          <details id="goalPanel" class="settings-card" open>
+            <summary>创作 Goal · 有界续作与复核</summary>
+            <label><input id="goalMode" type="checkbox" />启用 Goal 续作</label>
+            <div class="double">
+              <label
+                >最少复核轮数<input
+                  id="goalMinReviewRounds"
+                  type="number"
+                  min="1"
+                  max="16"
+                  value="1"
+              /></label>
+              <label
+                >最多自动续作<input
+                  id="goalMaxContinuations"
+                  type="number"
+                  min="1"
+                  max="128"
+                  value="6"
+              /></label>
+            </div>
+            <label
+              >验收要求<textarea
+                id="goalCriteria"
+                rows="3"
+                placeholder="例如：主体比例清晰；完成屋顶、入口、标牌；检查至少三个视角"
+              ></textarea>
+            </label>
+            <p class="caption">
+              相同几何的重复截图不增加轮数。续作共用本次预算；连续三次无进展会停止并保留草稿。恢复后输入新要求可继续，重启不会自动调用模型。
+            </p>
+          </details>
+          <section class="settings-card">
+            <h2>自动整理上下文</h2>
+            <label class="check"
+              ><input
+                id="autoCompact"
+                type="checkbox"
+                checked
+              />自动compact</label
+            >
+            <label
+              >触发阈值（估算Token）<input
+                id="compactTokens"
+                type="number"
+                min="1000"
+                value="60000"
+            /></label>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <footer id="workbenchFooter">
       <span id="boxCount">0 Box</span>
       <span id="voxelCount">0格</span>
       <span id="bounds">范围为空</span>

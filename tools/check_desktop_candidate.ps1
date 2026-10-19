@@ -4,7 +4,8 @@ param(
     [Parameter(Mandatory)][string]$RepoRoot,
     [Parameter(Mandatory)][string]$RuntimeDir,
     [Parameter(Mandatory)][string]$DataDir,
-    [Parameter(Mandatory)][string]$ReportPath
+    [Parameter(Mandatory)][string]$ReportPath,
+    [string]$ExpectedVersion = "0.3.0"
 )
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
@@ -54,7 +55,7 @@ try {
     }
     Check 'isolated Tauri process and loopback core started' ($null -ne $desktopProcess -and $null -ne $script:baseUrl)
     $state = Api '/api/state'
-    Check 'candidate version 0.3.0 and OSC disabled' ($state.software.version -eq '0.3.0' -and -not $state.connection.enabled)
+    Check "candidate version $ExpectedVersion and OSC disabled" ($state.software.version -eq $ExpectedVersion -and -not $state.connection.enabled)
     $config = Api '/api/harness/config' @{preset='detailed'}
     Check 'detailed preset applies complete budgets and Goal' ($config.settings.maxSteps -eq 128 -and $config.settings.goalMode -and $config.settings.goalMinReviewRounds -eq 3)
     $connection = Api '/api/provider/config' @{baseUrl='http://127.0.0.1:17777';apiType='chat';apiKey='local-candidate-fixture';sendReasoning=$false}
