@@ -1,0 +1,231 @@
+{
+  "schemaVersion": "1.0",
+  "success": true,
+  "generatedAtUtc": "2026-10-19T00:26:29.784098+00:00",
+  "project": "MorphForge",
+  "purpose": "Single-variable 4096-capacity upload probe for VRChat server-side security check differential diagnosis",
+  "status": "ready-for-manual-upload",
+  "pipeline": {
+    "target": "127.0.0.1:7801",
+    "projectPath": "D:\\Projects\\VRChatProjects2\\MorphForge",
+    "unityVersion": "2022.3.22f1",
+    "editorStatus": "ready",
+    "compiling": false,
+    "playMode": "stopped",
+    "dryRun": {
+      "success": true,
+      "diagnostics": []
+    },
+    "execution": {
+      "success": true,
+      "executeMs": 3765,
+      "diagnostics": []
+    },
+    "finalPhase": "resumed-and-generated-scene-only"
+  },
+  "paths": {
+    "sourceScene": "D:\\Projects\\VRChatProjects2\\MorphForge\\Assets\\MorphForge\\Scenes\\MorphForge_Stage3.unity",
+    "sourceAvatar": "D:\\Projects\\VRChatProjects2\\MorphForge\\Assets\\MorphForge\\Scenes\\MorphForge_Stage3.unity :: MorphForge_Stage3_Avatar",
+    "probePrefab": "D:\\Projects\\VRChatProjects2\\MorphForge\\Assets\\MorphForge\\Diagnostics\\Security4096\\MorphForge_Stage3_Avatar_4096Probe.prefab",
+    "probeScene": "D:\\Projects\\VRChatProjects2\\MorphForge\\Assets\\MorphForge\\Diagnostics\\Security4096\\MorphForge_Stage3_Avatar_4096Probe.unity",
+    "builder": "AgentScripts/Stage3CapacityProbe.cs",
+    "prefabMeta": "D:\\Projects\\VRChatProjects2\\MorphForge\\Assets\\MorphForge\\Diagnostics\\Security4096\\MorphForge_Stage3_Avatar_4096Probe.prefab.meta",
+    "sceneMeta": "D:\\Projects\\VRChatProjects2\\MorphForge\\Assets\\MorphForge\\Diagnostics\\Security4096\\MorphForge_Stage3_Avatar_4096Probe.unity.meta"
+  },
+  "uploadInstructions": {
+    "doNotBuildOrUploadAutomatically": true,
+    "selectScene": "Assets/MorphForge/Diagnostics/Security4096/MorphForge_Stage3_Avatar_4096Probe.unity",
+    "selectAvatar": "MorphForge_Stage3_Avatar_4096Probe",
+    "note": "The probe scene is saved, open, active and has the probe Avatar selected. If the SDK panel lists both avatars, explicitly choose MorphForge_Stage3_Avatar_4096Probe before Build & Publish.",
+    "blueprintIdIsEmpty": "The probe identity has no blueprintId. Choose the normal SDK flow that creates/uploads a separate private Avatar identity, not the existing 16384 avatar."
+  },
+  "sourceBoundary": {
+    "sourceSceneLoaded": true,
+    "sourceSceneDirty": true,
+    "sourceSceneWasDirty": true,
+    "sourceSceneActiveBeforeGeneration": true,
+    "sourceSceneActiveAfterGeneration": false,
+    "activeSceneIsNowProbe": true,
+    "sourceSceneSha256Before": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453",
+    "sourceSceneSha256After": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453",
+    "sourceSceneHashUnchanged": true,
+    "sourceBlueprintId": "avtr_3ba403cb-569d-4198-8de6-678e59c4440f",
+    "sourceStoreMaxParticles": 16384,
+    "sourceStoreStartLifetime": "Infinity",
+    "guardedSourceAssets": {
+      "paths": [
+        "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+        "Assets/MorphForge/Stage3/Avatar.prefab",
+        "Assets/MorphForge/MaterialsCatalog/ParticleBoxCatalog.mat",
+        "Assets/MorphForge/Shaders/ParticleBoxCatalog.shader",
+        "Assets/MorphForge/MaterialsCatalog/CatalogAtlas.png",
+        "Assets/MorphForge/MaterialsCatalog/CatalogMetadata.asset",
+        "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_FX_v_1_1_0.controller",
+        "Assets/Nemesis/Nemesis_Avatar/ExMenu&Param/Nemesis_Parameters_v_1_1_0.asset",
+        "Assets/Nemesis/Nemesis_Avatar/ExMenu&Param/Nemesis_MainMenu.asset"
+      ],
+      "hashesBefore": {
+        "Assets/MorphForge/Scenes/MorphForge_Stage3.unity": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453",
+        "Assets/MorphForge/Stage3/Avatar.prefab": "f35f236fe8280679529c9bf1b0cbf8c8ddec4cc8ec73249adb278a506f522d24",
+        "Assets/MorphForge/MaterialsCatalog/ParticleBoxCatalog.mat": "4bb67fab6a54c2f23415669081488ef8e45ce54d7218346db9918bd8e2bbdf76",
+        "Assets/MorphForge/Shaders/ParticleBoxCatalog.shader": "3660d65d4916de538a615b657eb98ae76fb01786f4ca13fbbf0b6b4b09813494",
+        "Assets/MorphForge/MaterialsCatalog/CatalogAtlas.png": "2d425287a7732a3cfb068fb586a3e4e67b57119f3c3357a8ac83f87a7d8bb6c8",
+        "Assets/MorphForge/MaterialsCatalog/CatalogMetadata.asset": "961f8306f56f302bbbc0076479572b03bca2708f60a48a748d81b8fa3fa4da0d",
+        "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_FX_v_1_1_0.controller": "720a1de6348452bb6ba48353c50e50eaff1370d4a378b605462ac0ecf33e83ad",
+        "Assets/Nemesis/Nemesis_Avatar/ExMenu&Param/Nemesis_Parameters_v_1_1_0.asset": "fe3e2332a7cfcda16a4a1ddf9cbfd9eb1d7cc42c4871a933a2ebe8b20d43e8ac",
+        "Assets/Nemesis/Nemesis_Avatar/ExMenu&Param/Nemesis_MainMenu.asset": "11996d219f46c798a679cd22697b47019135c37cc60df14d9e6e4a1280efe5c9"
+      },
+      "hashesAfter": {
+        "Assets/MorphForge/Scenes/MorphForge_Stage3.unity": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453",
+        "Assets/MorphForge/Stage3/Avatar.prefab": "f35f236fe8280679529c9bf1b0cbf8c8ddec4cc8ec73249adb278a506f522d24",
+        "Assets/MorphForge/MaterialsCatalog/ParticleBoxCatalog.mat": "4bb67fab6a54c2f23415669081488ef8e45ce54d7218346db9918bd8e2bbdf76",
+        "Assets/MorphForge/Shaders/ParticleBoxCatalog.shader": "3660d65d4916de538a615b657eb98ae76fb01786f4ca13fbbf0b6b4b09813494",
+        "Assets/MorphForge/MaterialsCatalog/CatalogAtlas.png": "2d425287a7732a3cfb068fb586a3e4e67b57119f3c3357a8ac83f87a7d8bb6c8",
+        "Assets/MorphForge/MaterialsCatalog/CatalogMetadata.asset": "961f8306f56f302bbbc0076479572b03bca2708f60a48a748d81b8fa3fa4da0d",
+        "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_FX_v_1_1_0.controller": "720a1de6348452bb6ba48353c50e50eaff1370d4a378b605462ac0ecf33e83ad",
+        "Assets/Nemesis/Nemesis_Avatar/ExMenu&Param/Nemesis_Parameters_v_1_1_0.asset": "fe3e2332a7cfcda16a4a1ddf9cbfd9eb1d7cc42c4871a933a2ebe8b20d43e8ac",
+        "Assets/Nemesis/Nemesis_Avatar/ExMenu&Param/Nemesis_MainMenu.asset": "11996d219f46c798a679cd22697b47019135c37cc60df14d9e6e4a1280efe5c9"
+      },
+      "unchanged": true
+    },
+    "sourceSceneNotSaved": true,
+    "sourceSceneNotMarkedClean": true,
+    "sourceSceneNotClosed": true
+  },
+  "probe": {
+    "prefabPath": "Assets/MorphForge/Diagnostics/Security4096/MorphForge_Stage3_Avatar_4096Probe.prefab",
+    "scenePath": "Assets/MorphForge/Diagnostics/Security4096/MorphForge_Stage3_Avatar_4096Probe.unity",
+    "prefabBytes": 1195290,
+    "prefabSha256": "7ba43282408524fb8bde05391623b40978f65af52f9499e6141f24e839e3a7a8",
+    "sceneBytes": 10451,
+    "sceneSha256": "0d0748058cf4085dcf88833aec6e5ce698176adce0694065394e5d454b8b31ca",
+    "prefabAvatarCount": 1,
+    "sceneAvatarCount": 1,
+    "sceneRootNames": [
+      "MorphForge_Stage3_Avatar_4096Probe",
+      "Probe Camera",
+      "Probe Light"
+    ],
+    "sceneRetainedOpen": true,
+    "sceneIsActive": true,
+    "prefabStoreMaxParticles": 4096,
+    "sceneStoreMaxParticles": 4096,
+    "prefabStoreStartLifetime": "Infinity",
+    "sceneStoreStartLifetime": "Infinity",
+    "positiveInfinityLifetimeRetained": true,
+    "prefabBlueprintId": "",
+    "prefabMissingScriptCount": 0
+  },
+  "intendedDifferencesOnly": {
+    "functional": [
+      "Store.maxParticles: 16384 -> 4096"
+    ],
+    "identityOnly": [
+      "PipelineManager.blueprintId: avtr_3ba403cb-569d-4198-8de6-678e59c4440f -> <empty> so the upload creates a separate Avatar identity"
+    ],
+    "identityChangeDoesNotCountAsOperationalParameterDifference": true,
+    "fullSourceToProbeOperationalDifferenceCount": 1,
+    "preserved": [
+      "Pump ParticleSystem all fields",
+      "Store ParticleSystem all fields except maxParticles",
+      "ParticleSystemRenderer all fields",
+      "shader and material references",
+      "all controller and animation layer references",
+      "protocol and transform hierarchy",
+      "all other avatar components and settings",
+      "positive Infinity lifetime",
+      "particle mesh/render streams"
+    ],
+    "notPreservedBecauseTheseAreDiagnosticsOptions": [
+      "camera",
+      "directional light",
+      "scene roots"
+    ]
+  },
+  "verification": {
+    "particleSerializedLeafFieldCounts": {
+      "sourceFields": 1395,
+      "prefabFields": 1395,
+      "sceneFields": 1395
+    },
+    "particleComparisonRule": "All leaf fields on every ParticleSystem and ParticleSystemRenderer are compared after normalizing intra-Avatar object references to relative paths. Only Store.InitialModule.maxNumParticles may differ.",
+    "sourceToPrefabUnexpectedDifferences": [],
+    "sourceToSceneUnexpectedDifferences": [],
+    "sourceAvatarParticleChangesDuringGeneration": [],
+    "controllerReferencesUnchanged": true,
+    "rendererAndMaterialReferencesUnchanged": true,
+    "prefabUnchangedDuringSceneGeneration": true,
+    "prefabSha256BeforeSceneResume": "7ba43282408524fb8bde05391623b40978f65af52f9499e6141f24e839e3a7a8",
+    "prefabSha256AfterSceneResume": "7ba43282408524fb8bde05391623b40978f65af52f9499e6141f24e839e3a7a8",
+    "temporaryScenesClosed": [
+      "<temporary-probe-scene>"
+    ],
+    "sourceSceneDirtyBefore": true,
+    "sourceSceneDirtyAfter": true,
+    "sourceSceneLoadedBefore": true,
+    "sourceSceneLoadedAfter": true,
+    "sourceSceneDiskHashBefore": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453",
+    "sourceSceneDiskHashAfter": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453",
+    "serializedYamlSpotCheck": {
+      "prefabStoreStartLifetimeScalar": "Infinity",
+      "prefabStoreMaxParticlesLine": "maxNumParticles: 4096",
+      "prefabPumpMaxParticlesLine": "maxNumParticles: 1",
+      "prefabBlueprintIdLine": "blueprintId: <empty>",
+      "probeSceneAvatarInstanceCount": 1
+    }
+  },
+  "saveBoundary": {
+    "sourceSceneSaved": false,
+    "sourcePrefabModified": false,
+    "sharedAssetsModified": false,
+    "usedAssetDatabaseSaveAssets": false,
+    "prefabSaveCall": "PrefabUtility.SaveAsPrefabAsset (initial successful create; not repeated on resume)",
+    "sceneSaveCall": "EditorSceneManager.SaveScene(new probe scene, ProbeScenePath)",
+    "fileLevelHashes": {
+      "sourceScene": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453",
+      "probePrefab": "7ba43282408524fb8bde05391623b40978f65af52f9499e6141f24e839e3a7a8",
+      "probeScene": "0d0748058cf4085dcf88833aec6e5ce698176adce0694065394e5d454b8b31ca"
+    }
+  },
+  "executionHistory": {
+    "attemptsBeforeSuccess": 3,
+    "reasonForEarlierStops": [
+      "First attempt stopped before any save because prefab-instance bookkeeping fields were intentionally compared; these are not particle functionality fields.",
+      "Second attempt stopped before any save because the validator filtered the one intended capacity difference from its expected-difference list.",
+      "Third attempt successfully wrote the new probe prefab, then stopped on harmless internal object-reference remapping from scene objects to prefab objects.",
+      "Because prefabs cannot be overwritten by the probe runner, the completed probe prefab was reused byte-for-byte for scene creation rather than regenerated."
+    ],
+    "firstAttemptSavedAssets": false,
+    "secondAttemptSavedAssets": false,
+    "thirdAttemptPrefabSaved": true,
+    "thirdAttemptSceneSaved": false,
+    "finalResumeRewrotePrefab": false,
+    "finalResumeSavedScene": true,
+    "failureDiagnostics": [],
+    "prefabHashBeforeResume": "7ba43282408524fb8bde05391623b40978f65af52f9499e6141f24e839e3a7a8",
+    "prefabHashAfterResume": "7ba43282408524fb8bde05391623b40978f65af52f9499e6141f24e839e3a7a8"
+  },
+  "lifecycleAndSafety": {
+    "buildRun": false,
+    "uploadRun": false,
+    "playModeRun": false,
+    "unityRebuildRun": false,
+    "oscSent": false,
+    "vrcProcessesTouched": false,
+    "desktopMorphForgeTouched": false,
+    "originalStage3RemainsOpen": true,
+    "originalStage3RemainsDirty": true,
+    "probeSceneIsOpenAndActive": true
+  },
+  "notes": [
+    "The probe prefab/scene are Windows-side commercial-model serialization assets and must not be copied to the Linux Git checkout.",
+    "The original dirty Stage3 and shared assets were checked by hash before and after generation.",
+    "This report records what was generated. A successful server-side security check requires the user to manually upload the selected probe Avatar in VRChat."
+  ],
+  "script": {
+    "path": "AgentScripts/Stage3CapacityProbe.cs",
+    "sha256": "140b4c24d29906bed04d04b7e77f07c89989b9863f194fb73267f7def797aef3",
+    "sizeBytes": 57781,
+    "ownership": "This task owns Stage3CapacityProbe.cs and probe4096.json."
+  }
+}

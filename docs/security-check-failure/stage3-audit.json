@@ -1,0 +1,3130 @@
+{
+  "schemaVersion": "1.0",
+  "auditComplete": true,
+  "generatedAtUtc": "2026-10-19T00:21:19.057669+00:00",
+  "project": "MorphForge",
+  "avatarId": "avtr_3ba403cb-569d-4198-8de6-678e59c4440f",
+  "scope": {
+    "readOnly": true,
+    "activeScene": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+    "activeSceneWasDirtyBeforeAndAfter": true,
+    "noSceneSaveDiscardBuildUploadPlayModeOrOsc": true,
+    "method": [
+      "Unity Editor active-scene read-only snapshot via unity-pipeline",
+      "Downloaded byte-for-byte VRCA and parsed UnityFS/SerializedFile metadata",
+      "Compared latest rejected bundle with nearest previous accepted build",
+      "Correlated client and Editor logs with package versions"
+    ],
+    "importantLimit": "Current dirty scene and final processed VRCA are related but not byte-identical. The final VRCA is authoritative for upload contents; the active scene reports authoring/source state."
+  },
+  "failureEvidence": {
+    "clientLog": "C:\\Users\\Chiro\\AppData\\LocalLow\\VRChat\\VRChat\\output_log_2026-10-19_02-29-02.txt",
+    "firstFailureAt": "2026-10-19 08:07:25 +08:00",
+    "repeatedFailures": [
+      "08:07:25",
+      "08:07:35",
+      "08:07:37"
+    ],
+    "errors": [
+      "Avatar 'avtr_3ba403cb-569d-4198-8de6-678e59c4440f' did not pass initial checks and won't be downloaded: AssetBundleFailedServerSideChecks",
+      "GET /api/1/analysis/file_d68d4ea2-015f-40cd-bd19-444a2e49b24a/5/security -> 403 File forbidden"
+    ],
+    "meaning": "The build/upload completed, but VRChat server-side avatar analysis rejected this bundle revision. It is not an SDK-side validation or local bundle-build failure.",
+    "previousAcceptedEvidence": {
+      "sameAvatarIdLoadedAt": "2026-10-19 02:29:27 +08:00",
+      "logLines": [
+        "Loading Avatar Data:avtr_3ba403cb-569d-4198-8de6-678e59c4440f",
+        "[Behaviour] CacheComponents: ParticleSystems 2, AudioSources 0",
+        "[Behaviour] Avatar is Ready, Initializing"
+      ],
+      "caveat": "The nearest local prior VRCA is the 00:46:43 build. The log proves an earlier revision of the same avatar ID loaded; the local artifact match is strong but is not a cloud-signed byte-level proof of which revision was served."
+    }
+  },
+  "buildEnvironment": {
+    "unity": "2022.3.22f1",
+    "vrchatSdkAvatars": "3.10.5",
+    "vrchatSdkBase": "3.10.5",
+    "modularAvatar": "1.18.7",
+    "ndmf": "1.14.8",
+    "vrcFury": "1.1430.0",
+    "buildLog": "D:\\Projects\\VRChatProjects2\\MorphForge\\Logs\\MorphForge-Editor.log",
+    "buildLogSizeLine": "Total compressed size 7.2 MB. Total uncompressed size 54.7 MB.",
+    "buildCategoryBreakdown": {
+      "Textures": "31.1 MB",
+      "Meshes": "20.1 MB",
+      "Animations": "1.8 MB",
+      "Sounds": "0.0 KB",
+      "Shaders": "495.6 KB",
+      "OtherAssets": "836.8 KB",
+      "Scripts": "2.4 KB",
+      "IncludedDlls": "0.0 KB",
+      "FileHeaders": "402.6 KB",
+      "TotalUserAssets": "54.7 MB"
+    },
+    "buildSucceededBeforeServerRejection": true
+  },
+  "artifacts": {
+    "latestBundle": {
+      "path": "C:\\Users\\Chiro\\AppData\\Local\\Temp\\DefaultCompany\\MorphForge\\69f626c2-9197-4911-ae2d-6d2d130790c6.vrca",
+      "sizeBytes": 7519081,
+      "lastWriteTime": "2026-10-19T08:05:03.3490211+08:00",
+      "sha256": "f09c858cc585cec664b4e4d44a9c1b04e4512e63439b3dba02dccac043e32461"
+    },
+    "previousBundle": {
+      "path": "C:\\Users\\Chiro\\AppData\\Local\\Temp\\DefaultCompany\\MorphForge\\5a8c54b4-df81-46ed-b451-75932ba0b855.vrca",
+      "sizeBytes": 7525940,
+      "lastWriteTime": "2026-10-19T00:46:43.0226945+08:00",
+      "sha256": "b215812968e8abb7258b9daad7205fce08a7828962d61234710aaa4435eafff4"
+    },
+    "buildReport": {
+      "path": "D:\\Projects\\VRChatProjects2\\MorphForge\\Library\\LastBuild.buildreport",
+      "sizeBytes": 232596,
+      "lastWriteTime": "2026-10-19T08:05:03.9752941+08:00",
+      "sha256": "1437d08ee183803102eada46670e0c5e929780463447d153e635d4fa1803a1c7"
+    },
+    "activeSceneOnDisk": {
+      "path": "D:\\Projects\\VRChatProjects2\\MorphForge\\Assets\\MorphForge\\Scenes\\MorphForge_Stage3.unity",
+      "sizeBytes": 968303,
+      "lastWriteTime": "2026-10-19T08:04:30.7686744+08:00",
+      "sha256": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453"
+    },
+    "stage3Prefab": {
+      "path": "D:\\Projects\\VRChatProjects2\\MorphForge\\Assets\\MorphForge\\Stage3\\Avatar.prefab",
+      "sizeBytes": 936527,
+      "lastWriteTime": "2026-10-19T00:10:59.6858371+08:00",
+      "sha256": "f35f236fe8280679529c9bf1b0cbf8c8ddec4cc8ec73249adb278a506f522d24"
+    }
+  },
+  "finalRejectedBundle": {
+    "file": "mf-stage3-latest.vrca",
+    "sha256": "f09c858cc585cec664b4e4d44a9c1b04e4512e63439b3dba02dccac043e32461",
+    "compressedSizeBytes": 7519081,
+    "serializedDataBytes": 25026684,
+    "resourceStreamBytes": 32304016,
+    "assetBundleUncompressedBytes": 57330700,
+    "unityVersion": "2022.3.22f1",
+    "platform": "StandaloneWindows64",
+    "objectCounts": {
+      "AnimationClip": 243,
+      "Animator": 1,
+      "AnimatorController": 8,
+      "AssetBundle": 1,
+      "Avatar": 1,
+      "AvatarMask": 1,
+      "BoxCollider": 2,
+      "GameObject": 420,
+      "Material": 13,
+      "Mesh": 20,
+      "MeshFilter": 1,
+      "MeshRenderer": 1,
+      "MonoBehaviour": 506,
+      "MonoScript": 18,
+      "ParticleSystem": 2,
+      "ParticleSystemRenderer": 2,
+      "Shader": 11,
+      "SkinnedMeshRenderer": 19,
+      "Texture2D": 12,
+      "Transform": 420
+    },
+    "monoScriptClasses": [
+      "PipelineManager",
+      "VRCAimConstraint",
+      "VRCAnimatorLayerControl",
+      "VRCAnimatorLocomotionControl",
+      "VRCAnimatorTemporaryPoseSpace",
+      "VRCAnimatorTrackingControl",
+      "VRCAvatarDescriptor",
+      "VRCAvatarParameterDriver",
+      "VRCContactReceiver",
+      "VRCExpressionParameters",
+      "VRCExpressionsMenu",
+      "VRCParentConstraint",
+      "VRCPhysBone",
+      "VRCPhysBoneCollider",
+      "VRCPlayableLayerControl",
+      "VRCPositionConstraint",
+      "VRCRotationConstraint",
+      "VRCScaleConstraint"
+    ],
+    "monoBehaviourCountsByScript": {
+      "VRC.Core.PipelineManager": 1,
+      "VRC.SDK3.Avatars.Components.VRCAnimatorLayerControl": 4,
+      "VRC.SDK3.Avatars.Components.VRCAnimatorLocomotionControl": 2,
+      "VRC.SDK3.Avatars.Components.VRCAnimatorTemporaryPoseSpace": 6,
+      "VRC.SDK3.Avatars.Components.VRCAnimatorTrackingControl": 114,
+      "VRC.SDK3.Avatars.Components.VRCAvatarDescriptor": 1,
+      "VRC.SDK3.Avatars.Components.VRCAvatarParameterDriver": 249,
+      "VRC.SDK3.Avatars.Components.VRCPlayableLayerControl": 7,
+      "VRC.SDK3.Avatars.ScriptableObjects.VRCExpressionParameters": 1,
+      "VRC.SDK3.Avatars.ScriptableObjects.VRCExpressionsMenu": 15,
+      "VRC.SDK3.Dynamics.Constraint.Components.VRCAimConstraint": 1,
+      "VRC.SDK3.Dynamics.Constraint.Components.VRCParentConstraint": 3,
+      "VRC.SDK3.Dynamics.Constraint.Components.VRCPositionConstraint": 2,
+      "VRC.SDK3.Dynamics.Constraint.Components.VRCRotationConstraint": 45,
+      "VRC.SDK3.Dynamics.Constraint.Components.VRCScaleConstraint": 1,
+      "VRC.SDK3.Dynamics.Contact.Components.VRCContactReceiver": 3,
+      "VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone": 40,
+      "VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBoneCollider": 11
+    },
+    "controllers": [
+      {
+        "name": "Nemesis_FX_v_1_1_0",
+        "runtimeSizeBytes": 205273,
+        "parameterCount": 99,
+        "layerCount": 44,
+        "stateCount": 344,
+        "anyStateTransitionCount": 209,
+        "transitionCount": 752,
+        "clipReferenceCount": 345,
+        "layers": [
+          {
+            "name": "Modular Avatar: MMD Dummy",
+            "weight": 1.0,
+            "stateCount": 1,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Modular Avatar: MMD Dummy",
+            "weight": 1.0,
+            "stateCount": 1,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Modular Avatar: MMD Control",
+            "weight": 1.0,
+            "stateCount": 3,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "ModularAvatar: Merge Blend Tree",
+            "weight": 1.0,
+            "stateCount": 1,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "FasialSet1",
+            "weight": 1.0,
+            "stateCount": 21,
+            "anyStateTransitionCount": 4
+          },
+          {
+            "name": "FasialSet0",
+            "weight": 1.0,
+            "stateCount": 21,
+            "anyStateTransitionCount": 4
+          },
+          {
+            "name": "Fasial",
+            "weight": 1.0,
+            "stateCount": 76,
+            "anyStateTransitionCount": 73
+          },
+          {
+            "name": "GestureNumLocal",
+            "weight": 1.0,
+            "stateCount": 15,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "CopyFaceSetNum",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 2
+          },
+          {
+            "name": "LipSyncBlocker",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Tail",
+            "weight": 1.0,
+            "stateCount": 7,
+            "anyStateTransitionCount": 7
+          },
+          {
+            "name": "Ear",
+            "weight": 1.0,
+            "stateCount": 5,
+            "anyStateTransitionCount": 5
+          },
+          {
+            "name": "Wing",
+            "weight": 1.0,
+            "stateCount": 5,
+            "anyStateTransitionCount": 5
+          },
+          {
+            "name": "KneeSox",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Shoes",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Tops",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Beret",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "EyeLight",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "ColliderJump",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "TailCollider",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "AFK",
+            "weight": 1.0,
+            "stateCount": 9,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Toe",
+            "weight": 1.0,
+            "stateCount": 3,
+            "anyStateTransitionCount": 3
+          },
+          {
+            "name": "ToeR",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "ToeL",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "ToeBoth",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 2
+          },
+          {
+            "name": "Shared complete data output",
+            "weight": 1.0,
+            "stateCount": 1,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "MF3 single commit inbox",
+            "weight": 1.0,
+            "stateCount": 97,
+            "anyStateTransitionCount": 96
+          },
+          {
+            "name": "MF3 native particle execution",
+            "weight": 1.0,
+            "stateCount": 8,
+            "anyStateTransitionCount": 1
+          },
+          {
+            "name": "MA Responsive: Costume_KneeSox",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "MA Responsive: Body_2",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "MA Responsive: Body_2",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "MA Responsive: Body_2",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "MA Responsive: Body_2",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "MA Responsive: Body_2",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "MA Responsive: Body_2",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "MA Responsive: Body_2",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "MA Responsive: Costume_KneeSox",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "DelayDisable",
+            "weight": 1.0,
+            "stateCount": 1,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Placement: world / avatar / hands",
+            "weight": 1.0,
+            "stateCount": 11,
+            "anyStateTransitionCount": 1
+          },
+          {
+            "name": "Placement: owner contact and fist detection",
+            "weight": 1.0,
+            "stateCount": 4,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Placement: content scale",
+            "weight": 1.0,
+            "stateCount": 1,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Placement: handle visibility",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Placement: world horizontal content",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Placement: local hand / two synced bits",
+            "weight": 1.0,
+            "stateCount": 7,
+            "anyStateTransitionCount": 6
+          }
+        ]
+      },
+      {
+        "name": "vrc_AvatarV3SittingLayer",
+        "runtimeSizeBytes": 3181,
+        "parameterCount": 4,
+        "layerCount": 1,
+        "stateCount": 6,
+        "anyStateTransitionCount": 0,
+        "transitionCount": 9,
+        "clipReferenceCount": 6,
+        "layers": [
+          {
+            "name": "Sitting",
+            "weight": 1.0,
+            "stateCount": 6,
+            "anyStateTransitionCount": 0
+          }
+        ]
+      },
+      {
+        "name": "Nemesis_Locomotion",
+        "runtimeSizeBytes": 33555,
+        "parameterCount": 25,
+        "layerCount": 5,
+        "stateCount": 34,
+        "anyStateTransitionCount": 3,
+        "transitionCount": 106,
+        "clipReferenceCount": 44,
+        "layers": [
+          {
+            "name": "Locomotion",
+            "weight": 1.0,
+            "stateCount": 11,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Foot Anchor",
+            "weight": 0.0,
+            "stateCount": 5,
+            "anyStateTransitionCount": 2
+          },
+          {
+            "name": "Desktop Mode",
+            "weight": 0.0,
+            "stateCount": 8,
+            "anyStateTransitionCount": 1
+          },
+          {
+            "name": "Pose Observer",
+            "weight": 0.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Foot Anchor Switch",
+            "weight": 0.0,
+            "stateCount": 8,
+            "anyStateTransitionCount": 0
+          }
+        ]
+      },
+      {
+        "name": "vrc_AvatarV3UtilityIKPose",
+        "runtimeSizeBytes": 920,
+        "parameterCount": 2,
+        "layerCount": 1,
+        "stateCount": 1,
+        "anyStateTransitionCount": 0,
+        "transitionCount": 2,
+        "clipReferenceCount": 1,
+        "layers": [
+          {
+            "name": "Utility Layer",
+            "weight": 1.0,
+            "stateCount": 1,
+            "anyStateTransitionCount": 0
+          }
+        ]
+      },
+      {
+        "name": "Nemesis_Action",
+        "runtimeSizeBytes": 17162,
+        "parameterCount": 11,
+        "layerCount": 1,
+        "stateCount": 33,
+        "anyStateTransitionCount": 0,
+        "transitionCount": 63,
+        "clipReferenceCount": 33,
+        "layers": [
+          {
+            "name": "Action",
+            "weight": 1.0,
+            "stateCount": 33,
+            "anyStateTransitionCount": 0
+          }
+        ]
+      },
+      {
+        "name": "vrc_AvatarV3HandsLayer",
+        "runtimeSizeBytes": 7904,
+        "parameterCount": 6,
+        "layerCount": 3,
+        "stateCount": 16,
+        "anyStateTransitionCount": 16,
+        "transitionCount": 22,
+        "clipReferenceCount": 16,
+        "layers": [
+          {
+            "name": "AllParts",
+            "weight": 1.0,
+            "stateCount": 0,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Left Hand",
+            "weight": 1.0,
+            "stateCount": 8,
+            "anyStateTransitionCount": 8
+          },
+          {
+            "name": "Right Hand",
+            "weight": 1.0,
+            "stateCount": 8,
+            "anyStateTransitionCount": 8
+          }
+        ]
+      },
+      {
+        "name": "vrc_AvatarV3UtilityTPose",
+        "runtimeSizeBytes": 920,
+        "parameterCount": 2,
+        "layerCount": 1,
+        "stateCount": 1,
+        "anyStateTransitionCount": 0,
+        "transitionCount": 2,
+        "clipReferenceCount": 1,
+        "layers": [
+          {
+            "name": "Utility Layer",
+            "weight": 1.0,
+            "stateCount": 1,
+            "anyStateTransitionCount": 0
+          }
+        ]
+      },
+      {
+        "name": "vrc_AvatarV3IdleLayer",
+        "runtimeSizeBytes": 1968,
+        "parameterCount": 4,
+        "layerCount": 1,
+        "stateCount": 2,
+        "anyStateTransitionCount": 0,
+        "transitionCount": 4,
+        "clipReferenceCount": 2,
+        "layers": [
+          {
+            "name": "Idle",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          }
+        ]
+      }
+    ],
+    "controllerTotals": {
+      "layers": 57,
+      "states": 437,
+      "anyStateTransitions": 228,
+      "transitions": 960,
+      "clipReferences": 448
+    },
+    "totalControllerRuntimeSizeBytes": 270883,
+    "particleSystems": [
+      {
+        "gameObject": "Pump",
+        "maxParticles": 1,
+        "startLifetime": 0.5,
+        "size3D": false,
+        "startSize": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "startSpeed": 0.0,
+        "looping": false,
+        "playOnAwake": true,
+        "ringBufferMode": 0,
+        "bursts": [
+          {
+            "count": 1.0,
+            "cycles": 1,
+            "repeatInterval": 0.009999999776482582,
+            "probability": 1.0
+          }
+        ]
+      },
+      {
+        "gameObject": "Store",
+        "maxParticles": 16384,
+        "startLifetime": "+Infinity",
+        "size3D": true,
+        "startSize": [
+          0.25,
+          0.25,
+          0.25
+        ],
+        "startSpeed": 0.0,
+        "looping": false,
+        "playOnAwake": false,
+        "ringBufferMode": 0,
+        "bursts": [
+          {
+            "count": 1.0,
+            "cycles": 1,
+            "repeatInterval": 0.009999999776482582,
+            "probability": 1.0
+          }
+        ]
+      }
+    ],
+    "meshSummary": {
+      "count": 20,
+      "totalVertices": 58442,
+      "totalTriangles": 86796,
+      "items": [
+        {
+          "name": "Costume_Pants_+",
+          "vertices": 718,
+          "triangles": 1228,
+          "subMeshes": 1,
+          "blendShapes": 5
+        },
+        {
+          "name": "Costume_Wing",
+          "vertices": 2536,
+          "triangles": 4376,
+          "subMeshes": 1,
+          "blendShapes": 0
+        },
+        {
+          "name": "Costume_KneeSox",
+          "vertices": 3246,
+          "triangles": 5748,
+          "subMeshes": 1,
+          "blendShapes": 18
+        },
+        {
+          "name": "Hair_Back",
+          "vertices": 3696,
+          "triangles": 4194,
+          "subMeshes": 1,
+          "blendShapes": 0
+        },
+        {
+          "name": "Costume_Sailor_Inner",
+          "vertices": 3230,
+          "triangles": 5066,
+          "subMeshes": 1,
+          "blendShapes": 3
+        },
+        {
+          "name": "Preuploaded cube, 12 triangles",
+          "vertices": 24,
+          "triangles": 12,
+          "subMeshes": 1,
+          "blendShapes": 0
+        },
+        {
+          "name": "Costume_Shoes",
+          "vertices": 4490,
+          "triangles": 6472,
+          "subMeshes": 1,
+          "blendShapes": 0
+        },
+        {
+          "name": "Costume_Flower",
+          "vertices": 471,
+          "triangles": 600,
+          "subMeshes": 1,
+          "blendShapes": 0
+        },
+        {
+          "name": "Costume_Sailor_sode",
+          "vertices": 2096,
+          "triangles": 3036,
+          "subMeshes": 1,
+          "blendShapes": 0
+        },
+        {
+          "name": "Wolf_Tail",
+          "vertices": 2538,
+          "triangles": 3078,
+          "subMeshes": 1,
+          "blendShapes": 0
+        },
+        {
+          "name": "Body_2",
+          "vertices": 10522,
+          "triangles": 18138,
+          "subMeshes": 1,
+          "blendShapes": 73
+        },
+        {
+          "name": "Costume_Beret",
+          "vertices": 1915,
+          "triangles": 3152,
+          "subMeshes": 1,
+          "blendShapes": 0
+        },
+        {
+          "name": "Body",
+          "vertices": 9328,
+          "triangles": 12816,
+          "subMeshes": 7,
+          "blendShapes": 550
+        },
+        {
+          "name": "Hair_Head",
+          "vertices": 649,
+          "triangles": 872,
+          "subMeshes": 1,
+          "blendShapes": 1
+        },
+        {
+          "name": "Hair_Side",
+          "vertices": 2834,
+          "triangles": 3192,
+          "subMeshes": 1,
+          "blendShapes": 0
+        },
+        {
+          "name": "Costume_Inner",
+          "vertices": 1470,
+          "triangles": 2220,
+          "subMeshes": 1,
+          "blendShapes": 3
+        },
+        {
+          "name": "Costume_Sailor",
+          "vertices": 2278,
+          "triangles": 3736,
+          "subMeshes": 1,
+          "blendShapes": 1
+        },
+        {
+          "name": "Costume_Pants",
+          "vertices": 575,
+          "triangles": 950,
+          "subMeshes": 1,
+          "blendShapes": 5
+        },
+        {
+          "name": "Hair_Front",
+          "vertices": 1762,
+          "triangles": 1964,
+          "subMeshes": 1,
+          "blendShapes": 10
+        },
+        {
+          "name": "Wolf_Ear",
+          "vertices": 4064,
+          "triangles": 5946,
+          "subMeshes": 1,
+          "blendShapes": 0
+        }
+      ]
+    },
+    "materials": [
+      "Gold translucent placement handle",
+      "Nemesis_Alpha1",
+      "Nemesis_Alpha2",
+      "Nemesis_Cloth1",
+      "Nemesis_Cloth2",
+      "Nemesis_Eye",
+      "Nemesis_Face",
+      "Nemesis_FaceOutline",
+      "Nemesis_Hair",
+      "Nemesis_Hair_Outline",
+      "Nemesis_Hair_Shadow",
+      "Nemesis_Skin",
+      "ParticleBoxCatalog"
+    ],
+    "shaders": [
+      "Hidden/lilToonOutline",
+      "Hidden/lilToonTransparent",
+      "Hidden/lilToonTransparentOutline",
+      "Hidden/lilToonTwoPassTransparent",
+      "Hidden/ltspass_opaque",
+      "Hidden/ltspass_transparent",
+      "MorphForge/AnchorHandle",
+      "MorphForge/ParticleBoxCatalog",
+      "Unlit/Texture",
+      "_lil/[Optional] lilToonFakeShadow",
+      "lilToon"
+    ],
+    "textures": [
+      {
+        "name": "CatalogAtlas",
+        "width": 384,
+        "height": 96,
+        "format": 4,
+        "mipCount": 1,
+        "completeImageSize": 147456
+      },
+      {
+        "name": "CatalogMetadata",
+        "width": 16384,
+        "height": 1,
+        "format": 20,
+        "mipCount": 1,
+        "completeImageSize": 262144
+      },
+      {
+        "name": "Nemesis_Alpha_edit",
+        "width": 1024,
+        "height": 1024,
+        "format": 12,
+        "mipCount": 11,
+        "completeImageSize": 1398128
+      },
+      {
+        "name": "Nemesis_Cloth1 (29)",
+        "width": 2048,
+        "height": 2048,
+        "format": 10,
+        "mipCount": 12,
+        "completeImageSize": 2796216
+      },
+      {
+        "name": "Nemesis_Cloth2 (29)",
+        "width": 2048,
+        "height": 2048,
+        "format": 12,
+        "mipCount": 12,
+        "completeImageSize": 5592432
+      },
+      {
+        "name": "Nemesis_Cloth2_EmissionMask",
+        "width": 2048,
+        "height": 2048,
+        "format": 10,
+        "mipCount": 12,
+        "completeImageSize": 2796216
+      },
+      {
+        "name": "Nemesis_Eye (22)",
+        "width": 2048,
+        "height": 2048,
+        "format": 10,
+        "mipCount": 12,
+        "completeImageSize": 2796216
+      },
+      {
+        "name": "Nemesis_Eye_EmissionMask",
+        "width": 2048,
+        "height": 2048,
+        "format": 10,
+        "mipCount": 12,
+        "completeImageSize": 2796216
+      },
+      {
+        "name": "Nemesis_Hairs (17)",
+        "width": 2048,
+        "height": 2048,
+        "format": 10,
+        "mipCount": 12,
+        "completeImageSize": 2796216
+      },
+      {
+        "name": "Nemesis_Skin (32)",
+        "width": 2048,
+        "height": 2048,
+        "format": 12,
+        "mipCount": 12,
+        "completeImageSize": 5592432
+      },
+      {
+        "name": "noizu",
+        "width": 2048,
+        "height": 2048,
+        "format": 10,
+        "mipCount": 12,
+        "completeImageSize": 2796216
+      },
+      {
+        "name": "noizu2",
+        "width": 2048,
+        "height": 2048,
+        "format": 10,
+        "mipCount": 12,
+        "completeImageSize": 2796216
+      }
+    ],
+    "animationSummary": {
+      "uniqueAnimationClipObjects": 243,
+      "curveChannels": 4662,
+      "genericBindingEntries": 24026,
+      "streamedClipValueCount": 68432,
+      "denseSampleCount": 39118,
+      "clipNames": [
+        "",
+        "",
+        "05_Kemomimi_Default",
+        "05_Kemomimi_Normal",
+        "05_Kemomimi_Re",
+        "AFK-finish_FX",
+        "AFK1-idle_Action",
+        "AFK1-idle_FX",
+        "AFK1-init_Aciton",
+        "AFK1-init_FX",
+        "AFK2-idle_FX",
+        "AFK2-init",
+        "AFK2-init_FX",
+        "AFK2-out",
+        "AFK2-out_FX",
+        "ArmLeft",
+        "ArmRight",
+        "Beret_OFF",
+        "BirthColora_Max",
+        "BirthColora_Min",
+        "BirthColorb_Max",
+        "BirthColorb_Min",
+        "BirthColorg_Max",
+        "BirthColorg_Min",
+        "BirthColorr_Max",
+        "BirthColorr_Min",
+        "BridgeWait",
+        "Brush",
+        "CaptureReset",
+        "ColliderJump_OFF",
+        "ColliderJump_ON",
+        "Done",
+        "Ear_DOWN",
+        "Ear_UP",
+        "Empty",
+        "Empty",
+        "Erase",
+        "EraserClearx",
+        "EraserCleary",
+        "EraserClearz",
+        "EraserPointx",
+        "EraserPointy",
+        "EraserPointz",
+        "EraserRegionx_Max",
+        "EraserRegionx_Min",
+        "EraserRegiony_Max",
+        "EraserRegiony_Min",
+        "EraserRegionz_Max",
+        "EraserRegionz_Min",
+        "EyeLightOff",
+        "EyeLightOn",
+        "Facial_00_idle",
+        "Facial_01_uge",
+        "Facial_02_Pero",
+        "Facial_03_Doya",
+        "Facial_04_Tere",
+        "Facial_05_Orooro",
+        "Facial_06_Hunsu",
+        "Facial_07_niko",
+        "Facial_08_Hau",
+        "Facial_09_sirome",
+        "Facial_10_Wink",
+        "Facial_11_Boronaki",
+        "Facial_12_Jito",
+        "Facial_13_Kirakira",
+        "Facial_14_Lemon",
+        "Facial_15_peropero",
+        "Facial_16_doya2",
+        "Facial_17_Kekkai",
+        "Facial_18_Fu--n",
+        "Facial_19_DarknessSmile",
+        "Facial_20_Smile2",
+        "Facial_21_Hin",
+        "Facial_22_kyomu",
+        "Facial_23_aori",
+        "Facial_24_Gaman",
+        "Facial_25_Darkness",
+        "Facial_26_Good",
+        "Facial_27_uge",
+        "Facial_28_siwasiwa",
+        "Facial_29_FX",
+        "Facial_30_poke",
+        "Facial_31_hiki",
+        "Facial_32_suya",
+        "Facial_33_II",
+        "Fire",
+        "Follow",
+        "Foot_Default_L",
+        "Foot_Default_R",
+        "Foot_Idle_L",
+        "Foot_Idle_R",
+        "Foot_Open2_L",
+        "Foot_Open2_R",
+        "Foot_Open_L",
+        "Foot_Open_R",
+        "Foot_hold2_L",
+        "Foot_hold2_R",
+        "Foot_hold_L",
+        "Foot_hold_R",
+        "GripIdle",
+        "GripL",
+        "GripR",
+        "GripRelease",
+        "HandleOff",
+        "HandleOn",
+        "Idle",
+        "InboxEmpty",
+        "Init",
+        "KneeSox_OFF",
+        "KneeSox_ON",
+        "Latch",
+        "Left",
+        "LevelOff",
+        "LevelOn",
+        "LipsyncBlocker",
+        "MMDRelay",
+        "NullMotion",
+        "Owner0",
+        "Owner1",
+        "Owner2",
+        "Positionx_Max",
+        "Positionx_Min",
+        "Positiony_Max",
+        "Positiony_Min",
+        "Positionz_Max",
+        "Positionz_Min",
+        "Property Overlay controlled by Costume_KneeSox 100",
+        "Property Overlay controlled by Costume_KneeSox 100",
+        "Property Overlay controlled by Costume_KneeSox 100",
+        "Property Overlay controlled by Costume_KneeSox 100",
+        "Property Overlay controlled by Costume_KneeSox 100",
+        "Property Overlay controlled by Costume_KneeSox 100",
+        "Property Overlay controlled by Costume_KneeSox 100",
+        "Property Overlay controlled by Costume_Shoes 100",
+        "Property Overlay controlled by Costume_Shoes 100",
+        "Reactive Component Defaults",
+        "RearmReset",
+        "Release",
+        "Release",
+        "Remote0",
+        "Remote1",
+        "Remote2",
+        "Reset",
+        "Right",
+        "ScaleMax",
+        "ScaleMin",
+        "Settle",
+        "Shoes_OFF",
+        "Shoes_OFF_CON",
+        "Shoes_OFF_PB",
+        "Sizex_Max",
+        "Sizex_Min",
+        "Sizey_Max",
+        "Sizey_Min",
+        "Sizez_Max",
+        "Sizez_Min",
+        "TailCollider_OFF",
+        "TailCollider_ON",
+        "TailPose_Default",
+        "TailPose_UP_1",
+        "TailPose_down",
+        "TailPose_up_2",
+        "TailPose_wag_A",
+        "TailPose_wag_B",
+        "TailPose_wag_C",
+        "Toe_OFF",
+        "Tops_OFF",
+        "Tops_ON",
+        "WingDown",
+        "Wing_Default",
+        "Wing_Fast",
+        "Wing_Slow",
+        "Wing_Up",
+        "World",
+        "beret_ON",
+        "blank",
+        "blank",
+        "empty",
+        "empty",
+        "empty motion",
+        "empty motion",
+        "empty motion",
+        "empty motion",
+        "empty motion",
+        "empty motion",
+        "empty motion",
+        "empty motion",
+        "empty motion",
+        "nemesys_crouch_still",
+        "proxy_backflip",
+        "proxy_crouch_walk_forward",
+        "proxy_crouch_walk_right",
+        "proxy_crouch_walk_right_135",
+        "proxy_crouch_walk_right_45",
+        "proxy_dance",
+        "proxy_die",
+        "proxy_empty",
+        "proxy_fall_short",
+        "proxy_hands_fist",
+        "proxy_hands_gun",
+        "proxy_hands_idle",
+        "proxy_hands_open",
+        "proxy_hands_peace",
+        "proxy_hands_point",
+        "proxy_hands_rock",
+        "proxy_hands_thumbs_up",
+        "proxy_idle",
+        "proxy_ikpose",
+        "proxy_low_crawl_forward",
+        "proxy_low_crawl_right",
+        "proxy_low_crawl_still",
+        "proxy_run_backward",
+        "proxy_run_forward",
+        "proxy_run_strafe_right",
+        "proxy_run_strafe_right_135",
+        "proxy_run_strafe_right_45",
+        "proxy_seated_clap",
+        "proxy_seated_disapprove",
+        "proxy_seated_disbelief",
+        "proxy_seated_drum",
+        "proxy_seated_laugh",
+        "proxy_seated_point",
+        "proxy_seated_raise_hand",
+        "proxy_seated_shake_fist",
+        "proxy_sit",
+        "proxy_sprint_forward",
+        "proxy_stand_cheer",
+        "proxy_stand_clap",
+        "proxy_stand_point",
+        "proxy_stand_sadkick",
+        "proxy_stand_still",
+        "proxy_stand_wave",
+        "proxy_strafe_right",
+        "proxy_strafe_right_135",
+        "proxy_strafe_right_45",
+        "proxy_supine_getup",
+        "proxy_tpose",
+        "proxy_walk_backward",
+        "proxy_walk_forward",
+        "あおむけ",
+        "たてひざ（女）",
+        "ぺたん",
+        "よこむき"
+      ]
+    },
+    "nonFiniteAudit": {
+      "AnimatorController": [
+        {
+          "controller": "Nemesis_Locomotion",
+          "occurrences": 6,
+          "propertyPaths": [
+            "/m_Controller/m_StateMachineArray[]/data/m_StateConstantArray[]/data/m_BlendTreeConstantArray[]/data/m_NodeArray[]/data/m_Blend2dData/data/m_ChildPairAvgMagInvArray[]",
+            "/m_Controller/m_StateMachineArray[]/data/m_StateConstantArray[]/data/m_BlendTreeConstantArray[]/data/m_NodeArray[]/data/m_Blend2dData/data/m_ChildPairVectorArray[]/y"
+          ],
+          "identicalInAcceptedPredecessor": true
+        }
+      ],
+      "Mesh": {
+        "positiveInfinityValues": 11826,
+        "negativeInfinityValues": 11826,
+        "objectsAffected": 19,
+        "interpretation": "per-bone AABB sentinel metadata; identical in accepted predecessor"
+      },
+      "ParticleSystem": [
+        {
+          "gameObject": "Store",
+          "propertyPath": "/InitialModule/startLifetime/scalar",
+          "value": "+Infinity",
+          "unityDocumentedAsInfiniteLifetime": true,
+          "identicalValuePresentInAcceptedPredecessor": true
+        }
+      ]
+    }
+  },
+  "previousAcceptedBundle": {
+    "file": "mf-stage3-old.vrca",
+    "sha256": "b215812968e8abb7258b9daad7205fce08a7828962d61234710aaa4435eafff4",
+    "compressedSizeBytes": 7525940,
+    "serializedDataBytes": 24786848,
+    "resourceStreamBytes": 32156560,
+    "assetBundleUncompressedBytes": 56943408,
+    "unityVersion": "2022.3.22f1",
+    "platform": "StandaloneWindows64",
+    "objectCounts": {
+      "AnimationClip": 233,
+      "Animator": 1,
+      "AnimatorController": 8,
+      "AssetBundle": 1,
+      "Avatar": 1,
+      "AvatarMask": 1,
+      "BoxCollider": 2,
+      "GameObject": 415,
+      "Material": 13,
+      "Mesh": 20,
+      "MeshFilter": 1,
+      "MeshRenderer": 1,
+      "MonoBehaviour": 527,
+      "MonoScript": 16,
+      "ParticleSystem": 2,
+      "ParticleSystemRenderer": 2,
+      "Shader": 11,
+      "SkinnedMeshRenderer": 19,
+      "Texture2D": 10,
+      "Transform": 415
+    },
+    "monoScriptClasses": [
+      "PipelineManager",
+      "VRCAnimatorLayerControl",
+      "VRCAnimatorLocomotionControl",
+      "VRCAnimatorTemporaryPoseSpace",
+      "VRCAnimatorTrackingControl",
+      "VRCAvatarDescriptor",
+      "VRCAvatarParameterDriver",
+      "VRCContactReceiver",
+      "VRCExpressionParameters",
+      "VRCExpressionsMenu",
+      "VRCParentConstraint",
+      "VRCPhysBone",
+      "VRCPhysBoneCollider",
+      "VRCPlayableLayerControl",
+      "VRCRotationConstraint",
+      "VRCScaleConstraint"
+    ],
+    "monoBehaviourCountsByScript": {
+      "VRC.Core.PipelineManager": 1,
+      "VRC.SDK3.Avatars.Components.VRCAnimatorLayerControl": 4,
+      "VRC.SDK3.Avatars.Components.VRCAnimatorLocomotionControl": 2,
+      "VRC.SDK3.Avatars.Components.VRCAnimatorTemporaryPoseSpace": 6,
+      "VRC.SDK3.Avatars.Components.VRCAnimatorTrackingControl": 114,
+      "VRC.SDK3.Avatars.Components.VRCAvatarDescriptor": 1,
+      "VRC.SDK3.Avatars.Components.VRCAvatarParameterDriver": 274,
+      "VRC.SDK3.Avatars.Components.VRCPlayableLayerControl": 7,
+      "VRC.SDK3.Avatars.ScriptableObjects.VRCExpressionParameters": 1,
+      "VRC.SDK3.Avatars.ScriptableObjects.VRCExpressionsMenu": 15,
+      "VRC.SDK3.Dynamics.Constraint.Components.VRCParentConstraint": 3,
+      "VRC.SDK3.Dynamics.Constraint.Components.VRCRotationConstraint": 44,
+      "VRC.SDK3.Dynamics.Constraint.Components.VRCScaleConstraint": 1,
+      "VRC.SDK3.Dynamics.Contact.Components.VRCContactReceiver": 3,
+      "VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone": 40,
+      "VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBoneCollider": 11
+    },
+    "controllers": [
+      {
+        "name": "Nemesis_FX_v_1_1_0",
+        "runtimeSizeBytes": 217822,
+        "parameterCount": 100,
+        "layerCount": 42,
+        "stateCount": 366,
+        "anyStateTransitionCount": 235,
+        "transitionCount": 801,
+        "clipReferenceCount": 367,
+        "layers": [
+          {
+            "name": "Modular Avatar: MMD Dummy",
+            "weight": 1.0,
+            "stateCount": 1,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Modular Avatar: MMD Dummy",
+            "weight": 1.0,
+            "stateCount": 1,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Modular Avatar: MMD Control",
+            "weight": 1.0,
+            "stateCount": 3,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "ModularAvatar: Merge Blend Tree",
+            "weight": 1.0,
+            "stateCount": 1,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "FasialSet1",
+            "weight": 1.0,
+            "stateCount": 21,
+            "anyStateTransitionCount": 4
+          },
+          {
+            "name": "FasialSet0",
+            "weight": 1.0,
+            "stateCount": 21,
+            "anyStateTransitionCount": 4
+          },
+          {
+            "name": "Fasial",
+            "weight": 1.0,
+            "stateCount": 76,
+            "anyStateTransitionCount": 73
+          },
+          {
+            "name": "GestureNumLocal",
+            "weight": 1.0,
+            "stateCount": 15,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "CopyFaceSetNum",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 2
+          },
+          {
+            "name": "LipSyncBlocker",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Tail",
+            "weight": 1.0,
+            "stateCount": 7,
+            "anyStateTransitionCount": 7
+          },
+          {
+            "name": "Ear",
+            "weight": 1.0,
+            "stateCount": 5,
+            "anyStateTransitionCount": 5
+          },
+          {
+            "name": "Wing",
+            "weight": 1.0,
+            "stateCount": 5,
+            "anyStateTransitionCount": 5
+          },
+          {
+            "name": "KneeSox",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Shoes",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Tops",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Beret",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "EyeLight",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "ColliderJump",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "TailCollider",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "AFK",
+            "weight": 1.0,
+            "stateCount": 9,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Toe",
+            "weight": 1.0,
+            "stateCount": 3,
+            "anyStateTransitionCount": 3
+          },
+          {
+            "name": "ToeR",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "ToeL",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "ToeBoth",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 2
+          },
+          {
+            "name": "Shared complete data output",
+            "weight": 1.0,
+            "stateCount": 1,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Single commit input inbox",
+            "weight": 1.0,
+            "stateCount": 129,
+            "anyStateTransitionCount": 128
+          },
+          {
+            "name": "Frame driven native particle lifecycle",
+            "weight": 1.0,
+            "stateCount": 7,
+            "anyStateTransitionCount": 1
+          },
+          {
+            "name": "MA Responsive: Costume_KneeSox",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "MA Responsive: Body_2",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "MA Responsive: Body_2",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "MA Responsive: Body_2",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "MA Responsive: Body_2",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "MA Responsive: Body_2",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "MA Responsive: Body_2",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "MA Responsive: Body_2",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "MA Responsive: Costume_KneeSox",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "DelayDisable",
+            "weight": 1.0,
+            "stateCount": 1,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Placement: world / avatar / hands",
+            "weight": 1.0,
+            "stateCount": 11,
+            "anyStateTransitionCount": 1
+          },
+          {
+            "name": "Placement: owner contact and fist detection",
+            "weight": 1.0,
+            "stateCount": 4,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Placement: content scale",
+            "weight": 1.0,
+            "stateCount": 1,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Placement: handle visibility",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          }
+        ]
+      },
+      {
+        "name": "Nemesis_Locomotion",
+        "runtimeSizeBytes": 33555,
+        "parameterCount": 25,
+        "layerCount": 5,
+        "stateCount": 34,
+        "anyStateTransitionCount": 3,
+        "transitionCount": 106,
+        "clipReferenceCount": 44,
+        "layers": [
+          {
+            "name": "Locomotion",
+            "weight": 1.0,
+            "stateCount": 11,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Foot Anchor",
+            "weight": 0.0,
+            "stateCount": 5,
+            "anyStateTransitionCount": 2
+          },
+          {
+            "name": "Desktop Mode",
+            "weight": 0.0,
+            "stateCount": 8,
+            "anyStateTransitionCount": 1
+          },
+          {
+            "name": "Pose Observer",
+            "weight": 0.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Foot Anchor Switch",
+            "weight": 0.0,
+            "stateCount": 8,
+            "anyStateTransitionCount": 0
+          }
+        ]
+      },
+      {
+        "name": "vrc_AvatarV3UtilityIKPose",
+        "runtimeSizeBytes": 920,
+        "parameterCount": 2,
+        "layerCount": 1,
+        "stateCount": 1,
+        "anyStateTransitionCount": 0,
+        "transitionCount": 2,
+        "clipReferenceCount": 1,
+        "layers": [
+          {
+            "name": "Utility Layer",
+            "weight": 1.0,
+            "stateCount": 1,
+            "anyStateTransitionCount": 0
+          }
+        ]
+      },
+      {
+        "name": "vrc_AvatarV3SittingLayer",
+        "runtimeSizeBytes": 3181,
+        "parameterCount": 4,
+        "layerCount": 1,
+        "stateCount": 6,
+        "anyStateTransitionCount": 0,
+        "transitionCount": 9,
+        "clipReferenceCount": 6,
+        "layers": [
+          {
+            "name": "Sitting",
+            "weight": 1.0,
+            "stateCount": 6,
+            "anyStateTransitionCount": 0
+          }
+        ]
+      },
+      {
+        "name": "vrc_AvatarV3IdleLayer",
+        "runtimeSizeBytes": 1968,
+        "parameterCount": 4,
+        "layerCount": 1,
+        "stateCount": 2,
+        "anyStateTransitionCount": 0,
+        "transitionCount": 4,
+        "clipReferenceCount": 2,
+        "layers": [
+          {
+            "name": "Idle",
+            "weight": 1.0,
+            "stateCount": 2,
+            "anyStateTransitionCount": 0
+          }
+        ]
+      },
+      {
+        "name": "vrc_AvatarV3UtilityTPose",
+        "runtimeSizeBytes": 920,
+        "parameterCount": 2,
+        "layerCount": 1,
+        "stateCount": 1,
+        "anyStateTransitionCount": 0,
+        "transitionCount": 2,
+        "clipReferenceCount": 1,
+        "layers": [
+          {
+            "name": "Utility Layer",
+            "weight": 1.0,
+            "stateCount": 1,
+            "anyStateTransitionCount": 0
+          }
+        ]
+      },
+      {
+        "name": "Nemesis_Action",
+        "runtimeSizeBytes": 17162,
+        "parameterCount": 11,
+        "layerCount": 1,
+        "stateCount": 33,
+        "anyStateTransitionCount": 0,
+        "transitionCount": 63,
+        "clipReferenceCount": 33,
+        "layers": [
+          {
+            "name": "Action",
+            "weight": 1.0,
+            "stateCount": 33,
+            "anyStateTransitionCount": 0
+          }
+        ]
+      },
+      {
+        "name": "vrc_AvatarV3HandsLayer",
+        "runtimeSizeBytes": 7904,
+        "parameterCount": 6,
+        "layerCount": 3,
+        "stateCount": 16,
+        "anyStateTransitionCount": 16,
+        "transitionCount": 22,
+        "clipReferenceCount": 16,
+        "layers": [
+          {
+            "name": "AllParts",
+            "weight": 1.0,
+            "stateCount": 0,
+            "anyStateTransitionCount": 0
+          },
+          {
+            "name": "Left Hand",
+            "weight": 1.0,
+            "stateCount": 8,
+            "anyStateTransitionCount": 8
+          },
+          {
+            "name": "Right Hand",
+            "weight": 1.0,
+            "stateCount": 8,
+            "anyStateTransitionCount": 8
+          }
+        ]
+      }
+    ],
+    "controllerTotals": {
+      "layers": 55,
+      "states": 459,
+      "anyStateTransitions": 254,
+      "transitions": 1009,
+      "clipReferences": 470
+    },
+    "totalControllerRuntimeSizeBytes": 283432,
+    "particleSystems": [
+      {
+        "gameObject": "Pump",
+        "maxParticles": 1,
+        "startLifetime": 0.02500000037252903,
+        "size3D": false,
+        "startSize": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "startSpeed": 0.0,
+        "looping": false,
+        "playOnAwake": true,
+        "ringBufferMode": 0,
+        "bursts": [
+          {
+            "count": 1.0,
+            "cycles": 1,
+            "repeatInterval": 0.009999999776482582,
+            "probability": 1.0
+          }
+        ]
+      },
+      {
+        "gameObject": "Store",
+        "maxParticles": 64,
+        "startLifetime": "+Infinity",
+        "size3D": true,
+        "startSize": [
+          0.25,
+          0.25,
+          0.25
+        ],
+        "startSpeed": 0.0,
+        "looping": false,
+        "playOnAwake": false,
+        "ringBufferMode": 0,
+        "bursts": [
+          {
+            "count": 1.0,
+            "cycles": 1,
+            "repeatInterval": 0.009999999776482582,
+            "probability": 1.0
+          }
+        ]
+      }
+    ],
+    "meshSummary": {
+      "count": 20,
+      "totalVertices": 58442,
+      "totalTriangles": 86796,
+      "items": [
+        {
+          "name": "Costume_Pants_+",
+          "vertices": 718,
+          "triangles": 1228,
+          "subMeshes": 1,
+          "blendShapes": 5
+        },
+        {
+          "name": "Costume_Wing",
+          "vertices": 2536,
+          "triangles": 4376,
+          "subMeshes": 1,
+          "blendShapes": 0
+        },
+        {
+          "name": "Costume_KneeSox",
+          "vertices": 3246,
+          "triangles": 5748,
+          "subMeshes": 1,
+          "blendShapes": 18
+        },
+        {
+          "name": "Hair_Back",
+          "vertices": 3696,
+          "triangles": 4194,
+          "subMeshes": 1,
+          "blendShapes": 0
+        },
+        {
+          "name": "Costume_Sailor_Inner",
+          "vertices": 3230,
+          "triangles": 5066,
+          "subMeshes": 1,
+          "blendShapes": 3
+        },
+        {
+          "name": "Preuploaded cube, 12 triangles",
+          "vertices": 24,
+          "triangles": 12,
+          "subMeshes": 1,
+          "blendShapes": 0
+        },
+        {
+          "name": "Costume_Shoes",
+          "vertices": 4490,
+          "triangles": 6472,
+          "subMeshes": 1,
+          "blendShapes": 0
+        },
+        {
+          "name": "Costume_Flower",
+          "vertices": 471,
+          "triangles": 600,
+          "subMeshes": 1,
+          "blendShapes": 0
+        },
+        {
+          "name": "Costume_Sailor_sode",
+          "vertices": 2096,
+          "triangles": 3036,
+          "subMeshes": 1,
+          "blendShapes": 0
+        },
+        {
+          "name": "Wolf_Tail",
+          "vertices": 2538,
+          "triangles": 3078,
+          "subMeshes": 1,
+          "blendShapes": 0
+        },
+        {
+          "name": "Body_2",
+          "vertices": 10522,
+          "triangles": 18138,
+          "subMeshes": 1,
+          "blendShapes": 73
+        },
+        {
+          "name": "Costume_Beret",
+          "vertices": 1915,
+          "triangles": 3152,
+          "subMeshes": 1,
+          "blendShapes": 0
+        },
+        {
+          "name": "Body",
+          "vertices": 9328,
+          "triangles": 12816,
+          "subMeshes": 7,
+          "blendShapes": 550
+        },
+        {
+          "name": "Hair_Head",
+          "vertices": 649,
+          "triangles": 872,
+          "subMeshes": 1,
+          "blendShapes": 1
+        },
+        {
+          "name": "Hair_Side",
+          "vertices": 2834,
+          "triangles": 3192,
+          "subMeshes": 1,
+          "blendShapes": 0
+        },
+        {
+          "name": "Costume_Inner",
+          "vertices": 1470,
+          "triangles": 2220,
+          "subMeshes": 1,
+          "blendShapes": 3
+        },
+        {
+          "name": "Costume_Sailor",
+          "vertices": 2278,
+          "triangles": 3736,
+          "subMeshes": 1,
+          "blendShapes": 1
+        },
+        {
+          "name": "Costume_Pants",
+          "vertices": 575,
+          "triangles": 950,
+          "subMeshes": 1,
+          "blendShapes": 5
+        },
+        {
+          "name": "Hair_Front",
+          "vertices": 1762,
+          "triangles": 1964,
+          "subMeshes": 1,
+          "blendShapes": 10
+        },
+        {
+          "name": "Wolf_Ear",
+          "vertices": 4064,
+          "triangles": 5946,
+          "subMeshes": 1,
+          "blendShapes": 0
+        }
+      ]
+    },
+    "materials": [
+      "Gold translucent placement handle",
+      "MorphForge box cells",
+      "Nemesis_Alpha1",
+      "Nemesis_Alpha2",
+      "Nemesis_Cloth1",
+      "Nemesis_Cloth2",
+      "Nemesis_Eye",
+      "Nemesis_Face",
+      "Nemesis_FaceOutline",
+      "Nemesis_Hair",
+      "Nemesis_Hair_Outline",
+      "Nemesis_Hair_Shadow",
+      "Nemesis_Skin"
+    ],
+    "shaders": [
+      "Hidden/lilToonOutline",
+      "Hidden/lilToonTransparent",
+      "Hidden/lilToonTransparentOutline",
+      "Hidden/lilToonTwoPassTransparent",
+      "Hidden/ltspass_opaque",
+      "Hidden/ltspass_transparent",
+      "MorphForge/AnchorHandle",
+      "MorphForge/ParticleBoxLocalUV",
+      "Unlit/Texture",
+      "_lil/[Optional] lilToonFakeShadow",
+      "lilToon"
+    ],
+    "textures": [
+      {
+        "name": "Nemesis_Alpha_edit",
+        "width": 1024,
+        "height": 1024,
+        "format": 12,
+        "mipCount": 11,
+        "completeImageSize": 1398128
+      },
+      {
+        "name": "Nemesis_Cloth1 (29)",
+        "width": 2048,
+        "height": 2048,
+        "format": 10,
+        "mipCount": 12,
+        "completeImageSize": 2796216
+      },
+      {
+        "name": "Nemesis_Cloth2 (29)",
+        "width": 2048,
+        "height": 2048,
+        "format": 12,
+        "mipCount": 12,
+        "completeImageSize": 5592432
+      },
+      {
+        "name": "Nemesis_Cloth2_EmissionMask",
+        "width": 2048,
+        "height": 2048,
+        "format": 10,
+        "mipCount": 12,
+        "completeImageSize": 2796216
+      },
+      {
+        "name": "Nemesis_Eye (22)",
+        "width": 2048,
+        "height": 2048,
+        "format": 10,
+        "mipCount": 12,
+        "completeImageSize": 2796216
+      },
+      {
+        "name": "Nemesis_Eye_EmissionMask",
+        "width": 2048,
+        "height": 2048,
+        "format": 10,
+        "mipCount": 12,
+        "completeImageSize": 2796216
+      },
+      {
+        "name": "Nemesis_Hairs (17)",
+        "width": 2048,
+        "height": 2048,
+        "format": 10,
+        "mipCount": 12,
+        "completeImageSize": 2796216
+      },
+      {
+        "name": "Nemesis_Skin (32)",
+        "width": 2048,
+        "height": 2048,
+        "format": 12,
+        "mipCount": 12,
+        "completeImageSize": 5592432
+      },
+      {
+        "name": "noizu",
+        "width": 2048,
+        "height": 2048,
+        "format": 10,
+        "mipCount": 12,
+        "completeImageSize": 2796216
+      },
+      {
+        "name": "noizu2",
+        "width": 2048,
+        "height": 2048,
+        "format": 10,
+        "mipCount": 12,
+        "completeImageSize": 2796216
+      }
+    ],
+    "animationSummary": {
+      "uniqueAnimationClipObjects": 233,
+      "curveChannels": 4662,
+      "genericBindingEntries": 24013,
+      "streamedClipValueCount": 68412,
+      "denseSampleCount": 39118,
+      "clipNames": [
+        "",
+        "",
+        "05_Kemomimi_Default",
+        "05_Kemomimi_Normal",
+        "05_Kemomimi_Re",
+        "AFK-finish_FX",
+        "AFK1-idle_Action",
+        "AFK1-idle_FX",
+        "AFK1-init_Aciton",
+        "AFK1-init_FX",
+        "AFK2-idle_FX",
+        "AFK2-init",
+        "AFK2-init_FX",
+        "AFK2-out",
+        "AFK2-out_FX",
+        "ArmLeft",
+        "ArmRight",
+        "Beret_OFF",
+        "BirthColora_Max",
+        "BirthColora_Min",
+        "BirthColorb_Max",
+        "BirthColorb_Min",
+        "BirthColorg_Max",
+        "BirthColorg_Min",
+        "BirthColorr_Max",
+        "BirthColorr_Min",
+        "CaptureReset",
+        "ColliderJump_OFF",
+        "ColliderJump_ON",
+        "Done",
+        "Ear_DOWN",
+        "Ear_UP",
+        "Empty",
+        "Empty",
+        "Erase",
+        "EraserClearx",
+        "EraserCleary",
+        "EraserClearz",
+        "EraserPointx",
+        "EraserPointy",
+        "EraserPointz",
+        "EraserRegionx_Max",
+        "EraserRegionx_Min",
+        "EraserRegiony_Max",
+        "EraserRegiony_Min",
+        "EraserRegionz_Max",
+        "EraserRegionz_Min",
+        "EyeLightOff",
+        "EyeLightOn",
+        "Facial_00_idle",
+        "Facial_01_uge",
+        "Facial_02_Pero",
+        "Facial_03_Doya",
+        "Facial_04_Tere",
+        "Facial_05_Orooro",
+        "Facial_06_Hunsu",
+        "Facial_07_niko",
+        "Facial_08_Hau",
+        "Facial_09_sirome",
+        "Facial_10_Wink",
+        "Facial_11_Boronaki",
+        "Facial_12_Jito",
+        "Facial_13_Kirakira",
+        "Facial_14_Lemon",
+        "Facial_15_peropero",
+        "Facial_16_doya2",
+        "Facial_17_Kekkai",
+        "Facial_18_Fu--n",
+        "Facial_19_DarknessSmile",
+        "Facial_20_Smile2",
+        "Facial_21_Hin",
+        "Facial_22_kyomu",
+        "Facial_23_aori",
+        "Facial_24_Gaman",
+        "Facial_25_Darkness",
+        "Facial_26_Good",
+        "Facial_27_uge",
+        "Facial_28_siwasiwa",
+        "Facial_29_FX",
+        "Facial_30_poke",
+        "Facial_31_hiki",
+        "Facial_32_suya",
+        "Facial_33_II",
+        "Fire",
+        "Follow",
+        "Foot_Default_L",
+        "Foot_Default_R",
+        "Foot_Idle_L",
+        "Foot_Idle_R",
+        "Foot_Open2_L",
+        "Foot_Open2_R",
+        "Foot_Open_L",
+        "Foot_Open_R",
+        "Foot_hold2_L",
+        "Foot_hold2_R",
+        "Foot_hold_L",
+        "Foot_hold_R",
+        "GripIdle",
+        "GripL",
+        "GripR",
+        "GripRelease",
+        "HandleOff",
+        "HandleOn",
+        "Idle",
+        "InboxEmpty",
+        "Init",
+        "KneeSox_OFF",
+        "KneeSox_ON",
+        "Latch",
+        "Left",
+        "LipsyncBlocker",
+        "MMDRelay",
+        "NullMotion",
+        "Positionx_Max",
+        "Positionx_Min",
+        "Positiony_Max",
+        "Positiony_Min",
+        "Positionz_Max",
+        "Positionz_Min",
+        "Property Overlay controlled by Costume_KneeSox 100",
+        "Property Overlay controlled by Costume_KneeSox 100",
+        "Property Overlay controlled by Costume_KneeSox 100",
+        "Property Overlay controlled by Costume_KneeSox 100",
+        "Property Overlay controlled by Costume_KneeSox 100",
+        "Property Overlay controlled by Costume_KneeSox 100",
+        "Property Overlay controlled by Costume_KneeSox 100",
+        "Property Overlay controlled by Costume_Shoes 100",
+        "Property Overlay controlled by Costume_Shoes 100",
+        "Reactive Component Defaults",
+        "RearmReset",
+        "Release",
+        "Release",
+        "Reset",
+        "Right",
+        "ScaleMax",
+        "ScaleMin",
+        "Settle",
+        "Shoes_OFF",
+        "Shoes_OFF_CON",
+        "Shoes_OFF_PB",
+        "Sizex_Max",
+        "Sizex_Min",
+        "Sizey_Max",
+        "Sizey_Min",
+        "Sizez_Max",
+        "Sizez_Min",
+        "TailCollider_OFF",
+        "TailCollider_ON",
+        "TailPose_Default",
+        "TailPose_UP_1",
+        "TailPose_down",
+        "TailPose_up_2",
+        "TailPose_wag_A",
+        "TailPose_wag_B",
+        "TailPose_wag_C",
+        "Toe_OFF",
+        "Tops_OFF",
+        "Tops_ON",
+        "WingDown",
+        "Wing_Default",
+        "Wing_Fast",
+        "Wing_Slow",
+        "Wing_Up",
+        "World",
+        "beret_ON",
+        "blank",
+        "blank",
+        "empty",
+        "empty",
+        "empty motion",
+        "empty motion",
+        "empty motion",
+        "empty motion",
+        "empty motion",
+        "empty motion",
+        "empty motion",
+        "empty motion",
+        "empty motion",
+        "nemesys_crouch_still",
+        "proxy_backflip",
+        "proxy_crouch_walk_forward",
+        "proxy_crouch_walk_right",
+        "proxy_crouch_walk_right_135",
+        "proxy_crouch_walk_right_45",
+        "proxy_dance",
+        "proxy_die",
+        "proxy_empty",
+        "proxy_fall_short",
+        "proxy_hands_fist",
+        "proxy_hands_gun",
+        "proxy_hands_idle",
+        "proxy_hands_open",
+        "proxy_hands_peace",
+        "proxy_hands_point",
+        "proxy_hands_rock",
+        "proxy_hands_thumbs_up",
+        "proxy_idle",
+        "proxy_ikpose",
+        "proxy_low_crawl_forward",
+        "proxy_low_crawl_right",
+        "proxy_low_crawl_still",
+        "proxy_run_backward",
+        "proxy_run_forward",
+        "proxy_run_strafe_right",
+        "proxy_run_strafe_right_135",
+        "proxy_run_strafe_right_45",
+        "proxy_seated_clap",
+        "proxy_seated_disapprove",
+        "proxy_seated_disbelief",
+        "proxy_seated_drum",
+        "proxy_seated_laugh",
+        "proxy_seated_point",
+        "proxy_seated_raise_hand",
+        "proxy_seated_shake_fist",
+        "proxy_sit",
+        "proxy_sprint_forward",
+        "proxy_stand_cheer",
+        "proxy_stand_clap",
+        "proxy_stand_point",
+        "proxy_stand_sadkick",
+        "proxy_stand_still",
+        "proxy_stand_wave",
+        "proxy_strafe_right",
+        "proxy_strafe_right_135",
+        "proxy_strafe_right_45",
+        "proxy_supine_getup",
+        "proxy_tpose",
+        "proxy_walk_backward",
+        "proxy_walk_forward",
+        "あおむけ",
+        "たてひざ（女）",
+        "ぺたん",
+        "よこむき"
+      ]
+    },
+    "nonFiniteAudit": {
+      "AnimatorController": [
+        {
+          "controller": "Nemesis_Locomotion",
+          "occurrences": 6,
+          "propertyPaths": [
+            "/m_Controller/m_StateMachineArray[]/data/m_StateConstantArray[]/data/m_BlendTreeConstantArray[]/data/m_NodeArray[]/data/m_Blend2dData/data/m_ChildPairAvgMagInvArray[]",
+            "/m_Controller/m_StateMachineArray[]/data/m_StateConstantArray[]/data/m_BlendTreeConstantArray[]/data/m_NodeArray[]/data/m_Blend2dData/data/m_ChildPairVectorArray[]/y"
+          ],
+          "identicalInAcceptedPredecessor": true
+        }
+      ],
+      "Mesh": {
+        "positiveInfinityValues": 11826,
+        "negativeInfinityValues": 11826,
+        "objectsAffected": 19,
+        "interpretation": "per-bone AABB sentinel metadata; identical in accepted predecessor"
+      },
+      "ParticleSystem": [
+        {
+          "gameObject": "Store",
+          "propertyPath": "/InitialModule/startLifetime/scalar",
+          "value": "+Infinity",
+          "unityDocumentedAsInfiniteLifetime": true,
+          "identicalValuePresentInAcceptedPredecessor": true
+        }
+      ]
+    }
+  },
+  "versionDiff": {
+    "objectCountDelta": {
+      "AnimationClip": 10,
+      "Animator": 0,
+      "AnimatorController": 0,
+      "AssetBundle": 0,
+      "Avatar": 0,
+      "AvatarMask": 0,
+      "BoxCollider": 0,
+      "GameObject": 5,
+      "Material": 0,
+      "Mesh": 0,
+      "MeshFilter": 0,
+      "MeshRenderer": 0,
+      "MonoBehaviour": -21,
+      "MonoScript": 2,
+      "ParticleSystem": 0,
+      "ParticleSystemRenderer": 0,
+      "Shader": 0,
+      "SkinnedMeshRenderer": 0,
+      "Texture2D": 2,
+      "Transform": 5
+    },
+    "addedAnimationClips": [
+      "BridgeWait",
+      "Brush",
+      "LevelOff",
+      "LevelOn",
+      "Owner0",
+      "Owner1",
+      "Owner2",
+      "Remote0",
+      "Remote1",
+      "Remote2"
+    ],
+    "removedAnimationClips": [],
+    "addedTextures": [
+      "CatalogAtlas",
+      "CatalogMetadata"
+    ],
+    "removedTextures": [],
+    "addedMaterials": [
+      "ParticleBoxCatalog"
+    ],
+    "removedMaterials": [
+      "MorphForge box cells"
+    ],
+    "addedShaders": [
+      "MorphForge/ParticleBoxCatalog"
+    ],
+    "removedShaders": [
+      "MorphForge/ParticleBoxLocalUV"
+    ],
+    "particleChanges": {
+      "Store.maxParticles": {
+        "before": 64,
+        "after": 16384,
+        "multiplier": 256
+      },
+      "Store.startLifetime": {
+        "before": "+Infinity",
+        "after": "+Infinity",
+        "unchanged": true
+      },
+      "Pump.startLifetime": {
+        "before": 0.025,
+        "after": 0.5
+      },
+      "Store.rendererMaterial": {
+        "before": "MorphForge box cells",
+        "after": "ParticleBoxCatalog"
+      },
+      "Store.rendererShader": {
+        "before": "MorphForge/ParticleBoxLocalUV",
+        "after": "MorphForge/ParticleBoxCatalog"
+      },
+      "sameParticleSystemCount": 2,
+      "sameMeshRendererMode": true,
+      "sameCustomVertexStreams": true
+    },
+    "controllerChanges": {
+      "totalLayers": {
+        "before": 55,
+        "after": 57
+      },
+      "totalStates": {
+        "before": 459,
+        "after": 437
+      },
+      "totalAnyStateTransitions": {
+        "before": 254,
+        "after": 228
+      },
+      "totalTransitions": {
+        "before": 1009,
+        "after": 960
+      },
+      "totalControllerRuntimeSizeBytes": {
+        "before": 283432,
+        "after": 270883
+      },
+      "interpretation": "Overall animation complexity and serialized controller runtime size decreased. The FX controller gained two layers but contains fewer states, transitions and clip references than before."
+    },
+    "synchronizedExpressionBits": {
+      "before": 196,
+      "after": 159,
+      "note": "Lower in the rejected bundle; not a likely budget trigger."
+    }
+  },
+  "sourceSceneSnapshot": {
+    "capturedFrom": "Unity Editor active scene while dirty",
+    "scenePath": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+    "sceneDirty": true,
+    "sceneFile": {
+      "exists": true,
+      "sizeBytes": 968303,
+      "lastWriteTimeUtc": "2026-10-19T00:04:30.7686744Z",
+      "sha256": "501ec0ca438fbf645f609f455df5396c151819e6f84c0e2a03451cedba9cf453"
+    },
+    "sceneStatesBefore": [
+      {
+        "path": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+        "name": "MorphForge_Stage3",
+        "isLoaded": true,
+        "isDirty": true,
+        "isActive": true
+      },
+      {
+        "path": "Packages/nadena.dev.ndmf/Runtime/___NDMF Preview___.unity",
+        "name": "___NDMF Preview___",
+        "isLoaded": true,
+        "isDirty": false,
+        "isActive": false
+      }
+    ],
+    "sceneStatesAfter": [
+      {
+        "path": "Assets/MorphForge/Scenes/MorphForge_Stage3.unity",
+        "name": "MorphForge_Stage3",
+        "isLoaded": true,
+        "isDirty": true,
+        "isActive": true
+      },
+      {
+        "path": "Packages/nadena.dev.ndmf/Runtime/___NDMF Preview___.unity",
+        "name": "___NDMF Preview___",
+        "isLoaded": true,
+        "isDirty": false,
+        "isActive": false
+      }
+    ],
+    "avatar": {
+      "name": "MorphForge_Stage3_Avatar",
+      "transformCount": 418,
+      "componentCount": 563,
+      "missingScriptObjectCount": 0,
+      "morphForgeRuntimeScriptsInsideAvatar": [],
+      "particleSystems": [
+        {
+          "name": "Pump",
+          "path": "MorphForge_Stage3_Avatar[0]/MorphForgePlacement[22]/WorldFrame[2]/AnchorPose[0]/ContentLeveling[2]/ContentScale[0]/ProtocolCenter[0]/MorphForgeGeometry[0]/Minimum[0]/Center[0]/Pump[1]",
+          "activeSelf": false,
+          "activeInHierarchy": false,
+          "isPlaying": false,
+          "isPaused": false,
+          "isStopped": true,
+          "particleCount": 0,
+          "lengthInSeconds": 0.1,
+          "looping": false,
+          "prewarm": false,
+          "playOnAwake": true,
+          "simulationSpace": "Local",
+          "scalingMode": "Local",
+          "ringBufferMode": "Disabled",
+          "startLifetime": {
+            "mode": "Constant",
+            "constant": 0.5,
+            "constantMin": 0.0,
+            "constantMax": 0.5,
+            "curveMultiplier": 1.0,
+            "isNonFinite": false
+          },
+          "startSpeed": {
+            "mode": "Constant",
+            "constant": 0.0,
+            "constantMin": 0.0,
+            "constantMax": 0.0,
+            "curveMultiplier": 1.0,
+            "isNonFinite": false
+          },
+          "startSize": {
+            "mode": "Constant",
+            "constant": 1.0,
+            "constantMin": 0.0,
+            "constantMax": 1.0,
+            "curveMultiplier": 1.0,
+            "isNonFinite": false
+          },
+          "startSize3D": false,
+          "startRotation3D": false,
+          "maxParticles": 1,
+          "emission": {
+            "enabled": true,
+            "rateOverTime": {
+              "mode": "Constant",
+              "constant": 0.0,
+              "constantMin": 0.0,
+              "constantMax": 0.0,
+              "curveMultiplier": 1.0,
+              "isNonFinite": false
+            },
+            "rateOverDistance": {
+              "mode": "Constant",
+              "constant": 0.0,
+              "constantMin": 0.0,
+              "constantMax": 0.0,
+              "curveMultiplier": 1.0,
+              "isNonFinite": false
+            },
+            "bursts": [
+              {
+                "time": 0.0,
+                "count": {
+                  "mode": "Constant",
+                  "constant": 1.0,
+                  "constantMin": 0.0,
+                  "constantMax": 1.0,
+                  "curveMultiplier": 1.0,
+                  "isNonFinite": false
+                },
+                "cycleCount": 1,
+                "repeatInterval": 0.01,
+                "probability": 1.0
+              }
+            ]
+          },
+          "collision": {
+            "enabled": false,
+            "type": "Planes",
+            "colliderForce": 0.0
+          },
+          "subEmitters": {
+            "enabled": true,
+            "count": 1,
+            "systems": [
+              "MorphForge_Stage3_Avatar[0]/MorphForgePlacement[22]/WorldFrame[2]/AnchorPose[0]/ContentLeveling[2]/ContentScale[0]/ProtocolCenter[0]/MorphForgeGeometry[0]/Store[1]"
+            ]
+          },
+          "trails": false,
+          "lights": false,
+          "renderer": {
+            "renderMode": "Billboard",
+            "alignment": "View",
+            "sortMode": "None",
+            "meshPath": null,
+            "meshVertexCount": 0,
+            "materialPaths": [],
+            "activeVertexStreams": [
+              "Position",
+              "Normal",
+              "Color",
+              "UV"
+            ]
+          },
+          "nonFiniteSerializedFloats": []
+        },
+        {
+          "name": "Store",
+          "path": "MorphForge_Stage3_Avatar[0]/MorphForgePlacement[22]/WorldFrame[2]/AnchorPose[0]/ContentLeveling[2]/ContentScale[0]/ProtocolCenter[0]/MorphForgeGeometry[0]/Store[1]",
+          "activeSelf": true,
+          "activeInHierarchy": true,
+          "isPlaying": false,
+          "isPaused": false,
+          "isStopped": true,
+          "particleCount": 0,
+          "lengthInSeconds": 0.1,
+          "looping": false,
+          "prewarm": false,
+          "playOnAwake": false,
+          "simulationSpace": "Custom",
+          "scalingMode": "Hierarchy",
+          "ringBufferMode": "Disabled",
+          "startLifetime": {
+            "mode": "Constant",
+            "constant": "Infinity",
+            "constantMin": 0.0,
+            "constantMax": "Infinity",
+            "curveMultiplier": 1.0,
+            "isNonFinite": true
+          },
+          "startSpeed": {
+            "mode": "Constant",
+            "constant": 0.0,
+            "constantMin": 0.0,
+            "constantMax": 0.0,
+            "curveMultiplier": 1.0,
+            "isNonFinite": false
+          },
+          "startSize": {
+            "mode": "Constant",
+            "constant": 0.25,
+            "constantMin": 0.0,
+            "constantMax": 0.25,
+            "curveMultiplier": 1.0,
+            "isNonFinite": false
+          },
+          "startSize3D": true,
+          "startRotation3D": false,
+          "maxParticles": 16384,
+          "emission": {
+            "enabled": true,
+            "rateOverTime": {
+              "mode": "Constant",
+              "constant": 0.0,
+              "constantMin": 0.0,
+              "constantMax": 0.0,
+              "curveMultiplier": 1.0,
+              "isNonFinite": false
+            },
+            "rateOverDistance": {
+              "mode": "Constant",
+              "constant": 0.0,
+              "constantMin": 0.0,
+              "constantMax": 0.0,
+              "curveMultiplier": 1.0,
+              "isNonFinite": false
+            },
+            "bursts": [
+              {
+                "time": 0.0,
+                "count": {
+                  "mode": "Constant",
+                  "constant": 1.0,
+                  "constantMin": 0.0,
+                  "constantMax": 1.0,
+                  "curveMultiplier": 1.0,
+                  "isNonFinite": false
+                },
+                "cycleCount": 1,
+                "repeatInterval": 0.01,
+                "probability": 1.0
+              }
+            ]
+          },
+          "collision": {
+            "enabled": false,
+            "type": "Planes",
+            "colliderForce": 0.0
+          },
+          "subEmitters": {
+            "enabled": false,
+            "count": 0,
+            "systems": []
+          },
+          "trails": false,
+          "lights": false,
+          "renderer": {
+            "renderMode": "Mesh",
+            "alignment": "Local",
+            "sortMode": "None",
+            "meshPath": "Assets/MorphForge/Stage2/Cube.asset",
+            "meshVertexCount": 24,
+            "materialPaths": [
+              "Assets/MorphForge/MaterialsCatalog/ParticleBoxCatalog.mat"
+            ],
+            "activeVertexStreams": [
+              "Position",
+              "Normal",
+              "Color",
+              "UV",
+              "UV2",
+              "SizeXYZ"
+            ]
+          },
+          "nonFiniteSerializedFloats": [
+            {
+              "propertyPath": "InitialModule.startLifetime.scalar",
+              "value": "+Infinity"
+            }
+          ]
+        }
+      ],
+      "rendererSummary": {
+        "rendererCount": 22,
+        "meshRendererCount": 1,
+        "skinnedMeshRendererCount": 19,
+        "particleSystemRendererCount": 2,
+        "meshCount": 20,
+        "totalVertices": 58933,
+        "materialCount": 13,
+        "uniqueTextureCount": 12
+      },
+      "textureRuntimeMemoryEstimateBytes": 65141184,
+      "animationLayers": [
+        {
+          "group": "base",
+          "index": 0,
+          "type": "Base",
+          "enabled": false,
+          "isDefault": false,
+          "controllerPath": "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Locomotion.controller",
+          "controllerName": "Nemesis_Locomotion"
+        },
+        {
+          "group": "base",
+          "index": 1,
+          "type": "Additive",
+          "enabled": false,
+          "isDefault": true,
+          "controllerPath": null,
+          "controllerName": null
+        },
+        {
+          "group": "base",
+          "index": 2,
+          "type": "Gesture",
+          "enabled": false,
+          "isDefault": true,
+          "controllerPath": null,
+          "controllerName": null
+        },
+        {
+          "group": "base",
+          "index": 3,
+          "type": "Action",
+          "enabled": false,
+          "isDefault": false,
+          "controllerPath": "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Action.controller",
+          "controllerName": "Nemesis_Action"
+        },
+        {
+          "group": "base",
+          "index": 4,
+          "type": "FX",
+          "enabled": false,
+          "isDefault": false,
+          "controllerPath": "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_FX_v_1_1_0.controller",
+          "controllerName": "Nemesis_FX_v_1_1_0"
+        },
+        {
+          "group": "special",
+          "index": 0,
+          "type": "Sitting",
+          "enabled": false,
+          "isDefault": true,
+          "controllerPath": null,
+          "controllerName": null
+        },
+        {
+          "group": "special",
+          "index": 1,
+          "type": "TPose",
+          "enabled": false,
+          "isDefault": true,
+          "controllerPath": null,
+          "controllerName": null
+        },
+        {
+          "group": "special",
+          "index": 2,
+          "type": "IKPose",
+          "enabled": false,
+          "isDefault": true,
+          "controllerPath": null,
+          "controllerName": null
+        }
+      ],
+      "animationLayerControllerSummaries": [
+        {
+          "name": "Nemesis_Locomotion",
+          "parameterCount": 23,
+          "layerCount": 5,
+          "stateCount": 34,
+          "transitionSearchTotal": 94,
+          "clipCount": 25
+        },
+        {
+          "name": "Nemesis_Action",
+          "parameterCount": 9,
+          "layerCount": 1,
+          "stateCount": 33,
+          "transitionSearchTotal": 61,
+          "clipCount": 24
+        },
+        {
+          "name": "Nemesis_FX_v_1_1_0",
+          "parameterCount": 46,
+          "layerCount": 21,
+          "stateCount": 186,
+          "transitionSearchTotal": 390,
+          "clipCount": 89
+        }
+      ],
+      "componentCounts": [
+        {
+          "type": "UnityEngine.Transform",
+          "count": 418
+        },
+        {
+          "type": "VRC.SDK3.Dynamics.Constraint.Components.VRCRotationConstraint",
+          "count": 45
+        },
+        {
+          "type": "VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBone",
+          "count": 40
+        },
+        {
+          "type": "UnityEngine.SkinnedMeshRenderer",
+          "count": 19
+        },
+        {
+          "type": "VRC.SDK3.Dynamics.PhysBone.Components.VRCPhysBoneCollider",
+          "count": 11
+        },
+        {
+          "type": "VRC.SDK3.Dynamics.Contact.Components.VRCContactReceiver",
+          "count": 3
+        },
+        {
+          "type": "UnityEngine.BoxCollider",
+          "count": 2
+        },
+        {
+          "type": "UnityEngine.ParticleSystem",
+          "count": 2
+        },
+        {
+          "type": "UnityEngine.ParticleSystemRenderer",
+          "count": 2
+        },
+        {
+          "type": "VRC.SDK3.Dynamics.Constraint.Components.VRCParentConstraint",
+          "count": 2
+        },
+        {
+          "type": "VRC.SDK3.Dynamics.Constraint.Components.VRCPositionConstraint",
+          "count": 2
+        },
+        {
+          "type": "nadena.dev.modular_avatar.core.ModularAvatarBoneProxy",
+          "count": 2
+        },
+        {
+          "type": "nadena.dev.modular_avatar.core.ModularAvatarMergeAnimator",
+          "count": 2
+        },
+        {
+          "type": "nadena.dev.modular_avatar.core.ModularAvatarParameters",
+          "count": 2
+        },
+        {
+          "type": "nadena.dev.modular_avatar.core.ModularAvatarShapeChanger",
+          "count": 2
+        },
+        {
+          "type": "UnityEngine.Animator",
+          "count": 1
+        },
+        {
+          "type": "UnityEngine.MeshFilter",
+          "count": 1
+        },
+        {
+          "type": "UnityEngine.MeshRenderer",
+          "count": 1
+        },
+        {
+          "type": "VRC.Core.PipelineManager",
+          "count": 1
+        },
+        {
+          "type": "VRC.SDK3.Avatars.Components.VRCAvatarDescriptor",
+          "count": 1
+        },
+        {
+          "type": "VRC.SDK3.Dynamics.Constraint.Components.VRCAimConstraint",
+          "count": 1
+        },
+        {
+          "type": "nadena.dev.modular_avatar.core.ModularAvatarMenuInstaller",
+          "count": 1
+        },
+        {
+          "type": "nadena.dev.modular_avatar.core.ModularAvatarWorldFixedObject",
+          "count": 1
+        },
+        {
+          "type": "nadena.dev.modular_avatar.core.ModularAvatarWorldScaleObject",
+          "count": 1
+        }
+      ],
+      "nonFiniteControllerFloats": 0
+    },
+    "editorOnlyObjectsOutsideAvatar": [
+      {
+        "type": "BlackStartX.GestureManager.GestureManager",
+        "assembly": "vrchat.blackstartx.gesture-manager",
+        "path": "MorphForge Stage3 Gesture Manager[4]",
+        "insideAvatar": false,
+        "editorOnly": true
+      },
+      {
+        "type": "MorphForge.Editor.MorphForgePlayReceiver",
+        "assembly": "Assembly-CSharp",
+        "path": "MorphForge Test Receiver[6]",
+        "insideAvatar": false,
+        "editorOnly": true
+      }
+    ],
+    "interpretation": "GestureManager and MorphForgePlayReceiver exist only as EditorOnly scene objects outside the avatar. Neither is a final-bundle MonoScript."
+  },
+  "nonFiniteAudit": {
+    "latestBundle": {
+      "AnimatorController": [
+        {
+          "controller": "Nemesis_Locomotion",
+          "occurrences": 6,
+          "propertyPaths": [
+            "/m_Controller/m_StateMachineArray[]/data/m_StateConstantArray[]/data/m_BlendTreeConstantArray[]/data/m_NodeArray[]/data/m_Blend2dData/data/m_ChildPairAvgMagInvArray[]",
+            "/m_Controller/m_StateMachineArray[]/data/m_StateConstantArray[]/data/m_BlendTreeConstantArray[]/data/m_NodeArray[]/data/m_Blend2dData/data/m_ChildPairVectorArray[]/y"
+          ],
+          "identicalInAcceptedPredecessor": true
+        }
+      ],
+      "Mesh": {
+        "positiveInfinityValues": 11826,
+        "negativeInfinityValues": 11826,
+        "objectsAffected": 19,
+        "interpretation": "per-bone AABB sentinel metadata; identical in accepted predecessor"
+      },
+      "ParticleSystem": [
+        {
+          "gameObject": "Store",
+          "propertyPath": "/InitialModule/startLifetime/scalar",
+          "value": "+Infinity",
+          "unityDocumentedAsInfiniteLifetime": true,
+          "identicalValuePresentInAcceptedPredecessor": true
+        }
+      ]
+    },
+    "differentialResult": "All non-finite categories are structurally identical in the earlier local bundle: 1 particle Infinity, 6 AnimatorController NaN/Infinity values, and 23,652 Mesh AABB sentinel floats. They are therefore not credible differential causes for this rejection.",
+    "startLifetimeConclusion": "Unity 2022.3 explicitly documents float.PositiveInfinity as valid for infinite particle lifetime. It is not malformed Unity data. It can only remain an undocumented VRChat compatibility variable, but the accepted predecessor used the same value."
+  },
+  "ruledOutOrDeprioritized": [
+    {
+      "item": "PC compressed-size limit",
+      "evidence": "7,519,081 bytes (7.17 MiB) vs official 200 MB limit",
+      "status": "ruled out"
+    },
+    {
+      "item": "PC uncompressed-size limit",
+      "evidence": "57,330,700 bytes (54.68 MiB) vs official 500 MB limit",
+      "status": "ruled out"
+    },
+    {
+      "item": "Wrong build target",
+      "evidence": "SerializedFile target platform is StandaloneWindows64",
+      "status": "ruled out"
+    },
+    {
+      "item": "Missing scripts / custom runtime scripts in final bundle",
+      "evidence": "18 MonoScript classes are all VRChat SDK classes; no MorphForge, GestureManager or PlayReceiver script",
+      "status": "ruled out"
+    },
+    {
+      "item": "GestureManager/PlayReceiver accidentally included in avatar",
+      "evidence": "Both are EditorOnly scene objects outside the avatar and absent from the final MonoScript list",
+      "status": "ruled out"
+    },
+    {
+      "item": "Ordinary particle-system-count explosion",
+      "evidence": "Final bundle contains exactly 2 ParticleSystems, not 151 or 289; those log counts belong to other remote avatars",
+      "status": "ruled out"
+    },
+    {
+      "item": "Generic animator complexity increase",
+      "evidence": "Total controller runtime size is 270,883 bytes; total states/transitions and FX runtime size are lower than accepted predecessor",
+      "status": "low likelihood"
+    },
+    {
+      "item": "startLifetime=+Infinity alone",
+      "evidence": "Same value existed in the earlier accepted 64-particle Store",
+      "status": "not sufficient by itself"
+    },
+    {
+      "item": "Mesh/animation NaN/Infinity alone",
+      "evidence": "Same counts and locations in acceptable predecessor",
+      "status": "not sufficient by itself"
+    },
+    {
+      "item": "VRChat performance rank alone",
+      "evidence": "Performance ranking does not impose a public hard cap beyond Very Poor; official documentation separately warns extremely unoptimized avatars may be prevented",
+      "status": "not a complete explanation"
+    }
+  ],
+  "riskRanking": [
+    {
+      "rank": 1,
+      "risk": "Undocumented VRChat server-side particle-capacity/compatibility limit",
+      "why": [
+        "Store maxParticles changed 64 -> 16,384 (256x) in the rejected revision",
+        "It is the largest user-visible behavior change and directly affects allocated particle capacity",
+        "Final Total Particles Active is 16,385 by VRChat performance-stat definition; this is far beyond the public Poor threshold of 2,500 and has no public upper threshold",
+        "A 64-capacity Store with the same +Infinity lifetime previously loaded"
+      ],
+      "confidence": "medium; plausible but unproven",
+      "doNotClaim": "Do not treat the old 50,000 limiter as the server threshold or claim 16,384 is the confirmed cause."
+    },
+    {
+      "rank": 2,
+      "risk": "New catalog renderer/shader/material asset is rejected by an undocumented validator",
+      "why": [
+        "The rejected build adds MorphForge/ParticleBoxCatalog, ParticleBoxCatalog.mat, CatalogAtlas.png and CatalogMetadata",
+        "CatalogMetadata is a 16,384 x 1 RGBAFloat Texture2D; CatalogAtlas is 384 x 96 RGBA32",
+        "A custom MorphForge shader existed before and was accepted, so this is a differential compatibility candidate rather than a general ban on custom shaders"
+      ],
+      "confidence": "medium-low; plausible but unproven",
+      "doNotClaim": "Do not claim VRChat blocks custom shaders or RGBAFloat textures based on available evidence."
+    },
+    {
+      "rank": 3,
+      "risk": "Server false positive or transient analysis state",
+      "why": [
+        "Official VRChat documentation acknowledges server-side security checks and removal of false positives",
+        "Three repeated client requests within 12 seconds all returned the same 403 verdict"
+      ],
+      "confidence": "low-medium; deterministic within this upload, but cannot exclude a mistakenly classified bundle"
+    },
+    {
+      "rank": 4,
+      "risk": "Undisclosed asset-level incompatibility from newly added placement animator clips",
+      "why": [
+        "Ten clips were added: BridgeWait, Brush, LevelOff, LevelOn, Owner0..2, Remote0..2",
+        "Overall animation channels are unchanged and total controller work decreased",
+        "No malformed animation curve values are unique to this revision"
+      ],
+      "confidence": "low"
+    }
+  ],
+  "recommendedSingleVariableFollowUps": [
+    {
+      "order": 1,
+      "change": "Clone the current successful avatar, keep the catalog/material/new clips, but set Store.maxParticles back to 64 (or at most 256). Build to a separate test avatar ID and upload.",
+      "separates": "Particle capacity/compatibility from renderer/catalog changes",
+      "expectedIfCapacityIsTrigger": "Avatar becomes Ready"
+    },
+    {
+      "order": 2,
+      "change": "Keep Store.maxParticles=16384 but restore the old MorphForge/ParticleBoxLocalUV material/shader and exclude CatalogAtlas/CatalogMetadata.",
+      "separates": "Capacity from the new catalog renderer path",
+      "expectedIfCatalogIsTrigger": "Avatar becomes Ready"
+    },
+    {
+      "order": 3,
+      "change": "If both still fail, keep the new catalog and 16,384 capacity but disable the ten newly added placement clips/layers.",
+      "separates": "Animator additions from the particle path",
+      "expectedIfAnimatorIsTrigger": "Avatar becomes Ready"
+    },
+    {
+      "order": 4,
+      "change": "If the current build eventually passes unchanged, retain all evidence and treat it as a server false-positive/rescan case.",
+      "separates": "Transient analysis verdict from bundle incompatibility",
+      "expectedIfTransient": "Same SHA becomes Ready without a content change"
+    }
+  ],
+  "supportTicketData": {
+    "avatarId": "avtr_3ba403cb-569d-4198-8de6-678e59c4440f",
+    "failedUploadTimes": [
+      "2026-10-19 08:07:25 +08:00",
+      "2026-10-19 08:07:35 +08:00",
+      "2026-10-19 08:07:37 +08:00"
+    ],
+    "localBundleSha256": "f09c858cc585cec664b4e4d44a9c1b04e4512e63439b3dba02dccac043e32461",
+    "compressedSize": "7,519,081 bytes (7.17 MiB)",
+    "uncompressedSize": "57,330,700 bytes (54.68 MiB)",
+    "platform": "Windows / StandaloneWindows64",
+    "sdk": "VRChat SDK 3.10.5",
+    "unity": "2022.3.22f1",
+    "observedClientError": "AssetBundleFailedServerSideChecks; GET /api/1/analysis/file_d68d4ea2-015f-40cd-bd19-444a2e49b24a/5/security returned 403 File forbidden",
+    "request": "Ask VRChat Support whether the security analysis rejected a specific asset/component and whether this revision is a false positive. Do not request an override; request diagnosis/rescan."
+  },
+  "sources": [
+    {
+      "title": "VRChat - My avatar is showing Security Checks Failed",
+      "url": "https://help.vrchat.com/hc/en-us/articles/31264259544211-My-avatar-is-showing-Security-Checks-Failed",
+      "usedFor": "Server-side security checks, undocumented hard limits, false-positive support path"
+    },
+    {
+      "title": "VRChat - Avatar Size Limits",
+      "url": "https://creators.vrchat.com/avatars/avatar-size-limits/",
+      "usedFor": "PC 200 MB download / 500 MB uncompressed limits and SDK enforcement"
+    },
+    {
+      "title": "VRChat - Performance Ranks",
+      "url": "https://creators.vrchat.com/avatars/avatar-performance-ranking-system",
+      "usedFor": "Total Particles Active is sum of maxParticles; public Poor threshold 2500; Very Poor is not a server security verdict"
+    },
+    {
+      "title": "Unity 2022.3 - ParticleSystem.MainModule.startLifetime",
+      "url": "https://docs.unity3d.com/2022.3/Documentation/ScriptReference/ParticleSystem.MainModule-startLifetime.html",
+      "usedFor": "float.PositiveInfinity is documented as valid infinite particle lifetime"
+    },
+    {
+      "title": "Local Editor log",
+      "path": "D:\\Projects\\VRChatProjects2\\MorphForge\\Logs\\MorphForge-Editor.log",
+      "usedFor": "Build timestamps, successful bundle build, 7.2 MB/54.7 MB size statement and category breakdown"
+    },
+    {
+      "title": "Local VRChat client log",
+      "path": "C:\\Users\\Chiro\\AppData\\LocalLow\\VRChat\\VRChat\\output_log_2026-10-19_02-29-02.txt",
+      "usedFor": "Exact server-side check failure and prior successful load of the same avatar ID"
+    }
+  ],
+  "auditScript": {
+    "path": "AgentScripts/Stage3SecurityAudit.cs",
+    "sha256": "8d326cfe8e33439d903971217a26f4d6c9d4860ba64ab39507f2c0404c434f7b",
+    "entry": "Stage3SecurityAudit.Run",
+    "dryRunCompile": "success",
+    "executed": "success",
+    "executionMilliseconds": 337,
+    "readOnlyAssertions": [
+      "No scene was saved, marked clean, closed, switched, or reloaded.",
+      "No Play Mode, build, upload, VRChat launch, or OSC send occurred.",
+      "No serialized asset or component was modified."
+    ]
+  },
+  "remainingUncertainty": [
+    "VRChat does not publish the exact server-side security rules or thresholds.",
+    "A server verdict cannot be reproduced locally; only structural risk factors and differential changes are observable.",
+    "The current dirty scene may continue to change; all source-scene figures refer to the captured snapshot and hash above.",
+    "The local predecessor VRCA is the nearest prior build, not proof of the exact cloud bytes that loaded at 02:29:27."
+  ]
+}
