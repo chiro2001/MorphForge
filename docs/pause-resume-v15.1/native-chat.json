@@ -1,0 +1,107 @@
+{
+  "success": true,
+  "apiType": "chat",
+  "checks": [
+    {
+      "name": "isolated project ID and patched version",
+      "passed": true
+    },
+    {
+      "name": "OSC remains disabled",
+      "passed": true
+    },
+    {
+      "name": "pause 1 preserves run and has no cache-loss alert",
+      "passed": true
+    },
+    {
+      "name": "pause 1 keeps interrupted usage unknown",
+      "passed": true
+    },
+    {
+      "name": "pause 1 displays an honest unknown-usage message",
+      "passed": true
+    },
+    {
+      "name": "pause 2 preserves run and has no cache-loss alert",
+      "passed": true
+    },
+    {
+      "name": "pause 2 keeps interrupted usage unknown",
+      "passed": true
+    },
+    {
+      "name": "pause 2 displays an honest unknown-usage message",
+      "passed": true
+    },
+    {
+      "name": "two pointer resumes complete the same run",
+      "passed": true
+    },
+    {
+      "name": "every actual HTTP message prefix is unchanged",
+      "passed": true
+    },
+    {
+      "name": "tools and static instructions remain stable",
+      "passed": true
+    },
+    {
+      "name": "only real fixture usage enters hit-rate denominator",
+      "passed": true
+    },
+    {
+      "name": "restore never authorizes a prefix reset",
+      "passed": true
+    },
+    {
+      "name": "patched UI has no unhandled errors",
+      "passed": true
+    },
+    {
+      "name": "test never enabled OSC",
+      "passed": true
+    }
+  ],
+  "requests": 3,
+  "cacheMonitor": {
+    "alert": null,
+    "cacheReportedRequests": 1,
+    "cacheRequired": true,
+    "clientPrefixIsNotCacheHit": true,
+    "lastCachedTokens": 150000,
+    "lastHitRate": 0.9375,
+    "lastInputTokens": 160000,
+    "lastUnreportedInterruption": {
+      "cacheReported": false,
+      "excludedFromCacheSamples": true,
+      "note": "请求已中断，未收到缓存结算信息；费用未知，不作为缓存未命中的证据。",
+      "phase": "streaming",
+      "requestId": "6d1d8143-e235-44d2-bcf8-ff50e4627b5e",
+      "usageReported": false
+    },
+    "mode": "strict",
+    "prefix": {
+      "appendOnly": true,
+      "contextEpoch": 0,
+      "currentMessages": 5,
+      "expectedReset": false,
+      "field": "messages",
+      "firstChangedMessage": null,
+      "previousMessages": 4,
+      "reason": "append_only",
+      "resetAuthorization": null,
+      "scope": "wire_messages",
+      "sharedMessages": 4,
+      "staticPrefixUnchanged": true
+    },
+    "recentHitRate": 0.9375,
+    "requests": 1,
+    "source": "upstream_usage",
+    "status": "warming",
+    "unreportedInterruptions": 2,
+    "windowRequests": 1
+  },
+  "scope": "Actual Tauri/WebView2 pointer clicks and core requests; loopback fixture usage is synthetic, no upstream cache or billing claim.",
+  "realModelRequests": 0
+}

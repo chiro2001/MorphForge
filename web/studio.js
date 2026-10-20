@@ -771,7 +771,7 @@ ${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${["mf4
   setValue("cacheGuard", harness.settings.cacheGuard || "auto");
   const monitor = harness.cacheMonitor || {};
   $("cacheMonitorStatus").textContent =
-    `前缀 ${monitor.prefix?.appendOnly === false ? "发生重置/变化" : monitor.prefix?.appendOnly === true ? "保持追加" : "待观察"} · 最近缓存 ${typeof monitor.recentHitRate === "number" ? (monitor.recentHitRate * 100).toFixed(1) + "%" : "未报告"} · ${monitor.alert || (monitor.mode ? (monitor.cacheRequired ? "严格监测" : "观察模式") : "等待首次请求；保护按配置启用")}`;
+    `前缀 ${monitor.prefix?.appendOnly === false ? "发生重置/变化" : monitor.prefix?.appendOnly === true ? "保持追加" : "待观察"} · 最近缓存 ${typeof monitor.recentHitRate === "number" ? (monitor.recentHitRate * 100).toFixed(1) + "%" : "未报告"} · ${monitor.alert || (monitor.mode ? (monitor.cacheRequired ? "严格监测" : "观察模式") : "等待首次请求；保护按配置启用")}${monitor.unreportedInterruptions ? ` · ${monitor.unreportedInterruptions} 次中断未回报缓存，费用未知，未计入命中率` : ""}`;
   $("cacheMonitorStatus").classList.toggle("kind-error", !!monitor.alert);
   $("cacheLiveStatus").textContent = $("cacheMonitorStatus").textContent;
   $("cacheLiveStatus").classList.toggle("kind-error", !!monitor.alert);

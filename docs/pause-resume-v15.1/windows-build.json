@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "source": "C:\\Users\\Chiro\\tmp\\morphforge\\pause-resume-v0151\\source",
+  "package": "C:\\Users\\Chiro\\tmp\\morphforge\\pause-resume-v0151\\package",
+  "version": "0.15.1",
+  "files": [
+    {
+      "sha256": "6e902275c2d5938b51b1e934affb979f6115fd043d0845bcc8589ed811c65b6b",
+      "name": "morphforge-desktop.exe"
+    },
+    {
+      "sha256": "0243bf6990506c6adc37857beb06122f74c5958964996c888574bf35c97f9b36",
+      "name": "morphforge.exe"
+    }
+  ]
+}

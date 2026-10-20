@@ -323,7 +323,7 @@ impl Provider {
             if let Some(id) = event.data["requestId"].as_str() {
                 let status = {
                     let mut guard = self.guard.lock().unwrap();
-                    let status = guard.unfinished(id, &event.data);
+                    let status = guard.unfinished(kind, id, &event.data);
                     guard.save(&self.root)?;
                     status
                 };

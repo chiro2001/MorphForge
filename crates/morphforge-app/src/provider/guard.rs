@@ -23,6 +23,8 @@ pub(super) struct CacheGuard {
     alert: Option<String>,
     prefix: Value,
     in_compact: bool,
+    unreported_interruptions: u64,
+    last_unreported_interruption: Option<Value>,
 }
 impl CacheGuard {
     pub fn load(root: &Path) -> Result<Self> {
@@ -88,22 +90,54 @@ impl CacheGuard {
         self.prefix = prefix.clone();
         self.alert = Some("检测到未经授权的客户端前缀改写；请求未发送".into());
     }
-    pub fn unfinished(&mut self, id: &str, data: &Value) -> Option<Value> {
+    pub fn unfinished(&mut self, kind: &str, id: &str, data: &Value) -> Option<Value> {
         if self.in_compact || data["phase"] == "before_send" || self.last_request == id {
             return None;
         }
         let usage = data["response"]
             .get("usage")
-            .or_else(|| data["terminal"]["response"].get("usage"))
+            .filter(|usage| usage.is_object())
+            .or_else(|| {
+                data["terminal"]["response"]
+                    .get("usage")
+                    .filter(|usage| usage.is_object())
+            })
             .or_else(|| {
                 data["frames"].as_array()?.iter().rev().find_map(|frame| {
                     frame
                         .get("usage")
-                        .or_else(|| frame["response"].get("usage"))
+                        .filter(|usage| usage.is_object())
+                        .or_else(|| {
+                            frame["response"]
+                                .get("usage")
+                                .filter(|usage| usage.is_object())
+                        })
                 })
             })
             .cloned()
             .unwrap_or(Value::Null);
+        // User cancellation cuts off the final usage frame on most streaming
+        // APIs. Absence of that frame is not evidence of a cache miss. Keep an
+        // explicit unknown entry, without inserting an estimated cache sample
+        // or clearing any earlier, independently established alert. Actual
+        // cache counters received before cancellation still use normal checks.
+        if kind == "provider.cancelled"
+            && normalize_usage(&usage)["input_tokens_details"]["cached_tokens"].is_null()
+        {
+            if self
+                .last_unreported_interruption
+                .as_ref()
+                .is_none_or(|last| last["requestId"] != id)
+            {
+                self.unreported_interruptions = self.unreported_interruptions.saturating_add(1);
+                self.last_unreported_interruption = Some(json!({
+                    "requestId":id,"phase":data["phase"],"usageReported":usage.is_object(),
+                    "cacheReported":false,"excludedFromCacheSamples":true,
+                    "note":"请求已中断，未收到缓存结算信息；费用未知，不作为缓存未命中的证据。"
+                }));
+            }
+            return Some(self.status());
+        }
         Some(self.record(id, &json!({"usage":usage})))
     }
     pub fn record(&mut self, id: &str, value: &Value) -> Value {
@@ -190,6 +224,7 @@ impl CacheGuard {
             "recentHitRate":if input>0 {Some(cached as f64/input as f64)}else{None},
             "lastInputTokens":last.map(|s|s.input),"lastCachedTokens":last.and_then(|s|s.cached),
             "lastHitRate":last.and_then(|s|s.cached.map(|c|if s.input>0{c as f64/s.input as f64}else{0.0})),
+            "unreportedInterruptions":self.unreported_interruptions,"lastUnreportedInterruption":self.last_unreported_interruption,
             "source":"upstream_usage","clientPrefixIsNotCacheHit":true})
     }
 }
@@ -201,6 +236,78 @@ mod tests {
             cache_guard: "strict".into(),
             estimated_input_tokens: 20_000,
             ..Default::default()
+        }
+    }
+    #[test]
+    fn cancelled_unknown_usage_is_persisted_separately_from_cache_samples() {
+        let mut g = CacheGuard::default();
+        let c = Connection::default();
+        let mut t = trace();
+        t.estimated_input_tokens = 160_000;
+        let p = json!({"appendOnly":true});
+        g.prepare(&c, &json!("x"), &t, &p).unwrap();
+        let data = json!({"phase":"streaming","frames":[{"type":"response.output_text.delta","delta":"partial"}]});
+        let status = g.unfinished("provider.cancelled", "a", &data).unwrap();
+        assert!(status["alert"].is_null());
+        assert_eq!(status["windowRequests"], 0);
+        assert!(status["recentHitRate"].is_null());
+        assert_eq!(status["unreportedInterruptions"], 1);
+        assert_eq!(status["lastUnreportedInterruption"]["cacheReported"], false);
+        g.unfinished("provider.cancelled", "a", &data);
+        assert_eq!(g.status()["unreportedInterruptions"], 1);
+        let dir = tempfile::tempdir().unwrap();
+        g.save(dir.path()).unwrap();
+        let mut g = CacheGuard::load(dir.path()).unwrap();
+        assert_eq!(g.status(), status);
+        g.prepare(&c, &json!("x"), &t, &p).unwrap();
+        g.record("b", &json!({"usage":{"input_tokens":160000,"input_tokens_details":{"cached_tokens":150000}}}));
+        assert_eq!(g.status()["recentHitRate"], 0.9375);
+        assert_eq!(g.status()["windowRequests"], 1);
+    }
+
+    #[test]
+    fn cancellation_does_not_clear_a_real_alert_or_ignore_reported_cache_loss() {
+        let c = Connection::default();
+        let mut t = trace();
+        t.estimated_input_tokens = 160_000;
+        let p = json!({"appendOnly":true});
+        let mut g = CacheGuard::default();
+        g.prepare(&c, &json!("x"), &t, &p).unwrap();
+        // A null placeholder must not hide valid counters in an earlier frame.
+        g.unfinished(
+            "provider.cancelled",
+            "a",
+            &json!({"phase":"streaming","frames":[
+                {"usage":{"prompt_tokens":160000,"prompt_tokens_details":{"cached_tokens":0}}},
+                {"usage":null}
+            ]}),
+        );
+        let before = g.status();
+        assert!(before["alert"].is_string());
+        assert_eq!(before["lastCachedTokens"], 0);
+        g.unfinished("provider.cancelled", "b", &json!({"phase":"sending"}));
+        assert_eq!(g.status()["alert"], before["alert"]);
+        assert!(g.prepare(&c, &json!("x"), &t, &p).is_err());
+        g.unfinished("provider.cancelled", "c", &json!({"phase":"before_send"}));
+        assert_eq!(g.status()["unreportedInterruptions"], 1);
+    }
+
+    #[test]
+    fn incomplete_or_failed_requests_still_trigger_missing_cache_protection() {
+        for kind in ["provider.incomplete", "provider.transport_error"] {
+            let mut g = CacheGuard::default();
+            let mut t = trace();
+            t.estimated_input_tokens = 160_000;
+            g.prepare(
+                &Connection::default(),
+                &json!("x"),
+                &t,
+                &json!({"appendOnly":true}),
+            )
+            .unwrap();
+            let s = g.unfinished(kind, "a", &json!({})).unwrap();
+            assert!(s["alert"].is_string(), "{kind}");
+            assert_eq!(s["windowRequests"], 1);
         }
     }
     #[test]

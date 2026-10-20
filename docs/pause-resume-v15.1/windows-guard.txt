@@ -1,0 +1,17 @@
+   Compiling morphforge-app v0.15.1 (C:\Users\Chiro\tmp\morphforge\pause-resume-v0151\source\crates\morphforge-app)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 24.45s
+     Running unittests src\lib.rs (D:\Projects\VRChatProjects2\MorphForge\target\x86_64-pc-windows-msvc\debug\deps\morphforge_app-b541805ecb115fae.exe)
+
+running 9 tests
+test provider::guard::tests::corrupt_monitor_state_is_not_silently_treated_as_a_new_session ... ok
+test provider::guard::tests::incomplete_or_failed_requests_still_trigger_missing_cache_protection ... ok
+test provider::guard::tests::weighted_usage_and_compaction_remain_separate ... ok
+test provider::guard::tests::unknown_is_not_zero_and_large_input_stops_immediately ... ok
+test provider::guard::tests::established_cache_loss_stops_at_the_first_anomaly ... ok
+test provider::guard::tests::cancellation_does_not_clear_a_real_alert_or_ignore_reported_cache_loss ... ok
+test provider::guard::tests::uncached_small_but_realistic_tool_context_stops_after_three_requests ... ok
+test provider::guard::tests::zero_cache_pauses_and_acknowledgement_does_not_change_prefix ... ok
+test provider::guard::tests::cancelled_unknown_usage_is_persisted_separately_from_cache_samples ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 87 filtered out; finished in 0.01s
+

@@ -6,6 +6,7 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
+use futures_util::StreamExt;
 use morphforge_app::{
     capture::CaptureBroker,
     fonts::FontCatalog,
@@ -29,6 +30,7 @@ use tokio::{net::TcpListener, task::JoinHandle};
 enum Reply {
     Http(u16, Value),
     Sse(String),
+    StreamingPause(String, Duration, String),
     Delay(Duration, Box<Reply>),
 }
 
@@ -108,6 +110,7 @@ async fn responses_handler(
             .header(header::CONTENT_TYPE, "text/event-stream")
             .body(Body::from(body))
             .unwrap(),
+        Some(reply @ Reply::StreamingPause(..)) => render_reply(reply),
         Some(Reply::Delay(delay, reply)) => {
             tokio::time::sleep(delay).await;
             render_reply(*reply)
@@ -130,6 +133,18 @@ fn render_reply(reply: Reply) -> Response<Body> {
             .header(header::CONTENT_TYPE, "text/event-stream")
             .body(Body::from(body))
             .unwrap(),
+        Reply::StreamingPause(prefix, delay, suffix) => {
+            let stream = futures_util::stream::once(async move { Ok::<_, std::io::Error>(prefix) })
+                .chain(futures_util::stream::once(async move {
+                    tokio::time::sleep(delay).await;
+                    Ok::<_, std::io::Error>(suffix)
+                }));
+            Response::builder()
+                .status(StatusCode::OK)
+                .header(header::CONTENT_TYPE, "text/event-stream")
+                .body(Body::from_stream(stream))
+                .unwrap()
+        }
         Reply::Delay(_, _) => panic!("nested delay reply is unsupported"),
     }
 }
@@ -1543,6 +1558,108 @@ async fn pause_freezes_active_budget_and_resume_continues_the_same_run() {
 }
 
 #[tokio::test]
+async fn pause_resume_large_stream_preserves_prefix_and_does_not_invent_cache_loss() {
+    for api in ["responses", "chat"] {
+        let progress = if api == "chat" {
+            json!({"choices":[{"index":0,"delta":{"reasoning_content":"正在观察"},"finish_reason":null}]})
+        } else {
+            json!({"type":"response.reasoning_summary_text.delta","delta":"正在观察"})
+        };
+        let done = if api == "chat" {
+            Reply::Http(
+                200,
+                json!({"choices":[{"message":{"role":"assistant","content":"继续完成"},"finish_reason":"stop"}],"usage":{"prompt_tokens":160000,"completion_tokens":10,"total_tokens":160010,"prompt_tokens_details":{"cached_tokens":150000}}}),
+            )
+        } else {
+            sse([
+                json!({"type":"response.completed","response":{"status":"completed","output":[],"usage":{"input_tokens":160000,"output_tokens":10,"total_tokens":160010,"input_tokens_details":{"cached_tokens":150000}}}}),
+            ])
+        };
+        let interrupted = || {
+            Reply::StreamingPause(
+                format!("data: {progress}\n\n"),
+                Duration::from_secs(5),
+                "data: [DONE]\n\n".into(),
+            )
+        };
+        let fake = FakeResponses::start(vec![interrupted(), interrupted(), done]).await;
+        let dir = TempDir::new().unwrap();
+        let w = workspace(&dir);
+        let h = harness(w.clone(), &fake.base);
+        h.provider
+            .configure(&json!({"apiType":api,"stream":true}))
+            .unwrap();
+        h.configure(&json!({"cacheGuard":"strict","maxRunTokens":2000000,"autoCompact":false}))
+            .unwrap();
+        h.inner
+            .lock()
+            .unwrap()
+            .conversation
+            .input
+            .push(json!({"role":"user","content":"参考".repeat(80000)}));
+        h.start("暂停恢复回归").unwrap();
+        let run_id = h.state()["run"]["id"].clone();
+        for index in 0..2 {
+            tokio::time::timeout(Duration::from_secs(5), async {
+                loop {
+                    let ready = w
+                        .lock()
+                        .unwrap()
+                        .events
+                        .iter()
+                        .filter(|e| e.kind == "provider.first_byte")
+                        .count();
+                    if ready > index {
+                        break;
+                    }
+                    tokio::time::sleep(Duration::from_millis(5)).await;
+                }
+            })
+            .await
+            .expect("stream must be active before pausing");
+            h.control("pause").unwrap();
+            assert_eq!(terminal_run(&h).await.status, "paused");
+            let monitor = h.state()["cacheMonitor"].clone();
+            assert!(
+                monitor["alert"].is_null(),
+                "{api}: cancelled stream has no final cache usage: {monitor}"
+            );
+            assert_eq!(monitor["windowRequests"], 0, "no fabricated cache samples");
+            h.control("resume").unwrap();
+        }
+        assert_eq!(terminal_run(&h).await.status, "completed", "{api}");
+        assert_eq!(h.state()["run"]["id"], run_id);
+        assert_eq!(fake.request_count(), 3, "exactly one request per resume");
+        let requests = fake.requests();
+        let field = if api == "chat" { "messages" } else { "input" };
+        for pair in requests.windows(2) {
+            let previous = pair[0][field].as_array().unwrap();
+            let next = pair[1][field].as_array().unwrap();
+            assert_eq!(
+                &next[..previous.len()],
+                previous.as_slice(),
+                "{api}: actual HTTP prefix must append"
+            );
+            assert_eq!(pair[0]["tools"], pair[1]["tools"]);
+        }
+        let monitor = h.state()["cacheMonitor"].clone();
+        assert_eq!(monitor["windowRequests"], 1);
+        assert_eq!(monitor["lastCachedTokens"], 150000);
+        assert_eq!(monitor["unreportedInterruptions"], 2);
+        let events = &w.lock().unwrap().events;
+        assert!(!events.iter().any(|e| e.kind == "cache.guard.blocked"));
+        for event in events
+            .iter()
+            .filter(|e| e.kind == "provider.request")
+            .skip(1)
+        {
+            assert_eq!(event.data["prefix"]["appendOnly"], true);
+            assert_eq!(event.data["prefix"]["expectedReset"], false);
+        }
+    }
+}
+
+#[tokio::test]
 async fn run_deadline_cancels_a_slow_provider_request() {
     let fake = FakeResponses::start(vec![Reply::Delay(
         Duration::from_secs(3),
@@ -2104,6 +2221,8 @@ async fn unexpected_prefix_rewrite_is_blocked_before_network_and_survives_restar
         .starts_with("CACHE_GUARD_PAUSED"));
     assert_eq!(fake.request_count(), 1);
     let p = Provider::new_for_loopback_test(dir.path(), &fake.base).unwrap();
+    // Acknowledging an upstream cost warning must never authorize a rewrite.
+    p.acknowledge_cache_warning().unwrap();
     assert!(p
         .response(changed.clone(), w.clone(), "r", &c)
         .await

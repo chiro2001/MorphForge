@@ -1,0 +1,19 @@
+{
+  "success": true,
+  "rustWorkspace": {
+    "passed": 229,
+    "failed": 0,
+    "logSha256": "602127e972bd9e8ed0ddd6fbc08ff299f8c2da043ac3d108a71dfe41364b2520"
+  },
+  "nodeTests": 56,
+  "realModelRequests": 0,
+  "negativeControl": {
+    "version": "0.15.0",
+    "result": "reproduced",
+    "estimatedInputTokens": 181324,
+    "alert": "大输入请求没有得到有效缓存命中报告，已阻止继续发送",
+    "windowRequests": 1,
+    "cachedTokens": null
+  },
+  "regression": "Two consecutive streaming pause/resume operations for both Chat and Responses; actual HTTP history is append-only and no reset is authorized."
+}
