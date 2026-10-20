@@ -1,0 +1,7 @@
+{
+  "success": true,
+  "cases": 504,
+  "worstAbsoluteError": 7.15255737E-07,
+  "failures": [],
+  "scope": "Actual GPU float render/readback, independent CPU integer bitfield oracle. All runtime material modes, color/PBR/noise fields and alpha mode tags."
+}

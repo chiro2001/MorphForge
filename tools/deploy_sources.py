@@ -18,7 +18,7 @@ def main():
     options = parser.parse_args()
     files = []
     files.extend(p for p in ROOT.glob("examples/**/*") if p.is_file() and not p.is_symlink())
-    for pattern in ("references/**/*.js", "references/**/*.json", "references/**/*.md", "references/**/*.txt", "references/**/*.png", "references/**/*.webp", "tools/*.py", "tools/*.ps1", "tools/*.mjs", "crates/**/*.rs", "crates/**/*.js", "crates/**/*.txt", "crates/**/*.md", "crates/**/Cargo.toml", "materials/*.txt", "materials/**/*.json", "fonts/*.otf", "fonts/*.ttf", "fonts/*.txt", "AgentScripts/*.cs", "Assets/MorphForge/Editor/*.cs", "Assets/MorphForge/Runtime/*.cs", "Assets/MorphForge/Shaders/*.shader", "docs/**/*.md", ".agents/skills/**/*.md", "web/**/*.html", "web/**/*.css", "web/**/*.js", "web/**/*.mjs", "web/**/*.txt", "web/**/*.json"):
+    for pattern in ("references/**/*.js", "references/**/*.json", "references/**/*.md", "references/**/*.txt", "references/**/*.png", "references/**/*.webp", "tools/*.py", "tools/*.ps1", "tools/*.mjs", "crates/**/*.rs", "crates/**/*.js", "crates/**/*.txt", "crates/**/*.md", "crates/**/Cargo.toml", "materials/*.txt", "materials/**/*.json", "fonts/*.otf", "fonts/*.ttf", "fonts/*.txt", "AgentScripts/*.cs", "Assets/MorphForge/Editor/*.cs", "Assets/MorphForge/Runtime/*.cs", "Assets/MorphForge/Shaders/*.shader", "Assets/MorphForge/Shaders/*.cginc", "docs/**/*.md", ".agents/skills/**/*.md", "web/**/*.html", "web/**/*.css", "web/**/*.js", "web/**/*.mjs", "web/**/*.txt", "web/**/*.json"):
         files.extend(p for p in ROOT.glob(pattern) if p.is_file() and not p.is_symlink())
     for pattern in ("desktop/*.toml", "desktop/*.lock", "desktop/*.md", "desktop/*.svg", "desktop/ui/*", "desktop/src-tauri/*.toml", "desktop/src-tauri/*.json", "desktop/src-tauri/*.rs", "desktop/src-tauri/src/*.rs"):
         files.extend(p for p in ROOT.glob(pattern) if p.is_file() and not p.is_symlink())
@@ -38,7 +38,7 @@ foreach ($relative in $files.Keys) {{
     $extension = [IO.Path]::GetExtension($relative).ToLowerInvariant()
     $isReference = $relative -match '^(references|examples)/[A-Za-z0-9_./-]+\\.(png|webp)$'
     $isFont = $relative -match '^fonts/[A-Za-z0-9_.-]+\\.(otf|ttf)$'
-    if (-not $isReference -and -not $isFont -and $extension -notin @('.py','.ps1','.cs','.shader','.md','.html','.css','.js','.txt','.json','.rs','.toml','.lock','.mjs','.svg')) {{ throw 'Only source files and bundled fonts are allowed.' }}
+    if (-not $isReference -and -not $isFont -and $extension -notin @('.py','.ps1','.cs','.shader','.cginc','.md','.html','.css','.js','.txt','.json','.rs','.toml','.lock','.mjs','.svg')) {{ throw 'Only source files and bundled fonts are allowed.' }}
     $path = Join-Path $root $relative
     $bytes = [Convert]::FromBase64String($files[$relative])
     if (Test-Path -LiteralPath $path -PathType Leaf) {{

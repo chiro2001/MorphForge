@@ -72,7 +72,8 @@
           />
         </div>
         <button id="paintSelection" class="wide">给选中内容换材质</button>
-        <button id="pixelThemeOpen" class="wide">内置像素工坊 · 19种材质</button>
+        <button id="runtimeMaterialOpen" class="wide">＋实时颜色 / 程序材质</button>
+        <button id="pixelThemeOpen" class="wide">内置方块工坊 · 48种材质</button>
         <button id="packImport" class="wide">导入 Minecraft Java 资源包</button>
         <input id="packFile" type="file" accept=".zip" hidden />
 
@@ -397,6 +398,7 @@ mf.group('main', () => {
           </p>
           <label
             >协议<select id="profile">
+              <option value="mf5">MF5 · 实时材质 / 微缩 / 双体素</option>
               <option value="mf4">MF4 · 240bit三通道（无面捕）</option>
               <option value="mf3">MF3 · 56bit兼容档</option>
               <option value="mf2">MF2 · Stage3兼容</option>
@@ -437,10 +439,11 @@ mf.group('main', () => {
           >
           <div class="double">
             <button id="publish">发布当前版本</button>
+            <button id="repairPublish">保留显示补播</button>
             <button id="resync">清空并重建</button>
           </div>
           <label
-            >周期全量刷新（秒，0关闭）<input
+            >周期刷新（秒，0关闭；MF5补播）<input
               id="refreshSeconds"
               type="number"
               value="0"
@@ -453,7 +456,8 @@ mf.group('main', () => {
           <button id="avatarCatalogImport" class="wide">导入目标 Avatar 材质目录</button>
           <input id="avatarCatalogFile" type="file" accept=".json,.zip" hidden />
           <div id="materialCompatibility" class="status"></div>
-          <button id="avatarCatalogBundled" class="wide">使用配套 MF4 0.8 头像目录</button>
+          <button id="avatarCatalogBundled" class="wide">使用配套 MF5 0.9 头像目录</button>
+          <button id="avatarCatalogMf4" class="wide">使用旧版 MF4 目录</button>
           <button id="avatarCatalogClear" class="wide">清除目标目录声明</button>
           <div id="syncStatus" class="status">发送已关闭</div>
           <div class="section-title">定位球</div>
@@ -470,18 +474,14 @@ mf.group('main', () => {
               checked
             />保持水平，保留朝向</label
           >
-          <label>显示缩放 <output id="scaleValue">1.00×</output></label>
-          <input
-            id="scale"
-            type="range"
-            value="1"
-            min=".05"
-            max="1"
-            step=".01"
-          />
+          <label>显示比例 <output id="scaleValue">100%</output></label>
+          <input id="scale" type="range" value="2" min="0" max="3" step="0.01" />
+          <div class="row"><input id="scalePercent" type="number" min="1" max="1000" step="1" value="100" aria-label="显示比例百分数" /><span>%</span></div>
+          <div class="row"><button data-scale="1">1%</button><button data-scale="10">10%</button><button data-scale="100">100%</button><button data-scale="1000">1000%</button></div>
+          <p id="scaleHint" class="caption">新100%＝旧5%，标准格长12.5毫米；缩放不改变体素坐标。</p>
           <button id="resetAnchor" class="wide">移到面前</button>
           <div class="caption">
-            MF4几何240bit（三路各80bit，命令自带材质）＋定位14bit＝254bit；本体参数仅本地使用，不含面捕。MF3兼容档56bit。需导入对应头像目录，实际以联合构建报告为准。
+            MF5：240bit三通道＋14bit定位。实时RGB、PBR与程序材质；同材质单位体素可两块合批。本体开关仅本地，无面捕；MF4/MF3为兼容档。
           </div>
         </section>
 
@@ -834,13 +834,23 @@ mf.group('main', () => {
       <p class="caption">使用整数体素格；可撤销。几何移动不会改写 Recipe 源码，重新 replace 源码仍使用原坐标。超过 256 格的尺寸不能仅靠居中解决。</p>
       <button id="transformApply" class="primary wide" disabled>应用整体定位</button>
     </dialog>
+    <dialog id="runtimeMaterialDialog" class="modal"><h2>实时材质</h2>
+      <p class="caption">MF5可直接传新颜色和表面描述。原始材质完整保存；VRC量化结果在下方显示。新图片贴图仍需打包。</p>
+      <label>名称<input id="runtimeName" value="我的材质" maxlength="128" /></label>
+      <div class="double"><label>类型<select id="runtimeKind"><option value="color">纯色（RGB24）</option><option value="pbr">PBR / 金属 / 玻璃</option><option value="water">程序水面</option><option value="cloud">程序云</option><option value="wood">程序木纹</option><option value="stone">程序石纹</option></select></label><label>颜色<input id="runtimeColor" type="color" value="#76bce8" /></label></div>
+      <div id="runtimeSurfaceFields" class="double" hidden><label>金属度<input id="runtimeMetal" type="number" min="0" max="1" step="0.05" value="0" /></label><label>粗糙度<input id="runtimeRough" type="number" min="0" max="1" step="0.05" value="0.9" /></label><label>不透明度<input id="runtimeOpacity" type="number" min="0" max="1" step="0.05" value="1" /></label><label>发光<input id="runtimeEmission" type="number" min="0" max="3" step="0.1" value="0" /></label></div>
+      <div id="runtimeNoiseFields" class="double" hidden><label>纹理比例<input id="runtimeNoiseScale" type="number" min="0.25" max="8" step="0.25" value="1" /></label><label>变化种子<input id="runtimeSeed" type="number" min="0" max="7" step="1" value="0" /></label></div>
+      <p id="runtimeWireHint" class="caption"></p><pre id="runtimeReceipt" class="status"></pre>
+      <div class="row"><button id="runtimeMaterialClose">关闭</button><button id="runtimeMaterialApply" class="primary">添加并选用</button></div>
+    </dialog>
     <dialog id="pixelThemeDialog" aria-labelledby="pixelThemeTitle">
       <div class="row"><h2 id="pixelThemeTitle" class="grow">内置像素工坊</h2><button id="pixelThemeClose">关闭</button></div>
-      <p>原创 16×16 像素主题 · 19种材质 · MIT 许可 · 完全离线</p>
+      <p>原创 16×16 Minecraft风格主题 · MIT许可 · 配套MF5头像内置
+      <label>主题<select id="pixelThemeChoice"><option value="block-workshop">方块工坊 · 48种</option><option value="pixel-workshop">原像素工坊 · 19种（兼容）</option></select></label></p>
       <div class="pixel-swatches"><span style="background:#899197">石</span><span style="background:#9d6a39">木</span><span style="background:#57943e">草</span><span style="background:#a7513d">砖</span><span style="background:#408fcc">水</span><span style="background:#edf4fa;color:#273442">云</span><span style="background:#edbe40;color:#273442">金</span></div>
       <p class="caption">包括原木六面、木板、石材、泥土、草地、砖、沙、雪、树叶、流水、玻璃、云、铁铜金、灯石与黑曜石。不是 Minecraft 原版素材；其他主题可继续导入 Java 资源包。</p>
       <label class="check"><input id="pixelThemeReplace" type="checkbox" />同时把当前作品的基础木石、草土、砖等映射成像素主题</label>
-      <p class="caption">新材质会随作品保存。VRC 使用前需重新导出并打包 Avatar 材质目录；应用前先停止 OSC。</p>
+      <p class="caption">新材质随作品保存；配套MF5已内置这两套主题，按身份映射。其他新图片需打包；应用主题前先停止OSC。</p>
       <button id="applyPixelTheme" class="primary wide">加入当前项目</button>
     </dialog>
     <dialog id="workspaceDialog" aria-labelledby="workspaceTitle">

@@ -1,0 +1,125 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "isolated frontend starts with OSC off",
+      "passed": true
+    },
+    {
+      "name": "MF5 directory selected without sending",
+      "passed": true
+    },
+    {
+      "name": "offline repair button queues replay without enabling OSC",
+      "passed": true
+    },
+    {
+      "name": "geometry uses 240 synchronized bits",
+      "passed": true
+    },
+    {
+      "name": "scale UI 1% maps to physical 0.0005",
+      "passed": true
+    },
+    {
+      "name": "scale UI 10% maps to physical 0.005",
+      "passed": true
+    },
+    {
+      "name": "scale UI 100% maps to physical 0.05",
+      "passed": true
+    },
+    {
+      "name": "scale UI 1000% maps to physical 0.5",
+      "passed": true
+    },
+    {
+      "name": "scale persists and displays new 100%",
+      "passed": true
+    },
+    {
+      "name": "real dialog creates RGB24 runtime material",
+      "passed": true
+    },
+    {
+      "name": "48 original block textures available",
+      "passed": true
+    },
+    {
+      "name": "runtime materials all match built avatar without palette rebuild",
+      "passed": true
+    },
+    {
+      "name": "procedural patterns reach WebGL uniforms",
+      "passed": true
+    },
+    {
+      "name": "micro capture perspective and orthographic complete",
+      "passed": true
+    },
+    {
+      "name": "micro-perspective is visible at minimum scale",
+      "passed": true
+    },
+    {
+      "name": "micro-orthographic is visible at minimum scale",
+      "passed": true
+    },
+    {
+      "name": "5000 colors share one batch",
+      "passed": true
+    },
+    {
+      "name": "per-box colors survive batching",
+      "passed": true
+    },
+    {
+      "name": "incremental repaint updates same-batch style changes",
+      "passed": true
+    },
+    {
+      "name": "no JS or GPU shader errors",
+      "passed": true
+    },
+    {
+      "name": "entire test leaves OSC disabled",
+      "passed": true
+    }
+  ],
+  "performance": {
+    "batches": 1,
+    "calls": 1,
+    "first": [
+      0,
+      0,
+      0
+    ],
+    "instances": 5000,
+    "last": [
+      0.8275708556175232,
+      0.10969562828540802,
+      0.9258406162261963
+    ]
+  },
+  "browserLogs": [
+    {
+      "level": "DEBUG",
+      "message": "http://127.0.0.1:17904/ - [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o",
+      "source": "recommendation",
+      "timestamp": 1792460858356
+    },
+    {
+      "level": "DEBUG",
+      "message": "http://127.0.0.1:17904/ - [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o",
+      "source": "recommendation",
+      "timestamp": 1792460860040
+    },
+    {
+      "level": "DEBUG",
+      "message": "http://127.0.0.1:17904/ - [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o",
+      "source": "recommendation",
+      "timestamp": 1792460861514
+    }
+  ],
+  "scope": "Real Chromium UI and renderer; isolated workspace; no paid model or real VRChat."
+}

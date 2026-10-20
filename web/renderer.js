@@ -1,3 +1,4 @@
+import { proceduralShader } from "/procedural-shader.js";
 import { captureSampling, viewPixelRatio } from "/render-settings.js";
 import { fitBounds, resolveCamera } from "/camera-spec.js";
 import * as THREE from "three";
@@ -309,6 +310,12 @@ export class VoxelRenderer {
       frameTime: Math.max(0.001, Number(style.frameTime) || 0.1),
     };
   }
+  effectiveStyle(style,mode=this.mode) {return mode==="vrc" && style?.vrcEffective ? {...style,...style.vrcEffective} : style;}
+  batchKey(styleId,mode=this.mode) {
+    const s=this.renderStyleMap?.get(styleId);
+    if(!s || s.textures?.length || s.procedural || ["water","cloud"].includes(s.family) || s.renderMode==="cutout" || (mode!=="vrc" && s.emission>0))return "style:"+styleId;
+    return "flat:"+JSON.stringify([s.metallic||0,s.roughness??.8,s.opacity??1,s.emission||0,s.renderMode||"opaque"]);
+  }
   updateInstances(mesh, boxes, style, { full = false } = {}) {
     const matrix = new THREE.Matrix4(),
       rotation = new THREE.Quaternion(),
@@ -333,9 +340,11 @@ export class VoxelRenderer {
         b.id === old.id &&
         b.min.every((v, a) => v === old.min[a]) &&
         b.size.every((v, a) => v === old.size[a]) &&
+        b.styleId === old.styleId &&
+        JSON.stringify(b.vrcColor) === JSON.stringify(old.vrcColor) &&
         b.tintId === old.tintId &&
         b.motionPhase === old.motionPhase &&
-        hidden.array[i] === (this.surfaceMasks[b.id] || 0)
+        hidden.array[i] === (this.mode==="vrc" && b.vrcHiddenFaces!==undefined ? b.vrcHiddenFaces : (this.surfaceMasks[b.id] || 0))
       )
         continue;
       const position = toThree(
@@ -346,9 +355,11 @@ export class VoxelRenderer {
       mesh.setMatrixAt(i, matrix);
       dims.array.set(b.size, i * 3);
       phases.array[i] = b.motionPhase ?? 0;
-      hidden.array[i] = this.surfaceMasks[b.id] || 0;
-      color.setRGB(...style.color, THREE.SRGBColorSpace);
-      if (b.tintId) {
+      hidden.array[i] = this.mode==="vrc" && b.vrcHiddenFaces!==undefined ? b.vrcHiddenFaces : (this.surfaceMasks[b.id] || 0);
+      const instanceStyle=this.renderStyleMap?.get(b.styleId)||style;
+      color.setRGB(...instanceStyle.color, THREE.SRGBColorSpace);
+      if(this.mode==="vrc" && b.vrcColor) color.setRGB(...b.vrcColor,THREE.SRGBColorSpace);
+      else if (b.tintId) {
         const t = b.tintId;
         color.multiply(
           new THREE.Color(
@@ -391,10 +402,11 @@ export class VoxelRenderer {
     const groups = new Map();
     for (const b of scene.boxes) {
       if (this.groupsHidden.has(b.group)) continue;
-      if (!groups.has(b.styleId)) groups.set(b.styleId, []);
-      groups.get(b.styleId).push(b);
+      const key=this.batchKey(b.styleId,mode);
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(b);
     }
-    const batches = new Map(this.meshes.map((m) => [m.userData.styleId, m]));
+    const batches = new Map(this.meshes.map((m) => [m.userData.batchKey, m]));
     if (
       [...groups].some(
         ([id, boxes]) =>
@@ -407,7 +419,7 @@ export class VoxelRenderer {
     let updated = 0;
     for (const [id, mesh] of batches) {
       const boxes = groups.get(id) || [],
-        style = catalog.get(id) || { color: [0.6, 0.6, 0.7] };
+        style = this.renderStyleMap.get(mesh.userData.styleId) || { color: [0.6, 0.6, 0.7] };
       if (this.updateInstances(mesh, boxes, style)) updated++;
     }
     this.boxes = scene.boxes;
@@ -422,6 +434,7 @@ export class VoxelRenderer {
     return true;
   }
   async load(scene, styles, { mode = this.mode, scale = this.scale, surfaces = null } = {}) {
+    this.renderStyleMap=new Map(styles.map(s=>[s.id,this.effectiveStyle(s,mode)]));
     this.surfaceMasks = surfaces?.masks || {};
     this.surfaceStats = surfaces || {hiddenFaces:0};
     if (this.tryIncremental(scene, styles, { mode, scale })) return this;
@@ -449,13 +462,14 @@ export class VoxelRenderer {
       catalog = new Map(styles.map((m) => [m.id, m]));
     for (const b of scene.boxes) {
       if (this.groupsHidden.has(b.group)) continue;
-      const key = b.styleId;
+      const key = this.batchKey(b.styleId,mode);
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key).push(b);
     }
     const unit = new THREE.BoxGeometry(1, 1, 1);
-    for (const [id, boxes] of groups) {
-      const style = catalog.get(id) || {
+    for (const [batchKey, boxes] of groups) {
+      const id=boxes[0].styleId;
+      const style = this.renderStyleMap.get(id) || {
           id,
           color: [0.6, 0.6, 0.7],
           roughness: 0.8,
@@ -517,9 +531,12 @@ export class VoxelRenderer {
           mfFrames: { value: atlas?.frames ?? 1 },
           mfFrameTime: { value: atlas?.frameTime ?? (style.frameTime || 0.1) },
           mfTime: { value: 0 },
+          mfProcKind: {value:({water:1,cloud:2,wood:3,stone:4})[style.procedural?.kind]||0},
+          mfNoiseScale:{value:style.procedural?.scale||1},
+          mfNoiseSeed:{value:style.procedural?.seed||0},
           mfKind: {
             value:
-              style.family === "water"
+              style.procedural ? 0 : style.family === "water"
                 ? 1
                 : style.family === "cloud"
                   ? 2
@@ -541,8 +558,9 @@ export class VoxelRenderer {
         );
         shader.vertexShader = shader.vertexShader.replace("#include <worldpos_vertex>", "#include <worldpos_vertex>\nmfEye=cameraPosition-(modelMatrix*instanceMatrix*vec4(transformed,1.)).xyz;");
         shader.fragmentShader =
-          "uniform sampler2D mfAtlas;uniform highp sampler2DArray mfArrayAtlas; uniform float mfArray,mfGrid,mfCull,mfVirtual,mfMetal,mfRough,mfEmission,mfHasAtlas,mfFrames,mfFrameTime,mfTime,mfKind; varying vec3 mfLocal,mfDims,mfNormal,mfEye;varying float mfPhase,mfHidden;\n" +
+          "uniform sampler2D mfAtlas;uniform highp sampler2DArray mfArrayAtlas; uniform float mfArray,mfGrid,mfCull,mfVirtual,mfMetal,mfRough,mfEmission,mfHasAtlas,mfFrames,mfFrameTime,mfTime,mfKind,mfProcKind,mfNoiseScale,mfNoiseSeed; varying vec3 mfLocal,mfDims,mfNormal,mfEye;varying float mfPhase,mfHidden;\n" +
           shader.fragmentShader;
+        shader.fragmentShader=proceduralShader+shader.fragmentShader;
         shader.fragmentShader = shader.fragmentShader.replace(
           "#include <color_fragment>",
           `#include <color_fragment>
@@ -562,6 +580,7 @@ export class VoxelRenderer {
      }
      if(mfGrid>.5){vec2 edge=min(tile,1.-tile);vec2 fw=max(fwidth(logical),vec2(.0001));float line=min(smoothstep(vec2(0.),fw*1.2,edge).x,smoothstep(vec2(0.),fw*1.2,edge).y);diffuseColor.rgb*=mix(.55,1.,line);}
      if(mfKind==3.){float leaf=sin(tile.x*12.)*sin(tile.y*12.);if(mfHasAtlas<.5&&leaf<-.2)discard;if(diffuseColor.a<.5)discard;}
+     if(mfProcKind>.5)diffuseColor.rgb*=MF5Pattern(mfProcKind,logical,face,mfNoiseScale,mfNoiseSeed,mfTime);
      if(mfVirtual>.5){
        vec3 n=normalize(vec3(mfNormal.x,mfNormal.y,-mfNormal.z));
        vec3 light=normalize(vec3(.4,.8,.6));vec3 eye=normalize(vec3(mfEye.x,mfEye.y,-mfEye.z));vec3 halfDir=normalize(light+eye);
@@ -574,9 +593,10 @@ export class VoxelRenderer {
         );
       };
       material.customProgramCacheKey = () =>
-        `mf-v07-${mode}-${style.family}-${!!atlas}-${!!atlas?.array}-${style.renderMode}`;
+        `mf-v09-${mode}-${style.family}-${!!atlas}-${!!atlas?.array}-${style.renderMode}-${style.procedural?.kind||0}`;
       const mesh = new THREE.InstancedMesh(geometry, material, capacity);
       mesh.userData.styleId = id;
+      mesh.userData.batchKey = batchKey;
       mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
       geometry.attributes.mfSize.setUsage(THREE.DynamicDrawUsage);
       this.updateInstances(mesh, boxes, style, { full: true });
@@ -611,6 +631,7 @@ export class VoxelRenderer {
     this.grid.material.opacity = 0.5;
     this.helpers.add(this.grid);
     this.axes.scale.set(this.scale, this.scale, -this.scale);
+    this.marker.scale.setScalar(this.scale);
   }
   setLayer(layer) {
     this.grid.position.y = layer * this.cellSize * this.scale;
@@ -713,7 +734,7 @@ export class VoxelRenderer {
       : box.getCenter(new THREE.Vector3());
     let span = box.isEmpty()
       ? 4
-      : Math.max(...box.getSize(new THREE.Vector3()).toArray(), 0.3);
+      : Math.max(...box.getSize(new THREE.Vector3()).toArray(), this.mode==="vrc"?this.cellSize*this.scale*2:0.3);
     if (focus) {
       center = toThree(focus.map((v) => v * this.cellSize * this.scale));
       span = Math.min(span, 2);
@@ -732,7 +753,7 @@ export class VoxelRenderer {
     this.camera.position
       .copy(center)
       .addScaledVector(direction, span * 1.9 + this.cellSize * this.scale);
-    this.camera.near = Math.max(0.001, span / 10000);
+    this.camera.near = Math.max(0.000001, Math.min(0.005,span / 1000));
     this.camera.far = Math.max(500, span * 20);
     this.camera.updateProjectionMatrix();
     this.camera.lookAt(center);

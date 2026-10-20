@@ -1,0 +1,34 @@
+{
+  "success": true,
+  "previewInstalled": "0.9.0",
+  "activeOldPreviewKept": true,
+  "projectId": "73909a44-a130-4cfa-a8b2-0ab827127d63",
+  "revision": 17,
+  "connection": {
+    "ack": false,
+    "auto": false,
+    "capacity": 16384,
+    "desiredRevision": 16,
+    "enabled": false,
+    "error": "",
+    "etaSeconds": 0.0,
+    "interval": 0.25,
+    "pending": 0,
+    "placement": {
+      "level": true,
+      "scale": 0.05000000074505806,
+      "visible": true,
+      "world": true
+    },
+    "port": 9000,
+    "profile": "mf4",
+    "refreshSeconds": 0,
+    "sending": false,
+    "sentCommands": 1137,
+    "sentRevision": 16,
+    "syncedBits": 240
+  },
+  "pendingCatalogInstalled": true,
+  "migrationOnRestart": true,
+  "originalAcceptanceCoreSha256": "23c86a41b05a8a61a67850dfbf180a9400d4cb4d9cfbfa7457c1b9198ee74d8a"
+}

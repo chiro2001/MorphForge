@@ -1,0 +1,279 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "default view has no debug grid and uses high quality",
+      "passed": true
+    },
+    {
+      "name": "negative Y is diagnosed, negative X/Z are valid coordinates",
+      "passed": true
+    },
+    {
+      "name": "shared transparent interface has two hidden faces",
+      "passed": true
+    },
+    {
+      "name": "transform dry run is non-mutating",
+      "passed": true
+    },
+    {
+      "name": "UI center-on-ground fixes target bounds",
+      "passed": true
+    },
+    {
+      "name": "whole-scene transform is undoable",
+      "passed": true
+    },
+    {
+      "name": "view settings persist in the Rust workspace",
+      "passed": true
+    },
+    {
+      "name": "view settings survive reload",
+      "passed": true
+    },
+    {
+      "name": "offline pixel theme adds nineteen complete materials",
+      "passed": true
+    },
+    {
+      "name": "applying theme preserves existing geometry by default",
+      "passed": true
+    },
+    {
+      "name": "texture arrays have independent mipmaps",
+      "passed": true
+    },
+    {
+      "name": "VRC preview enables virtual light in real material programs",
+      "passed": true
+    },
+    {
+      "name": "custom shots, VRC light and supersampling share one capture API",
+      "passed": true
+    },
+    {
+      "name": "capture output keeps requested dimensions: front",
+      "passed": true
+    },
+    {
+      "name": "capture output keeps requested dimensions: top",
+      "passed": true
+    },
+    {
+      "name": "capture output keeps requested dimensions: water-detail",
+      "passed": true
+    },
+    {
+      "name": "capture restores the observer debug-grid preference",
+      "passed": true
+    },
+    {
+      "name": "export includes original pixel license and face-mask capability",
+      "passed": true
+    },
+    {
+      "name": "target catalog can be imported through the UI",
+      "passed": true
+    },
+    {
+      "name": "offline publication preserves source animation phase and data",
+      "passed": true
+    },
+    {
+      "name": "mismatched target material blocks publication before OSC",
+      "passed": true
+    },
+    {
+      "name": "model-facing schema exposes render quality, mode and transforms",
+      "passed": true
+    },
+    {
+      "name": "integer face masks do not create interpolation holes",
+      "passed": true
+    },
+    {
+      "name": "no JS or GPU shader errors",
+      "passed": true
+    },
+    {
+      "name": "all acceptance actions leave OSC off",
+      "passed": true
+    }
+  ],
+  "capture": {
+    "id": "89d727a4-0d07-4021-9b98-e0bdb656ee4e",
+    "images": [
+      {
+        "artifact": "d2d6bbd60232a4f53341da46cfe5abaa455594096afdfa3aab7ed375d796948f.png",
+        "camera": {
+          "coordinateSpace": "render-world",
+          "fov": 42,
+          "position": [
+            7.234744481093289e-16,
+            1.333914062679662,
+            5.657617188997186
+          ],
+          "projection": "perspective",
+          "target": [
+            0,
+            0.625,
+            -0.24999999999999997
+          ]
+        },
+        "height": 480,
+        "rendering": {
+          "hiddenFaces": 2,
+          "mode": "vrc",
+          "renderHeight": 960,
+          "renderWidth": 1280,
+          "supersampling": 2,
+          "surfaceCulling": true,
+          "textureWarnings": [],
+          "voxelGrid": false
+        },
+        "url": "/artifacts/d2d6bbd60232a4f53341da46cfe5abaa455594096afdfa3aab7ed375d796948f.png",
+        "view": "front",
+        "width": 640
+      },
+      {
+        "artifact": "cce5927db6639d2ac0e098a6de97d7733143dfaf27fe8443daa17f3f5ec91888.png",
+        "camera": {
+          "coordinateSpace": "render-world",
+          "fov": 42,
+          "position": [
+            7.286648423676243e-20,
+            6.5749999702499995,
+            -0.24940500000255175
+          ],
+          "projection": "perspective",
+          "target": [
+            0,
+            0.625,
+            -0.24999999999999997
+          ]
+        },
+        "height": 480,
+        "rendering": {
+          "hiddenFaces": 2,
+          "mode": "vrc",
+          "renderHeight": 960,
+          "renderWidth": 1280,
+          "supersampling": 2,
+          "surfaceCulling": true,
+          "textureWarnings": [],
+          "voxelGrid": false
+        },
+        "url": "/artifacts/cce5927db6639d2ac0e098a6de97d7733143dfaf27fe8443daa17f3f5ec91888.png",
+        "view": "top",
+        "width": 640
+      },
+      {
+        "artifact": "47bcb8cb2d24ca1f13c3b95da469d5980dca6ab39d204bbd1da426d0d8c1950f.png",
+        "camera": {
+          "bounds": {
+            "max": [
+              4,
+              2,
+              3
+            ],
+            "min": [
+              2,
+              0,
+              1
+            ]
+          },
+          "coordinateSpace": "voxel-grid",
+          "far": 5000,
+          "fov": 42,
+          "near": 0.001,
+          "orthographic": {
+            "bottom": -1.6440885482032142,
+            "left": -2.192118064270952,
+            "right": 2.192118064270952,
+            "top": 1.6440885482032142
+          },
+          "position": [
+            4.939928980159603,
+            3.1404748010635326,
+            6.16019112324932
+          ],
+          "projection": "orthographic",
+          "target": [
+            3,
+            1,
+            2
+          ],
+          "up": [
+            -0.17860619515673035,
+            0.90630778703665,
+            -0.3830222215594891
+          ]
+        },
+        "height": 480,
+        "rendering": {
+          "hiddenFaces": 2,
+          "mode": "vrc",
+          "renderHeight": 960,
+          "renderWidth": 1280,
+          "supersampling": 2,
+          "surfaceCulling": true,
+          "textureWarnings": [],
+          "voxelGrid": false
+        },
+        "url": "/artifacts/47bcb8cb2d24ca1f13c3b95da469d5980dca6ab39d204bbd1da426d0d8c1950f.png",
+        "view": "water-detail",
+        "width": 640
+      }
+    ],
+    "ok": true,
+    "revision": 8,
+    "stats": {
+      "boxCount": 5
+    }
+  },
+  "surfaceMaskPixels": {
+    "box": {
+      "group": "water-b",
+      "id": 6,
+      "min": [
+        4,
+        0,
+        1
+      ],
+      "motionPhase": 0,
+      "size": [
+        2,
+        2,
+        2
+      ],
+      "styleId": 16,
+      "tintId": 0
+    },
+    "changedPixels": 0,
+    "height": 1518,
+    "width": 1804
+  },
+  "browserLogs": [
+    {
+      "level": "DEBUG",
+      "message": "http://127.0.0.1:17905/ - [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o",
+      "source": "recommendation",
+      "timestamp": 1792460277615
+    },
+    {
+      "level": "DEBUG",
+      "message": "http://127.0.0.1:17905/ - [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o",
+      "source": "recommendation",
+      "timestamp": 1792460280974
+    },
+    {
+      "level": "DEBUG",
+      "message": "http://127.0.0.1:17905/?capture=1 - [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o",
+      "source": "recommendation",
+      "timestamp": 1792460276747
+    }
+  ],
+  "scope": "Real Chromium frontend + screenshot worker; no paid model or OSC"
+}

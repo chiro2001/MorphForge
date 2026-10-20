@@ -1,0 +1,246 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "catalogStyle": 1,
+      "differentPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "catalogStyle": 25,
+      "differentPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "catalogStyle": 26,
+      "differentPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "catalogStyle": 27,
+      "differentPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "catalogStyle": 28,
+      "differentPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "catalogStyle": 64,
+      "differentPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "catalogStyle": 76,
+      "differentPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "catalogStyle": 82,
+      "differentPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "catalogStyle": 111,
+      "differentPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "mode": 1,
+      "visiblePixels": 34076,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "mode": 1,
+      "staticAcrossTime": true,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "mode": 2,
+      "visiblePixels": 34076,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "mode": 3,
+      "visiblePixels": 34076,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "mode": 4,
+      "visiblePixels": 34076,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "mode": 5,
+      "visiblePixels": 34076,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "mode": 5,
+      "staticAcrossTime": true,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "mode": 6,
+      "visiblePixels": 34076,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "mode": 6,
+      "staticAcrossTime": true,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "mode": 7,
+      "visiblePixels": 34076,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "mode": 7,
+      "staticAcrossTime": true,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "catalogStyle": 1,
+      "differentPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "catalogStyle": 25,
+      "differentPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "catalogStyle": 26,
+      "differentPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "catalogStyle": 27,
+      "differentPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "catalogStyle": 28,
+      "differentPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "catalogStyle": 64,
+      "differentPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "catalogStyle": 76,
+      "differentPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "catalogStyle": 82,
+      "differentPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "catalogStyle": 111,
+      "differentPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "mode": 1,
+      "visiblePixels": 34076,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "mode": 1,
+      "staticAcrossTime": true,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "mode": 2,
+      "visiblePixels": 34076,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "mode": 3,
+      "visiblePixels": 34076,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "mode": 4,
+      "visiblePixels": 34076,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "mode": 5,
+      "visiblePixels": 34076,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "mode": 5,
+      "staticAcrossTime": true,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "mode": 6,
+      "visiblePixels": 34076,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "mode": 6,
+      "staticAcrossTime": true,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "mode": 7,
+      "visiblePixels": 34076,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalog",
+      "mode": 7,
+      "staticAcrossTime": true,
+      "passed": true
+    }
+  ],
+  "scope": "Actual GPU camera pixels from both production shaders; catalog backward equivalence, every runtime surface visible, static colors/patterns stable. MSAA4. No OSC."
+}

@@ -10,6 +10,7 @@ pub enum Command {
     Erase { value: Box3 },
     Remove { value: Box3 },
     Clear,
+    Pair { first: Box3, second: Box3 },
     Brush { style: u32, tint: u8, motion: u8 },
 }
 pub fn key(b: &Box3) -> ([i32; 3], [u32; 3]) {
@@ -18,7 +19,7 @@ pub fn key(b: &Box3) -> ([i32; 3], [u32; 3]) {
 pub fn appearance(b: &Box3) -> (u32, u8, u8) {
     (b.style_id, b.tint_id, b.motion_phase)
 }
-pub fn validate_box(b: &Box3) -> Result<()> {
+pub fn validate_geometry(b: &Box3) -> Result<()> {
     for a in 0..3 {
         let p = b.min[a] as i64 + if a == 1 { 0 } else { 128 };
         if !(0..=255).contains(&p) || b.size[a] < 1 || b.size[a] > 256 || p + b.size[a] as i64 > 256
@@ -28,6 +29,10 @@ pub fn validate_box(b: &Box3) -> Result<()> {
             ));
         }
     }
+    Ok(())
+}
+pub fn validate_box(b: &Box3) -> Result<()> {
+    validate_geometry(b)?;
     if b.style_id > 4095 || b.tint_id > 63 || b.motion_phase > 63 {
         return Err(GeometryError("目标VRC样式/染色/运动编码越界".into()));
     }
@@ -48,6 +53,7 @@ pub fn payload(c: &Command) -> Result<(u8, [u8; 6])> {
     let mut data = [0; 6];
     let (op, b) = match c {
         Command::Clear => return Ok((5, data)),
+        Command::Pair { .. } => return Err(GeometryError("Pair仅限MF5".into())),
         Command::Brush {
             style,
             tint,
@@ -237,10 +243,28 @@ pub fn wide_plan(
     target: &[Box3],
     assignments: &BTreeMap<GeometryKey, usize>,
 ) -> [Vec<Command>; WIDE_LANES] {
+    wide_plan_by(sent, target, assignments, |a, b| {
+        appearance(a) == appearance(b)
+    })
+}
+pub fn wide_plan_by(
+    sent: &[Box3],
+    target: &[Box3],
+    assignments: &BTreeMap<GeometryKey, usize>,
+    same: impl Fn(&Box3, &Box3) -> bool,
+) -> [Vec<Command>; WIDE_LANES] {
+    pool_plan_by::<3>(sent, target, assignments, same)
+}
+pub fn pool_plan_by<const N: usize>(
+    sent: &[Box3],
+    target: &[Box3],
+    assignments: &BTreeMap<GeometryKey, usize>,
+    same: impl Fn(&Box3, &Box3) -> bool,
+) -> [Vec<Command>; N] {
     let old: BTreeMap<_, _> = sent.iter().map(|b| (key(b), b)).collect();
     let new: BTreeMap<_, _> = target.iter().map(|b| (key(b), b)).collect();
-    let mut queues: [Vec<Command>; WIDE_LANES] = Default::default();
-    let mut counts = [0usize; WIDE_LANES];
+    let mut queues: [Vec<Command>; N] = std::array::from_fn(|_| Vec::new());
+    let mut counts = [0usize; N];
     for (k, b) in &old {
         let lane = assignments.get(k).copied().unwrap_or(0);
         if new.contains_key(k) {
@@ -252,13 +276,13 @@ pub fn wide_plan(
         }
     }
     for (k, b) in &new {
-        if old.get(k).is_some_and(|v| appearance(v) == appearance(b)) {
+        if old.get(k).is_some_and(|v| same(v, b)) {
             continue;
         }
         let lane = if old.contains_key(k) {
             assignments.get(k).copied().unwrap_or(0)
         } else {
-            let lane = (0..WIDE_LANES).min_by_key(|i| counts[*i]).unwrap();
+            let lane = (0..N).min_by_key(|i| counts[*i]).unwrap();
             counts[lane] += 1;
             lane
         };
@@ -273,4 +297,74 @@ pub fn wide_plan(
         });
     }
     queues
+}
+
+pub fn mf5_values(
+    c: &Command,
+    seq: u8,
+    lane: usize,
+    surface: crate::material_wire::Surface,
+) -> Result<Vec<(String, OscValue)>> {
+    mf5_pool_values(c, seq, lane, surface, false)
+}
+pub fn mf5_pool_values(
+    c: &Command,
+    seq: u8,
+    lane: usize,
+    surface: crate::material_wire::Surface,
+    secondary: bool,
+) -> Result<Vec<(String, OscValue)>> {
+    if seq >= 8 || lane >= 3 || surface.mode > 7 {
+        return Err(GeometryError("MF5通道/序号/材质越界".into()));
+    }
+    let mut data = [0; 9];
+    let op = if let Command::Pair { first, second } = c {
+        validate_geometry(first)?;
+        validate_geometry(second)?;
+        if first.size != [1; 3]
+            || second.size != [1; 3]
+            || key(first) == key(second)
+            || surface.mode > 2
+            || secondary
+        {
+            return Err(GeometryError(
+                "MF5 Pair需要主/次池的两个单位体素和可合批材质".into(),
+            ));
+        }
+        for axis in 0..3 {
+            data[axis] = (first.min[axis] + if axis == 1 { 0 } else { 128 }) as u8;
+            data[axis + 3] = (second.min[axis] + if axis == 1 { 0 } else { 128 }) as u8;
+        }
+        17 + surface.mode
+    } else {
+        let (value, op) = match c {
+            Command::Box { value } | Command::Voxel { value } => (
+                Some(value),
+                1 + surface.mode + if secondary { 8 } else { 0 },
+            ),
+            Command::Remove { value } => (Some(value), if secondary { 21 } else { 20 }),
+            Command::Erase { value } => (Some(value), if secondary { 24 } else { 23 }),
+            Command::Clear => (None, 22),
+            _ => return Err(GeometryError("MF5不使用Brush".into())),
+        };
+        if let Some(b) = value {
+            validate_geometry(b)?;
+            for axis in 0..3 {
+                data[axis] = (b.min[axis] + if axis == 1 { 0 } else { 128 }) as u8;
+                data[axis + 3] = (b.size[axis] - 1) as u8;
+            }
+        }
+        op
+    };
+    data[6..].copy_from_slice(&surface.bytes);
+    let mut values: Vec<_> = data
+        .into_iter()
+        .enumerate()
+        .map(|(i, v)| (format!("MF5_L{lane}_D{i:02}"), OscValue::Int(v as i32)))
+        .collect();
+    values.push((
+        format!("MF5_L{lane}_Ctl"),
+        OscValue::Int(((seq << 5) | op) as i32),
+    ));
+    Ok(values)
 }

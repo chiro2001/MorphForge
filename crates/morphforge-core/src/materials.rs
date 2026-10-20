@@ -22,6 +22,15 @@ pub struct Material {
     pub pack: Option<String>,
     #[serde(default)]
     pub source: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub procedural: Option<Procedural>,
+}
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct Procedural {
+    pub kind: String,
+    pub scale: f32,
+    pub seed: u32,
 }
 pub fn builtins() -> Vec<Material> {
     let entries = [
@@ -334,6 +343,7 @@ pub fn builtins() -> Vec<Material> {
                     frame_time: 0.1,
                     pack: None,
                     source: None,
+                    procedural: None,
                 }
             },
         )

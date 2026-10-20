@@ -1,0 +1,199 @@
+{
+  "success": true,
+  "catalog": {
+    "success": true,
+    "format": "MorphForgeMaterialCatalog/1",
+    "sourceRoot": "C:\\Users\\Chiro\\tmp\\morphforge\\mf5-catalog",
+    "atlas": "Assets/MorphForge/Diagnostics/MF5Catalog/CatalogAtlas.png",
+    "metadata": "Assets/MorphForge/Diagnostics/MF5Catalog/CatalogMetadata.asset",
+    "material": "Assets/MorphForge/Diagnostics/MF5Catalog/ParticleBoxCatalog.mat",
+    "styleCount": 76,
+    "styleIdRange": [
+      1,
+      111
+    ],
+    "atlasSize": [
+      8064,
+      160
+    ],
+    "cellPixels": 32,
+    "metadataWidth": 256,
+    "metadataHeight": 64,
+    "metadataTexels": 16384,
+    "metadataStyles": 4096,
+    "animatedStyles": 1,
+    "transparentStyles": 10,
+    "cutoutStyles": 3,
+    "layeredTextures": 306,
+    "texturedStyles": 48,
+    "unverified": "Requires the long-run Unity gate before visual/NDMF acceptance."
+  },
+  "budget": {
+    "success": true,
+    "totalBits": 254,
+    "geometryBits": 240,
+    "placementBits": 14,
+    "faceTrackingBits": 0,
+    "bodySyncedBits": 0,
+    "remainingBits": 2,
+    "parameters": [
+      {
+        "name": "MF_World",
+        "type": "Bool"
+      },
+      {
+        "name": "MF_Handle",
+        "type": "Bool"
+      },
+      {
+        "name": "MF_Scale",
+        "type": "Float"
+      },
+      {
+        "name": "MF_Reset",
+        "type": "Bool"
+      },
+      {
+        "name": "MF_GrabL",
+        "type": "Bool"
+      },
+      {
+        "name": "MF_GrabR",
+        "type": "Bool"
+      },
+      {
+        "name": "MF_Level",
+        "type": "Bool"
+      },
+      {
+        "name": "MF5_L0_Ctl",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L0_D00",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L0_D01",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L0_D02",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L0_D03",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L0_D04",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L0_D05",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L0_D06",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L0_D07",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L0_D08",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L1_Ctl",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L1_D00",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L1_D01",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L1_D02",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L1_D03",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L1_D04",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L1_D05",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L1_D06",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L1_D07",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L1_D08",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L2_Ctl",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L2_D00",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L2_D01",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L2_D02",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L2_D03",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L2_D04",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L2_D05",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L2_D06",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L2_D07",
+        "type": "Int"
+      },
+      {
+        "name": "MF5_L2_D08",
+        "type": "Int"
+      }
+    ],
+    "fxLayers": 65,
+    "fxParameters": 235
+  },
+  "avatarId": "avtr_df2ff222-b6ff-47fb-80be-e060868596a2",
+  "scene": "Assets/MorphForge/MF5/MorphForge_MF5.unity",
+  "sourceSceneDirtyPreserved": false,
+  "prefabSha256": "3a2b0b4899b9ba4dbd6d4cf5ab01a58cae4855800f85e5219c15ba0bc5133ec2",
+  "activeCapacity": 16384,
+  "poolCapacity": 16386,
+  "lanes": 3
+}

@@ -6,7 +6,7 @@ use morphforge_core::{Box3, Scene};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use std::{
-    collections::BTreeMap,
+    collections::{BTreeMap, BTreeSet},
     fs,
     net::UdpSocket,
     path::PathBuf,
@@ -40,7 +40,7 @@ impl Default for Connection {
             refresh_seconds: 0,
             world: true,
             visible: true,
-            scale: 1.,
+            scale: morphforge_core::material_wire::SCALE_REFERENCE,
             level: true,
         }
     }
@@ -56,6 +56,9 @@ pub struct State {
     pub seq: u8,
     pub wide_seqs: [u8; 3],
     pub lanes: BTreeMap<protocol::GeometryKey, usize>,
+    pub wire_sent: BTreeMap<protocol::GeometryKey, morphforge_core::material_wire::Surface>,
+    pub wire_desired: BTreeMap<protocol::GeometryKey, morphforge_core::material_wire::Surface>,
+    pub repair_seen: Option<BTreeSet<protocol::GeometryKey>>,
     pub brush: Option<(u32, u8, u8)>,
     pub resets: u8,
     pub connected: bool,
@@ -79,6 +82,23 @@ pub struct Transport {
 impl Transport {
     pub fn new(workspace: Arc<Mutex<Workspace>>) -> Self {
         let root = workspace.lock().unwrap().root.clone();
+        let pending = root.join("pending-avatar-catalog.json");
+        if let Ok(bytes) = fs::read(&pending) {
+            if let Ok(catalog) = crate::target::AvatarCatalog::from_bytes(&bytes) {
+                if catalog.runtime_materials() {
+                    if root.join("avatar-catalog.json").exists() {
+                        let _ = fs::copy(
+                            root.join("avatar-catalog.json"),
+                            root.join("avatar-catalog.previous.json"),
+                        );
+                    }
+                    if crate::store::write_json(&root.join("avatar-catalog.json"), &catalog).is_ok()
+                    {
+                        let _ = fs::remove_file(&pending);
+                    }
+                }
+            }
+        }
         let (avatar_catalog, avatar_catalog_error) = if root.join("avatar-catalog.json").exists() {
             match std::fs::read(root.join("avatar-catalog.json"))
                 .map_err(anyhow::Error::from)
@@ -96,11 +116,17 @@ impl Transport {
             .and_then(|b| serde_json::from_slice::<Connection>(&b).ok())
             .unwrap_or_default();
         config.enabled = false;
-        if avatar_catalog
+        if let Some(protocol) = avatar_catalog
             .as_ref()
-            .is_some_and(crate::target::AvatarCatalog::wide_protocol)
+            .and_then(crate::target::AvatarCatalog::wire_protocol)
         {
-            config.profile = "mf4".into();
+            config.profile = protocol.into();
+            if protocol == "mf5" {
+                config.scale = config.scale.clamp(
+                    morphforge_core::material_wire::SCALE_MIN,
+                    morphforge_core::material_wire::SCALE_MAX,
+                );
+            }
         }
         let t = Self {
             inner: Arc::new(Mutex::new(State {
@@ -114,6 +140,9 @@ impl Transport {
                 seq: 1,
                 wide_seqs: [1; 3],
                 lanes: BTreeMap::new(),
+                wire_sent: BTreeMap::new(),
+                wire_desired: BTreeMap::new(),
+                repair_seen: None,
                 brush: None,
                 resets: 0,
                 connected: false,
@@ -142,8 +171,8 @@ impl Transport {
             s.brush,
             s.config.profile == "mf2",
         );
-        let command_batches = if s.config.profile == "mf4" {
-            protocol::wide_plan(planning_sent, &s.desired, &s.lanes)
+        let command_batches = if ["mf4", "mf5"].contains(&s.config.profile.as_str()) {
+            wide_queues(&s, planning_sent)
                 .iter()
                 .map(Vec::len)
                 .max()
@@ -155,7 +184,7 @@ impl Transport {
             + s.resets as usize
             + usize::from(!s.controls.is_empty())
             + s.reset_pulse as usize;
-        json!({"enabled":s.config.enabled,"sending":s.connected,"port":s.config.port,"interval":s.config.interval,"profile":s.config.profile,"auto":s.config.auto,"capacity":s.config.capacity,"refreshSeconds":s.config.refresh_seconds,"pending":pending,"etaSeconds":pending as f64*s.config.interval,"desiredRevision":s.desired_revision,"sentRevision":s.sent_revision,"sentCommands":s.sent_count,"error":s.last_error,"ack":false,"syncedBits":if s.config.profile=="mf4"{240}else if s.config.profile=="mf3"{56}else{88},"placement":{"world":s.config.world,"visible":s.config.visible,"scale":s.config.scale,"level":s.config.level}})
+        json!({"enabled":s.config.enabled,"sending":s.connected,"port":s.config.port,"interval":s.config.interval,"profile":s.config.profile,"auto":s.config.auto,"capacity":s.config.capacity,"refreshSeconds":s.config.refresh_seconds,"pending":pending,"etaSeconds":pending as f64*s.config.interval,"desiredRevision":s.desired_revision,"sentRevision":s.sent_revision,"sentCommands":s.sent_count,"error":s.last_error,"ack":false,"repairing":s.repair_seen.is_some(),"syncedBits":if ["mf4","mf5"].contains(&s.config.profile.as_str()){240}else if s.config.profile=="mf3"{56}else{88},"placement":{"world":s.config.world,"visible":s.config.visible,"scale":s.config.scale,"level":s.config.level}})
     }
     pub fn configure(&self, v: &Value, workspace: &mut Workspace) -> Result<Value> {
         let mut s = self.inner.lock().unwrap();
@@ -172,32 +201,42 @@ impl Transport {
             || !config.interval.is_finite()
             || !(0.05..=5.).contains(&config.interval)
             || !config.scale.is_finite()
-            || !(0.05..=1.).contains(&config.scale)
-            || !["mf4", "mf3", "mf2"].contains(&config.profile.as_str())
+            || !scale_valid(config.scale, &config.profile)
+            || !["mf5", "mf4", "mf3", "mf2"].contains(&config.profile.as_str())
             || config.capacity == 0
             || config.capacity > 50000
         {
             bail!("连接配置越界")
         }
-        if config.profile == "mf4" && config.capacity > 16384 {
+        if ["mf4", "mf5"].contains(&config.profile.as_str()) && config.capacity > 16384 {
             bail!("MF4_CAPACITY：三通道头像总容量为16384 Box");
         }
-        if config.enabled
-            && config.profile != "mf4"
-            && s.avatar_catalog
-                .as_ref()
-                .is_some_and(crate::target::AvatarCatalog::wide_protocol)
-        {
-            bail!("PROTOCOL_MISMATCH：目标目录为MF4三通道头像，不能使用MF3/MF2发送");
-        }
-        if config.enabled
-            && config.profile == "mf4"
-            && !s
+        if config.enabled {
+            if let Some(target) = s
                 .avatar_catalog
                 .as_ref()
-                .is_some_and(crate::target::AvatarCatalog::wide_protocol)
-        {
-            bail!("MF4_CATALOG_REQUIRED：请导入配套的MF4头像目录（240bit三通道），确认头像版本后再连接");
+                .and_then(crate::target::AvatarCatalog::wire_protocol)
+            {
+                if target != config.profile {
+                    bail!("PROTOCOL_MISMATCH：目标头像使用 {target}，请切换对应发送协议");
+                }
+            }
+            if config.profile == "mf5"
+                && !s
+                    .avatar_catalog
+                    .as_ref()
+                    .is_some_and(crate::target::AvatarCatalog::runtime_materials)
+            {
+                bail!("MF5_CATALOG_REQUIRED：请载入MF5配套目标目录");
+            }
+            if config.profile == "mf4"
+                && !s
+                    .avatar_catalog
+                    .as_ref()
+                    .is_some_and(crate::target::AvatarCatalog::wide_protocol)
+            {
+                bail!("MF4_CATALOG_REQUIRED：请载入MF4配套目标目录");
+            }
         }
         if config.enabled && !s.avatar_catalog_error.is_empty() {
             bail!("MATERIAL_CATALOG_INVALID：{}", s.avatar_catalog_error);
@@ -210,13 +249,16 @@ impl Transport {
                 &workspace.project.materials,
                 s.avatar_catalog.as_ref(),
             )?;
-            protocol::validate_target(&projected, config.capacity)?;
+            validate_scene(&projected, config.capacity, &config.profile)?;
         }
         s.config = config;
         if restart {
             s.generation += 1;
+            s.repair_seen = None;
             s.sent.clear();
             s.lanes.clear();
+            s.wide_seqs = [1; 3];
+            s.wire_sent.clear();
             s.sent_revision = None;
             s.brush = None;
             s.resets = 2;
@@ -231,13 +273,18 @@ impl Transport {
             if c.profile != "mf2" {
                 s.controls.insert("MF_Level".into(), Control::Bool(c.level));
             }
-            protocol::validate_target(&workspace.project.scene, s.config.capacity)?;
-            s.desired = crate::target::project(
+            validate_scene(
+                &workspace.project.scene,
+                s.config.capacity,
+                &s.config.profile,
+            )?;
+            let projection = crate::target::project_wire(
                 &workspace.project.scene,
                 &workspace.project.materials,
                 s.avatar_catalog.as_ref(),
-            )?
-            .boxes;
+            )?;
+            s.desired = projection.scene.boxes;
+            s.wire_desired = projection.surfaces;
             s.desired_revision = workspace.project.scene.revision;
         }
         if !s.config.enabled {
@@ -245,13 +292,18 @@ impl Transport {
             s.connected = false;
         }
         if s.config.enabled && s.config.auto && !old.auto {
-            protocol::validate_target(&workspace.project.scene, s.config.capacity)?;
-            s.desired = crate::target::project(
+            validate_scene(
+                &workspace.project.scene,
+                s.config.capacity,
+                &s.config.profile,
+            )?;
+            let projection = crate::target::project_wire(
                 &workspace.project.scene,
                 &workspace.project.materials,
                 s.avatar_catalog.as_ref(),
-            )?
-            .boxes;
+            )?;
+            s.desired = projection.scene.boxes;
+            s.wire_desired = projection.surfaces;
             s.desired_revision = workspace.project.scene.revision;
         }
         let mut saved = s.config.clone();
@@ -307,19 +359,46 @@ impl Transport {
             }
             state.avatar_catalog.clone()
         };
-        let projected = crate::target::project(scene, materials, profile.as_ref())?;
-        self.publish(&projected, resync)
+        let projected = crate::target::project_wire(scene, materials, profile.as_ref())?;
+        self.publish_projection(&projected.scene, projected.surfaces, resync)
     }
     pub fn publish(&self, scene: &Scene, resync: bool) -> Result<Value> {
+        self.publish_projection(scene, BTreeMap::new(), resync)
+    }
+    fn publish_projection(
+        &self,
+        scene: &Scene,
+        surfaces: BTreeMap<protocol::GeometryKey, morphforge_core::material_wire::Surface>,
+        resync: bool,
+    ) -> Result<Value> {
         let mut s = self.inner.lock().unwrap();
-        protocol::validate_target(scene, s.config.capacity)?;
+        validate_scene(scene, s.config.capacity, &s.config.profile)?;
+        if s.desired_revision != scene.revision || s.wire_desired != surfaces {
+            // New edits take priority over an in-progress maintenance replay.
+            s.repair_seen = None;
+        }
+        s.wire_desired = surfaces;
         s.desired = scene.boxes.clone();
         s.desired_revision = scene.revision;
         if resync {
+            s.repair_seen = None;
             s.resets = s.resets.max(2);
             s.brush = None;
             s.sent_revision = None;
         }
+        drop(s);
+        Ok(self.state())
+    }
+    /// Idempotent replay preserves native pool assignments and existing display.
+    /// This is blind repair, never a receiver acknowledgement.
+    pub fn repair(&self) -> Result<Value> {
+        let mut s = self.inner.lock().unwrap();
+        if s.config.profile != "mf5" {
+            bail!("补播需要MF5头像；旧协议请使用清空并重建");
+        }
+        s.repair_seen = Some(BTreeSet::new());
+        s.sent_revision = None;
+        s.last_refresh = Instant::now();
         drop(s);
         Ok(self.state())
     }
@@ -334,8 +413,8 @@ impl Transport {
             .get("scale")
             .map(|v| v.as_f64().context("缩放须为数字"))
             .transpose()?;
-        if scale.is_some_and(|f| !f.is_finite() || !(0.05..=1.).contains(&f)) {
-            bail!("缩放范围0.05..1")
+        if scale.is_some_and(|f| !f.is_finite() || !scale_valid(f as f32, &self.config().profile)) {
+            bail!("缩放超出当前头像范围：MF5为.0005.. .5（新1%..1000%），旧协议为.05..1")
         }
         let mut s = self.inner.lock().unwrap();
         for (key, b) in updates {
@@ -440,15 +519,24 @@ impl Transport {
                     && s.last_refresh.elapsed().as_secs() >= s.config.refresh_seconds
                     && s.sent_revision == Some(s.desired_revision)
                 {
-                    s.resets = 2;
+                    if s.config.profile == "mf5" {
+                        s.repair_seen = Some(BTreeSet::new());
+                    } else {
+                        s.resets = 2;
+                    }
                     s.sent_revision = None;
                     s.last_refresh = Instant::now();
                 }
                 if s.resets > 0 {
-                    Some(if s.config.profile == "mf4" {
+                    Some(if ["mf4", "mf5"].contains(&s.config.profile.as_str()) {
                         Job::Batch(
                             (0..protocol::WIDE_LANES)
-                                .map(|i| (i, Command::Clear))
+                                .map(|i| {
+                                    (
+                                        if s.config.profile == "mf5" { i * 2 } else { i },
+                                        Command::Clear,
+                                    )
+                                })
                                 .collect(),
                         )
                     } else {
@@ -464,11 +552,22 @@ impl Transport {
                             .collect(),
                     ))
                 } else {
-                    let command = if s.config.profile == "mf4" {
-                        let batch: Vec<_> = protocol::wide_plan(&s.sent, &s.desired, &s.lanes)
+                    let command = if ["mf4", "mf5"].contains(&s.config.profile.as_str()) {
+                        let batch: Vec<_> = wide_queues(&s, &s.sent)
                             .into_iter()
                             .enumerate()
-                            .filter_map(|(i, q)| q.into_iter().next().map(|c| (i, c)))
+                            .filter_map(|(i, q)| {
+                                q.into_iter().next().map(|(secondary, c)| {
+                                    (
+                                        if s.config.profile == "mf5" {
+                                            i * 2 + secondary
+                                        } else {
+                                            i
+                                        },
+                                        c,
+                                    )
+                                })
+                            })
                             .collect();
                         if batch.is_empty() {
                             None
@@ -482,6 +581,7 @@ impl Transport {
                             .map(Job::Command)
                     };
                     if command.is_none() {
+                        s.repair_seen = None;
                         if s.sent_revision != Some(s.desired_revision) {
                             s.last_refresh = Instant::now();
                         }
@@ -506,7 +606,22 @@ impl Transport {
                 Job::Batch(batch) => batch
                     .iter()
                     .try_fold(Vec::new(), |mut values, (lane, c)| {
-                        values.extend(protocol::wide_values(c, s.wide_seqs[*lane], *lane)?);
+                        values.extend(if s.config.profile == "mf5" {
+                            let surface = command_box(c)
+                                .map(|b| surface_for(&s, b))
+                                .unwrap_or_else(|| {
+                                    morphforge_core::material_wire::Surface::catalog(0, 0, 0)
+                                });
+                            protocol::mf5_pool_values(
+                                c,
+                                s.wide_seqs[*lane / 2],
+                                *lane / 2,
+                                surface,
+                                *lane % 2 == 1,
+                            )?
+                        } else {
+                            protocol::wide_values(c, s.wide_seqs[*lane], *lane)?
+                        });
                         Ok(values)
                     })
                     .map(|values| protocol::bundle(&values)),
@@ -517,7 +632,13 @@ impl Transport {
                                 k.clone(),
                                 match v {
                                     Control::Bool(b) => OscValue::Bool(*b),
-                                    Control::Float(f) => OscValue::Float(*f),
+                                    Control::Float(f) => OscValue::Float(
+                                        if k == "MF_Scale" && s.config.profile == "mf5" {
+                                            morphforge_core::material_wire::scale_wire(*f)
+                                        } else {
+                                            *f
+                                        },
+                                    ),
                                 },
                             )
                         })
@@ -557,12 +678,19 @@ impl Transport {
             match &job {
                 Job::Batch(batch) => {
                     for (lane, _) in batch {
-                        s.wide_seqs[*lane] = (s.wide_seqs[*lane] + 1) % 16;
+                        let index = if s.config.profile == "mf5" {
+                            *lane / 2
+                        } else {
+                            *lane
+                        };
+                        s.wide_seqs[index] = (s.wide_seqs[index] + 1)
+                            % if s.config.profile == "mf5" { 8 } else { 16 };
                     }
                     let clear = batch.iter().any(|(_, c)| matches!(c, Command::Clear));
                     if clear {
                         s.sent.clear();
                         s.lanes.clear();
+                        s.wire_sent.clear();
                         s.sent_revision = None;
                         s.brush = None;
                         s.resets = s.resets.saturating_sub(1);
@@ -572,11 +700,29 @@ impl Transport {
                                 Command::Remove { value } => {
                                     s.sent.retain(|b| key(b) != key(value));
                                     s.lanes.remove(&key(value));
+                                    s.wire_sent.remove(&key(value));
                                 }
                                 Command::Box { value } | Command::Voxel { value } => {
                                     s.sent.retain(|b| key(b) != key(value));
                                     s.sent.push(value.clone());
+                                    if let Some(seen) = &mut s.repair_seen {
+                                        seen.insert(key(value));
+                                    }
                                     s.lanes.insert(key(value), *lane);
+                                    let surface = surface_for(&s, value);
+                                    s.wire_sent.insert(key(value), surface);
+                                }
+                                Command::Pair { first, second } => {
+                                    for (offset, value) in [first, second].into_iter().enumerate() {
+                                        s.sent.retain(|b| key(b) != key(value));
+                                        s.sent.push(value.clone());
+                                        if let Some(seen) = &mut s.repair_seen {
+                                            seen.insert(key(value));
+                                        }
+                                        s.lanes.insert(key(value), *lane + offset);
+                                        let surface = surface_for(&s, value);
+                                        s.wire_sent.insert(key(value), surface);
+                                    }
                                 }
                                 _ => {}
                             }
@@ -603,7 +749,7 @@ impl Transport {
                             s.sent.push(value.clone());
                             s.brush = Some(appearance(value));
                         }
-                        Command::Erase { .. } => {}
+                        Command::Erase { .. } | Command::Pair { .. } => {}
                     }
                 }
                 Job::Controls(v) => {
@@ -628,4 +774,116 @@ impl Transport {
             next = Instant::now() + Duration::from_secs_f64(interval);
         }
     }
+}
+
+fn scale_valid(v: f32, profile: &str) -> bool {
+    if profile == "mf5" {
+        (morphforge_core::material_wire::SCALE_MIN..=morphforge_core::material_wire::SCALE_MAX)
+            .contains(&v)
+    } else {
+        (0.05..=1.).contains(&v)
+    }
+}
+fn command_box(c: &Command) -> Option<&Box3> {
+    match c {
+        Command::Box { value } | Command::Voxel { value } => Some(value),
+        Command::Pair { first, .. } => Some(first),
+        _ => None,
+    }
+}
+fn surface_for(s: &State, b: &Box3) -> morphforge_core::material_wire::Surface {
+    s.wire_desired.get(&key(b)).copied().unwrap_or_else(|| {
+        morphforge_core::material_wire::Surface::catalog(b.style_id, b.tint_id, b.motion_phase)
+    })
+}
+fn wide_queues(s: &State, sent: &[Box3]) -> [Vec<(usize, Command)>; 3] {
+    if s.config.profile != "mf5" {
+        return protocol::wide_plan(sent, &s.desired, &s.lanes)
+            .map(|v| v.into_iter().map(|c| (0, c)).collect());
+    }
+    let mut pools = protocol::pool_plan_by::<6>(sent, &s.desired, &s.lanes, |a, b| {
+        (s.repair_seen
+            .as_ref()
+            .is_none_or(|seen| seen.contains(&key(a))))
+            && s.wire_sent.get(&key(a)).copied().unwrap_or_else(|| {
+                morphforge_core::material_wire::Surface::catalog(
+                    a.style_id,
+                    a.tint_id,
+                    a.motion_phase,
+                )
+            }) == surface_for(s, b)
+    });
+    for queue in &mut pools {
+        queue.sort_by_key(|c| {
+            let b = command_box(c);
+            (b.is_some(), b.map(|b| surface_for(s, b)), b.map(key))
+        });
+    }
+    let paired = s
+        .avatar_catalog
+        .as_ref()
+        .is_some_and(|c| c.capabilities.iter().any(|v| v == "mf5-dual-pool/1"));
+    std::array::from_fn(|lane| {
+        let mut a = std::collections::VecDeque::from(std::mem::take(&mut pools[lane * 2]));
+        let mut b = std::collections::VecDeque::from(std::mem::take(&mut pools[lane * 2 + 1]));
+        let mut out = Vec::new();
+        let mut next = false;
+        while !a.is_empty() || !b.is_empty() {
+            if paired {
+                if let (
+                    Some(Command::Voxel { value: first }),
+                    Some(Command::Voxel { value: second }),
+                ) = (a.front(), b.front())
+                {
+                    let surface = surface_for(s, first);
+                    if surface.mode <= 2 && surface == surface_for(s, second) {
+                        out.push((
+                            0,
+                            Command::Pair {
+                                first: first.clone(),
+                                second: second.clone(),
+                            },
+                        ));
+                        a.pop_front();
+                        b.pop_front();
+                        continue;
+                    }
+                }
+            }
+            let secondary = if a.is_empty() {
+                true
+            } else if b.is_empty() {
+                false
+            } else if a.len() == b.len() {
+                next = !next;
+                next
+            } else {
+                b.len() > a.len()
+            };
+            out.push((
+                usize::from(secondary),
+                if secondary {
+                    b.pop_front().unwrap()
+                } else {
+                    a.pop_front().unwrap()
+                },
+            ));
+        }
+        out
+    })
+}
+fn validate_scene(scene: &Scene, capacity: usize, profile: &str) -> Result<()> {
+    if profile != "mf5" {
+        return Ok(protocol::validate_target(scene, capacity)?);
+    }
+    if scene.boxes.len() > capacity {
+        bail!("MF5容量超限：{capacity} Box");
+    }
+    for b in &scene.boxes {
+        protocol::validate_geometry(b)?;
+        if b.tint_id > 63 || b.motion_phase > 63 {
+            bail!("染色/运动编码须在0..63");
+        }
+    }
+    Ok(())
 }

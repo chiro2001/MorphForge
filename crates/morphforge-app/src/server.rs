@@ -256,14 +256,18 @@ async fn scene(State(a): State<App>, Query(q): Query<Revision>) -> ApiResult {
     let scene = w.scene_at(revision)?;
     let materials = w.materials_at(revision)?;
     let surfaces = morphforge_core::surfaces::transparent_interfaces(&scene, &materials);
+    let transport = a.transport.inner.lock().unwrap();
     Ok(Json(
-        json!({"scene":scene,"materials":materials,"surfaces":surfaces}),
+        json!({"scene":crate::target::decorate_preview(&scene,&materials,transport.avatar_catalog.as_ref()),"materials":crate::target::preview_materials(&materials,transport.avatar_catalog.as_ref()),"surfaces":surfaces}),
     ))
 }
 async fn avatar_profile(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     let w = a.workspace.lock().unwrap();
     let catalog = match v["action"].as_str() {
         Some("clear") => None,
+        Some("bundled_mf5") => Some(crate::target::AvatarCatalog::from_bytes(include_bytes!(
+            "../../../materials/mf5/catalog.json"
+        ))?),
         Some("bundled_mf4") => Some(crate::target::AvatarCatalog::from_bytes(include_bytes!(
             "../../../materials/mf4/catalog.json"
         ))?),
@@ -480,15 +484,23 @@ async fn connect(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     Ok(Json(a.transport.configure(&v, &mut w)?))
 }
 async fn publish(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    if v["repair"].as_bool().unwrap_or(false)
+        && (a.transport.config().profile != "mf5" || v["resync"].as_bool().unwrap_or(false))
+    {
+        return Err(anyhow::anyhow!("补播仅支持MF5，且不可与清空重建同时使用").into());
+    }
     let mut w = a.workspace.lock().unwrap();
     let rev = v["revision"].as_u64().unwrap_or(w.project.scene.revision);
     let _ = w.commit(Some(rev), v["title"].as_str().unwrap_or("手动发布"), None)?;
     let scene = w.scene_at(rev)?;
-    let result = a.transport.publish_with_materials(
+    let mut result = a.transport.publish_with_materials(
         &scene,
         &w.materials_at(rev)?,
         v["resync"].as_bool().unwrap_or(false),
     )?;
+    if v["repair"].as_bool().unwrap_or(false) {
+        result = a.transport.repair()?;
+    }
     w.event(
         "revision.published",
         None,

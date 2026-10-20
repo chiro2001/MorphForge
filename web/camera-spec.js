@@ -48,7 +48,7 @@ export function resolveCamera(bounds, shot = {}, aspect = 1) {
     tanY = Math.tan((fov * Math.PI) / 360),
     tanX = tanY * aspect,
     margin = 1 + (shot.margin ?? 0.12);
-  const span = Math.max(...bounds.max.map((v, i) => v - bounds.min[i]), 1);
+  const span = Math.max(...bounds.max.map((v, i) => v - bounds.min[i]), 0.000001);
   const fitDistance = Math.max(
     ...corners.map(
       (p) =>
@@ -68,7 +68,7 @@ export function resolveCamera(bounds, shot = {}, aspect = 1) {
       ...corners.map((p) =>
         Math.max(Math.abs(dot(p, up)), Math.abs(dot(p, right)) / aspect),
       ),
-      0.5,
+      0.000001,
     ) * margin;
   return {
     projection: shot.projection || "perspective",
@@ -82,7 +82,7 @@ export function resolveCamera(bounds, shot = {}, aspect = 1) {
       top: halfY,
       bottom: -halfY,
     },
-    near: 0.001,
+    near: Math.max(0.000001, Math.min(0.001, distance/1000)),
     far: Math.max(5000, distance + span * 10),
     bounds,
     coordinateSpace: "voxel-grid",

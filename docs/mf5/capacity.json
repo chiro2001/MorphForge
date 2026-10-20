@@ -1,0 +1,21 @@
+{
+  "success": true,
+  "boxes": 16384,
+  "pools": [
+    2731,
+    2731,
+    2731,
+    2731,
+    2730,
+    2730
+  ],
+  "frames": 2731,
+  "firstPassCount": 16384,
+  "firstPassMissing": [],
+  "repairBatches": 0,
+  "repairInterval": 0.5,
+  "interval": 0.25,
+  "seconds": 692.8691172,
+  "errors": [],
+  "scope": "16384 actual OSC-drawn unit voxels via native Animator into six independent production particle pools; no particle prefill. Local missing-ID oracle and slower repair if needed; not remote ACK or multiplayer guarantee."
+}

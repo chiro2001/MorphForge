@@ -1,0 +1,38 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "fresh isolated workspace starts with OSC off",
+      "passed": true
+    },
+    {
+      "name": "real catalogue button selects MF4 without sending",
+      "passed": true
+    },
+    {
+      "name": "actual geometry bit budget is displayed",
+      "passed": true
+    },
+    {
+      "name": "wrong wire protocol is rejected before OSC",
+      "passed": true
+    },
+    {
+      "name": "pool capacity cannot be overcommitted",
+      "passed": true
+    },
+    {
+      "name": "offline publish remains independent of VRC",
+      "passed": true
+    },
+    {
+      "name": "catalogue and profile persist through reload",
+      "passed": true
+    },
+    {
+      "name": "no JavaScript or shader errors",
+      "passed": true
+    }
+  ],
+  "scope": "Real Chromium controls; OSC remains off; no upstream model calls."
+}

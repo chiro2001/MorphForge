@@ -763,6 +763,7 @@ fn import_model_materials(
             animated_materials += 1;
         }
         additions.push(Material {
+            procedural: None,
             id: next,
             uid,
             name: format!("{block} · {name}"),
@@ -861,6 +862,7 @@ fn import_texture_fallbacks(
             .unwrap_or(&asset.uid)
             .trim_start_matches("block/");
         additions.push(Material {
+            procedural: None,
             id: next,
             uid,
             name: format!("{block} · {name}"),

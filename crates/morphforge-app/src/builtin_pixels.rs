@@ -269,6 +269,360 @@ fn specs() -> Vec<Spec> {
     )
     .collect()
 }
+fn block_specs() -> Vec<Spec> {
+    let mut all = specs();
+    all.extend([
+        Spec {
+            key: "spruce_log",
+            name: "云杉原木",
+            family: "wood",
+            color: [104, 77, 48],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "birch_log",
+            name: "白桦原木",
+            family: "wood",
+            color: [207, 201, 179],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "dark_log",
+            name: "深橡原木",
+            family: "wood",
+            color: [72, 49, 33],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "spruce_planks",
+            name: "云杉木板",
+            family: "wood",
+            color: [126, 91, 52],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "birch_planks",
+            name: "白桦木板",
+            family: "wood",
+            color: [220, 203, 144],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "dark_planks",
+            name: "深色木板",
+            family: "wood",
+            color: [84, 58, 38],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "mossy_cobble",
+            name: "苔石",
+            family: "natural",
+            color: [98, 117, 83],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "deepslate",
+            name: "深板岩",
+            family: "natural",
+            color: [66, 72, 76],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "granite",
+            name: "花岗岩",
+            family: "natural",
+            color: [158, 115, 99],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "marble",
+            name: "纹理大理石",
+            family: "natural",
+            color: [222, 219, 209],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "basalt",
+            name: "玄武岩",
+            family: "natural",
+            color: [66, 65, 72],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "red_sand",
+            name: "红沙",
+            family: "natural",
+            color: [182, 103, 58],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "sandstone",
+            name: "砂岩砖",
+            family: "building",
+            color: [205, 184, 133],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "quartz",
+            name: "石英块",
+            family: "building",
+            color: [236, 228, 216],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "blue_brick",
+            name: "蓝灰砖",
+            family: "building",
+            color: [81, 107, 130],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "grey_brick",
+            name: "灰石砖",
+            family: "building",
+            color: [113, 120, 123],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "tiles",
+            name: "深色瓦",
+            family: "building",
+            color: [78, 74, 76],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "blue_glass",
+            name: "蓝玻璃",
+            family: "glass",
+            color: [92, 147, 214],
+            base: 0,
+            metal: 0.2f32,
+            rough: 0.1f32,
+            opacity: 0.4f32,
+            emission: 0.,
+            mode: "transparent",
+        },
+        Spec {
+            key: "green_glass",
+            name: "绿玻璃",
+            family: "glass",
+            color: [109, 189, 139],
+            base: 0,
+            metal: 0.2f32,
+            rough: 0.1f32,
+            opacity: 0.4f32,
+            emission: 0.,
+            mode: "transparent",
+        },
+        Spec {
+            key: "red_glass",
+            name: "红玻璃",
+            family: "glass",
+            color: [214, 108, 105],
+            base: 0,
+            metal: 0.2f32,
+            rough: 0.1f32,
+            opacity: 0.4f32,
+            emission: 0.,
+            mode: "transparent",
+        },
+        Spec {
+            key: "moss",
+            name: "绒苔",
+            family: "foliage",
+            color: [77, 118, 51],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "dark_leaves",
+            name: "深绿树叶",
+            family: "foliage",
+            color: [38, 83, 42],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "cutout",
+        },
+        Spec {
+            key: "amethyst",
+            name: "紫晶",
+            family: "natural",
+            color: [150, 100, 190],
+            base: 0,
+            metal: 0.15f32,
+            rough: 0.3f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "red_wool",
+            name: "朱红羊毛",
+            family: "matte",
+            color: [180, 61, 51],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "blue_wool",
+            name: "靛蓝羊毛",
+            family: "matte",
+            color: [62, 88, 161],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "white_wool",
+            name: "白羊毛",
+            family: "matte",
+            color: [223, 221, 211],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "black_wool",
+            name: "黑羊毛",
+            family: "matte",
+            color: [45, 43, 48],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "red_terracotta",
+            name: "赭红陶土",
+            family: "building",
+            color: [149, 78, 57],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+        Spec {
+            key: "blue_terracotta",
+            name: "青蓝陶土",
+            family: "building",
+            color: [78, 103, 123],
+            base: 0,
+            metal: 0.0f32,
+            rough: 0.9f32,
+            opacity: 1.0f32,
+            emission: 0.,
+            mode: "opaque",
+        },
+    ]);
+    all
+}
 fn texture(s: &Spec, face: usize) -> Result<Vec<u8>> {
     let frames = if s.key == "water" { 4 } else { 1 };
     let mut image = RgbaImage::new(16, 16 * frames);
@@ -279,7 +633,22 @@ fn texture(s: &Spec, face: usize) -> Result<Vec<u8>> {
                 let mut delta = noise / 2;
                 let mut color = s.color;
                 let mut alpha = 255;
-                match s.key {
+                let pattern = if s.key.ends_with("_log") {
+                    "wood"
+                } else if s.key.ends_with("_planks") {
+                    "planks"
+                } else if s.key.ends_with("_glass") {
+                    "glass"
+                } else if s.key.ends_with("_brick") || s.key == "sandstone" {
+                    "brick"
+                } else if s.key == "dark_leaves" {
+                    "leaves"
+                } else if s.key == "mossy_cobble" {
+                    "cobble"
+                } else {
+                    s.key
+                };
+                match pattern {
                     "wood" => {
                         delta += if face == 2 || face == 3 {
                             let d = (x as i32 - 7).abs().max((y as i32 - 7).abs());
@@ -370,7 +739,7 @@ fn texture(s: &Spec, face: usize) -> Result<Vec<u8>> {
     Ok(out.into_inner())
 }
 pub fn list() -> Value {
-    json!([{"id":"pixel-workshop","name":"像素工坊","version":"1.0","license":"MIT","author":"MorphForge contributors","materialCount":specs().len(),"description":"内置原创16×16像素主题；木石、草土、砖、云水、金属与发光。可导出到Avatar，无需下载。"}])
+    json!([{"id":"pixel-workshop","name":"像素工坊","version":"1.0","license":"MIT","author":"MorphForge contributors","materialCount":specs().len(),"description":"原有19种原创像素主题。"},{"id":"block-workshop","name":"方块工坊","version":"1.0","license":"MIT","author":"MorphForge contributors","materialCount":block_specs().len(),"description":"48种原创Minecraft风格16×16像素方块：木石砖瓦、矿物、彩玻璃、羊毛与陶土。MF5头像已内置；不含Mojang素材。"}])
 }
 pub fn apply(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Value> {
     let base = args["baseRevision"]
@@ -379,14 +748,18 @@ pub fn apply(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Value
     if base != w.project.scene.revision {
         bail!("REVISION_CONFLICT");
     }
-    if args["id"].as_str() != Some("pixel-workshop") {
+    if ![Some("pixel-workshop"), Some("block-workshop")].contains(&args["id"].as_str()) {
         bail!("未知内置主题");
     }
     let mut materials = w.project.materials.clone();
     let mut used: BTreeSet<_> = materials.iter().map(|m| m.id).collect();
     let mut mapping = BTreeMap::new();
     let mut added = 0;
-    for spec in specs() {
+    for spec in if args["id"] == "block-workshop" {
+        block_specs()
+    } else {
+        specs()
+    } {
         let uid = format!("mf-pixel:{}", spec.key);
         if let Some(existing) = materials.iter().find(|m| m.uid == uid) {
             mapping.insert(spec.base, existing.id);
@@ -417,6 +790,7 @@ pub fn apply(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Value
             frame_time: 0.1,
             pack: Some("pixel-workshop/1.0".into()),
             source: Some("MorphForge original procedural pixel textures; MIT".into()),
+            procedural: None,
         });
         mapping.insert(spec.base, id);
         added += 1;
@@ -444,6 +818,6 @@ pub fn apply(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Value
     let result = w.replace_with_materials(scene, materials, Some(base), run)?;
     w.event("pack.builtin.applied",run,json!({"id":"pixel-workshop","license":"MIT","materialsAdded":added,"repaintedBoxes":changed}))?;
     Ok(
-        json!({"ok":true,"revision":result["revision"],"materialsAdded":added,"repaintedBoxes":changed,"license":"MIT","note":"像素材质已加入当前工程。VRChat使用需要重新导出并打包Avatar目录。"}),
+        json!({"ok":true,"revision":result["revision"],"materialsAdded":added,"repaintedBoxes":changed,"license":"MIT","note":"主题已加入；配套MF5头像内置方块工坊，可直接按身份映射。MF4/旧头像或额外新图片需要更新目录。"}),
     )
 }

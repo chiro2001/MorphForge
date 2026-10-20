@@ -26,6 +26,7 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
         CGINCLUDE
         #include "UnityCG.cginc"
         #include "Lighting.cginc"
+        #include "MorphForgeRuntimeSurface.cginc"
 
         UNITY_DECLARE_TEX2DARRAY(_CatalogLayers);
         float _UseLayeredTextures;
@@ -121,25 +122,32 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
             return frac(faceData.xy * extent / max(_CellSize, 0.0001));
         }
 
+        float EarlyFlags(v2f i)
+        {
+            float mode=MF5Mode(i.data,_WireEncoding);
+            if(mode>.5&&mode<1.5)return 0;
+            float bits=MF5Bits(i.data);
+            if(mode>1.5&&mode<2.5)return MF5Field(bits,20,4)>.5?2:0;
+            if(mode>2.5&&mode<6.5)return MF5Field(bits,14,4)>.5?2:0;
+            float4 code=MF5Codes(i.data,_WireEncoding,mode);
+            return MetaTexel(code.r+64.0*code.g,2.0).w;
+        }
+
         fixed4 SampleCatalog(v2f i, out float3 baseColor, out float opacity, out float flags)
         {
-            float4 codes = floor(saturate(i.data) * 63.0 + 0.5);
-            if (_WireEncoding > 3.5)
-            {
-                float3 bytes = floor(saturate(i.data.rgb) * 255.0 + 0.5);
-                float style = bytes.r + 256.0 * fmod(bytes.g, 16.0);
-                codes = float4(fmod(style, 64.0), floor(style / 64.0),
-                    floor(bytes.g / 16.0) + 16.0 * fmod(bytes.b, 4.0), floor(bytes.b / 4.0));
-            }
+            float runtimeMode=MF5Mode(i.data,_WireEncoding);
+            float4 codes=MF5Codes(i.data,_WireEncoding,runtimeMode);
             float styleId = codes.r + 64.0 * codes.g;
             float tint = codes.b;
             float motion = codes.a / 64.0;
             float4 m0 = MetaTexel(styleId, 0.0); // offsetXY, frames, frameTime
             float4 m1 = MetaTexel(styleId, 1.0); // sRGB color, opacity
             float4 m2 = MetaTexel(styleId, 2.0); // metallic, roughness, emission, flags
+            float runtimeKind,noiseScale,noiseSeed;
+            MF5Material(i.data,runtimeMode,m1,m2,runtimeKind,noiseScale,noiseSeed);
             flags = m2.w;
             float3 sRGBColor = m1.rgb;
-            if (styleId < 0.5)
+            if (styleId < 0.5 && runtimeMode < 0.5)
             {
                 sRGBColor = float3(0.62, 0.67, 0.73);
                 m1.a = 1.0;
@@ -149,7 +157,7 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
             baseColor = GammaToLinearSpace(sRGBColor);
             opacity = saturate(m1.a);
 
-            if (tint > 0.0)
+            if (tint > 0.0 && runtimeMode < 0.5)
             {
                 float3 tintFactor = 0.45 + 0.55 * frac(tint * float3(0.31, 0.53, 0.79));
                 baseColor *= tintFactor;
@@ -200,6 +208,10 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
             if (hasTexture)
             {
                 baseColor *= texel.rgb;
+            }
+            if(runtimeKind>.5) {
+                float2 extent=axis<.5?i.size.zy:(axis<1.5?i.size.xz:i.size.xy);
+                baseColor*=MF5Pattern(runtimeKind,i.uvFace.xy*extent/max(_CellSize,.0001),face,noiseScale,noiseSeed,_Time.y);
             }
             if (_VoxelGrid > .5)
             {
@@ -265,9 +277,9 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
 
             fixed4 frag(v2f i) : SV_Target
             {
-                float3 color;
-                float opacity;
-                float flags;
+                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
+                float3 color;float opacity;float flags=EarlyFlags(i);
+                if(fmod(floor(flags/2.0),2.0)>=1.0)discard;
                 fixed4 result = SampleCatalog(i, color, opacity, flags);
                 if (fmod(flags, 4.0) >= 2.0)
                     discard;
@@ -292,9 +304,9 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
 
             fixed4 frag(v2f i) : SV_Target
             {
-                float3 color;
-                float opacity;
-                float flags;
+                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
+                float3 color;float opacity;float flags=EarlyFlags(i);
+                if(fmod(floor(flags/2.0),2.0)<1.0)discard;
                 fixed4 result = SampleCatalog(i, color, opacity, flags);
                 if (fmod(flags, 4.0) < 2.0)
                     discard;

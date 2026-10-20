@@ -1,0 +1,239 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "phase": "clear",
+      "passed": true,
+      "expected": 0,
+      "actual": 0,
+      "errors": []
+    },
+    {
+      "phase": "primary surface-mode-0",
+      "passed": true,
+      "expected": 3,
+      "actual": 3,
+      "errors": []
+    },
+    {
+      "phase": "primary surface-mode-1",
+      "passed": true,
+      "expected": 6,
+      "actual": 6,
+      "errors": []
+    },
+    {
+      "phase": "primary surface-mode-2",
+      "passed": true,
+      "expected": 9,
+      "actual": 9,
+      "errors": []
+    },
+    {
+      "phase": "primary surface-mode-3",
+      "passed": true,
+      "expected": 12,
+      "actual": 12,
+      "errors": []
+    },
+    {
+      "phase": "primary surface-mode-4",
+      "passed": true,
+      "expected": 15,
+      "actual": 15,
+      "errors": []
+    },
+    {
+      "phase": "primary surface-mode-5",
+      "passed": true,
+      "expected": 18,
+      "actual": 18,
+      "errors": []
+    },
+    {
+      "phase": "primary surface-mode-6",
+      "passed": true,
+      "expected": 21,
+      "actual": 21,
+      "errors": []
+    },
+    {
+      "phase": "primary surface-mode-7",
+      "passed": true,
+      "expected": 24,
+      "actual": 24,
+      "errors": []
+    },
+    {
+      "phase": "secondary surface-mode-0",
+      "passed": true,
+      "expected": 27,
+      "actual": 27,
+      "errors": []
+    },
+    {
+      "phase": "secondary surface-mode-1",
+      "passed": true,
+      "expected": 30,
+      "actual": 30,
+      "errors": []
+    },
+    {
+      "phase": "secondary surface-mode-2",
+      "passed": true,
+      "expected": 33,
+      "actual": 33,
+      "errors": []
+    },
+    {
+      "phase": "secondary surface-mode-3",
+      "passed": true,
+      "expected": 36,
+      "actual": 36,
+      "errors": []
+    },
+    {
+      "phase": "secondary surface-mode-4",
+      "passed": true,
+      "expected": 39,
+      "actual": 39,
+      "errors": []
+    },
+    {
+      "phase": "secondary surface-mode-5",
+      "passed": true,
+      "expected": 42,
+      "actual": 42,
+      "errors": []
+    },
+    {
+      "phase": "secondary surface-mode-6",
+      "passed": true,
+      "expected": 45,
+      "actual": 45,
+      "errors": []
+    },
+    {
+      "phase": "secondary surface-mode-7",
+      "passed": true,
+      "expected": 48,
+      "actual": 48,
+      "errors": []
+    },
+    {
+      "phase": "96 RGB unit voxels / two sequence wraps / independent dual pools",
+      "passed": true,
+      "expected": 144,
+      "actual": 144,
+      "errors": []
+    },
+    {
+      "phase": "catalog pair",
+      "passed": true,
+      "expected": 150,
+      "actual": 150,
+      "errors": []
+    },
+    {
+      "phase": "PBR pair",
+      "passed": true,
+      "expected": 156,
+      "actual": 156,
+      "errors": []
+    },
+    {
+      "phase": "single draw after pair retains secondary pool",
+      "passed": true,
+      "expected": 159,
+      "actual": 159,
+      "errors": []
+    },
+    {
+      "phase": "precise erase in secondary pools",
+      "passed": true,
+      "expected": 156,
+      "actual": 156,
+      "errors": []
+    },
+    {
+      "phase": "paired repaint retains count and restores erased voxels",
+      "passed": true,
+      "expected": 159,
+      "actual": 159,
+      "errors": []
+    },
+    {
+      "phase": "1% minimum",
+      "passed": true,
+      "actualPhysical": 0.0005,
+      "expectedPhysical": 0.0005
+    },
+    {
+      "phase": "10%",
+      "passed": true,
+      "actualPhysical": 0.005000001,
+      "expectedPhysical": 0.005
+    },
+    {
+      "phase": "100% equals old 5%",
+      "passed": true,
+      "actualPhysical": 0.05000001,
+      "expectedPhysical": 0.05
+    },
+    {
+      "phase": "1000% maximum",
+      "passed": true,
+      "actualPhysical": 0.5,
+      "expectedPhysical": 0.5
+    },
+    {
+      "phase": "restore standard size",
+      "passed": true,
+      "actualPhysical": 0.05000001,
+      "expectedPhysical": 0.05
+    },
+    {
+      "phase": "Avatar menu preset 0",
+      "passed": true,
+      "actualPhysical": 0.0005
+    },
+    {
+      "phase": "Avatar menu preset 1",
+      "passed": true,
+      "actualPhysical": 0.005000001
+    },
+    {
+      "phase": "Avatar menu preset 2",
+      "passed": true,
+      "actualPhysical": 0.05000001
+    },
+    {
+      "phase": "Avatar menu preset 3",
+      "passed": true,
+      "actualPhysical": 0.5
+    },
+    {
+      "phase": "restore after menu presets",
+      "passed": true,
+      "actualPhysical": 0.05000001,
+      "expectedPhysical": 0.05
+    },
+    {
+      "phase": "retained data after rescale and idle",
+      "passed": true,
+      "expected": 159,
+      "actual": 159,
+      "errors": []
+    },
+    {
+      "phase": "final clear",
+      "passed": true,
+      "expected": 0,
+      "actual": 0,
+      "errors": []
+    }
+  ],
+  "batches": 37,
+  "interval": 0.25,
+  "scope": "Real production-format OSC bundles on 9012 -> GestureManager -> native Animator and particles. Includes dual-pump birth, all surface tags, color retention, deletes, scale and Avatar menu drivers; no particle prefill or paid model calls."
+}

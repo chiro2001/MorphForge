@@ -9,7 +9,20 @@ use std::{
 pub fn export(w: &Workspace) -> Result<Vec<u8>> {
     let mut ids = BTreeSet::new();
     let mut textures = BTreeSet::new();
-    for m in &w.project.materials {
+    let mut materials: Vec<_> = w
+        .project
+        .materials
+        .iter()
+        .filter(|m| {
+            m.id <= 4095 || morphforge_core::material_wire::Surface::runtime(m, 0).is_none()
+        })
+        .cloned()
+        .collect();
+    // A runtime-only project still exports a valid, nonempty static lookup.
+    if materials.is_empty() {
+        materials.push(morphforge_core::materials::builtins().remove(0));
+    }
+    for m in &materials {
         if m.id > 4095 || !ids.insert(m.id) {
             bail!("Avatar材质目录需要唯一的0..4095 styleId")
         };
@@ -28,7 +41,7 @@ pub fn export(w: &Workspace) -> Result<Vec<u8>> {
     let options = zip::write::SimpleFileOptions::default()
         .compression_method(zip::CompressionMethod::Deflated);
     zip.start_file("catalog.json", options)?;
-    zip.write_all(serde_json::to_string_pretty(&json!({"format":"MorphForgeMaterialCatalog/1","version":crate::store::hash(&serde_json::to_vec(&w.project.materials)?),"capabilities":["virtual-light/1",crate::target::SURFACE_CAPABILITY],"virtualLighting":{"direction":[0.4,0.8,0.6],"voxelGrid":false},"colorSpace":"sRGB","cellSize":0.25,"materials":w.project.materials,"sourceProject":w.project.id,"sourceRevision":w.project.scene.revision}))?.as_bytes())?;
+    zip.write_all(serde_json::to_string_pretty(&json!({"format":"MorphForgeMaterialCatalog/1","version":crate::store::hash(&serde_json::to_vec(&w.project.materials)?),"capabilities":["virtual-light/1",crate::target::SURFACE_CAPABILITY],"virtualLighting":{"direction":[0.4,0.8,0.6],"voxelGrid":false},"colorSpace":"sRGB","cellSize":0.25,"materials":materials,"sourceProject":w.project.id,"sourceRevision":w.project.scene.revision}))?.as_bytes())?;
     zip.start_file("licenses/MorphForge-Pixel-MIT.txt", options)?;
     zip.write_all(crate::builtin_pixels::LICENSE.as_bytes())?;
     let mut total = 0usize;

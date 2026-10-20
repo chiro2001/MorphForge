@@ -47,7 +47,7 @@ pub(super) fn define(workspace: &mut Workspace, args: &Value, run: Option<&str>)
             .map(|offset| u8::from_str_radix(&hex[offset..offset + 2], 16).unwrap() as f32 / 255.0);
         let uid = format!("mf:palette-{hex}");
         let id = if let Some(existing) = materials.iter().find(|m| m.uid == uid) {
-            if existing.id > 4095
+            if existing.id > 65535
                 || existing.color != rgb
                 || existing.source.as_deref() != Some("MorphForge palette/1")
                 || existing.family != "matte"
@@ -61,9 +61,9 @@ pub(super) fn define(workspace: &mut Workspace, args: &Value, run: Option<&str>)
             }
             existing.id
         } else {
-            let id = (25..=4095)
+            let id = (25..=65535)
                 .find(|id| !used.contains(id))
-                .context("PALETTE_CAPACITY：25..4095内无可用材质ID，请复用已有色板")?;
+                .context("PALETTE_CAPACITY：25..65535内无可用材质ID，请复用已有色板")?;
             used.insert(id);
             materials.push(Material {
                 id,
@@ -81,6 +81,7 @@ pub(super) fn define(workspace: &mut Workspace, args: &Value, run: Option<&str>)
                 frame_time: 0.0,
                 pack: None,
                 source: Some("MorphForge palette/1".into()),
+                procedural: None,
             });
             added += 1;
             id
@@ -100,8 +101,8 @@ pub(super) fn define(workspace: &mut Workspace, args: &Value, run: Option<&str>)
     let value = json!({
         "ok":true,"revision":workspace.project.scene.revision,"palette":palette,
         "added":added,"geometryChanged":false,
-        "vrcCatalogExportRequired":added > 0,
-        "hint":"Use returned IDs/UIDs in run_recipe at the returned revision. New colors are local artwork materials; export/rebuild the Avatar catalog before VRC publishing. 新颜色先用于本机作品；发布到VRC前需导出并更新Avatar材质目录。"
+        "vrcCatalogExportRequired":added > 0,"mf5RebuildRequired":false,
+        "hint":"Use returned IDs/UIDs in run_recipe at the returned revision. MF5 sends these colors as RGB24 without an Avatar rebuild. MF4/older still need matching catalogs. MF5可直接发送新颜色；旧版仍需材质目录打包。"
     });
     workspace.event("palette.defined", run, value.clone())?;
     Ok(value)

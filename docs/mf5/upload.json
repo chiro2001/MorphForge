@@ -1,0 +1,14 @@
+{
+  "status": "success",
+  "operation": "564b39e054144f40b1c94a33313e7b44",
+  "targetAvatarId": "avtr_df2ff222-b6ff-47fb-80be-e060868596a2",
+  "versionBefore": 13,
+  "startedUtc": "2026-10-20T01:53:48.370322Z",
+  "displayName": "MorphForge MF5 16K",
+  "geometryBits": 240,
+  "totalBits": 254,
+  "phase": "complete",
+  "avatarVersion": 15,
+  "pendingUpload": false,
+  "completedUtc": "2026-10-20T01:59:23.1678254Z"
+}

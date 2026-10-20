@@ -17,7 +17,7 @@ def main():
         check('fresh isolated workspace starts with OSC off',not api('state')['connection']['enabled'])
         api('vrc/profile',{'action':'clear'});api('connect',{'enabled':False,'profile':'mf3'})
         b.js('document.querySelector("button[data-tab=sync]").click()');b.wait('return !document.getElementById("tab-sync").hidden')
-        b.click('avatarCatalogBundled');b.wait('return window.__morphforge.state.connection.profile==="mf4"',15)
+        b.click('avatarCatalogMf4');b.wait('return window.__morphforge.state.connection.profile==="mf4"',15)
         s=api('state');check('real catalogue button selects MF4 without sending',s['connection']['profile']=='mf4' and not s['connection']['enabled'] and s['materialCompatibility']['matched'])
         check('actual geometry bit budget is displayed',s['connection']['syncedBits']==240)
         try:api('connect',{'profile':'mf3','enabled':True});blocked=False

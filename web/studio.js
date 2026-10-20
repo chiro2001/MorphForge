@@ -75,6 +75,7 @@ let providerDraftDirty = false;
 let providerSaveBusy = false;
 let workspaceBusy = false;
 let loadedProjectId = "";
+let loadedPreviewCatalog = "";
 let viewSettings = {quality:"high",captureQuality:"high",voxelGrid:false,captureGrid:false,surfaceCulling:true,showTargetBounds:false};
 let pendingTransform = null;
 
@@ -584,7 +585,10 @@ async function refresh(force = false) {
       if (timelineView && !$("timeline").hidden) timelineView.reload().catch(error);
     }
     updateState();
-    if ((next.revision !== loadedRevision || force) && !loading) {
+    const previewCatalog=JSON.stringify([next.connection.profile,next.materialCompatibility?.fingerprint]);
+    const previewScale=$("renderMode").value === "vrc" ? next.connection.placement.scale : 1;
+    if(renderer.scale!==previewScale) renderer.setScale(previewScale);
+    if ((next.revision !== loadedRevision || previewCatalog!==loadedPreviewCatalog || force) && !loading) {
       loading = true;
       try {
         sceneData = await api("scene");
@@ -602,6 +606,7 @@ async function refresh(force = false) {
               : 1,
         });
         loadedRevision = sceneData.scene.revision;
+        loadedPreviewCatalog=previewCatalog;
         selected = new Set(
           [...selected].filter((id) =>
             sceneData.scene.boxes.some((box) => box.id === id),
@@ -647,7 +652,7 @@ function updateState() {
   const target=s.targetCompatibility;
   $("vrcBoundsStatus").textContent=target ? `${target.fits?"坐标/容量可发布":"目标预检未通过"} · ${target.outOfBoundsCount} 个越界 Box\n作品尺寸 ${target.extent.join(" × ")} 格${target.outOfBoundsGroups.length?"\n越界分组："+target.outOfBoundsGroups.join("、"):""}` : "";
   const catalog=s.materialCompatibility;
-  $("materialCompatibility").textContent=catalog ? (catalog.status==="unknown"?"未声明目标目录，未核实上传的Avatar。":catalog.matched?`目录匹配 · ${catalog.usedStyles} 种已用材质 · ${catalog.fingerprint.slice(0,12)}\n用户导入的目录，非远端确认。`:`目录不匹配：缺少 [${catalog.missingIds.join(",")}]，定义不同 [${catalog.differentIds.join(",")}]\n${catalog.note||"请更新Avatar目录后再发布。"}`) : "";
+  $("materialCompatibility").textContent=catalog ? (catalog.status==="unknown"?"未声明目标目录，未核实上传的Avatar。":catalog.matched?`目录匹配${catalog.runtimeMaterials?" / 支持实时材质":""} · ${catalog.usedStyles} 种已用材质 · ${catalog.fingerprint.slice(0,12)}\n用户导入的目录，非远端确认。`:`目录不匹配：缺少 [${catalog.missingIds.join(",")}]，定义不同 [${catalog.differentIds.join(",")}]\n${catalog.note||"请更新Avatar目录后再发布。"}`) : "";
   setChecked("autoCenterOnFinish",s.project.autoCenterOnFinish);
   if(pendingTransform) $("transformApply").disabled=pendingTransform.baseRevision!==s.revision;
   $("renderDiagnostics").textContent=`实际 WebGL 抗锯齿样本：${renderer.renderer.getContext().getParameter(renderer.renderer.getContext().SAMPLES)} · 内部透明面 ${renderer.surfaceStats?.hiddenFaces||0} 个\n${renderer.textureWarnings.join("\n")}`;
@@ -658,6 +663,7 @@ function updateState() {
   setValue("interval", connection.interval);
   setValue("targetCapacity", connection.capacity);
   setValue("refreshSeconds", connection.refreshSeconds);
+  $("repairPublish").disabled=connection.profile!=="mf5";
   setChecked("autoPublish", connection.auto);
   $("connect").textContent = connection.enabled ? "停止发送" : "开启发送";
   $("connect").classList.toggle("selected", connection.enabled);
@@ -670,15 +676,22 @@ function updateState() {
     (!connection.enabled
       ? "发送已关闭；可继续独立创作。"
       : `本机发包中 · 无远端ACK
-${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${connection.profile==="mf4"?" · 3 Box/批（本体仅本地）":""}
+${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${["mf4","mf5"].includes(connection.profile)?" · 本体仅本地":""}
 目标 v${connection.desiredRevision} / 已发送 v${connection.sentRevision ?? "—"}
 待发 ${fmt(connection.pending)} 批 · 预计 ${time(connection.etaSeconds)}
 累计 ${fmt(connection.sentCommands)} 批`);
   setChecked("world", connection.placement.world);
   setChecked("visible", connection.placement.visible);
   setChecked("level", connection.placement.level);
-  setValue("scale", connection.placement.scale);
-  $("scaleValue").value = Number(connection.placement.scale).toFixed(2) + "×";
+  setValue("scale", Math.log10(connection.placement.scale/.0005));
+  const percent=connection.placement.scale/.05*100;
+  setValue("scalePercent",Number(percent.toFixed(2)));
+  $("scaleValue").value=Number(percent.toFixed(1))+"%";
+  $("scale").min=connection.profile==="mf5"?"0":"2";
+  $("scalePercent").min=connection.profile==="mf5"?"1":"100";
+  $("scale").max=connection.profile==="mf5"?"3":String(Math.log10(2000));
+  $("scalePercent").max=connection.profile==="mf5"?"1000":"2000";
+  $("scaleHint").textContent=`新100%＝旧5% · 当前格长 ${(0.25*connection.placement.scale*1000).toFixed(3)} 毫米。${connection.profile==="mf5"?"1%～1000%，对数刻度，便于微缩。":"旧头像不支持100%以下；请使用MF5配套头像。"}`;
   for (const id of [
     "preset",
     "contextWindowTokens",
@@ -1202,12 +1215,18 @@ for(const id of ["transformAction","shiftX","shiftY","shiftZ"]) $(id).oninput=()
 $("transformApply").onclick=async()=>{if(!pendingTransform)return;try{await api("harness/tool",{name:"transform_scene",arguments:pendingTransform});pendingTransform=null;$("transformDialog").close();await refresh(true);renderer.view();toast("整体定位已保存，可撤销");}catch(cause){error(cause);}};
 $("schemaUpgradeContext").onclick=async()=>{try{await api("harness/control",{action:"upgrade_context"});await refresh();toast("已升级工具说明；首次请求重新预热，实际缓存仍持续监测");}catch(cause){error(cause);}};
 $("autoCenterOnFinish").onchange=async()=>{try{await api("project",{autoCenterOnFinish:$("autoCenterOnFinish").checked});await refresh();}catch(cause){error(cause);}};
+function runtimeFields(){const kind=$("runtimeKind").value,proc=["water","cloud","wood","stone"].includes(kind);$("runtimeSurfaceFields").hidden=kind==="color";$("runtimeNoiseFields").hidden=!proc;$("runtimeMetal").disabled=proc;$("runtimeWireHint").textContent=kind==="color"?"RGB24精确颜色；MF5直接发送，无需重新上传头像。":kind==="pbr"?"VRC使用RGB565；金属度/粗糙度/透明度/发光各4档。艺术原值保持。":"VRC颜色RGB444；噪声比例和种子各8档，其他表面参数4档。";}
+$("runtimeKind").onchange=()=>{const kind=$("runtimeKind").value;$("runtimeMetal").value=kind==="water"?.2:kind==="pbr"?.8:0;$("runtimeRough").value=kind==="water"?.12:kind==="cloud"?1:kind==="pbr"?.25:.9;$("runtimeOpacity").value=kind==="water"?.65:kind==="cloud"?.5:1;runtimeFields();};
+$("runtimeMaterialOpen").onclick=()=>{runtimeFields();$("runtimeReceipt").textContent="";$("runtimeMaterialDialog").showModal();};
+$("runtimeMaterialClose").onclick=()=>$("runtimeMaterialDialog").close();
+$("runtimeMaterialApply").onclick=async()=>{const button=$("runtimeMaterialApply");button.disabled=true;try{const kind=$("runtimeKind").value,entry={name:$("runtimeName").value,color:$("runtimeColor").value,kind};if(kind!=="color")Object.assign(entry,{metallic:Number($("runtimeMetal").value),roughness:Number($("runtimeRough").value),opacity:Number($("runtimeOpacity").value),emission:Number($("runtimeEmission").value)});if(["water","cloud","wood","stone"].includes(kind))Object.assign(entry,{noiseScale:Number($("runtimeNoiseScale").value),seed:Number($("runtimeSeed").value)});const r=await api("harness/tool",{name:"define_materials",arguments:{baseRevision:state.revision,materials:[entry]}});selectedStyle=r.materials[0].id;$("runtimeReceipt").textContent=JSON.stringify(r.materials[0].vrcEffective,null,2);await refresh(true);toast("材质已添加并选用；MF5实时发送");}catch(cause){error(cause);}finally{button.disabled=false;}};
 $("pixelThemeOpen").onclick=()=>$("pixelThemeDialog").showModal();
 $("pixelThemeClose").onclick=()=>$("pixelThemeDialog").close();
-$("applyPixelTheme").onclick=async()=>{try{const result=await api("harness/tool",{name:"builtin_materials",arguments:{action:"apply",id:"pixel-workshop",baseRevision:state.revision,replaceBaseMaterials:$("pixelThemeReplace").checked}});await refresh(true);$("pixelThemeDialog").close();toast(`像素主题已加入 · 新增${result.materialsAdded}种材质`);}catch(cause){error(cause);}};
+$("applyPixelTheme").onclick=async()=>{try{const result=await api("harness/tool",{name:"builtin_materials",arguments:{action:"apply",id:$("pixelThemeChoice").value,baseRevision:state.revision,replaceBaseMaterials:$("pixelThemeReplace").checked}});await refresh(true);$("pixelThemeDialog").close();toast(`像素主题已加入 · 新增${result.materialsAdded}种材质`);}catch(cause){error(cause);}};
 $("avatarCatalogImport").onclick=()=>$("avatarCatalogFile").click();
 $("avatarCatalogFile").onchange=async(event)=>{try{const file=event.target.files[0];if(!file)return;const form=new FormData();form.append("file",file);const r=await fetch("/api/vrc/profile/import",{method:"POST",body:form});const value=await r.json();if(!r.ok)throw new Error(value.error);await refresh();toast(value.matched?"目标目录与已用材质匹配":"已记录目标目录，存在材质差异");}catch(cause){error(cause);}event.target.value="";};
-$("avatarCatalogBundled").onclick=async()=>{try{await api("vrc/profile",{action:"bundled_mf4"});await api("connect",{profile:"mf4",enabled:false});await refresh();toast("已载入MF4 0.8目录；请切换到配套头像后开启发送");}catch(cause){error(cause);}};
+$("avatarCatalogBundled").onclick=async()=>{try{await api("vrc/profile",{action:"bundled_mf5"});await api("connect",{profile:"mf5",enabled:false,scale:Math.min(.5,Math.max(.0005,state.connection.placement.scale))});await refresh(true);toast("已载入MF5目录；请使用配套MF5头像");}catch(cause){error(cause);}};
+$("avatarCatalogMf4").onclick=async()=>{try{await api("vrc/profile",{action:"bundled_mf4"});await api("connect",{profile:"mf4",enabled:false,scale:Math.max(.05,state.connection.placement.scale)});await refresh(true);}catch(cause){error(cause);}};
 $("avatarCatalogClear").onclick=async()=>{try{await api("vrc/profile",{action:"clear"});await refresh();}catch(cause){error(cause);}};
 
 $("exportProject").onclick = async () => {
@@ -1323,6 +1342,7 @@ $("publish").onclick = async () => {
     error(cause);
   }
 };
+$("repairPublish").onclick=async()=>{try{await api("publish",{repair:true});await refresh();toast("已排入补播，保留现有显示；没有远端ACK。若有残留请清空并重建。");}catch(cause){error(cause);}};
 $("resync").onclick = async () => {
   try {
     await api("publish", { resync: true });
@@ -1346,12 +1366,11 @@ async function placement(value) {
 for (const id of ["world", "visible", "level"]) {
   $(id).onchange = () => placement({ [id]: $(id).checked });
 }
-$("scale").oninput = () => {
-  $("scaleValue").value = Number($("scale").value).toFixed(2) + "×";
-  if ($("renderMode").value === "vrc")
-    renderer.setScale(Number($("scale").value));
-};
-$("scale").onchange = () => placement({ scale: Number($("scale").value) });
+function showScale(physical){const p=physical/.05*100;$("scaleValue").value=Number(p.toFixed(1))+"%";$("scalePercent").value=Number(p.toFixed(2));if($("renderMode").value==="vrc")renderer.setScale(physical);}
+$("scale").oninput=()=>showScale(.0005*10**Number($("scale").value));
+$("scale").onchange=()=>placement({scale:.0005*10**Number($("scale").value)});
+$("scalePercent").onchange=()=>placement({scale:Number($("scalePercent").value)/100*.05});
+document.querySelectorAll("[data-scale]").forEach(button=>button.onclick=()=>placement({scale:Number(button.dataset.scale)/100*.05}));
 $("resetAnchor").onclick = () => placement({ reset: true });
 
 document.querySelectorAll("[data-tab]").forEach((button) => {

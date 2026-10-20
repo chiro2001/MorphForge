@@ -35,7 +35,7 @@ def main():
   b.click('renderOptionsOpen');b.click('voxelGrid');b.wait('return window.__morphforge.renderer.voxelGrid');b.click('showTargetBounds');b.wait('return window.__morphforge.renderer.targetBounds.visible');b.click('renderOptionsClose')
   check('view settings persist in the Rust workspace',api('view-settings')['voxelGrid'] and api('view-settings')['showTargetBounds'])
   b.call(b.path+'/refresh',{});b.wait('return window.__morphforge?.ready',30);check('view settings survive reload',b.js('return window.__morphforge.renderer.voxelGrid && window.__morphforge.renderer.targetBounds.visible'))
-  b.click('pixelThemeOpen');b.wait('return document.getElementById("pixelThemeDialog").open');b.click('applyPixelTheme');b.wait('return !document.getElementById("pixelThemeDialog").open',20);visible_revision()
+  b.click('pixelThemeOpen');b.wait('return document.getElementById("pixelThemeDialog").open');b.js('document.getElementById("pixelThemeChoice").value="pixel-workshop"');b.click('applyPixelTheme');b.wait('return !document.getElementById("pixelThemeDialog").open',20);visible_revision()
   materials=api('scene')['materials'];pixel=[m for m in materials if m['uid'].startswith('mf-pixel:')]
   check('offline pixel theme adds nineteen complete materials',len(pixel)==19 and all(len(m['textures'])==6 for m in pixel))
   check('applying theme preserves existing geometry by default',api('scene')['scene']['boxes']==centered['boxes'])

@@ -1,0 +1,24 @@
+{
+  "success": false,
+  "boxes": 16348,
+  "pools": [
+    2725,
+    2725,
+    2725,
+    2725,
+    2724,
+    2724
+  ],
+  "frames": 2731,
+  "interval": 0.25,
+  "seconds": 695.8083889999999,
+  "errors": [
+    "Pool 0 expected 2731 got 2725",
+    "Pool 1 expected 2731 got 2725",
+    "Pool 2 expected 2731 got 2725",
+    "Pool 3 expected 2731 got 2725",
+    "Pool 4 expected 2730 got 2724",
+    "Pool 5 expected 2730 got 2724"
+  ],
+  "scope": "16384 actual OSC-drawn unit voxels via native Animator into six independent production particle pools; no particle prefill. Local Unity, not multiplayer."
+}

@@ -1,0 +1,61 @@
+{
+  "suspended": false,
+  "records": [
+    {
+      "objectId": -9858,
+      "globalId": "GlobalObjectId_V1-2-64737d50a45d3ea40a1249c912197785-1196135828297054-596603422",
+      "scene": "Assets/MorphForge/Diagnostics/Recovery20261020/UnsavedFullFT.unity",
+      "sceneWasDirty": false,
+      "active": true
+    },
+    {
+      "objectId": 58680,
+      "globalId": "GlobalObjectId_V1-2-f3eed961163c5a94b9a886dd8e03a1e3-1196135828297054-596603422",
+      "scene": "Assets/MorphForge/FullFT/MorphForge_FullFT.unity",
+      "sceneWasDirty": false,
+      "active": true
+    },
+    {
+      "objectId": 59556,
+      "globalId": "GlobalObjectId_V1-2-f3eed961163c5a94b9a886dd8e03a1e3-4753792520517706511-2094474485",
+      "scene": "Assets/MorphForge/FullFT/MorphForge_FullFT.unity",
+      "sceneWasDirty": false,
+      "active": true
+    },
+    {
+      "objectId": -9864,
+      "globalId": "GlobalObjectId_V1-2-64737d50a45d3ea40a1249c912197785-4753792520517706511-2094474485",
+      "scene": "Assets/MorphForge/Diagnostics/Recovery20261020/UnsavedFullFT.unity",
+      "sceneWasDirty": false,
+      "active": true
+    },
+    {
+      "objectId": 58032,
+      "globalId": "GlobalObjectId_V1-2-f3eed961163c5a94b9a886dd8e03a1e3-1131472985-0",
+      "scene": "Assets/MorphForge/FullFT/MorphForge_FullFT.unity",
+      "sceneWasDirty": false,
+      "active": true
+    },
+    {
+      "objectId": 59846,
+      "globalId": "GlobalObjectId_V1-2-64737d50a45d3ea40a1249c912197785-1131472985-0",
+      "scene": "Assets/MorphForge/Diagnostics/Recovery20261020/UnsavedFullFT.unity",
+      "sceneWasDirty": false,
+      "active": true
+    },
+    {
+      "objectId": 59496,
+      "globalId": "GlobalObjectId_V1-2-f3eed961163c5a94b9a886dd8e03a1e3-1965714066-0",
+      "scene": "Assets/MorphForge/FullFT/MorphForge_FullFT.unity",
+      "sceneWasDirty": false,
+      "active": true
+    },
+    {
+      "objectId": 59860,
+      "globalId": "GlobalObjectId_V1-2-64737d50a45d3ea40a1249c912197785-1965714066-0",
+      "scene": "Assets/MorphForge/Diagnostics/Recovery20261020/UnsavedFullFT.unity",
+      "sceneWasDirty": false,
+      "active": true
+    }
+  ]
+}

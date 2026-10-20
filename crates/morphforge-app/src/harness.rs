@@ -20,10 +20,11 @@ mod goal;
 pub(crate) mod lifecycle;
 mod palette;
 mod prompts;
+mod runtime_materials;
 mod visual_context;
 pub use goal::GoalProgress;
 pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/4.9";
-pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/3.6";
+pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/3.7";
 
 #[derive(Clone, Debug)]
 struct PendingPrompt {
@@ -1843,6 +1844,7 @@ impl Harness {
                     "family":material.family,
                     "color":material.color,
                     "renderMode":material.render_mode,
+                    "surface":{"metallic":material.metallic,"roughness":material.roughness,"opacity":material.opacity,"emission":material.emission,"procedural":material.procedural},
                 })
             })
             .collect::<Vec<_>>();
@@ -1901,6 +1903,7 @@ impl Harness {
             "referenceImages":reference_images,
             "viewConventions":{"front":{"cameraFrom":"+Z","looksToward":"-Z"},"hero":{"cameraFrom":"+X,+Y,+Z"},"placementHint":"脸、眼睛、围裙、门窗、正面文字应位于主体的+Z外表面；更大的Z更靠近front相机。"},
             "sync":self.transport.state(),
+            "runtimeSurfaceHints":{"mf5":"define_palette/define_materials可实时发送，不需重传头像；新图片仍需打包。查看工具返回的vrcEffective了解量化。","scale":"placement.scale保持实际倍数；新100%=.05，MF5范围.0005.. .5（1%..1000%）。","transparency":"MF5运行时透明表面暂不带六面遮罩；目录透明材质可剔内部面。"},
             "recipeSources":crate::sources::list(&workspace).unwrap_or(Value::Null),
             "sdkVersion":recipe::SDK_VERSION,
             "sdk":"mf.box(min,[w,h,d],{style:'wood',tint:0,motion:0}); mf.erase(min,size); mf.paint(min,size,{style}) recolors existing voxels only and never creates them; use mf.box to add voxels. mf.clear(); mf.removeGroup(name); mf.replaceGroup(name,()=>{}); mf.ellipsoid(center,radii,options); mf.sphere(center,radius,options); mf.capsule(a,b,radius,options); mf.cylinder(base,height,radius,options) Y-axis; mf.tube(points,radius,options); mf.extrude(points2d,origin,depth,{plane:\"xy\",style}); mf.voxelize({min,max},(x,y,z)=>boolean_or_style,options) samples cell centers, max2M cells; mf.group(name,()=>{}); mf.repeat(n,(i)=>{}); mf.mirror('x',()=>{}); mf.translate([x,y,z],()=>{}); mf.line(a,b,{thickness:1,style}); mf.stairs(origin,n,{width:3,depth:1,rise:1,style}); mf.wall(origin,w,h,{thickness:1,style}); mf.roof(origin,w,d,h,{style}); Math.random()/mf.random() deterministic by seed. All coordinates integer signed grid. Y is height. VRC target requires X/Z[-128,128),Y[0,256). Styles are catalog IDs/UID names. mode apply preserves current geometry; replace starts from empty."
@@ -2040,6 +2043,7 @@ impl Harness {
                 if self.transport.config().enabled{bail!("加入主题前请停止OSC发送，避免Avatar目录不一致");}
                 crate::builtin_pixels::apply(workspace,args,run)
             }),
+            "define_materials" => self.with_workspace_guard(guard.as_ref(),|workspace|runtime_materials::define(workspace,args,run)),
             "define_palette" => self.with_workspace_guard(guard.as_ref(), |workspace| {
                 palette::define(workspace, args, run)
             }),
@@ -3269,9 +3273,9 @@ pub fn tools_for_language(language: &str) -> Value {
         tool(
             "define_palette",
             if en {
-                "Define 1–32 exact opaque sRGB colors (#RRGGBB) for reference matching. Reuse returned style IDs/UIDs and revision in geometry calls. Adds missing colors without changing existing materials or geometry. New colors require Avatar catalog export/rebuild for VRC."
+                "Define 1–32 exact opaque sRGB colors (#RRGGBB) for reference matching. Reuse returned style IDs/UIDs and revision in geometry calls. Adds missing colors without changing existing materials or geometry. MF5 sends new colors directly as RGB24; MF4/older require Avatar catalog rebuild."
             } else {
-                "按#RRGGBB（sRGB）定义1至32个不透明纯色，匹配参考图肤色、藏蓝等。返回材质ID/UID和最新revision，后续几何使用这些返回值；同色复用，不改已有材质或几何。新颜色发布VRC前需导出并更新Avatar目录。"
+                "按#RRGGBB（sRGB）定义1至32个不透明纯色，匹配参考图肤色、藏蓝等。返回材质ID/UID和最新revision，后续几何使用这些返回值；同色复用，不改已有材质或几何。MF5可直接实时发送新颜色；MF4及更早需要更新Avatar目录。"
             },
             json!({
                 "baseRevision":{"type":"integer","minimum":0},
@@ -3283,6 +3287,16 @@ pub fn tools_for_language(language: &str) -> Value {
                 }}
             }),
             vec!["baseRevision", "colors"],
+        ),
+        tool(
+            "define_materials",
+            if en {
+                "Define runtime color/PBR/water/cloud/wood/stone materials; returns IDs/UIDs and revision plus quantized vrcEffective. MF5 sends them inline without Avatar rebuild; arbitrary new image textures still need packaging. Parameters outside supported wire ranges are rejected."
+            } else {
+                "定义实时纯色/PBR/水/云/木纹/石纹材质。返回材质ID/UID、revision和VRC量化后的vrcEffective；MF5无需重传头像。新图片贴图仍需打包。kind=color为精确RGB哑光；pbr可指定表面参数；程序材质支持noiseScale/seed。"
+            },
+            json!({"baseRevision":{"type":"integer","minimum":0},"materials":{"type":"array","minItems":1,"maxItems":32,"items":{"type":"object","properties":{"name":{"type":"string","minLength":1,"maxLength":128},"color":{"type":"string","pattern":"^#[0-9a-fA-F]{6}$"},"kind":{"type":"string","enum":["color","pbr","water","cloud","wood","stone"]},"metallic":{"type":"number","minimum":0,"maximum":1},"roughness":{"type":"number","minimum":0,"maximum":1},"opacity":{"type":"number","minimum":0,"maximum":1},"emission":{"type":"number","minimum":0,"maximum":3},"noiseScale":{"type":"number","minimum":0.25,"maximum":8},"seed":{"type":"integer","minimum":0,"maximum":4294967295u64}},"required":["name","color","kind"],"additionalProperties":false}}}),
+            vec!["baseRevision", "materials"]
         ),
         tool(
             "run_recipe",
@@ -3321,11 +3335,11 @@ pub fn tools_for_language(language: &str) -> Value {
         tool(
             "builtin_materials",
             if en {
-                "List offline original pixel material themes or add one to the current project. apply requires baseRevision and id. replaceBaseMaterials optionally repaints built-in base styles. New textures require rebuilding the Avatar catalog; stop OSC before applying."
+                "List offline original pixel material themes or add one to the current project. apply requires baseRevision and id. replaceBaseMaterials optionally repaints built-in base styles. Bundled MF5 pixel textures are already in the matching Avatar and resolve by identity. Arbitrary new textures require an Avatar rebuild; stop OSC before applying."
             } else {
-                "查看离线内置原创像素材质主题，或加入当前工程。apply需id和baseRevision；replaceBaseMaterials可将基础材质映射为像素风。新贴图需重新打包Avatar目录，应用前停止OSC。"
+                "查看离线内置原创像素材质主题，或加入当前工程。apply需id和baseRevision；replaceBaseMaterials可将基础材质映射为像素风。配套MF5头像已内置此主题，作品编号不同也能映射；额外新贴图仍需打包，应用前停止OSC。"
             },
-            json!({"action":{"type":"string","enum":["list","apply"]},"id":{"type":"string","enum":["pixel-workshop"]},"baseRevision":{"type":"integer","minimum":0},"replaceBaseMaterials":{"type":"boolean"}}),
+            json!({"action":{"type":"string","enum":["list","apply"]},"id":{"type":"string","enum":["pixel-workshop","block-workshop"]},"baseRevision":{"type":"integer","minimum":0},"replaceBaseMaterials":{"type":"boolean"}}),
             vec!["action"]
         ),
         tool(
