@@ -457,12 +457,15 @@ export class VoxelRenderer {
   }
   async load(scene, styles, { mode = this.mode, scale = this.scale, surfaces = null } = {}) {
     if(this.disposed)return this;
+    const restoringPose=!!this.animationClip;
     this.clearAnimationPose();
     this.renderStyleMap=new Map(styles.map(s=>[s.id,this.effectiveStyle(s,mode)]));
     this.surfaceMasks = surfaces?.masks || {};
     this.surfaceStats = surfaces || {hiddenFaces:0};
     if (this.tryIncremental(scene, styles, { mode, scale })) {
       this.loadTriangles(scene);
+      // Leaving a pose restores all instances, even if only one object was edited.
+      if(restoringPose)for(const mesh of this.meshes){mesh.instanceMatrix.clearUpdateRanges();mesh.instanceMatrix.needsUpdate=true;}
       return this;
     }
     this.styleSignature = JSON.stringify(styles);
@@ -969,6 +972,8 @@ export class VoxelRenderer {
       const values=this.animationBases.get(mesh);if(!values)continue;
       mesh.userData.animationFrustum??=mesh.frustumCulled;mesh.frustumCulled=false;
       for(let i=0;i<mesh.count;i++){base.fromArray(values,i*16);const m=matrices.get(mesh.userData.boxes[i].group);if(m)base.premultiply(m);mesh.setMatrixAt(i,base);}
+      // A pose rewrites every instance, including those outside a sparse edit range.
+      mesh.instanceMatrix.clearUpdateRanges();
       mesh.instanceMatrix.needsUpdate=true;
     }
     const v=new THREE.Vector3();
@@ -978,7 +983,7 @@ export class VoxelRenderer {
   }
   clearAnimationPose() {
     if(!this.animationClip)return;
-    for(const [mesh,values] of this.animationBases||[]){mesh.instanceMatrix.array.set(values);mesh.instanceMatrix.needsUpdate=true;mesh.frustumCulled=mesh.userData.animationFrustum??true;delete mesh.userData.animationFrustum;}
+    for(const [mesh,values] of this.animationBases||[]){mesh.instanceMatrix.array.set(values);mesh.instanceMatrix.clearUpdateRanges();mesh.instanceMatrix.needsUpdate=true;mesh.frustumCulled=mesh.userData.animationFrustum??true;delete mesh.userData.animationFrustum;}
     for(const [mesh,values] of this.animationTriangleBases||[]){mesh.geometry.attributes.position.array.set(values);mesh.geometry.attributes.position.needsUpdate=true;mesh.geometry.computeVertexNormals();mesh.geometry.computeBoundingSphere();}
     this.animationClip=null;this.animationBases=null;this.animationTriangleBases=null;
     for(const u of this.uniforms)u.mfCull.value=this.surfaceCulling&&!this.groupsHidden.size?1:0;

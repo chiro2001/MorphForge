@@ -137,18 +137,12 @@ try {
     "Windows creative candidate is 0.15.0",
     await js('return window.__morphforge.state.software.version==="0.15.0"'),
   );
-  const embedded = await js(
-    'return await (await fetch("/creative-ui.js",{cache:"no-store"})).text()',
-  );
-  await check(
-    "native embedded creative UI matches frozen source",
-    createHash("sha256").update(embedded).digest("hex") ===
-      createHash("sha256")
-        .update(
-          fs.readFileSync(new URL("../web/creative-ui.js", import.meta.url)),
-        )
-        .digest("hex"),
-  );
+  let embeddedMatch=true;
+  for(const file of ["creative-ui.js","renderer.js"]){
+    const embedded=await js('return await (await fetch('+JSON.stringify('/'+file)+',{cache:"no-store"})).text()');
+    embeddedMatch&&=createHash("sha256").update(embedded).digest("hex")===createHash("sha256").update(fs.readFileSync(new URL("../web/"+file,import.meta.url))).digest("hex");
+  }
+  await check("native embedded creative UI and renderer match frozen source",embeddedMatch);
   await check(
     "native creative tests leave OSC disabled",
     !(await js("return window.__morphforge.state.connection.enabled")),

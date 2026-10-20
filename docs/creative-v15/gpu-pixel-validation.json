@@ -1,0 +1,12 @@
+{
+  "success": true,
+  "expectedStale": false,
+  "incrementalSha256": "f5754cd0a7135ab306daa7c91d4af5dffd2e66d4a62dc7636f8dfa0540e7d2ee",
+  "freshSha256": "f5754cd0a7135ab306daa7c91d4af5dffd2e66d4a62dc7636f8dfa0540e7d2ee",
+  "pixelsMatch": true,
+  "staticAfterPosePixelsMatch": true,
+  "staticIncrementalSha256": "6a4f99f0df25383a461d26eec36c79fef9f23ae93a678b556dc2b7108f4c6da8",
+  "staticFreshSha256": "6a4f99f0df25383a461d26eec36c79fef9f23ae93a678b556dc2b7108f4c6da8",
+  "realModelRequests": 0,
+  "scope": "Actual Rust snapshot/partial instance update, same material batch, frozen pose; real Chromium PNG pixels compared to a fresh worker"
+}

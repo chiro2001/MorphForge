@@ -101,9 +101,30 @@ Official Tauri v2 references used for this shell:
 - <https://docs.rs/tauri-plugin-shell/latest/tauri_plugin_shell/process/struct.Command.html>
 
 
-## gamepc side-by-side preview
+## gamepc primary updates
 
-Keep the user's current acceptance install running. Deploy future development builds to
+As requested on 2026-10-20, updates now target the main installation at
+`%LOCALAPPDATA%\MorphForge Desktop`. Build the normal release/NSIS bundle with
+`tools/build_windows.ps1`, then use `tools/install_main.ps1` with the installer,
+expected version, and SHA256 hashes of the core and shell extracted from the verified NSIS payload.
+The bundler stamps the installed shell differently from the raw compiled executable,
+so do not use the unstamped shell hash. Extract both executables with 7-Zip first.
+
+The updater checks that the main program is closed, backs up its installation and
+complete original data directory, runs the official silent installer, and verifies
+both extracted installer payloads, Windows registration, desktop/Start Menu entries and an unchanged
+SHA256 manifest of original data. `-CloseRunning` optionally requests a normal
+window close; it never force-kills a model job. Existing Preview data is preserved
+separately and is not automatically merged into main data.
+
+## Historical side-by-side preview
+
+The following describes the existing independent Preview channel. It is retained
+for isolated comparisons; it is no longer the default deployment target.
+
+
+
+For an explicitly requested isolated comparison, deploy a build to
 `%LOCALAPPDATA%\MorphForge Preview`, using a packaged directory containing
 `morphforge-desktop.exe`, `morphforge.exe` and `licenses/`:
 

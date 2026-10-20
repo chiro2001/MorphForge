@@ -1,7 +1,7 @@
 {
   "format": "MorphForgeBuildInputs/1",
-  "gitCommit": "afd06502be0ee57677f53548f6843126efc3c7d3",
-  "sha256": "6cb8d5362b734d1b128b8b36f9479e48184af6022569ce63f0e063abaf64387e",
+  "gitCommit": "4b408769a8a8e31ed24675e6badc5270f0dde622",
+  "sha256": "5854d22e3232de5f7846e81ebe05ff51a6086ff25d3dba00a89fda90d29eeca6",
   "files": {
     "Cargo.lock": "856cae33450b2d51c0a2af8b3a73792d4eddefff4b79fc1ec9ffd7af8221803f",
     "Cargo.toml": "848316c5f63d6a0974628b67d5ef201e5166c8f347a15d598e211462c924b4ea",
@@ -196,7 +196,7 @@
     "web/render-settings.js": "b6da1ec966153402389c88596c468101a0e915cbb0fbe5eecd5663aa2644d107",
     "web/render-settings.test.mjs": "09780044ee89446404e711d614c9bea32ec3733ee26516b3378bb911c884ae59",
     "web/renderer-resources.test.mjs": "fe6635da04cbbc1322ce6a28a661bfa736c51b79c6a110a9be991b38d217fefa",
-    "web/renderer.js": "694a9296d562adcd9f821401f95ccb7f83592cd8a07dee6ce60efeb14424770a",
+    "web/renderer.js": "e866d7ac087c6639e8b0c5c1778cbf75972c057b57e3c829eda0a58f49998211",
     "web/scroll-follow.js": "a4d53ca66e6a1a8473fa675319f0eafde1201b24dee3bc51bd76bace2a952505",
     "web/studio.html": "e8d673031d27ecc29dc33a52efca72da6b046d4a787bd37bd93ea469638739dc",
     "web/studio.js": "1c9ab716e9cb29be6ece2c7cdc3d8e4f61a7bfb051996b8cc2e88f05937dd03f",

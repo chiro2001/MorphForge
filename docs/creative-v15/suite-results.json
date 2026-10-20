@@ -34,12 +34,21 @@
   "realModelRequests": 0,
   "oscSent": false,
   "avatarChanged": false,
-  "sourceSha256": "6cb8d5362b734d1b128b8b36f9479e48184af6022569ce63f0e063abaf64387e",
-  "installedRuntime": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Preview\\versions\\0.15.0-24c3ef00aaca",
+  "sourceSha256": "5854d22e3232de5f7846e81ebe05ff51a6086ff25d3dba00a89fda90d29eeca6",
+  "installedRuntime": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Desktop",
   "animationTargets": [
     "editor",
     "capture",
     "animated-glb"
   ],
-  "avatarAnimationPlayback": false
+  "avatarAnimationPlayback": false,
+  "deploymentChannel": "main",
+  "originalDataFilesUnchanged": true,
+  "gpuPixelRegression": {
+    "success": true,
+    "animatedCapturePixelsMatchFresh": true,
+    "restoredStaticCapturePixelsMatchFresh": true,
+    "evidence": "gpu-pixel-validation.json"
+  },
+  "mainInstallEvidence": "main-install.json"
 }

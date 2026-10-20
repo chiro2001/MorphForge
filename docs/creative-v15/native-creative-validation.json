@@ -10,7 +10,7 @@
       "passed": true
     },
     {
-      "name": "native embedded creative UI matches frozen source",
+      "name": "native embedded creative UI and renderer match frozen source",
       "passed": true
     },
     {

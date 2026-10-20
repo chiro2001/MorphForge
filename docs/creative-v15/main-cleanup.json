@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "items": [
+    {
+      "normalCloseRequested": true,
+      "taskRemoved": true,
+      "name": "native-gpu-final"
+    },
+    {
+      "normalCloseRequested": true,
+      "taskRemoved": true,
+      "name": "native-main-release"
+    }
+  ],
+  "scope": "Only known temporary isolated native test packages; main installation untouched"
+}

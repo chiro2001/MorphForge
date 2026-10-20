@@ -2,46 +2,46 @@
   "success": true,
   "files": [
     {
-      "bytes": 2480,
-      "animationChannels": null,
-      "name": "未命名作品.glb",
       "sha256": "cd5656f707a620131d56aad0668f442d79961b7a7f0c3a9beb6484c1a53a5ef7",
-      "valid": true
+      "bytes": 2480,
+      "name": "未命名作品.glb",
+      "valid": true,
+      "animationChannels": null
     },
     {
+      "sha256": "d96b6925098dbbbb477687365225acfa56efc22137a027f0b441985e4dd962c7",
       "bytes": 13280,
-      "animationChannels": null,
       "name": "未命名作品.json",
-      "sha256": "b10ff1874c9dfde8822637c68cc275ed4abdf19718134799f3c5beca628d10cc",
-      "valid": true
+      "valid": true,
+      "animationChannels": null
     },
     {
-      "bytes": 986,
-      "animationChannels": null,
-      "name": "未命名作品.obj.zip",
       "sha256": "627da2825bd43f6bafe323115505ea8f92229e0dbe61c7f3d93dce62b6f78b55",
-      "valid": true
+      "bytes": 986,
+      "name": "未命名作品.obj.zip",
+      "valid": true,
+      "animationChannels": null
     },
     {
-      "bytes": 1036,
-      "animationChannels": null,
-      "name": "未命名作品.ply",
       "sha256": "cc330d2abbe6aabfeda5db9ec6e15b43fb3af8c4ed0791c387518c180c09fb53",
-      "valid": true
+      "bytes": 1036,
+      "name": "未命名作品.ply",
+      "valid": true,
+      "animationChannels": null
     },
     {
-      "bytes": 684,
-      "animationChannels": null,
-      "name": "未命名作品.stl",
       "sha256": "a964f1ce21a85c1995570354f1b70386c0a862c383e28a144e20116a2a4fc1a7",
-      "valid": true
+      "bytes": 684,
+      "name": "未命名作品.stl",
+      "valid": true,
+      "animationChannels": null
     },
     {
-      "bytes": 7548,
-      "animationChannels": 3,
-      "name": "animation.glb",
       "sha256": "051a8b261c7169a09ef795912636a83997db94dab0f33cd8c5ff7d3392c3251b",
-      "valid": true
+      "bytes": 7548,
+      "name": "animation.glb",
+      "valid": true,
+      "animationChannels": 3
     }
   ]
 }

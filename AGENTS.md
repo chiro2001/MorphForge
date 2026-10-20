@@ -13,8 +13,8 @@
 
 ## gamepc 软件更新约定
 
-- 用户验收版保持在 `%LOCALAPPDATA%\MorphForge Desktop`，数据为 `%LOCALAPPDATA%\MorphForge`。用户可能持续使用，不因开发更新而关闭或覆盖它。
-- 默认更新独立开发测试副本 `%LOCALAPPDATA%\MorphForge Preview`，使用 `tools/install_preview.ps1` 部署；桌面入口为“MorphForge - 开发测试副本”。数据、对话、日志及 WebView2 缓存独立。
-- 副本以内容哈希保存不可变版本目录，更新只切换 `current.json`；已经运行的旧副本继续使用旧目录，用户关闭重开后进入新版本。不要覆盖仍在运行的 `morphforge.exe`，recipe 子进程依赖 `current_exe()`。
-- 首次可复制当前作品、作品库和配置；后续保留副本自己的数据，不自动和验收版合并或双向同步。
+- 用户于2026-10-20明确改为：后续默认更新**主安装** `%LOCALAPPDATA%\MorphForge Desktop`，原数据 `%LOCALAPPDATA%\MorphForge` 保留。更新前备份程序和数据，使用正式Windows安装包，并验证实际安装版本及桌面入口。
+- 正在运行时先检查是否有AI任务和未完成操作；不覆盖运行中的核心可执行文件（Recipe依赖current_exe）。可在授权的更新范围内正常关闭程序后安装，避免强制结束任务。
+- 原独立开发测试副本 `%LOCALAPPDATA%\MorphForge Preview` 与其Data/Profile继续保留；不自动复制或合并主安装与开发副本的数据。
+- 自动GUI验收使用临时隔离数据/浏览器配置，先校验项目ID、版本和内嵌源码哈希，测试窗口标记为自动验收，不能假设用户没有操作过已有窗口。
 - 仅在用户明确要求发布时创建 GitHub Release。

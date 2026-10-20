@@ -1,0 +1,69 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "installer exists",
+      "passed": true
+    },
+    {
+      "name": "previous installer completed and backup is available",
+      "passed": true
+    },
+    {
+      "name": "installed core reports expected version",
+      "passed": true
+    },
+    {
+      "name": "installed core matches verified release payload",
+      "passed": true
+    },
+    {
+      "name": "installed shell matches verified release payload",
+      "passed": true
+    },
+    {
+      "name": "original data files are byte-for-byte unchanged by installation",
+      "passed": true
+    },
+    {
+      "name": "Windows installed-app registration reports expected version",
+      "passed": true
+    },
+    {
+      "name": "main entry exists: C:\\Users\\Chiro\\OneDrive\\Desktop\\MorphForge Desktop.lnk",
+      "passed": true
+    },
+    {
+      "name": "main entry targets installed shell: C:\\Users\\Chiro\\OneDrive\\Desktop\\MorphForge Desktop.lnk",
+      "passed": true
+    },
+    {
+      "name": "main entry exists: C:\\Users\\Chiro\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\MorphForge Desktop.lnk",
+      "passed": true
+    },
+    {
+      "name": "main entry targets installed shell: C:\\Users\\Chiro\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\MorphForge Desktop.lnk",
+      "passed": true
+    }
+  ],
+  "installRoot": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Desktop",
+  "dataDir": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge",
+  "backupRoot": "C:\\Users\\Chiro\\tmp\\morphforge\\main-backup-20261020-212506-e288dda8",
+  "error": null,
+  "installerSha256": "2de7e993f898eba5f25b9ab585e1c7ae3888814333abf86fba1e9d70f9233184",
+  "installerExitCode": 0,
+  "dataBefore": {
+    "sha256": "484e0b905a594a716412515aef357c6f20b8f9f642851a1a85d8d938b00cbff5",
+    "files": 4576,
+    "bytes": 796542177
+  },
+  "dataAfter": {
+    "sha256": "484e0b905a594a716412515aef357c6f20b8f9f642851a1a85d8d938b00cbff5",
+    "bytes": 796542177,
+    "files": 4576
+  },
+  "version": "0.15.0",
+  "coreSha256": "d15a43299e438413259a8f837741ccca90356433b8bcdd849d6562c88fe270fb",
+  "shellSha256": "cb3a793d983da00fae46a7b329ec138f8dabdc0ed29d3763dca32664b3023094",
+  "finishedAt": "2026-10-20T13:32:17.7952517+00:00"
+}

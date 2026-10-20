@@ -21,6 +21,15 @@ try {
  $env:WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS="--remote-debugging-port=$DebugPort --remote-allow-origins=*"
  $env:MORPHFORGE_API_BASE_URL='http://127.0.0.1:9';$env:MORPHFORGE_API_KEY='local-gui-validation-only'
  $p=Start-Process -FilePath (Join-Path $PackageDir 'morphforge-desktop.exe') -WorkingDirectory $PackageDir -PassThru
+ Add-Type @'
+using System;
+using System.Runtime.InteropServices;
+public static class MorphForgeAuditTitle {
+ [DllImport("user32.dll", CharSet=CharSet.Unicode)] public static extern bool SetWindowText(IntPtr h, string text);
+}
+'@
+ $windowDeadline=[DateTimeOffset]::UtcNow.AddSeconds(10)
+ while([DateTimeOffset]::UtcNow -lt $windowDeadline){$p.Refresh();if($p.HasExited){break};if($p.MainWindowHandle -ne [IntPtr]::Zero){[MorphForgeAuditTitle]::SetWindowText($p.MainWindowHandle,'MorphForge 自动验收（临时隔离数据）')|Out-Null;break};Start-Sleep -Milliseconds 100}
  $projectFile=Join-Path $env:MORPHFORGE_DATA 'project.json'
  $deadline=[DateTimeOffset]::UtcNow.AddSeconds(30)
  while(-not (Test-Path -LiteralPath $projectFile)){if([DateTimeOffset]::UtcNow -gt $deadline){throw 'Isolated core did not initialize its project'};Start-Sleep -Milliseconds 200}
