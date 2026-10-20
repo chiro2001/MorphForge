@@ -18,6 +18,34 @@ import urllib.request
 import uuid
 
 
+def triangle_topology(triangles):
+    """Diagnostic after welding equal positions within each group.
+
+    Coincident shells can create nonmanifold edges here. This is not a
+    self-intersection test or a replacement for visual review.
+    """
+    edges = collections.defaultdict(list)
+    degenerate = 0
+    vertices = set()
+    for triangle in triangles:
+        a, b, c = (tuple(v) for v in triangle['vertices'])
+        group = triangle.get('group', 'main')
+        vertices.update((group, v) for v in (a, b, c))
+        u = [b[i] - a[i] for i in range(3)]
+        v = [c[i] - a[i] for i in range(3)]
+        cross = (u[1]*v[2]-u[2]*v[1], u[2]*v[0]-u[0]*v[2], u[0]*v[1]-u[1]*v[0])
+        if not any(cross):
+            degenerate += 1
+            continue
+        for start, end in ((a, b), (b, c), (c, a)):
+            edges[(group, *sorted((start, end)))].append(start < end)
+    return {'method': 'equal_position_weld_per_group', 'uniqueVertices': len(vertices),
+            'degenerateFaces': degenerate,
+            'boundaryEdges': sum(len(rows) == 1 for rows in edges.values()),
+            'nonmanifoldEdges': sum(len(rows) > 2 for rows in edges.values()),
+            'inconsistentWindingEdges': sum(len(rows) == 2 and rows[0] == rows[1] for rows in edges.values())}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--url', required=True)
@@ -49,7 +77,7 @@ def main() -> None:
 
     initial = api('state')
     initial_scene = api('scene')['scene']
-    if initial_scene['boxes'] and not case.get('continue', False):
+    if (initial_scene['boxes'] or initial_scene.get('triangles')) and not case.get('continue', False):
         raise RuntimeError('the evaluation data directory must start with an empty scene')
     api('connect', {'enabled': False, 'auto': False, 'port': 9012})
     if case.get('enforceProtection'):
@@ -111,6 +139,7 @@ def main() -> None:
     initial_run = started['run']['id']
     actions = []
     seen_status = None
+    halted_for_cache = False
     terminal_since = None
     last_state = started
     report = {'case': case.get('id'), 'caseSha256': hashlib.sha256(case_bytes).hexdigest(),
@@ -120,6 +149,11 @@ def main() -> None:
         while time.monotonic() - start < options.timeout:
             last_state = api('harness/state')
             refresh_events()
+            if last_state.get('cacheMonitor', {}).get('alert') and not halted_for_cache:
+                # Retain the draft and evidence, but never resume a paid run past
+                # a strict cache alert or wait out the full evaluation timeout.
+                api('harness/control', {'action': 'stop'})
+                halted_for_cache = True
             if options.lifetime_token_limit and last_state['usage']['total']['totalTokens'] > options.lifetime_token_limit:
                 api('harness/control', {'action': 'stop'})
                 raise RuntimeError('evaluation data-directory token ceiling reached; stopped further requests')
@@ -204,18 +238,23 @@ def main() -> None:
             (options.output / name).write_bytes(blob)
             images.append({'view': image['view'], 'file': name,
                            'sha256': hashlib.sha256(blob).hexdigest()})
+        triangles = scene.get('triangles', [])
+        objects = scene['boxes'] + triangles
         checks = {
             'runCompleted': last_state['run']['status'] == 'completed',
             'allActionsExercised': len(actions) == len(case.get('actions', [])),
-            'nonemptyScene': bool(scene['boxes']),
+            'nonemptyScene': bool(objects),
+            'objectCapacity': len(objects) <= case.get('maxObjects', 16384),
+            'triangleCapacity': len(triangles) <= case.get('maxTriangles', 16384),
             'boxCapacity': len(scene['boxes']) <= case.get('maxBoxes', 16384),
             'modelUsedVisualFeedback': bool(captures),
             'modelCommitted': counts['revision.committed'] > 0,
             'modelSavedArtwork': counts['artwork.saved'] > 0,
             'oscRemainsDisabled': state['connection']['enabled'] is False,
+            'noCacheAlert': not halted_for_cache and not last_state.get('cacheMonitor', {}).get('alert'),
         }
         for group in case.get('requiredGroups', []):
-            checks[f'group:{group}'] = any(b.get('group') == group for b in scene['boxes'])
+            checks[f'group:{group}'] = any(b.get('group') == group for b in objects)
         for group in case.get('protectedGroups', []):
             def signature(box):
                 return json.dumps(box, ensure_ascii=False, sort_keys=True)
@@ -235,7 +274,13 @@ def main() -> None:
             checks['vrcCoordinateRange'] = all(
                 all(box['min'][axis] >= low and box['min'][axis] + box['size'][axis] <= high
                     for axis, low, high in ((0, -128, 128), (1, 0, 256), (2, -128, 128)))
-                for box in scene['boxes'])
+                for box in scene['boxes']) and all(
+                all(-128 <= v[0] <= 127 and 0 <= v[1] <= 255 and -128 <= v[2] <= 127 for v in triangle['vertices'])
+                for triangle in triangles)
+        if case.get('geometry') == 'triangles':
+            checks['usesTriangleBackend'] = bool(triangles) and not scene['boxes']
+        if case.get('geometry') == 'voxels':
+            checks['usesVoxelBackend'] = bool(scene['boxes'])
         if case.get('requireSavedViews'):
             captured = {image['artifact'] for event in captures
                         for image in event['data']['result']['images']}
@@ -251,9 +296,10 @@ def main() -> None:
                     e['kind'] == 'harness.message.applied' and e['data'].get('requestId') == rid for e in events)
         report.update({'success': all(checks.values()), 'checks': checks,
                        'run': last_state['run'], 'interaction': last_state.get('interaction'),
-                       'scene': {'revision': scene['revision'], 'boxes': len(scene['boxes']),
+                       'scene': {'revision': scene['revision'], 'boxes': len(scene['boxes']), 'triangles': len(triangles), 'objects': len(objects),
                                  'styles': len({b['styleId'] for b in scene['boxes']}),
-                                 'groups': sorted({b.get('group', 'main') for b in scene['boxes']})},
+                                 'groups': sorted({b.get('group', 'main') for b in objects})},
+                       'triangleTopology': triangle_topology(triangles),
                        'eventCounts': dict(counts), 'toolCalls': len(tools),
                        'usage': last_state.get('usage'),
                        'visualContext': [e['data'].get('visualContext') for e in model_events
@@ -263,6 +309,8 @@ def main() -> None:
                        'toolErrors': [{'name': e['data']['name'], 'result': e['data']['result']}
                                       for e in errors],
                        'images': images, 'seconds': time.monotonic() - start})
+        report['cacheMonitor'] = last_state.get('cacheMonitor')
+        (options.output / 'artwork.json').write_text(json.dumps(api('export'), ensure_ascii=False))
         (options.output / 'scene.json').write_text(json.dumps(scene, ensure_ascii=False))
         (options.output / 'events.jsonl').write_text(''.join(
             json.dumps(event, ensure_ascii=False) + '\n' for event in events

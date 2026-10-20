@@ -1,0 +1,24 @@
+{
+  "id": "polygon-kingfisher",
+  "geometry": "triangles",
+  "settings": {
+    "preset": "detailed",
+    "model": "deepseek-flash",
+    "reasoning": "high",
+    "language": "zh-CN",
+    "goalMode": false,
+    "maxSteps": 16,
+    "maxRunTokens": 650000,
+    "maxRunSeconds": 1200,
+    "maxOutputTokens": 65536,
+    "cacheGuard": "strict",
+    "sendImages": true,
+    "detailInstructions": ""
+  },
+  "maxObjects": 3500,
+  "maxTriangles": 3500,
+  "targetVrc": true,
+  "requireVisualIteration": true,
+  "requireSavedViews": true,
+  "prompt": "请从零制作一件有艺术完成度的纯色低多边形作品《溪石上的翠鸟》。全部几何使用真正三角面/索引网格，Box数量必须为0。不要载入任何已有作品或示例。主角为站在河石上的翠鸟：有流线型但不是简单球堆的身体，较大的头、细长笔直的黑色喙、可读的黑眼和浅色眼点、青蓝/湖蓝头背与分区羽片、橙黄胸腹、白色喉斑、层叠收拢的翅膀、短而明确的尾羽、两只脚与石头正确接触。加入一块带冷暖灰切面的不规则河石和少量低矮水面/涟漪作为简洁展示底座，主角占画面主体。约600至1800面为参考，硬上限3500面；不要细分平面来凑面数。逐面纯色，配色克制，三维闭合和绕序正确，尽量用共享顶点；小部件也有合理体积。让鸟的喙朝+Z并略向+X，方便front和hero识别，最长尺度控制约100格，全部坐标满足MF6。选择持久源码中的参数化方法搭建，主动使用自由/侧面/正交和局部相机检查眼睛、喙、翼羽及脚石连接。至少在第一轮真实截图后针对可见短板修改一次几何并复核；最终hero/front/top三视角必须对应最终revision，实际查看后finish_artwork提交、保存作品库。请如实区分已做到和简化的部分，不连接或发送OSC。用中文说明，直接完成，不要向用户提问。"
+}

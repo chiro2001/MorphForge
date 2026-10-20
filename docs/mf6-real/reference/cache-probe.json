@@ -1,0 +1,76 @@
+{
+  "run": {
+    "activeRequestId": null,
+    "epoch": 1,
+    "error": "",
+    "finishedAt": "2026-10-20T08:38:35.402Z",
+    "id": "7cb040f1-a00e-4fd9-a845-284e26a2cbfc",
+    "language": "zh-CN",
+    "message": "缓存检查就绪",
+    "prompt": "这是一次缓存连通性检查，不是创作任务。不做几何操作、不保存作品、不截图。第一步仅调用get_context（默认参数），收到工具结果后只回复「缓存检查就绪」，不要其他工具。",
+    "promptVersion": "morphforge-system/5.0",
+    "startedAt": "2026-10-20T08:38:33.774Z",
+    "status": "completed",
+    "steps": 2,
+    "tokens": 27543,
+    "toolsVersion": "morphforge-tools/4.0"
+  },
+  "cacheMonitor": {
+    "alert": null,
+    "cacheReportedRequests": 2,
+    "cacheRequired": true,
+    "clientPrefixIsNotCacheHit": true,
+    "lastCachedTokens": 11648,
+    "lastHitRate": 0.7364693980778958,
+    "lastInputTokens": 15816,
+    "mode": "strict",
+    "prefix": {
+      "appendOnly": true,
+      "contextEpoch": 0,
+      "currentMessages": 3,
+      "expectedReset": false,
+      "field": "input",
+      "firstChangedMessage": null,
+      "previousMessages": 1,
+      "reason": "append_only",
+      "resetAuthorization": null,
+      "scope": "wire_messages",
+      "sharedMessages": 1,
+      "staticPrefixUnchanged": true
+    },
+    "recentHitRate": 0.5303096380287833,
+    "requests": 2,
+    "source": "upstream_usage",
+    "status": "observing",
+    "windowRequests": 2
+  },
+  "usage": {
+    "prefixDenominator": "cache_reported_input_tokens",
+    "run": {
+      "cacheReportedInputTokens": 27516,
+      "cacheReportedRequests": 2,
+      "cachedInputTokens": 14592,
+      "inputTokens": 27516,
+      "outputTokens": 27,
+      "prefixHitRate": 0.5303096380287833,
+      "reportedRequests": 2,
+      "requests": 2,
+      "totalTokens": 27543,
+      "unreportedRequests": 0
+    },
+    "scope": "workspace",
+    "source": "upstream_reported_usage",
+    "total": {
+      "cacheReportedInputTokens": 27516,
+      "cacheReportedRequests": 2,
+      "cachedInputTokens": 14592,
+      "inputTokens": 27516,
+      "outputTokens": 27,
+      "prefixHitRate": 0.5303096380287833,
+      "reportedRequests": 2,
+      "requests": 2,
+      "totalTokens": 27543,
+      "unreportedRequests": 0
+    }
+  }
+}

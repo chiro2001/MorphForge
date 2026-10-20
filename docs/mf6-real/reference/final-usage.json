@@ -1,0 +1,76 @@
+{
+  "usage": {
+    "prefixDenominator": "cache_reported_input_tokens",
+    "run": {
+      "cacheReportedInputTokens": 108197,
+      "cacheReportedRequests": 2,
+      "cachedInputTokens": 102400,
+      "inputTokens": 108197,
+      "outputTokens": 628,
+      "prefixHitRate": 0.9464218046711091,
+      "reportedRequests": 2,
+      "requests": 2,
+      "totalTokens": 108825,
+      "unreportedRequests": 0
+    },
+    "scope": "workspace",
+    "source": "upstream_reported_usage",
+    "total": {
+      "cacheReportedInputTokens": 370381,
+      "cacheReportedRequests": 11,
+      "cachedInputTokens": 341248,
+      "inputTokens": 370381,
+      "outputTokens": 25984,
+      "prefixHitRate": 0.9213431574513812,
+      "reportedRequests": 11,
+      "requests": 11,
+      "totalTokens": 396365,
+      "unreportedRequests": 0
+    }
+  },
+  "cacheMonitor": {
+    "alert": null,
+    "cacheReportedRequests": 5,
+    "cacheRequired": true,
+    "clientPrefixIsNotCacheHit": true,
+    "lastCachedTokens": 51456,
+    "lastHitRate": 0.9054213369463849,
+    "lastInputTokens": 56831,
+    "mode": "strict",
+    "prefix": {
+      "appendOnly": true,
+      "contextEpoch": 0,
+      "currentMessages": 31,
+      "expectedReset": false,
+      "field": "input",
+      "firstChangedMessage": null,
+      "previousMessages": 28,
+      "reason": "append_only",
+      "resetAuthorization": null,
+      "scope": "wire_messages",
+      "sharedMessages": 28,
+      "staticPrefixUnchanged": true
+    },
+    "recentHitRate": 0.9566186151716688,
+    "requests": 11,
+    "source": "upstream_usage",
+    "status": "observing",
+    "windowRequests": 5
+  },
+  "run": {
+    "activeRequestId": null,
+    "epoch": 3,
+    "error": "RUN_BUDGET：剩余Token不足以预留下一请求的估计输入和输出；已保留草稿",
+    "finishedAt": "2026-10-20T08:43:34.468Z",
+    "id": "ba8dc247-be23-4e37-9f5b-618ca10c871c",
+    "language": "zh-CN",
+    "message": "",
+    "prompt": "上一轮因累计Token预算停止，保留了已修改和已截图的revision 3。现在仅收尾：get_context确认状态，然后查看当前revision的hero/front/top截图，核对小屋参考图的轮廓与门窗；不要新增几何或额外修饰。实际查看后finish_artwork提交保存，诚实说明参考图差异和预算停止。禁止载入其他作品或发送OSC。",
+    "promptVersion": "morphforge-system/5.0",
+    "startedAt": "2026-10-20T08:43:24.530Z",
+    "status": "failed",
+    "steps": 2,
+    "tokens": 108825,
+    "toolsVersion": "morphforge-tools/4.0"
+  }
+}

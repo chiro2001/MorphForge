@@ -1,0 +1,28 @@
+{
+  "id": "reference-cottage-finish",
+  "geometry": "voxels",
+  "referenceIds": [
+    "builtin:cottage"
+  ],
+  "settings": {
+    "preset": "detailed",
+    "model": "deepseek-flash",
+    "reasoning": "high",
+    "language": "zh-CN",
+    "goalMode": false,
+    "maxSteps": 3,
+    "maxRunTokens": 180000,
+    "maxRunSeconds": 1200,
+    "maxOutputTokens": 8192,
+    "cacheGuard": "strict",
+    "sendImages": true,
+    "detailInstructions": ""
+  },
+  "maxObjects": 3000,
+  "maxBoxes": 3000,
+  "targetVrc": true,
+  "requireVisualIteration": false,
+  "requireSavedViews": true,
+  "prompt": "上一轮因累计Token预算停止，保留了已修改和已截图的revision 3。现在仅收尾：get_context确认状态，然后查看当前revision的hero/front/top截图，核对小屋参考图的轮廓与门窗；不要新增几何或额外修饰。实际查看后finish_artwork提交保存，诚实说明参考图差异和预算停止。禁止载入其他作品或发送OSC。",
+  "continue": true
+}

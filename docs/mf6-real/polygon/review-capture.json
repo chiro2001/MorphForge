@@ -1,0 +1,106 @@
+{
+  "id": "a9c576f8-d7c3-4aa2-a97e-affee1dc25f9",
+  "images": [
+    {
+      "artifact": "b8c84b230141eb6a110acd04156a6f4e6cdf39c83fc201c1ebea8e356a74f6e3.png",
+      "camera": {
+        "coordinateSpace": "render-world",
+        "fov": 42,
+        "position": [
+          20.293964620053913,
+          23.220473465040435,
+          26.4924557750674
+        ],
+        "projection": "perspective",
+        "target": [
+          0,
+          8,
+          1.125
+        ]
+      },
+      "height": 1024,
+      "rendering": {
+        "hiddenFaces": 0,
+        "mode": "art",
+        "renderHeight": 2048,
+        "renderWidth": 2560,
+        "supersampling": 2,
+        "surfaceCulling": true,
+        "textureWarnings": [],
+        "voxelGrid": false
+      },
+      "url": "/artifacts/b8c84b230141eb6a110acd04156a6f4e6cdf39c83fc201c1ebea8e356a74f6e3.png",
+      "view": "hero",
+      "width": 1280
+    },
+    {
+      "artifact": "d876dd198961de41df9c7ab342ccbd49994d407812301552378edd1f5b461f35.png",
+      "camera": {
+        "coordinateSpace": "render-world",
+        "fov": 42,
+        "position": [
+          4.362125348894483e-15,
+          12.274334789686195,
+          36.74445658071833
+        ],
+        "projection": "perspective",
+        "target": [
+          0,
+          8,
+          1.125
+        ]
+      },
+      "height": 1024,
+      "rendering": {
+        "hiddenFaces": 0,
+        "mode": "art",
+        "renderHeight": 2048,
+        "renderWidth": 2560,
+        "supersampling": 2,
+        "surfaceCulling": true,
+        "textureWarnings": [],
+        "voxelGrid": false
+      },
+      "url": "/artifacts/d876dd198961de41df9c7ab342ccbd49994d407812301552378edd1f5b461f35.png",
+      "view": "front",
+      "width": 1280
+    },
+    {
+      "artifact": "8a2647e55635140e85186c74a0eb07ebd25174b261003e458942c63e8c384341.png",
+      "camera": {
+        "coordinateSpace": "render-world",
+        "fov": 42,
+        "position": [
+          4.393420373098914e-19,
+          43.874999820625,
+          1.1285874999846142
+        ],
+        "projection": "perspective",
+        "target": [
+          0,
+          8,
+          1.125
+        ]
+      },
+      "height": 1024,
+      "rendering": {
+        "hiddenFaces": 0,
+        "mode": "art",
+        "renderHeight": 2048,
+        "renderWidth": 2560,
+        "supersampling": 2,
+        "surfaceCulling": true,
+        "textureWarnings": [],
+        "voxelGrid": false
+      },
+      "url": "/artifacts/8a2647e55635140e85186c74a0eb07ebd25174b261003e458942c63e8c384341.png",
+      "view": "top",
+      "width": 1280
+    }
+  ],
+  "ok": true,
+  "revision": 3,
+  "stats": {
+    "boxCount": 0
+  }
+}

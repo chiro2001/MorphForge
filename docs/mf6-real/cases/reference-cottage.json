@@ -1,0 +1,27 @@
+{
+  "id": "reference-cottage",
+  "geometry": "voxels",
+  "referenceIds": [
+    "builtin:cottage"
+  ],
+  "settings": {
+    "preset": "detailed",
+    "model": "deepseek-flash",
+    "reasoning": "high",
+    "language": "zh-CN",
+    "goalMode": false,
+    "maxSteps": 16,
+    "maxRunTokens": 300000,
+    "maxRunSeconds": 1200,
+    "maxOutputTokens": 65536,
+    "cacheGuard": "strict",
+    "sendImages": true,
+    "detailInstructions": ""
+  },
+  "maxObjects": 3000,
+  "maxBoxes": 3000,
+  "targetVrc": true,
+  "requireVisualIteration": true,
+  "requireSavedViews": true,
+  "prompt": "请仅根据我选中的小屋参考图，从零复刻一件完整、可展示的体素小屋作品。不要载入已有作品、示例或绘图源码，不要添加图片里没有的树、招牌和叙事道具。保留参考图中最重要的比例和轮廓：宽大的红色分层四坡屋顶、左后方浅灰烟囱、暖橙色墙面、正面两侧蓝色窗、正中清楚的门洞、浅灰窗台与入户台阶、方形薄草地底座。主体宽约96格，最多3000个对象；大平面用大Box，轮廓与窗门细节认真细化，不靠随机噪点凑数量。以体素风格为主，可按需用带材质斜面；不要把整体退化成几个大方盒。先观察图片提取识别点与配色，使用持久源码搭建，再获取front和hero以及局部/正交截图，至少根据可见问题实际修正一轮，然后重新截图核对。最终必须包括hero/front/top三张当前版本截图，在实际看过后调用finish_artwork提交并保存到作品库；如有简化或未达成请诚实说明。坐标可发布MF6，X/Z[-128,128)、Y[0,256)，但不连接或发送OSC。请直接完整执行，不要向用户提问。"
+}

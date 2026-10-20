@@ -1,0 +1,37 @@
+{
+  "artwork": {
+    "boxCount": 0,
+    "createdAt": "2026-10-20T08:50:05.582Z",
+    "description": "",
+    "id": "38d48f0c-47ac-497b-bcfa-a31828da7202",
+    "origin": "user",
+    "sourceCredits": [],
+    "sourceRun": null,
+    "tags": [
+      "real-model",
+      "triangles",
+      "manual-archive",
+      "topology-needs-review"
+    ],
+    "thumbnail": "b8c84b230141eb6a110acd04156a6f4e6cdf39c83fc201c1ebea8e356a74f6e3.png",
+    "title": "溪石上的翠鸟 · 真实三角面验证",
+    "triangleCount": 1135,
+    "views": [
+      "b8c84b230141eb6a110acd04156a6f4e6cdf39c83fc201c1ebea8e356a74f6e3.png",
+      "d876dd198961de41df9c7ab342ccbd49994d407812301552378edd1f5b461f35.png",
+      "8a2647e55635140e85186c74a0eb07ebd25174b261003e458942c63e8c384341.png"
+    ],
+    "voxelCount": 0
+  },
+  "commit": {
+    "createdAt": "2026-10-20T08:50:05.536Z",
+    "id": "c8b10e67-69a6-48ae-98c1-1fba0dbb0805",
+    "revision": 3,
+    "sceneHash": "7a71e8415aa750777de46178a88267c1d2e649b202035b82c83bbb9d7176ae38",
+    "title": "溪石上的翠鸟 · 真实三角面验证"
+  },
+  "finished": true,
+  "ok": true,
+  "revision": 3,
+  "summary": "DeepSeek真实生成三版几何，最终1135三角面、0 Box。最后修订已截图，但模型未收到下一响应复核或自动保存即被严格累计预算保护停止；验收者实际检查最终三视图后手动归档，不改几何。等位置焊接诊断有3开放边、16非流形边，不能称为完全闭合网格。"
+}

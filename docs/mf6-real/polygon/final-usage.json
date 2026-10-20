@@ -1,0 +1,76 @@
+{
+  "usage": {
+    "prefixDenominator": "cache_reported_input_tokens",
+    "run": {
+      "cacheReportedInputTokens": 469255,
+      "cacheReportedRequests": 7,
+      "cachedInputTokens": 417024,
+      "inputTokens": 469255,
+      "outputTokens": 68807,
+      "prefixHitRate": 0.888693780567069,
+      "reportedRequests": 7,
+      "requests": 7,
+      "totalTokens": 538062,
+      "unreportedRequests": 0
+    },
+    "scope": "workspace",
+    "source": "upstream_reported_usage",
+    "total": {
+      "cacheReportedInputTokens": 496801,
+      "cacheReportedRequests": 9,
+      "cachedInputTokens": 439808,
+      "inputTokens": 496801,
+      "outputTokens": 68834,
+      "prefixHitRate": 0.8852800215780564,
+      "reportedRequests": 9,
+      "requests": 9,
+      "totalTokens": 565635,
+      "unreportedRequests": 0
+    }
+  },
+  "cacheMonitor": {
+    "alert": null,
+    "cacheReportedRequests": 5,
+    "cacheRequired": true,
+    "clientPrefixIsNotCacheHit": true,
+    "lastCachedTokens": 99456,
+    "lastHitRate": 0.9968227877281429,
+    "lastInputTokens": 99773,
+    "mode": "strict",
+    "prefix": {
+      "appendOnly": true,
+      "contextEpoch": 0,
+      "currentMessages": 26,
+      "expectedReset": false,
+      "field": "input",
+      "firstChangedMessage": null,
+      "previousMessages": 22,
+      "reason": "append_only",
+      "resetAuthorization": null,
+      "scope": "wire_messages",
+      "sharedMessages": 22,
+      "staticPrefixUnchanged": true
+    },
+    "recentHitRate": 0.962504655982281,
+    "requests": 9,
+    "source": "upstream_usage",
+    "status": "observing",
+    "windowRequests": 5
+  },
+  "run": {
+    "activeRequestId": null,
+    "epoch": 2,
+    "error": "RUN_BUDGET：剩余Token不足以预留下一请求的估计输入和输出；已保留草稿",
+    "finishedAt": "2026-10-20T08:48:26.739Z",
+    "id": "56767813-e64b-47c1-9574-c9643e1b2a37",
+    "language": "zh-CN",
+    "message": "侧视图暴露出结构问题：翼羽成了外挑平板、头身像两个球、喙过长、胸腹白斑过大。现在重构鸟体比例（头身融合的流线轮廓、三层随形翼羽、锥形尾、短腿），并收敛配色。",
+    "prompt": "请从零制作一件有艺术完成度的纯色低多边形作品《溪石上的翠鸟》。全部几何使用真正三角面/索引网格，Box数量必须为0。不要载入任何已有作品或示例。主角为站在河石上的翠鸟：有流线型但不是简单球堆的身体，较大的头、细长笔直的黑色喙、可读的黑眼和浅色眼点、青蓝/湖蓝头背与分区羽片、橙黄胸腹、白色喉斑、层叠收拢的翅膀、短而明确的尾羽、两只脚与石头正确接触。加入一块带冷暖灰切面的不规则河石和少量低矮水面/涟漪作为简洁展示底座，主角占画面主体。约600至1800面为参考，硬上限3500面；不要细分平面来凑面数。逐面纯色，配色克制，三维闭合和绕序正确，尽量用共享顶点；小部件也有合理体积。让鸟的喙朝+Z并略向+X，方便front和hero识别，最长尺度控制约100格，全部坐标满足MF6。选择持久源码中的参数化方法搭建，主动使用自由/侧面/正交和局部相机检查眼睛、喙、翼羽及脚石连接。至少在第一轮真实截图后针对可见短板修改一次几何并复核；最终hero/front/top三视角必须对应最终revision，实际查看后finish_artwork提交、保存作品库。请如实区分已做到和简化的部分，不连接或发送OSC。用中文说明，直接完成，不要向用户提问。",
+    "promptVersion": "morphforge-system/5.0",
+    "startedAt": "2026-10-20T08:43:23.316Z",
+    "status": "failed",
+    "steps": 7,
+    "tokens": 538062,
+    "toolsVersion": "morphforge-tools/4.0"
+  }
+}

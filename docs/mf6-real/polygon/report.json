@@ -1,0 +1,210 @@
+{
+  "case": "polygon-kingfisher",
+  "caseSha256": "fa716cde5f7a84764676b49db3e980bc4c546c4d48d371403fa241e769d86b69",
+  "backend": "http://127.0.0.1:18902",
+  "initialRunId": "56767813-e64b-47c1-9574-c9643e1b2a37",
+  "settings": {
+    "preset": "detailed",
+    "model": "deepseek-flash",
+    "reasoning": "high",
+    "language": "zh-CN",
+    "goalMode": false,
+    "maxSteps": 16,
+    "maxRunTokens": 650000,
+    "maxRunSeconds": 1200,
+    "maxOutputTokens": 65536,
+    "cacheGuard": "strict",
+    "sendImages": true,
+    "detailInstructions": ""
+  },
+  "versions": {
+    "software": {
+      "apiVersion": "mf-http/2",
+      "name": "MorphForge",
+      "version": "0.13.0"
+    },
+    "tools": "morphforge-tools/4.0",
+    "prompt": "morphforge-system/5.0",
+    "language": "zh-CN",
+    "schemaSha256": "74abf24a8abd5eeb13379e4610ee06ed9a54838eb92c286d3838e999b50d5f9c"
+  },
+  "actions": [],
+  "success": false,
+  "requireCacheHit": true,
+  "lifetimeTokenLimit": 680000,
+  "checks": {
+    "runCompleted": false,
+    "allActionsExercised": true,
+    "nonemptyScene": true,
+    "objectCapacity": true,
+    "triangleCapacity": true,
+    "boxCapacity": true,
+    "modelUsedVisualFeedback": true,
+    "modelCommitted": false,
+    "modelSavedArtwork": false,
+    "oscRemainsDisabled": true,
+    "geometryRevisedAfterVisualFeedback": true,
+    "vrcCoordinateRange": true,
+    "usesTriangleBackend": true,
+    "savedArtworkHasActualViews": false
+  },
+  "run": {
+    "activeRequestId": null,
+    "epoch": 2,
+    "error": "RUN_BUDGET：剩余Token不足以预留下一请求的估计输入和输出；已保留草稿",
+    "finishedAt": "2026-10-20T08:48:26.739Z",
+    "id": "56767813-e64b-47c1-9574-c9643e1b2a37",
+    "language": "zh-CN",
+    "message": "侧视图暴露出结构问题：翼羽成了外挑平板、头身像两个球、喙过长、胸腹白斑过大。现在重构鸟体比例（头身融合的流线轮廓、三层随形翼羽、锥形尾、短腿），并收敛配色。",
+    "prompt": "请从零制作一件有艺术完成度的纯色低多边形作品《溪石上的翠鸟》。全部几何使用真正三角面/索引网格，Box数量必须为0。不要载入任何已有作品或示例。主角为站在河石上的翠鸟：有流线型但不是简单球堆的身体，较大的头、细长笔直的黑色喙、可读的黑眼和浅色眼点、青蓝/湖蓝头背与分区羽片、橙黄胸腹、白色喉斑、层叠收拢的翅膀、短而明确的尾羽、两只脚与石头正确接触。加入一块带冷暖灰切面的不规则河石和少量低矮水面/涟漪作为简洁展示底座，主角占画面主体。约600至1800面为参考，硬上限3500面；不要细分平面来凑面数。逐面纯色，配色克制，三维闭合和绕序正确，尽量用共享顶点；小部件也有合理体积。让鸟的喙朝+Z并略向+X，方便front和hero识别，最长尺度控制约100格，全部坐标满足MF6。选择持久源码中的参数化方法搭建，主动使用自由/侧面/正交和局部相机检查眼睛、喙、翼羽及脚石连接。至少在第一轮真实截图后针对可见短板修改一次几何并复核；最终hero/front/top三视角必须对应最终revision，实际查看后finish_artwork提交、保存作品库。请如实区分已做到和简化的部分，不连接或发送OSC。用中文说明，直接完成，不要向用户提问。",
+    "promptVersion": "morphforge-system/5.0",
+    "startedAt": "2026-10-20T08:43:23.316Z",
+    "status": "failed",
+    "steps": 7,
+    "tokens": 538062,
+    "toolsVersion": "morphforge-tools/4.0"
+  },
+  "interaction": {
+    "activeRequestId": null,
+    "activeSecondsRemaining": null,
+    "epoch": 2,
+    "paused": false,
+    "phase": "failed",
+    "queue": [],
+    "runId": "56767813-e64b-47c1-9574-c9643e1b2a37"
+  },
+  "scene": {
+    "revision": 3,
+    "boxes": 0,
+    "triangles": 1135,
+    "objects": 1135,
+    "styles": 0,
+    "groups": [
+      "kingfisher-bird",
+      "kingfisher-rock",
+      "kingfisher-water"
+    ]
+  },
+  "eventCounts": {
+    "harness.started": 1,
+    "harness.message.accepted": 1,
+    "harness.message.applied": 1,
+    "harness.request.prepared": 7,
+    "provider.request": 7,
+    "provider.attempt": 7,
+    "provider.first_byte": 7,
+    "provider.reasoning_delta": 280,
+    "provider.text_delta": 185,
+    "provider.response": 7,
+    "cache.guard.status": 7,
+    "tool.request": 7,
+    "source.changed": 3,
+    "tool.result": 7,
+    "geometry.applied": 3,
+    "recipe.completed": 3,
+    "capture.completed": 3,
+    "harness.finished": 1
+  },
+  "toolCalls": 7,
+  "usage": {
+    "prefixDenominator": "cache_reported_input_tokens",
+    "run": {
+      "cacheReportedInputTokens": 469255,
+      "cacheReportedRequests": 7,
+      "cachedInputTokens": 417024,
+      "inputTokens": 469255,
+      "outputTokens": 68807,
+      "prefixHitRate": 0.888693780567069,
+      "reportedRequests": 7,
+      "requests": 7,
+      "totalTokens": 538062,
+      "unreportedRequests": 0
+    },
+    "scope": "workspace",
+    "source": "upstream_reported_usage",
+    "total": {
+      "cacheReportedInputTokens": 496801,
+      "cacheReportedRequests": 9,
+      "cachedInputTokens": 439808,
+      "inputTokens": 496801,
+      "outputTokens": 68834,
+      "prefixHitRate": 0.8852800215780564,
+      "reportedRequests": 9,
+      "requests": 9,
+      "totalTokens": 565635,
+      "unreportedRequests": 0
+    }
+  },
+  "visualContext": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "referenceImages": [],
+  "toolNames": {
+    "recipe_sources": 7
+  },
+  "toolErrors": [
+    {
+      "name": "recipe_sources",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "SOURCE_CONFLICT：expectedHash需要read/write返回的file.hash（当前9bae8c8816375acc7bc31942b03f8909b108e6384e9ca3b37b76c4c7d71c687e），不是sourceHash；确认文件内容后再修改"
+        },
+        "ok": false
+      }
+    }
+  ],
+  "images": [
+    {
+      "view": "hero",
+      "file": "hero.png",
+      "sha256": "3c091221346609cdc1ef60cab751e94168faca3410f06e46467d1bb91dd62d9e"
+    },
+    {
+      "view": "front",
+      "file": "front.png",
+      "sha256": "138f90a1fa637c1d87be651316f1d465a6204e4952a31e8e3c94c9c442a12f80"
+    },
+    {
+      "view": "top",
+      "file": "top.png",
+      "sha256": "3c293cd31b664410c8fb53d06f668988eb84d2b9de37e759d8ac2d684dfb9fa8"
+    }
+  ],
+  "seconds": 308.08144716965035,
+  "cacheMonitor": {
+    "alert": null,
+    "cacheReportedRequests": 5,
+    "cacheRequired": true,
+    "clientPrefixIsNotCacheHit": true,
+    "lastCachedTokens": 99456,
+    "lastHitRate": 0.9968227877281429,
+    "lastInputTokens": 99773,
+    "mode": "strict",
+    "prefix": {
+      "appendOnly": true,
+      "contextEpoch": 0,
+      "currentMessages": 26,
+      "expectedReset": false,
+      "field": "input",
+      "firstChangedMessage": null,
+      "previousMessages": 22,
+      "reason": "append_only",
+      "resetAuthorization": null,
+      "scope": "wire_messages",
+      "sharedMessages": 22,
+      "staticPrefixUnchanged": true
+    },
+    "recentHitRate": 0.962504655982281,
+    "requests": 9,
+    "source": "upstream_usage",
+    "status": "observing",
+    "windowRequests": 5
+  }
+}

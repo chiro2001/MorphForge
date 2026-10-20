@@ -1,0 +1,8 @@
+{
+  "method": "equal_position_weld_per_group",
+  "uniqueVertices": 593,
+  "degenerateFaces": 0,
+  "boundaryEdges": 3,
+  "nonmanifoldEdges": 16,
+  "inconsistentWindingEdges": 0
+}

@@ -1,0 +1,210 @@
+{
+  "case": "reference-cottage-finish",
+  "caseSha256": "5b26539a6954006d3e68357bd339988e8573cb6fa9d17b374e28d0adfa3dc0c4",
+  "backend": "http://127.0.0.1:18901",
+  "initialRunId": "ba8dc247-be23-4e37-9f5b-618ca10c871c",
+  "settings": {
+    "preset": "detailed",
+    "model": "deepseek-flash",
+    "reasoning": "high",
+    "language": "zh-CN",
+    "goalMode": false,
+    "maxSteps": 3,
+    "maxRunTokens": 180000,
+    "maxRunSeconds": 1200,
+    "maxOutputTokens": 8192,
+    "cacheGuard": "strict",
+    "sendImages": true,
+    "detailInstructions": ""
+  },
+  "versions": {
+    "software": {
+      "apiVersion": "mf-http/2",
+      "name": "MorphForge",
+      "version": "0.13.0"
+    },
+    "tools": "morphforge-tools/4.0",
+    "prompt": "morphforge-system/5.0",
+    "language": "zh-CN",
+    "schemaSha256": "74abf24a8abd5eeb13379e4610ee06ed9a54838eb92c286d3838e999b50d5f9c"
+  },
+  "actions": [],
+  "success": false,
+  "requireCacheHit": true,
+  "lifetimeTokenLimit": 470000,
+  "checks": {
+    "runCompleted": false,
+    "allActionsExercised": true,
+    "nonemptyScene": true,
+    "objectCapacity": true,
+    "triangleCapacity": true,
+    "boxCapacity": true,
+    "modelUsedVisualFeedback": true,
+    "modelCommitted": false,
+    "modelSavedArtwork": false,
+    "oscRemainsDisabled": true,
+    "vrcCoordinateRange": true,
+    "usesVoxelBackend": true,
+    "savedArtworkHasActualViews": false
+  },
+  "run": {
+    "activeRequestId": null,
+    "epoch": 3,
+    "error": "RUN_BUDGET：剩余Token不足以预留下一请求的估计输入和输出；已保留草稿",
+    "finishedAt": "2026-10-20T08:43:34.468Z",
+    "id": "ba8dc247-be23-4e37-9f5b-618ca10c871c",
+    "language": "zh-CN",
+    "message": "",
+    "prompt": "上一轮因累计Token预算停止，保留了已修改和已截图的revision 3。现在仅收尾：get_context确认状态，然后查看当前revision的hero/front/top截图，核对小屋参考图的轮廓与门窗；不要新增几何或额外修饰。实际查看后finish_artwork提交保存，诚实说明参考图差异和预算停止。禁止载入其他作品或发送OSC。",
+    "promptVersion": "morphforge-system/5.0",
+    "startedAt": "2026-10-20T08:43:24.530Z",
+    "status": "failed",
+    "steps": 2,
+    "tokens": 108825,
+    "toolsVersion": "morphforge-tools/4.0"
+  },
+  "interaction": {
+    "activeRequestId": null,
+    "activeSecondsRemaining": null,
+    "epoch": 3,
+    "paused": false,
+    "phase": "failed",
+    "queue": [],
+    "runId": "ba8dc247-be23-4e37-9f5b-618ca10c871c"
+  },
+  "scene": {
+    "revision": 3,
+    "boxes": 162,
+    "triangles": 0,
+    "objects": 162,
+    "styles": 8,
+    "groups": [
+      "base",
+      "chimney",
+      "door",
+      "roof",
+      "steps",
+      "walls",
+      "windows"
+    ]
+  },
+  "eventCounts": {
+    "harness.started": 1,
+    "harness.message.accepted": 1,
+    "harness.message.applied": 1,
+    "harness.request.prepared": 2,
+    "provider.request": 2,
+    "provider.attempt": 2,
+    "provider.first_byte": 2,
+    "provider.reasoning_delta": 5,
+    "provider.response": 2,
+    "cache.guard.status": 2,
+    "tool.request": 2,
+    "tool.result": 2,
+    "capture.completed": 1,
+    "harness.finished": 1
+  },
+  "toolCalls": 2,
+  "usage": {
+    "prefixDenominator": "cache_reported_input_tokens",
+    "run": {
+      "cacheReportedInputTokens": 108197,
+      "cacheReportedRequests": 2,
+      "cachedInputTokens": 102400,
+      "inputTokens": 108197,
+      "outputTokens": 628,
+      "prefixHitRate": 0.9464218046711091,
+      "reportedRequests": 2,
+      "requests": 2,
+      "totalTokens": 108825,
+      "unreportedRequests": 0
+    },
+    "scope": "workspace",
+    "source": "upstream_reported_usage",
+    "total": {
+      "cacheReportedInputTokens": 370381,
+      "cacheReportedRequests": 11,
+      "cachedInputTokens": 341248,
+      "inputTokens": 370381,
+      "outputTokens": 25984,
+      "prefixHitRate": 0.9213431574513812,
+      "reportedRequests": 11,
+      "requests": 11,
+      "totalTokens": 396365,
+      "unreportedRequests": 0
+    }
+  },
+  "visualContext": [
+    null,
+    null
+  ],
+  "referenceImages": [
+    {
+      "artifact": "7806c5789afccdaa913dc4e725d91f77e81896ca5542cc432cea6390de416f53.png",
+      "author": "MorphForge 项目自制",
+      "category": "常用结构",
+      "height": 832,
+      "id": "builtin:cottage",
+      "license": "MIT（项目自制参考）",
+      "licenseUrl": "",
+      "notes": "由 references/recipes/cottage.js 参数化生成，使用项目自有材质。",
+      "origin": "builtin",
+      "sourceUrl": "",
+      "thumbnail": "db778a8b5414f4cb6270395b1209274c1a27ce1f424550a753c4d427dc4bf87e.webp",
+      "title": "屋顶、门窗与小屋",
+      "width": 1024
+    }
+  ],
+  "toolNames": {
+    "get_context": 1,
+    "capture_views": 1
+  },
+  "toolErrors": [],
+  "images": [
+    {
+      "view": "hero",
+      "file": "hero.png",
+      "sha256": "22aba8719afa7e1a0c5989bd9501621ea2e63bf2eabee762ec5631857863e0a4"
+    },
+    {
+      "view": "front",
+      "file": "front.png",
+      "sha256": "040d4578d9223e428988a3af7d2a533f72e71b3d34d3c5edaae904ca9ec84184"
+    },
+    {
+      "view": "top",
+      "file": "top.png",
+      "sha256": "ff667e34222f9b5e8e9a280bff22acb3ed3d91fe0c86dae8fbbd98b2bf807b94"
+    }
+  ],
+  "seconds": 15.363390800077468,
+  "cacheMonitor": {
+    "alert": null,
+    "cacheReportedRequests": 5,
+    "cacheRequired": true,
+    "clientPrefixIsNotCacheHit": true,
+    "lastCachedTokens": 51456,
+    "lastHitRate": 0.9054213369463849,
+    "lastInputTokens": 56831,
+    "mode": "strict",
+    "prefix": {
+      "appendOnly": true,
+      "contextEpoch": 0,
+      "currentMessages": 31,
+      "expectedReset": false,
+      "field": "input",
+      "firstChangedMessage": null,
+      "previousMessages": 28,
+      "reason": "append_only",
+      "resetAuthorization": null,
+      "scope": "wire_messages",
+      "sharedMessages": 28,
+      "staticPrefixUnchanged": true
+    },
+    "recentHitRate": 0.9566186151716688,
+    "requests": 11,
+    "source": "upstream_usage",
+    "status": "observing",
+    "windowRequests": 5
+  }
+}

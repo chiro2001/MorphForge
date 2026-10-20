@@ -1,0 +1,232 @@
+{
+  "case": "reference-cottage",
+  "caseSha256": "b0b20767e6e847a64038986e7819199a2f59aabb9f63dd23ba9c1b8a33c6cd90",
+  "backend": "http://127.0.0.1:18901",
+  "initialRunId": "36ea2046-68f0-496c-81c5-6a8f2fcac96a",
+  "settings": {
+    "preset": "detailed",
+    "model": "deepseek-flash",
+    "reasoning": "high",
+    "language": "zh-CN",
+    "goalMode": false,
+    "maxSteps": 16,
+    "maxRunTokens": 300000,
+    "maxRunSeconds": 1200,
+    "maxOutputTokens": 65536,
+    "cacheGuard": "strict",
+    "sendImages": true,
+    "detailInstructions": ""
+  },
+  "versions": {
+    "software": {
+      "apiVersion": "mf-http/2",
+      "name": "MorphForge",
+      "version": "0.13.0"
+    },
+    "tools": "morphforge-tools/4.0",
+    "prompt": "morphforge-system/5.0",
+    "language": "zh-CN",
+    "schemaSha256": "74abf24a8abd5eeb13379e4610ee06ed9a54838eb92c286d3838e999b50d5f9c"
+  },
+  "actions": [],
+  "success": false,
+  "requireCacheHit": true,
+  "lifetimeTokenLimit": 330000,
+  "checks": {
+    "runCompleted": false,
+    "allActionsExercised": true,
+    "nonemptyScene": true,
+    "objectCapacity": true,
+    "triangleCapacity": true,
+    "boxCapacity": true,
+    "modelUsedVisualFeedback": true,
+    "modelCommitted": false,
+    "modelSavedArtwork": false,
+    "oscRemainsDisabled": true,
+    "geometryRevisedAfterVisualFeedback": true,
+    "vrcCoordinateRange": true,
+    "usesVoxelBackend": true,
+    "savedArtworkHasActualViews": false
+  },
+  "run": {
+    "activeRequestId": null,
+    "epoch": 2,
+    "error": "RUN_BUDGET：剩余Token不足以预留下一请求的估计输入和输出；已保留草稿",
+    "finishedAt": "2026-10-20T08:42:40.074Z",
+    "id": "36ea2046-68f0-496c-81c5-6a8f2fcac96a",
+    "language": "zh-CN",
+    "message": "",
+    "prompt": "请仅根据我选中的小屋参考图，从零复刻一件完整、可展示的体素小屋作品。不要载入已有作品、示例或绘图源码，不要添加图片里没有的树、招牌和叙事道具。保留参考图中最重要的比例和轮廓：宽大的红色分层四坡屋顶、左后方浅灰烟囱、暖橙色墙面、正面两侧蓝色窗、正中清楚的门洞、浅灰窗台与入户台阶、方形薄草地底座。主体宽约96格，最多3000个对象；大平面用大Box，轮廓与窗门细节认真细化，不靠随机噪点凑数量。以体素风格为主，可按需用带材质斜面；不要把整体退化成几个大方盒。先观察图片提取识别点与配色，使用持久源码搭建，再获取front和hero以及局部/正交截图，至少根据可见问题实际修正一轮，然后重新截图核对。最终必须包括hero/front/top三张当前版本截图，在实际看过后调用finish_artwork提交并保存到作品库；如有简化或未达成请诚实说明。坐标可发布MF6，X/Z[-128,128)、Y[0,256)，但不连接或发送OSC。请直接完整执行，不要向用户提问。",
+    "promptVersion": "morphforge-system/5.0",
+    "startedAt": "2026-10-20T08:40:26.042Z",
+    "status": "failed",
+    "steps": 7,
+    "tokens": 259997,
+    "toolsVersion": "morphforge-tools/4.0"
+  },
+  "interaction": {
+    "activeRequestId": null,
+    "activeSecondsRemaining": null,
+    "epoch": 2,
+    "paused": false,
+    "phase": "failed",
+    "queue": [],
+    "runId": "36ea2046-68f0-496c-81c5-6a8f2fcac96a"
+  },
+  "scene": {
+    "revision": 3,
+    "boxes": 162,
+    "triangles": 0,
+    "objects": 162,
+    "styles": 8,
+    "groups": [
+      "base",
+      "chimney",
+      "door",
+      "roof",
+      "steps",
+      "walls",
+      "windows"
+    ]
+  },
+  "eventCounts": {
+    "harness.started": 1,
+    "harness.message.accepted": 1,
+    "harness.message.applied": 1,
+    "harness.request.prepared": 7,
+    "provider.request": 7,
+    "provider.attempt": 7,
+    "provider.first_byte": 7,
+    "provider.reasoning_delta": 123,
+    "provider.response": 7,
+    "cache.guard.status": 7,
+    "tool.request": 7,
+    "geometry.replaced": 1,
+    "palette.defined": 1,
+    "tool.result": 7,
+    "source.changed": 3,
+    "geometry.applied": 2,
+    "recipe.completed": 2,
+    "capture.completed": 2,
+    "harness.finished": 1
+  },
+  "toolCalls": 7,
+  "usage": {
+    "prefixDenominator": "cache_reported_input_tokens",
+    "run": {
+      "cacheReportedInputTokens": 234668,
+      "cacheReportedRequests": 7,
+      "cachedInputTokens": 224256,
+      "inputTokens": 234668,
+      "outputTokens": 25329,
+      "prefixHitRate": 0.9556309339151482,
+      "reportedRequests": 7,
+      "requests": 7,
+      "totalTokens": 259997,
+      "unreportedRequests": 0
+    },
+    "scope": "workspace",
+    "source": "upstream_reported_usage",
+    "total": {
+      "cacheReportedInputTokens": 262184,
+      "cacheReportedRequests": 9,
+      "cachedInputTokens": 238848,
+      "inputTokens": 262184,
+      "outputTokens": 25356,
+      "prefixHitRate": 0.9109938058767888,
+      "reportedRequests": 9,
+      "requests": 9,
+      "totalTokens": 287540,
+      "unreportedRequests": 0
+    }
+  },
+  "visualContext": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "referenceImages": [
+    {
+      "artifact": "7806c5789afccdaa913dc4e725d91f77e81896ca5542cc432cea6390de416f53.png",
+      "author": "MorphForge 项目自制",
+      "category": "常用结构",
+      "height": 832,
+      "id": "builtin:cottage",
+      "license": "MIT（项目自制参考）",
+      "licenseUrl": "",
+      "notes": "由 references/recipes/cottage.js 参数化生成，使用项目自有材质。",
+      "origin": "builtin",
+      "sourceUrl": "",
+      "thumbnail": "db778a8b5414f4cb6270395b1209274c1a27ce1f424550a753c4d427dc4bf87e.webp",
+      "title": "屋顶、门窗与小屋",
+      "width": 1024
+    }
+  ],
+  "toolNames": {
+    "define_palette": 1,
+    "recipe_sources": 6
+  },
+  "toolErrors": [
+    {
+      "name": "recipe_sources",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "SOURCE_CONFLICT：expectedHash需要read/write返回的file.hash（当前1495f32751d21ccabde93f5c518f46c4d92b7405b38beccd830f8fdcd9f0264e），不是sourceHash；确认文件内容后再修改"
+        },
+        "ok": false
+      }
+    }
+  ],
+  "images": [
+    {
+      "view": "hero",
+      "file": "hero.png",
+      "sha256": "22aba8719afa7e1a0c5989bd9501621ea2e63bf2eabee762ec5631857863e0a4"
+    },
+    {
+      "view": "front",
+      "file": "front.png",
+      "sha256": "040d4578d9223e428988a3af7d2a533f72e71b3d34d3c5edaae904ca9ec84184"
+    },
+    {
+      "view": "top",
+      "file": "top.png",
+      "sha256": "ff667e34222f9b5e8e9a280bff22acb3ed3d91fe0c86dae8fbbd98b2bf807b94"
+    }
+  ],
+  "seconds": 139.84868815308437,
+  "cacheMonitor": {
+    "alert": null,
+    "cacheReportedRequests": 5,
+    "cacheRequired": true,
+    "clientPrefixIsNotCacheHit": true,
+    "lastCachedTokens": 42624,
+    "lastHitRate": 0.9195322949475774,
+    "lastInputTokens": 46354,
+    "mode": "strict",
+    "prefix": {
+      "appendOnly": true,
+      "contextEpoch": 0,
+      "currentMessages": 24,
+      "expectedReset": false,
+      "field": "input",
+      "firstChangedMessage": null,
+      "previousMessages": 21,
+      "reason": "append_only",
+      "resetAuthorization": null,
+      "scope": "wire_messages",
+      "sharedMessages": 21,
+      "staticPrefixUnchanged": true
+    },
+    "recentHitRate": 0.9568501726097867,
+    "requests": 9,
+    "source": "upstream_usage",
+    "status": "observing",
+    "windowRequests": 5
+  }
+}

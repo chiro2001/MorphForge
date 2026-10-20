@@ -1,0 +1,37 @@
+{
+  "artwork": {
+    "boxCount": 162,
+    "createdAt": "2026-10-20T08:45:05.121Z",
+    "description": "",
+    "id": "5b5c88a9-65e6-4b48-a12a-9b226c3ce7b6",
+    "origin": "user",
+    "sourceCredits": [],
+    "sourceRun": null,
+    "tags": [
+      "real-model",
+      "reference",
+      "voxel",
+      "manual-archive"
+    ],
+    "thumbnail": "22aba8719afa7e1a0c5989bd9501621ea2e63bf2eabee762ec5631857863e0a4.png",
+    "title": "红顶小屋 · 真实看图复刻",
+    "triangleCount": 0,
+    "views": [
+      "22aba8719afa7e1a0c5989bd9501621ea2e63bf2eabee762ec5631857863e0a4.png",
+      "040d4578d9223e428988a3af7d2a533f72e71b3d34d3c5edaae904ca9ec84184.png",
+      "ff667e34222f9b5e8e9a280bff22acb3ed3d91fe0c86dae8fbbd98b2bf807b94.png"
+    ],
+    "voxelCount": 163200
+  },
+  "commit": {
+    "createdAt": "2026-10-20T08:45:05.113Z",
+    "id": "df5d84a1-e343-42f9-ad0e-60f8f51e0be8",
+    "revision": 3,
+    "sceneHash": "d5e08e562d57990c91f5bd6cdc82b82a8bd65b2386311b2d9d57592737eb9662",
+    "title": "红顶小屋 · 真实看图复刻"
+  },
+  "finished": true,
+  "ok": true,
+  "revision": 3,
+  "summary": "DeepSeek真实看图生成162 Box并完成一次截图后几何修改。模型两次运行均被累计预算保护停止，未自动收尾；此记录由验收者检查最终截图后手动归档，未改动几何。屋顶/门窗比例为近似，非精确重建。"
+}

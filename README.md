@@ -84,11 +84,13 @@ GitHub公开仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支�
 
 [用法、素材出处与许可](docs/references/README.md)。复杂角色的比例、遮挡与配色仍需人工复核，参考图片不等于自动重建保证。
 
-已支持精确RGB色板，缺少肤色、藏蓝等颜色时由模型创建并保存。0.4.2修复前缀缓存：普通请求只追加内容，system保持稳定，旧截图清理移到compact边界。以下为此前真实参考图生成、预算耗尽后接续保存的223 Box作品，配色与正面识别点已有改善，比例和裙摆仍有简化。
+已支持精确RGB色板，缺少颜色时由模型创建并保存。普通请求只追加内容，system保持稳定，旧截图清理移到compact边界。下面是2026-10-20使用真实DeepSeek-V4.1-Flash看图生成的红顶小屋：162 Box，包含截图后的实际几何修改。参考图为项目原创；最终截图来自工作台实际渲染。
 
-![参考图与RGB色板生成的鲸鱼娘](docs/media/whale-reference-palette.webp)
+![真实DeepSeek看图复刻的红顶小屋](docs/media/reference-cottage.webp)
 
-非官方体素二创；参考图作者ZipZipPipe、原角色上善无形，遵循CC BY-NC-SA 4.0。[原帖与署名](references/ATTRIBUTION.md) · [可直接导入的作品JSON](docs/quality-v4.1/whale-palette-finish/artwork.json) · [完整评测、失败与接续记录](docs/quality-v4.1/RESULTS.md)。
+小屋生成阶段上游实际缓存命中率95.56%。建模与视觉修改完成，但初次及收尾续作均被累计预算保护停止，最终由验收者检查截图后手动归档；不将手动保存计为模型自动完成。屋顶、烟囱和门窗比例仍是近似。[参考图、用量及完整验证记录](docs/mf6-real/RESULTS.md) · [可导入作品JSON](docs/mf6-real/reference/finish-artwork.json)。
+
+同轮还验证了[纯三角面翠鸟](docs/mf6-real/RESULTS.md)：模型生成并修改三版，最终1,135面、0 Box。实际缓存命中88.87%；自动收尾与闭合拓扑仍有未通过项，原始失败记录和实际截图一起保留。
 
 ## 创作速度与精度
 

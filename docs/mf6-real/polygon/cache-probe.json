@@ -1,0 +1,150 @@
+{
+  "cacheMonitor": {
+    "alert": null,
+    "cacheReportedRequests": 2,
+    "cacheRequired": true,
+    "clientPrefixIsNotCacheHit": true,
+    "lastCachedTokens": 11648,
+    "lastHitRate": 0.7355392775953523,
+    "lastInputTokens": 15836,
+    "mode": "strict",
+    "prefix": {
+      "appendOnly": true,
+      "contextEpoch": 0,
+      "currentMessages": 3,
+      "expectedReset": false,
+      "field": "input",
+      "firstChangedMessage": null,
+      "previousMessages": 1,
+      "reason": "append_only",
+      "resetAuthorization": null,
+      "scope": "wire_messages",
+      "sharedMessages": 1,
+      "staticPrefixUnchanged": true
+    },
+    "recentHitRate": 0.8271255354679445,
+    "requests": 2,
+    "source": "upstream_usage",
+    "status": "observing",
+    "windowRequests": 2
+  },
+  "context": {
+    "compactCount": 0,
+    "createdAt": "2026-10-20T08:42:40.021Z",
+    "currentTools": "morphforge-tools/4.0",
+    "estimatedTokens": 4985,
+    "goal": null,
+    "goals": [
+      "这是一次缓存连通性检查，不是创作任务。不做几何操作、不保存作品、不截图。第一步仅调用get_context（默认参数），收到工具结果后只回复「缓存检查就绪」，不要其他工具。"
+    ],
+    "id": "523d6227-cb6b-40b3-b1bd-c2fbd322759e",
+    "messages": 4,
+    "referenceImages": [],
+    "schemaTools": "morphforge-tools/4.0",
+    "schemaUpgradeRequired": false,
+    "summary": "",
+    "title": ""
+  },
+  "interaction": {
+    "activeRequestId": null,
+    "activeSecondsRemaining": null,
+    "epoch": 1,
+    "paused": false,
+    "phase": "completed",
+    "queue": [],
+    "runId": "795b629f-56b7-4e8b-a4a0-ff4c17270636"
+  },
+  "modelLimits": {
+    "advertised": {
+      "contextWindow": 1048576,
+      "maxOutputTokens": 393216
+    },
+    "effectiveContextWindow": 1048576,
+    "effectiveOutputCeiling": 2048,
+    "model": "deepseek-flash",
+    "source": "upstream_models"
+  },
+  "paused": false,
+  "provider": {
+    "apiType": "responses",
+    "baseUrl": "https://api.deepseek.com",
+    "chatTokenField": "max_tokens",
+    "configured": true,
+    "fileUpload": false,
+    "imageDelivery": "inline",
+    "interface": "responses",
+    "keyConfigured": true,
+    "requiresApiKey": true,
+    "sendReasoning": true,
+    "stream": true,
+    "supportsFileUpload": true
+  },
+  "queued": [],
+  "run": {
+    "activeRequestId": null,
+    "epoch": 1,
+    "error": "",
+    "finishedAt": "2026-10-20T08:42:44.559Z",
+    "id": "795b629f-56b7-4e8b-a4a0-ff4c17270636",
+    "language": "zh-CN",
+    "message": "缓存检查就绪",
+    "prompt": "这是一次缓存连通性检查，不是创作任务。不做几何操作、不保存作品、不截图。第一步仅调用get_context（默认参数），收到工具结果后只回复「缓存检查就绪」，不要其他工具。",
+    "promptVersion": "morphforge-system/5.0",
+    "startedAt": "2026-10-20T08:42:42.515Z",
+    "status": "completed",
+    "steps": 2,
+    "tokens": 27573,
+    "toolsVersion": "morphforge-tools/4.0"
+  },
+  "settings": {
+    "autoCompact": true,
+    "budgetDefaultsVersion": 1,
+    "cacheGuard": "strict",
+    "compactTokens": 900000,
+    "contextWindowTokens": 1048576,
+    "detailInstructions": "",
+    "goalCriteria": "",
+    "goalMaxContinuations": 12,
+    "goalMinReviewRounds": 3,
+    "goalMode": false,
+    "language": "zh-CN",
+    "maxOutputTokens": 2048,
+    "maxRunSeconds": 180,
+    "maxRunTokens": 50000,
+    "maxSteps": 2,
+    "model": "deepseek-flash",
+    "preset": "detailed",
+    "reasoning": "high",
+    "sendImages": true,
+    "uploadImages": true
+  },
+  "usage": {
+    "prefixDenominator": "cache_reported_input_tokens",
+    "run": {
+      "cacheReportedInputTokens": 27546,
+      "cacheReportedRequests": 2,
+      "cachedInputTokens": 22784,
+      "inputTokens": 27546,
+      "outputTokens": 27,
+      "prefixHitRate": 0.8271255354679445,
+      "reportedRequests": 2,
+      "requests": 2,
+      "totalTokens": 27573,
+      "unreportedRequests": 0
+    },
+    "scope": "workspace",
+    "source": "upstream_reported_usage",
+    "total": {
+      "cacheReportedInputTokens": 27546,
+      "cacheReportedRequests": 2,
+      "cachedInputTokens": 22784,
+      "inputTokens": 27546,
+      "outputTokens": 27,
+      "prefixHitRate": 0.8271255354679445,
+      "reportedRequests": 2,
+      "requests": 2,
+      "totalTokens": 27573,
+      "unreportedRequests": 0
+    }
+  }
+}
