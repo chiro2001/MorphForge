@@ -4,7 +4,8 @@
 
 - [用户指南](docs/USER-GUIDE.md)：安装、配置、编辑、AI、compact、作品库与 OSC 发布。
 - [交付记录](docs/DELIVERY.md) · [实施状态及证据](docs/plan/STATUS.md) · [已确认设计](docs/plan/README.md) · [验收标准](docs/plan/ACCEPTANCE.md)。
-- gamepc 开发测试副本 **0.16.0**：自动比较增量/重建及连续区域编码，读取Avatar参数匹配材质目录，多实例共享作品库与OSC排他；输入区建模类型/尺寸、发送进度、作品删除、视角保持、树叶与抓握修复。私人 **MF6 16K v5** 已纳入原版Minecraft 1.21.1材质，三项服务端分析通过；主安装0.15.3保持运行。[使用、成本与验证](docs/stream-v16/RESULTS.md)。
+- **正式版 v0.16.0**：安装包已升级 gamepc 主程序，开发测试副本继续保留；[安装与发布记录](docs/release-v16/RESULTS.md)。
+- **0.16.0 功能**：自动比较增量/重建及连续区域编码，读取Avatar参数匹配材质目录，多实例共享作品库与OSC排他；输入区建模类型/尺寸、发送进度、作品删除、视角保持、树叶与抓握修复。私人 **MF6 16K v5** 已纳入原版Minecraft 1.21.1材质，三项服务端分析通过。[使用、成本与验证](docs/stream-v16/RESULTS.md)。
 - **0.15.3 历史记录**：明确增量基准为本机逐条已发记录，修复跨池删除历史丢失和MF6手动补播被拒绝；输入区显示当前上下文k数/窗口/百分比，保留严格前缀检查。仍无多人接收ACK。[修复与验证](docs/publish-context-v15.3/RESULTS.md)。
 - gamepc 开发测试副本 **0.15.2**：开放0.10/0.20/0.25/0.28/0.30/0.40/0.50秒发送档位，修复快速切档被旧刷新覆盖；预览增加三角面深度优先级。Avatar着色器修正已通过Unity GPU测试，需重新上传头像才能在VRChat生效，本轮未上传。[修复与验证](docs/overlap-v15.2/RESULTS.md)。
 - gamepc 开发测试副本 **0.15.1**：修复大上下文流式暂停后无法继续；中断未结算单独记为费用未知，不再误报缓存失效，严格前缀保护保留。主安装继续保留0.15.0。[修复与验证](docs/pause-resume-v15.1/RESULTS.md)。
@@ -143,7 +144,7 @@ API连接可自定义 **Chat Completions 或 Responses** 服务、Base URL、模
 
 默认回归只向9012发送，不向9000发包或启动VRChat。2026-10-19经用户明确授权，已上传并核验私有 **MorphForge FullFT 16K**：实际包总256bit、完整FT161、Store16384，服务端三项分析均200。修复了Catalog metadata布局、FullFT场景根名和人物特效Pickup碰撞力；[最终证据](docs/security-check-failure/FINAL-FULLFT.md)与[客户端复核步骤](docs/security-check-failure/CLIENT-RETEST.md)。
 
-网络发布没有远端ACK；本机发送进度不能证明其他玩家已经显示。真实客户端加载、多人及VR手势仍待现场确认。当前主安装为0.15.3，开发副本为0.16.0；公开Release按用户要求另行发布。
+网络发布没有远端ACK；本机发送进度不能证明其他玩家已经显示。真实客户端加载、多人及VR手势仍待现场确认。当前主安装和开发副本均为0.16.0；正式安装包见GitHub Release `v0.16.0`。
 
 ## 开发入口
 

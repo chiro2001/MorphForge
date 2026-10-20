@@ -1,0 +1,12 @@
+{
+  "sourceFreeze": "4d73d5d327997247c3eed081e43a9e971610420ec3e774c5b1d73a02c42508c2",
+  "success": true,
+  "installerSha256": "046cafbd09f9a37ef724926ea0a3bebc0767eeb817c3137343ddd12c5c4b2cb4",
+  "portableShellSha256": "e77bb3e0f5a4ac23ae1620474b675f93ad3581923affaf250029bd6d013f6e3d",
+  "originalMinecraftResourcesIncluded": false,
+  "installer": "E:\\tmp\\morphforge\\release-v0160\\MorphForge Desktop_0.16.0_x64-setup.exe",
+  "version": "0.16.0",
+  "installerBytes": 18319713,
+  "coreSha256": "40282db83401d43e00fd7633fbc53358641ef1c181f2dff855837574b3fefa22",
+  "shellSha256": "02f27379dde71929e5b370c57d759b2eafc323a213ae0010f42ecc6c0efa8f7c"
+}

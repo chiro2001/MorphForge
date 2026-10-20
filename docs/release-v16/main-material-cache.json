@@ -1,0 +1,9 @@
+{
+  "catalogIdentity": "5dde40a53705beee432145e5cfe00c937c1b55097261861588b3ae5e9c61cab8",
+  "success": true,
+  "scope": "Add private immutable Avatar resources and known identity cache; automatic detection can select the matching directory after Avatar reload. No Preview project/conversation copy.",
+  "selectedCatalogChanged": false,
+  "copiedTextureFiles": 1277,
+  "catalogStyles": 1686,
+  "projectConversationAndConnectionPreserved": true
+}

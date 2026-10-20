@@ -1,0 +1,17 @@
+{
+  "newWorkbenchControls": true,
+  "corePid": 63104,
+  "nativeWindowVisible": true,
+  "independentInstance": false,
+  "base": "http://127.0.0.1:57912",
+  "version": "0.16.0",
+  "success": true,
+  "expectedRevision": 14,
+  "currentContext": "048bf289-c90c-481a-86da-6390970795cd",
+  "phase": "idle",
+  "pid": 140212,
+  "oscEnabled": false,
+  "projectPreserved": true,
+  "revision": 14,
+  "projectId": "603d6c99-e982-46ba-ac79-7a15c559415c"
+}

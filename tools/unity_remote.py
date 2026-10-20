@@ -8,7 +8,9 @@ import os
 import subprocess
 import sys
 
-DEFAULT_HOST = "192.168.101.5"
+# Use the configured alias so BatchMode, identity and multiplexing settings
+# are applied consistently to Pipeline and ordinary remote commands.
+DEFAULT_HOST = os.environ.get("MORPHFORGE_SSH_HOST", "gpu5080")
 DEFAULT_PROJECT = r"D:\Projects\VRChatProjects2\MorphForge"
 
 

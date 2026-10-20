@@ -20,7 +20,7 @@ PATTERNS = (
     "desktop/Cargo.lock", "desktop/app-icon.svg", "desktop/ui/*",
     "desktop/src-tauri/Cargo.toml", "desktop/src-tauri/build.rs",
     "desktop/src-tauri/tauri.conf.json", "desktop/src-tauri/src/*.rs",
-    "tools/build_windows.ps1", "references/**/*", "examples/**/*",
+    "tools/build_windows.ps1", "references/**/*", "examples/**/*", "materials/**/*",
 )
 
 

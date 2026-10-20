@@ -1,0 +1,99 @@
+{
+  "checks": [
+    {
+      "target": "192.168.101.5",
+      "attempt": 1,
+      "success": true,
+      "exitCode": 0,
+      "seconds": 0.578,
+      "error": null
+    },
+    {
+      "target": "192.168.101.5",
+      "attempt": 2,
+      "success": true,
+      "exitCode": 0,
+      "seconds": 0.68,
+      "error": null
+    },
+    {
+      "target": "192.168.101.5",
+      "attempt": 3,
+      "success": true,
+      "exitCode": 0,
+      "seconds": 0.732,
+      "error": null
+    },
+    {
+      "target": "192.168.101.5",
+      "attempt": 4,
+      "success": true,
+      "exitCode": 0,
+      "seconds": 0.603,
+      "error": null
+    },
+    {
+      "target": "192.168.101.5",
+      "attempt": 5,
+      "success": true,
+      "exitCode": 0,
+      "seconds": 0.668,
+      "error": null
+    },
+    {
+      "target": "gpu5080",
+      "attempt": 1,
+      "success": true,
+      "exitCode": 0,
+      "seconds": 0.316,
+      "error": null
+    },
+    {
+      "target": "gpu5080",
+      "attempt": 2,
+      "success": true,
+      "exitCode": 0,
+      "seconds": 0.315,
+      "error": null
+    },
+    {
+      "target": "gpu5080",
+      "attempt": 3,
+      "success": true,
+      "exitCode": 0,
+      "seconds": 0.279,
+      "error": null
+    },
+    {
+      "target": "gpu5080",
+      "attempt": 4,
+      "success": true,
+      "exitCode": 0,
+      "seconds": 0.24,
+      "error": null
+    },
+    {
+      "target": "gpu5080",
+      "attempt": 5,
+      "success": true,
+      "exitCode": 0,
+      "seconds": 0.238,
+      "error": null
+    }
+  ],
+  "allPassed": true,
+  "defaultHostBefore": "192.168.101.5",
+  "defaultHostAfter": "gpu5080",
+  "environmentOverride": "MORPHFORGE_SSH_HOST",
+  "configurationDifference": {
+    "ip": {
+      "controlMaster": false,
+      "controlPersist": false
+    },
+    "alias": {
+      "controlMaster": "auto",
+      "controlPersistSeconds": 1800
+    }
+  },
+  "finding": "Current checks all succeeded. Prior reset not reproduced; tools now use configured SSH alias instead of bypassing its identity/multiplexing settings. No server configuration change."
+}

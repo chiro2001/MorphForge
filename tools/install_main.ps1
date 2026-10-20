@@ -6,6 +6,7 @@ param(
     [Parameter(Mandatory)][string]$ExpectedCoreHash,
     [Parameter(Mandatory)][string]$ExpectedShellHash,
     [string]$ReportPath='',
+    [string]$BackupRoot='',
     [switch]$CloseRunning,
     [switch]$VerifyOnly
 )
@@ -14,7 +15,7 @@ $ProgressPreference='SilentlyContinue'
 Set-StrictMode -Version Latest
 $root=Join-Path $env:LOCALAPPDATA 'MorphForge Desktop'
 $data=Join-Path $env:LOCALAPPDATA 'MorphForge'
-$backup=Join-Path $env:USERPROFILE ('tmp\morphforge\main-backup-'+[DateTimeOffset]::Now.ToString('yyyyMMdd-HHmmss')+'-'+[guid]::NewGuid().ToString('N').Substring(0,8))
+$backup=if($BackupRoot){[IO.Path]::GetFullPath($BackupRoot)}else{Join-Path $env:USERPROFILE ('tmp\morphforge\main-backup-'+[DateTimeOffset]::Now.ToString('yyyyMMdd-HHmmss')+'-'+[guid]::NewGuid().ToString('N').Substring(0,8))}
 $checks=[Collections.Generic.List[object]]::new()
 $report=[ordered]@{success=$false;checks=$checks;installRoot=$root;dataDir=$data;backupRoot=$backup;error=$null}
 function Check([string]$Name,[bool]$Pass){$checks.Add(@{name=$Name;passed=$Pass});if(-not $Pass){throw $Name}}
@@ -30,6 +31,7 @@ function DataFingerprint {
     @{sha256=[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($encoded)).ToLowerInvariant();files=$manifest.Count;bytes=$bytes}
 }
 try {
+    Check 'backup is outside the installation and data' (-not @($root,$data).Where({$backup -eq $_ -or $backup.StartsWith($_+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)}).Count)
     Check 'installer exists' (Test-Path -LiteralPath $Installer -PathType Leaf)
     $report.installerSha256=(Get-FileHash -LiteralPath $Installer -Algorithm SHA256).Hash.ToLowerInvariant()
     if($VerifyOnly){

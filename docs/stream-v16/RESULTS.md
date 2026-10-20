@@ -1,3 +1,5 @@
+> 后续正式安装与GitHub Release已按用户要求完成，见[0.16正式交付](../release-v16/RESULTS.md)。本文记录之前的开发副本验收。
+
 # MorphForge 0.16：发布、Avatar 材质与工作台
 
 日期：2026-10-21。软件 **0.16.0** 已安装 gamepc 的「MorphForge - 开发测试副本」；主安装 0.15.3 及其活动任务保持原状。用户自有私有 Avatar **MorphForge MF6 16K** 已原位更新至 **v5**，generic、standard、security 三项服务端分析全部通过。未发布 GitHub Release，本轮真实付费模型请求为 0。
