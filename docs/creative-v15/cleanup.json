@@ -1,0 +1,21 @@
+{
+  "scope": "Only explicitly identified temporary native test apps and tasks; user originals preserved",
+  "items": [
+    {
+      "taskRemoved": true,
+      "closed": true,
+      "name": "native"
+    },
+    {
+      "taskRemoved": true,
+      "closed": true,
+      "name": "native2"
+    },
+    {
+      "taskRemoved": true,
+      "closed": true,
+      "name": "native-final"
+    }
+  ],
+  "success": true
+}

@@ -1,6 +1,6 @@
 {
   "format": "MorphForgeBuiltinArtworks/1",
-  "version": 1,
+  "version": 2,
   "examples": [
     {
       "id": "builtin:copper-lighthouse",
@@ -346,6 +346,58 @@
         }
       ],
       "sourceRecord": "docs/quality-v4.1/chair-reference/report.json"
+    },
+    {
+      "id": "builtin:kinetic-windmill",
+      "projectFile": "projects/kinetic-windmill.json",
+      "artwork": {
+        "id": "builtin:kinetic-windmill",
+        "title": "会转动的风车",
+        "tags": [
+          "内置示例",
+          "动画",
+          "组件",
+          "风车"
+        ],
+        "createdAt": "2026-10-20T12:00:00Z",
+        "boxCount": 32,
+        "triangleCount": 2,
+        "voxelCount": 5277,
+        "thumbnail": null,
+        "sourceRun": null,
+        "origin": "builtin",
+        "sourceCredits": [
+          {
+            "id": "builtin:kinetic-windmill",
+            "title": "会转动的风车",
+            "author": "MorphForge项目自制",
+            "license": "MIT",
+            "source": "examples/recipes/kinetic-windmill.js"
+          }
+        ],
+        "description": "含可复用窗户组件、正面相机书签和8秒循环旋转轨道。载入后打开动画，选择“风车匀速转动”播放；当前Avatar只发布静态几何。"
+      },
+      "images": [
+        {
+          "view": "hero",
+          "file": "images/kinetic-windmill-hero.webp",
+          "originalArtifact": "adb60e688ec4e14fb7e741f7234a64d55504bac81eea93fc718897603bd00f95.png",
+          "sha256": "9c1eca1d625b98fe9c97d45a4961409421d9f90d4cdfa53765c4d43124b15e19"
+        },
+        {
+          "view": "front",
+          "file": "images/kinetic-windmill-front.webp",
+          "originalArtifact": "a4332926fb8be82a48996a995085a33d4efeae3e9e8d63bc6de28a3ef716e825.png",
+          "sha256": "c7212cfe7cf4850bcecd25eac9848f04d271708fbad9f26e072f0902d6691c27"
+        },
+        {
+          "view": "top",
+          "file": "images/kinetic-windmill-top.webp",
+          "originalArtifact": "65651d70e49636c73ebe3dbed758976a03e94a6a9b6bf465f25dbf30a1a8a3a8.png",
+          "sha256": "213fc1233bef19f50cac145a8e3f1bd033e8b95ce8abcd051ecf783556917291"
+        }
+      ],
+      "sourceRecord": "examples/recipes/kinetic-windmill.js"
     }
   ]
 }

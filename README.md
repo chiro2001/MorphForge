@@ -4,6 +4,7 @@
 
 - [用户指南](docs/USER-GUIDE.md)：安装、配置、编辑、AI、compact、作品库与 OSC 发布。
 - [交付记录](docs/DELIVERY.md) · [实施状态及证据](docs/plan/STATUS.md) · [已确认设计](docs/plan/README.md) · [验收标准](docs/plan/ACCEPTANCE.md)。
+- gamepc 开发测试副本 **0.15.0**：参考图并排/叠加对照与相机书签、Harness可复用组件、分组关键帧/播放/姿态截图及动画GLB导出。新增可直接播放的风车示例；动画目前用于编辑器与GLB。[使用与验证](docs/creative-v15/RESULTS.md)。
 - gamepc 开发测试副本 **0.14.1**：补测GUI按钮，修复设置/弹窗提示不可见、上下文面板消失及变换/换材质后选区丢失。[按钮验收记录](docs/gui-buttons/RESULTS.md)。
 - gamepc 开发测试副本 **0.14.0**：右侧按创作过程展示思考、正文、工具摘要和截图，修复滚动跟随与中文历史分页；新增文件/编辑等桌面菜单，以及GLB、OBJ ZIP、PLY、STL导出。[使用与验证](docs/studio-v14/RESULTS.md)。
 - gamepc 开发测试副本 **0.13.0**：MF6 统一240bit帧、三角面与单对象体素斜面、历史删除补播、Minecraft建筑源库／资源包状态／独立预览／可撤销导入。MF6 16K配套头像已上传并通过三项服务端分析，尚未真实多人验收。[分阶段计划](docs/mf6/PLAN.md) · [验证记录](docs/mf6/RESULTS.md)。
@@ -62,7 +63,7 @@ GitHub公开仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支�
 
 工作台截图为0.14界面载入真实模型生成的翠鸟，并离线回看创作过程；下方为此前真实 DeepSeek 创作的渲染，包含由字体栅格化的可编辑体素汉字。作品过程、失败与修正见 [Harness 迭代记录](docs/harness-v2/evals/README.md)。展示图为压缩 WebP 副本，原始验收 PNG 保留。
 
-作品库已离线内置6个完整示例：铜灯塔与树（49 Box）、Leviathan灯塔（7,459）、云港驿站（766）、星砂港（791）、鲸鱼娘（223）和木椅（16）。点击“载入可编辑副本”即可继续手工或AI修改；几何、材质与18张真实视图随程序附带，无需重新生成或覆盖示例原件。[示例署名与许可](examples/ATTRIBUTION.md)。
+作品库已离线内置7个完整示例：铜灯塔与树（49 Box）、Leviathan灯塔（7,459）、云港驿站（766）、星砂港（791）、鲸鱼娘（223）、木椅（16），以及带组件和循环动画的风车（32 Box / 2面）。点击“载入可编辑副本”即可继续手工或AI修改；几何、材质与21张真实视图随程序附带，无需重新生成或覆盖示例原件。[示例署名与许可](examples/ATTRIBUTION.md)。
 
 ![离线内置作品库](docs/media/builtin-artworks.webp)
 
@@ -77,6 +78,14 @@ GitHub公开仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支�
 新增自由/局部/正交相机、曲面/管线/挤出助手、持久CommonJS源码与精确patch，以及绘制后直接返回截图。缓存与前缀常驻检查：官方接口默认严格，兼容服务可在配置页选择「严格」；异常和执行器崩溃会暂停后续调用。严格模式预留预计输入预算，不把缓存命中率当作没有费用。[工具与用法](docs/HARNESS-QUALITY-TOOLS.md)。
 
 真实生成实验的失败、Token消耗和修复均保留；尚未完成与用户dsh的同条件配对，不能宣称质量已追平或超过。
+
+## 参考对照、组件和动画
+
+“参考对照”可选择图库图片并排或半透明叠加，调整裁剪/缩放/偏移，保存相机书签并生成对照截图。组件库从已有选区或分组保存几何，支持整数倍缩放、四向旋转、镜像与批量放置；Harness在同一对话中可保存一次再反复调用，组件随项目保留。
+
+动画面板为已有分组设置枢轴和移动/旋转/缩放关键帧，支持播放、循环、拖动与冻结姿态截图，可导出带运动的GLB。作品库载入“会转动的风车”，打开动画选择“风车匀速转动”即可尝试；返回静态编辑后继续建模。当前MF6 Avatar仍发布静态几何；编辑器播放不发送逐帧OSC。[接口与边界](docs/creative-v15/API.md)。
+
+![带可复用窗户和旋转轨道的风车](examples/images/kinetic-windmill-hero.webp)
 
 ## 图片参考
 
@@ -118,7 +127,7 @@ API连接可自定义 **Chat Completions 或 Responses** 服务、Base URL、模
 
 默认回归只向9012发送，不向9000发包或启动VRChat。2026-10-19经用户明确授权，已上传并核验私有 **MorphForge FullFT 16K**：实际包总256bit、完整FT161、Store16384，服务端三项分析均200。修复了Catalog metadata布局、FullFT场景根名和人物特效Pickup碰撞力；[最终证据](docs/security-check-failure/FINAL-FULLFT.md)与[客户端复核步骤](docs/security-check-failure/CLIENT-RETEST.md)。
 
-网络发布没有远端ACK；本机发送进度不能证明其他玩家已经显示。真实客户端加载、多人及VR手势仍待现场确认。当前开发副本为0.14.1；公开Release按用户要求另行发布。
+网络发布没有远端ACK；本机发送进度不能证明其他玩家已经显示。真实客户端加载、多人及VR手势仍待现场确认。当前开发副本为0.15.0；公开Release按用户要求另行发布。
 
 ## 开发入口
 

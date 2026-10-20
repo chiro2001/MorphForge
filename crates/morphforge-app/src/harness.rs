@@ -23,8 +23,8 @@ mod prompts;
 mod runtime_materials;
 mod visual_context;
 pub use goal::GoalProgress;
-pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/5.0";
-pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/4.0";
+pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/5.1";
+pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/4.1";
 
 #[derive(Clone, Debug)]
 struct PendingPrompt {
@@ -1545,6 +1545,7 @@ impl Harness {
                             if name == "recipe_sources" && arguments["action"] == "run"
                                 || name == "run_recipe"
                                 || (name == "voxel_text" && arguments["mode"] == "apply")
+                                || (name == "components" && arguments["action"] == "place")
                             {
                                 arguments["requestId"] = json!(call_id);
                             }
@@ -1899,13 +1900,14 @@ impl Harness {
             "catalog":catalog,
             "pinnedNotes":workspace.project.pinned_notes,
             "sourceCredits":workspace.project.source_credits,
-            "libraryHints":{"builtinExamples":6,"tool":"artworks action=search returns personal artworks and immutable examples; load/fork needs id and current baseRevision and creates an editable copy."},
+            "libraryHints":{"builtinExamples":7,"tool":"artworks action=search returns personal artworks and immutable examples; load/fork needs id and current baseRevision and creates an editable copy."},
             "goal":active_goal,
             "referenceImages":reference_images,
             "viewConventions":{"front":{"cameraFrom":"+Z","looksToward":"-Z"},"hero":{"cameraFrom":"+X,+Y,+Z"},"placementHint":"脸、眼睛、围裙、门窗、正面文字应位于主体的+Z外表面；更大的Z更靠近front相机。"},
             "sync":self.transport.state(),
             "runtimeSurfaceHints":{"mf5":"define_palette/define_materials可实时发送，不需重传头像；新图片仍需打包。查看工具返回的vrcEffective了解量化。","scale":"placement.scale保持实际倍数；新100%=.05，MF5范围.0005.. .5（1%..1000%）。","transparency":"MF5运行时透明表面暂不带六面遮罩；目录透明材质可剔内部面。"},
             "recipeSources":crate::sources::list(&workspace).unwrap_or(Value::Null),
+            "creative":workspace.project.creative.brief(),
             "sdkVersion":recipe::SDK_VERSION,
             "meshSdk":"mf.triangle(a,b,c,{color:'#RRGGBB',doubleSided:false,group}); mf.mesh(vertices,faces,{color,colors:[per-face RGB8 or hex],group,doubleSided}); faces are triples of vertex indices. mf.triangleStrip(vertices,{colors}); mf.slope(min,size,{style:styleId,direction:'+x'|'-x'|'+z'|'-z',group}); // textured voxel slope, one object. mf.wedge(min,size,{direction:'+x'|'-x'|'+z'|'-z',color}); integer coordinates, per-face RGB8, no UV. Same translate/mirror/group frame as mf.box. mesh_tools can inspect/edit stable face IDs. Region erase removes whole faces by AABB; it does not clip triangles. MF6 required for triangle OSC; art-only editing is independent of VRChat.",
             "sdk":"mf.box(min,[w,h,d],{style:'wood',tint:0,motion:0}); mf.erase(min,size); mf.paint(min,size,{style}) recolors existing voxels only and never creates them; use mf.box to add voxels. mf.clear(); mf.removeGroup(name); mf.replaceGroup(name,()=>{}); mf.ellipsoid(center,radii,options); mf.sphere(center,radius,options); mf.capsule(a,b,radius,options); mf.cylinder(base,height,radius,options) Y-axis; mf.tube(points,radius,options); mf.extrude(points2d,origin,depth,{plane:\"xy\",style}); mf.voxelize({min,max},(x,y,z)=>boolean_or_style,options) samples cell centers, max2M cells; mf.group(name,()=>{}); mf.repeat(n,(i)=>{}); mf.mirror('x',()=>{}); mf.translate([x,y,z],()=>{}); mf.line(a,b,{thickness:1,style}); mf.stairs(origin,n,{width:3,depth:1,rise:1,style}); mf.wall(origin,w,h,{thickness:1,style}); mf.roof(origin,w,d,h,{style}); Math.random()/mf.random() deterministic by seed. All coordinates integer signed grid. Y is height. VRC target requires X/Z[-128,128),Y[0,256). Styles are catalog IDs/UID names. mode apply preserves current geometry; replace starts from empty."
@@ -2081,6 +2083,19 @@ impl Harness {
         }
         match name {
             "get_context" => Ok(self.context_with_options(args)),
+            "components" | "reference_workbench" | "animation" => {
+                if name == "reference_workbench" && args["action"] == "capture" {
+                    return self.capture_views_tool(args,run,guard).await;
+                }
+                self.with_workspace_guard(guard.as_ref(), |w| {
+                    let domain=match name {"reference_workbench"=>"references",other=>other};
+                    let mut result=crate::creative::action(w,domain,args,run)?;
+                    if name=="components" && args["action"]=="place" && args["dryRun"]!=true && result["replayed"]!=true && self.transport.config().enabled && self.transport.config().auto {
+                        if let Err(e)=self.transport.publish_with_materials(&w.project.scene,&w.project.materials,false){result["publishWarning"]=json!(e.to_string())}
+                    }
+                    Ok(result)
+                })
+            },
             "image_tools" => self.with_workspace_guard(guard.as_ref(), |w| {
                 let mut result=crate::image_tools::action(w,args,run)?;
                 if args["action"]=="voxel_plane" && result["dryRun"]==false && self.transport.config().enabled && self.transport.config().auto {
@@ -2221,6 +2236,11 @@ impl Harness {
         run: Option<&str>,
         guard: Option<RunGuard>,
     ) -> Result<Value> {
+        let resolved = {
+            let w = self.workspace.lock().unwrap();
+            crate::creative::resolve_capture(&w, args)?
+        };
+        let args = &resolved;
         let (project_id, signature) = {
             let workspace = self.workspace.lock().unwrap();
             (
@@ -2247,7 +2267,7 @@ impl Harness {
                 && goal::geometry_hash(&workspace) == signature
                 && result["revision"].as_u64() == Some(workspace.project.scene.revision)
         };
-        if matches {
+        if matches && args.get("animation").is_none() {
             self.record_goal_capture(&project_id, signature, &result)?;
         }
         Ok(result)
@@ -2499,12 +2519,13 @@ impl Harness {
                 "recipe.completed",
                 run,
                 json!({
-                    "seed":request.seed,
-                    "mode":request.mode,
-                    "sdkVersion":recipe::SDK_VERSION,
-                    "artifact":artifact,
-                    "result":value,
-                }),
+                        "seed":request.seed,
+                        "mode":request.mode,
+                        "creative":workspace.project.creative.brief(),
+                "sdkVersion":recipe::SDK_VERSION,
+                        "artifact":artifact,
+                        "result":value,
+                    }),
             )?;
             if self.transport.config().enabled && self.transport.config().auto {
                 let _ = workspace.commit(None, "自动发布", run)?;
@@ -3588,6 +3609,21 @@ pub fn tools_for_language(language: &str) -> Value {
             ));
         }
     }
+    schemas
+        .as_array_mut()
+        .unwrap()
+        .extend(crate::creative_schema::tools(en));
+    let capture = schemas
+        .as_array_mut()
+        .unwrap()
+        .iter_mut()
+        .find(|t| t["name"] == "capture_views")
+        .unwrap();
+    let properties = capture["parameters"]["properties"].as_object_mut().unwrap();
+    properties.insert("comparison".into(),json!({"type":"object","properties":{"imageId":{"type":"string"},"mode":{"type":"string","enum":["split","overlay"]},"opacity":{"type":"number"},"zoom":{"type":"number"},"offset":{"type":"array","items":{"type":"number"},"minItems":2,"maxItems":2},"crop":{"type":"array","items":{"type":"number"},"minItems":4,"maxItems":4}},"required":["imageId","mode","opacity","zoom","offset","crop"],"additionalProperties":false}));
+    properties.insert("bookmarkId".into(), json!({"type":"string"}));
+    properties.insert("compare".into(), json!({"type":"boolean"}));
+    properties.insert("animation".into(),json!({"type":"object","properties":{"clipId":{"type":"string"},"time":{"type":"number","minimum":0}},"required":["clipId","time"],"additionalProperties":false}));
     schemas
 }
 

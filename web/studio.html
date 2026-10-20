@@ -91,7 +91,7 @@
         <details class="app-menu">
           <summary>资源</summary>
           <div role="menu">
-            <button role="menuitem" data-command="libraryOpen">作品库…</button
+            <button role="menuitem" data-command="comparisonOpen">参考图对照…</button><button role="menuitem" data-command="componentOpen">组件库…</button><button role="menuitem" data-command="animationOpen">分组动画…</button><button role="menuitem" data-command="libraryOpen">作品库…</button
             ><button role="menuitem" data-command="referenceOpen">
               参考图库…</button
             ><button role="menuitem" data-command="minecraftOpen">
@@ -281,6 +281,7 @@
           <button id="capture">三视图</button>
           <button id="renderOptionsOpen">画质/显示</button>
           <button id="centerScene">整体定位</button>
+          <button id="comparisonOpen">参考对照</button><button id="componentOpen">组件库</button><button id="animationOpen">动画</button>
         </div>
         <div id="emptyHint">
           <h1>从想象，到一块一块</h1>
@@ -1081,7 +1082,7 @@ mf.group('main', () => {
       /></label>
       <p id="modelExportHint" class="caption"></p>
       <p class="caption">
-        导出整个工程，包含本地预览中隐藏的分组。保留独立壳体和内部面，不自动做布尔并集或补洞；程序材质使用静态基础色，图片动画使用首帧。导出不会修改作品。
+        导出整个工程，包含本地预览中隐藏的分组。保留独立壳体和内部面，不自动做布尔并集或补洞；程序材质使用静态基础色，图片动画使用首帧。此处导出静态几何；分组运动请在动画面板使用“导出动画 GLB”。导出不会修改作品。
       </p>
       <div id="modelExportStatus" role="status" class="caption"></div>
       <button id="modelExportApply" class="primary wide">导出模型</button>

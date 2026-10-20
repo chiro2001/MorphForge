@@ -1,6 +1,6 @@
 // Actual Tauri/WebView2 input via its isolated, temporary CDP debugging port.
 import fs from 'node:fs';
-const [sessionPath,outRoot,debug='http://127.0.0.1:19220']=process.argv.slice(2);
+const [sessionPath,outRoot,debug='http://127.0.0.1:19220',expectedVersion='0.14.1']=process.argv.slice(2);
 if(!sessionPath||!outRoot)throw Error('usage: node check_gui_native.mjs SESSION_JSON OUTPUT_DIR [DEBUG_ORIGIN]');
 fs.mkdirSync(outRoot,{recursive:true});
 const session=JSON.parse(fs.readFileSync(sessionPath,'utf8').replace(/^\uFEFF/,''));
@@ -20,7 +20,8 @@ async function snapshot(name){const r=await send('Page.captureScreenshot',{forma
 async function menu(key,exportModel=false){const sel=`[data-${exportModel?'export':'command'}="${key}"]`;const index=await js(`document.querySelectorAll('.app-menu').forEach(n=>n.open=false);return [...document.querySelectorAll('.app-menu')].indexOf(document.querySelector(${JSON.stringify(sel)}).closest('.app-menu'));`);await click(`.app-menu:nth-child(${index+1})>summary`);if(exportModel)await click('.menu-submenu>summary');await click(sel);}
 try{
  await wait('return !!window.__morphforge?.ready');await send('Page.enable');await js('window.__nativeErrors=[];window.addEventListener("error",e=>{if(e.message)window.__nativeErrors.push(e.message)});window.addEventListener("unhandledrejection",e=>window.__nativeErrors.push(String(e.reason)));');
- await check('real Windows packaged app version',await js('return window.__morphforge.state.software.version==="0.14.1"'));
+ if(session.projectId)await check('native target matches isolated test project',await js('return window.__morphforge.state.project.id')===session.projectId);
+ await check('real Windows packaged app version',await js('return window.__morphforge.state.software.version==='+JSON.stringify(expectedVersion)));
  await check('native test starts with OSC disabled',!await js('return window.__morphforge.state.connection.enabled'));
  try{await send('Browser.setDownloadBehavior',{behavior:'allow',downloadPath:session.downloads,eventsEnabled:true});}catch{await send('Page.setDownloadBehavior',{behavior:'allow',downloadPath:session.downloads});}
  await click('[data-tab=text]');await click('#settingsOpen');await wait('return !settingsPage.hidden');await check('native tab switching preserves context settings',!await js('return document.getElementById("tab-context").hidden'));

@@ -1,0 +1,45 @@
+{
+  "success": true,
+  "version": "0.15.0",
+  "suites": {
+    "browser": {
+      "success": true,
+      "checks": 17,
+      "evidence": "browser-validation.json"
+    },
+    "controls": {
+      "success": true,
+      "checks": 15,
+      "evidence": "controls-validation.json"
+    },
+    "harness": {
+      "success": true,
+      "checks": 10,
+      "evidence": "harness-validation.json"
+    },
+    "nativeBase": {
+      "success": true,
+      "checks": 17,
+      "evidence": "native-base-validation.json"
+    },
+    "nativeCreative": {
+      "success": true,
+      "checks": 15,
+      "evidence": "native-creative-validation.json"
+    }
+  },
+  "rustWorkspaceTests": 225,
+  "windowsAppLibraryTests": 93,
+  "nodeTests": 56,
+  "realModelRequests": 0,
+  "oscSent": false,
+  "avatarChanged": false,
+  "sourceSha256": "6cb8d5362b734d1b128b8b36f9479e48184af6022569ce63f0e063abaf64387e",
+  "installedRuntime": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Preview\\versions\\0.15.0-24c3ef00aaca",
+  "animationTargets": [
+    "editor",
+    "capture",
+    "animated-glb"
+  ],
+  "avatarAnimationPlayback": false
+}

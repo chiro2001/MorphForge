@@ -1,0 +1,801 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "native target matches isolated test project",
+      "passed": true
+    },
+    {
+      "name": "real Windows packaged app version",
+      "passed": true
+    },
+    {
+      "name": "native test starts with OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "native tab switching preserves context settings",
+      "passed": true
+    },
+    {
+      "name": "settings feedback is visible in native WebView2",
+      "passed": true
+    },
+    {
+      "name": "native dialog validation error appears above the modal backdrop",
+      "passed": true
+    },
+    {
+      "name": "native pointer draws actual scene geometry",
+      "passed": true
+    },
+    {
+      "name": "JSON save action remains inside the running workbench",
+      "passed": true
+    },
+    {
+      "name": "native glb menu opens export dialog",
+      "passed": true
+    },
+    {
+      "name": "native glb export completes its UI action",
+      "passed": true
+    },
+    {
+      "name": "native obj menu opens export dialog",
+      "passed": true
+    },
+    {
+      "name": "native obj export completes its UI action",
+      "passed": true
+    },
+    {
+      "name": "native ply menu opens export dialog",
+      "passed": true
+    },
+    {
+      "name": "native ply export completes its UI action",
+      "passed": true
+    },
+    {
+      "name": "native stl menu opens export dialog",
+      "passed": true
+    },
+    {
+      "name": "native stl export completes its UI action",
+      "passed": true
+    },
+    {
+      "name": "native controls have no unhandled JavaScript error",
+      "passed": true
+    }
+  ],
+  "downloadEvents": [
+    {
+      "method": "Browser.downloadWillBegin",
+      "params": {
+        "frameId": "8A58CD4F428F21C01FD07C6039A142C1",
+        "guid": "cee66278-df01-4a7e-83f2-0d83a5f5a5e2",
+        "url": "blob:http://127.0.0.1:59012/86e255a3-b784-43dd-943c-c0f4ab1bcdab",
+        "suggestedFilename": "未命名作品.json"
+      }
+    },
+    {
+      "method": "Page.downloadWillBegin",
+      "params": {
+        "frameId": "8A58CD4F428F21C01FD07C6039A142C1",
+        "guid": "cee66278-df01-4a7e-83f2-0d83a5f5a5e2",
+        "url": "blob:http://127.0.0.1:59012/86e255a3-b784-43dd-943c-c0f4ab1bcdab",
+        "suggestedFilename": "未命名作品.json"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "cee66278-df01-4a7e-83f2-0d83a5f5a5e2",
+        "totalBytes": 13280,
+        "receivedBytes": 0,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "cee66278-df01-4a7e-83f2-0d83a5f5a5e2",
+        "totalBytes": 13280,
+        "receivedBytes": 0,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "cee66278-df01-4a7e-83f2-0d83a5f5a5e2",
+        "totalBytes": 13280,
+        "receivedBytes": 13280,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "cee66278-df01-4a7e-83f2-0d83a5f5a5e2",
+        "totalBytes": 13280,
+        "receivedBytes": 13280,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "cee66278-df01-4a7e-83f2-0d83a5f5a5e2",
+        "totalBytes": 13280,
+        "receivedBytes": 13280,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "cee66278-df01-4a7e-83f2-0d83a5f5a5e2",
+        "totalBytes": 13280,
+        "receivedBytes": 13280,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "cee66278-df01-4a7e-83f2-0d83a5f5a5e2",
+        "totalBytes": 13280,
+        "receivedBytes": 13280,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "cee66278-df01-4a7e-83f2-0d83a5f5a5e2",
+        "totalBytes": 13280,
+        "receivedBytes": 13280,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "cee66278-df01-4a7e-83f2-0d83a5f5a5e2",
+        "totalBytes": 13280,
+        "receivedBytes": 13280,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "cee66278-df01-4a7e-83f2-0d83a5f5a5e2",
+        "totalBytes": 13280,
+        "receivedBytes": 13280,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "cee66278-df01-4a7e-83f2-0d83a5f5a5e2",
+        "totalBytes": 13280,
+        "receivedBytes": 13280,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "cee66278-df01-4a7e-83f2-0d83a5f5a5e2",
+        "totalBytes": 13280,
+        "receivedBytes": 13280,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "cee66278-df01-4a7e-83f2-0d83a5f5a5e2",
+        "totalBytes": 13280,
+        "receivedBytes": 13280,
+        "state": "completed",
+        "filePath": "C:\\Users\\Chiro\\tmp\\morphforge\\creative-v0150\\native-final\\downloads\\未命名作品.json"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "cee66278-df01-4a7e-83f2-0d83a5f5a5e2",
+        "totalBytes": 13280,
+        "receivedBytes": 13280,
+        "state": "completed"
+      }
+    },
+    {
+      "method": "Browser.downloadWillBegin",
+      "params": {
+        "frameId": "8A58CD4F428F21C01FD07C6039A142C1",
+        "guid": "e8280e44-b838-4eed-8176-ade1a69cca04",
+        "url": "blob:http://127.0.0.1:59012/df4807eb-2333-4ae1-992e-c877ec5014aa",
+        "suggestedFilename": "未命名作品.glb"
+      }
+    },
+    {
+      "method": "Page.downloadWillBegin",
+      "params": {
+        "frameId": "8A58CD4F428F21C01FD07C6039A142C1",
+        "guid": "e8280e44-b838-4eed-8176-ade1a69cca04",
+        "url": "blob:http://127.0.0.1:59012/df4807eb-2333-4ae1-992e-c877ec5014aa",
+        "suggestedFilename": "未命名作品.glb"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "e8280e44-b838-4eed-8176-ade1a69cca04",
+        "totalBytes": 2480,
+        "receivedBytes": 0,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "e8280e44-b838-4eed-8176-ade1a69cca04",
+        "totalBytes": 2480,
+        "receivedBytes": 0,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "e8280e44-b838-4eed-8176-ade1a69cca04",
+        "totalBytes": 2480,
+        "receivedBytes": 2480,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "e8280e44-b838-4eed-8176-ade1a69cca04",
+        "totalBytes": 2480,
+        "receivedBytes": 2480,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "e8280e44-b838-4eed-8176-ade1a69cca04",
+        "totalBytes": 2480,
+        "receivedBytes": 2480,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "e8280e44-b838-4eed-8176-ade1a69cca04",
+        "totalBytes": 2480,
+        "receivedBytes": 2480,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "e8280e44-b838-4eed-8176-ade1a69cca04",
+        "totalBytes": 2480,
+        "receivedBytes": 2480,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "e8280e44-b838-4eed-8176-ade1a69cca04",
+        "totalBytes": 2480,
+        "receivedBytes": 2480,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "e8280e44-b838-4eed-8176-ade1a69cca04",
+        "totalBytes": 2480,
+        "receivedBytes": 2480,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "e8280e44-b838-4eed-8176-ade1a69cca04",
+        "totalBytes": 2480,
+        "receivedBytes": 2480,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "e8280e44-b838-4eed-8176-ade1a69cca04",
+        "totalBytes": 2480,
+        "receivedBytes": 2480,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "e8280e44-b838-4eed-8176-ade1a69cca04",
+        "totalBytes": 2480,
+        "receivedBytes": 2480,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "e8280e44-b838-4eed-8176-ade1a69cca04",
+        "totalBytes": 2480,
+        "receivedBytes": 2480,
+        "state": "completed",
+        "filePath": "C:\\Users\\Chiro\\tmp\\morphforge\\creative-v0150\\native-final\\downloads\\未命名作品.glb"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "e8280e44-b838-4eed-8176-ade1a69cca04",
+        "totalBytes": 2480,
+        "receivedBytes": 2480,
+        "state": "completed"
+      }
+    },
+    {
+      "method": "Browser.downloadWillBegin",
+      "params": {
+        "frameId": "8A58CD4F428F21C01FD07C6039A142C1",
+        "guid": "311151ba-85c8-483a-a703-1030165e5924",
+        "url": "blob:http://127.0.0.1:59012/8db19c5f-6a58-4b0c-987b-9e9eb223fd5e",
+        "suggestedFilename": "未命名作品.obj.zip"
+      }
+    },
+    {
+      "method": "Page.downloadWillBegin",
+      "params": {
+        "frameId": "8A58CD4F428F21C01FD07C6039A142C1",
+        "guid": "311151ba-85c8-483a-a703-1030165e5924",
+        "url": "blob:http://127.0.0.1:59012/8db19c5f-6a58-4b0c-987b-9e9eb223fd5e",
+        "suggestedFilename": "未命名作品.obj.zip"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "311151ba-85c8-483a-a703-1030165e5924",
+        "totalBytes": 986,
+        "receivedBytes": 0,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "311151ba-85c8-483a-a703-1030165e5924",
+        "totalBytes": 986,
+        "receivedBytes": 0,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "311151ba-85c8-483a-a703-1030165e5924",
+        "totalBytes": 986,
+        "receivedBytes": 986,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "311151ba-85c8-483a-a703-1030165e5924",
+        "totalBytes": 986,
+        "receivedBytes": 986,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "311151ba-85c8-483a-a703-1030165e5924",
+        "totalBytes": 986,
+        "receivedBytes": 986,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "311151ba-85c8-483a-a703-1030165e5924",
+        "totalBytes": 986,
+        "receivedBytes": 986,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "311151ba-85c8-483a-a703-1030165e5924",
+        "totalBytes": 986,
+        "receivedBytes": 986,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "311151ba-85c8-483a-a703-1030165e5924",
+        "totalBytes": 986,
+        "receivedBytes": 986,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "311151ba-85c8-483a-a703-1030165e5924",
+        "totalBytes": 986,
+        "receivedBytes": 986,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "311151ba-85c8-483a-a703-1030165e5924",
+        "totalBytes": 986,
+        "receivedBytes": 986,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "311151ba-85c8-483a-a703-1030165e5924",
+        "totalBytes": 986,
+        "receivedBytes": 986,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "311151ba-85c8-483a-a703-1030165e5924",
+        "totalBytes": 986,
+        "receivedBytes": 986,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "311151ba-85c8-483a-a703-1030165e5924",
+        "totalBytes": 986,
+        "receivedBytes": 986,
+        "state": "completed",
+        "filePath": "C:\\Users\\Chiro\\tmp\\morphforge\\creative-v0150\\native-final\\downloads\\未命名作品.obj.zip"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "311151ba-85c8-483a-a703-1030165e5924",
+        "totalBytes": 986,
+        "receivedBytes": 986,
+        "state": "completed"
+      }
+    },
+    {
+      "method": "Browser.downloadWillBegin",
+      "params": {
+        "frameId": "8A58CD4F428F21C01FD07C6039A142C1",
+        "guid": "c108ff18-70cf-4793-9f01-696c68237c97",
+        "url": "blob:http://127.0.0.1:59012/88120405-4147-420d-8758-fd2d3275a9f8",
+        "suggestedFilename": "未命名作品.ply"
+      }
+    },
+    {
+      "method": "Page.downloadWillBegin",
+      "params": {
+        "frameId": "8A58CD4F428F21C01FD07C6039A142C1",
+        "guid": "c108ff18-70cf-4793-9f01-696c68237c97",
+        "url": "blob:http://127.0.0.1:59012/88120405-4147-420d-8758-fd2d3275a9f8",
+        "suggestedFilename": "未命名作品.ply"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "c108ff18-70cf-4793-9f01-696c68237c97",
+        "totalBytes": 1036,
+        "receivedBytes": 0,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "c108ff18-70cf-4793-9f01-696c68237c97",
+        "totalBytes": 1036,
+        "receivedBytes": 0,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "c108ff18-70cf-4793-9f01-696c68237c97",
+        "totalBytes": 1036,
+        "receivedBytes": 1036,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "c108ff18-70cf-4793-9f01-696c68237c97",
+        "totalBytes": 1036,
+        "receivedBytes": 1036,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "c108ff18-70cf-4793-9f01-696c68237c97",
+        "totalBytes": 1036,
+        "receivedBytes": 1036,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "c108ff18-70cf-4793-9f01-696c68237c97",
+        "totalBytes": 1036,
+        "receivedBytes": 1036,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "c108ff18-70cf-4793-9f01-696c68237c97",
+        "totalBytes": 1036,
+        "receivedBytes": 1036,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "c108ff18-70cf-4793-9f01-696c68237c97",
+        "totalBytes": 1036,
+        "receivedBytes": 1036,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "c108ff18-70cf-4793-9f01-696c68237c97",
+        "totalBytes": 1036,
+        "receivedBytes": 1036,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "c108ff18-70cf-4793-9f01-696c68237c97",
+        "totalBytes": 1036,
+        "receivedBytes": 1036,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "c108ff18-70cf-4793-9f01-696c68237c97",
+        "totalBytes": 1036,
+        "receivedBytes": 1036,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "c108ff18-70cf-4793-9f01-696c68237c97",
+        "totalBytes": 1036,
+        "receivedBytes": 1036,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "c108ff18-70cf-4793-9f01-696c68237c97",
+        "totalBytes": 1036,
+        "receivedBytes": 1036,
+        "state": "completed",
+        "filePath": "C:\\Users\\Chiro\\tmp\\morphforge\\creative-v0150\\native-final\\downloads\\未命名作品.ply"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "c108ff18-70cf-4793-9f01-696c68237c97",
+        "totalBytes": 1036,
+        "receivedBytes": 1036,
+        "state": "completed"
+      }
+    },
+    {
+      "method": "Browser.downloadWillBegin",
+      "params": {
+        "frameId": "8A58CD4F428F21C01FD07C6039A142C1",
+        "guid": "577505bf-9c80-456a-9a86-3a732967592c",
+        "url": "blob:http://127.0.0.1:59012/e1e78dd8-bcb9-4206-8bef-0b49a83c8a4a",
+        "suggestedFilename": "未命名作品.stl"
+      }
+    },
+    {
+      "method": "Page.downloadWillBegin",
+      "params": {
+        "frameId": "8A58CD4F428F21C01FD07C6039A142C1",
+        "guid": "577505bf-9c80-456a-9a86-3a732967592c",
+        "url": "blob:http://127.0.0.1:59012/e1e78dd8-bcb9-4206-8bef-0b49a83c8a4a",
+        "suggestedFilename": "未命名作品.stl"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "577505bf-9c80-456a-9a86-3a732967592c",
+        "totalBytes": 684,
+        "receivedBytes": 0,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "577505bf-9c80-456a-9a86-3a732967592c",
+        "totalBytes": 684,
+        "receivedBytes": 0,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "577505bf-9c80-456a-9a86-3a732967592c",
+        "totalBytes": 684,
+        "receivedBytes": 684,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "577505bf-9c80-456a-9a86-3a732967592c",
+        "totalBytes": 684,
+        "receivedBytes": 684,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "577505bf-9c80-456a-9a86-3a732967592c",
+        "totalBytes": 684,
+        "receivedBytes": 684,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "577505bf-9c80-456a-9a86-3a732967592c",
+        "totalBytes": 684,
+        "receivedBytes": 684,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "577505bf-9c80-456a-9a86-3a732967592c",
+        "totalBytes": 684,
+        "receivedBytes": 684,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "577505bf-9c80-456a-9a86-3a732967592c",
+        "totalBytes": 684,
+        "receivedBytes": 684,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "577505bf-9c80-456a-9a86-3a732967592c",
+        "totalBytes": 684,
+        "receivedBytes": 684,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "577505bf-9c80-456a-9a86-3a732967592c",
+        "totalBytes": 684,
+        "receivedBytes": 684,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "577505bf-9c80-456a-9a86-3a732967592c",
+        "totalBytes": 684,
+        "receivedBytes": 684,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "577505bf-9c80-456a-9a86-3a732967592c",
+        "totalBytes": 684,
+        "receivedBytes": 684,
+        "state": "inProgress"
+      }
+    },
+    {
+      "method": "Browser.downloadProgress",
+      "params": {
+        "guid": "577505bf-9c80-456a-9a86-3a732967592c",
+        "totalBytes": 684,
+        "receivedBytes": 684,
+        "state": "completed",
+        "filePath": "C:\\Users\\Chiro\\tmp\\morphforge\\creative-v0150\\native-final\\downloads\\未命名作品.stl"
+      }
+    },
+    {
+      "method": "Page.downloadProgress",
+      "params": {
+        "guid": "577505bf-9c80-456a-9a86-3a732967592c",
+        "totalBytes": 684,
+        "receivedBytes": 684,
+        "state": "completed"
+      }
+    }
+  ],
+  "scope": "Actual installed-style Tauri shell and Windows WebView2 with trusted CDP pointer input. Isolated data/profile; no model calls or OSC."
+}

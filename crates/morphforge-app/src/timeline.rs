@@ -105,6 +105,9 @@ fn tool_summary(data: &Value) -> String {
         "read_artifact" => "查看图片或源码文件".into(),
         "transform_scene" => "调整作品整体位置".into(),
         "mesh_tools" => "编辑三角网格".into(),
+        "components" => format!("组件 · {}", args["action"].as_str().unwrap_or("list")),
+        "reference_workbench" => "参考图与相机对照".into(),
+        "animation" => "编辑分组动画".into(),
         _ => name.into(),
     }
 }

@@ -139,6 +139,9 @@ impl App {
                 get(view_settings).post(view_settings_save),
             )
             .route("/api/scene", get(scene))
+            .route("/api/creative", get(creative_list))
+            .route("/api/creative/{domain}", post(creative_action))
+            .route("/api/creative/animation/{id}/export", get(animation_export))
             .route("/api/export", get(export))
             .route("/api/export/model", get(export_model))
             .route("/api/project", post(project))
@@ -206,6 +209,54 @@ async fn workspace_gate(State(a): State<App>, request: Request, next: Next) -> R
     } else {
         next.run(request).await
     }
+}
+async fn creative_list(State(a): State<App>) -> ApiResult {
+    Ok(Json(a.workspace.lock().unwrap().project.creative.summary()))
+}
+async fn creative_action(
+    State(a): State<App>,
+    AxPath(domain): AxPath<String>,
+    Json(v): Json<Value>,
+) -> ApiResult {
+    let tool = match domain.as_str() {
+        "references" => "reference_workbench",
+        "components" => "components",
+        "animation" => "animation",
+        _ => return Err(anyhow::anyhow!("未知创作功能").into()),
+    };
+    Ok(Json(a.harness.tool(tool, &v, None).await?))
+}
+async fn animation_export(
+    State(a): State<App>,
+    AxPath(id): AxPath<String>,
+) -> Result<Response, ApiError> {
+    let _permit = a.export_jobs.acquire().await?;
+    let (scene, materials, root, clip) = {
+        let w = a.workspace.lock().unwrap();
+        (
+            w.project.scene.clone(),
+            w.project.materials.clone(),
+            w.root.clone(),
+            w.project
+                .creative
+                .clips
+                .get(&id)
+                .cloned()
+                .context("动画不存在")?,
+        )
+    };
+    let bytes = tokio::task::spawn_blocking(move || {
+        crate::animation_export::export(&scene, &materials, &root, &clip)
+    })
+    .await??;
+    Ok((
+        [
+            ("Content-Type", "model/gltf-binary"),
+            ("Content-Disposition", "attachment; filename=animation.glb"),
+        ],
+        bytes,
+    )
+        .into_response())
 }
 async fn view_settings(State(a): State<App>) -> ApiResult {
     Ok(Json(crate::view_settings::load(
@@ -608,8 +659,33 @@ async fn import(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     if let Some(ref values) = materials {
         validate_materials(values)?;
     }
+    let creative = v
+        .get("project")
+        .and_then(|p| p.get("creative"))
+        .map(|v| serde_json::from_value::<crate::creative::Creative>(v.clone()))
+        .transpose()?;
+    if let Some(c) = &creative {
+        c.validate(&w.project.limits)?;
+    }
+    let old_creative = w.project.creative.clone();
+    if let Some(mut c) = creative {
+        c.revision = w
+            .project
+            .creative
+            .revision
+            .checked_add(1)
+            .context("创作版本溢出")?;
+        w.project.creative = c;
+    }
     let materials = materials.unwrap_or_else(|| w.project.materials.clone());
-    let result = w.replace_with_materials(scene, materials, v["baseRevision"].as_u64(), None)?;
+    let result = match w.replace_with_materials(scene, materials, v["baseRevision"].as_u64(), None)
+    {
+        Ok(v) => v,
+        Err(e) => {
+            w.project.creative = old_creative;
+            return Err(e.into());
+        }
+    };
     Ok(Json(result))
 }
 fn validate_materials(values: &[morphforge_core::materials::Material]) -> Result<()> {

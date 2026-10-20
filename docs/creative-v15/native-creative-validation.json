@@ -1,0 +1,66 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "native target matches isolated test project",
+      "passed": true
+    },
+    {
+      "name": "Windows creative candidate is 0.15.0",
+      "passed": true
+    },
+    {
+      "name": "native embedded creative UI matches frozen source",
+      "passed": true
+    },
+    {
+      "name": "native creative tests leave OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "native component saves source group",
+      "passed": true
+    },
+    {
+      "name": "native component placement edits real geometry",
+      "passed": true
+    },
+    {
+      "name": "comparison canvas stays above its controls",
+      "passed": true
+    },
+    {
+      "name": "native paired comparison screenshot renders actual artifact",
+      "passed": true
+    },
+    {
+      "name": "native animation plays then pauses its visible timeline",
+      "passed": true
+    },
+    {
+      "name": "animation dock reserves a separate visible render area",
+      "passed": true
+    },
+    {
+      "name": "native animated GLB download action leaves the workbench active",
+      "passed": true
+    },
+    {
+      "name": "native static editor recovers after playback",
+      "passed": true
+    },
+    {
+      "name": "built-in windmill loads component and five-keyframe motion",
+      "passed": true
+    },
+    {
+      "name": "built-in windmill plays through the real Windows renderer",
+      "passed": true
+    },
+    {
+      "name": "native creative workbenches have no unhandled JS errors",
+      "passed": true
+    }
+  ],
+  "scope": "Actual isolated Windows Tauri/WebView2, trusted pointer input, real Rust recipe/asset/capture/export APIs. No paid model or OSC."
+}

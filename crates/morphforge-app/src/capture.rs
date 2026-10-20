@@ -76,7 +76,7 @@ impl CaptureBroker {
                 .get("revision")
                 .and_then(Value::as_u64)
                 .unwrap_or(w.project.scene.revision);
-            json!({"id":id,"revision":rev,"scene":w.scene_at(rev)?,"materials":w.materials_at(rev)?,"views":views,"shots":shots,"width":width,"height":height,"mode":mode,"quality":quality,"supersampling":supersampling,"voxelGrid":options["voxelGrid"].as_bool().unwrap_or(false),"surfaceCulling":options["surfaceCulling"].as_bool().unwrap_or(true),"surfaces":morphforge_core::surfaces::transparent_interfaces(&w.scene_at(rev)?,&w.materials_at(rev)?)})
+            json!({"id":id,"revision":rev,"scene":w.scene_at(rev)?,"materials":w.materials_at(rev)?,"views":views,"shots":shots,"width":width,"height":height,"mode":mode,"quality":quality,"supersampling":supersampling,"voxelGrid":options["voxelGrid"].as_bool().unwrap_or(false),"surfaceCulling":options["surfaceCulling"].as_bool().unwrap_or(true),"comparison":options["comparison"],"animationClip":options["animationClip"],"animationTime":options["animationTime"],"surfaces":morphforge_core::surfaces::transparent_interfaces(&w.scene_at(rev)?,&w.materials_at(rev)?)})
         };
         let (tx, rx) = oneshot::channel();
         self.jobs.lock().unwrap().insert(
@@ -154,7 +154,7 @@ impl CaptureBroker {
                 bail!("无效PNG")
             };
             let name = workspace.artifact(&bytes, "png")?;
-            artifacts.push(json!({"view":view,"artifact":name,"url":format!("/artifacts/{name}"),"width":job.value["width"],"height":job.value["height"],"camera":image.get("camera"),"rendering":image.get("rendering")}));
+            artifacts.push(json!({"view":view,"artifact":name,"url":format!("/artifacts/{name}"),"width":job.value["width"],"height":job.value["height"],"camera":image.get("camera"),"rendering":image.get("rendering"),"comparison":job.value["comparison"],"animationTime":job.value["animationTime"]}));
         }
         let result = json!({"ok":true,"id":id,"revision":job.value["revision"],"images":artifacts,"stats":job.value["scene"].get("boxes").and_then(Value::as_array).map(|a|json!({"boxCount":a.len()}))});
         let _ = job.tx.send(Ok(result.clone()));
@@ -244,7 +244,7 @@ pub fn view_options(options: &Value) -> Result<(Value, Value)> {
     Ok((json!(names), shots))
 }
 
-fn validate_shots(value: &Value) -> Result<()> {
+pub(crate) fn validate_shots(value: &Value) -> Result<()> {
     let shots = value.as_array().context("shots必须是数组")?;
     if shots.is_empty() || shots.len() > 5 {
         bail!("每次截图需要1至5个shots")
@@ -282,11 +282,30 @@ fn validate_shots(value: &Value) -> Result<()> {
                 }
             }
         }
-        for key in ["position", "target"] {
+        if let Some(h) = shot.get("orthoHeight") {
+            if !h
+                .as_f64()
+                .is_some_and(|n| n.is_finite() && n > 0. && n <= 2_000_000.)
+            {
+                bail!("正交相机高度无效")
+            }
+        }
+        for key in ["position", "target", "up"] {
             if let Some(v) = shot.get(key) {
                 if !valid_point(v) {
                     bail!("相机坐标需要三个有限数：{key}")
                 }
+            }
+        }
+        if let Some(up) = shot.get("up") {
+            let p: Vec<f64> = up
+                .as_array()
+                .unwrap()
+                .iter()
+                .map(|v| v.as_f64().unwrap())
+                .collect();
+            if p.iter().map(|v| v * v).sum::<f64>() < 1e-12 {
+                bail!("相机up不能为零")
             }
         }
         if shot.get("position").is_some() && shot["position"] == shot["target"] {

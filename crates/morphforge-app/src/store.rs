@@ -118,6 +118,8 @@ pub struct TextReceipt {
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Project {
+    #[serde(default)]
+    pub creative: crate::creative::Creative,
     pub id: String,
     pub name: String,
     #[serde(default = "default_modeling_style")]
@@ -143,6 +145,7 @@ pub struct Project {
 impl Default for Project {
     fn default() -> Self {
         Self {
+            creative: Default::default(),
             id: Uuid::new_v4().to_string(),
             name: "未命名作品".into(),
             modeling_style: default_modeling_style(),
@@ -226,6 +229,7 @@ impl Workspace {
             Project::default()
         };
         project.scene.validate(&project.limits)?;
+        project.creative.validate(&project.limits)?;
         let identity_path = root.join("legacy-identity.json");
         let identity: Value = if identity_path.exists() {
             serde_json::from_slice(&fs::read(&identity_path)?)?
@@ -293,6 +297,7 @@ impl Workspace {
     }
     pub fn activate_project(&mut self, project: Project) -> Result<()> {
         project.scene.validate(&project.limits)?;
+        project.creative.validate(&project.limits)?;
         let mut revisions = load_snapshots(&self.root, &project.id)?;
         revisions.entry(project.scene.revision).or_insert(());
         let mut undo: Vec<_> = revisions
@@ -799,6 +804,7 @@ impl Workspace {
             )?)?
         };
         let p: Project = serde_json::from_value(v["project"].clone())?;
+        p.creative.validate(&self.project.limits)?;
         let mut scene = p.scene;
         scene.revision = self.project.scene.revision + 1;
         scene.validate(&self.project.limits)?;
@@ -822,6 +828,9 @@ impl Workspace {
         self.project.materials = p.materials;
         self.project.name = p.name;
         self.project.source_credits = p.source_credits;
+        let mut creative = p.creative;
+        creative.revision = self.project.creative.revision.saturating_add(1);
+        self.project.creative = creative;
         self.revisions.insert(scene.revision, ());
         if let Err(error) = self.persist() {
             self.project = previous_project;
@@ -903,7 +912,7 @@ impl Workspace {
         Ok(())
     }
     pub fn state(&self) -> Value {
-        json!({"project":{"id":self.project.id,"name":self.project.name,"modelingStyle":self.project.modeling_style,"cellSize":self.project.scene.cell_size,"size":self.project.scene.size,"pinnedNotes":self.project.pinned_notes,"autoCenterOnFinish":self.project.auto_center_on_finish,"protectedGroups":self.project.protected_groups},"revision":self.project.scene.revision,"stats":self.project.scene.stats(&self.project.limits),"canUndo":!self.undo.is_empty(),"canRedo":!self.redo.is_empty(),"commits":self.project.commits,"eventSeq":self.next_seq-1})
+        json!({"project":{"id":self.project.id,"name":self.project.name,"modelingStyle":self.project.modeling_style,"cellSize":self.project.scene.cell_size,"size":self.project.scene.size,"pinnedNotes":self.project.pinned_notes,"autoCenterOnFinish":self.project.auto_center_on_finish,"protectedGroups":self.project.protected_groups},"revision":self.project.scene.revision,"stats":self.project.scene.stats(&self.project.limits),"creativeRevision":self.project.creative.revision,"canUndo":!self.undo.is_empty(),"canRedo":!self.redo.is_empty(),"commits":self.project.commits,"eventSeq":self.next_seq-1})
     }
     pub(crate) fn ensure_protected_groups_unchanged(
         &self,

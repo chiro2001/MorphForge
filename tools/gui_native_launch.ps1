@@ -21,5 +21,9 @@ try {
  $env:WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS="--remote-debugging-port=$DebugPort --remote-allow-origins=*"
  $env:MORPHFORGE_API_BASE_URL='http://127.0.0.1:9';$env:MORPHFORGE_API_KEY='local-gui-validation-only'
  $p=Start-Process -FilePath (Join-Path $PackageDir 'morphforge-desktop.exe') -WorkingDirectory $PackageDir -PassThru
- @{pid=$p.Id;package=$PackageDir;data=$env:MORPHFORGE_DATA;downloads=(Join-Path $WorkRoot 'downloads');profile=$profile}|ConvertTo-Json|Set-Content (Join-Path $WorkRoot 'native-session.json') -Encoding utf8
+ $projectFile=Join-Path $env:MORPHFORGE_DATA 'project.json'
+ $deadline=[DateTimeOffset]::UtcNow.AddSeconds(30)
+ while(-not (Test-Path -LiteralPath $projectFile)){if([DateTimeOffset]::UtcNow -gt $deadline){throw 'Isolated core did not initialize its project'};Start-Sleep -Milliseconds 200}
+ $projectId=(Get-Content -LiteralPath $projectFile -Raw|ConvertFrom-Json).id
+ @{pid=$p.Id;package=$PackageDir;data=$env:MORPHFORGE_DATA;downloads=(Join-Path $WorkRoot 'downloads');profile=$profile;projectId=$projectId;debugPort=$DebugPort}|ConvertTo-Json|Set-Content (Join-Path $WorkRoot 'native-session.json') -Encoding utf8
 } catch { $_|Out-String|Set-Content (Join-Path $WorkRoot 'launch-error.txt');throw }

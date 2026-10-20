@@ -1,3 +1,5 @@
+import { setupCreativeUi } from "/creative-ui.js";
+import { composeCapture } from "/comparison.js";
 import { createFeedback } from "/feedback-ui.js";
 import { ActivityView } from "/activity-ui.js";
 import { setupDesktopMenus } from "/desktop-menu.js";
@@ -56,6 +58,7 @@ let lastSeq = 0;
 let eventRows = [];
 let timelineView = null;
 let activityView = null;
+let creativeUi = null;
 
 let pointerStart = null;
 let loading = false;
@@ -623,6 +626,7 @@ async function refresh(force = false) {
         loading = false;
       }
     }
+    if(creativeUi)await creativeUi.sync(next);
     window.__morphforge.ready = true;
   } catch (cause) {
     $("saveState").textContent = "后端暂时不可用";
@@ -1015,7 +1019,7 @@ renderer.renderer.domElement.addEventListener("pointerdown", (event) => {
   if (event.button === 0) pointerStart = [event.clientX, event.clientY];
 });
 renderer.renderer.domElement.addEventListener("pointerup", (event) => {
-  if (event.button !== 0 || !pointerStart || loading) return;
+  if (event.button !== 0 || !pointerStart || loading || renderer.animationClip) return;
   const start = pointerStart;
   pointerStart = null;
   const distance = Math.hypot(
@@ -2341,9 +2345,10 @@ if (captureMode) {
           scale: 1,
           surfaces: job.surfaces,
         });
+        if(job.animationClip)renderer.setAnimationPose(job.animationClip,job.animationTime||0);
         const images = await renderer.capture(
           job.views,
-          job.width,
+          job.comparison?.mode==="split"?Math.floor(job.width/2):job.width,
           job.height,
           job.shots,
           job,
@@ -2351,7 +2356,7 @@ if (captureMode) {
         await api("capture/result", {
           id: job.id,
           revision: renderer.renderRevision,
-          images,
+          images:await composeCapture(images,job.comparison,job.width,job.height),
         });
       }
     } catch (cause) {
@@ -2372,6 +2377,8 @@ if (captureMode) {
   if (["steer", "interrupt", "queue"].includes(storedMode))
     $("messageMode").value = storedMode;
   try{viewSettings=await api("view-settings");applyViewSettings();}catch(cause){error(cause);}
+  creativeUi = setupCreativeUi({$,api,renderer,getState:()=>state,getScene:()=>sceneData,getSelected:()=>selected,refresh,error,toast});
+  window.__morphforge.creative=creativeUi;
   activityView = new ActivityView(api,error);
   setupDesktopMenus({getCellSize:()=>sceneData?.scene.cellSize??.25,getName:()=>state?.project.name||"morphforge",onError:error,onLayout:()=>renderer.resize()});
   await refresh();

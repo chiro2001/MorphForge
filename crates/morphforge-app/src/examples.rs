@@ -69,14 +69,16 @@ mod tests {
         let mut w = Workspace::open(dir.path().to_path_buf()).unwrap();
         let original = serde_json::to_value(&w.project).unwrap();
         let entries = list(&mut w).unwrap();
-        assert_eq!(entries.len(), 6);
+        assert_eq!(entries.len(), 7);
         assert!(w.library().unwrap().is_empty());
         assert_eq!(serde_json::to_value(&w.project).unwrap(), original);
         for artwork in entries {
             let value = get(&mut w, &artwork.id).unwrap();
             let project: Project = serde_json::from_value(value["project"].clone()).unwrap();
             project.scene.validate(&project.limits).unwrap();
+            project.creative.validate(&project.limits).unwrap();
             assert_eq!(project.scene.boxes.len(), artwork.box_count);
+            assert_eq!(project.scene.triangles.len(), artwork.triangle_count);
             assert!(!project.source_credits.is_empty());
             assert_eq!(artwork.views.len(), 3);
             for view in &artwork.views {

@@ -67,3 +67,6 @@
 SDK支持mf.triangle(a,b,c,{color:'#RRGGBB',doubleSided:false})、mf.mesh(vertices,faces,{colors:[每面颜色]})、mf.triangleStrip(vertices,{colors})、mf.wedge(min,size,{direction:'+x',color})。坐标为有界整数；colors是RGB8数组或#RRGGBB，按三角面独立着色，无需UV。旋转与负缩放时保持绕序；镜像和translate/group可用现有SDK上下文。长源码存入recipe_sources，不要反复重发整件作品。
 
 mesh_tools提供按稳定面ID的查看、修改、删除、改色；区域erase对网格采用AABB选择后删除整面，不做精确裁切。先看截图再修改，纯多边形作品同样需要多角度复核。编辑器可以独立创作；向VRChat发布三角面需要匹配的MF6头像。传输压缩由后端处理，不要自行构造OSC字节或为了省包牺牲必要形状细节。
+
+## 对照、组件与运动
+需要重复元素时先用components保存一个已检查的组件，再批量place；组件库在同一对话可反复调用且随项目保存。get_context.creative返回组件摘要、相机书签和动画。用reference_workbench保存匹配参考图的相机，capture_views bookmarkId+compare:true可直接检查比例与轮廓。动画用animation为已有分组定义关键帧，用capture_views animation:{clipId,time}检查关键姿态；动画为编辑器/GLB能力，当前MF6仅发送静态几何。资产列表和状态只通过动态工具结果进入上下文，不要求重写system或历史。

@@ -1,0 +1,386 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "fixture output cannot reach a real Avatar",
+      "passed": true
+    },
+    {
+      "name": "harness reaches completion through all nine actual tool calls",
+      "passed": true
+    },
+    {
+      "name": "component reuse stays inside one conversation",
+      "passed": true
+    },
+    {
+      "name": "saved component is placed into two new groups",
+      "passed": true
+    },
+    {
+      "name": "context discovers named assets without embedding component geometry",
+      "passed": true
+    },
+    {
+      "name": "tool schemas stay stable across provider requests",
+      "passed": true
+    },
+    {
+      "name": "every subsequent wire context is strictly append-only",
+      "passed": true
+    },
+    {
+      "name": "tool loop reports no tool failure",
+      "passed": true
+    },
+    {
+      "name": "comparison and frozen-motion captures enter real history",
+      "passed": true
+    },
+    {
+      "name": "new geometry placement receives an injected call-id requestId",
+      "passed": true
+    }
+  ],
+  "realModelRequests": 0,
+  "scope": "Local synthetic SSE provider + actual Rust harness + Chromium image worker; no OSC. Cache metadata is synthetic.",
+  "requests": 10,
+  "wirePrefixAudit": {
+    "appendOnly": true,
+    "contextEpoch": 0,
+    "currentMessages": 19,
+    "expectedReset": false,
+    "field": "input",
+    "firstChangedMessage": null,
+    "previousMessages": 17,
+    "reason": "append_only",
+    "resetAuthorization": null,
+    "scope": "wire_messages",
+    "sharedMessages": 17,
+    "staticPrefixUnchanged": true
+  },
+  "assets": {
+    "animationTarget": "editor-and-glb; MF6 publishes static geometry only",
+    "bookmarks": {
+      "fixture-front": {
+        "comparison": {
+          "crop": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "imageId": "builtin:chair",
+          "mode": "split",
+          "offset": [
+            0.0,
+            0.0
+          ],
+          "opacity": 0.5,
+          "zoom": 1.0
+        },
+        "name": "匹配正面",
+        "shot": {
+          "id": "fixture-front",
+          "pitch": 0,
+          "projection": "orthographic",
+          "yaw": 0
+        }
+      },
+      "ref-4ae68016-62c1-433f-b332-41ae92589f16": {
+        "comparison": {
+          "crop": [
+            0.1,
+            0.1,
+            0.8,
+            0.8
+          ],
+          "imageId": "builtin:chair",
+          "mode": "overlay",
+          "offset": [
+            0.0,
+            0.0
+          ],
+          "opacity": 0.35,
+          "zoom": 1.0
+        },
+        "name": "正面对照书签",
+        "shot": {
+          "fit": {
+            "bounds": {
+              "max": [
+                1,
+                1,
+                1
+              ],
+              "min": [
+                -1,
+                -1,
+                -1
+              ]
+            }
+          },
+          "fov": 42,
+          "id": "ref-4ae68016-62c1-433f-b332-41ae92589f16",
+          "orthoHeight": 17.03829787234043,
+          "position": [
+            3.330199398344407e-15,
+            4.500000000000002,
+            27.19314173411486
+          ],
+          "projection": "orthographic",
+          "target": [
+            0,
+            4.5,
+            0
+          ],
+          "up": [
+            0,
+            1,
+            0
+          ]
+        }
+      },
+      "ref-daef8336-cb12-425e-8031-11fc66f4b80e": {
+        "comparison": {
+          "crop": [
+            0.1,
+            0.1,
+            0.8,
+            0.8
+          ],
+          "imageId": "builtin:chair",
+          "mode": "split",
+          "offset": [
+            0.0,
+            0.0
+          ],
+          "opacity": 0.35,
+          "zoom": 1.0
+        },
+        "name": "正面对照书签",
+        "shot": {
+          "fit": {
+            "bounds": {
+              "max": [
+                1,
+                1,
+                1
+              ],
+              "min": [
+                -1,
+                -1,
+                -1
+              ]
+            }
+          },
+          "fov": 42,
+          "id": "ref-daef8336-cb12-425e-8031-11fc66f4b80e",
+          "orthoHeight": 17.03829787234043,
+          "position": [
+            3.330199398344407e-15,
+            4.500000000000002,
+            27.19314173411486
+          ],
+          "projection": "orthographic",
+          "target": [
+            0,
+            4.5,
+            0
+          ],
+          "up": [
+            0,
+            1,
+            0
+          ]
+        }
+      }
+    },
+    "clips": {
+      "clip-f1d0cf67-9fae-40f3-8ec5-e5ee397f681c": {
+        "duration": 4.0,
+        "looping": true,
+        "name": "木门开合",
+        "tracks": [
+          {
+            "group": "door",
+            "interpolation": "linear",
+            "keys": [
+              {
+                "rotation": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "scale": [
+                  1.0,
+                  1.0,
+                  1.0
+                ],
+                "time": 0.0,
+                "translation": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              {
+                "rotation": [
+                  0.0,
+                  95.0,
+                  0.0
+                ],
+                "scale": [
+                  1.0,
+                  1.0,
+                  1.0
+                ],
+                "time": 2.0,
+                "translation": [
+                  0.0,
+                  2.0,
+                  0.0
+                ]
+              }
+            ],
+            "pivot": [
+              -5.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "group": "flag",
+            "interpolation": "linear",
+            "keys": [
+              {
+                "rotation": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "scale": [
+                  1.0,
+                  1.0,
+                  1.0
+                ],
+                "time": 0.0,
+                "translation": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              {
+                "rotation": [
+                  20.0,
+                  0.0,
+                  0.0
+                ],
+                "scale": [
+                  1.0,
+                  1.0,
+                  1.0
+                ],
+                "time": 2.0,
+                "translation": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              }
+            ],
+            "pivot": [
+              4.0,
+              8.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "fixture-open": {
+        "duration": 2.0,
+        "looping": true,
+        "name": "开门",
+        "tracks": [
+          {
+            "group": "door",
+            "interpolation": "linear",
+            "keys": [
+              {
+                "rotation": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "scale": [
+                  1.0,
+                  1.0,
+                  1.0
+                ],
+                "time": 0.0,
+                "translation": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              {
+                "rotation": [
+                  0.0,
+                  100.0,
+                  0.0
+                ],
+                "scale": [
+                  1.0,
+                  1.0,
+                  1.0
+                ],
+                "time": 2.0,
+                "translation": [
+                  0.0,
+                  2.0,
+                  0.0
+                ]
+              }
+            ],
+            "pivot": [
+              -2.0,
+              1.0,
+              0.0
+            ]
+          }
+        ]
+      }
+    },
+    "components": [
+      {
+        "anchor": [
+          0,
+          1,
+          0
+        ],
+        "boxCount": 1,
+        "description": "",
+        "id": "fixture-door",
+        "name": "重复门",
+        "sourceRevision": 5,
+        "triangleCount": 0
+      },
+      {
+        "anchor": [
+          -4,
+          1,
+          1
+        ],
+        "boxCount": 1,
+        "description": "",
+        "id": "part-807b9b83-72cc-4ce6-8bf0-6e231f22157d",
+        "name": "可复用木门",
+        "sourceRevision": 1,
+        "triangleCount": 0
+      }
+    ],
+    "revision": 15
+  }
+}

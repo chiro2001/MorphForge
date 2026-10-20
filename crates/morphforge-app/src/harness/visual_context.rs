@@ -17,7 +17,7 @@ pub(super) fn retain_latest_views(input: &mut [Value]) -> VisualContextStats {
             item["type"] == "function_call"
                 && matches!(
                     item["name"].as_str(),
-                    Some("capture_views" | "run_recipe" | "recipe_sources")
+                    Some("capture_views" | "run_recipe" | "recipe_sources" | "reference_workbench")
                 )
         })
         .filter_map(|item| item["call_id"].as_str().map(str::to_owned))

@@ -1631,3 +1631,37 @@ body > #toast { position:fixed; z-index:90; bottom:42px; }
 dialog > #toast { display:none; position:sticky; top:0; bottom:auto; left:auto; transform:none; max-width:100%; margin:0 0 12px; z-index:12; }
 dialog > #toast.visible { display:block; }
 #toast[data-kind="error"] { background:#392820; border-color:#c58772; color:#ffd1bf; }
+
+/* Creative workbenches share the desktop shell and keep uncommon controls local. */
+.creative-dialog { width:min(1200px,95vw); max-width:95vw; }
+.creative-controls { display:grid; grid-template-columns:repeat(auto-fit,minmax(155px,1fr)); gap:10px; margin:12px 0; }
+.creative-controls label { display:flex; flex-direction:column; gap:4px; font-size:12px; color:var(--muted); }
+.creative-controls input,.creative-controls select { width:100%; min-width:0; }
+.comparison-stage { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; height:min(50vh,500px); }
+#comparisonReference { width:100%; height:100%; min-width:0; background:#101923; }
+#comparisonViewport { position:relative; min-width:0; overflow:hidden; }
+#comparisonViewport > canvas:not(#comparisonOverlay) { display:block; }
+#comparisonOverlay { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:1; display:none; }
+.overlay-mode .comparison-stage { grid-template-columns:1fr; }
+.overlay-mode #comparisonReference { display:none; }
+.overlay-mode #comparisonOverlay { display:block; }
+#comparisonResult { max-width:100%; margin-top:12px; }
+.creative-preview { height:220px; margin:12px 0; overflow:hidden; }
+.motion-panel { position:absolute; z-index:8; left:14px; right:14px; bottom:34px; max-height:60%; overflow:auto; padding:12px; border:1px solid var(--border); border-radius:10px; background:#17212cf5; box-shadow:0 8px 30px #0008; }
+.motion-panel input[type=number] { width:72px; }
+.motion-panel input[type=range] { width:100%; }
+.motion-panel > .row { margin-bottom:8px; }
+.motion-panel label { font-size:12px; }
+.motion-panel .creative-controls { grid-template-columns:repeat(auto-fit,minmax(145px,1fr)); }
+.motion-keys { max-height:130px; overflow:auto; margin:8px 0; }
+.motion-keys button { font-size:11px; }
+.row.wrap { flex-wrap:wrap; }
+.comparison-stage { grid-template-rows:minmax(0,1fr); }
+#comparisonReference,#comparisonViewport { min-height:0; }
+#comparisonViewport > canvas:not(#comparisonOverlay) { position:absolute; inset:0; }
+#motionClip { width:170px; flex:0 1 170px; }
+#motionName { width:140px; flex:0 1 140px; }
+.motion-panel { bottom:32px; max-height:48%; background:#17212c; }
+.motion-panel > .row { gap:6px; }
+.motion-panel > .row label { display:flex; align-items:center; gap:6px; }
+.motion-panel summary { margin:3px 0; }

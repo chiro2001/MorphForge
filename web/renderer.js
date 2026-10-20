@@ -1,3 +1,4 @@
+import { sampleTrack, poseBounds } from "/motion.js";
 import { textureOrientationShader } from "/texture-orientation.js";
 import { proceduralShader } from "/procedural-shader.js";
 import { captureSampling, viewPixelRatio } from "/render-settings.js";
@@ -150,11 +151,13 @@ export class VoxelRenderer {
     this.resizeObserver.observe(container);
     this.resize();
     this.controls.addEventListener("change", () => this.sortTransparency());
-    this.renderer.setAnimationLoop((time) => {
+    this.animationLoop = (time) => {
+      this.onAnimationFrame?.(time / 1000);
       this.controls.update();
       for (const uniforms of this.uniforms) uniforms.mfTime.value = time / 1000;
       this.renderer.render(this.scene, this.camera);
-    });
+    };
+    this.renderer.setAnimationLoop(this.animationLoop);
   }
   setViewOptions({quality = this.quality, voxelGrid = this.voxelGrid, surfaceCulling = this.surfaceCulling, showTargetBounds = this.targetBounds.visible} = {}) {
     this.quality = quality;
@@ -163,7 +166,7 @@ export class VoxelRenderer {
     this.renderer.setPixelRatio(viewPixelRatio(quality, devicePixelRatio));
     for (const u of this.uniforms) {
       u.mfGrid.value = this.voxelGrid ? 1 : 0;
-      u.mfCull.value = this.surfaceCulling && !this.groupsHidden.size ? 1 : 0;
+      u.mfCull.value = this.surfaceCulling && !this.groupsHidden.size && !this.animationClip ? 1 : 0;
     }
     const c = this.cellSize * this.scale;
     this.targetBounds.box.min.copy(toThree([-128*c, 0, 128*c]));
@@ -172,6 +175,7 @@ export class VoxelRenderer {
     this.resize();
   }
   sortTransparency() {
+    if(this.animationClip)return;
     if (!this.meshes?.length || !this.styles) return;
     const direction = new THREE.Vector3();
     this.camera.getWorldDirection(direction);
@@ -217,10 +221,12 @@ export class VoxelRenderer {
     generator.dispose();
   }
   resize() {
-    const r = this.container.getBoundingClientRect();
+    const rect = this.container.getBoundingClientRect();
+    const r = {width:rect.width,height:Math.max(1,rect.height-(this.previewInset||0))};
     if (r.width < 1 || r.height < 1) return;
     this.renderer.setSize(r.width, r.height);
     this.camera.aspect = r.width / r.height;
+    if(this.camera.isOrthographicCamera){const height=this.camera.top-this.camera.bottom,center=(this.camera.left+this.camera.right)/2;this.camera.left=center-height*this.camera.aspect/2;this.camera.right=center+height*this.camera.aspect/2;}
     this.camera.updateProjectionMatrix();
   }
   async atlas(style) {
@@ -451,6 +457,7 @@ export class VoxelRenderer {
   }
   async load(scene, styles, { mode = this.mode, scale = this.scale, surfaces = null } = {}) {
     if(this.disposed)return this;
+    this.clearAnimationPose();
     this.renderStyleMap=new Map(styles.map(s=>[s.id,this.effectiveStyle(s,mode)]));
     this.surfaceMasks = surfaces?.masks || {};
     this.surfaceStats = surfaces || {hiddenFaces:0};
@@ -543,7 +550,7 @@ export class VoxelRenderer {
           mfArrayAtlas: { value: atlas?.array ? atlas.texture : null },
           mfArray: { value: atlas?.array ? 1 : 0 },
           mfGrid: { value: this.voxelGrid ? 1 : 0 },
-          mfCull: { value: this.surfaceCulling && !this.groupsHidden.size ? 1 : 0 },
+          mfCull: { value: this.surfaceCulling && !this.groupsHidden.size && !this.animationClip ? 1 : 0 },
           mfVirtual: { value: mode === "vrc" ? 1 : 0 },
           mfMetal: { value: style.metallic || 0 },
           mfRough: { value: style.roughness ?? .8 },
@@ -772,6 +779,7 @@ export class VoxelRenderer {
     this.updateSelection();
   }
   cameraObjects() {
+    if(this.animationClip)return poseBounds(this.boxes,this.triangles,this.animationClip,this.animationTime);
     return this.boxes.concat(this.triangles.map(t=>{
       const min=[0,1,2].map(a=>Math.min(...t.vertices.map(v=>v[a]))),max=[0,1,2].map(a=>Math.max(...t.vertices.map(v=>v[a])));
       return {id:t.id,group:t.group,min,size:max.map((v,a)=>v-min[a])};
@@ -779,6 +787,7 @@ export class VoxelRenderer {
   }
   bounds() {
     const box = new THREE.Box3();
+    if(this.animationClip){for(const b of this.cameraObjects()){if(this.groupsHidden.has(b.group))continue;box.expandByPoint(toThree(b.min.map(v=>v*this.cellSize*this.scale)));box.expandByPoint(toThree(b.min.map((v,a)=>(v+b.size[a])*this.cellSize*this.scale)));}return box;}
     for (const b of this.boxes) {
       if (this.groupsHidden.has(b.group)) continue;
       const p = b.min.map(
@@ -835,6 +844,7 @@ export class VoxelRenderer {
     };
   }
   pick(event, { erase = false, layer = 0 } = {}) {
+    if(this.animationClip)return null;
     const rect = this.renderer.domElement.getBoundingClientRect();
     const mouse = new THREE.Vector2(
       ((event.clientX - rect.left) / rect.width) * 2 - 1,
@@ -936,6 +946,43 @@ export class VoxelRenderer {
     for(const t of this.triangles){if(!this.selection.has(t.id))continue;for(const p of t.vertices)box.expandByPoint(toThree(p.map(v=>v*this.cellSize*this.scale)));}
     this.selectedHelper.box.copy(box);
     this.selectedHelper.visible = !box.isEmpty();
+  }
+  cameraBookmark() {
+    const unit=this.cellSize*this.scale;
+    return {projection:this.camera.isOrthographicCamera?"orthographic":"perspective",position:fromThree(this.camera.position).map(v=>v/unit),target:fromThree(this.controls.target).map(v=>v/unit),up:fromThree(this.camera.up),fov:this.camera.fov||42,...(this.camera.isOrthographicCamera?{orthoHeight:(this.camera.top-this.camera.bottom)/(unit*this.camera.zoom)}:{}),fit:{bounds:{min:[-1,-1,-1],max:[1,1,1]}}};
+  }
+  setAnimationPose(clip,time) {
+    if(this.animationClip!==clip){
+      this.clearAnimationPose();this.animationClip=clip;
+      this.animationBases=new Map(this.meshes.map(mesh=>[mesh,mesh.instanceMatrix.array.slice()]));
+      this.animationTriangleBases=new Map(this.triangleMeshes.map(mesh=>[mesh,mesh.geometry.attributes.position.array.slice()]));
+      this.selectedHelper.visible=false;this.ghost.visible=false;
+    }
+    this.animationTime=Math.max(0,Math.min(clip.duration,time));
+    const matrices=new Map();
+    for(const track of clip.tracks){
+      const p=sampleTrack(track,this.animationTime),q=p.quaternion,unit=this.cellSize,pivot=toThree(track.pivot.map(v=>v*unit)),position=toThree(p.translation.map(v=>v*unit)).add(pivot);
+      const m=new THREE.Matrix4().compose(position,new THREE.Quaternion(-q[0],-q[1],q[2],q[3]),new THREE.Vector3(...p.scale));m.multiply(new THREE.Matrix4().makeTranslation(-pivot.x,-pivot.y,-pivot.z));matrices.set(track.group,m);
+    }
+    const base=new THREE.Matrix4();
+    for(const mesh of this.meshes){
+      const values=this.animationBases.get(mesh);if(!values)continue;
+      mesh.userData.animationFrustum??=mesh.frustumCulled;mesh.frustumCulled=false;
+      for(let i=0;i<mesh.count;i++){base.fromArray(values,i*16);const m=matrices.get(mesh.userData.boxes[i].group);if(m)base.premultiply(m);mesh.setMatrixAt(i,base);}
+      mesh.instanceMatrix.needsUpdate=true;
+    }
+    const v=new THREE.Vector3();
+    for(const mesh of this.triangleMeshes){const base=this.animationTriangleBases.get(mesh);if(!base)continue;const a=mesh.geometry.attributes.position;
+      for(let i=0;i<a.count;i++){v.fromArray(base,i*3);const m=matrices.get(mesh.userData.faces[Math.floor(i/3)].group);if(m)v.applyMatrix4(m);a.setXYZ(i,v.x,v.y,v.z);}a.needsUpdate=true;mesh.geometry.computeVertexNormals();mesh.geometry.computeBoundingSphere();}
+    for(const u of this.uniforms)u.mfCull.value=0;
+  }
+  clearAnimationPose() {
+    if(!this.animationClip)return;
+    for(const [mesh,values] of this.animationBases||[]){mesh.instanceMatrix.array.set(values);mesh.instanceMatrix.needsUpdate=true;mesh.frustumCulled=mesh.userData.animationFrustum??true;delete mesh.userData.animationFrustum;}
+    for(const [mesh,values] of this.animationTriangleBases||[]){mesh.geometry.attributes.position.array.set(values);mesh.geometry.attributes.position.needsUpdate=true;mesh.geometry.computeVertexNormals();mesh.geometry.computeBoundingSphere();}
+    this.animationClip=null;this.animationBases=null;this.animationTriangleBases=null;
+    for(const u of this.uniforms)u.mfCull.value=this.surfaceCulling&&!this.groupsHidden.size?1:0;
+    this.updateSelection();
   }
   viewShot(shot, width, height) {
     const spec = resolveCamera(

@@ -20,7 +20,7 @@ async fn builtin_gallery_is_offline_forkable_and_preserves_licensed_sources() {
         .await
         .unwrap();
     assert!(library["artworks"].as_array().unwrap().is_empty());
-    assert_eq!(library["examples"].as_array().unwrap().len(), 6);
+    assert_eq!(library["examples"].as_array().unwrap().len(), 7);
     assert_eq!(app.workspace.lock().unwrap().project.scene.revision, 0);
     for artwork in library["examples"].as_array().unwrap() {
         let image = client

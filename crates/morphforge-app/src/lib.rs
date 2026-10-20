@@ -27,3 +27,7 @@ pub mod minecraft;
 pub mod model_export;
 
 pub mod selection;
+
+pub mod animation_export;
+pub mod creative;
+pub mod creative_schema;

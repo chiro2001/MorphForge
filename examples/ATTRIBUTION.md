@@ -9,6 +9,7 @@
 | 云港信使驿站 | 766 | `docs/harness-v2/evals/r2c-closeout/` | 项目生成示例，MIT；保留负Y，仅作为独立艺术示例 |
 | 星砂港 | 791 | `docs/harness-v2/evals/r3c-front-text/` | 项目生成示例，MIT；包含体素字体字牌及按无损续作要求保留的旧背字 |
 | 鲸鱼娘女仆 | 223 | `docs/quality-v4.1/whale-palette-finish/` | 参考图二创，**CC BY-NC-SA 4.0**，独立于程序MIT；比例与轮廓有简化 |
+| 会转动的风车 | 32 + 2面 | `examples/recipes/kinetic-windmill.js` | 项目自制，MIT；带窗户组件、相机书签、8秒循环旋转轨道 |
 | 木椅 | 16 | `docs/quality-v4.1/chair-reference/` | 项目生成示例，MIT；镂空靠背可继续改进 |
 
 鲸鱼娘参考图作者为 **ZipZipPipe**，原角色为 **上善无形**。这是非官方体素二创；保留署名、非商业和相同方式共享条件，不能因修改或另存作品而改授MIT。其几何、渲染图片及项目中的对应示例按CC BY-NC-SA 4.0提供。

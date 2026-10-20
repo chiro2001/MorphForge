@@ -36,8 +36,9 @@ export function resolveCamera(bounds, shot = {}, aspect = 1) {
         Math.sin(pitch),
         Math.cos(yaw) * Math.cos(pitch),
       ];
-  const preferredUp = Math.abs(direction[1]) > 0.999 ? [0, 0, -1] : [0, 1, 0];
-  const right = norm(cross(preferredUp, direction)),
+  const preferredUp = shot.up || (Math.abs(direction[1]) > 0.999 ? [0, 0, -1] : [0, 1, 0]);
+  const candidate=cross(preferredUp,direction), fallback=Math.abs(direction[1])>.999?[0,0,-1]:[0,1,0];
+  const right = norm(Math.hypot(...candidate)<1e-9?cross(fallback,direction):candidate),
     up = norm(cross(direction, right));
   const corners = [];
   for (const x of [bounds.min[0], bounds.max[0]])
@@ -63,7 +64,7 @@ export function resolveCamera(bounds, shot = {}, aspect = 1) {
   const distance = shot.position
     ? Math.hypot(...sub(shot.position, target))
     : fitDistance;
-  const halfY =
+  const halfY = shot.orthoHeight ? shot.orthoHeight/2 :
     Math.max(
       ...corners.map((p) =>
         Math.max(Math.abs(dot(p, up)), Math.abs(dot(p, right)) / aspect),
