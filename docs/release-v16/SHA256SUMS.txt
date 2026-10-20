@@ -1,0 +1,2 @@
+046cafbd09f9a37ef724926ea0a3bebc0767eeb817c3137343ddd12c5c4b2cb4  MorphForge.Desktop_0.16.0_x64-setup.exe
+4a377532f2a2d669987409f8d85d416540036d08e20351a031c1e1cc7eb15459  MorphForge-0.16.0-build-inputs.json

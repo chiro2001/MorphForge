@@ -6,7 +6,7 @@
 
 使用已验收0.16.0的核心与桌面二进制，Tauri独立bundle命令生成正式NSIS安装包；没有把测试副本直接复制覆盖主程序。229项输入冻结核对通过，清单现在同时覆盖内嵌材质目录与许可。运行功能与[0.16验收版](../stream-v16/RESULTS.md)一致。
 
-文件：`MorphForge Desktop_0.16.0_x64-setup.exe`，18,319,713字节。
+文件：`MorphForge Desktop_0.16.0_x64-setup.exe`，18,319,713字节。GitHub上传时将空格规范化为句点，实际下载名为`MorphForge.Desktop_0.16.0_x64-setup.exe`；Release中的校验清单按实际下载名生成。
 
 SHA-256：`046cafbd09f9a37ef724926ea0a3bebc0767eeb817c3137343ddd12c5c4b2cb4`。
 

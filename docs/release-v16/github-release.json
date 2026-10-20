@@ -1,0 +1,48 @@
+{
+  "assets": [
+    {
+      "browser_download_url": "https://github.com/chiro2001/MorphForge/releases/download/v0.16.0/MorphForge-0.16.0-build-inputs.json",
+      "digest": "sha256:4a377532f2a2d669987409f8d85d416540036d08e20351a031c1e1cc7eb15459",
+      "id": 660818466,
+      "name": "MorphForge-0.16.0-build-inputs.json",
+      "size": 25555,
+      "state": "uploaded"
+    },
+    {
+      "browser_download_url": "https://github.com/chiro2001/MorphForge/releases/download/v0.16.0/MorphForge.Desktop_0.16.0_x64-setup.exe",
+      "digest": "sha256:046cafbd09f9a37ef724926ea0a3bebc0767eeb817c3137343ddd12c5c4b2cb4",
+      "id": 660818469,
+      "name": "MorphForge.Desktop_0.16.0_x64-setup.exe",
+      "size": 18319713,
+      "state": "uploaded"
+    },
+    {
+      "browser_download_url": "https://github.com/chiro2001/MorphForge/releases/download/v0.16.0/SHA256SUMS.txt",
+      "digest": "sha256:b658fca84a28614b9250a8ac0db55aebb4e4753f11bb7c8bb2218c06871131e2",
+      "id": 660820373,
+      "name": "SHA256SUMS.txt",
+      "size": 208,
+      "state": "uploaded"
+    }
+  ],
+  "draft": false,
+  "prerelease": false,
+  "tag": "v0.16.0",
+  "target": "0d46f5eb559f6514b2c87f34fd28f25e321170f0",
+  "url": "https://github.com/chiro2001/MorphForge/releases/tag/v0.16.0",
+  "downloadVerification": {
+    "success": true,
+    "files": [
+      {
+        "name": "MorphForge.Desktop_0.16.0_x64-setup.exe",
+        "sha256": "046cafbd09f9a37ef724926ea0a3bebc0767eeb817c3137343ddd12c5c4b2cb4",
+        "bytes": 18319713
+      },
+      {
+        "name": "MorphForge-0.16.0-build-inputs.json",
+        "sha256": "4a377532f2a2d669987409f8d85d416540036d08e20351a031c1e1cc7eb15459",
+        "bytes": 25555
+      }
+    ]
+  }
+}
