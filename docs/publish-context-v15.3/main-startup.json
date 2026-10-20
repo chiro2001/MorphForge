@@ -1,0 +1,76 @@
+{
+  "boxes": 0,
+  "originalContextId": "25d6c99e-aa83-4cee-8e0e-136320c736cd",
+  "contextId": "048bf289-c90c-481a-86da-6390970795cd",
+  "version": "0.15.3",
+  "originalBoxes": 669,
+  "success": true,
+  "oscEnabled": false,
+  "originalProjectId": "54dfae96-ff92-45f5-b030-0e2b907050b5",
+  "revision": 0,
+  "projectId": "603d6c99-e982-46ba-ac79-7a15c559415c",
+  "contextUsage": {
+    "estimated": true,
+    "historyTokensEstimate": 0,
+    "lastMeasuredAt": null,
+    "note": "当前会话输入上下文估算，含系统说明与工具。以上次上游输入usage校准并估算新增历史；图片和tokenizer可能影响精度。不是累计计费用量，也不把尚未生成的输出预算计作已用。",
+    "remainingTokens": 1027660,
+    "source": "local_estimate",
+    "upstreamInputTokens": null,
+    "usedPercent": 1.9947052001953125,
+    "usedTokens": 20916,
+    "windowTokens": 1048576
+  },
+  "baseUrl": "http://127.0.0.1:65238",
+  "currentWorkspaceChanged": true,
+  "phase": "idle",
+  "checks": [
+    {
+      "name": "installed main runtime reports 0.15.3",
+      "passed": true
+    },
+    {
+      "name": "current project changed through explicit workspace action",
+      "passed": true
+    },
+    {
+      "name": "original project remains available",
+      "passed": true
+    },
+    {
+      "name": "complete original scene is preserved",
+      "passed": true
+    },
+    {
+      "name": "original materials are preserved",
+      "passed": true
+    },
+    {
+      "name": "complete original conversation input is preserved",
+      "passed": true
+    },
+    {
+      "name": "OSC remains disabled after startup",
+      "passed": true
+    },
+    {
+      "name": "new context meter is present",
+      "passed": true
+    },
+    {
+      "name": "installed UI contains new context and repair controls",
+      "passed": true
+    }
+  ],
+  "processes": [
+    {
+      "ProcessId": 191576,
+      "ExecutablePath": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Desktop\\morphforge-desktop.exe"
+    },
+    {
+      "ProcessId": 158896,
+      "ExecutablePath": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Desktop\\morphforge.exe"
+    }
+  ],
+  "triangles": 0
+}

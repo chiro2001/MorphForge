@@ -52,3 +52,17 @@ HTTP集成测试通过实际 `/api/publish` 验证手动补播：旧入口400，
 Windows x64 core与Tauri shell构建成功。开发测试副本安装到 `%LOCALAPPDATA%\MorphForge Preview\versions\0.15.3-a29beefe4af7`，桌面“**MorphForge - 开发测试副本**”指向新版本；旧版本二进制保留。安装仅更新副本current指针，未启动或覆盖主安装。
 
 部署校验及主程序未改动证据见 [deployment.json](deployment.json) 和 [cleanup.json](cleanup.json)。主程序原有core PID210184、shell PID201512持续运行。临时验收窗口正常关闭，独立验收数据保留在gamepc用户临时目录，未合并到主数据或Preview数据。未创建GitHub Release。
+
+## 后续主安装替换
+
+同日用户明确要求“现在替换主程序版本”，随后使用正式NSIS安装包将主安装更新至0.15.3并启动。更新前主程序已关闭，无需结束运行中的任务。完整备份位于gamepc：
+
+`C:\Users\Chiro\tmp\morphforge\main-backup-20261021-023544-f8105ab5`
+
+安装前后全部6846个原数据文件、约1.36GB的组合指纹一致。安装注册版本、桌面及开始菜单入口、核心和shell有效载荷均通过校验。NSIS会修改shell的安装包类型标记，第一次误用target中的shell哈希校验未通过；随后独立解包安装器，确认安装文件与包内文件完全一致，再执行只读校验通过，无需重复安装。核心始终匹配已验收副本的同一二进制。
+
+安装器SHA256：`4848de72828770ffbaa1faaa7f75ffbd4a19a3ae2568c3faa0018baa6a524f35`。
+
+主程序实际启动返回0.15.3，新上下文表盘与补播控件可用，OSC保持关闭。启动后发生显式`new_project`工作区切换，验收保持当前新项目不动；通过存档核对更新前669 Box作品的完整场景、材质及原对话输入均保留。未复制开发副本数据、未调用模型、未发布Release。
+
+见[主安装校验](main-install.json)及[启动和原存档核验](main-startup.json)。前文“主安装保持原状”仅描述之前副本验收阶段。
