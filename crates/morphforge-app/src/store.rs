@@ -459,6 +459,8 @@ impl Workspace {
         let start = std::time::Instant::now();
         let next = before.apply(ops, &self.project.limits)?;
         self.ensure_protected_groups_unchanged(&before, &next)?;
+        let selection_ids =
+            crate::selection::after_edit(&before, &next, ops, &self.project.limits)?;
         self.undo.push(before.revision);
         self.undo = self
             .undo
@@ -474,7 +476,10 @@ impl Workspace {
         self.revisions.insert(next.revision, ());
         self.project.scene = next;
         self.persist()?;
-        let value = json!({"ok":true,"revision":self.project.scene.revision,"stats":self.project.scene.stats(&self.project.limits),"changed":{"before":before.boxes.len(),"after":self.project.scene.boxes.len()},"generationMs":start.elapsed().as_secs_f64()*1000.});
+        let mut value = json!({"ok":true,"revision":self.project.scene.revision,"stats":self.project.scene.stats(&self.project.limits),"changed":{"before":before.boxes.len(),"after":self.project.scene.boxes.len()},"generationMs":start.elapsed().as_secs_f64()*1000.});
+        if let Some(ids) = selection_ids {
+            value["selectionIds"] = json!(ids);
+        }
         self.event("geometry.applied",run,json!({"baseRevision":before.revision,"requestId":request,"operations":ops,"result":value}))?;
         if let Some(id) = request {
             self.requests.insert(id.into(), value.clone());

@@ -1,0 +1,518 @@
+{
+  "success": true,
+  "browserChecks": 124,
+  "aiChecks": 21,
+  "browser": [
+    {
+      "name": "test workspace has OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "context remains reachable after text",
+      "passed": true
+    },
+    {
+      "name": "context remains reachable after sync",
+      "passed": true
+    },
+    {
+      "name": "context remains reachable after ai",
+      "passed": true
+    },
+    {
+      "name": "settings save has visible success feedback",
+      "passed": true
+    },
+    {
+      "name": "recipe estimate is visible and does not mutate",
+      "passed": true
+    },
+    {
+      "name": "recipe apply changes geometry and restores button",
+      "passed": true
+    },
+    {
+      "name": "settings controls persist through actual APIs",
+      "passed": true
+    },
+    {
+      "name": "renderOptionsOpen opens its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "renderOptionsClose closes its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "centerScene opens its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "transformClose closes its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "runtimeMaterialOpen opens its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "runtimeMaterialClose closes its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "pixelThemeOpen opens its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "pixelThemeClose closes its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "imageToolsOpen opens its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "imageToolsClose closes its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "minecraftOpen opens its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "mcClose closes its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "libraryOpen opens its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "libraryClose closes its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "file menu newProject works",
+      "passed": true
+    },
+    {
+      "name": "file menu workspaceOpen works",
+      "passed": true
+    },
+    {
+      "name": "menu libraryOpen delegates to its live dialog",
+      "passed": true
+    },
+    {
+      "name": "menu referenceOpen delegates to its live dialog",
+      "passed": true
+    },
+    {
+      "name": "menu minecraftOpen delegates to its live dialog",
+      "passed": true
+    },
+    {
+      "name": "menu pixelThemeOpen delegates to its live dialog",
+      "passed": true
+    },
+    {
+      "name": "menu renderOptionsOpen delegates to its live dialog",
+      "passed": true
+    },
+    {
+      "name": "menu centerScene delegates to its live dialog",
+      "passed": true
+    },
+    {
+      "name": "toggleTools hides panel",
+      "passed": true
+    },
+    {
+      "name": "toggleTools restores panel",
+      "passed": true
+    },
+    {
+      "name": "toggleObserver hides panel",
+      "passed": true
+    },
+    {
+      "name": "toggleObserver restores panel",
+      "passed": true
+    },
+    {
+      "name": "houseDemo creates visible geometry",
+      "passed": true
+    },
+    {
+      "name": "stairsDemo creates visible geometry",
+      "passed": true
+    },
+    {
+      "name": "directionsDemo creates visible geometry",
+      "passed": true
+    },
+    {
+      "name": "stress5k creates visible geometry",
+      "passed": true
+    },
+    {
+      "name": "stress16k creates visible geometry",
+      "passed": true
+    },
+    {
+      "name": "position draw creates a real cuboid",
+      "passed": true
+    },
+    {
+      "name": "undo removes drawn cuboid",
+      "passed": true
+    },
+    {
+      "name": "redo restores cuboid",
+      "passed": true
+    },
+    {
+      "name": "eraser applies exact region",
+      "passed": true
+    },
+    {
+      "name": "moveSelection modifies selected geometry",
+      "passed": true
+    },
+    {
+      "name": "copySelection modifies selected geometry",
+      "passed": true
+    },
+    {
+      "name": "rotateSelection modifies selected geometry",
+      "passed": true
+    },
+    {
+      "name": "mirrorSelection modifies selected geometry",
+      "passed": true
+    },
+    {
+      "name": "painting selected cuboid changes its material",
+      "passed": true
+    },
+    {
+      "name": "painting preserves an actionable selection",
+      "passed": true
+    },
+    {
+      "name": "moveSelection empty selection gives feedback",
+      "passed": true
+    },
+    {
+      "name": "copySelection empty selection gives feedback",
+      "passed": true
+    },
+    {
+      "name": "rotateSelection empty selection gives feedback",
+      "passed": true
+    },
+    {
+      "name": "mirrorSelection empty selection gives feedback",
+      "passed": true
+    },
+    {
+      "name": "paintSelection empty selection gives feedback",
+      "passed": true
+    },
+    {
+      "name": "camera hero is finite",
+      "passed": true
+    },
+    {
+      "name": "camera front is finite",
+      "passed": true
+    },
+    {
+      "name": "camera top is finite",
+      "passed": true
+    },
+    {
+      "name": "camera side is finite",
+      "passed": true
+    },
+    {
+      "name": "load selected triangle fills vertex fields",
+      "passed": true
+    },
+    {
+      "name": "mesh update keeps one changed triangle",
+      "passed": true
+    },
+    {
+      "name": "triangle delete removes selected face",
+      "passed": true
+    },
+    {
+      "name": "voxel slope remains one shaped box",
+      "passed": true
+    },
+    {
+      "name": "polygon wedge creates eight real faces",
+      "passed": true
+    },
+    {
+      "name": "missing mesh selection is explained",
+      "passed": true
+    },
+    {
+      "name": "modal invalid input error is inside active dialog",
+      "passed": true
+    },
+    {
+      "name": "font refresh reports completion",
+      "passed": true
+    },
+    {
+      "name": "font preview produces boxes without applying",
+      "passed": true
+    },
+    {
+      "name": "clear text preview disables apply",
+      "passed": true
+    },
+    {
+      "name": "text apply creates editable voxel geometry",
+      "passed": true
+    },
+    {
+      "name": "image upload adds a selected local reference",
+      "passed": true
+    },
+    {
+      "name": "reference library selection persists",
+      "passed": true
+    },
+    {
+      "name": "pixel-read button returns actual pixels",
+      "passed": true
+    },
+    {
+      "name": "resize button keeps original and creates a copy",
+      "passed": true
+    },
+    {
+      "name": "voxel-plane preview leaves scene unchanged",
+      "passed": true
+    },
+    {
+      "name": "voxel-plane apply mutates and closes dialog",
+      "passed": true
+    },
+    {
+      "name": "Minecraft preview uses independent viewport",
+      "passed": true
+    },
+    {
+      "name": "Minecraft apply creates actual editable building",
+      "passed": true
+    },
+    {
+      "name": "save artwork shows immediate progress",
+      "passed": true
+    },
+    {
+      "name": "save artwork adds a real library item",
+      "passed": true
+    },
+    {
+      "name": "library multi-view opens actual image gallery",
+      "passed": true
+    },
+    {
+      "name": "library load restores editable artwork",
+      "passed": true
+    },
+    {
+      "name": "toolbar screenshot shows three actual views",
+      "passed": true
+    },
+    {
+      "name": "file save downloads project JSON",
+      "passed": true
+    },
+    {
+      "name": "project import keeps a valid editable scene",
+      "passed": true
+    },
+    {
+      "name": "glb GUI export returns a downloaded model",
+      "passed": true
+    },
+    {
+      "name": "obj GUI export returns a downloaded model",
+      "passed": true
+    },
+    {
+      "name": "ply GUI export returns a downloaded model",
+      "passed": true
+    },
+    {
+      "name": "stl GUI export returns a downloaded model",
+      "passed": true
+    },
+    {
+      "name": "diagnostics menu downloads ZIP",
+      "passed": true
+    },
+    {
+      "name": "grid setting reaches renderer",
+      "passed": true
+    },
+    {
+      "name": "center preview displays calculated offset",
+      "passed": true
+    },
+    {
+      "name": "centering applies and closes dialog",
+      "passed": true
+    },
+    {
+      "name": "group visibility changes local render",
+      "passed": true
+    },
+    {
+      "name": "group lock persists to backend",
+      "passed": true
+    },
+    {
+      "name": "version restore closes history with a valid scene",
+      "passed": true
+    },
+    {
+      "name": "VRChat preset changes port while output remains off",
+      "passed": true
+    },
+    {
+      "name": "avatarCatalogBundled changes target catalog state",
+      "passed": true
+    },
+    {
+      "name": "avatarCatalogMf4 changes target catalog state",
+      "passed": true
+    },
+    {
+      "name": "avatarCatalogClear changes target catalog state",
+      "passed": true
+    },
+    {
+      "name": "avatarCatalogMf6 changes target catalog state",
+      "passed": true
+    },
+    {
+      "name": "catalog export/import matches active material",
+      "passed": true
+    },
+    {
+      "name": "placement scale 1% persists",
+      "passed": true
+    },
+    {
+      "name": "placement scale 100% persists",
+      "passed": true
+    },
+    {
+      "name": "placement scale 1000% persists",
+      "passed": true
+    },
+    {
+      "name": "placement toggle world persists",
+      "passed": true
+    },
+    {
+      "name": "placement toggle visible persists",
+      "passed": true
+    },
+    {
+      "name": "placement toggle level persists",
+      "passed": true
+    },
+    {
+      "name": "disabled-output publish controls do not enable transmission",
+      "passed": true
+    },
+    {
+      "name": "enable and publish send a real local OSC packet",
+      "passed": true
+    },
+    {
+      "name": "file new project creates separate project",
+      "passed": true
+    },
+    {
+      "name": "new context changes session without losing project",
+      "passed": true
+    },
+    {
+      "name": "workspace switch opens previously saved project",
+      "passed": true
+    },
+    {
+      "name": "no unhandled browser JavaScript errors",
+      "passed": true
+    },
+    {
+      "name": "runtime material creates or reuses a matching style",
+      "passed": true
+    },
+    {
+      "name": "theme import adds textured builtins",
+      "passed": true
+    },
+    {
+      "name": "resource pack button/import reports results",
+      "passed": true
+    },
+    {
+      "name": "menu redo mirrors unavailable target state",
+      "passed": true
+    },
+    {
+      "name": "menu undo removes actual geometry",
+      "passed": true
+    },
+    {
+      "name": "menu redo restores actual geometry",
+      "passed": true
+    },
+    {
+      "name": "menu screenshot opens three real views",
+      "passed": true
+    },
+    {
+      "name": "menu timeline changes actual panel visibility",
+      "passed": true
+    },
+    {
+      "name": "menu resource pack import reaches the upload report",
+      "passed": true
+    },
+    {
+      "name": "10 percent scale shortcut persists",
+      "passed": true
+    },
+    {
+      "name": "earlier-process button retains or expands observed history",
+      "passed": true
+    }
+  ],
+  "resolvedFixtureFailures": [
+    {
+      "case": "materials-and-resource-pack-upload",
+      "original": "Repeated material definition was expected to increase catalog count. The backend correctly reuses identical material properties.",
+      "correction": "Assert actual persisted material properties and allow canonical reuse. Targeted scenario passed, including theme and resource-pack upload.",
+      "evidence": "browser-materials-validation.json"
+    }
+  ],
+  "realModelRequests": 0,
+  "oscDestination": "127.0.0.1:9012 (local fixture only)",
+  "notes": [
+    "Inventory includes dynamic and hidden aliases; it is not a count of accepted independent functions.",
+    "Old-schema upgrade is hidden in a current-schema workspace and was not activated."
+  ],
+  "menuEvidence": "menu-validation.json"
+}

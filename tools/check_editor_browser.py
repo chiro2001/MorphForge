@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Exercise the actual browser UI with W3C WebDriver mouse input, using local ChromeDriver."""
-import argparse,base64,json,time,urllib.request
+import argparse,base64,json,time,urllib.request,urllib.error
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 class Browser:
@@ -10,7 +10,11 @@ class Browser:
         self.sid=value['sessionId'];self.path='/session/'+self.sid
     def call(self,path,data=None,method=None):
         req=urllib.request.Request(self.base+path,data=None if data is None else json.dumps(data).encode(),headers={'Content-Type':'application/json'},method=method or ('POST' if data is not None else 'GET'))
-        with urllib.request.urlopen(req,timeout=40) as r:value=json.load(r)['value']
+        try:
+            with urllib.request.urlopen(req,timeout=40) as r:value=json.load(r)['value']
+        except urllib.error.HTTPError as cause:
+            detail=cause.read().decode(errors='replace')
+            raise RuntimeError(f'WebDriver {cause.code}: {detail}') from cause
         if isinstance(value,dict) and 'error' in value:raise RuntimeError(value)
         return value
     def js(self,source,*args):return self.call(self.path+'/execute/sync',{'script':source,'args':list(args)})

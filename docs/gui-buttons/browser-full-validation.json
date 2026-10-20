@@ -1,0 +1,3335 @@
+{
+  "success": false,
+  "checks": [
+    {
+      "name": "test workspace has OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "context remains reachable after text",
+      "passed": true
+    },
+    {
+      "name": "context remains reachable after sync",
+      "passed": true
+    },
+    {
+      "name": "context remains reachable after ai",
+      "passed": true
+    },
+    {
+      "name": "settings save has visible success feedback",
+      "passed": true
+    },
+    {
+      "name": "recipe estimate is visible and does not mutate",
+      "passed": true
+    },
+    {
+      "name": "recipe apply changes geometry and restores button",
+      "passed": true
+    },
+    {
+      "name": "settings controls persist through actual APIs",
+      "passed": true
+    },
+    {
+      "name": "renderOptionsOpen opens its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "renderOptionsClose closes its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "centerScene opens its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "transformClose closes its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "runtimeMaterialOpen opens its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "runtimeMaterialClose closes its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "pixelThemeOpen opens its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "pixelThemeClose closes its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "imageToolsOpen opens its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "imageToolsClose closes its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "minecraftOpen opens its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "mcClose closes its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "libraryOpen opens its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "libraryClose closes its actual dialog",
+      "passed": true
+    },
+    {
+      "name": "file menu newProject works",
+      "passed": true
+    },
+    {
+      "name": "file menu workspaceOpen works",
+      "passed": true
+    },
+    {
+      "name": "menu libraryOpen delegates to its live dialog",
+      "passed": true
+    },
+    {
+      "name": "menu referenceOpen delegates to its live dialog",
+      "passed": true
+    },
+    {
+      "name": "menu minecraftOpen delegates to its live dialog",
+      "passed": true
+    },
+    {
+      "name": "menu pixelThemeOpen delegates to its live dialog",
+      "passed": true
+    },
+    {
+      "name": "menu renderOptionsOpen delegates to its live dialog",
+      "passed": true
+    },
+    {
+      "name": "menu centerScene delegates to its live dialog",
+      "passed": true
+    },
+    {
+      "name": "toggleTools hides panel",
+      "passed": true
+    },
+    {
+      "name": "toggleTools restores panel",
+      "passed": true
+    },
+    {
+      "name": "toggleObserver hides panel",
+      "passed": true
+    },
+    {
+      "name": "toggleObserver restores panel",
+      "passed": true
+    },
+    {
+      "name": "houseDemo creates visible geometry",
+      "passed": true
+    },
+    {
+      "name": "stairsDemo creates visible geometry",
+      "passed": true
+    },
+    {
+      "name": "directionsDemo creates visible geometry",
+      "passed": true
+    },
+    {
+      "name": "stress5k creates visible geometry",
+      "passed": true
+    },
+    {
+      "name": "stress16k creates visible geometry",
+      "passed": true
+    },
+    {
+      "name": "position draw creates a real cuboid",
+      "passed": true
+    },
+    {
+      "name": "undo removes drawn cuboid",
+      "passed": true
+    },
+    {
+      "name": "redo restores cuboid",
+      "passed": true
+    },
+    {
+      "name": "eraser applies exact region",
+      "passed": true
+    },
+    {
+      "name": "moveSelection modifies selected geometry",
+      "passed": true
+    },
+    {
+      "name": "copySelection modifies selected geometry",
+      "passed": true
+    },
+    {
+      "name": "rotateSelection modifies selected geometry",
+      "passed": true
+    },
+    {
+      "name": "mirrorSelection modifies selected geometry",
+      "passed": true
+    },
+    {
+      "name": "painting selected cuboid changes its material",
+      "passed": true
+    },
+    {
+      "name": "painting preserves an actionable selection",
+      "passed": true
+    },
+    {
+      "name": "moveSelection empty selection gives feedback",
+      "passed": true
+    },
+    {
+      "name": "copySelection empty selection gives feedback",
+      "passed": true
+    },
+    {
+      "name": "rotateSelection empty selection gives feedback",
+      "passed": true
+    },
+    {
+      "name": "mirrorSelection empty selection gives feedback",
+      "passed": true
+    },
+    {
+      "name": "paintSelection empty selection gives feedback",
+      "passed": true
+    },
+    {
+      "name": "camera hero is finite",
+      "passed": true
+    },
+    {
+      "name": "camera front is finite",
+      "passed": true
+    },
+    {
+      "name": "camera top is finite",
+      "passed": true
+    },
+    {
+      "name": "camera side is finite",
+      "passed": true
+    },
+    {
+      "name": "load selected triangle fills vertex fields",
+      "passed": true
+    },
+    {
+      "name": "mesh update keeps one changed triangle",
+      "passed": true
+    },
+    {
+      "name": "triangle delete removes selected face",
+      "passed": true
+    },
+    {
+      "name": "voxel slope remains one shaped box",
+      "passed": true
+    },
+    {
+      "name": "polygon wedge creates eight real faces",
+      "passed": true
+    },
+    {
+      "name": "missing mesh selection is explained",
+      "passed": true
+    },
+    {
+      "name": "modal invalid input error is inside active dialog",
+      "passed": true
+    },
+    {
+      "name": "runtime material creates actual style",
+      "passed": false
+    },
+    {
+      "name": "font refresh reports completion",
+      "passed": true
+    },
+    {
+      "name": "font preview produces boxes without applying",
+      "passed": true
+    },
+    {
+      "name": "clear text preview disables apply",
+      "passed": true
+    },
+    {
+      "name": "text apply creates editable voxel geometry",
+      "passed": true
+    },
+    {
+      "name": "image upload adds a selected local reference",
+      "passed": true
+    },
+    {
+      "name": "reference library selection persists",
+      "passed": true
+    },
+    {
+      "name": "pixel-read button returns actual pixels",
+      "passed": true
+    },
+    {
+      "name": "resize button keeps original and creates a copy",
+      "passed": true
+    },
+    {
+      "name": "voxel-plane preview leaves scene unchanged",
+      "passed": true
+    },
+    {
+      "name": "voxel-plane apply mutates and closes dialog",
+      "passed": true
+    },
+    {
+      "name": "Minecraft preview uses independent viewport",
+      "passed": true
+    },
+    {
+      "name": "Minecraft apply creates actual editable building",
+      "passed": true
+    },
+    {
+      "name": "save artwork shows immediate progress",
+      "passed": true
+    },
+    {
+      "name": "save artwork adds a real library item",
+      "passed": true
+    },
+    {
+      "name": "library multi-view opens actual image gallery",
+      "passed": true
+    },
+    {
+      "name": "library load restores editable artwork",
+      "passed": true
+    },
+    {
+      "name": "toolbar screenshot shows three actual views",
+      "passed": true
+    },
+    {
+      "name": "file save downloads project JSON",
+      "passed": true
+    },
+    {
+      "name": "project import keeps a valid editable scene",
+      "passed": true
+    },
+    {
+      "name": "glb GUI export returns a downloaded model",
+      "passed": true
+    },
+    {
+      "name": "obj GUI export returns a downloaded model",
+      "passed": true
+    },
+    {
+      "name": "ply GUI export returns a downloaded model",
+      "passed": true
+    },
+    {
+      "name": "stl GUI export returns a downloaded model",
+      "passed": true
+    },
+    {
+      "name": "diagnostics menu downloads ZIP",
+      "passed": true
+    },
+    {
+      "name": "grid setting reaches renderer",
+      "passed": true
+    },
+    {
+      "name": "center preview displays calculated offset",
+      "passed": true
+    },
+    {
+      "name": "centering applies and closes dialog",
+      "passed": true
+    },
+    {
+      "name": "group visibility changes local render",
+      "passed": true
+    },
+    {
+      "name": "group lock persists to backend",
+      "passed": true
+    },
+    {
+      "name": "version restore closes history with a valid scene",
+      "passed": true
+    },
+    {
+      "name": "VRChat preset changes port while output remains off",
+      "passed": true
+    },
+    {
+      "name": "avatarCatalogBundled changes target catalog state",
+      "passed": true
+    },
+    {
+      "name": "avatarCatalogMf4 changes target catalog state",
+      "passed": true
+    },
+    {
+      "name": "avatarCatalogClear changes target catalog state",
+      "passed": true
+    },
+    {
+      "name": "avatarCatalogMf6 changes target catalog state",
+      "passed": true
+    },
+    {
+      "name": "catalog export/import matches active material",
+      "passed": true
+    },
+    {
+      "name": "placement scale 1% persists",
+      "passed": true
+    },
+    {
+      "name": "placement scale 100% persists",
+      "passed": true
+    },
+    {
+      "name": "placement scale 1000% persists",
+      "passed": true
+    },
+    {
+      "name": "placement toggle world persists",
+      "passed": true
+    },
+    {
+      "name": "placement toggle visible persists",
+      "passed": true
+    },
+    {
+      "name": "placement toggle level persists",
+      "passed": true
+    },
+    {
+      "name": "disabled-output publish controls do not enable transmission",
+      "passed": true
+    },
+    {
+      "name": "enable and publish send a real local OSC packet",
+      "passed": true
+    },
+    {
+      "name": "file new project creates separate project",
+      "passed": true
+    },
+    {
+      "name": "new context changes session without losing project",
+      "passed": true
+    },
+    {
+      "name": "workspace switch opens previously saved project",
+      "passed": true
+    },
+    {
+      "name": "no unhandled browser JavaScript errors",
+      "passed": true
+    }
+  ],
+  "failures": [
+    {
+      "case": "materials-and-resource-pack-upload",
+      "error": "runtime material creates actual style"
+    }
+  ],
+  "clicks": [
+    {
+      "id": "",
+      "tab": "text",
+      "text": "字体文字",
+      "trusted": true
+    },
+    {
+      "id": "settingsOpen",
+      "text": "设置",
+      "trusted": true
+    },
+    {
+      "id": "settingsBack",
+      "text": "返回工作台",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "tab": "sync",
+      "text": "VRC发布",
+      "trusted": true
+    },
+    {
+      "id": "settingsOpen",
+      "text": "设置",
+      "trusted": true
+    },
+    {
+      "id": "settingsBack",
+      "text": "返回工作台",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "tab": "ai",
+      "text": "AI创作",
+      "trusted": true
+    },
+    {
+      "id": "settingsOpen",
+      "text": "设置",
+      "trusted": true
+    },
+    {
+      "id": "settingsBack",
+      "text": "返回工作台",
+      "trusted": true
+    },
+    {
+      "id": "settingsOpen",
+      "text": "设置",
+      "trusted": true
+    },
+    {
+      "id": "saveNotes",
+      "text": "保存固定要求",
+      "trusted": true
+    },
+    {
+      "id": "dryRecipe",
+      "text": "只估算",
+      "trusted": true
+    },
+    {
+      "id": "runRecipe",
+      "text": "执行 Recipe",
+      "trusted": true
+    },
+    {
+      "id": "settingsBack",
+      "text": "返回工作台",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "tab": "ai",
+      "text": "AI创作",
+      "trusted": true
+    },
+    {
+      "id": "renderOptionsOpen",
+      "text": "画质/显示",
+      "trusted": true
+    },
+    {
+      "id": "renderOptionsClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "id": "centerScene",
+      "text": "整体定位",
+      "trusted": true
+    },
+    {
+      "id": "transformClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "id": "runtimeMaterialOpen",
+      "text": "\n          ＋实时颜色 / 程序材质\n        ",
+      "trusted": true
+    },
+    {
+      "id": "runtimeMaterialClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "id": "pixelThemeOpen",
+      "text": "\n          内置方块工坊 · 48种材质\n        ",
+      "trusted": true
+    },
+    {
+      "id": "pixelThemeClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "id": "imageToolsOpen",
+      "text": "图片像素 / 转体素平面",
+      "trusted": true
+    },
+    {
+      "id": "imageToolsClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "id": "minecraftOpen",
+      "text": "\n          Minecraft 建筑导入与源库\n        ",
+      "trusted": true
+    },
+    {
+      "id": "mcClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "id": "libraryOpen",
+      "text": "作品库",
+      "trusted": true
+    },
+    {
+      "id": "libraryClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "command": "newProject",
+      "id": "",
+      "text": "\n              新建项目…Ctrl+N\n            ",
+      "trusted": true
+    },
+    {
+      "id": "newProject",
+      "text": "新建项目",
+      "trusted": false
+    },
+    {
+      "id": "workspaceClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "command": "workspaceOpen",
+      "id": "",
+      "text": "\n              项目与对话…\n            ",
+      "trusted": true
+    },
+    {
+      "id": "workspaceOpen",
+      "text": "项目与对话",
+      "trusted": false
+    },
+    {
+      "id": "workspaceClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "command": "settingsOpen",
+      "id": "",
+      "text": "\n              连接、模型与预算…",
+      "trusted": true
+    },
+    {
+      "id": "settingsOpen",
+      "text": "设置",
+      "trusted": false
+    },
+    {
+      "id": "settingsBack",
+      "text": "返回工作台",
+      "trusted": true
+    },
+    {
+      "command": "historyOpen",
+      "id": "",
+      "text": "\n              版本历史…",
+      "trusted": true
+    },
+    {
+      "id": "historyOpen",
+      "text": "版本历史",
+      "trusted": false
+    },
+    {
+      "id": "historyClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "command": "libraryOpen",
+      "id": "",
+      "text": "作品库…",
+      "trusted": true
+    },
+    {
+      "id": "libraryOpen",
+      "text": "作品库",
+      "trusted": false
+    },
+    {
+      "id": "libraryClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "command": "referenceOpen",
+      "id": "",
+      "text": "\n              参考图库…",
+      "trusted": true
+    },
+    {
+      "id": "referenceOpen",
+      "text": "参考图库",
+      "trusted": false
+    },
+    {
+      "id": "referenceClose",
+      "text": "完成选择",
+      "trusted": true
+    },
+    {
+      "command": "minecraftOpen",
+      "id": "",
+      "text": "\n              Minecraft 建筑…",
+      "trusted": true
+    },
+    {
+      "id": "minecraftOpen",
+      "text": "\n          Minecraft 建筑导入与源库\n        ",
+      "trusted": false
+    },
+    {
+      "id": "mcClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "command": "pixelThemeOpen",
+      "id": "",
+      "text": "\n              内置材质…",
+      "trusted": true
+    },
+    {
+      "id": "pixelThemeOpen",
+      "text": "\n          内置方块工坊 · 48种材质\n        ",
+      "trusted": false
+    },
+    {
+      "id": "pixelThemeClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "command": "renderOptionsOpen",
+      "id": "",
+      "text": "\n              画质与显示…\n            ",
+      "trusted": true
+    },
+    {
+      "id": "renderOptionsOpen",
+      "text": "画质/显示",
+      "trusted": false
+    },
+    {
+      "id": "renderOptionsClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "command": "centerScene",
+      "id": "",
+      "text": "\n              整体定位…\n            ",
+      "trusted": true
+    },
+    {
+      "id": "centerScene",
+      "text": "整体定位",
+      "trusted": false
+    },
+    {
+      "id": "transformClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "id": "aiSettingsOpen",
+      "text": "配置",
+      "trusted": true
+    },
+    {
+      "id": "settingsBack",
+      "text": "返回工作台",
+      "trusted": true
+    },
+    {
+      "command": "fitView",
+      "id": "",
+      "text": "适应整个作品",
+      "trusted": true
+    },
+    {
+      "id": "fitView",
+      "text": "适应",
+      "trusted": false
+    },
+    {
+      "id": "toggleTools",
+      "text": "显示 / 隐藏绘制工具",
+      "trusted": true
+    },
+    {
+      "id": "toggleTools",
+      "text": "显示 / 隐藏绘制工具",
+      "trusted": true
+    },
+    {
+      "command": "fitView",
+      "id": "",
+      "text": "适应整个作品",
+      "trusted": true
+    },
+    {
+      "id": "fitView",
+      "text": "适应",
+      "trusted": false
+    },
+    {
+      "id": "toggleObserver",
+      "text": "\n              显示 / 隐藏创作观察",
+      "trusted": true
+    },
+    {
+      "id": "toggleObserver",
+      "text": "\n              显示 / 隐藏创作观察",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "tab": "ai",
+      "text": "AI创作",
+      "trusted": true
+    },
+    {
+      "id": "clearScene",
+      "text": "清空",
+      "trusted": true
+    },
+    {
+      "id": "houseDemo",
+      "text": "小屋",
+      "trusted": true
+    },
+    {
+      "id": "stairsDemo",
+      "text": "阶梯",
+      "trusted": true
+    },
+    {
+      "id": "directionsDemo",
+      "text": "方向标记",
+      "trusted": true
+    },
+    {
+      "id": "stress5k",
+      "text": "5k Box",
+      "trusted": true
+    },
+    {
+      "id": "stress16k",
+      "text": "16k Box",
+      "trusted": true
+    },
+    {
+      "id": "clearScene",
+      "text": "清空",
+      "trusted": true
+    },
+    {
+      "id": "addTool",
+      "text": "＋放置",
+      "trusted": true
+    },
+    {
+      "id": "applyPosition",
+      "text": "在指定位置应用",
+      "trusted": true
+    },
+    {
+      "id": "undo",
+      "text": "↶",
+      "trusted": true
+    },
+    {
+      "id": "redo",
+      "text": "↷",
+      "trusted": true
+    },
+    {
+      "id": "eraseTool",
+      "text": "－擦除",
+      "trusted": true
+    },
+    {
+      "id": "applyPosition",
+      "text": "在指定位置应用",
+      "trusted": true
+    },
+    {
+      "id": "addTool",
+      "text": "＋放置",
+      "trusted": true
+    },
+    {
+      "id": "applyPosition",
+      "text": "在指定位置应用",
+      "trusted": true
+    },
+    {
+      "id": "selectTool",
+      "text": "选择",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "text": "正面",
+      "trusted": true,
+      "view": "front"
+    },
+    {
+      "command": "moveSelection",
+      "id": "",
+      "text": "\n              移动选中内容",
+      "trusted": true
+    },
+    {
+      "id": "moveSelection",
+      "text": "移动",
+      "trusted": false
+    },
+    {
+      "command": "copySelection",
+      "id": "",
+      "text": "\n              复制选中内容",
+      "trusted": true
+    },
+    {
+      "id": "copySelection",
+      "text": "复制",
+      "trusted": false
+    },
+    {
+      "command": "rotateSelection",
+      "id": "",
+      "text": "\n              旋转选中内容",
+      "trusted": true
+    },
+    {
+      "id": "rotateSelection",
+      "text": "旋转90°",
+      "trusted": false
+    },
+    {
+      "command": "mirrorSelection",
+      "id": "",
+      "text": "\n              镜像选中内容",
+      "trusted": true
+    },
+    {
+      "id": "mirrorSelection",
+      "text": "镜像X",
+      "trusted": false
+    },
+    {
+      "id": "",
+      "text": "",
+      "trusted": true
+    },
+    {
+      "id": "paintSelection",
+      "text": "给选中内容换材质",
+      "trusted": true
+    },
+    {
+      "id": "selectTool",
+      "text": "选择",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "text": "正面",
+      "trusted": true,
+      "view": "front"
+    },
+    {
+      "id": "moveSelection",
+      "text": "移动",
+      "trusted": true
+    },
+    {
+      "id": "copySelection",
+      "text": "复制",
+      "trusted": true
+    },
+    {
+      "id": "rotateSelection",
+      "text": "旋转90°",
+      "trusted": true
+    },
+    {
+      "id": "mirrorSelection",
+      "text": "镜像X",
+      "trusted": true
+    },
+    {
+      "id": "paintSelection",
+      "text": "给选中内容换材质",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "text": "主视",
+      "trusted": true,
+      "view": "hero"
+    },
+    {
+      "id": "",
+      "text": "正面",
+      "trusted": true,
+      "view": "front"
+    },
+    {
+      "id": "",
+      "text": "俯视",
+      "trusted": true,
+      "view": "top"
+    },
+    {
+      "id": "",
+      "text": "侧面",
+      "trusted": true,
+      "view": "side"
+    },
+    {
+      "id": "fitView",
+      "text": "适应",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "tab": "ai",
+      "text": "AI创作",
+      "trusted": true
+    },
+    {
+      "id": "clearScene",
+      "text": "清空",
+      "trusted": true
+    },
+    {
+      "id": "meshAdd",
+      "text": "添加三角面",
+      "trusted": true
+    },
+    {
+      "id": "selectTool",
+      "text": "选择",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "text": "正面",
+      "trusted": true,
+      "view": "front"
+    },
+    {
+      "id": "meshLoadSelection",
+      "text": "读取选中面",
+      "trusted": true
+    },
+    {
+      "id": "meshUpdate",
+      "text": "更新选中面",
+      "trusted": true
+    },
+    {
+      "id": "meshDelete",
+      "text": "删除选中面",
+      "trusted": true
+    },
+    {
+      "id": "voxelWedge",
+      "text": "添加体素斜面",
+      "trusted": true
+    },
+    {
+      "id": "meshWedge",
+      "text": "添加多边形斜面",
+      "trusted": true
+    },
+    {
+      "id": "meshLoadSelection",
+      "text": "读取选中面",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "tab": "ai",
+      "text": "AI创作",
+      "trusted": true
+    },
+    {
+      "id": "runtimeMaterialOpen",
+      "text": "\n          ＋实时颜色 / 程序材质\n        ",
+      "trusted": true
+    },
+    {
+      "id": "runtimeMaterialApply",
+      "text": "添加并选用",
+      "trusted": true
+    },
+    {
+      "id": "runtimeMaterialApply",
+      "text": "添加并选用",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "tab": "ai",
+      "text": "AI创作",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "tab": "text",
+      "text": "字体文字",
+      "trusted": true
+    },
+    {
+      "id": "textFontRefresh",
+      "text": "刷新字体",
+      "trusted": true
+    },
+    {
+      "id": "textPreview",
+      "text": "\n            预览文字\n          ",
+      "trusted": true
+    },
+    {
+      "id": "textClearPreview",
+      "text": "清除预览",
+      "trusted": true
+    },
+    {
+      "id": "textPreview",
+      "text": "\n            预览文字\n          ",
+      "trusted": true
+    },
+    {
+      "id": "textApply",
+      "text": "应用到草稿",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "tab": "ai",
+      "text": "AI创作",
+      "trusted": true
+    },
+    {
+      "id": "referenceUpload",
+      "text": "添加图片",
+      "trusted": true
+    },
+    {
+      "id": "referenceFiles",
+      "text": "",
+      "trusted": false
+    },
+    {
+      "id": "referenceOpen",
+      "text": "参考图库",
+      "trusted": true
+    },
+    {
+      "id": "referenceClose",
+      "text": "完成选择",
+      "trusted": true
+    },
+    {
+      "id": "imageToolsOpen",
+      "text": "图片像素 / 转体素平面",
+      "trusted": true
+    },
+    {
+      "id": "imageToolInspect",
+      "text": "读像素",
+      "trusted": true
+    },
+    {
+      "id": "imageToolResize",
+      "text": "生成缩放副本",
+      "trusted": true
+    },
+    {
+      "id": "imageToolPreview",
+      "text": "预览平面",
+      "trusted": true
+    },
+    {
+      "id": "imageToolApply",
+      "text": "应用平面",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "tab": "ai",
+      "text": "AI创作",
+      "trusted": true
+    },
+    {
+      "id": "minecraftOpen",
+      "text": "\n          Minecraft 建筑导入与源库\n        ",
+      "trusted": true
+    },
+    {
+      "id": "mcUpload",
+      "text": "上传建筑",
+      "trusted": true
+    },
+    {
+      "id": "mcFile",
+      "text": "",
+      "trusted": false
+    },
+    {
+      "id": "mcInspect",
+      "text": "查看源信息",
+      "trusted": true
+    },
+    {
+      "id": "mcPreview",
+      "text": "生成独立预览",
+      "trusted": true
+    },
+    {
+      "id": "mcApply",
+      "text": "\n          应用到草稿（可撤销）\n        ",
+      "trusted": true
+    },
+    {
+      "id": "mcClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "tab": "ai",
+      "text": "AI创作",
+      "trusted": true
+    },
+    {
+      "command": "saveArtwork",
+      "id": "",
+      "text": "\n              保存到作品库…\n            ",
+      "trusted": true
+    },
+    {
+      "id": "saveArtwork",
+      "text": "保存到作品库",
+      "trusted": false
+    },
+    {
+      "id": "libraryOpen",
+      "text": "作品库",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "text": "多视图",
+      "trusted": true
+    },
+    {
+      "id": "captureClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "text": "载入并继续",
+      "trusted": true
+    },
+    {
+      "id": "capture",
+      "text": "三视图",
+      "trusted": true
+    },
+    {
+      "id": "captureClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "command": "exportProject",
+      "id": "",
+      "text": "\n              保存工程副本…Ctrl+S\n            ",
+      "trusted": true
+    },
+    {
+      "id": "exportProject",
+      "text": "保存工程副本",
+      "trusted": false
+    },
+    {
+      "command": "importProject",
+      "id": "",
+      "text": "\n              打开工程 JSON…Ctrl+O\n            ",
+      "trusted": true
+    },
+    {
+      "id": "importProject",
+      "text": "导入",
+      "trusted": false
+    },
+    {
+      "id": "projectFile",
+      "text": "",
+      "trusted": false
+    },
+    {
+      "export": "glb",
+      "id": "",
+      "text": "\n                  GLB · 材质与贴图",
+      "trusted": true
+    },
+    {
+      "id": "modelExportApply",
+      "text": "导出模型",
+      "trusted": true
+    },
+    {
+      "id": "modelExportClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "export": "obj",
+      "id": "",
+      "text": "\n                  OBJ + MTL · ZIP",
+      "trusted": true
+    },
+    {
+      "id": "modelExportApply",
+      "text": "导出模型",
+      "trusted": true
+    },
+    {
+      "id": "modelExportClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "export": "ply",
+      "id": "",
+      "text": "\n                  PLY · 顶点颜色",
+      "trusted": true
+    },
+    {
+      "id": "modelExportApply",
+      "text": "导出模型",
+      "trusted": true
+    },
+    {
+      "id": "modelExportClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "export": "stl",
+      "id": "",
+      "text": "STL · 几何",
+      "trusted": true
+    },
+    {
+      "id": "modelExportApply",
+      "text": "导出模型",
+      "trusted": true
+    },
+    {
+      "id": "modelExportClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "command": "diagnosticsExport",
+      "id": "",
+      "text": "\n              导出诊断记录…\n            ",
+      "trusted": true
+    },
+    {
+      "id": "diagnosticsExport",
+      "text": "导出诊断记录",
+      "trusted": false
+    },
+    {
+      "id": "",
+      "tab": "ai",
+      "text": "AI创作",
+      "trusted": true
+    },
+    {
+      "id": "renderOptionsOpen",
+      "text": "画质/显示",
+      "trusted": true
+    },
+    {
+      "id": "renderOptionsClose",
+      "text": "关闭",
+      "trusted": true
+    },
+    {
+      "id": "centerScene",
+      "text": "整体定位",
+      "trusted": true
+    },
+    {
+      "id": "transformPreview",
+      "text": "预览偏移与边界",
+      "trusted": true
+    },
+    {
+      "id": "transformApply",
+      "text": "\n        应用整体定位\n      ",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "text": "保护",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "text": "已保护",
+      "trusted": true
+    },
+    {
+      "command": "historyOpen",
+      "id": "",
+      "text": "\n              版本历史…",
+      "trusted": true
+    },
+    {
+      "id": "historyOpen",
+      "text": "版本历史",
+      "trusted": false
+    },
+    {
+      "id": "",
+      "text": "从此版本继续",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "tab": "ai",
+      "text": "AI创作",
+      "trusted": true
+    },
+    {
+      "id": "clearScene",
+      "text": "清空",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "text": "",
+      "trusted": true
+    },
+    {
+      "id": "addTool",
+      "text": "＋放置",
+      "trusted": true
+    },
+    {
+      "id": "applyPosition",
+      "text": "在指定位置应用",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "tab": "sync",
+      "text": "VRC发布",
+      "trusted": true
+    },
+    {
+      "id": "avatarCatalogMf6",
+      "text": "\n            使用配套 MF6 16K 头像目录\n          ",
+      "trusted": true
+    },
+    {
+      "id": "vrcPort",
+      "text": "VRChat 9000",
+      "trusted": true
+    },
+    {
+      "id": "unityPort",
+      "text": "Unity 9012",
+      "trusted": true
+    },
+    {
+      "id": "avatarCatalogBundled",
+      "text": "\n            使用配套 MF5 0.9 头像目录\n          ",
+      "trusted": true
+    },
+    {
+      "id": "avatarCatalogMf4",
+      "text": "使用旧版 MF4 目录",
+      "trusted": true
+    },
+    {
+      "id": "avatarCatalogClear",
+      "text": "清除目标目录声明",
+      "trusted": true
+    },
+    {
+      "id": "avatarCatalogMf6",
+      "text": "\n            使用配套 MF6 16K 头像目录\n          ",
+      "trusted": true
+    },
+    {
+      "id": "catalogExport",
+      "text": "导出 Avatar 材质目录",
+      "trusted": true
+    },
+    {
+      "id": "avatarCatalogImport",
+      "text": "\n            导入目标 Avatar 材质目录\n          ",
+      "trusted": true
+    },
+    {
+      "id": "avatarCatalogFile",
+      "text": "",
+      "trusted": false
+    },
+    {
+      "id": "",
+      "scale": "1",
+      "text": "1%",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "scale": "100",
+      "text": "100%",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "scale": "1000",
+      "text": "1000%",
+      "trusted": true
+    },
+    {
+      "id": "resetAnchor",
+      "text": "移到面前",
+      "trusted": true
+    },
+    {
+      "id": "publish",
+      "text": "发布当前版本",
+      "trusted": true
+    },
+    {
+      "id": "repairPublish",
+      "text": "保留显示补播",
+      "trusted": true
+    },
+    {
+      "id": "resync",
+      "text": "清空并重建",
+      "trusted": true
+    },
+    {
+      "id": "avatarCatalogMf6",
+      "text": "\n            使用配套 MF6 16K 头像目录\n          ",
+      "trusted": true
+    },
+    {
+      "id": "connect",
+      "text": "开启发送",
+      "trusted": true
+    },
+    {
+      "id": "publish",
+      "text": "发布当前版本",
+      "trusted": true
+    },
+    {
+      "id": "connect",
+      "text": "停止发送",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "tab": "ai",
+      "text": "AI创作",
+      "trusted": true
+    },
+    {
+      "command": "newProject",
+      "id": "",
+      "text": "\n              新建项目…Ctrl+N\n            ",
+      "trusted": true
+    },
+    {
+      "id": "newProject",
+      "text": "新建项目",
+      "trusted": false
+    },
+    {
+      "id": "workspaceCreate",
+      "text": "\n            新建\n          ",
+      "trusted": true
+    },
+    {
+      "id": "newContext",
+      "text": "新开对话",
+      "trusted": true
+    },
+    {
+      "id": "workspaceCreate",
+      "text": "\n            新建\n          ",
+      "trusted": true
+    },
+    {
+      "command": "workspaceOpen",
+      "id": "",
+      "text": "\n              项目与对话…\n            ",
+      "trusted": true
+    },
+    {
+      "id": "workspaceOpen",
+      "text": "项目与对话",
+      "trusted": false
+    },
+    {
+      "id": "",
+      "text": "打开",
+      "trusted": true
+    },
+    {
+      "id": "",
+      "tab": "ai",
+      "text": "AI创作",
+      "trusted": true
+    }
+  ],
+  "inventory": [
+    {
+      "command": "newProject",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "新建项目…Ctrl+N",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": "workspaceOpen",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "项目与对话…",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": "importProject",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "打开工程 JSON…Ctrl+O",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": "exportProject",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "保存工程副本…Ctrl+S",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": "glb",
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "GLB · 材质与贴图",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": "obj",
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "OBJ + MTL · ZIP",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": "ply",
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "PLY · 顶点颜色",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": "stl",
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "STL · 几何",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": "saveArtwork",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "保存到作品库…",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": "undo",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "撤销Ctrl+Z",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": "redo",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "重做Ctrl+Y",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": "copySelection",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "复制选中内容",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": "moveSelection",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "移动选中内容",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": "rotateSelection",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "旋转选中内容",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": "mirrorSelection",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "镜像选中内容",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": "centerScene",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "整体定位…",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": "fitView",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "适应整个作品",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": "capture",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "拍摄三视图",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": "renderOptionsOpen",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "画质与显示…",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "toggleTools",
+      "scale": null,
+      "tab": null,
+      "text": "显示 / 隐藏绘制工具",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "toggleObserver",
+      "scale": null,
+      "tab": null,
+      "text": "显示 / 隐藏创作观察",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": "timelineToggle",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "原始事件与诊断",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": "libraryOpen",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "作品库…",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": "referenceOpen",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "参考图库…",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": "minecraftOpen",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "Minecraft 建筑…",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": "pixelThemeOpen",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "内置材质…",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": "packImport",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "导入材质包…",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": "settingsOpen",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "连接、模型与预算…",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": "historyOpen",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "版本历史…",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": "diagnosticsExport",
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "导出诊断记录…",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "newProject",
+      "scale": null,
+      "tab": null,
+      "text": "新建项目",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "workspaceOpen",
+      "scale": null,
+      "tab": null,
+      "text": "项目与对话",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "exportProject",
+      "scale": null,
+      "tab": null,
+      "text": "保存工程副本",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "saveArtwork",
+      "scale": null,
+      "tab": null,
+      "text": "保存到作品库",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "importProject",
+      "scale": null,
+      "tab": null,
+      "text": "导入",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "libraryOpen",
+      "scale": null,
+      "tab": null,
+      "text": "作品库",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "settingsOpen",
+      "scale": null,
+      "tab": null,
+      "text": "设置",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "addTool",
+      "scale": null,
+      "tab": null,
+      "text": "＋放置",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "eraseTool",
+      "scale": null,
+      "tab": null,
+      "text": "－擦除",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "selectTool",
+      "scale": null,
+      "tab": null,
+      "text": "选择",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "applyPosition",
+      "scale": null,
+      "tab": null,
+      "text": "在指定位置应用",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "meshAdd",
+      "scale": null,
+      "tab": null,
+      "text": "添加三角面",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "meshLoadSelection",
+      "scale": null,
+      "tab": null,
+      "text": "读取选中面",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "meshUpdate",
+      "scale": null,
+      "tab": null,
+      "text": "更新选中面",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "meshDelete",
+      "scale": null,
+      "tab": null,
+      "text": "删除选中面",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "voxelWedge",
+      "scale": null,
+      "tab": null,
+      "text": "添加体素斜面",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "meshWedge",
+      "scale": null,
+      "tab": null,
+      "text": "添加多边形斜面",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "paintSelection",
+      "scale": null,
+      "tab": null,
+      "text": "给选中内容换材质",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "runtimeMaterialOpen",
+      "scale": null,
+      "tab": null,
+      "text": "＋实时颜色 / 程序材质",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "pixelThemeOpen",
+      "scale": null,
+      "tab": null,
+      "text": "内置方块工坊 · 48种材质",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "imageToolsOpen",
+      "scale": null,
+      "tab": null,
+      "text": "图片像素 / 转体素平面",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "minecraftOpen",
+      "scale": null,
+      "tab": null,
+      "text": "Minecraft 建筑导入与源库",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "packImport",
+      "scale": null,
+      "tab": null,
+      "text": "导入 Minecraft Java 资源包",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "保护",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "保护",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "moveSelection",
+      "scale": null,
+      "tab": null,
+      "text": "移动",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "copySelection",
+      "scale": null,
+      "tab": null,
+      "text": "复制",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "rotateSelection",
+      "scale": null,
+      "tab": null,
+      "text": "旋转90°",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "mirrorSelection",
+      "scale": null,
+      "tab": null,
+      "text": "镜像X",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "houseDemo",
+      "scale": null,
+      "tab": null,
+      "text": "小屋",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "stairsDemo",
+      "scale": null,
+      "tab": null,
+      "text": "阶梯",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "directionsDemo",
+      "scale": null,
+      "tab": null,
+      "text": "方向标记",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "stress5k",
+      "scale": null,
+      "tab": null,
+      "text": "5k Box",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "stress16k",
+      "scale": null,
+      "tab": null,
+      "text": "16k Box",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "clearScene",
+      "scale": null,
+      "tab": null,
+      "text": "清空",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "undo",
+      "scale": null,
+      "tab": null,
+      "text": "↶",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "redo",
+      "scale": null,
+      "tab": null,
+      "text": "↷",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "fitView",
+      "scale": null,
+      "tab": null,
+      "text": "适应",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "主视",
+      "view": "hero",
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "正面",
+      "view": "front",
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "俯视",
+      "view": "top",
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": null,
+      "text": "侧面",
+      "view": "side",
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "capture",
+      "scale": null,
+      "tab": null,
+      "text": "三视图",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "renderOptionsOpen",
+      "scale": null,
+      "tab": null,
+      "text": "画质/显示",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "centerScene",
+      "scale": null,
+      "tab": null,
+      "text": "整体定位",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": "ai",
+      "text": "AI创作",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": "text",
+      "text": "字体文字",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": null,
+      "tab": "sync",
+      "text": "VRC发布",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "aiSettingsOpen",
+      "scale": null,
+      "tab": null,
+      "text": "配置",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "schemaUpgradeContext",
+      "scale": null,
+      "tab": null,
+      "text": "升级旧对话工具并重新预热",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "newContext",
+      "scale": null,
+      "tab": null,
+      "text": "新开对话",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "activityOlder",
+      "scale": null,
+      "tab": null,
+      "text": "更早过程",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "activityLatest",
+      "scale": null,
+      "tab": null,
+      "text": "返回最新",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "referenceOpen",
+      "scale": null,
+      "tab": null,
+      "text": "参考图库",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "referenceUpload",
+      "scale": null,
+      "tab": null,
+      "text": "添加图片",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "cacheShowConfig",
+      "scale": null,
+      "tab": null,
+      "text": "查看缓存告警",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "sendMessage",
+      "scale": null,
+      "tab": null,
+      "text": "开始创作",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": true,
+      "export": null,
+      "id": "pauseAI",
+      "scale": null,
+      "tab": null,
+      "text": "暂停",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": true,
+      "export": null,
+      "id": "resumeAI",
+      "scale": null,
+      "tab": null,
+      "text": "继续",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": true,
+      "export": null,
+      "id": "stopAI",
+      "scale": null,
+      "tab": null,
+      "text": "停止本轮",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "textFontRefresh",
+      "scale": null,
+      "tab": null,
+      "text": "刷新字体",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": true,
+      "export": null,
+      "id": "textPreview",
+      "scale": null,
+      "tab": null,
+      "text": "预览文字",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": true,
+      "export": null,
+      "id": "textClearPreview",
+      "scale": null,
+      "tab": null,
+      "text": "清除预览",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": true,
+      "export": null,
+      "id": "textApply",
+      "scale": null,
+      "tab": null,
+      "text": "应用到草稿",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "unityPort",
+      "scale": null,
+      "tab": null,
+      "text": "Unity 9012",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "vrcPort",
+      "scale": null,
+      "tab": null,
+      "text": "VRChat 9000",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "connect",
+      "scale": null,
+      "tab": null,
+      "text": "开启发送",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "publish",
+      "scale": null,
+      "tab": null,
+      "text": "发布当前版本",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "repairPublish",
+      "scale": null,
+      "tab": null,
+      "text": "保留显示补播",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "resync",
+      "scale": null,
+      "tab": null,
+      "text": "清空并重建",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "catalogExport",
+      "scale": null,
+      "tab": null,
+      "text": "导出 Avatar 材质目录",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "avatarCatalogImport",
+      "scale": null,
+      "tab": null,
+      "text": "导入目标 Avatar 材质目录",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "avatarCatalogMf6",
+      "scale": null,
+      "tab": null,
+      "text": "使用配套 MF6 16K 头像目录",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "avatarCatalogBundled",
+      "scale": null,
+      "tab": null,
+      "text": "使用配套 MF5 0.9 头像目录",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "avatarCatalogMf4",
+      "scale": null,
+      "tab": null,
+      "text": "使用旧版 MF4 目录",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "avatarCatalogClear",
+      "scale": null,
+      "tab": null,
+      "text": "清除目标目录声明",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": "1",
+      "tab": null,
+      "text": "1%",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": "10",
+      "tab": null,
+      "text": "10%",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": "100",
+      "tab": null,
+      "text": "100%",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "",
+      "scale": "1000",
+      "tab": null,
+      "text": "1000%",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "resetAnchor",
+      "scale": null,
+      "tab": null,
+      "text": "移到面前",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "settingsBack",
+      "scale": null,
+      "tab": null,
+      "text": "返回工作台",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "saveProvider",
+      "scale": null,
+      "tab": null,
+      "text": "保存连接",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "cacheAcknowledge",
+      "scale": null,
+      "tab": null,
+      "text": "已检查上游，确认缓存告警",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "compact",
+      "scale": null,
+      "tab": null,
+      "text": "Compact 上下文",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "saveNotes",
+      "scale": null,
+      "tab": null,
+      "text": "保存固定要求",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "runRecipe",
+      "scale": null,
+      "tab": null,
+      "text": "执行 Recipe",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "dryRecipe",
+      "scale": null,
+      "tab": null,
+      "text": "只估算",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "timelineToggle",
+      "scale": null,
+      "tab": null,
+      "text": "事件与诊断 ▴",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "timelineOlder",
+      "scale": null,
+      "tab": null,
+      "text": "更早记录",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "timelineLatest",
+      "scale": null,
+      "tab": null,
+      "text": "最近记录",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "timelineResume",
+      "scale": null,
+      "tab": null,
+      "text": "返回最新",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "historyOpen",
+      "scale": null,
+      "tab": null,
+      "text": "版本历史",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "diagnosticsExport",
+      "scale": null,
+      "tab": null,
+      "text": "导出诊断记录",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "activityImageClose",
+      "scale": null,
+      "tab": null,
+      "text": "关闭",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "modelExportClose",
+      "scale": null,
+      "tab": null,
+      "text": "关闭",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "modelExportApply",
+      "scale": null,
+      "tab": null,
+      "text": "导出模型",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "renderOptionsClose",
+      "scale": null,
+      "tab": null,
+      "text": "关闭",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "transformClose",
+      "scale": null,
+      "tab": null,
+      "text": "关闭",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "transformPreview",
+      "scale": null,
+      "tab": null,
+      "text": "预览偏移与边界",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": true,
+      "export": null,
+      "id": "transformApply",
+      "scale": null,
+      "tab": null,
+      "text": "应用整体定位",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "runtimeMaterialClose",
+      "scale": null,
+      "tab": null,
+      "text": "关闭",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "runtimeMaterialApply",
+      "scale": null,
+      "tab": null,
+      "text": "添加并选用",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "pixelThemeClose",
+      "scale": null,
+      "tab": null,
+      "text": "关闭",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "applyPixelTheme",
+      "scale": null,
+      "tab": null,
+      "text": "加入当前项目",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "workspaceClose",
+      "scale": null,
+      "tab": null,
+      "text": "关闭",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "workspaceCreate",
+      "scale": null,
+      "tab": null,
+      "text": "新建",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "timelinePreviewClose",
+      "scale": null,
+      "tab": null,
+      "text": "关闭",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "imageToolInspect",
+      "scale": null,
+      "tab": null,
+      "text": "读像素",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "imageToolResize",
+      "scale": null,
+      "tab": null,
+      "text": "生成缩放副本",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "imageToolPreview",
+      "scale": null,
+      "tab": null,
+      "text": "预览平面",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": true,
+      "export": null,
+      "id": "imageToolApply",
+      "scale": null,
+      "tab": null,
+      "text": "应用平面",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "imageToolsClose",
+      "scale": null,
+      "tab": null,
+      "text": "关闭",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "referenceClose",
+      "scale": null,
+      "tab": null,
+      "text": "完成选择",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "mcClose",
+      "scale": null,
+      "tab": null,
+      "text": "关闭",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "mcUpload",
+      "scale": null,
+      "tab": null,
+      "text": "上传建筑",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "mcInspect",
+      "scale": null,
+      "tab": null,
+      "text": "查看源信息",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "mcPreview",
+      "scale": null,
+      "tab": null,
+      "text": "生成独立预览",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": true,
+      "export": null,
+      "id": "mcApply",
+      "scale": null,
+      "tab": null,
+      "text": "应用到草稿（可撤销）",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "packReportClose",
+      "scale": null,
+      "tab": null,
+      "text": "关闭",
+      "view": null,
+      "clicked": false
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "libraryClose",
+      "scale": null,
+      "tab": null,
+      "text": "关闭",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "captureClose",
+      "scale": null,
+      "tab": null,
+      "text": "关闭",
+      "view": null,
+      "clicked": true
+    },
+    {
+      "command": null,
+      "disabled": false,
+      "export": null,
+      "id": "historyClose",
+      "scale": null,
+      "tab": null,
+      "text": "关闭",
+      "view": null,
+      "clicked": true
+    }
+  ],
+  "distinctIdButtonsClicked": 96,
+  "scope": "Actual Chromium pointer clicks + Rust backend. Synthetic local files; localhost model fixture only. OSC limited to local 9012 fixture receiver."
+}

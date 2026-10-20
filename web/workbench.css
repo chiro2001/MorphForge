@@ -1625,3 +1625,9 @@ body.hide-tools.hide-observer main {
 .right > #tab-ai:not([hidden]) {
   overflow-y: auto;
 }
+
+/* Keep feedback visible when workbench is hidden or a native dialog is modal. */
+body > #toast { position:fixed; z-index:90; bottom:42px; }
+dialog > #toast { display:none; position:sticky; top:0; bottom:auto; left:auto; transform:none; max-width:100%; margin:0 0 12px; z-index:12; }
+dialog > #toast.visible { display:block; }
+#toast[data-kind="error"] { background:#392820; border-color:#c58772; color:#ffd1bf; }

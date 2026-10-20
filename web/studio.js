@@ -1,3 +1,4 @@
+import { createFeedback } from "/feedback-ui.js";
 import { ActivityView } from "/activity-ui.js";
 import { setupDesktopMenus } from "/desktop-menu.js";
 import { TimelineView } from "/timeline-ui.js";
@@ -55,7 +56,7 @@ let lastSeq = 0;
 let eventRows = [];
 let timelineView = null;
 let activityView = null;
-let toastTimer;
+
 let pointerStart = null;
 let loading = false;
 let selected = new Set();
@@ -143,15 +144,10 @@ async function api(path, body) {
   return value;
 }
 
-function toast(text) {
-  $("toast").textContent = text;
-  $("toast").classList.add("visible");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => $("toast").classList.remove("visible"), 4500);
-}
+const toast = createFeedback($("toast"));
 
 function error(value) {
-  toast(friendlyError(value));
+  toast(friendlyError(value), "error");
   console.error(value);
 }
 
@@ -812,7 +808,12 @@ function edit(value) {
         requestId: crypto.randomUUID(),
       });
       if (result.warning) toast(result.warning);
+      if (Array.isArray(result.selectionIds)) {
+        selected = new Set(result.selectionIds);
+        renderer.selection = selected;
+      }
       await refresh();
+      if (Array.isArray(result.selectionIds)) { renderer.updateSelection(); selectionInfo(); }
     } catch (cause) {
       error(cause);
       await refresh();
@@ -1162,6 +1163,7 @@ async function renderWorkspaces() {
     for (const item of entries) {
       const row = document.createElement("div");
       row.className = "workspace-item";
+      row.dataset.workspaceId = item.id;
       const label = document.createElement("span");
       label.className = "grow";
       label.textContent = item.name || item.title || "未命名";
@@ -1414,7 +1416,7 @@ document.querySelectorAll("[data-tab]").forEach((button) => {
     document.querySelectorAll("[data-tab]").forEach((item) => {
       item.classList.toggle("selected", item === button);
     });
-    for (const name of ["ai", "text", "sync", "context"]) {
+    for (const name of ["ai", "text", "sync"]) {
       $("tab-" + name).hidden = name !== button.dataset.tab;
     }
     if (button.dataset.tab === "text") loadFonts();
@@ -1767,8 +1769,10 @@ for (const [id, action] of [
 ]) {
   $(id).onclick = async () => {
     try {
+      if (action === "compact") toast("正在整理上下文…");
       await api("harness/control", { action });
       await refresh();
+      if (action === "compact") toast("上下文已整理");
     } catch (cause) {
       error(cause);
     }
@@ -1788,6 +1792,10 @@ $("saveNotes").onclick = async () => {
 };
 
 async function runRecipe(dryRun) {
+  const button = $(dryRun ? "dryRecipe" : "runRecipe");
+  if (button.disabled) return;
+  button.disabled = true;
+  toast(dryRun ? "正在估算绘图代码…" : "正在执行绘图代码…");
   try {
     const value = await api("harness/tool", {
       name: "run_recipe",
@@ -1807,10 +1815,11 @@ async function runRecipe(dryRun) {
     } else {
       await refresh();
       renderer.view();
+      toast("绘图代码已应用，可撤销");
     }
   } catch (cause) {
     error(cause);
-  }
+  } finally { button.disabled = false; }
 }
 $("runRecipe").onclick = () => runRecipe(false);
 $("dryRecipe").onclick = () => runRecipe(true);
@@ -1845,6 +1854,10 @@ $("capture").onclick = async () => {
 };
 $("captureClose").onclick = () => $("captureDialog").close();
 $("saveArtwork").onclick = async () => {
+  const button = $("saveArtwork");
+  if (button.disabled) return;
+  button.disabled = true;
+  toast("正在保存作品和三视图…");
   try {
     const images = await capture();
     await api("artworks", {
@@ -1857,7 +1870,7 @@ $("saveArtwork").onclick = async () => {
     toast("作品和三视图已保存");
   } catch (cause) {
     error(cause);
-  }
+  } finally { button.disabled = false; }
 };
 
 async function library() {
@@ -2078,7 +2091,12 @@ async function loadFonts(force = false) {
   }
 }
 
-$("textFontRefresh").onclick = () => loadFonts(true);
+$("textFontRefresh").onclick = async () => {
+  $("textFontRefresh").disabled=true;
+  toast("正在刷新字体…");
+  try { if(await loadFonts(true)) toast(`字体列表已刷新 · ${fontCatalog.length}种`); }
+  finally { $("textFontRefresh").disabled=false; }
+};
 
 function collectTextRequest() {
   return buildTextRequest({

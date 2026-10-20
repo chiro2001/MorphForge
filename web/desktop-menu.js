@@ -17,11 +17,24 @@ export function setupDesktopMenus({ getCellSize, getName, onError, onLayout }) {
     $("modelExportStatus").textContent = "";
     $("modelExportDialog").showModal();
   };
+  const syncAvailability = () => {
+    for (const item of bar.querySelectorAll("[data-command]")) {
+      const target = $(item.dataset.command);
+      item.disabled = !target || target.disabled;
+      item.title = !target
+        ? "该功能当前不可用"
+        : target.disabled
+          ? target.title || "当前状态下不可用"
+          : "";
+    }
+  };
   for (const root of roots) {
     root.querySelector("summary").addEventListener("click", () => {
+      syncAvailability();
       for (const other of roots) if (other !== root) other.open = false;
     });
     root.querySelector("summary").addEventListener("pointerenter", () => {
+      syncAvailability();
       if (roots.some((n) => n.open)) {
         for (const other of roots) other.open = other === root;
       }
@@ -47,6 +60,7 @@ export function setupDesktopMenus({ getCellSize, getName, onError, onLayout }) {
     }
     const root = e.target.closest(".app-menu");
     if (!root) return;
+    syncAvailability();
     if (
       ["ArrowLeft", "ArrowRight"].includes(e.key) &&
       !e.target.closest(".menu-submenu")

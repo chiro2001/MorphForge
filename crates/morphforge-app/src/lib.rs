@@ -25,3 +25,5 @@ pub mod mesh_tools;
 pub mod minecraft;
 
 pub mod model_export;
+
+pub mod selection;

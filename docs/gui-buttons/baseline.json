@@ -1,0 +1,16 @@
+[
+  {
+    "case": "settings-save-feedback",
+    "saved": true,
+    "feedbackVisible": false
+  },
+  {
+    "case": "context-after-tab-switch",
+    "hidden": true
+  },
+  {
+    "case": "modal-invalid-input-feedback",
+    "message": "材质参数范围：金属度/粗糙度/不透明度0..1，发光0..3",
+    "feedbackInsideDialog": false
+  }
+]

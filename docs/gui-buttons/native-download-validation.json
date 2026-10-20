@@ -1,0 +1,35 @@
+{
+  "files": [
+    {
+      "valid": true,
+      "sha256": "cd5656f707a620131d56aad0668f442d79961b7a7f0c3a9beb6484c1a53a5ef7",
+      "bytes": 2480,
+      "name": "未命名作品.glb"
+    },
+    {
+      "valid": true,
+      "sha256": "d5b2fffac959cf2b8d01c5e3723a86899d35b6c7b2733a46781e6c4911a5d1c7",
+      "bytes": 13169,
+      "name": "未命名作品.json"
+    },
+    {
+      "valid": true,
+      "sha256": "627da2825bd43f6bafe323115505ea8f92229e0dbe61c7f3d93dce62b6f78b55",
+      "bytes": 986,
+      "name": "未命名作品.obj.zip"
+    },
+    {
+      "valid": true,
+      "sha256": "cc330d2abbe6aabfeda5db9ec6e15b43fb3af8c4ed0791c387518c180c09fb53",
+      "bytes": 1036,
+      "name": "未命名作品.ply"
+    },
+    {
+      "valid": true,
+      "sha256": "a964f1ce21a85c1995570354f1b70386c0a862c383e28a144e20116a2a4fc1a7",
+      "bytes": 684,
+      "name": "未命名作品.stl"
+    }
+  ],
+  "success": true
+}

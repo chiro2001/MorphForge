@@ -4,6 +4,7 @@
 
 - [用户指南](docs/USER-GUIDE.md)：安装、配置、编辑、AI、compact、作品库与 OSC 发布。
 - [交付记录](docs/DELIVERY.md) · [实施状态及证据](docs/plan/STATUS.md) · [已确认设计](docs/plan/README.md) · [验收标准](docs/plan/ACCEPTANCE.md)。
+- gamepc 开发测试副本 **0.14.1**：补测GUI按钮，修复设置/弹窗提示不可见、上下文面板消失及变换/换材质后选区丢失。[按钮验收记录](docs/gui-buttons/RESULTS.md)。
 - gamepc 开发测试副本 **0.14.0**：右侧按创作过程展示思考、正文、工具摘要和截图，修复滚动跟随与中文历史分页；新增文件/编辑等桌面菜单，以及GLB、OBJ ZIP、PLY、STL导出。[使用与验证](docs/studio-v14/RESULTS.md)。
 - gamepc 开发测试副本 **0.13.0**：MF6 统一240bit帧、三角面与单对象体素斜面、历史删除补播、Minecraft建筑源库／资源包状态／独立预览／可撤销导入。MF6 16K配套头像已上传并通过三项服务端分析，尚未真实多人验收。[分阶段计划](docs/mf6/PLAN.md) · [验证记录](docs/mf6/RESULTS.md)。
 - gamepc 开发测试副本 **0.10.0**：读取参考图像素、缩放副本、图片转彩色体素平面、连续循环补播和三种发送顺序；兼容MF5 v15、新1%～1000%缩放、实时材质与48种原创纹理。原安装与数据保留，未新增Release。[本轮功能与可行性](docs/image-stream/DESIGN.md) · [验证](docs/image-stream/RESULTS.md)。
@@ -117,7 +118,7 @@ API连接可自定义 **Chat Completions 或 Responses** 服务、Base URL、模
 
 默认回归只向9012发送，不向9000发包或启动VRChat。2026-10-19经用户明确授权，已上传并核验私有 **MorphForge FullFT 16K**：实际包总256bit、完整FT161、Store16384，服务端三项分析均200。修复了Catalog metadata布局、FullFT场景根名和人物特效Pickup碰撞力；[最终证据](docs/security-check-failure/FINAL-FULLFT.md)与[客户端复核步骤](docs/security-check-failure/CLIENT-RETEST.md)。
 
-网络发布没有远端ACK；本机发送进度不能证明其他玩家已经显示。真实客户端加载、多人及VR手势仍待现场确认。当前开发副本为0.14.0；公开Release按用户要求另行发布。
+网络发布没有远端ACK；本机发送进度不能证明其他玩家已经显示。真实客户端加载、多人及VR手势仍待现场确认。当前开发副本为0.14.1；公开Release按用户要求另行发布。
 
 ## 开发入口
 
