@@ -15,15 +15,120 @@
       <div class="brand">
         <b>M</b><span>MorphForge<small>体素艺术工作台</small></span>
       </div>
+      <nav id="desktopMenu" class="desktop-menu" aria-label="应用菜单">
+        <details class="app-menu">
+          <summary>文件</summary>
+          <div role="menu">
+            <button role="menuitem" data-command="newProject">
+              新建项目…<kbd>Ctrl+N</kbd>
+            </button>
+            <button role="menuitem" data-command="workspaceOpen">
+              项目与对话…
+            </button>
+            <button role="menuitem" data-command="importProject">
+              打开工程 JSON…<kbd>Ctrl+O</kbd>
+            </button>
+            <button role="menuitem" data-command="exportProject">
+              保存工程副本…<kbd>Ctrl+S</kbd>
+            </button>
+            <div class="menu-divider"></div>
+            <details class="menu-submenu">
+              <summary>导出3D模型 <span>›</span></summary>
+              <div role="menu">
+                <button role="menuitem" data-export="glb">
+                  GLB · 材质与贴图</button
+                ><button role="menuitem" data-export="obj">
+                  OBJ + MTL · ZIP</button
+                ><button role="menuitem" data-export="ply">
+                  PLY · 顶点颜色</button
+                ><button role="menuitem" data-export="stl">STL · 几何</button>
+              </div>
+            </details>
+            <button role="menuitem" data-command="saveArtwork">
+              保存到作品库…
+            </button>
+          </div>
+        </details>
+        <details class="app-menu">
+          <summary>编辑</summary>
+          <div role="menu">
+            <button role="menuitem" data-command="undo">
+              撤销<kbd>Ctrl+Z</kbd></button
+            ><button role="menuitem" data-command="redo">
+              重做<kbd>Ctrl+Y</kbd>
+            </button>
+            <div class="menu-divider"></div>
+            <button role="menuitem" data-command="copySelection">
+              复制选中内容</button
+            ><button role="menuitem" data-command="moveSelection">
+              移动选中内容</button
+            ><button role="menuitem" data-command="rotateSelection">
+              旋转选中内容</button
+            ><button role="menuitem" data-command="mirrorSelection">
+              镜像选中内容</button
+            ><button role="menuitem" data-command="centerScene">
+              整体定位…
+            </button>
+          </div>
+        </details>
+        <details class="app-menu">
+          <summary>视图</summary>
+          <div role="menu">
+            <button role="menuitem" data-command="fitView">适应整个作品</button
+            ><button role="menuitem" data-command="capture">拍摄三视图</button
+            ><button role="menuitem" data-command="renderOptionsOpen">
+              画质与显示…
+            </button>
+            <div class="menu-divider"></div>
+            <button role="menuitem" id="toggleTools">显示 / 隐藏绘制工具</button
+            ><button role="menuitem" id="toggleObserver">
+              显示 / 隐藏创作观察</button
+            ><button role="menuitem" data-command="timelineToggle">
+              原始事件与诊断
+            </button>
+          </div>
+        </details>
+        <details class="app-menu">
+          <summary>资源</summary>
+          <div role="menu">
+            <button role="menuitem" data-command="libraryOpen">作品库…</button
+            ><button role="menuitem" data-command="referenceOpen">
+              参考图库…</button
+            ><button role="menuitem" data-command="minecraftOpen">
+              Minecraft 建筑…</button
+            ><button role="menuitem" data-command="pixelThemeOpen">
+              内置材质…</button
+            ><button role="menuitem" data-command="packImport">
+              导入材质包…
+            </button>
+          </div>
+        </details>
+        <details class="app-menu">
+          <summary>设置</summary>
+          <div role="menu">
+            <button role="menuitem" data-command="settingsOpen">
+              连接、模型与预算…</button
+            ><button role="menuitem" data-command="historyOpen">
+              版本历史…</button
+            ><button role="menuitem" data-command="diagnosticsExport">
+              导出诊断记录…
+            </button>
+          </div>
+        </details>
+      </nav>
       <input id="projectName" value="未命名作品" aria-label="工程名称" />
       <span id="saveState">本机保存</span>
       <span class="grow"></span>
-      <button id="newProject">新建项目</button>
-      <button id="workspaceOpen">项目与对话</button>
-      <button id="settingsOpen">配置</button>
-      <button id="libraryOpen">作品库</button>
-      <button id="exportProject">导出工程</button>
-      <button id="importProject">导入</button>
+
+      <div class="header-actions" hidden>
+        <button id="newProject">新建项目</button
+        ><button id="workspaceOpen">项目与对话</button
+        ><button id="exportProject">保存工程副本</button
+        ><button id="saveArtwork">保存到作品库</button
+        ><button id="importProject">导入</button>
+      </div>
+      <button id="libraryOpen">作品库</button
+      ><button id="settingsOpen">设置</button>
       <input type="file" id="projectFile" accept=".json" hidden />
       <span id="connectionBadge" class="badge">独立创作</span>
     </header>
@@ -59,19 +164,46 @@
 
         <details id="meshPanel">
           <summary>多边形与斜面</summary>
-          <label>AI建模风格<select id="modelingStyle"><option value="mixed">混合 · 体素与多边形</option><option value="voxel">体素 · 可加入斜面</option><option value="lowpoly">低多边形 · 逐面纯色</option></select></label>
-          <label>分组<input id="meshGroup" value="polygon" maxlength="128" /></label>
-          <label>面颜色<input id="meshColor" type="color" value="#e7a34b" /></label>
+          <label
+            >AI建模风格<select id="modelingStyle">
+              <option value="mixed">混合 · 体素与多边形</option>
+              <option value="voxel">体素 · 可加入斜面</option>
+              <option value="lowpoly">低多边形 · 逐面纯色</option>
+            </select></label
+          >
+          <label
+            >分组<input id="meshGroup" value="polygon" maxlength="128"
+          /></label>
+          <label
+            >面颜色<input id="meshColor" type="color" value="#e7a34b"
+          /></label>
           <label><input id="meshDoubleSided" type="checkbox" />双面显示</label>
           <label>顶点A · X,Y,Z<input id="meshA" value="-8, 0, 0" /></label>
           <label>顶点B · X,Y,Z<input id="meshB" value="8, 0, 0" /></label>
           <label>顶点C · X,Y,Z<input id="meshC" value="0, 16, 0" /></label>
-          <div class="double"><button id="meshAdd">添加三角面</button><button id="meshLoadSelection">读取选中面</button><button id="meshUpdate">更新选中面</button><button id="meshDelete">删除选中面</button></div>
+          <div class="double">
+            <button id="meshAdd">添加三角面</button
+            ><button id="meshLoadSelection">读取选中面</button
+            ><button id="meshUpdate">更新选中面</button
+            ><button id="meshDelete">删除选中面</button>
+          </div>
           <label>斜面起点<input id="wedgeMin" value="-8, 0, 0" /></label>
           <label>斜面尺寸<input id="wedgeSize" value="16, 8, 16" /></label>
-          <label>上升方向<select id="wedgeDirection"><option value="+x">+X</option><option value="-x">−X</option><option value="+z">+Z</option><option value="-z">−Z</option></select></label>
-          <div class="double"><button id="voxelWedge">添加体素斜面</button><button id="meshWedge">添加多边形斜面</button></div>
-          <p class="caption">体素斜面使用所选材质、按整体擦除；多边形斜面使用面颜色、可逐面编辑。选择工具可移动、复制或改色。向VRC发送需要MF6头像。</p>
+          <label
+            >上升方向<select id="wedgeDirection">
+              <option value="+x">+X</option>
+              <option value="-x">−X</option>
+              <option value="+z">+Z</option>
+              <option value="-z">−Z</option>
+            </select></label
+          >
+          <div class="double">
+            <button id="voxelWedge">添加体素斜面</button
+            ><button id="meshWedge">添加多边形斜面</button>
+          </div>
+          <p class="caption">
+            体素斜面使用所选材质、按整体擦除；多边形斜面使用面颜色、可逐面编辑。选择工具可移动、复制或改色。向VRC发送需要MF6头像。
+          </p>
         </details>
 
         <div class="section-title">材质</div>
@@ -89,10 +221,16 @@
           />
         </div>
         <button id="paintSelection" class="wide">给选中内容换材质</button>
-        <button id="runtimeMaterialOpen" class="wide">＋实时颜色 / 程序材质</button>
-        <button id="pixelThemeOpen" class="wide">内置方块工坊 · 48种材质</button>
+        <button id="runtimeMaterialOpen" class="wide">
+          ＋实时颜色 / 程序材质
+        </button>
+        <button id="pixelThemeOpen" class="wide">
+          内置方块工坊 · 48种材质
+        </button>
         <button id="imageToolsOpen" class="wide">图片像素 / 转体素平面</button>
-        <button id="minecraftOpen" class="wide">Minecraft 建筑导入与源库</button>
+        <button id="minecraftOpen" class="wide">
+          Minecraft 建筑导入与源库
+        </button>
         <button id="packImport" class="wide">导入 Minecraft Java 资源包</button>
         <input id="packFile" type="file" accept=".zip" hidden />
 
@@ -160,7 +298,6 @@
           <button data-tab="ai" class="selected">AI创作</button>
           <button data-tab="text">字体文字</button>
           <button data-tab="sync">VRC发布</button>
-          <button data-tab="context">上下文</button>
         </nav>
 
         <section id="tab-ai">
@@ -169,34 +306,51 @@
             <span id="providerState" class="badge">检查配置</span>
             <button id="aiSettingsOpen" title="打开连接与创作配置">配置</button>
           </div>
-          <div id="schemaUpgradeNotice" class="status" hidden>此对话使用旧版工具说明。新开对话可使用新工具；升级旧对话会改变静态前缀、需要重新预热缓存。较大上下文建议新开对话，避免一次完整冷输入。</div>
-          <button id="schemaUpgradeContext" class="wide" hidden>升级旧对话工具并重新预热</button>
-          <label
-            >创作预设<select id="preset">
-              <option value="sketch">快速草图 · 轮廓优先</option>
-              <option value="standard" selected>标准创作 · 结构与细节</option>
-              <option value="detailed">精细作品 · 多轮复核</option>
-            </select></label
-          >
-          <p id="goalStatus" class="caption goal-progress" hidden></p>
+          <div id="schemaUpgradeNotice" class="status" hidden>
+            此对话使用旧版工具说明。新开对话可使用新工具；升级旧对话会改变静态前缀、需要重新预热缓存。较大上下文建议新开对话，避免一次完整冷输入。
+          </div>
+          <button id="schemaUpgradeContext" class="wide" hidden>
+            升级旧对话工具并重新预热
+          </button>
+          <details class="advanced-fold">
+            <summary>创作预设与目标</summary>
+            <label
+              >创作预设<select id="preset">
+                <option value="sketch">快速草图 · 轮廓优先</option>
+                <option value="standard" selected>标准创作 · 结构与细节</option>
+                <option value="detailed">精细作品 · 多轮复核</option>
+              </select></label
+            >
+            <p id="goalStatus" class="caption goal-progress" hidden></p>
+          </details>
           <div class="chat-heading">
             <span id="activeSessionTitle">对话</span>
             <button id="newContext">新开对话</button>
-            <span class="caption">消息按顺序保留，刷新不会重复。</span>
           </div>
-          <div id="chat" class="chat" aria-live="polite">
-            <p class="caption chat-placeholder">
-              描述你想搭建的作品。运行中可以插话、排队下一轮或打断当前步骤。
-            </p>
+          <div class="observation-heading">
+            <b>创作观察</b><button id="activityOlder">更早过程</button>
           </div>
+          <div
+            id="activityFeed"
+            class="activity-feed"
+            role="log"
+            aria-label="模型创作过程"
+            aria-live="off"
+          ></div>
+          <button id="activityLatest" class="return-latest" hidden>
+            返回最新
+          </button>
 
-          <div class="pending-block">
-            <div class="pending-heading">
-              <span>待处理消息</span
-              ><span id="pendingCount" class="badge">0</span>
+          <details class="advanced-fold pending-fold">
+            <summary>消息队列</summary>
+            <div class="pending-block">
+              <div class="pending-heading">
+                <span>待处理消息</span
+                ><span id="pendingCount" class="badge">0</span>
+              </div>
+              <div id="pendingMessages" class="pending-list"></div>
             </div>
-            <div id="pendingMessages" class="pending-list"></div>
-          </div>
+          </details>
 
           <details class="reference-composer" id="referenceComposer">
             <summary>
@@ -249,7 +403,7 @@
           </div>
           <textarea
             id="prompt"
-            rows="4"
+            rows="3"
             placeholder="例如：搭一座云上的铜色灯塔，保留负空间，用三视图检查轮廓…"
           ></textarea>
           <div class="composer-actions">
@@ -280,21 +434,6 @@
             暂停会取消当前请求并冻结后续执行；需要继续修改时可在发送方式中选择“打断并继续”。
           </p>
           <div id="runStatus" class="status">待命</div>
-          <details>
-            <summary>Recipe 工作区</summary>
-            <textarea id="recipeCode" rows="10" spellcheck="false">
-mf.group('main', () => {
-  mf.box([-3,0,-3], [6,1,6], {style:'stone'});
-  mf.box([-1,1,-1], [2,5,2], {style:'copper'});
-  mf.box([-2,6,-2], [4,1,4], {style:'lamp'});
-});</textarea
-            >
-            <div class="double">
-              <button id="runRecipe">执行 Recipe</button>
-              <button id="dryRecipe">只估算</button>
-            </div>
-          </details>
-          <button id="saveArtwork" class="wide">保存到作品库</button>
         </section>
 
         <section id="tab-text" hidden>
@@ -469,18 +608,46 @@ mf.group('main', () => {
               value="0"
               min="0"
           /></label>
-          <label class="check"><input id="loopReplay" type="checkbox" />完成后连续循环补播（MF5/MF6）</label>
-          <label>发送顺序<select id="sendOrder"><option value="volume">大块优先，同体积从下到上、从左到右</option><option value="bottom_up">从下到上、从左到右</option><option value="material">材质优先，侧重双体素配对</option></select></label>
+          <label class="check"
+            ><input
+              id="loopReplay"
+              type="checkbox"
+            />完成后连续循环补播（MF5/MF6）</label
+          >
+          <label
+            >发送顺序<select id="sendOrder">
+              <option value="volume">大块优先，同体积从下到上、从左到右</option>
+              <option value="bottom_up">从下到上、从左到右</option>
+              <option value="material">材质优先，侧重双体素配对</option>
+            </select></label
+          >
           <p id="replayStatus" class="caption"></p>
           <div id="vrcBoundsStatus" class="status"></div>
-          <label class="check"><input id="autoCenterOnFinish" type="checkbox" />AI 完成前自动落地居中</label>
-          <p class="caption">允许负 X/Z；目标范围 X/Z -128～127、Y 0～255。显示缩放不扩大编码范围。</p>
+          <label class="check"
+            ><input id="autoCenterOnFinish" type="checkbox" />AI
+            完成前自动落地居中</label
+          >
+          <p class="caption">
+            允许负 X/Z；目标范围 X/Z -128～127、Y
+            0～255。显示缩放不扩大编码范围。
+          </p>
           <button id="catalogExport" class="wide">导出 Avatar 材质目录</button>
-          <button id="avatarCatalogImport" class="wide">导入目标 Avatar 材质目录</button>
-          <input id="avatarCatalogFile" type="file" accept=".json,.zip" hidden />
+          <button id="avatarCatalogImport" class="wide">
+            导入目标 Avatar 材质目录
+          </button>
+          <input
+            id="avatarCatalogFile"
+            type="file"
+            accept=".json,.zip"
+            hidden
+          />
           <div id="materialCompatibility" class="status"></div>
-          <button id="avatarCatalogMf6" class="wide">使用配套 MF6 16K 头像目录</button>
-          <button id="avatarCatalogBundled" class="wide">使用配套 MF5 0.9 头像目录</button>
+          <button id="avatarCatalogMf6" class="wide">
+            使用配套 MF6 16K 头像目录
+          </button>
+          <button id="avatarCatalogBundled" class="wide">
+            使用配套 MF5 0.9 头像目录
+          </button>
           <button id="avatarCatalogMf4" class="wide">使用旧版 MF4 目录</button>
           <button id="avatarCatalogClear" class="wide">清除目标目录声明</button>
           <div id="syncStatus" class="status">发送已关闭</div>
@@ -499,32 +666,38 @@ mf.group('main', () => {
             />保持水平，保留朝向</label
           >
           <label>显示比例 <output id="scaleValue">100%</output></label>
-          <input id="scale" type="range" value="2" min="0" max="3" step="0.01" />
-          <div class="row"><input id="scalePercent" type="number" min="1" max="1000" step="1" value="100" aria-label="显示比例百分数" /><span>%</span></div>
-          <div class="row"><button data-scale="1">1%</button><button data-scale="10">10%</button><button data-scale="100">100%</button><button data-scale="1000">1000%</button></div>
-          <p id="scaleHint" class="caption">新100%＝旧5%，标准格长12.5毫米；缩放不改变体素坐标。</p>
+          <input
+            id="scale"
+            type="range"
+            value="2"
+            min="0"
+            max="3"
+            step="0.01"
+          />
+          <div class="row">
+            <input
+              id="scalePercent"
+              type="number"
+              min="1"
+              max="1000"
+              step="1"
+              value="100"
+              aria-label="显示比例百分数"
+            /><span>%</span>
+          </div>
+          <div class="row">
+            <button data-scale="1">1%</button
+            ><button data-scale="10">10%</button
+            ><button data-scale="100">100%</button
+            ><button data-scale="1000">1000%</button>
+          </div>
+          <p id="scaleHint" class="caption">
+            新100%＝旧5%，标准格长12.5毫米；缩放不改变体素坐标。
+          </p>
           <button id="resetAnchor" class="wide">移到面前</button>
           <div class="caption">
             MF5：240bit三通道＋14bit定位。实时RGB、PBR与程序材质；同材质单位体素可两块合批。本体开关仅本地，无面捕；MF4/MF3为兼容档。
           </div>
-        </section>
-
-        <section id="tab-context" hidden>
-          <div id="contextStats" class="status"></div>
-          <button id="compact" class="wide primary">Compact 上下文</button>
-          <label
-            >固定要求<textarea
-              id="pinnedNotes"
-              rows="5"
-              placeholder="不会依赖摘要记忆的美术要求和约束"
-            ></textarea>
-          </label>
-          <button id="saveNotes" class="wide">保存固定要求</button>
-          <div class="section-title">最近compact摘要</div>
-          <pre id="contextSummary">暂无</pre>
-          <p class="caption">
-            compact只整理模型活跃上下文。完整消息、recipe、截图、工具和作品版本保留。
-          </p>
         </section>
       </aside>
     </main>
@@ -762,6 +935,45 @@ mf.group('main', () => {
               相同几何的重复截图不增加轮数。续作共用本次预算；连续三次无进展会停止并保留草稿。恢复后输入新要求可继续，重启不会自动调用模型。
             </p>
           </details>
+          <details id="chatArchive" class="advanced-fold">
+            <summary>对话文字记录</summary>
+            <div id="chat" class="chat" aria-live="polite">
+              <p class="caption chat-placeholder">
+                描述你想搭建的作品。运行中可以插话、排队下一轮或打断当前步骤。
+              </p>
+            </div>
+          </details>
+          <details id="tab-context" class="settings-card">
+            <summary>上下文与固定要求</summary>
+            <div id="contextStats" class="status"></div>
+            <button id="compact" class="wide primary">Compact 上下文</button>
+            <label
+              >固定要求<textarea
+                id="pinnedNotes"
+                rows="5"
+                placeholder="不会依赖摘要记忆的美术要求和约束"
+              ></textarea>
+            </label>
+            <button id="saveNotes" class="wide">保存固定要求</button>
+            <div class="section-title">最近compact摘要</div>
+            <pre id="contextSummary">暂无</pre>
+            <p class="caption">
+              compact只整理模型活跃上下文。完整消息、recipe、截图、工具和作品版本保留。
+            </p>
+          </details>
+          <details class="settings-card">
+            <summary>Recipe 工作区</summary>
+            <textarea id="recipeCode" rows="10" spellcheck="false">
+mf.group('main', () => {
+  mf.box([-3,0,-3], [6,1,6], {style:'stone'});
+  mf.box([-1,1,-1], [2,5,2], {style:'copper'});
+  mf.box([-2,6,-2], [4,1,4], {style:'lamp'});
+});</textarea>
+            <div class="double">
+              <button id="runRecipe">执行 Recipe</button>
+              <button id="dryRecipe">只估算</button>
+            </div>
+          </details>
           <section class="settings-card">
             <h2>自动整理上下文</h2>
             <label class="check"
@@ -788,13 +1000,14 @@ mf.group('main', () => {
       <span id="voxelCount">0格</span>
       <span id="bounds">范围为空</span>
       <span class="grow"></span>
-      <button id="timelineToggle">创作时间轴 ▴</button>
+      <button id="timelineToggle">事件与诊断 ▴</button>
     </footer>
     <section id="timeline" hidden>
       <div class="row">
-        <b>创作时间轴</b>
+        <b>原始事件 · 诊断</b>
         <button id="timelineOlder">更早记录</button
-        ><button id="timelineLatest">最近记录</button>
+        ><button id="timelineLatest">最近记录</button
+        ><button id="timelineResume" hidden>返回最新</button>
         <label
           ><input id="timelineFollow" type="checkbox" checked />跟随最新</label
         >
@@ -837,44 +1050,229 @@ mf.group('main', () => {
       <div id="events"></div>
     </section>
 
-    <dialog id="renderOptionsDialog" aria-labelledby="renderOptionsTitle">
-      <div class="row"><h2 id="renderOptionsTitle" class="grow">画质与显示</h2><button id="renderOptionsClose">关闭</button></div>
-      <div class="double">
-        <label>观察画质<select id="renderQuality"><option value="high">精细 · 2× 像素采样</option><option value="standard">标准 · 节省显卡负载</option></select></label>
-        <label>手动截图画质<select id="captureQuality"><option value="high">精细 · 2× 超采样后缩图</option><option value="standard">标准 · 原尺寸</option></select></label>
+    <dialog id="activityImageDialog" class="activity-image-dialog">
+      <div class="row">
+        <h2 id="activityImageTitle" class="grow">截图</h2>
+        <button id="activityImageClose">关闭</button>
       </div>
-      <label class="check"><input id="voxelGrid" type="checkbox" />观察时显示体素格线</label>
-      <label class="check"><input id="captureGrid" type="checkbox" />手动截图包含格线</label>
-      <label class="check"><input id="surfaceCulling" type="checkbox" checked />剔除连续透明介质的内部界面</label>
-      <label class="check"><input id="showTargetBounds" type="checkbox" />显示 VRC 256³ 发布边界</label>
-      <p class="caption">近处保持像素纹理；远处使用独立纹理层 mipmap。VRC 预览使用固定虚拟光照。隐藏分组时暂停内部界面剔除，避免被隐藏的邻居留下缺面。观察辅助边界不进入截图。</p>
+      <img id="activityImage" alt="模型截图" />
+    </dialog>
+    <dialog id="modelExportDialog" aria-labelledby="modelExportTitle">
+      <div class="row">
+        <h2 id="modelExportTitle" class="grow">导出3D模型</h2>
+        <button id="modelExportClose">关闭</button>
+      </div>
+      <label
+        >格式<select id="modelExportFormat">
+          <option value="glb">GLB · 单文件，PBR材质与贴图</option>
+          <option value="obj">OBJ + MTL + 贴图 · ZIP</option>
+          <option value="ply">PLY · 顶点颜色</option>
+          <option value="stl">STL · 仅几何，毫米</option>
+        </select></label
+      >
+      <label
+        >每格对应米数<input
+          id="modelExportCellSize"
+          type="number"
+          min="0.000001"
+          max="1000"
+          step="any"
+          value="0.25"
+      /></label>
+      <p id="modelExportHint" class="caption"></p>
+      <p class="caption">
+        导出整个工程，包含本地预览中隐藏的分组。保留独立壳体和内部面，不自动做布尔并集或补洞；程序材质使用静态基础色，图片动画使用首帧。导出不会修改作品。
+      </p>
+      <div id="modelExportStatus" role="status" class="caption"></div>
+      <button id="modelExportApply" class="primary wide">导出模型</button>
+    </dialog>
+    <dialog id="renderOptionsDialog" aria-labelledby="renderOptionsTitle">
+      <div class="row">
+        <h2 id="renderOptionsTitle" class="grow">画质与显示</h2>
+        <button id="renderOptionsClose">关闭</button>
+      </div>
+      <div class="double">
+        <label
+          >观察画质<select id="renderQuality">
+            <option value="high">精细 · 2× 像素采样</option>
+            <option value="standard">标准 · 节省显卡负载</option>
+          </select></label
+        >
+        <label
+          >手动截图画质<select id="captureQuality">
+            <option value="high">精细 · 2× 超采样后缩图</option>
+            <option value="standard">标准 · 原尺寸</option>
+          </select></label
+        >
+      </div>
+      <label class="check"
+        ><input id="voxelGrid" type="checkbox" />观察时显示体素格线</label
+      >
+      <label class="check"
+        ><input id="captureGrid" type="checkbox" />手动截图包含格线</label
+      >
+      <label class="check"
+        ><input
+          id="surfaceCulling"
+          type="checkbox"
+          checked
+        />剔除连续透明介质的内部界面</label
+      >
+      <label class="check"
+        ><input id="showTargetBounds" type="checkbox" />显示 VRC 256³
+        发布边界</label
+      >
+      <p class="caption">
+        近处保持像素纹理；远处使用独立纹理层 mipmap。VRC
+        预览使用固定虚拟光照。隐藏分组时暂停内部界面剔除，避免被隐藏的邻居留下缺面。观察辅助边界不进入截图。
+      </p>
       <p id="renderDiagnostics" class="caption"></p>
     </dialog>
     <dialog id="transformDialog" aria-labelledby="transformTitle">
-      <div class="row"><h2 id="transformTitle" class="grow">整体定位</h2><button id="transformClose">关闭</button></div>
-      <label>操作<select id="transformAction"><option value="center_on_ground">落地居中</option><option value="translate">按偏移量整体平移</option></select></label>
-      <div class="triple"><label>X<input id="shiftX" type="number" step="1" value="0" /></label><label>Y<input id="shiftY" type="number" step="1" value="0" /></label><label>Z<input id="shiftZ" type="number" step="1" value="0" /></label></div>
-      <button id="transformPreview">预览偏移与边界</button><pre id="transformReport">请预览后应用。</pre>
-      <p class="caption">使用整数体素格；可撤销。几何移动不会改写 Recipe 源码，重新 replace 源码仍使用原坐标。超过 256 格的尺寸不能仅靠居中解决。</p>
-      <button id="transformApply" class="primary wide" disabled>应用整体定位</button>
+      <div class="row">
+        <h2 id="transformTitle" class="grow">整体定位</h2>
+        <button id="transformClose">关闭</button>
+      </div>
+      <label
+        >操作<select id="transformAction">
+          <option value="center_on_ground">落地居中</option>
+          <option value="translate">按偏移量整体平移</option>
+        </select></label
+      >
+      <div class="triple">
+        <label>X<input id="shiftX" type="number" step="1" value="0" /></label
+        ><label>Y<input id="shiftY" type="number" step="1" value="0" /></label
+        ><label>Z<input id="shiftZ" type="number" step="1" value="0" /></label>
+      </div>
+      <button id="transformPreview">预览偏移与边界</button>
+      <pre id="transformReport">请预览后应用。</pre>
+      <p class="caption">
+        使用整数体素格；可撤销。几何移动不会改写 Recipe 源码，重新 replace
+        源码仍使用原坐标。超过 256 格的尺寸不能仅靠居中解决。
+      </p>
+      <button id="transformApply" class="primary wide" disabled>
+        应用整体定位
+      </button>
     </dialog>
-    <dialog id="runtimeMaterialDialog" class="modal"><h2>实时材质</h2>
-      <p class="caption">MF5可直接传新颜色和表面描述。原始材质完整保存；VRC量化结果在下方显示。新图片贴图仍需打包。</p>
-      <label>名称<input id="runtimeName" value="我的材质" maxlength="128" /></label>
-      <div class="double"><label>类型<select id="runtimeKind"><option value="color">纯色（RGB24）</option><option value="pbr">PBR / 金属 / 玻璃</option><option value="water">程序水面</option><option value="cloud">程序云</option><option value="wood">程序木纹</option><option value="stone">程序石纹</option></select></label><label>颜色<input id="runtimeColor" type="color" value="#76bce8" /></label></div>
-      <div id="runtimeSurfaceFields" class="double" hidden><label>金属度<input id="runtimeMetal" type="number" min="0" max="1" step="0.05" value="0" /></label><label>粗糙度<input id="runtimeRough" type="number" min="0" max="1" step="0.05" value="0.9" /></label><label>不透明度<input id="runtimeOpacity" type="number" min="0" max="1" step="0.05" value="1" /></label><label>发光<input id="runtimeEmission" type="number" min="0" max="3" step="0.1" value="0" /></label></div>
-      <div id="runtimeNoiseFields" class="double" hidden><label>纹理比例<input id="runtimeNoiseScale" type="number" min="0.25" max="8" step="0.25" value="1" /></label><label>变化种子<input id="runtimeSeed" type="number" min="0" max="7" step="1" value="0" /></label></div>
-      <p id="runtimeWireHint" class="caption"></p><pre id="runtimeReceipt" class="status"></pre>
-      <div class="row"><button id="runtimeMaterialClose">关闭</button><button id="runtimeMaterialApply" class="primary">添加并选用</button></div>
+    <dialog id="runtimeMaterialDialog" class="modal">
+      <h2>实时材质</h2>
+      <p class="caption">
+        MF5可直接传新颜色和表面描述。原始材质完整保存；VRC量化结果在下方显示。新图片贴图仍需打包。
+      </p>
+      <label
+        >名称<input id="runtimeName" value="我的材质" maxlength="128"
+      /></label>
+      <div class="double">
+        <label
+          >类型<select id="runtimeKind">
+            <option value="color">纯色（RGB24）</option>
+            <option value="pbr">PBR / 金属 / 玻璃</option>
+            <option value="water">程序水面</option>
+            <option value="cloud">程序云</option>
+            <option value="wood">程序木纹</option>
+            <option value="stone">程序石纹</option>
+          </select></label
+        ><label
+          >颜色<input id="runtimeColor" type="color" value="#76bce8"
+        /></label>
+      </div>
+      <div id="runtimeSurfaceFields" class="double" hidden>
+        <label
+          >金属度<input
+            id="runtimeMetal"
+            type="number"
+            min="0"
+            max="1"
+            step="0.05"
+            value="0" /></label
+        ><label
+          >粗糙度<input
+            id="runtimeRough"
+            type="number"
+            min="0"
+            max="1"
+            step="0.05"
+            value="0.9" /></label
+        ><label
+          >不透明度<input
+            id="runtimeOpacity"
+            type="number"
+            min="0"
+            max="1"
+            step="0.05"
+            value="1" /></label
+        ><label
+          >发光<input
+            id="runtimeEmission"
+            type="number"
+            min="0"
+            max="3"
+            step="0.1"
+            value="0"
+        /></label>
+      </div>
+      <div id="runtimeNoiseFields" class="double" hidden>
+        <label
+          >纹理比例<input
+            id="runtimeNoiseScale"
+            type="number"
+            min="0.25"
+            max="8"
+            step="0.25"
+            value="1" /></label
+        ><label
+          >变化种子<input
+            id="runtimeSeed"
+            type="number"
+            min="0"
+            max="7"
+            step="1"
+            value="0"
+        /></label>
+      </div>
+      <p id="runtimeWireHint" class="caption"></p>
+      <pre id="runtimeReceipt" class="status"></pre>
+      <div class="row">
+        <button id="runtimeMaterialClose">关闭</button
+        ><button id="runtimeMaterialApply" class="primary">添加并选用</button>
+      </div>
     </dialog>
     <dialog id="pixelThemeDialog" aria-labelledby="pixelThemeTitle">
-      <div class="row"><h2 id="pixelThemeTitle" class="grow">内置像素工坊</h2><button id="pixelThemeClose">关闭</button></div>
-      <p>原创 16×16 Minecraft风格主题 · MIT许可 · 配套MF5头像内置
-      <label>主题<select id="pixelThemeChoice"><option value="block-workshop">方块工坊 · 48种</option><option value="pixel-workshop">原像素工坊 · 19种（兼容）</option></select></label></p>
-      <div class="pixel-swatches"><span style="background:#899197">石</span><span style="background:#9d6a39">木</span><span style="background:#57943e">草</span><span style="background:#a7513d">砖</span><span style="background:#408fcc">水</span><span style="background:#edf4fa;color:#273442">云</span><span style="background:#edbe40;color:#273442">金</span></div>
-      <p class="caption">包括原木六面、木板、石材、泥土、草地、砖、沙、雪、树叶、流水、玻璃、云、铁铜金、灯石与黑曜石。不是 Minecraft 原版素材；其他主题可继续导入 Java 资源包。</p>
-      <label class="check"><input id="pixelThemeReplace" type="checkbox" />同时把当前作品的基础木石、草土、砖等映射成像素主题</label>
-      <p class="caption">新材质随作品保存；配套MF5已内置这两套主题，按身份映射。其他新图片需打包；应用主题前先停止OSC。</p>
+      <div class="row">
+        <h2 id="pixelThemeTitle" class="grow">内置像素工坊</h2>
+        <button id="pixelThemeClose">关闭</button>
+      </div>
+      <p>
+        原创 16×16 Minecraft风格主题 · MIT许可 · 配套MF5头像内置
+        <label
+          >主题<select id="pixelThemeChoice">
+            <option value="block-workshop">方块工坊 · 48种</option>
+            <option value="pixel-workshop">原像素工坊 · 19种（兼容）</option>
+          </select></label
+        >
+      </p>
+      <div class="pixel-swatches">
+        <span style="background: #899197">石</span
+        ><span style="background: #9d6a39">木</span
+        ><span style="background: #57943e">草</span
+        ><span style="background: #a7513d">砖</span
+        ><span style="background: #408fcc">水</span
+        ><span style="background: #edf4fa; color: #273442">云</span
+        ><span style="background: #edbe40; color: #273442">金</span>
+      </div>
+      <p class="caption">
+        包括原木六面、木板、石材、泥土、草地、砖、沙、雪、树叶、流水、玻璃、云、铁铜金、灯石与黑曜石。不是
+        Minecraft 原版素材；其他主题可继续导入 Java 资源包。
+      </p>
+      <label class="check"
+        ><input
+          id="pixelThemeReplace"
+          type="checkbox"
+        />同时把当前作品的基础木石、草土、砖等映射成像素主题</label
+      >
+      <p class="caption">
+        新材质随作品保存；配套MF5已内置这两套主题，按身份映射。其他新图片需打包；应用主题前先停止OSC。
+      </p>
       <button id="applyPixelTheme" class="primary wide">加入当前项目</button>
     </dialog>
     <dialog id="workspaceDialog" aria-labelledby="workspaceTitle">
@@ -882,15 +1280,32 @@ mf.group('main', () => {
         <h2 id="workspaceTitle" class="grow">项目与对话</h2>
         <button id="workspaceClose" aria-label="关闭项目与对话">关闭</button>
       </div>
-      <p class="caption">工程保存作品、材质和源码；对话独立保存模型上下文和缓存监测。切换会断开 OSC。运行中的 AI 请先停止。</p>
+      <p class="caption">
+        工程保存作品、材质和源码；对话独立保存模型上下文和缓存监测。切换会断开
+        OSC。运行中的 AI 请先停止。
+      </p>
       <form id="workspaceCreateForm">
         <div class="row">
-          <label class="grow">新建类型<select id="workspaceKind"><option value="new_project">空白项目和新对话</option><option value="new_session">当前作品的新对话</option></select></label>
-          <label class="grow">名称（可留空）<input id="workspaceName" maxlength="64" placeholder="未命名作品 / 新对话" /></label>
-          <button id="workspaceCreate" type="submit" class="primary">新建</button>
+          <label class="grow"
+            >新建类型<select id="workspaceKind">
+              <option value="new_project">空白项目和新对话</option>
+              <option value="new_session">当前作品的新对话</option>
+            </select></label
+          >
+          <label class="grow"
+            >名称（可留空）<input
+              id="workspaceName"
+              maxlength="64"
+              placeholder="未命名作品 / 新对话"
+          /></label>
+          <button id="workspaceCreate" type="submit" class="primary">
+            新建
+          </button>
         </div>
       </form>
-      <p class="caption">新对话保留当前几何与源码，不继承旧消息；首次请求可能没有缓存命中，后续仍由缓存保护监测。打开旧对话继续编辑当前作品，不会恢复旧几何版本。</p>
+      <p class="caption">
+        新对话保留当前几何与源码，不继承旧消息；首次请求可能没有缓存命中，后续仍由缓存保护监测。打开旧对话继续编辑当前作品，不会恢复旧几何版本。
+      </p>
       <p id="workspaceError" class="caption" role="alert"></p>
       <h3>本机项目</h3>
       <div id="workspaceProjects" class="workspace-list"></div>
@@ -905,21 +1320,113 @@ mf.group('main', () => {
       </div>
       <div id="timelinePreviewViewport"></div>
     </dialog>
-    <dialog id="imageToolsDialog" class="modal"><h2>图片像素与体素平面</h2>
+    <dialog id="imageToolsDialog" class="modal">
+      <h2>图片像素与体素平面</h2>
       <label>参考图片<select id="imageToolId"></select></label>
-      <img id="imageToolSource" alt="源参考图" style="max-width:100%;max-height:180px;object-fit:contain" />
-      <div class="double"><label>宽<input id="imageToolWidth" type="number" min="1" max="1024" value="64" /></label><label>高<input id="imageToolHeight" type="number" min="1" max="1024" value="64" /></label></div>
-      <label class="check"><input id="imageToolAspect" type="checkbox" checked />保持宽高比（以宽为准）</label>
-      <div class="double"><label>插值<select id="imageToolFilter"><option value="nearest">最近邻 · 像素画</option><option value="area">平滑缩小</option><option value="lanczos">Lanczos</option></select></label><label>颜色上限<input id="imageToolColors" type="number" min="1" max="4096" value="256" /></label></div>
-      <div class="double"><label>平面<select id="imageToolPlane"><option value="xy">XY · 立面 / 正面朝+Z</option><option value="xz">XZ · 地面</option><option value="yz">YZ · 侧面</option></select></label><label>厚度<input id="imageToolThickness" type="number" min="1" max="64" value="1" /></label></div>
-      <label class="check"><input id="imageToolCenter" type="checkbox" checked />底部中心定位</label>
-      <div class="triple"><label>X<input id="imageToolX" type="number" value="0" /></label><label>Y<input id="imageToolY" type="number" value="0" /></label><label>Z<input id="imageToolZ" type="number" value="0" /></label></div>
-      <label>覆盖方式<select id="imageToolCanvas"><option value="overlay">覆盖像素，透明处保留原场景</option><option value="replace">替换矩形画布，透明处擦除</option></select></label>
-      <label>透明阈值<input id="imageToolAlpha" type="number" min="1" max="255" value="16" /></label>
-      <p class="caption">缩放副本最高1024；体素平面每边最高256。透明阈值后生成不透明有色方块；默认保留透明孔后的原场景，也可整块替换，可撤销。原图始终保留；平面不是三维重建。</p>
-      <img id="imageToolPreviewImage" alt="量化预览" hidden style="max-width:100%;max-height:200px;image-rendering:pixelated" />
+      <img
+        id="imageToolSource"
+        alt="源参考图"
+        style="max-width: 100%; max-height: 180px; object-fit: contain"
+      />
+      <div class="double">
+        <label
+          >宽<input
+            id="imageToolWidth"
+            type="number"
+            min="1"
+            max="1024"
+            value="64" /></label
+        ><label
+          >高<input
+            id="imageToolHeight"
+            type="number"
+            min="1"
+            max="1024"
+            value="64"
+        /></label>
+      </div>
+      <label class="check"
+        ><input
+          id="imageToolAspect"
+          type="checkbox"
+          checked
+        />保持宽高比（以宽为准）</label
+      >
+      <div class="double">
+        <label
+          >插值<select id="imageToolFilter">
+            <option value="nearest">最近邻 · 像素画</option>
+            <option value="area">平滑缩小</option>
+            <option value="lanczos">Lanczos</option>
+          </select></label
+        ><label
+          >颜色上限<input
+            id="imageToolColors"
+            type="number"
+            min="1"
+            max="4096"
+            value="256"
+        /></label>
+      </div>
+      <div class="double">
+        <label
+          >平面<select id="imageToolPlane">
+            <option value="xy">XY · 立面 / 正面朝+Z</option>
+            <option value="xz">XZ · 地面</option>
+            <option value="yz">YZ · 侧面</option>
+          </select></label
+        ><label
+          >厚度<input
+            id="imageToolThickness"
+            type="number"
+            min="1"
+            max="64"
+            value="1"
+        /></label>
+      </div>
+      <label class="check"
+        ><input
+          id="imageToolCenter"
+          type="checkbox"
+          checked
+        />底部中心定位</label
+      >
+      <div class="triple">
+        <label>X<input id="imageToolX" type="number" value="0" /></label
+        ><label>Y<input id="imageToolY" type="number" value="0" /></label
+        ><label>Z<input id="imageToolZ" type="number" value="0" /></label>
+      </div>
+      <label
+        >覆盖方式<select id="imageToolCanvas">
+          <option value="overlay">覆盖像素，透明处保留原场景</option>
+          <option value="replace">替换矩形画布，透明处擦除</option>
+        </select></label
+      >
+      <label
+        >透明阈值<input
+          id="imageToolAlpha"
+          type="number"
+          min="1"
+          max="255"
+          value="16"
+      /></label>
+      <p class="caption">
+        缩放副本最高1024；体素平面每边最高256。透明阈值后生成不透明有色方块；默认保留透明孔后的原场景，也可整块替换，可撤销。原图始终保留；平面不是三维重建。
+      </p>
+      <img
+        id="imageToolPreviewImage"
+        alt="量化预览"
+        hidden
+        style="max-width: 100%; max-height: 200px; image-rendering: pixelated"
+      />
       <pre id="imageToolReport" class="status"></pre>
-      <div class="row"><button id="imageToolInspect">读像素</button><button id="imageToolResize">生成缩放副本</button><button id="imageToolPreview">预览平面</button><button id="imageToolApply" class="primary" disabled>应用平面</button><button id="imageToolsClose">关闭</button></div>
+      <div class="row">
+        <button id="imageToolInspect">读像素</button
+        ><button id="imageToolResize">生成缩放副本</button
+        ><button id="imageToolPreview">预览平面</button
+        ><button id="imageToolApply" class="primary" disabled>应用平面</button
+        ><button id="imageToolsClose">关闭</button>
+      </div>
     </dialog>
     <dialog id="referenceDialog" aria-labelledby="referenceTitle">
       <div class="row">
@@ -942,16 +1449,67 @@ mf.group('main', () => {
         <div id="referenceSources" class="caption"></div>
       </details>
     </dialog>
-    <dialog id="minecraftDialog" style="width:min(1050px,94vw);max-height:92vh;overflow:auto" aria-labelledby="minecraftTitle">
-      <div class="row"><h2 id="minecraftTitle" class="grow">Minecraft 建筑导入</h2><button id="mcClose">关闭</button></div>
-      <p class="caption">支持 .litematic、Sponge .schem、旧 .schematic、Java 结构 .nbt。保留原始文件；近似形状、精度损失和未知方块会在报告中列出。Bedrock 与完整世界目录暂不支持。</p>
-      <div class="row"><select id="mcSource" class="grow" aria-label="建筑源"></select><button id="mcUpload">上传建筑</button><button id="mcInspect">查看源信息</button><a id="mcOriginal" download hidden>下载原文件</a></div>
-      <input id="mcFile" type="file" accept=".litematic,.schem,.schematic,.nbt" hidden />
-      <div class="row"><label>每 MC 方块格数<select id="mcScale"><option>1</option><option>2</option><option selected>4</option><option>8</option><option>16</option></select></label><label>材质<select id="mcPack"></select></label><label>导入方式<select id="mcMode"><option value="replace">替换草稿</option><option value="overlay">覆盖指定区域</option></select></label><label>偏移 XYZ<input id="mcOffset" value="0, 0, 0" /></label></div>
-      <div class="row"><label><input id="mcCenter" type="checkbox" checked />地面中心归零</label><label><input id="mcSurface" type="checkbox" />仅可见外壳</label><button id="mcPreview">生成独立预览</button><button id="mcApply" class="primary" disabled>应用到草稿（可撤销）</button></div>
-      <div id="mcViewport" style="height:360px;position:relative"></div>
-      <pre id="mcReport" style="max-height:240px;overflow:auto;white-space:pre-wrap"></pre>
-      <p class="caption">原版或本地资源包可另行导入；新增图片材质需要重新打包 Avatar。此窗口只预览建筑，点击应用后才会修改草稿和按已有连接设置发布。</p>
+    <dialog
+      id="minecraftDialog"
+      style="width: min(1050px, 94vw); max-height: 92vh; overflow: auto"
+      aria-labelledby="minecraftTitle"
+    >
+      <div class="row">
+        <h2 id="minecraftTitle" class="grow">Minecraft 建筑导入</h2>
+        <button id="mcClose">关闭</button>
+      </div>
+      <p class="caption">
+        支持 .litematic、Sponge .schem、旧 .schematic、Java 结构
+        .nbt。保留原始文件；近似形状、精度损失和未知方块会在报告中列出。Bedrock
+        与完整世界目录暂不支持。
+      </p>
+      <div class="row">
+        <select id="mcSource" class="grow" aria-label="建筑源"></select
+        ><button id="mcUpload">上传建筑</button
+        ><button id="mcInspect">查看源信息</button
+        ><a id="mcOriginal" download hidden>下载原文件</a>
+      </div>
+      <input
+        id="mcFile"
+        type="file"
+        accept=".litematic,.schem,.schematic,.nbt"
+        hidden
+      />
+      <div class="row">
+        <label
+          >每 MC 方块格数<select id="mcScale">
+            <option>1</option>
+            <option>2</option>
+            <option selected>4</option>
+            <option>8</option>
+            <option>16</option>
+          </select></label
+        ><label>材质<select id="mcPack"></select></label
+        ><label
+          >导入方式<select id="mcMode">
+            <option value="replace">替换草稿</option>
+            <option value="overlay">覆盖指定区域</option>
+          </select></label
+        ><label>偏移 XYZ<input id="mcOffset" value="0, 0, 0" /></label>
+      </div>
+      <div class="row">
+        <label
+          ><input id="mcCenter" type="checkbox" checked />地面中心归零</label
+        ><label><input id="mcSurface" type="checkbox" />仅可见外壳</label
+        ><button id="mcPreview">生成独立预览</button
+        ><button id="mcApply" class="primary" disabled>
+          应用到草稿（可撤销）
+        </button>
+      </div>
+      <div id="mcViewport" style="height: 360px; position: relative"></div>
+      <pre
+        id="mcReport"
+        style="max-height: 240px; overflow: auto; white-space: pre-wrap"
+      ></pre>
+      <p class="caption">
+        原版或本地资源包可另行导入；新增图片材质需要重新打包
+        Avatar。此窗口只预览建筑，点击应用后才会修改草稿和按已有连接设置发布。
+      </p>
     </dialog>
     <dialog id="packReportDialog">
       <div class="row">

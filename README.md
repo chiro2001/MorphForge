@@ -4,6 +4,7 @@
 
 - [用户指南](docs/USER-GUIDE.md)：安装、配置、编辑、AI、compact、作品库与 OSC 发布。
 - [交付记录](docs/DELIVERY.md) · [实施状态及证据](docs/plan/STATUS.md) · [已确认设计](docs/plan/README.md) · [验收标准](docs/plan/ACCEPTANCE.md)。
+- gamepc 开发测试副本 **0.14.0**：右侧按创作过程展示思考、正文、工具摘要和截图，修复滚动跟随与中文历史分页；新增文件/编辑等桌面菜单，以及GLB、OBJ ZIP、PLY、STL导出。[使用与验证](docs/studio-v14/RESULTS.md)。
 - gamepc 开发测试副本 **0.13.0**：MF6 统一240bit帧、三角面与单对象体素斜面、历史删除补播、Minecraft建筑源库／资源包状态／独立预览／可撤销导入。MF6 16K配套头像已上传并通过三项服务端分析，尚未真实多人验收。[分阶段计划](docs/mf6/PLAN.md) · [验证记录](docs/mf6/RESULTS.md)。
 - gamepc 开发测试副本 **0.10.0**：读取参考图像素、缩放副本、图片转彩色体素平面、连续循环补播和三种发送顺序；兼容MF5 v15、新1%～1000%缩放、实时材质与48种原创纹理。原安装与数据保留，未新增Release。[本轮功能与可行性](docs/image-stream/DESIGN.md) · [验证](docs/image-stream/RESULTS.md)。
 - Windows **0.6.0 候选版**：`dist/windows/MorphForge Desktop_0.6.0_x64-setup.exe`；校验和在同目录。[Harness强化验证](docs/quality-v6/RESULTS.md) · [前缀缓存修复](docs/quality-v4.2/RESULTS.md) · [参考图建模迭代](docs/quality-v4.1/RESULTS.md)。
@@ -48,7 +49,7 @@ GitHub公开仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支�
 
 ## 工作台与已有作品
 
-![MorphForge 共享工作台](docs/media/workbench.webp)
+![MorphForge 共享工作台与创作观察](docs/studio-v14/observer-readable.webp)
 
 连接与运行配置集中在独立页面：
 
@@ -58,7 +59,7 @@ GitHub公开仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支�
 |---|---|
 | ![云上邮局体素作品](docs/media/cloud-post.webp) | ![星港灯塔及体素汉字](docs/media/starlight-harbor.webp) |
 
-工作台截图为新版界面载入已有星港作品；下方为此前真实 DeepSeek 创作的渲染，包含由字体栅格化的可编辑体素汉字。作品过程、失败与修正见 [Harness 迭代记录](docs/harness-v2/evals/README.md)。展示图为压缩 WebP 副本，原始验收 PNG 保留。
+工作台截图为0.14界面载入真实模型生成的翠鸟，并离线回看创作过程；下方为此前真实 DeepSeek 创作的渲染，包含由字体栅格化的可编辑体素汉字。作品过程、失败与修正见 [Harness 迭代记录](docs/harness-v2/evals/README.md)。展示图为压缩 WebP 副本，原始验收 PNG 保留。
 
 作品库已离线内置6个完整示例：铜灯塔与树（49 Box）、Leviathan灯塔（7,459）、云港驿站（766）、星砂港（791）、鲸鱼娘（223）和木椅（16）。点击“载入可编辑副本”即可继续手工或AI修改；几何、材质与18张真实视图随程序附带，无需重新生成或覆盖示例原件。[示例署名与许可](examples/ATTRIBUTION.md)。
 
@@ -116,7 +117,7 @@ API连接可自定义 **Chat Completions 或 Responses** 服务、Base URL、模
 
 默认回归只向9012发送，不向9000发包或启动VRChat。2026-10-19经用户明确授权，已上传并核验私有 **MorphForge FullFT 16K**：实际包总256bit、完整FT161、Store16384，服务端三项分析均200。修复了Catalog metadata布局、FullFT场景根名和人物特效Pickup碰撞力；[最终证据](docs/security-check-failure/FINAL-FULLFT.md)与[客户端复核步骤](docs/security-check-failure/CLIENT-RETEST.md)。
 
-网络发布没有远端ACK；本机发送进度不能证明其他玩家已经显示。真实客户端加载、多人及VR手势仍待现场确认。当前开发副本为0.9.0；公开Release按用户要求另行发布。
+网络发布没有远端ACK；本机发送进度不能证明其他玩家已经显示。真实客户端加载、多人及VR手势仍待现场确认。当前开发副本为0.14.0；公开Release按用户要求另行发布。
 
 ## 开发入口
 

@@ -1,3 +1,5 @@
+import { ActivityView } from "/activity-ui.js";
+import { setupDesktopMenus } from "/desktop-menu.js";
 import { TimelineView } from "/timeline-ui.js";
 import { ReferencePicker } from "/reference-ui.js";
 import { usageDisplay, supportsFileUpload } from "/usage-ui.js";
@@ -52,6 +54,7 @@ let edits = Promise.resolve();
 let lastSeq = 0;
 let eventRows = [];
 let timelineView = null;
+let activityView = null;
 let toastTimer;
 let pointerStart = null;
 let loading = false;
@@ -223,6 +226,7 @@ function switchUiScope(projectId, activeReferences = [], sessionId = "") {
   if (uiScope === next) return;
   uiScope = next;
   previousHarness = null;
+  if(activityView){activityView.reset();activityView.load().catch(error);}
   referencePicker.setScope(uiScope, activeReferences);
   pendingMessages = dedupeMessages(
     safeStorageGet(`morphforge.pending.${uiScope}`, []),
@@ -1974,6 +1978,7 @@ async function pollEvents() {
       eventRows.push(...value.events);
       eventRows = eventRows.slice(-1500);
       applyHarnessEvents(value.events);
+      activityView?.load().catch(error);
       if (timelineView && !$("timeline").hidden)
         timelineView.load().catch(error);
     }
@@ -2349,6 +2354,8 @@ if (captureMode) {
   if (["steer", "interrupt", "queue"].includes(storedMode))
     $("messageMode").value = storedMode;
   try{viewSettings=await api("view-settings");applyViewSettings();}catch(cause){error(cause);}
+  activityView = new ActivityView(api,error);
+  setupDesktopMenus({getCellSize:()=>sceneData?.scene.cellSize??.25,getName:()=>state?.project.name||"morphforge",onError:error,onLayout:()=>renderer.resize()});
   await refresh();
   switchUiScope(state?.project?.id, state?.harness?.context?.referenceImages, state?.harness?.context?.id);
   restorePromptDraft();
@@ -2358,4 +2365,5 @@ if (captureMode) {
   loadFonts();
   setInterval(() => refresh(), 700);
   setInterval(pollEvents, 700);
+  setInterval(()=>activityView.load().catch(error),1500);
 }

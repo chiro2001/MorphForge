@@ -1,0 +1,74 @@
+{
+  "success": true,
+  "scope": "Packaged Windows core: real model exports and recipe subprocess. Isolated data; no paid model or OSC.",
+  "checks": [
+    {
+      "name": "validation data is fresh",
+      "passed": true
+    },
+    {
+      "name": "actual packaged version is 0.14.0 and OSC is off",
+      "passed": true
+    },
+    {
+      "name": "packaged UI embeds observation and desktop menus",
+      "passed": true
+    },
+    {
+      "name": "real kingfisher triangle artwork imports on Windows",
+      "passed": true
+    },
+    {
+      "name": "glb is a successful downloadable file",
+      "passed": true
+    },
+    {
+      "name": "obj is a successful downloadable file",
+      "passed": true
+    },
+    {
+      "name": "ply is a successful downloadable file",
+      "passed": true
+    },
+    {
+      "name": "stl is a successful downloadable file",
+      "passed": true
+    },
+    {
+      "name": "GLB header and total length are correct",
+      "passed": true
+    },
+    {
+      "name": "GLB preserves all real triangle faces",
+      "passed": true
+    },
+    {
+      "name": "OBJ bundle includes material sidecar",
+      "passed": true
+    },
+    {
+      "name": "STL face count and binary length match",
+      "passed": true
+    },
+    {
+      "name": "PLY preserves RGB vertex/face schema",
+      "passed": true
+    },
+    {
+      "name": "exports leave project revision unchanged",
+      "passed": true
+    },
+    {
+      "name": "packaged recipe worker still runs from its immutable executable",
+      "passed": true
+    },
+    {
+      "name": "viewing and exporting start neither model nor OSC",
+      "passed": true
+    }
+  ],
+  "error": null,
+  "version": "0.14.0",
+  "faces": 1134,
+  "finishedAt": "2026-10-20T09:48:04.7804291+00:00"
+}

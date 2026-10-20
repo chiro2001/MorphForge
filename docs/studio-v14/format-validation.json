@@ -1,0 +1,19 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "artwork": "kingfisher",
+      "faces": 1134,
+      "stlBinaryLength": 56784,
+      "plyFacesMatch": true,
+      "objFacesAndMtlMatch": true
+    },
+    {
+      "artwork": "textures-and-slope",
+      "faces": 28,
+      "stlBinaryLength": 1484,
+      "plyFacesMatch": true,
+      "objFacesAndMtlMatch": true
+    }
+  ]
+}

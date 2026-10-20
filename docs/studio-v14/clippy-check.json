@@ -1,0 +1,7 @@
+{
+  "exitCode": 0,
+  "scope": "workspace libraries; existing integration test lint baseline excluded by scope",
+  "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
+  "command": "cargo clippy --workspace --lib -- -D warnings -A clippy::unnecessary_cast -A clippy::type_complexity -A clippy::explicit_counter_loop -A clippy::needless_range_loop -A clippy::needless_question_mark -A clippy::manual_is_multiple_of",
+  "stdoutFile": "clippy-lib.txt"
+}

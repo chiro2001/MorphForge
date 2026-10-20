@@ -73,6 +73,41 @@ fn response_text(body: &Value) -> (String, String) {
     }
     (reasoning, text)
 }
+fn tool_summary(data: &Value) -> String {
+    let args = data["arguments"]
+        .as_str()
+        .and_then(|s| serde_json::from_str::<Value>(s).ok())
+        .unwrap_or_else(|| data["arguments"].clone());
+    let name = data["name"].as_str().unwrap_or("工具");
+    match name {
+        "recipe_sources" => format!(
+            "{}源码 · {}",
+            match args["action"].as_str().unwrap_or("") {
+                "run" => "运行",
+                "read" => "读取",
+                "patch" => "修改",
+                "write" => "保存",
+                "list" => "列出",
+                _ => "管理",
+            },
+            args["path"].as_str().unwrap_or("工程文件")
+        ),
+        "capture_views" => format!(
+            "观察模型 · {}个视角",
+            args["views"].as_array().map_or(0, Vec::len)
+                + args["shots"].as_array().map_or(0, Vec::len)
+        ),
+        "run_recipe" => "执行绘图代码".into(),
+        "get_context" => "读取工程状态与材质".into(),
+        "finish_artwork" => "复核完成并保存作品".into(),
+        "define_palette" => "创建作品配色".into(),
+        "define_materials" => "创建作品材质".into(),
+        "read_artifact" => "查看图片或源码文件".into(),
+        "transform_scene" => "调整作品整体位置".into(),
+        "mesh_tools" => "编辑三角网格".into(),
+        _ => name.into(),
+    }
+}
 pub fn project(event: &Event, limit: usize) -> Value {
     let d = &event.data;
     let (title, body) = match event.kind.as_str() {
@@ -90,7 +125,11 @@ pub fn project(event: &Event, limit: usize) -> Value {
         "provider.reasoning_delta" => ("思考片段 · 上游流式返回", light(d, limit, 0)),
         "provider.text_delta" => ("模型文本 · 进行中", light(d, limit, 0)),
         "provider.attempt" => ("HTTP发送尝试", light(d, limit, 0)),
-        "tool.call" | "tool.called" | "tool.request" => ("调用工具", light(d, limit, 0)),
+        "tool.call" | "tool.called" | "tool.request" => {
+            let mut body = light(d, limit, 0);
+            body["summary"] = json!(tool_summary(d));
+            ("调用工具", body)
+        }
         "tool.result" => ("工具结果", light(d, limit, 0)),
         "capture.completed" => ("真实截图", light(d, limit, 0)),
         "cache.guard.blocked" => ("缓存保护已暂停", light(d, limit, 0)),
@@ -165,6 +204,7 @@ pub struct Query {
     pub limit: Option<usize>,
     pub run: Option<String>,
     pub project_id: Option<String>,
+    pub session: Option<String>,
     pub kind: Option<String>,
     pub search: Option<String>,
 }
@@ -188,9 +228,10 @@ pub fn page(root: &Path, q: &Query) -> Result<Value> {
     let mut at = start;
     let mut line = String::new();
     if start > 0 && !forward {
-        reader.read_line(&mut line)?;
-        at += line.len() as u64;
-        line.clear();
+        // A byte offset can land in the middle of a multibyte UTF-8 scalar.
+        // Discard the partial line as bytes before decoding complete JSON lines.
+        let mut partial = Vec::new();
+        at += reader.read_until(b'\n', &mut partial)? as u64;
     }
     let limit = q.limit.unwrap_or(100).clamp(1, 200);
     let mut rows = VecDeque::new();
@@ -216,6 +257,9 @@ pub fn page(root: &Path, q: &Query) -> Result<Value> {
         if q.project_id
             .as_ref()
             .is_some_and(|id| row["projectId"].as_str() != Some(id))
+            || q.session
+                .as_ref()
+                .is_some_and(|id| row["sessionId"].as_str() != Some(id))
             || q.run
                 .as_ref()
                 .is_some_and(|run| row["runId"].as_str().is_none_or(|r| !r.contains(run)))
@@ -392,5 +436,73 @@ mod tests {
         e.data = json!({"result":{"imageRole":"reinspection","images":[{"artifact":"abc.png","view":"historical"}]}});
         let row = project(&e, 100);
         assert!(row["images"][0]["revision"].is_null());
+    }
+    #[test]
+    fn observation_filters_sessions_without_losing_raw_history() {
+        let dir = tempfile::tempdir().unwrap();
+        std::fs::create_dir(dir.path().join("events")).unwrap();
+        for (seq, session) in [(1, "old"), (2, "active"), (3, "old")] {
+            let mut e = event(seq);
+            e.session_id = Some(session.into());
+            append(dir.path(), &e).unwrap();
+        }
+        let result = page(
+            dir.path(),
+            &Query {
+                session: Some("active".into()),
+                ..Default::default()
+            },
+        )
+        .unwrap();
+        assert_eq!(result["events"].as_array().unwrap().len(), 1);
+        assert_eq!(result["events"][0]["seq"], 2);
+        assert_eq!(
+            page(dir.path(), &Query::default()).unwrap()["events"]
+                .as_array()
+                .unwrap()
+                .len(),
+            3
+        );
+    }
+    #[test]
+    fn source_operation_summary_does_not_display_the_source_blob() {
+        let mut e = event(1);
+        e.kind = "tool.request".into();
+        e.data = json!({"name":"recipe_sources","arguments":json!({"action":"patch","path":"bird.js","content":"long source"}).to_string()});
+        let value = project(&e, 4096);
+        assert_eq!(value["body"]["summary"], "修改源码 · bird.js");
+    }
+    #[test]
+    fn backward_pages_can_start_inside_chinese_utf8() {
+        let dir = tempfile::tempdir().unwrap();
+        std::fs::create_dir(dir.path().join("events")).unwrap();
+        let mut bytes = Vec::new();
+        for seq in 1..=100 {
+            serde_json::to_writer(&mut bytes,&json!({"seq":seq,"kind":"provider.reasoning_delta","body":{"text":"中".repeat(2000)}})).unwrap();
+            bytes.push(b'\n');
+        }
+        let prefix = bytes.clone();
+        let mut split = false;
+        for pad in 0..4 {
+            bytes = prefix.clone();
+            serde_json::to_writer(
+                &mut bytes,
+                &json!({"seq":101,"body":{"text":"x".repeat(pad)}}),
+            )
+            .unwrap();
+            bytes.push(b'\n');
+            let start = bytes.len() - 512 * 1024;
+            if (128..192).contains(&bytes[start]) {
+                split = true;
+                break;
+            }
+        }
+        assert!(split);
+        std::fs::write(dir.path().join("events/timeline.jsonl"), bytes).unwrap();
+        let result = page(dir.path(), &Query::default()).unwrap();
+        assert_eq!(
+            result["events"].as_array().unwrap().last().unwrap()["seq"],
+            101
+        );
     }
 }

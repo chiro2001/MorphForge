@@ -1,0 +1,86 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "isolated backend keeps OSC off",
+      "passed": true
+    },
+    {
+      "name": "history renders thought, tools, text and screenshot cards",
+      "passed": true
+    },
+    {
+      "name": "restoring an older session searches behind other sessions and keeps the live cursor",
+      "passed": true
+    },
+    {
+      "name": "observer is an independently scrollable visible pane",
+      "passed": true
+    },
+    {
+      "name": "new events do not pull a reader to the end",
+      "passed": true
+    },
+    {
+      "name": "new operations are actually rendered during that scroll check",
+      "passed": true
+    },
+    {
+      "name": "return-to-latest explicitly resumes follow",
+      "passed": true
+    },
+    {
+      "name": "expanded thought stays open when output updates",
+      "passed": true
+    },
+    {
+      "name": "expanded history keeps its reading position",
+      "passed": true
+    },
+    {
+      "name": "screenshots open in a full-size viewer",
+      "passed": true
+    },
+    {
+      "name": "raw event pane also stops following after scrolling up",
+      "passed": true
+    },
+    {
+      "name": "context and manual recipe remain available in settings",
+      "passed": true
+    },
+    {
+      "name": "file menu exposes nested model exports",
+      "passed": true
+    },
+    {
+      "name": "GLB menu opens a format and scale dialog",
+      "passed": true
+    },
+    {
+      "name": "real menu export succeeds",
+      "passed": true
+    },
+    {
+      "name": "download is an actual GLB file",
+      "passed": true
+    },
+    {
+      "name": "read-only operations leave geometry unchanged",
+      "passed": true
+    },
+    {
+      "name": "new conversation does not leak another session activity",
+      "passed": true
+    },
+    {
+      "name": "no provider request was started by viewing or export",
+      "passed": true
+    },
+    {
+      "name": "no JavaScript or WebGL errors",
+      "passed": true
+    }
+  ],
+  "scope": "Actual Chromium, historical model output, real read-only tools, download and session isolation. No paid model calls or OSC."
+}

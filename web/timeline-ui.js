@@ -1,5 +1,6 @@
 // The timeline is a read-only view. It never modifies model history or the draft.
 import { VoxelRenderer } from "/renderer.js";
+import { ScrollFollow } from "/scroll-follow.js";
 const el = (tag, text, className) => {
   const node = document.createElement(tag);
   if (text !== undefined) node.textContent = text;
@@ -17,6 +18,21 @@ export class TimelineView {
     this.generation = 0;
     this.preview = null;
     this.filterTimer = 0;
+    const checkbox = document.getElementById("timelineFollow");
+    this.follow = new ScrollFollow(
+      document.getElementById("timeline"),
+      document.getElementById("timelineResume"),
+      (following) => {
+        checkbox.checked = following;
+      },
+    );
+    checkbox.onchange = () => {
+      if (checkbox.checked) this.follow.latest();
+      else {
+        this.follow.following = false;
+        this.follow.update();
+      }
+    };
     for (const id of [
       "eventFilter",
       "eventRunFilter",
@@ -30,7 +46,9 @@ export class TimelineView {
     document.getElementById("timelineOlder").onclick = () =>
       this.load(true).catch(onError);
     document.getElementById("timelineLatest").onclick = () =>
-      this.reload().catch(onError);
+      this.reload()
+        .then(() => this.follow.latest())
+        .catch(onError);
     document.getElementById("timelinePreviewClose").onclick = () =>
       document.getElementById("timelinePreview").close();
   }
@@ -65,6 +83,7 @@ export class TimelineView {
     try {
       const result = await this.api("timeline?" + q);
       if (generation !== this.generation) return;
+      const scrollBefore = this.follow.snapshot();
       if (result.reset) {
         this.rows.clear();
         document.getElementById("events").replaceChildren();
@@ -77,7 +96,7 @@ export class TimelineView {
         this.rows.set(row.seq, row);
       }
       const container = document.getElementById("events");
-      if (this.rows.size > 400) {
+      if (this.rows.size > 400 && this.follow.following) {
         const sorted = [...this.rows.keys()].sort((a, b) => a - b);
         for (const seq of older ? sorted.slice(400) : sorted.slice(0, -400)) {
           this.rows.delete(seq);
@@ -98,8 +117,7 @@ export class TimelineView {
       document.getElementById("timelineOlder").disabled = this.before === 0;
       document.getElementById("timelineStatus").textContent =
         `已载入 ${this.rows.size} 条 · 思考仅展示上游实际返回内容`;
-      if (!older && document.getElementById("timelineFollow").checked)
-        container.lastElementChild?.scrollIntoView({ block: "start" });
+      this.follow.restore(scrollBefore, { older, added: result.events.length });
     } finally {
       this.busy = false;
     }
@@ -241,7 +259,10 @@ export class TimelineView {
       this.preview = new VoxelRenderer(
         document.getElementById("timelinePreviewViewport"),
       );
-    await this.preview.load(data.scene, data.materials, { mode: "art", surfaces:data.surfaces });
+    await this.preview.load(data.scene, data.materials, {
+      mode: "art",
+      surfaces: data.surfaces,
+    });
     this.preview.resize();
     this.preview.view("hero");
   }

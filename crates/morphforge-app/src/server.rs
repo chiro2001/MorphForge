@@ -39,6 +39,7 @@ pub struct App {
     text_jobs: Arc<tokio::sync::Semaphore>,
     reference_jobs: Arc<tokio::sync::Semaphore>,
     minecraft_jobs: Arc<tokio::sync::Semaphore>,
+    export_jobs: Arc<tokio::sync::Semaphore>,
 }
 pub struct ApiError(anyhow::Error);
 impl<E: Into<anyhow::Error>> From<E> for ApiError {
@@ -121,6 +122,7 @@ impl App {
             text_jobs: Arc::new(tokio::sync::Semaphore::new(2)),
             reference_jobs: Arc::new(tokio::sync::Semaphore::new(2)),
             minecraft_jobs: Arc::new(tokio::sync::Semaphore::new(2)),
+            export_jobs: Arc::new(tokio::sync::Semaphore::new(1)),
         })
     }
     pub fn router(&self) -> Router {
@@ -138,6 +140,7 @@ impl App {
             )
             .route("/api/scene", get(scene))
             .route("/api/export", get(export))
+            .route("/api/export/model", get(export_model))
             .route("/api/project", post(project))
             .route("/api/workspaces", get(workspaces).post(workspace_action))
             .route("/api/edit", post(edit))
@@ -320,6 +323,36 @@ async fn export(State(a): State<App>) -> ApiResult {
     Ok(Json(
         json!({"format":"MorphForgeProject/1","project":w.project}),
     ))
+}
+async fn export_model(
+    State(a): State<App>,
+    Query(options): Query<crate::model_export::Options>,
+) -> Result<Response, ApiError> {
+    let _permit = a.export_jobs.acquire().await?;
+    let (scene, materials, root) = {
+        let w = a.workspace.lock().unwrap();
+        (
+            w.project.scene.clone(),
+            w.project.materials.clone(),
+            w.root.clone(),
+        )
+    };
+    let result = tokio::task::spawn_blocking(move || {
+        crate::model_export::export(&scene, &materials, &root, &options)
+    })
+    .await??;
+    Ok((
+        [
+            ("Content-Type", result.mime.to_owned()),
+            (
+                "Content-Disposition",
+                format!("attachment; filename=\"morphforge.{}\"", result.extension),
+            ),
+            ("Cache-Control", "no-store".into()),
+        ],
+        result.bytes,
+    )
+        .into_response())
 }
 async fn project(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     let mut w = a.workspace.lock().unwrap();
@@ -697,6 +730,9 @@ async fn timeline_page(
     let root = {
         let w = a.workspace.lock().unwrap();
         q.project_id = Some(w.project.id.clone());
+        if q.session.as_deref() == Some("current") {
+            q.session = Some(w.session_id.clone());
+        }
         w.root.clone()
     };
     let value = tokio::task::spawn_blocking(move || crate::timeline::page(&root, &q)).await??;
