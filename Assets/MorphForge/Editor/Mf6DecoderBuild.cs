@@ -16,6 +16,7 @@ namespace MorphForge.Editor
         public const string Root=Mf6NativeBuild.Root;
         static AnimatorController fx;
         static AnimationClip empty;
+        static HashSet<string> declared;
         static string N(string name)=>"MF6_"+name;
         static void Set(VRCAvatarParameterDriver d,string name,float value)=>d.parameters.Add(new VRC_AvatarParameterDriver.Parameter{name=name,type=VRC_AvatarParameterDriver.ChangeType.Set,value=value});
         static void Copy(VRCAvatarParameterDriver d,string source,string name)=>d.parameters.Add(new VRC_AvatarParameterDriver.Parameter{name=name,source=source,type=VRC_AvatarParameterDriver.ChangeType.Copy});
@@ -26,8 +27,8 @@ namespace MorphForge.Editor
         static AnimatorStateTransition To(AnimatorState a,AnimatorState b,bool exit=false){var t=a.AddTransition(b);t.duration=0;t.hasExitTime=exit;t.exitTime=1;t.canTransitionToSelf=false;return t;}
         static void Eq(AnimatorStateTransition t,string name,int value)=>t.AddCondition(AnimatorConditionMode.Equals,value,N(name));
         static void Greater(AnimatorStateTransition t,string name,int value)=>t.AddCondition(AnimatorConditionMode.Greater,value,N(name));
-        static void IntParam(string name,int value=0){if(!fx.parameters.Any(p=>p.name==N(name)))fx.AddParameter(new AnimatorControllerParameter{name=N(name),type=AnimatorControllerParameterType.Int,defaultInt=value});}
-        static void FloatParam(string name){if(!fx.parameters.Any(p=>p.name==N(name)))fx.AddParameter(N(name),AnimatorControllerParameterType.Float);}
+        static void IntParam(string name,int value=0){if(declared.Add(N(name)))fx.AddParameter(new AnimatorControllerParameter{name=N(name),type=AnimatorControllerParameterType.Int,defaultInt=value});}
+        static void FloatParam(string name){if(declared.Add(N(name)))fx.AddParameter(N(name),AnimatorControllerParameterType.Float);}
         static void I(VRCAvatarParameterDriver d,string name,int value){IntParam(name);Set(d,N(name),value);}
         static void F(VRCAvatarParameterDriver d,string name,float value){FloatParam(name);Set(d,N(name),value);}
         static string Q(int i)=>N("Q"+i.ToString("D2"));
@@ -149,7 +150,7 @@ namespace MorphForge.Editor
             if(EditorApplication.isPlaying||EditorApplication.isCompiling)throw new Exception("Idle Edit Mode required");
             if(!AssetDatabase.IsValidFolder(Root))AssetDatabase.CreateFolder("Assets/MorphForge","MF6");var path=Root+"/Decoder.controller";
             fx=AssetDatabase.LoadAssetAtPath<AnimatorController>(path);if(!fx)fx=AnimatorController.CreateAnimatorControllerAtPath(path);else{fx.layers=new AnimatorControllerLayer[0];fx.parameters=new AnimatorControllerParameter[0];foreach(var asset in AssetDatabase.LoadAllAssetsAtPath(path))if(asset&&asset!=fx)UnityEngine.Object.DestroyImmediate(asset,true);}
-            empty=new AnimationClip{name="MF6 empty",frameRate=60};AssetDatabase.AddObjectToAsset(empty,fx);
+            declared=new HashSet<string>();empty=new AnimationClip{name="MF6 empty",frameRate=60};AssetDatabase.AddObjectToAsset(empty,fx);
             foreach(string name in new[]{"Ctl","Seq","Format","Stage","MetaLo","MetaHi"})IntParam(name);IntParam("LastRx",255);for(int i=0;i<29;i++){IntParam("D"+i.ToString("D2"));IntParam("Q"+i.ToString("D2"));}
             for(int p=0;p<8;p++){fx.AddParameter("MF6_P"+p+"_Ctl",AnimatorControllerParameterType.Int);for(int i=0;i<Mf6NativeBuild.Fields;i++)fx.AddParameter("MF6_P"+p+"_D"+i.ToString("D2"),AnimatorControllerParameterType.Float);}
             for(int p=0;p<8;p++)IntParam("NextSeq"+p);

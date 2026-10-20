@@ -1,0 +1,58 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "test starts with OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "real UI creates a per-face RGB triangle",
+      "passed": true
+    },
+    {
+      "name": "triangle has a real GPU mesh",
+      "passed": true
+    },
+    {
+      "name": "real pointer selects triangle without a Box",
+      "passed": true
+    },
+    {
+      "name": "vertex update preserves object ID and count",
+      "passed": true
+    },
+    {
+      "name": "selected face translates with its stable ID",
+      "passed": true
+    },
+    {
+      "name": "undo restores triangle vertices",
+      "passed": true
+    },
+    {
+      "name": "slope tool creates closed eight-face prism",
+      "passed": true
+    },
+    {
+      "name": "modeling style is persisted for the harness",
+      "passed": true
+    },
+    {
+      "name": "free-view screenshot pipeline includes polygon geometry",
+      "passed": true
+    },
+    {
+      "name": "export preserves colored mesh schema",
+      "passed": true
+    },
+    {
+      "name": "no JavaScript or shader errors",
+      "passed": true
+    },
+    {
+      "name": "no OSC or model requests were started",
+      "passed": true
+    }
+  ],
+  "scope": "Real Chromium UI, pointer selection, native WebGL meshes, screenshot camera pipeline and isolated HTTP backend. No paid model calls or real VRChat."
+}

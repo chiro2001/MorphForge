@@ -1,0 +1,11 @@
+{
+  "success": true,
+  "targetAvatarId": "",
+  "scene": "Assets/MorphForge/MF6/MorphForge_MF6.unity",
+  "stores": 8,
+  "editableCapacity": 16384,
+  "physicalCapacity": 16448,
+  "catalogStyles": 544,
+  "dependencyHash": "dad1f8d16ec7ac7877d6feb0b8d21a6e",
+  "timeUtc": "2026-10-20T07:27:46.7747551Z"
+}

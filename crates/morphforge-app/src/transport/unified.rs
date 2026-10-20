@@ -119,8 +119,10 @@ impl Session {
     pub fn pending_objects(&self) -> usize {
         self.desired_boxes
             .iter()
-            .filter(|(k, (_, s))| {
-                self.boxes.get(k).is_none_or(|old| old.surface != *s)
+            .filter(|(k, (b, s))| {
+                self.boxes
+                    .get(k)
+                    .is_none_or(|old| old.surface != *s || old.value.shape != b.shape)
                     || !self.seen(&Object::Box(**k))
             })
             .count()
@@ -193,8 +195,11 @@ impl Session {
                 actions,
             }));
         }
-        let has_boxes = self.desired_boxes.iter().any(|(k, (_, s))| {
-            self.boxes.get(k).is_none_or(|old| old.surface != *s) || !self.seen(&Object::Box(*k))
+        let has_boxes = self.desired_boxes.iter().any(|(k, (b, s))| {
+            self.boxes
+                .get(k)
+                .is_none_or(|old| old.surface != *s || old.value.shape != b.shape)
+                || !self.seen(&Object::Box(*k))
         });
         let has_triangles = self.desired_triangles.iter().any(|(id, t)| {
             self.triangles.get(id).is_none_or(|old| old.value != *t)
@@ -212,8 +217,10 @@ impl Session {
         let mut pending: Vec<_> = self
             .desired_boxes
             .iter()
-            .filter(|(k, (_, s))| {
-                self.boxes.get(k).is_none_or(|old| old.surface != *s)
+            .filter(|(k, (b, s))| {
+                self.boxes
+                    .get(k)
+                    .is_none_or(|old| old.surface != *s || old.value.shape != b.shape)
                     || !self.seen(&Object::Box(**k))
             })
             .map(|(_, v)| v)
@@ -236,10 +243,10 @@ impl Session {
         };
         let mut best: Option<Plan> = None;
         for variant in 0..3 {
-            if variant == 0 && (first.size != [1; 3]) {
+            if variant == 0 && (first.size != [1; 3] || first.shape != 0) {
                 continue;
             }
-            if variant == 1 && surface.mode > 2 {
+            if variant == 1 && (surface.mode > 2 || first.shape != 0) {
                 continue;
             }
             let max = if variant == 0 {
@@ -254,7 +261,8 @@ impl Session {
             let mut records = Vec::new();
             let mut actions = Vec::new();
             for (b, s) in pending.iter().copied() {
-                if (variant < 2 && *s != *surface)
+                if b.shape != first.shape
+                    || (variant < 2 && *s != *surface)
                     || (variant == 0 && b.size != [1; 3])
                     || (variant == 2 && s.mode != surface.mode)
                 {
@@ -299,7 +307,10 @@ impl Session {
             } else if variant == 1 {
                 Frame::SharedBoxes { records }
             } else {
-                Frame::Boxes { shape: 0, records }
+                Frame::Boxes {
+                    shape: first.shape,
+                    records,
+                }
             };
             let candidate = Plan { frame, actions };
             if best

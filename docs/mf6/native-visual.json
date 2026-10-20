@@ -16,9 +16,14 @@
       "view": "hero",
       "visiblePixels": 39335,
       "passed": true
+    },
+    {
+      "view": "close",
+      "visiblePixels": 262144,
+      "passed": true
     }
   ],
-  "nativeCount": 1,
+  "nativeCount": 9,
   "lossyScale": [
     0.05000001,
     0.05000001,
@@ -27,15 +32,15 @@
   "localToWorld": "0.05000\t0.00000\t0.00000\t0.00000\n0.00000\t0.05000\t0.00000\t2.17014\n0.00000\t0.00000\t0.05000\t0.34208\n0.00000\t0.00000\t0.00000\t1.00000\n",
   "rendererBounds": {
     "center": [
-      -1.38750029,
-      -4.22986031,
-      -1.257916
+      0.0,
+      -0.0298593044,
+      0.3420841
     ],
     "size": [
-      58.4658546,
-      58.4658546,
-      58.4658546
+      4.007138,
+      8.407139,
+      4.007138
     ]
   },
-  "scope": "Actual production particle renderer after native Animator birth; persisted carrier Mesh bounds, no transient bounds override. No MeshRenderer stand-in or particle injection."
+  "scope": "Actual production particle renderer after native Animator birth; native invisible bounds carrier, no transient bounds override. No MeshRenderer stand-in or particle injection."
 }

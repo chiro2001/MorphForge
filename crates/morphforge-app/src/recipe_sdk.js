@@ -51,6 +51,13 @@ const emit = (op, min, size, o = {}) => {
   if (op === "box") {
     value.motionPhase = o.motion ?? o.motionPhase ?? 0;
     value.group = o.group ?? currentGroup;
+    if(o.shape){
+      if(!Number.isInteger(o.shape)||o.shape<1||o.shape>4)throw Error("invalid voxel slope shape");
+      if(mirrors[1]<0)throw Error("voxel slope Y mirror requires polygon mf.wedge instead");
+      value.shape=o.shape;
+      if(mirrors[0]<0&&value.shape<=2)value.shape=value.shape===1?2:1;
+      if(mirrors[2]<0&&value.shape>=3)value.shape=value.shape===3?4:3;
+    }
   }
   ops.push(value);
 };
@@ -352,6 +359,11 @@ const mf = Object.freeze({
   mesh,
   triangleStrip,
   wedge,
+  slope(min,size,o={}) {
+    const shape={"+x":1,"-x":2,"+z":3,"-z":4}[o.direction??"+x"];
+    if(!shape)throw Error("slope direction requires +x/-x/+z/-z");
+    emit("box",min,size,{...o,shape});
+  },
   voxelize,
   ellipsoid,
   capsule,

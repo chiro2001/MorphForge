@@ -24,7 +24,7 @@ mod runtime_materials;
 mod visual_context;
 pub use goal::GoalProgress;
 pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/5.0";
-pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/3.9";
+pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/4.0";
 
 #[derive(Clone, Debug)]
 struct PendingPrompt {
@@ -1907,7 +1907,7 @@ impl Harness {
             "runtimeSurfaceHints":{"mf5":"define_palette/define_materials可实时发送，不需重传头像；新图片仍需打包。查看工具返回的vrcEffective了解量化。","scale":"placement.scale保持实际倍数；新100%=.05，MF5范围.0005.. .5（1%..1000%）。","transparency":"MF5运行时透明表面暂不带六面遮罩；目录透明材质可剔内部面。"},
             "recipeSources":crate::sources::list(&workspace).unwrap_or(Value::Null),
             "sdkVersion":recipe::SDK_VERSION,
-            "meshSdk":"mf.triangle(a,b,c,{color:'#RRGGBB',doubleSided:false,group}); mf.mesh(vertices,faces,{color,colors:[per-face RGB8 or hex],group,doubleSided}); faces are triples of vertex indices. mf.triangleStrip(vertices,{colors}); mf.wedge(min,size,{direction:'+x'|'-x'|'+z'|'-z',color}); integer coordinates, per-face RGB8, no UV. Same translate/mirror/group frame as mf.box. mesh_tools can inspect/edit stable face IDs. Region erase removes whole faces by AABB; it does not clip triangles. MF6 required for triangle OSC; art-only editing is independent of VRChat.",
+            "meshSdk":"mf.triangle(a,b,c,{color:'#RRGGBB',doubleSided:false,group}); mf.mesh(vertices,faces,{color,colors:[per-face RGB8 or hex],group,doubleSided}); faces are triples of vertex indices. mf.triangleStrip(vertices,{colors}); mf.slope(min,size,{style:styleId,direction:'+x'|'-x'|'+z'|'-z',group}); // textured voxel slope, one object. mf.wedge(min,size,{direction:'+x'|'-x'|'+z'|'-z',color}); integer coordinates, per-face RGB8, no UV. Same translate/mirror/group frame as mf.box. mesh_tools can inspect/edit stable face IDs. Region erase removes whole faces by AABB; it does not clip triangles. MF6 required for triangle OSC; art-only editing is independent of VRChat.",
             "sdk":"mf.box(min,[w,h,d],{style:'wood',tint:0,motion:0}); mf.erase(min,size); mf.paint(min,size,{style}) recolors existing voxels only and never creates them; use mf.box to add voxels. mf.clear(); mf.removeGroup(name); mf.replaceGroup(name,()=>{}); mf.ellipsoid(center,radii,options); mf.sphere(center,radius,options); mf.capsule(a,b,radius,options); mf.cylinder(base,height,radius,options) Y-axis; mf.tube(points,radius,options); mf.extrude(points2d,origin,depth,{plane:\"xy\",style}); mf.voxelize({min,max},(x,y,z)=>boolean_or_style,options) samples cell centers, max2M cells; mf.group(name,()=>{}); mf.repeat(n,(i)=>{}); mf.mirror('x',()=>{}); mf.translate([x,y,z],()=>{}); mf.line(a,b,{thickness:1,style}); mf.stairs(origin,n,{width:3,depth:1,rise:1,style}); mf.wall(origin,w,h,{thickness:1,style}); mf.roof(origin,w,d,h,{style}); Math.random()/mf.random() deterministic by seed. All coordinates integer signed grid. Y is height. VRC target requires X/Z[-128,128),Y[0,256). Styles are catalog IDs/UID names. mode apply preserves current geometry; replace starts from empty."
         })
     }
@@ -2030,6 +2030,54 @@ impl Harness {
             return self.with_workspace_guard(guard.as_ref(), |workspace| {
                 crate::sources::action(workspace, args, run)
             });
+        }
+        if name == "minecraft_import" {
+            if guard.as_ref().is_some_and(|g| !self.guard_is_current(g)) {
+                bail!("RUN_CANCELLED");
+            }
+            match args["action"].as_str().unwrap_or("list") {
+                "preview" => {
+                    let result = crate::minecraft::imports::preview(
+                        self.workspace.clone(),
+                        args.clone(),
+                        run.map(str::to_owned),
+                    )
+                    .await?;
+                    if guard.as_ref().is_some_and(|g| !self.guard_is_current(g)) {
+                        bail!("RUN_CANCELLED");
+                    }
+                    return Ok(result);
+                }
+                "list" | "inspect" => {
+                    return self.with_workspace_guard(guard.as_ref(), |w| {
+                        if args["action"] == "inspect" {
+                            crate::minecraft::imports::inspect(&w.root, args)
+                        } else {
+                            crate::minecraft::imports::list(&w.root)
+                        }
+                    })
+                }
+                "apply" => {
+                    return self.with_workspace_guard(guard.as_ref(), |w| {
+                        let mut result = crate::minecraft::imports::apply(w, args, run)?;
+                        if result["replayed"] != true
+                            && self.transport.config().enabled
+                            && self.transport.config().auto
+                        {
+                            w.commit(None, "AI Minecraft建筑导入", run)?;
+                            if let Err(e) = self.transport.publish_with_materials(
+                                &w.project.scene,
+                                &w.project.materials,
+                                false,
+                            ) {
+                                result["publishWarning"] = json!(e.to_string());
+                            }
+                        }
+                        Ok(result)
+                    })
+                }
+                _ => bail!("未知Minecraft导入操作"),
+            }
         }
         match name {
             "get_context" => Ok(self.context_with_options(args)),
@@ -3297,11 +3345,28 @@ pub fn tools_for_language(language: &str) -> Value {
             vec![],
         ),
         tool(
+            "minecraft_import",
+            if en {
+                "Import a locally uploaded Minecraft building: list sources, inspect paginated palette, preview compilation without changing the draft, then apply using previewId + baseRevision. Source files remain preserved. Formats: litematic, Sponge schem, legacy schematic, Java structure NBT. options.blockScale=1/2/4/8/16; higher values preserve thin structures. center uses bottom center; resourcePack=builtin or imported pack ID. Preview returns unknown/quantized states and capacity report; inspect this before applying. Apply is undoable and idempotent with requestId. Unsupported block shapes are approximated and reported. No Minecraft game logic."
+            } else {
+                "导入用户已上传的Minecraft建筑：list查看源库；inspect分页查看方块状态；preview编译并返回报告但不修改草稿；确认报告后用previewId和baseRevision调用apply，可撤销且requestId幂等。支持litematic、Sponge schem、旧schematic、Java结构NBT。options.blockScale=1/2/4/8/16，越高越能保留薄结构；center地面居中；resourcePack=builtin或已导入资源包ID。先检查未知形状、量化、材质近似和容量报告，超限时调整精度或只保留外壳。保留原建筑，不模拟游戏逻辑。"
+            },
+            json!({
+              "action":{"type":"string","enum":["list","inspect","preview","apply"]},
+              "sourceId":{"type":"string"},"previewId":{"type":"string"},"requestId":{"type":"string"},"projectId":{"type":"string"},"baseRevision":{"type":"integer","minimum":0},
+              "offset":{"type":"integer","minimum":0},"limit":{"type":"integer","minimum":1,"maximum":128},
+              "options":{"type":"object","properties":{
+                "blockScale":{"type":"integer","enum":[1,2,4,8,16]},"center":{"type":"boolean"},"surfaceOnly":{"type":"boolean"},"resourcePack":{"type":"string"},"mode":{"type":"string","enum":["replace","overlay"]},"group":{"type":"string"},"offset":{"type":"array","items":{"type":"integer"},"minItems":3,"maxItems":3}
+              },"additionalProperties":false}
+            }),
+            vec!["action"]
+        ),
+        tool(
             "mesh_tools",
             if en {
-                "Inspect or edit RGB8 triangle faces using stable IDs; apply appends or updates faces, wedge creates a closed slope. Geometry uses integer XYZ, per-face color and optional doubleSided, no UV. baseRevision required for edits; dryRun previews without changes. Region erase selects whole faces by AABB. For large indexed meshes prefer mf.mesh in run_recipe. Requires MF6 only when publishing to VRChat."
+                "Inspect or edit RGB8 triangle faces using stable IDs; apply appends or updates faces, wedge creates a closed polygon slope; primitive=voxel with styleId creates one textured voxel slope. Geometry uses integer XYZ, per-face color and optional doubleSided, no UV. baseRevision required for edits; dryRun previews without changes. Region erase selects whole faces by AABB. For large indexed meshes prefer mf.mesh in run_recipe. Requires MF6 only when publishing to VRChat."
             } else {
-                "查看或编辑逐面RGB8三角网格：inspect分页返回稳定ID；apply新增(id=0)或更新已有面；wedge生成封闭斜面；remove/paint按ID删除或改色。整数XYZ、每面颜色、可选doubleSided，无UV。修改需baseRevision，dryRun只预览。区域擦除按AABB删整面。大型索引网格优先在run_recipe调用mf.mesh；发布到VRChat才要求MF6。"
+                "查看或编辑逐面RGB8三角网格：inspect分页返回稳定ID；apply新增(id=0)或更新已有面；wedge默认生成封闭多边形斜面，primitive=voxel配合styleId生成单对象带材质体素斜面；remove/paint按ID删除或改色。整数XYZ、每面颜色、可选doubleSided，无UV。修改需baseRevision，dryRun只预览。区域擦除按AABB删整面。大型索引网格优先在run_recipe调用mf.mesh；发布到VRChat才要求MF6。"
             },
             json!({
                 "action":{"type":"string","enum":["inspect","apply","wedge","remove","paint"]},
@@ -3312,6 +3377,7 @@ pub fn tools_for_language(language: &str) -> Value {
                 "min":{"type":"array","items":{"type":"integer"},"minItems":3,"maxItems":3},
                 "size":{"type":"array","items":{"type":"integer","minimum":1},"minItems":3,"maxItems":3},
                 "color":{"type":"array","items":{"type":"integer","minimum":0,"maximum":255},"minItems":3,"maxItems":3},
+                "primitive":{"type":"string","enum":["polygon","voxel"]},"styleId":{"type":"integer","minimum":0},
                 "direction":{"type":"string","enum":["+x","-x","+z","-z"]},"doubleSided":{"type":"boolean"},
                 "triangles":{"type":"array","maxItems":512,"items":{"type":"object","properties":{
                     "id":{"type":"integer","minimum":0},"vertices":{"type":"array","minItems":3,"maxItems":3,"items":{"type":"array","items":{"type":"integer"},"minItems":3,"maxItems":3}},

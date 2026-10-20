@@ -1,27 +1,37 @@
 # MF6 验证记录（进行中）
 
-本页只记录已发生的验证；未完成本轮交付。
+2026-10-20，0.11 已部署到 gamepc 独立 Preview。后续阶段继续推进，不创建 GitHub Release。
 
 ## 已通过
 
-- 核心固定帧编解码：所有布局和8种表面模式往返、16个序号、保留位和填充拒绝、坐标边界、三角带绕序、1万组随机字节输入无panic。
-- Rust工作区完整回归一轮通过；随后新增统一调度两项测试通过：8体素共外观、4Box共外观、局部三角带、池平衡、增量删除屏障和不清空补播。
-- 三角面核心事务：混合对象ID、更新/删除、镜像绕序、复制、整面区域删除、导入、容量和失败回滚。
-- Recipe SDK：索引网格、逐面颜色、三角带、镜像/平移、闭合八面楔形通过Node验证。
-- 单池原生OSC出生验证：20个三角面，含24bit最大值与序号回绕；顶点/颜色逐字段精确一致；按ID重写无重复、删除及空闲保留通过。发送间隔0.30s，不能据此宣称全帧0.25s已通过。见`native-worker-smoke.json`。
-- 实际粒子Renderer三视图像素检查通过：正/背面46217像素、斜视39335像素，无运行时Bounds覆盖，无SetParticles/Emit注入。见`native-visual.json`与`visual/`。
-- GPU数据流读回确认世界坐标/单位ObjectToWorld、SizeXYZ、Center与InvStartLifetime布局，见`stream-probe.json`。
+| 验证 | 结果与证据 |
+|---|---|
+| 原生全格式 | 177帧、250ms间隔，49.23秒；全部布局、8种表面模式、稀疏池隔16帧恢复通过。`unified-smoke.json` |
+| 随机三角面 | 256个面／768个24bit顶点字，129帧；原生出生后的顶点与RGB逐字段精确一致。`random-smoke.json` |
+| 原生容量 | 2049帧、524.58秒；16,384有效对象，8池各2048，0缺失／重复；每池8个隐藏边界角点不变量通过。`capacity.json` |
+| 参数预算 | 240几何＋14定位＝254bit，37个同步参数。共享解码器22层、1697状态，构建后FX约102层。`final-budget.json`、`prepared.json` |
+| 三角面显示 | 实际生产粒子Renderer正/背/斜视通过，非C#注入Mesh或粒子；最终8角点方案及近距离全画面覆盖已复核。`native-visual.json` |
+| Rust回归 | 一轮完整工作区202项通过；随后新增保护组／斜面测试，Minecraft集成3项通过 |
+| 前端回归 | 44项Node测试通过；真实Chromium三角面编辑13项、Minecraft上传／预览／应用／撤销与斜面10项通过 |
+| Windows交付 | 0.11.0 Rust MSVC与Tauri/NSIS构建完成；独立不可变Preview安装成功，旧进程未关闭。`preview-v011.json` |
+
+实际原生路径：Rust codec OSC bundle → UDP9012 → GestureManager → 统一240bit解码器 → 8独立原生出生池。未使用SetParticles、Emit或运行时几何注入替代Avatar能力。
+
+核心测试覆盖格式往返、16个序号、保留位拒绝、坐标边界、局部原点越界、随机字节输入不panic；调度覆盖共享外观、局部三角带、池平衡、删除屏障与保留显示补播。
+
+应用测试覆盖预览不改变工程、请求幂等与重启恢复、过期预览、损坏源文件、保护组、撤销；Harness新增工具使用现有运行守卫，工具版本升级需显式新开／升级上下文，不能静默改变缓存前缀。本轮未发起付费模型请求。
 
 ## 保留的失败与修正
 
-- 直接将24bit整数放入粒子尺寸被Unity截到100000，且删除半径误伤其它粒子；见`probe-unnormalized-failure.json`。
-- 单纯0..1归一化虽然保留数据，但极小载体不利于参考系重建。改为1..4的两段指数编码。
-- 只扩大Renderer.localBounds不持久化，初次真实显示失败；改为持久化载体Mesh Bounds。
-- 初次材质复制仍指向旧ParticleBoxCatalog Shader；MF6现在明确使用已扩展的MetadataGrid Shader。
+- 直接把24bit整数放入粒子尺寸会被Unity截到100000，且删除半径误伤；改为1..4范围的两段指数编码。已有随机顶点实证，不再凭猜测重设计。
+- 只扩大Renderer.localBounds不持久化；扩大载体Mesh Bounds又会扩大Trigger判定半径，误删相邻对象。保留`expanded-mesh-trigger-failure.json`。
+- 最终采用每池8个不可见小粒子，分布于±40角点；Store物理2056容量＝2048有效＋8边界，载体Mesh为普通Bounds。显式清空后重建角点，边界泵采用Hierarchy缩放。总物理粒子16,448。
+- 初次材质复制仍指向旧Shader；MF6明确改用扩展后的MetadataGrid。
+- 有限出生寿命`524288+8×ID`允许0.0625秒级浮点偏差；验证恢复后的ID与24bit顶点字，不能要求寿命浮点值逐值相等。
 
-## 待完成
+## 仍需完成
 
-- 统一帧解码器与8池实际端到端、全部压缩格式、0.25s及稀疏池序号、丢帧补播。
-- 16K容量、旋转/缩放/定位、单面/双面、Box与三角面混合显示。
-- 完整前端/Harness/Windows、Minecraft导入与资源包、配套Avatar上传和服务端终态分析。
-- 当前没有真实多人验证，所有发送统计仍无ACK。
+- 配套MF6独立私有Avatar已开始上传，待generic／standard／security服务端终态分析。
+- 新目录贴图朝向与缩放的原生可视验证、近看与定位变换，后续版本安装与文档收尾。
+- 真实VRChat多人及后来者尚未验证。OSC无远端ACK；本地发送完成不代表远端已收到，维护补播只能逐渐修复。
+- Minecraft复杂自定义elements/CTM/自定义Shader等没有完整模拟；不支持的形状和材质会报告并近似。Bedrock与完整世界目录未纳入本轮。

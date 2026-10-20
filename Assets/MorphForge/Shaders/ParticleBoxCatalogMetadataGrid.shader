@@ -72,7 +72,7 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
 
         bool MF6Triangle(float4 data)
         {
-            return _WireEncoding > 5.5 && data.a * 255.0 < 6.5;
+            return _WireEncoding > 5.5 && data.a * 255.0 > .5 && data.a * 255.0 < 6.5;
         }
 
         bool MF6Double(float4 data) { return fmod(floor(data.a*255.0+.5),2.0)<.5; }
@@ -104,6 +104,10 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
             UNITY_SETUP_INSTANCE_ID(v);
             UNITY_INITIALIZE_OUTPUT(v2f, o);
             UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+            if(_WireEncoding>5.5 && v.color.a*255.0<.5)
+            {
+                o.pos=float4(0,0,0,1);o.world=0;o.local=0;o.normal=float3(0,1,0);o.data=v.color;o.uvFace=0;o.size=1;return o;
+            }
             if (MF6Triangle(v.color))
             {
                 float3 a = MF6Vertex(v.sizeData.x);
@@ -165,6 +169,18 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
             return o;
         }
 
+            float3 MFInverseRotation(float3 p,float code) {
+            float yaw=fmod(code,4.0),axis=floor(code/4.0);
+            if(yaw>.5&&yaw<1.5)p=float3(p.z,p.y,-p.x);
+            else if(yaw>1.5&&yaw<2.5)p=float3(-p.x,p.y,-p.z);
+            else if(yaw>2.5)p=float3(-p.z,p.y,p.x);
+            if(axis>.5&&axis<1.5)return float3(p.y,-p.x,p.z);
+            if(axis>1.5&&axis<2.5)return float3(p.x,p.z,-p.y);
+            if(axis>2.5&&axis<3.5)return float3(p.x,-p.z,p.y);
+            if(axis>3.5&&axis<4.5)return float3(-p.x,-p.y,p.z);
+            if(axis>4.5)return float3(-p.y,p.x,p.z);
+            return p;
+        }
         float4 MetaTexel(float styleId, float slot)
         {
             float index = styleId * 4.0 + slot;
@@ -277,6 +293,20 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
                 motion = 0.0; // transparent surfaces use these six bits for interface masks
             }
             float2 tile = FaceUV(axis, i.local, i.size, i.uvFace);
+            float encodedScale=MetaTexel(styleId,3.0).z;
+            float textureScale=encodedScale>.5?encodedScale-1.0:1.0;
+            float rotation=MetaTexel(styleId,3.0).w;
+            float faceSign=fmod(face,2.0)<.5?1.0:-1.0;
+            float3 uvPosition=axis<.5?float3(faceSign>0?1:0,i.uvFace.y,i.uvFace.x):(axis<1.5?float3(i.uvFace.x,faceSign>0?1:0,i.uvFace.y):float3(i.uvFace.xy,faceSign>0?1:0));
+            uvPosition=MFInverseRotation(uvPosition-.5,rotation)+.5;
+            float3 sourceSize=abs(MFInverseRotation(i.size,rotation));
+            float3 sourceNormal=MFInverseRotation(axisVector*faceSign,rotation);
+            float sourceAxis=abs(sourceNormal.x)>.5?0.0:(abs(sourceNormal.y)>.5?1.0:2.0);
+            float2 sourceUV=sourceAxis<.5?uvPosition.zy:(sourceAxis<1.5?uvPosition.xz:uvPosition.xy);
+            float2 faceExtent=sourceAxis<.5?sourceSize.zy:(sourceAxis<1.5?sourceSize.xz:sourceSize.xy);
+            face=sourceAxis*2.0+(sourceNormal[(int)sourceAxis]>0?0.0:1.0);
+            float2 logicalUV=textureScale<.5?sourceUV:sourceUV*faceExtent/max(_CellSize*textureScale,.0001);
+            tile=textureScale<.5?clamp(logicalUV,.001,.999):frac(logicalUV);
             float4 texel = float4(1, 1, 1, 1);
             bool hasTexture = fmod(flags, 2.0) >= 1.0;
             if (hasTexture)
@@ -293,7 +323,7 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
                 {
                     float baseLayer = MetaTexel(styleId, 3.0).y;
                     float2 extent = axis < .5 ? i.size.zy : (axis < 1.5 ? i.size.xz : i.size.xy);
-                    float2 logical = i.uvFace.xy * extent / max(_CellSize, .0001);
+                    float2 logical = logicalUV;
                     texel = _CatalogLayers.SampleGrad(sampler_CatalogLayers, float3(tile, baseLayer + frame * 6.0 + face), ddx(logical), ddy(logical));
                 }
                 else texel = tex2D(_CatalogAtlas, atlasUV);
@@ -372,7 +402,7 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
             #pragma vertex vert
             #pragma fragment frag
 
-            fixed4 frag(v2f i, fixed facing : VFACE) : SV_Target
+        fixed4 frag(v2f i, fixed facing : VFACE) : SV_Target
             {
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
                 if(facing<0 && (!MF6Triangle(i.data)||!MF6Double(i.data)))discard;

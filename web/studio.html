@@ -70,8 +70,8 @@
           <label>斜面起点<input id="wedgeMin" value="-8, 0, 0" /></label>
           <label>斜面尺寸<input id="wedgeSize" value="16, 8, 16" /></label>
           <label>上升方向<select id="wedgeDirection"><option value="+x">+X</option><option value="-x">−X</option><option value="+z">+Z</option><option value="-z">−Z</option></select></label>
-          <button id="meshWedge" class="wide">添加封闭斜面</button>
-          <p class="caption">坐标为整数格。选择工具可选中面并移动、复制或改色。区域擦除删除相交面整体；向VRC发送需要MF6配套头像。</p>
+          <div class="double"><button id="voxelWedge">添加体素斜面</button><button id="meshWedge">添加多边形斜面</button></div>
+          <p class="caption">体素斜面使用所选材质、按整体擦除；多边形斜面使用面颜色、可逐面编辑。选择工具可移动、复制或改色。向VRC发送需要MF6头像。</p>
         </details>
 
         <div class="section-title">材质</div>
@@ -92,6 +92,7 @@
         <button id="runtimeMaterialOpen" class="wide">＋实时颜色 / 程序材质</button>
         <button id="pixelThemeOpen" class="wide">内置方块工坊 · 48种材质</button>
         <button id="imageToolsOpen" class="wide">图片像素 / 转体素平面</button>
+        <button id="minecraftOpen" class="wide">Minecraft 建筑导入与源库</button>
         <button id="packImport" class="wide">导入 Minecraft Java 资源包</button>
         <input id="packFile" type="file" accept=".zip" hidden />
 
@@ -939,6 +940,17 @@ mf.group('main', () => {
         <summary>素材来源与本机收藏</summary>
         <div id="referenceSources" class="caption"></div>
       </details>
+    </dialog>
+    <dialog id="minecraftDialog" style="width:min(1050px,94vw);max-height:92vh;overflow:auto" aria-labelledby="minecraftTitle">
+      <div class="row"><h2 id="minecraftTitle" class="grow">Minecraft 建筑导入</h2><button id="mcClose">关闭</button></div>
+      <p class="caption">支持 .litematic、Sponge .schem、旧 .schematic、Java 结构 .nbt。保留原始文件；近似形状、精度损失和未知方块会在报告中列出。Bedrock 与完整世界目录暂不支持。</p>
+      <div class="row"><select id="mcSource" class="grow" aria-label="建筑源"></select><button id="mcUpload">上传建筑</button><button id="mcInspect">查看源信息</button><a id="mcOriginal" download hidden>下载原文件</a></div>
+      <input id="mcFile" type="file" accept=".litematic,.schem,.schematic,.nbt" hidden />
+      <div class="row"><label>每 MC 方块格数<select id="mcScale"><option>1</option><option>2</option><option selected>4</option><option>8</option><option>16</option></select></label><label>材质<select id="mcPack"></select></label><label>导入方式<select id="mcMode"><option value="replace">替换草稿</option><option value="overlay">覆盖指定区域</option></select></label><label>偏移 XYZ<input id="mcOffset" value="0, 0, 0" /></label></div>
+      <div class="row"><label><input id="mcCenter" type="checkbox" checked />地面中心归零</label><label><input id="mcSurface" type="checkbox" />仅可见外壳</label><button id="mcPreview">生成独立预览</button><button id="mcApply" class="primary" disabled>应用到草稿（可撤销）</button></div>
+      <div id="mcViewport" style="height:360px;position:relative"></div>
+      <pre id="mcReport" style="max-height:240px;overflow:auto;white-space:pre-wrap"></pre>
+      <p class="caption">原版或本地资源包可另行导入；新增图片材质需要重新打包 Avatar。此窗口只预览建筑，点击应用后才会修改草稿和按已有连接设置发布。</p>
     </dialog>
     <dialog id="packReportDialog">
       <div class="row">

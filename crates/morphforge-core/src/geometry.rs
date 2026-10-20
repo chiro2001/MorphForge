@@ -30,6 +30,20 @@ pub struct Box3 {
     pub motion_phase: u8,
     #[serde(default = "group_default")]
     pub group: String,
+    #[serde(default = "default_mergeable", skip_serializing_if = "is_mergeable")]
+    pub mergeable: bool,
+    /// 0=cube, 1=+X slope, 2=-X, 3=+Z, 4=-Z. Slopes occupy their AABB.
+    #[serde(default, skip_serializing_if = "zero_shape")]
+    pub shape: u8,
+}
+fn zero_shape(value: &u8) -> bool {
+    *value == 0
+}
+fn default_mergeable() -> bool {
+    true
+}
+fn is_mergeable(value: &bool) -> bool {
+    *value
 }
 fn style_default() -> u32 {
     1
@@ -44,6 +58,8 @@ impl Box3 {
             tint_id: 0,
             motion_phase: 0,
             group: group_default(),
+            mergeable: true,
+            shape: 0,
         }
     }
     pub fn end(&self) -> [i32; 3] {
@@ -77,7 +93,7 @@ impl Box3 {
                 ));
             }
         }
-        if self.tint_id > 63 || self.motion_phase > 63 || self.group.len() > 128 {
+        if self.tint_id > 63 || self.motion_phase > 63 || self.group.len() > 128 || self.shape > 4 {
             return Err(GeometryError(
                 "染色/动画预设须为0..63，分组名称不得过长".into(),
             ));
@@ -207,6 +223,9 @@ pub fn subtract(a: &Box3, b: &Box3) -> Vec<Box3> {
     if !a.intersects(b) {
         return vec![a.clone()];
     }
+    if a.shape != 0 {
+        return vec![];
+    } // template editing removes the whole shape
     let ae = a.end();
     let be = b.end();
     let lo = std::array::from_fn::<_, 3, _>(|i| a.min[i].max(b.min[i]));
@@ -309,15 +328,27 @@ pub fn merge(mut boxes: Vec<Box3>) -> Vec<Box3> {
     loop {
         let mut changed = false;
         for axis in [0usize, 2, 1] {
-            type Key = ([i32; 3], [u32; 3], u32, u8, u8, String);
+            type Key = ([i32; 3], [u32; 3], u32, u8, u8, String, usize);
             let mut groups: BTreeMap<Key, Vec<Box3>> = BTreeMap::new();
-            for b in boxes {
+            for (i, b) in boxes.into_iter().enumerate() {
                 let mut p = b.min;
                 let mut s = b.size;
                 p[axis] = 0;
                 s[axis] = 0;
                 groups
-                    .entry((p, s, b.style_id, b.tint_id, b.motion_phase, b.group.clone()))
+                    .entry((
+                        p,
+                        s,
+                        b.style_id,
+                        b.tint_id,
+                        b.motion_phase,
+                        b.group.clone(),
+                        if b.mergeable && b.shape == 0 {
+                            0
+                        } else {
+                            i + 1
+                        },
+                    ))
                     .or_default()
                     .push(b);
             }
@@ -541,6 +572,13 @@ impl Scene {
                     for id in index.query(&region, &all) {
                         let old = all.remove(&id).unwrap();
                         index.remove(&old);
+                        if old.shape != 0 {
+                            let mut value = old;
+                            value.style_id = *style_id;
+                            value.tint_id = *tint_id;
+                            insert(value, &mut all, &mut index, &mut next_id);
+                            continue;
+                        }
                         for p in subtract(&old, &region) {
                             insert(p, &mut all, &mut index, &mut next_id)
                         }
@@ -557,7 +595,7 @@ impl Scene {
                     }
                 }
                 Operation::Group { ids, name } => {
-                    if name.len() > 128 {
+                    if name.is_empty() || name.len() > 128 {
                         return Err(GeometryError("分组名称过长".into()));
                     }
                     for id in ids {
@@ -627,6 +665,13 @@ impl Scene {
                             b.min[2] = x;
                             b.size[0] = b.size[2];
                             b.size[2] = sx;
+                            b.shape = match b.shape {
+                                1 => 3,
+                                3 => 2,
+                                2 => 4,
+                                4 => 1,
+                                _ => 0,
+                            };
                         }
                         if let Some(axis) = mirror {
                             let a = match axis.as_str() {
@@ -636,6 +681,18 @@ impl Scene {
                                 _ => return Err(GeometryError("镜像轴须为x/y/z".into())),
                             };
                             b.min[a] = -b.min[a] - b.size[a] as i32;
+                            b.shape = match (b.shape, a) {
+                                (1, 0) => 2,
+                                (2, 0) => 1,
+                                (3, 2) => 4,
+                                (4, 2) => 3,
+                                (shape, 1) if shape != 0 => {
+                                    return Err(GeometryError(
+                                        "体素斜面暂不支持Y镜像，请使用多边形斜面".into(),
+                                    ))
+                                }
+                                (shape, _) => shape,
+                            };
                         }
                         for (a, delta) in offset.iter().enumerate() {
                             b.min[a] = b.min[a]
@@ -658,7 +715,7 @@ impl Scene {
         }
         Ok(Self {
             revision: self.revision + 1,
-            format: if triangles.is_empty() {
+            format: if triangles.is_empty() && boxes.iter().all(|b| b.shape == 0) {
                 self.format.clone()
             } else {
                 "MorphForgeScene/2".into()

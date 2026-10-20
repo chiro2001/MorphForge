@@ -4,11 +4,16 @@
 
 - [用户指南](docs/USER-GUIDE.md)：安装、配置、编辑、AI、compact、作品库与 OSC 发布。
 - [交付记录](docs/DELIVERY.md) · [实施状态及证据](docs/plan/STATUS.md) · [已确认设计](docs/plan/README.md) · [验收标准](docs/plan/ACCEPTANCE.md)。
+- gamepc 开发测试副本 **0.11.0**：MF6 统一240bit帧、三角面与单对象体素斜面、Minecraft建筑源库／独立预览／可撤销导入。兼容MF5；MF6头像配套验证进行中，尚未真实多人验收。[分阶段计划](docs/mf6/PLAN.md) · [验证记录](docs/mf6/RESULTS.md)。
 - gamepc 开发测试副本 **0.10.0**：读取参考图像素、缩放副本、图片转彩色体素平面、连续循环补播和三种发送顺序；兼容MF5 v15、新1%～1000%缩放、实时材质与48种原创纹理。原安装与数据保留，未新增Release。[本轮功能与可行性](docs/image-stream/DESIGN.md) · [验证](docs/image-stream/RESULTS.md)。
 - Windows **0.6.0 候选版**：`dist/windows/MorphForge Desktop_0.6.0_x64-setup.exe`；校验和在同目录。[Harness强化验证](docs/quality-v6/RESULTS.md) · [前缀缓存修复](docs/quality-v4.2/RESULTS.md) · [参考图建模迭代](docs/quality-v4.1/RESULTS.md)。
 
 GitHub公开仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支与完整历史保留。
 [获取源码和Windows克隆验证](docs/GIT-SOURCE.md)。
+
+![三角面和体素斜面编辑](docs/mf6/visual/mesh-editor.webp)
+
+![Minecraft建筑独立预览](docs/mf6/visual/minecraft-preview.webp)
 
 ## 在 VRChat 中的预期体验
 

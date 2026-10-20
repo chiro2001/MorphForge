@@ -61,19 +61,38 @@ pub fn execute(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Val
             let min = serde_json::from_value(args["min"].clone()).context("斜面min需要XYZ整数")?;
             let size =
                 serde_json::from_value(args["size"].clone()).context("斜面size需要XYZ正整数")?;
-            let color =
-                serde_json::from_value(args["color"].clone()).context("斜面color需要RGB8数组")?;
-            let mut faces = morphforge_core::triangles::wedge(
-                min,
-                size,
-                args["direction"].as_str().unwrap_or("+x"),
-                color,
-                args["group"].as_str().unwrap_or("slope"),
-            )?;
-            for face in &mut faces {
-                face.double_sided = args["doubleSided"] == true;
+            if args["primitive"] == "voxel" {
+                let shape = match args["direction"].as_str().unwrap_or("+x") {
+                    "+x" => 1,
+                    "-x" => 2,
+                    "+z" => 3,
+                    "-z" => 4,
+                    _ => bail!("斜面方向需要+x/-x/+z/-z"),
+                };
+                let style = u32::try_from(args["styleId"].as_u64().unwrap_or(1))?;
+                if !w.project.materials.iter().any(|m| m.id == style) {
+                    bail!("未知斜面材质");
+                }
+                let mut value = morphforge_core::Box3::new(min, size, style);
+                value.shape = shape;
+                value.mergeable = false;
+                value.group = args["group"].as_str().unwrap_or("slope").into();
+                operations.push(Operation::Box { value });
+            } else {
+                let color = serde_json::from_value(args["color"].clone())
+                    .context("斜面color需要RGB8数组")?;
+                let mut faces = morphforge_core::triangles::wedge(
+                    min,
+                    size,
+                    args["direction"].as_str().unwrap_or("+x"),
+                    color,
+                    args["group"].as_str().unwrap_or("slope"),
+                )?;
+                for face in &mut faces {
+                    face.double_sided = args["doubleSided"] == true;
+                }
+                operations.extend(faces.into_iter().map(|value| Operation::Triangle { value }));
             }
-            operations.extend(faces.into_iter().map(|value| Operation::Triangle { value }));
         }
         "remove" => operations.push(Operation::RemoveTriangles {
             ids: serde_json::from_value(args["ids"].clone())?,

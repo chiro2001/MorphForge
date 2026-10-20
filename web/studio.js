@@ -2,6 +2,7 @@ import { TimelineView } from "/timeline-ui.js";
 import { ReferencePicker } from "/reference-ui.js";
 import { usageDisplay, supportsFileUpload } from "/usage-ui.js";
 import { VoxelRenderer } from "/renderer.js";
+import { setupMinecraftUi } from "/minecraft-ui.js";
 import { setupMeshUi } from "/mesh-ui.js";
 import {
   groupRows,
@@ -2295,7 +2296,9 @@ $("textApply").onclick = async () => {
   }
 };
 
-setupMeshUi({$,getScene:()=>sceneData,getState:()=>state,getSelected:()=>selected,api,edit,refresh,error});
+setupMinecraftUi({$,api,getState:()=>state,getMaterials:()=>sceneData?.materials,refresh,error,toast});
+
+setupMeshUi({$,getScene:()=>sceneData,getState:()=>state,getSelected:()=>selected,getSelectedStyle:()=>selectedStyle,api,edit,refresh,error});
 
 if (captureMode) {
   document.body.classList.add("capture-mode");

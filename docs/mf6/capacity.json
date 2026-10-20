@@ -1,0 +1,316 @@
+{
+  "success": true,
+  "capacity": true,
+  "checks": [
+    {
+      "phase": "clear",
+      "passed": true,
+      "expected": 0,
+      "actual": 0,
+      "missingCount": 0,
+      "pools": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "errors": []
+    },
+    {
+      "phase": "capacity batch 127",
+      "passed": true,
+      "expected": 1024,
+      "actual": 1024,
+      "missingCount": 0,
+      "pools": [
+        128,
+        128,
+        128,
+        128,
+        128,
+        128,
+        128,
+        128
+      ],
+      "errors": []
+    },
+    {
+      "phase": "capacity batch 255",
+      "passed": true,
+      "expected": 2048,
+      "actual": 2048,
+      "missingCount": 0,
+      "pools": [
+        256,
+        256,
+        256,
+        256,
+        256,
+        256,
+        256,
+        256
+      ],
+      "errors": []
+    },
+    {
+      "phase": "capacity batch 383",
+      "passed": true,
+      "expected": 3072,
+      "actual": 3072,
+      "missingCount": 0,
+      "pools": [
+        384,
+        384,
+        384,
+        384,
+        384,
+        384,
+        384,
+        384
+      ],
+      "errors": []
+    },
+    {
+      "phase": "capacity batch 511",
+      "passed": true,
+      "expected": 4096,
+      "actual": 4096,
+      "missingCount": 0,
+      "pools": [
+        512,
+        512,
+        512,
+        512,
+        512,
+        512,
+        512,
+        512
+      ],
+      "errors": []
+    },
+    {
+      "phase": "capacity batch 639",
+      "passed": true,
+      "expected": 5120,
+      "actual": 5120,
+      "missingCount": 0,
+      "pools": [
+        640,
+        640,
+        640,
+        640,
+        640,
+        640,
+        640,
+        640
+      ],
+      "errors": []
+    },
+    {
+      "phase": "capacity batch 767",
+      "passed": true,
+      "expected": 6144,
+      "actual": 6144,
+      "missingCount": 0,
+      "pools": [
+        768,
+        768,
+        768,
+        768,
+        768,
+        768,
+        768,
+        768
+      ],
+      "errors": []
+    },
+    {
+      "phase": "capacity batch 895",
+      "passed": true,
+      "expected": 7168,
+      "actual": 7168,
+      "missingCount": 0,
+      "pools": [
+        896,
+        896,
+        896,
+        896,
+        896,
+        896,
+        896,
+        896
+      ],
+      "errors": []
+    },
+    {
+      "phase": "capacity batch 1023",
+      "passed": true,
+      "expected": 8192,
+      "actual": 8192,
+      "missingCount": 0,
+      "pools": [
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024
+      ],
+      "errors": []
+    },
+    {
+      "phase": "capacity batch 1151",
+      "passed": true,
+      "expected": 9216,
+      "actual": 9216,
+      "missingCount": 0,
+      "pools": [
+        1152,
+        1152,
+        1152,
+        1152,
+        1152,
+        1152,
+        1152,
+        1152
+      ],
+      "errors": []
+    },
+    {
+      "phase": "capacity batch 1279",
+      "passed": true,
+      "expected": 10240,
+      "actual": 10240,
+      "missingCount": 0,
+      "pools": [
+        1280,
+        1280,
+        1280,
+        1280,
+        1280,
+        1280,
+        1280,
+        1280
+      ],
+      "errors": []
+    },
+    {
+      "phase": "capacity batch 1407",
+      "passed": true,
+      "expected": 11264,
+      "actual": 11264,
+      "missingCount": 0,
+      "pools": [
+        1408,
+        1408,
+        1408,
+        1408,
+        1408,
+        1408,
+        1408,
+        1408
+      ],
+      "errors": []
+    },
+    {
+      "phase": "capacity batch 1535",
+      "passed": true,
+      "expected": 12288,
+      "actual": 12288,
+      "missingCount": 0,
+      "pools": [
+        1536,
+        1536,
+        1536,
+        1536,
+        1536,
+        1536,
+        1536,
+        1536
+      ],
+      "errors": []
+    },
+    {
+      "phase": "capacity batch 1663",
+      "passed": true,
+      "expected": 13312,
+      "actual": 13312,
+      "missingCount": 0,
+      "pools": [
+        1664,
+        1664,
+        1664,
+        1664,
+        1664,
+        1664,
+        1664,
+        1664
+      ],
+      "errors": []
+    },
+    {
+      "phase": "capacity batch 1791",
+      "passed": true,
+      "expected": 14336,
+      "actual": 14336,
+      "missingCount": 0,
+      "pools": [
+        1792,
+        1792,
+        1792,
+        1792,
+        1792,
+        1792,
+        1792,
+        1792
+      ],
+      "errors": []
+    },
+    {
+      "phase": "capacity batch 1919",
+      "passed": true,
+      "expected": 15360,
+      "actual": 15360,
+      "missingCount": 0,
+      "pools": [
+        1920,
+        1920,
+        1920,
+        1920,
+        1920,
+        1920,
+        1920,
+        1920
+      ],
+      "errors": []
+    },
+    {
+      "phase": "capacity batch 2047",
+      "passed": true,
+      "expected": 16384,
+      "actual": 16384,
+      "missingCount": 0,
+      "pools": [
+        2048,
+        2048,
+        2048,
+        2048,
+        2048,
+        2048,
+        2048,
+        2048
+      ],
+      "errors": []
+    }
+  ],
+  "frames": 2049,
+  "intervalMs": 250,
+  "elapsedSeconds": 524.57575309999993,
+  "scope": "Production Rust codec OSC bundles -> real UDP9012 -> GestureManager -> shared 240bit decoder -> eight independent native pools. No SetParticles, Emit, or scripted geometry injection."
+}

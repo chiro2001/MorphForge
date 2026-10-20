@@ -8,7 +8,7 @@ export function rgb8(hex) {
   if (!/^#[\da-f]{6}$/i.test(hex)) throw Error("颜色需要#RRGGBB");
   return [1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));
 }
-export function setupMeshUi({$, getScene, getState, getSelected, api, edit, refresh, error}) {
+export function setupMeshUi({$, getScene, getState, getSelected, getSelectedStyle, api, edit, refresh, error}) {
   const bind = (id, callback) => { $(id).onclick = async () => {try {await callback();} catch(cause) {error(cause);} }; };
   const face = () => ({vertices:["meshA","meshB","meshC"].map(id=>integerPoint($(id).value)),color:rgb8($("meshColor").value),doubleSided:$("meshDoubleSided").checked,group:$("meshGroup").value.trim()||"polygon"});
   const selectedFace = () => {
@@ -28,6 +28,11 @@ export function setupMeshUi({$, getScene, getState, getSelected, api, edit, refr
   bind("meshWedge",async()=>{
     const state=getState();if(!state)throw Error("工程尚未加载");
     const result=await api("mesh",{action:"wedge",baseRevision:state.revision,projectId:state.project.id,min:integerPoint($("wedgeMin").value),size:integerPoint($("wedgeSize").value,"尺寸",true),direction:$("wedgeDirection").value,color:rgb8($("meshColor").value),group:$("meshGroup").value.trim()||"slope",doubleSided:$("meshDoubleSided").checked});
+    await refresh(true);if(result.warning)throw Error(result.warning);
+  });
+  bind("voxelWedge",async()=>{
+    const state=getState();if(!state)throw Error("工程尚未加载");
+    const result=await api("mesh",{action:"wedge",primitive:"voxel",styleId:getSelectedStyle(),baseRevision:state.revision,projectId:state.project.id,min:integerPoint($("wedgeMin").value),size:integerPoint($("wedgeSize").value,"尺寸",true),direction:$("wedgeDirection").value,group:$("meshGroup").value.trim()||"slope"});
     await refresh(true);if(result.warning)throw Error(result.warning);
   });
   $("modelingStyle").onchange=async()=>{try{await api("project",{modelingStyle:$("modelingStyle").value,baseRevision:getState().revision});await refresh();}catch(cause){error(cause);}};

@@ -1,0 +1,176 @@
+{
+  "success": true,
+  "scene": "Assets/MorphForge/MF6/MorphForge_MF6.unity",
+  "avatarId": "",
+  "capacity": 16384,
+  "pools": 8,
+  "decoder": {
+    "success": true,
+    "layers": 22,
+    "states": 1697,
+    "parameters": 275,
+    "syncedBits": 240
+  },
+  "budget": {
+    "success": true,
+    "totalBits": 254,
+    "geometryBits": 240,
+    "placementBits": 14,
+    "remainingBits": 2,
+    "parameters": [
+      {
+        "name": "MF_World",
+        "type": "Bool"
+      },
+      {
+        "name": "MF_Handle",
+        "type": "Bool"
+      },
+      {
+        "name": "MF_Scale",
+        "type": "Float"
+      },
+      {
+        "name": "MF_Reset",
+        "type": "Bool"
+      },
+      {
+        "name": "MF_GrabL",
+        "type": "Bool"
+      },
+      {
+        "name": "MF_GrabR",
+        "type": "Bool"
+      },
+      {
+        "name": "MF_Level",
+        "type": "Bool"
+      },
+      {
+        "name": "MF6_Ctl",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D00",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D01",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D02",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D03",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D04",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D05",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D06",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D07",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D08",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D09",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D10",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D11",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D12",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D13",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D14",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D15",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D16",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D17",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D18",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D19",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D20",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D21",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D22",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D23",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D24",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D25",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D26",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D27",
+        "type": "Int"
+      },
+      {
+        "name": "MF6_D28",
+        "type": "Int"
+      }
+    ],
+    "compressedGeometry": [],
+    "fxLayers": 102,
+    "fxParameters": 768
+  },
+  "sourceMf5Preserved": true,
+  "avatarCount": 1
+}

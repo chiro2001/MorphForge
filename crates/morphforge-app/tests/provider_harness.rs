@@ -270,6 +270,7 @@ fn inert_transport() -> Transport {
             seq: 0,
             wide_seqs: [1; 3],
             lanes: Default::default(),
+            unified: Default::default(),
             wire_sent: Default::default(),
             wire_desired: Default::default(),
             repair_seen: None,

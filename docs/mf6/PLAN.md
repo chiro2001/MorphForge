@@ -58,7 +58,7 @@
 5. 局部坐标/三角带按能力标记逐项启用。软件编码存在不等于头像已经支持。
 6. 原生粒子输入顶点是世界坐标，ObjectToWorld为单位矩阵。使用Center、Normal、预烘焙Tangent和载体角标重建作品参考系。Unity将Center.x放在TEXCOORD1.w、Center.yz与InvStartLifetime放在TEXCOORD2.xyz，已通过实际GPU浮点读回确认。
 7. 三角面ID同时编码在有限出生寿命`524288+8×ID`中，Shader从逆寿命恢复ID以扣除存储位置。寿命约6..7.6天，周期补播会重新出生；不是无限寿命。
-8. 载体Mesh持久化扩大Bounds以覆盖Shader位移；不能依赖无法保存到Prefab的Renderer.localBounds覆盖。其开销与安全分析需验证。
+8. 每池8个不可见小粒子在±40的角点维护Shader位移后的Bounds，显式清空后重建；载体Mesh保持普通Bounds。扩大载体Mesh Bounds会扩大Trigger判定半径、误删相邻对象，已保留失败证据。边界泵采用Hierarchy缩放，不能用瞬时Renderer.localBounds替代持久化方案。
 9. 各物理池的本地执行序号独立递增，不直接复用全局帧序号，避免某池恰好空闲16帧后误判重复；不增加同步bit。
 
 ## Minecraft

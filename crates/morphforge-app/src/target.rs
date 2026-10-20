@@ -27,6 +27,12 @@ fn rendering(m: &Material) -> Value {
     if let Some(p) = &m.procedural {
         v["procedural"] = json!(p);
     }
+    if m.texture_scale != 1.0 {
+        v["textureScale"] = json!(m.texture_scale);
+    }
+    if m.texture_rotation != 0 {
+        v["textureRotation"] = json!(m.texture_rotation);
+    }
     v
 }
 impl AvatarCatalog {
@@ -70,6 +76,9 @@ impl AvatarCatalog {
                 || !m.roughness.is_finite()
                 || !m.emission.is_finite()
                 || !m.frame_time.is_finite()
+                || !m.texture_scale.is_finite()
+                || !(0.0..=256.0).contains(&m.texture_scale)
+                || m.texture_rotation > 23
                 || !["opaque", "cutout", "transparent"].contains(&m.render_mode.as_str())
             {
                 bail!("目录包含越界/重复/非有限材质");

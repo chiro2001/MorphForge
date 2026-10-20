@@ -1026,6 +1026,9 @@ fn validate_scene(scene: &Scene, capacity: usize, profile: &str) -> Result<()> {
         t.wire_vertices()?;
     }
     for b in &scene.boxes {
+        if profile != "mf6" && b.shape != 0 {
+            bail!("SHAPE_PROTOCOL_REQUIRED：体素斜面需要MF6头像");
+        }
         protocol::validate_geometry(b)?;
         if b.tint_id > 63 || b.motion_phase > 63 {
             bail!("染色/运动编码须在0..63");

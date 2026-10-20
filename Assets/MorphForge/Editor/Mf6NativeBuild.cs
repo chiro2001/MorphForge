@@ -52,7 +52,12 @@ namespace MorphForge.Editor
         static VRCAvatarParameterDriver Driver(AnimatorState s){var d=s.AddStateMachineBehaviour<VRCAvatarParameterDriver>();d.localOnly=false;return d;}
         static void Set(VRCAvatarParameterDriver d,string n,float v){d.parameters.Add(new VRC_AvatarParameterDriver.Parameter{name=prefix+n,type=VRC_AvatarParameterDriver.ChangeType.Set,value=v});}
         static void Copy(VRCAvatarParameterDriver d,string a,string b){d.parameters.Add(new VRC_AvatarParameterDriver.Parameter{name=prefix+b,source=prefix+a,type=VRC_AvatarParameterDriver.ChangeType.Copy});}
-        static AnimationClip Flow(string name,bool pump,bool erase,float duration=.001f)=>Clip(name,new[]{B("Minimum/Center/Pump",typeof(GameObject),"m_IsActive",pump?1:0,pump?1:0),B("Store",typeof(ParticleSystem),"TriggerModule.enabled",erase?1:0,erase?1:0)},false,duration);
+        static Motion Flow(string name,bool pump,bool erase,float duration=.001f)
+        {
+            AnimationClip Values(string suffix,bool regular,bool bounds)=>Clip(name+suffix,new[]{B("Minimum/Center/Pump",typeof(GameObject),"m_IsActive",regular?1:0,regular?1:0),B("BoundsPump",typeof(GameObject),"m_IsActive",bounds?1:0,bounds?1:0),B("Store",typeof(ParticleSystem),"TriggerModule.enabled",erase?1:0,erase?1:0)},false,duration);
+            if(!pump)return Values("",false,false);
+            var tree=new BlendTree{name=name+" exclusive emitter",blendType=BlendTreeType.Simple1D,blendParameter=prefix+"Kind",useAutomaticThresholds=false};AssetDatabase.AddObjectToAsset(tree,fx);tree.AddChild(Values("Regular",true,false),1);tree.AddChild(Values("Bounds",false,true),2);return tree;
+        }
         static void Data()
         {
             var list=new List<Binding>();
@@ -95,7 +100,14 @@ namespace MorphForge.Editor
                 motions.Add(Linear((triangle?"Tri":"Box")+"Eraser","Clear", "xyz".Select(a=>B("Minimum/Center/Eraser",typeof(Transform),"m_LocalScale."+a,.025f,1024)).ToArray(),1));
                 modes.Add(Direct(triangle?"Triangle data":"Box data",motions));
             }
-            var select=new BlendTree{name="Geometry type",blendType=BlendTreeType.Simple1D,blendParameter=prefix+"Kind",useAutomaticThresholds=false};AssetDatabase.AddObjectToAsset(select,fx);select.AddChild(modes[0],0);select.AddChild(modes[1],1);
+            var sentinel=new List<Binding>();
+            foreach(char axis in "xyz"){
+                sentinel.Add(B("Minimum",typeof(Transform),"m_LocalPosition."+axis,0,0));
+                sentinel.Add(B("Minimum/Center/Eraser",typeof(Transform),"m_LocalScale."+axis,.025f,.025f));
+                string size=axis=='x'?"startSize":axis=='y'?"startSizeY":"startSizeZ";foreach(string scalar in new[]{"scalar","minScalar"})sentinel.Add(B("Store",typeof(ParticleSystem),"InitialModule."+size+"."+scalar,.25f,.25f));
+            }
+            foreach(string scalar in new[]{"scalar","minScalar"})sentinel.Add(B("Store",typeof(ParticleSystem),"InitialModule.startLifetime."+scalar,1000000,1000000));
+            var select=new BlendTree{name="Geometry type",blendType=BlendTreeType.Simple1D,blendParameter=prefix+"Kind",useAutomaticThresholds=false};AssetDatabase.AddObjectToAsset(select,fx);select.AddChild(modes[0],0);select.AddChild(modes[1],1);select.AddChild(Basis("Invisible bounds carrier",sentinel.ToArray(),false),2);
             var state=State(Layer("MF6 immutable data output"),"Drive",select);state.writeDefaultValues=true;
         }
         static void Lifecycle()
@@ -107,30 +119,43 @@ namespace MorphForge.Editor
                 Set(d,"QKind",op==2||op==4?1:0);Set(d,"QClear",op==5?1:0);Set(d,"QOp",op);Set(d,"LastRx",seq);Set(d,"Ready",1);
                 var t=sm.AddAnyStateTransition(capture);t.duration=0;t.hasExitTime=false;t.canTransitionToSelf=false;t.AddCondition(AnimatorConditionMode.Equals,seq*8+op,prefix+"Ctl");t.AddCondition(AnimatorConditionMode.NotEqual,seq,prefix+"LastRx");t.AddCondition(AnimatorConditionMode.IfNot,0,prefix+"Ready");To(capture,wait);
             }
-            sm=Layer("MF6 native lifecycle");var idle=State(sm,"Idle",Flow("Idle",false,false));sm.defaultState=idle;
+            sm=Layer("MF6 native lifecycle");var idle=State(sm,"Idle",Flow("Idle",false,false));
             var latch=State(sm,"Latch",Flow("Latch",false,false));var driver=Driver(latch);for(int i=0;i<Fields;i++)Copy(driver,"Q"+i.ToString("D2"),"W"+i.ToString("D2"));Copy(driver,"QKind","Kind");Copy(driver,"QClear","Clear");Copy(driver,"QOp","Op");Set(driver,"Ready",0);Set(driver,"Busy",1);
             var settle=State(sm,"Settle",Flow("Settle",false,false,.03f));var erase=State(sm,"Erase",Flow("Erase",false,true));var release=State(sm,"Release",Flow("Release",false,false));var fire=State(sm,"Birth",Flow("Birth",true,false,.03f));var done=State(sm,"Done",Flow("Done",false,false));
             var finish=Driver(done);Set(finish,"Busy",0);finish.parameters.Add(new VRC_AvatarParameterDriver.Parameter{name=prefix+"DoneCount",type=VRC_AvatarParameterDriver.ChangeType.Add,value=1});
-            To(latch,settle);To(settle,erase);To(erase,release);foreach(int op in new[]{1,2}){var t=To(release,fire);t.AddCondition(AnimatorConditionMode.Equals,op,prefix+"Op");}var skip=To(release,done);skip.AddCondition(AnimatorConditionMode.Greater,2,prefix+"Op");To(fire,done);To(done,idle);
+            var carrier=State(sm,"Prepare bounds carrier",Flow("CarrierPrepare",false,false));var carrierDriver=Driver(carrier);Set(carrierDriver,"Kind",2);Set(carrierDriver,"Clear",0);Set(carrierDriver,"Busy",1);
+            var carrierSettle=State(sm,"Bounds carrier settle",Flow("CarrierSettle",false,false,.03f));To(carrier,carrierSettle);To(carrierSettle,fire);sm.defaultState=carrier;
+            To(latch,settle);To(settle,erase);To(erase,release);foreach(int op in new[]{1,2}){var t=To(release,fire);t.AddCondition(AnimatorConditionMode.Equals,op,prefix+"Op");}
+            var rebuild=To(release,carrier);rebuild.AddCondition(AnimatorConditionMode.Equals,5,prefix+"Op");
+            var skip=To(release,done);skip.AddCondition(AnimatorConditionMode.Greater,2,prefix+"Op");skip.AddCondition(AnimatorConditionMode.NotEqual,5,prefix+"Op");To(fire,done);To(done,idle);
             var enter=sm.AddAnyStateTransition(latch);enter.duration=0;enter.hasExitTime=false;enter.canTransitionToSelf=false;enter.AddCondition(AnimatorConditionMode.If,0,prefix+"Ready");enter.AddCondition(AnimatorConditionMode.IfNot,0,prefix+"Busy");
         }
-        public static string BuildWorker(int pool)
+        public static string BuildWorker(int pool,string materialSource=null)
         {
             if(EditorApplication.isPlaying||EditorApplication.isCompiling||pool<0||pool>7)throw new Exception("Idle Edit Mode and pool0..7 required");
             Folder(Root);path=Root+"/Pool"+pool;Folder(path);prefix="MF6_P"+pool+"_";clipId=0;
             fx=AssetDatabase.LoadAssetAtPath<AnimatorController>(path+"/FX.controller");if(!fx)fx=AnimatorController.CreateAnimatorControllerAtPath(path+"/FX.controller");
             else{fx.layers=new AnimatorControllerLayer[0];fx.parameters=new AnimatorControllerParameter[0];foreach(var item in AssetDatabase.LoadAllAssetsAtPath(path+"/FX.controller"))if(item&&item!=fx)UnityEngine.Object.DestroyImmediate(item,true);}
             fx.AddParameter(prefix+"Ctl",AnimatorControllerParameterType.Int);foreach(string n in new[]{"QOp","Op","LastRx"})fx.AddParameter(new AnimatorControllerParameter{name=prefix+n,type=AnimatorControllerParameterType.Int,defaultInt=n=="LastRx"?255:0});
-            foreach(string n in new[]{"Ready","Busy"})fx.AddParameter(prefix+n,AnimatorControllerParameterType.Bool);
+            foreach(string n in new[]{"Ready","Busy"})fx.AddParameter(new AnimatorControllerParameter{name=prefix+n,type=AnimatorControllerParameterType.Bool,defaultBool=n=="Busy"});
             foreach(string n in new[]{"QKind","Kind","QClear","Clear","DoneCount"})fx.AddParameter(prefix+n,AnimatorControllerParameterType.Float);
             fx.AddParameter(new AnimatorControllerParameter{name=prefix+"One",type=AnimatorControllerParameterType.Float,defaultFloat=1});
             for(int i=0;i<Fields;i++)foreach(string n in new[]{"D","Q","W"})fx.AddParameter(prefix+n+i.ToString("D2"),AnimatorControllerParameterType.Float);
             Data();Lifecycle();
             var module=PrefabUtility.LoadPrefabContents(ParticleStage2Build.Root+"/Display.prefab");
             try{
-                module.name="Pool"+pool;var store=module.transform.Find("Store").GetComponent<ParticleSystem>();var main=store.main;main.maxParticles=2048;main.startLifetime=1000000;main.scalingMode=ParticleSystemScalingMode.Hierarchy;main.customSimulationSpace=module.transform;
+                module.name="Pool"+pool;var store=module.transform.Find("Store").GetComponent<ParticleSystem>();var main=store.main;main.maxParticles=2056;main.startLifetime=1000000;main.scalingMode=ParticleSystemScalingMode.Hierarchy;main.customSimulationSpace=module.transform;
                 var trigger=store.trigger;trigger.radiusScale=0;
                 var pump=module.transform.Find("Minimum/Center/Pump").GetComponent<ParticleSystem>().main;pump.startLifetime=.5f;
+                // Eight tiny hidden corners keep shader-displaced geometry in
+                // the native renderer bounds, including close-up/rotated views.
+                // This emitter and the regular pump are never active together.
+                var shapeMesh=new Mesh{name="MF6 bounds corners"};shapeMesh.vertices=Enumerable.Range(0,8).Select(i=>new Vector3((i&1)==0?-40:40,(i&2)==0?-40:40,(i&4)==0?-40:40)).ToArray();shapeMesh.triangles=new[]{0,2,1,1,2,3,4,5,6,5,7,6,0,1,4,1,5,4,2,6,3,3,6,7,0,4,2,2,4,6,1,3,5,3,7,5};shapeMesh.RecalculateNormals();shapeMesh.RecalculateBounds();shapeMesh=Save(shapeMesh,path+"/BoundsCorners.asset");
+                var boundsObject=new GameObject("BoundsPump",typeof(ParticleSystem));boundsObject.transform.SetParent(module.transform,false);var boundsSystem=boundsObject.GetComponent<ParticleSystem>();boundsSystem.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);
+                var bm=boundsSystem.main;bm.playOnAwake=true;bm.loop=false;bm.duration=.1f;bm.startLifetime=.5f;bm.startSpeed=0;bm.maxParticles=8;bm.cullingMode=ParticleSystemCullingMode.AlwaysSimulate;bm.scalingMode=ParticleSystemScalingMode.Hierarchy;
+                var be=boundsSystem.emission;be.enabled=true;be.rateOverTime=0;be.rateOverDistance=0;be.SetBursts(new[]{new ParticleSystem.Burst(0,8)});
+                var bs=boundsSystem.shape;bs.enabled=true;bs.shapeType=ParticleSystemShapeType.Mesh;bs.mesh=shapeMesh;bs.meshShapeType=ParticleSystemMeshShapeType.Vertex;bs.meshSpawnMode=ParticleSystemShapeMultiModeValue.BurstSpread;bs.meshSpawnSpread=1;
+                boundsSystem.GetComponent<ParticleSystemRenderer>().enabled=false;var sub=boundsSystem.subEmitters;sub.enabled=true;sub.AddSubEmitter(store,ParticleSystemSubEmitterType.Birth,ParticleSystemSubEmitterProperties.InheritNothing);boundsObject.SetActive(false);
                 var renderer=store.GetComponent<ParticleSystemRenderer>();
                 var temporary=GameObject.CreatePrimitive(PrimitiveType.Cube);var mesh=UnityEngine.Object.Instantiate(temporary.GetComponent<MeshFilter>().sharedMesh);UnityEngine.Object.DestroyImmediate(temporary);mesh.name="MF6 cube / triangle carrier";var uv2=new Vector2[mesh.vertexCount];var uv=new Vector2[mesh.vertexCount];var tangents=new Vector4[mesh.vertexCount];var vertices=mesh.vertices;var normals=mesh.normals;var indices=mesh.triangles;var first=indices.Take(3).ToArray();var next=indices.Skip(3).Take(3).ToArray();int shared=first.First(v=>next.Contains(v));
                 for(int i=0;i<uv2.Length;i++){
@@ -138,9 +163,9 @@ namespace MorphForge.Editor
                     uv[i]=axis==0?new Vector2(v.z+.5f,v.y+.5f):axis==1?new Vector2(v.x+.5f,v.z+.5f):new Vector2(v.x+.5f,v.y+.5f);
                     var tangent=axis==0?Vector3.forward:Vector3.right;float sign=axis==0?n.x:axis==1?n.y:n.z;tangents[i]=new Vector4(tangent.x,tangent.y,tangent.z,axis==2?sign:-sign);
                 }
-                mesh.uv=uv;mesh.uv2=uv2;mesh.tangents=tangents;mesh.bounds=new Bounds(Vector3.zero,Vector3.one*8192);renderer.mesh=Save(mesh,path+"/Carrier.asset");
+                mesh.uv=uv;mesh.uv2=uv2;mesh.tangents=tangents;mesh.RecalculateBounds();renderer.mesh=Save(mesh,path+"/Carrier.asset");
                 renderer.SetActiveVertexStreams(new List<ParticleSystemVertexStream>{ParticleSystemVertexStream.Position,ParticleSystemVertexStream.Normal,ParticleSystemVertexStream.Tangent,ParticleSystemVertexStream.Color,ParticleSystemVertexStream.UV,ParticleSystemVertexStream.UV2,ParticleSystemVertexStream.SizeXYZ,ParticleSystemVertexStream.Center,ParticleSystemVertexStream.InvStartLifetime});
-                var material=UnityEngine.Object.Instantiate(AssetDatabase.LoadAssetAtPath<Material>("Assets/MorphForge/Diagnostics/MF5Catalog/ParticleBoxCatalog.mat"));material.name="MF6 catalogue and triangles";material.shader=Shader.Find("MorphForge/ParticleBoxCatalogMetadataGrid");material.SetFloat("_WireEncoding",6);renderer.sharedMaterial=Save(material,path+"/Surface.mat");
+                var material=UnityEngine.Object.Instantiate(AssetDatabase.LoadAssetAtPath<Material>(materialSource??"Assets/MorphForge/Diagnostics/MF5Catalog/ParticleBoxCatalog.mat"));material.name="MF6 catalogue and triangles";material.shader=Shader.Find("MorphForge/ParticleBoxCatalogMetadataGrid");material.SetFloat("_WireEncoding",6);renderer.sharedMaterial=Save(material,path+"/Surface.mat");
                 module.GetComponent<ModularAvatarMergeAnimator>().animator=fx;module.GetComponent<ModularAvatarParameters>().parameters.Clear();
                 PrefabUtility.SaveAsPrefabAsset(module,path+"/Display.prefab");
             }finally{PrefabUtility.UnloadPrefabContents(module);}

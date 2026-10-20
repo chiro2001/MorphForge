@@ -235,6 +235,8 @@ namespace MorphForge.Editor
                     throw new InvalidDataException("Invalid PBR scalar for style " + material.id);
                 if (material.frames < 0 || material.frames > MaxFrames)
                     throw new InvalidDataException("frames must be 0..1024 for style " + material.id);
+                if(material.textureRotation<0||material.textureRotation>23)throw new InvalidDataException("textureRotation must be 0..23 for style "+material.id);
+                if(!Finite(material.textureScale)||material.textureScale<0||material.textureScale>256)throw new InvalidDataException("textureScale must be 0..256 for style "+material.id);
                 if (material.frames > 1 && (!Finite(material.frameTime) || material.frameTime <= 0f))
                     throw new InvalidDataException("Animated style needs a positive frameTime: " + material.id);
                 if (material.textures != null && material.textures.Count != 0 && material.textures.Count != 6)
@@ -489,16 +491,17 @@ namespace MorphForge.Editor
         static Texture2DArray WriteLayers(AtlasLayout layout)
        {
            var textured = layout.Items.Where(i => i.Prepared.Textures != null).ToList();
-           var count = textured.Sum(i => i.Prepared.Frames * 6);
+           var groups=textured.GroupBy(i=>i.Prepared.Frames+":"+string.Join("|",i.Prepared.Textures.Select(t=>t.Path))).ToList();
+           var count = groups.Sum(g => g.First().Prepared.Frames * 6);
            if (count == 0 || !SystemInfo.supports2DArrayTextures || count > SystemInfo.maxTextureArraySlices || (long)count*CellPixels*CellPixels*4 > 64*1024*1024)
                return null;
            var array = new Texture2DArray(CellPixels, CellPixels, count, TextureFormat.RGBA32, true, false)
            { name="CatalogLayers", filterMode=FilterMode.Trilinear, wrapMode=TextureWrapMode.Repeat, anisoLevel=8 };
            var layer=0;
-           foreach (var item in textured)
+           foreach (var group in groups)
            {
-               item.LayerBase=layer;
-               item.Prepared.Flags |= 64;
+               var item=group.First();
+               foreach(var member in group){member.LayerBase=layer;member.Prepared.Flags|=64;}
                for(var frame=0;frame<item.Prepared.Frames;frame++) for(var face=0;face<6;face++)
                {
                    var source=item.Prepared.Textures[face];
@@ -539,6 +542,9 @@ namespace MorphForge.Editor
                 pixels[index + 11] = item.Prepared.Flags;
                 pixels[index + 12] = CellPixels;
                 pixels[index + 13] = item.LayerBase;
+                // Zero remains legacy one-cell tiling. One means stretch.
+                pixels[index + 14] = material.textureScale + 1f;
+                pixels[index + 15] = material.textureRotation;
             }
 
             // Preserve the asset GUID so existing material references survive rebuilds.
@@ -611,6 +617,8 @@ namespace MorphForge.Editor
             [JsonProperty("emission")] public float emission;
             [JsonProperty("renderMode")] public string renderMode;
             [JsonProperty("textures")] public List<string> textures;
+            [JsonProperty("textureScale")] public float textureScale = 1f;
+            [JsonProperty("textureRotation")] public int textureRotation;
             [JsonProperty("frames")] public int frames;
             [JsonProperty("frameTime")] public float frameTime;
             [JsonProperty("pack")] public string pack;

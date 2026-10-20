@@ -1,3 +1,4 @@
+import { textureOrientationShader } from "/texture-orientation.js";
 import { proceduralShader } from "/procedural-shader.js";
 import { captureSampling, viewPixelRatio } from "/render-settings.js";
 import { fitBounds, resolveCamera } from "/camera-spec.js";
@@ -8,6 +9,18 @@ import { OrbitControls } from "/vendor/OrbitControls.js";
 // Three uses the opposite handedness: apply this at every render/pick boundary.
 export const toThree = (p) => new THREE.Vector3(p[0], p[1], -p[2]);
 export const fromThree = (v) => [v.x, v.y, -v.z];
+function boxGeometry(shape = 0) {
+  const geometry=new THREE.BoxGeometry(1,1,1),position=geometry.attributes.position,normal=geometry.attributes.normal;
+  const coordinates=new Float32Array(position.count*3),faces=new Float32Array(position.count);
+  for(let i=0;i<position.count;i++){
+    const x=position.getX(i)+.5,y=position.getY(i)+.5,z=.5-position.getZ(i),nx=normal.getX(i),ny=normal.getY(i),nz=normal.getZ(i);
+    coordinates.set([x,y,z],i*3);faces[i]=Math.abs(nx)>.5?(nx>0?0:1):(Math.abs(ny)>.5?(ny>0?2:3):(nz>0?5:4));
+    if(shape){const height=shape===1?x:shape===2?1-x:shape===3?z:1-z;position.setY(i,y*height-.5);}
+  }
+  geometry.setAttribute("mfTemplateUV",new THREE.BufferAttribute(coordinates,3));geometry.setAttribute("mfFaceCode",new THREE.BufferAttribute(faces,1));
+  if(shape){geometry.computeVertexNormals();geometry.computeBoundingSphere();}
+  return geometry;
+}
 export const MAX_RESOURCE_FRAMES = 1024;
 export function resourceAtlasLayout(
   width,
@@ -313,10 +326,11 @@ export class VoxelRenderer {
     };
   }
   effectiveStyle(style,mode=this.mode) {return mode==="vrc" && style?.vrcEffective ? {...style,...style.vrcEffective} : style;}
-  batchKey(styleId,mode=this.mode) {
+  batchKey(styleId,mode=this.mode,shape=0) {
     const s=this.renderStyleMap?.get(styleId);
-    if(!s || s.textures?.length || s.procedural || ["water","cloud"].includes(s.family) || s.renderMode==="cutout" || (mode!=="vrc" && s.emission>0))return "style:"+styleId;
-    return "flat:"+JSON.stringify([s.metallic||0,s.roughness??.8,s.opacity??1,s.emission||0,s.renderMode||"opaque"]);
+    const suffix=shape?"|shape:"+shape:"";
+    if(!s || s.textures?.length || s.procedural || ["water","cloud"].includes(s.family) || s.renderMode==="cutout" || (mode!=="vrc" && s.emission>0))return "style:"+styleId+suffix;
+    return "flat:"+JSON.stringify([s.metallic||0,s.roughness??.8,s.opacity??1,s.emission||0,s.renderMode||"opaque"])+suffix;
   }
   updateInstances(mesh, boxes, style, { full = false } = {}) {
     const matrix = new THREE.Matrix4(),
@@ -404,7 +418,7 @@ export class VoxelRenderer {
     const groups = new Map();
     for (const b of scene.boxes) {
       if (this.groupsHidden.has(b.group)) continue;
-      const key=this.batchKey(b.styleId,mode);
+      const key=this.batchKey(b.styleId,mode,b.shape||0);
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key).push(b);
     }
@@ -436,6 +450,7 @@ export class VoxelRenderer {
     return true;
   }
   async load(scene, styles, { mode = this.mode, scale = this.scale, surfaces = null } = {}) {
+    if(this.disposed)return this;
     this.renderStyleMap=new Map(styles.map(s=>[s.id,this.effectiveStyle(s,mode)]));
     this.surfaceMasks = surfaces?.masks || {};
     this.surfaceStats = surfaces || {hiddenFaces:0};
@@ -468,11 +483,10 @@ export class VoxelRenderer {
       catalog = new Map(styles.map((m) => [m.id, m]));
     for (const b of scene.boxes) {
       if (this.groupsHidden.has(b.group)) continue;
-      const key = this.batchKey(b.styleId,mode);
+      const key = this.batchKey(b.styleId,mode,b.shape||0);
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key).push(b);
     }
-    const unit = new THREE.BoxGeometry(1, 1, 1);
     for (const [batchKey, boxes] of groups) {
       const id=boxes[0].styleId;
       const style = this.renderStyleMap.get(id) || {
@@ -485,6 +499,7 @@ export class VoxelRenderer {
           renderMode: "opaque",
         },
         atlas = await this.atlas(style);
+      if(this.disposed){atlas?.texture?.dispose();return this;}
       const transparent = style.renderMode === "transparent";
       const parameters = {
         color: 0xffffff,
@@ -509,7 +524,7 @@ export class VoxelRenderer {
           emissiveIntensity: style.emission ?? 0,
           envMapIntensity: 1.2,
         });
-      const geometry = unit.clone();
+      const geometry = boxes[0].shape ? boxGeometry(boxes[0].shape) : boxGeometry();
       const capacity =
         2 ** Math.ceil(Math.log2(Math.max(64, Math.ceil(boxes.length * 1.25))));
       const dimensions = new Float32Array(capacity * 3);
@@ -538,6 +553,8 @@ export class VoxelRenderer {
           mfFrameTime: { value: atlas?.frameTime ?? (style.frameTime || 0.1) },
           mfTime: { value: 0 },
           mfProcKind: {value:({water:1,cloud:2,wood:3,stone:4})[style.procedural?.kind]||0},
+          mfTileScale:{value:style.textureScale ?? 1},
+          mfTextureRotation:{value:style.textureRotation || 0},
           mfNoiseScale:{value:style.procedural?.scale||1},
           mfNoiseSeed:{value:style.procedural?.seed||0},
           mfKind: {
@@ -556,27 +573,34 @@ export class VoxelRenderer {
         Object.assign(shader.uniforms, uniforms);
         this.uniforms.push(uniforms);
         shader.vertexShader =
-          "attribute vec3 mfSize;attribute float mfMotion,mfHiddenFaces;varying float mfPhase,mfHidden; varying vec3 mfLocal,mfDims,mfNormal,mfEye;\n" +
+          "attribute vec3 mfSize,mfTemplateUV;attribute float mfMotion,mfHiddenFaces,mfFaceCode;varying float mfPhase,mfHidden,mfFace; varying vec3 mfLocal,mfDims,mfNormal,mfEye;\n" +
           shader.vertexShader;
         shader.vertexShader = shader.vertexShader.replace(
           "#include <begin_vertex>",
-          "#include <begin_vertex>\nmfLocal=position+0.5;mfDims=mfSize;mfNormal=normal;mfPhase=mfMotion/64.;mfHidden=mfHiddenFaces;",
+          "#include <begin_vertex>\nmfLocal=mfTemplateUV;mfDims=mfSize;mfNormal=normalize(normal/max(mfSize,vec3(.000001)));mfPhase=mfMotion/64.;mfHidden=mfHiddenFaces;mfFace=mfFaceCode;",
         );
         shader.vertexShader = shader.vertexShader.replace("#include <worldpos_vertex>", "#include <worldpos_vertex>\nmfEye=cameraPosition-(modelMatrix*instanceMatrix*vec4(transformed,1.)).xyz;");
         shader.fragmentShader =
-          "uniform sampler2D mfAtlas;uniform highp sampler2DArray mfArrayAtlas; uniform float mfArray,mfGrid,mfCull,mfVirtual,mfMetal,mfRough,mfEmission,mfHasAtlas,mfFrames,mfFrameTime,mfTime,mfKind,mfProcKind,mfNoiseScale,mfNoiseSeed; varying vec3 mfLocal,mfDims,mfNormal,mfEye;varying float mfPhase,mfHidden;\n" +
+          "uniform sampler2D mfAtlas;uniform highp sampler2DArray mfArrayAtlas; uniform float mfArray,mfGrid,mfCull,mfVirtual,mfMetal,mfRough,mfEmission,mfHasAtlas,mfFrames,mfFrameTime,mfTime,mfKind,mfProcKind,mfNoiseScale,mfNoiseSeed,mfTileScale,mfTextureRotation; varying vec3 mfLocal,mfDims,mfNormal,mfEye;varying float mfPhase,mfHidden,mfFace;\n" +
           shader.fragmentShader;
-        shader.fragmentShader=proceduralShader+shader.fragmentShader;
+        shader.fragmentShader=textureOrientationShader+proceduralShader+shader.fragmentShader;
         shader.fragmentShader = shader.fragmentShader.replace(
           "#include <color_fragment>",
           `#include <color_fragment>
-     float axis=abs(mfNormal.x)>.5?0.:(abs(mfNormal.y)>.5?1.:2.);
-     vec2 logical=axis<.5?mfLocal.zy*mfDims.zy:(axis<1.5?mfLocal.xz*mfDims.xz:mfLocal.xy*mfDims.xy);
-     float face=axis<.5?(mfNormal.x>0.?0.:1.):(axis<1.5?(mfNormal.y>0.?2.:3.):(mfNormal.z>0.?5.:4.));
+     float face=floor(mfFace+.5);float axis=floor(face/2.);
+     vec3 sourcePosition=mfInverseRotation(mfLocal-vec3(.5),mfTextureRotation)+vec3(.5);
+     vec3 sourceDims=abs(mfInverseRotation(mfDims,mfTextureRotation));
+     float signFace=mod(face,2.)<.5?1.:-1.;
+     vec3 sourceNormal=mfInverseRotation(axis<.5?vec3(signFace,0.,0.):(axis<1.5?vec3(0.,signFace,0.):vec3(0.,0.,signFace)),mfTextureRotation);
+     float sourceAxis=abs(sourceNormal.x)>.5?0.:(abs(sourceNormal.y)>.5?1.:2.);
+     vec2 faceUV=sourceAxis<.5?sourcePosition.zy:(sourceAxis<1.5?sourcePosition.xz:sourcePosition.xy);
+     vec2 extent=sourceAxis<.5?sourceDims.zy:(sourceAxis<1.5?sourceDims.xz:sourceDims.xy);
+     vec2 logical=mfTileScale<.5?faceUV:faceUV*extent/max(mfTileScale,.001);
      float hiddenCode=floor(mfHidden+.5);
      if(mfCull>.5 && mod(floor(hiddenCode/exp2(face)),2.)>.5)discard;
+     face=sourceAxis*2.+(sourceNormal[int(sourceAxis)]>0.?0.:1.);
      if(mfKind==1.)logical+=vec2(mfTime*.12,mfTime*.045)+.03*sin(logical.yx*4.+mfTime);
-     vec2 tile=fract(logical);
+     vec2 tile=mfTileScale<.5?clamp(logical,vec2(.001),vec2(.999)):fract(logical);
      if(mfHasAtlas>.5){
        float frame=mod(floor(mfTime/max(mfFrameTime,.001)+mfPhase*mfFrames+.0001),mfFrames);
        vec4 texel;
@@ -603,6 +627,7 @@ export class VoxelRenderer {
       const mesh = new THREE.InstancedMesh(geometry, material, capacity);
       mesh.userData.styleId = id;
       mesh.userData.batchKey = batchKey;
+      mesh.userData.shape = boxes[0].shape || 0;
       mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
       geometry.attributes.mfSize.setUsage(THREE.DynamicDrawUsage);
       this.updateInstances(mesh, boxes, style, { full: true });
@@ -610,7 +635,6 @@ export class VoxelRenderer {
       this.meshes.push(mesh);
       this.materials.push(material);
     }
-    unit.dispose();
     this.lastUpdate = {
       incremental: false,
       changedBatches: this.meshes.length,
@@ -824,6 +848,7 @@ export class VoxelRenderer {
       direction = fromThree(raycaster.ray.direction);
     let best = null;
     for (const b of this.boxes) {
+      if(b.shape)continue;
       if (this.groupsHidden.has(b.group)) continue;
       let near = -Infinity,
         far = Infinity,
@@ -854,6 +879,12 @@ export class VoxelRenderer {
       if (!best || near < best.t) best = { t: near, box: b, axis };
     }
     this.content.updateMatrixWorld(true);
+    const slopeHit=raycaster.intersectObjects(this.meshes.filter(m=>m.userData.shape),false)[0];
+    if(slopeHit&&(!best||slopeHit.distance<best.t*this.cellSize*this.scale)){
+      const matrix=new THREE.Matrix4();slopeHit.object.getMatrixAt(slopeHit.instanceId,matrix);
+      const n=slopeHit.face.normal.clone().applyNormalMatrix(new THREE.Matrix3().getNormalMatrix(matrix));
+      best={t:slopeHit.distance/(this.cellSize*this.scale),box:slopeHit.object.userData.boxes[slopeHit.instanceId],normal:fromThree(n)};
+    }
     const triangleHit=raycaster.intersectObjects(this.triangleMeshes,false)[0];
     if(triangleHit&&(!best||triangleHit.distance<best.t*this.cellSize*this.scale)){
       const triangle=triangleHit.object.userData.faces[triangleHit.faceIndex],point=fromThree(triangleHit.point).map(v=>v/(this.cellSize*this.scale)),normal=fromThree(triangleHit.face.normal);
@@ -861,8 +892,8 @@ export class VoxelRenderer {
     }
     if (best) {
       const point = origin.map((v, a) => v + direction[a] * best.t);
-      const normal = [0, 0, 0];
-      normal[best.axis] = -Math.sign(direction[best.axis]);
+      const normal = best.normal || [0, 0, 0];
+      if(!best.normal)normal[best.axis] = -Math.sign(direction[best.axis]);
       return {
         pos: point.map((v, a) =>
           Math.floor(v + normal[a] * (erase ? -1e-4 : 1e-4)),
@@ -937,6 +968,15 @@ export class VoxelRenderer {
     this.camera.lookAt(this.controls.target);
     this.controls.update();
     return spec;
+  }
+  dispose() {
+    if(this.disposed)return;this.disposed=true;
+    this.renderer.setAnimationLoop(null);this.resizeObserver.disconnect();this.controls.dispose();
+    const geometries=new Set(),materials=new Set(),textures=new Set(this.textures);
+    this.scene.traverse(object=>{if(object.geometry)geometries.add(object.geometry);if(object.material)for(const material of (Array.isArray(object.material)?object.material:[object.material]))materials.add(material);});
+    for(const material of materials){for(const value of Object.values(material))if(value?.isTexture)textures.add(value);material.dispose();}
+    for(const geometry of geometries)geometry.dispose();for(const texture of textures)texture.dispose();this.environment?.dispose?.();
+    this.renderer.dispose();this.renderer.domElement.remove();
   }
   async capture(views, width = 768, height = 640, shots = null, options = {}) {
     const pixelRatio = this.renderer.getPixelRatio(),

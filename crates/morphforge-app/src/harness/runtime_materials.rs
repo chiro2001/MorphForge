@@ -93,6 +93,8 @@ pub(super) fn define(w: &mut Workspace, args: &Value, run: Option<&str>) -> Resu
             bail!("噪声参数仅适用于water/cloud/wood/stone");
         }
         let mut m = Material {
+            texture_scale: 1.0,
+            texture_rotation: 0,
             id: 0,
             uid: String::new(),
             name: name.into(),

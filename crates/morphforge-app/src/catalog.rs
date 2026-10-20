@@ -7,11 +7,15 @@ use std::{
     io::{Cursor, Write},
 };
 pub fn export(w: &Workspace) -> Result<Vec<u8>> {
+    export_with_materials(w, &w.project.materials)
+}
+pub fn export_with_materials(
+    w: &Workspace,
+    source_materials: &[morphforge_core::materials::Material],
+) -> Result<Vec<u8>> {
     let mut ids = BTreeSet::new();
     let mut textures = BTreeSet::new();
-    let mut materials: Vec<_> = w
-        .project
-        .materials
+    let mut materials: Vec<_> = source_materials
         .iter()
         .filter(|m| {
             m.id <= 4095 || morphforge_core::material_wire::Surface::runtime(m, 0).is_none()
@@ -21,6 +25,25 @@ pub fn export(w: &Workspace) -> Result<Vec<u8>> {
     // A runtime-only project still exports a valid, nonempty static lookup.
     if materials.is_empty() {
         materials.push(morphforge_core::materials::builtins().remove(0));
+    }
+    if materials.len() > 4095 {
+        bail!("头像静态材质超过4095项，请减少静态目录；纯色可以实时发送");
+    }
+    let mut assigned: BTreeSet<_> = materials
+        .iter()
+        .filter(|m| m.id > 0 && m.id <= 4095)
+        .map(|m| m.id)
+        .collect();
+    let mut source_mapping = serde_json::Map::new();
+    for material in &mut materials {
+        let source = material.id;
+        if source == 0 || source > 4095 {
+            material.id = (1..=4095)
+                .find(|id| !assigned.contains(id))
+                .context("头像材质槽位已满")?;
+            assigned.insert(material.id);
+        }
+        source_mapping.insert(source.to_string(), json!(material.id));
     }
     for m in &materials {
         if m.id > 4095 || !ids.insert(m.id) {
@@ -41,7 +64,7 @@ pub fn export(w: &Workspace) -> Result<Vec<u8>> {
     let options = zip::write::SimpleFileOptions::default()
         .compression_method(zip::CompressionMethod::Deflated);
     zip.start_file("catalog.json", options)?;
-    zip.write_all(serde_json::to_string_pretty(&json!({"format":"MorphForgeMaterialCatalog/1","version":crate::store::hash(&serde_json::to_vec(&w.project.materials)?),"capabilities":["virtual-light/1",crate::target::SURFACE_CAPABILITY],"virtualLighting":{"direction":[0.4,0.8,0.6],"voxelGrid":false},"colorSpace":"sRGB","cellSize":0.25,"materials":materials,"sourceProject":w.project.id,"sourceRevision":w.project.scene.revision}))?.as_bytes())?;
+    zip.write_all(serde_json::to_string_pretty(&json!({"format":"MorphForgeMaterialCatalog/1","version":crate::store::hash(&serde_json::to_vec(source_materials)?),"capabilities":["virtual-light/1",crate::target::SURFACE_CAPABILITY,"texture-scale/1"],"virtualLighting":{"direction":[0.4,0.8,0.6],"voxelGrid":false},"colorSpace":"sRGB","cellSize":0.25,"materials":materials,"sourceStyleIdMap":source_mapping,"sourceProject":w.project.id,"sourceRevision":w.project.scene.revision}))?.as_bytes())?;
     zip.start_file("licenses/MorphForge-Pixel-MIT.txt", options)?;
     zip.write_all(crate::builtin_pixels::LICENSE.as_bytes())?;
     let mut total = 0usize;

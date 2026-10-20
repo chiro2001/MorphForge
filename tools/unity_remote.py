@@ -80,8 +80,18 @@ def main() -> int:
         try:
             envelope = json.loads(result.stdout)
             payload = (envelope.get("data") or {}).get("result")
-            if isinstance(payload, dict) and (payload.get("success") is False or payload.get("failed") is True):
-                return 6
+            while isinstance(payload, dict):
+                if payload.get("success") is False or payload.get("failed") is True:
+                    return 6
+                nested = payload.get("result")
+                if isinstance(nested, str):
+                    try:
+                        nested = json.loads(nested)
+                    except ValueError:
+                        break
+                if not isinstance(nested, dict):
+                    break
+                payload = nested
         except (ValueError, AttributeError):
             print("Cannot validate non-JSON Unity CLI output.", file=sys.stderr)
             return 6

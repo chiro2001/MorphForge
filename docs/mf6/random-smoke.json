@@ -1,0 +1,316 @@
+{
+  "success": true,
+  "capacity": false,
+  "checks": [
+    {
+      "phase": "clear",
+      "passed": true,
+      "expected": 0,
+      "actual": 0,
+      "missingCount": 0,
+      "pools": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "errors": []
+    },
+    {
+      "phase": "random full-byte triangles 7",
+      "passed": true,
+      "expected": 16,
+      "actual": 16,
+      "missingCount": 0,
+      "pools": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "errors": []
+    },
+    {
+      "phase": "random full-byte triangles 15",
+      "passed": true,
+      "expected": 32,
+      "actual": 32,
+      "missingCount": 0,
+      "pools": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "errors": []
+    },
+    {
+      "phase": "random full-byte triangles 23",
+      "passed": true,
+      "expected": 48,
+      "actual": 48,
+      "missingCount": 0,
+      "pools": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "errors": []
+    },
+    {
+      "phase": "random full-byte triangles 31",
+      "passed": true,
+      "expected": 64,
+      "actual": 64,
+      "missingCount": 0,
+      "pools": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "errors": []
+    },
+    {
+      "phase": "random full-byte triangles 39",
+      "passed": true,
+      "expected": 80,
+      "actual": 80,
+      "missingCount": 0,
+      "pools": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "errors": []
+    },
+    {
+      "phase": "random full-byte triangles 47",
+      "passed": true,
+      "expected": 96,
+      "actual": 96,
+      "missingCount": 0,
+      "pools": [
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12
+      ],
+      "errors": []
+    },
+    {
+      "phase": "random full-byte triangles 55",
+      "passed": true,
+      "expected": 112,
+      "actual": 112,
+      "missingCount": 0,
+      "pools": [
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14
+      ],
+      "errors": []
+    },
+    {
+      "phase": "random full-byte triangles 63",
+      "passed": true,
+      "expected": 128,
+      "actual": 128,
+      "missingCount": 0,
+      "pools": [
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16
+      ],
+      "errors": []
+    },
+    {
+      "phase": "random full-byte triangles 71",
+      "passed": true,
+      "expected": 144,
+      "actual": 144,
+      "missingCount": 0,
+      "pools": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ],
+      "errors": []
+    },
+    {
+      "phase": "random full-byte triangles 79",
+      "passed": true,
+      "expected": 160,
+      "actual": 160,
+      "missingCount": 0,
+      "pools": [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+      ],
+      "errors": []
+    },
+    {
+      "phase": "random full-byte triangles 87",
+      "passed": true,
+      "expected": 176,
+      "actual": 176,
+      "missingCount": 0,
+      "pools": [
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22
+      ],
+      "errors": []
+    },
+    {
+      "phase": "random full-byte triangles 95",
+      "passed": true,
+      "expected": 192,
+      "actual": 192,
+      "missingCount": 0,
+      "pools": [
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24
+      ],
+      "errors": []
+    },
+    {
+      "phase": "random full-byte triangles 103",
+      "passed": true,
+      "expected": 208,
+      "actual": 208,
+      "missingCount": 0,
+      "pools": [
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26
+      ],
+      "errors": []
+    },
+    {
+      "phase": "random full-byte triangles 111",
+      "passed": true,
+      "expected": 224,
+      "actual": 224,
+      "missingCount": 0,
+      "pools": [
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28
+      ],
+      "errors": []
+    },
+    {
+      "phase": "random full-byte triangles 119",
+      "passed": true,
+      "expected": 240,
+      "actual": 240,
+      "missingCount": 0,
+      "pools": [
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30
+      ],
+      "errors": []
+    },
+    {
+      "phase": "random full-byte triangles 127",
+      "passed": true,
+      "expected": 256,
+      "actual": 256,
+      "missingCount": 0,
+      "pools": [
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32
+      ],
+      "errors": []
+    }
+  ],
+  "frames": 129,
+  "intervalMs": 250,
+  "elapsedSeconds": 34.6290061,
+  "scope": "Production Rust codec OSC bundles -> real UDP9012 -> GestureManager -> shared 240bit decoder -> eight independent native pools. No SetParticles, Emit, or scripted geometry injection."
+}

@@ -763,6 +763,8 @@ fn import_model_materials(
             animated_materials += 1;
         }
         additions.push(Material {
+            texture_scale: 1.0,
+            texture_rotation: 0,
             procedural: None,
             id: next,
             uid,
@@ -862,6 +864,8 @@ fn import_texture_fallbacks(
             .unwrap_or(&asset.uid)
             .trim_start_matches("block/");
         additions.push(Material {
+            texture_scale: 1.0,
+            texture_rotation: 0,
             procedural: None,
             id: next,
             uid,
@@ -931,6 +935,9 @@ pub fn import_java_pack(workspace: &mut Workspace, bytes: &[u8], name: &str) -> 
     let count = additions.len();
     let mut materials = workspace.project.materials.clone();
     materials.extend(additions);
+    // Preserve the validated source for later re-baking, independently of project edits.
+    let source_path = workspace.root.join("packs").join(format!("{pack_id}.zip"));
+    crate::store::atomic(&source_path, bytes)?;
     workspace.update_materials(materials)?;
     let report = json!({
         "ok": true,

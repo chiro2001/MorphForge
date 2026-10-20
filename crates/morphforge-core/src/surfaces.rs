@@ -65,7 +65,7 @@ pub fn transparent_interfaces(scene: &Scene, materials: &[Material]) -> SurfaceI
         .boxes
         .iter()
         .enumerate()
-        .filter(|(_, b)| medium.contains(&b.style_id))
+        .filter(|(_, b)| b.shape == 0 && medium.contains(&b.style_id))
     {
         for axis in 0..3 {
             for positive in [false, true] {
@@ -87,7 +87,11 @@ pub fn transparent_interfaces(scene: &Scene, materials: &[Material]) -> SurfaceI
         }
     }
     let mut result = SurfaceInfo::default();
-    for b in scene.boxes.iter().filter(|b| medium.contains(&b.style_id)) {
+    for b in scene
+        .boxes
+        .iter()
+        .filter(|b| b.shape == 0 && medium.contains(&b.style_id))
+    {
         let mut mask = 0;
         for axis in 0..3 {
             for positive in [true, false] {

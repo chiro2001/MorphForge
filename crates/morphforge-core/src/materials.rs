@@ -1,4 +1,13 @@
 use serde::{Deserialize, Serialize};
+fn default_texture_scale() -> f32 {
+    1.0
+}
+fn default_scale(value: &f32) -> bool {
+    *value == 1.0
+}
+fn default_rotation(value: &u8) -> bool {
+    *value == 0
+}
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Material {
@@ -14,6 +23,14 @@ pub struct Material {
     pub render_mode: String,
     #[serde(default)]
     pub textures: Vec<String>,
+    /// Logical cells per texture tile; 0 stretches one baked tile per face.
+    #[serde(
+        default = "default_texture_scale",
+        skip_serializing_if = "default_scale"
+    )]
+    pub texture_scale: f32,
+    #[serde(default, skip_serializing_if = "default_rotation")]
+    pub texture_rotation: u8,
     #[serde(default)]
     pub frames: u32,
     #[serde(default)]
@@ -328,6 +345,8 @@ pub fn builtins() -> Vec<Material> {
         .map(
             |(id, uid, name, family, color, metallic, roughness, opacity, emission, mode)| {
                 Material {
+                    texture_scale: 1.0,
+                    texture_rotation: 0,
                     id,
                     uid: format!("mf:{uid}"),
                     name: name.into(),

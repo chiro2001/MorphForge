@@ -741,21 +741,21 @@ fn texture(s: &Spec, face: usize) -> Result<Vec<u8>> {
 pub fn list() -> Value {
     json!([{"id":"pixel-workshop","name":"像素工坊","version":"1.0","license":"MIT","author":"MorphForge contributors","materialCount":specs().len(),"description":"原有19种原创像素主题。"},{"id":"block-workshop","name":"方块工坊","version":"1.0","license":"MIT","author":"MorphForge contributors","materialCount":block_specs().len(),"description":"48种原创Minecraft风格16×16像素方块：木石砖瓦、矿物、彩玻璃、羊毛与陶土。MF5头像已内置；不含Mojang素材。"}])
 }
-pub fn apply(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Value> {
-    let base = args["baseRevision"]
-        .as_u64()
-        .context("加入主题需要baseRevision")?;
-    if base != w.project.scene.revision {
-        bail!("REVISION_CONFLICT");
-    }
-    if ![Some("pixel-workshop"), Some("block-workshop")].contains(&args["id"].as_str()) {
+/// Prepare immutable artwork materials and texture artifacts without changing
+/// the project or its revision. Import previews commit them only on apply.
+pub fn prepare_theme(
+    w: &mut Workspace,
+    theme: &str,
+    base_materials: &[Material],
+) -> Result<(Vec<Material>, BTreeMap<u32, u32>, usize)> {
+    if !["pixel-workshop", "block-workshop"].contains(&theme) {
         bail!("未知内置主题");
     }
-    let mut materials = w.project.materials.clone();
+    let mut materials = base_materials.to_vec();
     let mut used: BTreeSet<_> = materials.iter().map(|m| m.id).collect();
     let mut mapping = BTreeMap::new();
     let mut added = 0;
-    for spec in if args["id"] == "block-workshop" {
+    for spec in if theme == "block-workshop" {
         block_specs()
     } else {
         specs()
@@ -765,7 +765,7 @@ pub fn apply(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Value
             mapping.insert(spec.base, existing.id);
             continue;
         }
-        let id = (64..=4095)
+        let id = (64..=65535)
             .find(|id| !used.contains(id))
             .context("材质编号空间已满")?;
         used.insert(id);
@@ -775,6 +775,8 @@ pub fn apply(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Value
             textures.push(format!("/artifacts/{}", w.artifact(&png, "png")?));
         }
         materials.push(Material {
+            texture_scale: 1.0,
+            texture_rotation: 0,
             id,
             uid,
             name: spec.name.into(),
@@ -795,6 +797,21 @@ pub fn apply(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Value
         mapping.insert(spec.base, id);
         added += 1;
     }
+    Ok((materials, mapping, added))
+}
+pub fn apply(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Value> {
+    let base = args["baseRevision"]
+        .as_u64()
+        .context("加入主题需要baseRevision")?;
+    if base != w.project.scene.revision {
+        bail!("REVISION_CONFLICT");
+    }
+    if ![Some("pixel-workshop"), Some("block-workshop")].contains(&args["id"].as_str()) {
+        bail!("未知内置主题");
+    }
+    let source_materials = w.project.materials.clone();
+    let (materials, mapping, added) =
+        prepare_theme(w, args["id"].as_str().unwrap(), &source_materials)?;
     let mut scene = w.project.scene.clone();
     let mut changed = 0;
     if args["replaceBaseMaterials"] == true {
@@ -816,7 +833,11 @@ pub fn apply(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Value
         return Ok(json!({"ok":true,"unchanged":true,"revision":base,"materialsAdded":0}));
     }
     let result = w.replace_with_materials(scene, materials, Some(base), run)?;
-    w.event("pack.builtin.applied",run,json!({"id":"pixel-workshop","license":"MIT","materialsAdded":added,"repaintedBoxes":changed}))?;
+    w.event(
+        "pack.builtin.applied",
+        run,
+        json!({"id":args["id"],"license":"MIT","materialsAdded":added,"repaintedBoxes":changed}),
+    )?;
     Ok(
         json!({"ok":true,"revision":result["revision"],"materialsAdded":added,"repaintedBoxes":changed,"license":"MIT","note":"主题已加入；配套MF5头像内置方块工坊，可直接按身份映射。MF4/旧头像或额外新图片需要更新目录。"}),
     )

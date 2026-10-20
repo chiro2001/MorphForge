@@ -77,3 +77,8 @@ test("wedge emits a closed eight-face prism with per-face colors",()=>{
   for(const face of faces){assert.equal(face.group,"roof");for(let i=0;i<3;i++){const edge=[face.vertices[i].join(),face.vertices[(i+1)%3].join()].sort().join("|");edges.set(edge,(edges.get(edge)||0)+1);}}
   assert.ok([...edges.values()].every(n=>n===2));
 });
+test("textured slopes preserve material and mirror shape as a single object",()=>{
+ const ops=run('mf.translate([4,2,0],()=>mf.mirror("x",()=>mf.slope([1,0,0],[2,3,4],{style:"wood",direction:"+x"})));');
+ assert.equal(ops.length,1);assert.equal(ops[0].shape,2);assert.equal(ops[0].styleId,2);assert.deepEqual(Array.from(ops[0].min),[1,2,0]);
+ assert.throws(()=>run('mf.mirror("y",()=>mf.slope([0,0,0],[1,1,1]));'),/Y mirror/);
+});

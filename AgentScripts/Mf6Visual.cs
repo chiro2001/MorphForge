@@ -12,7 +12,7 @@ public static class Mf6Visual
 {
     public static string Stream()
     {
-        var gm=UnityEngine.Object.FindObjectsOfType<GestureManager>().Single(g=>g.gameObject.scene.path=="Assets/MorphForge/MF6/NativeProbe.unity");var m=gm.Module as ModuleVrc3;var ps=m.Avatar.GetComponentsInChildren<ParticleSystem>(true).Single(p=>p.name=="Store");var renderer=ps.GetComponent<ParticleSystemRenderer>();
+        var gm=UnityEngine.Object.FindObjectsOfType<GestureManager>().Single(g=>(g.gameObject.scene.path=="Assets/MorphForge/MF6/NativeProbe.unity"||g.gameObject.scene.path=="Assets/MorphForge/MF6/MorphForge_MF6.unity"));var m=gm.Module as ModuleVrc3;var ps=m.Avatar.GetComponentsInChildren<ParticleSystem>(true).Single(p=>p.name=="Store"&&p.transform.parent.name=="Pool0");var renderer=ps.GetComponent<ParticleSystemRenderer>();
         var shader=Shader.Find("Hidden/MorphForge/MF6StreamProbe");if(!shader)throw new Exception("Probe shader unavailable");var material=new Material(shader);var previousMaterial=renderer.sharedMaterial;int layer=ps.gameObject.layer;renderer.sharedMaterial=material;renderer.localBounds=new Bounds(Vector3.zero,Vector3.one*10000);ps.gameObject.layer=31;
         var camera=new GameObject("MF6 stream probe").AddComponent<Camera>();camera.enabled=false;camera.cullingMask=1<<31;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=Color.clear;camera.transform.position=Vector3.back*20;camera.transform.LookAt(Vector3.zero);camera.nearClipPlane=.001f;camera.farClipPlane=1000;
         var rt=new RenderTexture(4,4,24,RenderTextureFormat.ARGBFloat,RenderTextureReadWrite.Linear);rt.Create();camera.targetTexture=rt;var samples=new JArray();
@@ -25,8 +25,8 @@ public static class Mf6Visual
     public static async Task<string> Run()
     {
         if(!Application.isPlaying)throw new Exception("Play Mode required");
-        var gm=UnityEngine.Object.FindObjectsOfType<GestureManager>().Single(g=>g.gameObject.scene.path=="Assets/MorphForge/MF6/NativeProbe.unity");var m=gm.Module as ModuleVrc3;
-        var ps=m.Avatar.GetComponentsInChildren<ParticleSystem>(true).Single(p=>p.name=="Store");
+        var gm=UnityEngine.Object.FindObjectsOfType<GestureManager>().Single(g=>(g.gameObject.scene.path=="Assets/MorphForge/MF6/NativeProbe.unity"||g.gameObject.scene.path=="Assets/MorphForge/MF6/MorphForge_MF6.unity"));var m=gm.Module as ModuleVrc3;
+        var ps=m.Avatar.GetComponentsInChildren<ParticleSystem>(true).Single(p=>p.name=="Store"&&p.transform.parent.name=="Pool0");
         var nativeRenderer=ps.GetComponent<ParticleSystemRenderer>();
         int seq=(m.GetParam("MF6_P0_LastRx").IntValue()+1)%16;
         m.GetParam("MF6_P0_Ctl").Set(m,seq*8+5);await Task.Delay(450);seq=(seq+1)%16;
@@ -37,13 +37,14 @@ public static class Mf6Visual
         var target=new RenderTexture(512,512,24){antiAliasing=4};target.Create();camera.targetTexture=target;
         var checks=new JArray();Directory.CreateDirectory("Docs/MF6/visual");
         try{
+            camera.cullingMask=0;camera.Render();var beforeBlank=RenderTexture.active;RenderTexture.active=target;var blank=new Texture2D(1,1,TextureFormat.RGBA32,false);blank.ReadPixels(new Rect(0,0,1,1),0,0);blank.Apply();Color32 background=blank.GetPixels32()[0];UnityEngine.Object.DestroyImmediate(blank);RenderTexture.active=beforeBlank;camera.cullingMask=1<<31;
             Vector3 center=ps.transform.TransformPoint(new Vector3(0,4,0));float span=Mathf.Abs(ps.transform.lossyScale.x)*16;camera.orthographicSize=span*.7f;
-            foreach(var view in new[]{new{name="front",direction=Vector3.forward},new{name="back",direction=Vector3.back},new{name="hero",direction=new Vector3(1,.7f,2)}}){
-                camera.transform.position=center+view.direction.normalized*span*3;camera.transform.LookAt(center);camera.Render();var previous=RenderTexture.active;RenderTexture.active=target;var image=new Texture2D(512,512,TextureFormat.RGBA32,false);image.ReadPixels(new Rect(0,0,512,512),0,0);image.Apply();RenderTexture.active=previous;
-                var pixels=image.GetPixels32();var background=pixels[0];int visible=pixels.Count(p=>!p.Equals(background));File.WriteAllBytes("Docs/MF6/visual/"+view.name+".png",image.EncodeToPNG());UnityEngine.Object.DestroyImmediate(image);checks.Add(new JObject{["view"]=view.name,["visiblePixels"]=visible,["passed"]=visible>1000});
+            foreach(var view in new[]{new{name="front",direction=Vector3.forward},new{name="back",direction=Vector3.back},new{name="hero",direction=new Vector3(1,.7f,2)},new{name="close",direction=Vector3.forward}}){
+                camera.orthographicSize=view.name=="close"?span*.06f:span*.7f;camera.transform.position=center+view.direction.normalized*span*(view.name=="close"?.05f:3);camera.transform.LookAt(center);camera.Render();var previous=RenderTexture.active;RenderTexture.active=target;var image=new Texture2D(512,512,TextureFormat.RGBA32,false);image.ReadPixels(new Rect(0,0,512,512),0,0);image.Apply();RenderTexture.active=previous;
+                var pixels=image.GetPixels32();int visible=pixels.Count(p=>!p.Equals(background));File.WriteAllBytes("Docs/MF6/visual/"+view.name+".png",image.EncodeToPNG());UnityEngine.Object.DestroyImmediate(image);checks.Add(new JObject{["view"]=view.name,["visiblePixels"]=visible,["passed"]=visible>1000});
             }
             var renderer=ps.GetComponent<ParticleSystemRenderer>();var bounds=renderer.bounds;
-            var report=new JObject{["success"]=checks.All(c=>(bool)c["passed"]),["diagnosticBoundsOverride"]=false,["checks"]=checks,["nativeCount"]=ps.particleCount,["lossyScale"]=new JArray(ps.transform.lossyScale.x,ps.transform.lossyScale.y,ps.transform.lossyScale.z),["localToWorld"]=ps.transform.localToWorldMatrix.ToString(),["rendererBounds"]=JObject.FromObject(new{center=new[]{bounds.center.x,bounds.center.y,bounds.center.z},size=new[]{bounds.size.x,bounds.size.y,bounds.size.z}}),["scope"]="Actual production particle renderer after native Animator birth; persisted carrier Mesh bounds, no transient bounds override. No MeshRenderer stand-in or particle injection."};File.WriteAllText("Docs/MF6/native-visual.json",report.ToString());return report.ToString();
+            var report=new JObject{["success"]=checks.All(c=>(bool)c["passed"]),["diagnosticBoundsOverride"]=false,["checks"]=checks,["nativeCount"]=ps.particleCount,["lossyScale"]=new JArray(ps.transform.lossyScale.x,ps.transform.lossyScale.y,ps.transform.lossyScale.z),["localToWorld"]=ps.transform.localToWorldMatrix.ToString(),["rendererBounds"]=JObject.FromObject(new{center=new[]{bounds.center.x,bounds.center.y,bounds.center.z},size=new[]{bounds.size.x,bounds.size.y,bounds.size.z}}),["scope"]="Actual production particle renderer after native Animator birth; native invisible bounds carrier, no transient bounds override. No MeshRenderer stand-in or particle injection."};File.WriteAllText("Docs/MF6/native-visual.json",report.ToString());return report.ToString();
         }finally{nativeRenderer.ResetLocalBounds();ps.gameObject.layer=oldLayer;camera.targetTexture=null;UnityEngine.Object.DestroyImmediate(camera.gameObject);target.Release();UnityEngine.Object.DestroyImmediate(target);}
     }
 }

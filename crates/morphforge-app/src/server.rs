@@ -38,6 +38,7 @@ pub struct App {
     workspace_gate: Arc<tokio::sync::RwLock<()>>,
     text_jobs: Arc<tokio::sync::Semaphore>,
     reference_jobs: Arc<tokio::sync::Semaphore>,
+    minecraft_jobs: Arc<tokio::sync::Semaphore>,
 }
 pub struct ApiError(anyhow::Error);
 impl<E: Into<anyhow::Error>> From<E> for ApiError {
@@ -119,6 +120,7 @@ impl App {
             fonts,
             text_jobs: Arc::new(tokio::sync::Semaphore::new(2)),
             reference_jobs: Arc::new(tokio::sync::Semaphore::new(2)),
+            minecraft_jobs: Arc::new(tokio::sync::Semaphore::new(2)),
         })
     }
     pub fn router(&self) -> Router {
@@ -140,6 +142,13 @@ impl App {
             .route("/api/workspaces", get(workspaces).post(workspace_action))
             .route("/api/edit", post(edit))
             .route("/api/mesh", post(mesh_edit))
+            .route(
+                "/api/minecraft",
+                get(minecraft_sources).post(minecraft_action),
+            )
+            .route("/api/minecraft/upload", post(minecraft_upload))
+            .route("/api/minecraft/preview/{id}", get(minecraft_preview_scene))
+            .route("/api/minecraft/source/{id}", get(minecraft_original))
             .route("/api/import", post(import))
             .route("/api/history", get(history))
             .route("/api/undo", post(undo))
@@ -421,6 +430,110 @@ async fn edit(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
         }
     }
     Ok(Json(result))
+}
+async fn minecraft_sources(State(a): State<App>) -> ApiResult {
+    let root = a.workspace.lock().unwrap().root.clone();
+    Ok(Json(crate::minecraft::imports::list(&root)?))
+}
+async fn minecraft_upload(State(a): State<App>, mut multipart: Multipart) -> ApiResult {
+    let _gate = a.workspace_gate.read().await;
+    let permit = a.minecraft_jobs.clone().acquire_owned().await?;
+    let project_id = a.workspace.lock().unwrap().project.id.clone();
+    let mut file = None;
+    while let Some(field) = multipart.next_field().await? {
+        if field.name() != Some("file") {
+            continue;
+        }
+        if file.is_some() {
+            bail_api("一次只导入一个建筑文件")?;
+        }
+        let name = field.file_name().unwrap_or("building.nbt").to_owned();
+        let bytes = field.bytes().await?;
+        if bytes.len() > 64 * 1024 * 1024 {
+            bail_api("建筑文件超过64MiB")?;
+        }
+        file = Some((name, bytes.to_vec()));
+    }
+    let (name, bytes) = file.context("请选择.litematic/.schem/.schematic/Java结构.nbt建筑文件")?;
+    let (name, bytes, building) = tokio::task::spawn_blocking(move || -> Result<_> {
+        let _permit = permit;
+        let building = crate::minecraft::formats::parse(&bytes, &name)?;
+        Ok((name, bytes, building))
+    })
+    .await??;
+    let mut w = a.workspace.lock().unwrap();
+    if w.project.id != project_id {
+        bail_api("WORKSPACE_CONFLICT：工程已切换")?;
+    }
+    Ok(Json(crate::minecraft::imports::register(
+        &mut w, &bytes, &name, &building,
+    )?))
+}
+async fn minecraft_action(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    let _gate = a.workspace_gate.read().await;
+    match v["action"].as_str().unwrap_or("list") {
+        "list" => minecraft_sources(State(a.clone())).await,
+        "inspect" => {
+            let root = a.workspace.lock().unwrap().root.clone();
+            Ok(Json(
+                tokio::task::spawn_blocking(move || crate::minecraft::imports::inspect(&root, &v))
+                    .await??,
+            ))
+        }
+        "preview" => {
+            let _permit = a.minecraft_jobs.clone().acquire_owned().await?;
+            Ok(Json(
+                crate::minecraft::imports::preview(a.workspace.clone(), v, None).await?,
+            ))
+        }
+        "apply" => {
+            let mut w = a.workspace.lock().unwrap();
+            let mut result = crate::minecraft::imports::apply(&mut w, &v, None)?;
+            if result["replayed"] != true
+                && a.transport.config().enabled
+                && a.transport.config().auto
+            {
+                w.commit(None, "Minecraft建筑导入", None)?;
+                if let Err(error) = a.transport.publish_with_materials(
+                    &w.project.scene,
+                    &w.project.materials,
+                    false,
+                ) {
+                    result["warning"] = json!(error.to_string());
+                    result["draftSaved"] = json!(true);
+                }
+            }
+            Ok(Json(result))
+        }
+        _ => Err(anyhow::anyhow!("未知Minecraft导入操作").into()),
+    }
+}
+async fn minecraft_preview_scene(State(a): State<App>, AxPath(id): AxPath<String>) -> ApiResult {
+    let root = a.workspace.lock().unwrap().root.clone();
+    Ok(Json(
+        tokio::task::spawn_blocking(move || crate::minecraft::imports::preview_scene(&root, &id))
+            .await??,
+    ))
+}
+async fn minecraft_original(
+    State(a): State<App>,
+    AxPath(id): AxPath<String>,
+) -> Result<Response, ApiError> {
+    let root = a.workspace.lock().unwrap().root.clone();
+    let (bytes, name) =
+        tokio::task::spawn_blocking(move || crate::minecraft::imports::original(&root, &id))
+            .await??;
+    Ok((
+        [
+            ("Content-Type", "application/octet-stream".to_string()),
+            (
+                "Content-Disposition",
+                format!("attachment; filename=\"{name}\""),
+            ),
+        ],
+        bytes,
+    )
+        .into_response())
 }
 async fn mesh_edit(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     let mut w = a.workspace.lock().unwrap();
@@ -964,8 +1077,26 @@ async fn metrics(State(a): State<App>) -> ApiResult {
     Ok(Json(crate::diagnostics::metrics(&root)?))
 }
 
-async fn catalog(State(a): State<App>) -> Result<Response, ApiError> {
-    let bytes = crate::catalog::export(&a.workspace.lock().unwrap())?;
+#[derive(Default, Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct CatalogQuery {
+    #[serde(default)]
+    builtin_minecraft: bool,
+}
+async fn catalog(
+    State(a): State<App>,
+    Query(options): Query<CatalogQuery>,
+) -> Result<Response, ApiError> {
+    let bytes = {
+        let mut w = a.workspace.lock().unwrap();
+        if options.builtin_minecraft {
+            let source = w.project.materials.clone();
+            let materials = crate::minecraft::compile::prepare_builtin_variants(&mut w, &source)?;
+            crate::catalog::export_with_materials(&w, &materials)?
+        } else {
+            crate::catalog::export(&w)?
+        }
+    };
     Ok((
         [
             ("Content-Type", "application/zip"),

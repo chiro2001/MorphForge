@@ -1,0 +1,78 @@
+{
+  "success": true,
+  "scope": "Side-by-side portable deployment; never runs NSIS, stops an app, or replaces a running runtime",
+  "checks": [
+    {
+      "name": "preview root is separate from stable runtime and data",
+      "passed": true
+    },
+    {
+      "name": "package contains morphforge-desktop.exe",
+      "passed": true
+    },
+    {
+      "name": "package contains morphforge.exe",
+      "passed": true
+    },
+    {
+      "name": "package contains licenses",
+      "passed": true
+    },
+    {
+      "name": "package reports expected core version",
+      "passed": true
+    },
+    {
+      "name": "immutable runtime payload: morphforge-desktop.exe",
+      "passed": true
+    },
+    {
+      "name": "immutable runtime payload: morphforge.exe",
+      "passed": true
+    },
+    {
+      "name": "immutable runtime payload: licenses\\EXAMPLE-ATTRIBUTION.md",
+      "passed": true
+    },
+    {
+      "name": "immutable runtime payload: licenses\\examples\\CC-BY-NC-SA-4.0.txt",
+      "passed": true
+    },
+    {
+      "name": "immutable runtime payload: licenses\\examples\\MIT.txt",
+      "passed": true
+    },
+    {
+      "name": "immutable runtime payload: licenses\\OFL-NotoSansSC.txt",
+      "passed": true
+    },
+    {
+      "name": "immutable runtime payload: licenses\\PIXEL-WORKSHOP-MIT.txt",
+      "passed": true
+    },
+    {
+      "name": "immutable runtime payload: licenses\\REFERENCE-ATTRIBUTION.md",
+      "passed": true
+    },
+    {
+      "name": "immutable runtime payload: licenses\\references\\CC-BY-NC-SA-4.0.txt",
+      "passed": true
+    },
+    {
+      "name": "immutable runtime payload: licenses\\references\\MIT.txt",
+      "passed": true
+    },
+    {
+      "name": "immutable runtime payload: licenses\\references\\SELF-AUTHORED.txt",
+      "passed": true
+    }
+  ],
+  "error": null,
+  "version": "0.11.0",
+  "previewRoot": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Preview",
+  "runtime": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Preview\\versions\\0.11.0-0a1bfd95cb52",
+  "dataDir": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Preview\\Data",
+  "shortcut": "C:\\Users\\Chiro\\OneDrive\\Desktop\\MorphForge - 开发测试副本.lnk",
+  "payloadSha256": "0a1bfd95cb5271c7ddd645a984c6a4fc42409dbb7c5af81235f39929af388c57",
+  "finishedAt": "2026-10-20T07:22:23.4148151+00:00"
+}

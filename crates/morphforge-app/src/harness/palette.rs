@@ -66,6 +66,8 @@ pub(super) fn define(workspace: &mut Workspace, args: &Value, run: Option<&str>)
                 .context("PALETTE_CAPACITY：25..65535内无可用材质ID，请复用已有色板")?;
             used.insert(id);
             materials.push(Material {
+                texture_scale: 1.0,
+                texture_rotation: 0,
                 id,
                 uid: uid.clone(),
                 name: name.to_owned(),

@@ -32,6 +32,9 @@ pub fn validate_geometry(b: &Box3) -> Result<()> {
     Ok(())
 }
 pub fn validate_box(b: &Box3) -> Result<()> {
+    if b.shape != 0 {
+        return Err(GeometryError("体素斜面需要MF6协议".into()));
+    }
     validate_geometry(b)?;
     if b.style_id > 4095 || b.tint_id > 63 || b.motion_phase > 63 {
         return Err(GeometryError("目标VRC样式/染色/运动编码越界".into()));

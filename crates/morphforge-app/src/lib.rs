@@ -22,3 +22,4 @@ pub mod view_settings;
 
 pub mod image_tools;
 pub mod mesh_tools;
+pub mod minecraft;

@@ -133,6 +133,8 @@ pub struct Project {
     pub auto_center_on_finish: bool,
     #[serde(default)]
     pub text_receipts: BTreeMap<String, TextReceipt>,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub import_receipts: BTreeMap<String, Value>,
     #[serde(default)]
     pub protected_groups: BTreeSet<String>,
     #[serde(default)]
@@ -151,6 +153,7 @@ impl Default for Project {
             pinned_notes: String::new(),
             auto_center_on_finish: false,
             text_receipts: BTreeMap::new(),
+            import_receipts: BTreeMap::new(),
             protected_groups: BTreeSet::new(),
             source_credits: Vec::new(),
         }
@@ -933,6 +936,8 @@ struct ProtectedBox {
     tint_id: u8,
     motion_phase: u8,
     group: String,
+    mergeable: bool,
+    shape: u8,
 }
 fn protected_boxes(scene: &Scene, group: &str) -> Vec<ProtectedBox> {
     let mut boxes: Vec<_> = scene
@@ -947,6 +952,8 @@ fn protected_boxes(scene: &Scene, group: &str) -> Vec<ProtectedBox> {
             tint_id: item.tint_id,
             motion_phase: item.motion_phase,
             group: item.group.clone(),
+            mergeable: item.mergeable,
+            shape: item.shape,
         })
         .collect();
     boxes.sort();
