@@ -69,7 +69,7 @@ VRChat同步参数总预算256bit，当前几何240+定位14=254。把三路80bi
 
 新增Connection字段：`loopReplay`（默认false）、`sendOrder`（volume / bottom_up / material，默认volume）。保持旧配置可读。`publish`工具也可设置这些选项，但不自动开启OSC。
 
-- `loopReplay=true`：目标发完后立即进入下一轮保留显示补播，保持同一写者、同一节流、同一六池归属，不全局Clear。空场景不会产生忙循环。关闭循环后当前轮完成即停。
+- `loopReplay=true`：目标发完后立即进入下一轮保留显示补播，保持同一写者、同一节流、同一六池归属，不全局Clear。当前原生重写会先精确删除同位置粒子再出生，局部仍可能短暂闪动；极少Box的作品连续循环时尤其容易察觉，可改用有间隔的周期刷新。空场景不会产生忙循环。关闭循环后当前轮完成即停。
 - `refreshSeconds>0`：上一轮完成后等待相应秒数再补播；与连续循环区分，连续模式优先。
 - 状态增加`replayCycles`与现有`repairing`，UI显示轮数和发送关闭状态。新编辑取消维护补播、优先发送最新差异，随后再循环新目标。
 - volume：每个物理池按体积降序，再Y/X/Z；bottom_up：Y/X/Z，再体积；material：先线外观，再Y/X/Z，并做有界同外观配对。
