@@ -34,7 +34,7 @@ pub fn target_report(scene: &Scene, capacity: usize) -> Value {
     let invalid_styles: std::collections::BTreeSet<_> = scene
         .boxes
         .iter()
-        .filter(|b| b.style_id > 4095)
+        .filter(|b| b.style_id > 65535)
         .map(|b| b.style_id)
         .collect();
     json!({"bounds":bounds,"extent":extent,"targetMin":[-128,0,-128],"targetMax":[128,256,128],"centerOffset":offset,"canCenterToFit":extent.iter().all(|n|*n<=256),"outOfBoundsCount":invalid.len(),"outOfBoundsGroups":invalid.iter().map(|b|b.group.as_str()).collect::<std::collections::BTreeSet<_>>(),"boxCount":scene.boxes.len(),"capacity":capacity,"invalidStyleIds":invalid_styles,"fits":invalid.is_empty()&&invalid_styles.is_empty()&&scene.boxes.len()<=capacity,"coordinateSpace":"signed integer voxel grid; max bounds exclusive","note":"X/Z允许负数；显示缩放不会扩大256³编码范围。"})

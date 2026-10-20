@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "totalLoadedAvatars": 1,
+  "scenes": [
+    {
+      "path": "Assets/MorphForge/MF5/MorphForge_MF5.unity",
+      "avatars": 1,
+      "dirty": false
+    },
+    {
+      "path": "Packages/nadena.dev.ndmf/Runtime/___NDMF Preview___.unity",
+      "avatars": 0,
+      "dirty": false
+    }
+  ]
+}

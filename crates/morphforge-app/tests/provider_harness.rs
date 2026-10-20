@@ -278,6 +278,7 @@ fn inert_transport() -> Transport {
             connected: false,
             last_error: String::new(),
             sent_count: 0,
+            replay_cycles: 0,
             generation: 0,
             controls: BTreeMap::<String, Control>::new(),
             reset_pulse: 0,

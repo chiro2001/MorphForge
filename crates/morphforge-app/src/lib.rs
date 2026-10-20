@@ -19,3 +19,5 @@ pub mod builtin_pixels;
 pub mod scene_tools;
 pub mod target;
 pub mod view_settings;
+
+pub mod image_tools;

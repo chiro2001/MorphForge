@@ -24,7 +24,7 @@ mod runtime_materials;
 mod visual_context;
 pub use goal::GoalProgress;
 pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/4.9";
-pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/3.7";
+pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/3.8";
 
 #[derive(Clone, Debug)]
 struct PendingPrompt {
@@ -2031,6 +2031,13 @@ impl Harness {
         }
         match name {
             "get_context" => Ok(self.context_with_options(args)),
+            "image_tools" => self.with_workspace_guard(guard.as_ref(), |w| {
+                let mut result=crate::image_tools::action(w,args,run)?;
+                if args["action"]=="voxel_plane" && result["dryRun"]==false && self.transport.config().enabled && self.transport.config().auto {
+                    match self.transport.publish_with_materials(&w.project.scene,&w.project.materials,false){Ok(v)=>result["sync"]=v,Err(e)=>result["syncWarning"]=json!(e.to_string())}
+                }
+                Ok(result)
+            }),
             "transform_scene" => self.with_workspace_guard(guard.as_ref(),|workspace|{
                 let mut result=crate::scene_tools::transform(workspace,args,run)?;
                 if args["dryRun"]!=true && result["unchanged"]!=true && self.transport.config().enabled && self.transport.config().auto{
@@ -2097,10 +2104,15 @@ impl Harness {
                 if !workspace.project.commits.iter().any(|commit| commit.revision == revision) {
                     bail!("请先commit再publish")
                 }
+                let profile=self.transport.config().profile;
+                if args["repair"]==true && (profile!="mf5"||args["resync"]==true){bail!("补播仅支持MF5，且不能与resync同时使用");}
+                if args["loopReplay"]==true && profile!="mf5"{bail!("连续补播需要MF5");}
+                if let Some(order)=args.get("sendOrder"){if !["volume","bottom_up","material"].iter().any(|s|order==*s){bail!("sendOrder无效");}}
                 let scene = workspace.scene_at(revision)?;
-                let state = self
-                    .transport
-                    .publish_with_materials(&scene, &workspace.materials_at(revision)?, args["resync"].as_bool().unwrap_or(false))?;
+                let mut state = self.transport.publish_with_materials(&scene,&workspace.materials_at(revision)?,args["resync"]==true)?;
+                if args["repair"]==true {state=self.transport.repair()?;}
+                let mut options=serde_json::Map::new();for key in ["loopReplay","sendOrder"]{if let Some(value)=args.get(key){options.insert(key.into(),value.clone());}}
+                if !options.is_empty(){state=self.transport.configure(&Value::Object(options),workspace)?;}
                 workspace.event(
                     "revision.published",
                     run,
@@ -3289,6 +3301,16 @@ pub fn tools_for_language(language: &str) -> Value {
             vec!["baseRevision", "colors"],
         ),
         tool(
+            "image_tools",
+            if en {
+                "Local reference-image tools: list; inspect exact RGBA8 pixels/compact sample grid; resize/crop to a new reference while keeping the original and attribution; voxel_plane previews by default or applies with dryRun=false + baseRevision. width/height select pixel resolution, one side preserves aspect. Image top-left maps to minimum u/maximum v (xy: x/y, xz: x/z, yz: z/y). Default canvasMode=overlay replaces opaque pixels only; replace erases the whole rectangle including transparent holes. maxColors median-cut quantizes colors; materialIds instead maps to existing materials. New RGB goes directly to MF5. This creates a pixel-art plane, not 3D reconstruction."
+            } else {
+                "本机参考图工具：list列图库；inspect读取精确RGBA8像素和紧凑采样网格；resize裁剪/缩放为新参考图，保留原图与署名；voxel_plane默认只预览，dryRun=false并提供baseRevision才应用。width/height控制像素分辨率，只给一边等比缩放。顶行映射较大v；xy的u/v=x/y，xz=x/z，yz=z/y。默认canvasMode=overlay仅覆盖不透明像素；replace替换整个矩形画布（透明孔也擦除）；alphaThreshold后按不透明方块显示；maxColors中位切分量化颜色，或materialIds映射已有材质。新RGB可直接发MF5。这是像素画平面，不是自动三维重建。"
+            },
+            json!({"action":{"type":"string","enum":["list","inspect","resize","voxel_plane"]},"imageId":{"type":"string"},"width":{"type":"integer","minimum":1,"maximum":1024},"height":{"type":"integer","minimum":1,"maximum":1024},"crop":{"type":"object","properties":{"x":{"type":"integer","minimum":0},"y":{"type":"integer","minimum":0},"width":{"type":"integer","minimum":1},"height":{"type":"integer","minimum":1}},"required":["x","y","width","height"],"additionalProperties":false},"filter":{"type":"string","enum":["nearest","area","lanczos"]},"points":{"type":"array","maxItems":256,"items":{"type":"array","items":{"type":"integer","minimum":0},"minItems":2,"maxItems":2}},"grid":{"type":"array","items":{"type":"integer","minimum":1,"maximum":64},"minItems":2,"maxItems":2},"baseRevision":{"type":"integer","minimum":0},"dryRun":{"type":"boolean"},"plane":{"type":"string","enum":["xy","xz","yz"]},"origin":{"type":"array","items":{"type":"integer"},"minItems":3,"maxItems":3},"thickness":{"type":"integer","minimum":1,"maximum":64},"alphaThreshold":{"type":"integer","minimum":1,"maximum":255},"maxColors":{"type":"integer","minimum":1,"maximum":4096},"materialIds":{"type":"array","minItems":1,"maxItems":256,"items":{"type":"integer","minimum":1,"maximum":65535}},"group":{"type":"string"},"title":{"type":"string"},"canvasMode":{"type":"string","enum":["overlay","replace"]}}),
+            vec!["action"]
+        ),
+        tool(
             "define_materials",
             if en {
                 "Define runtime color/PBR/water/cloud/wood/stone materials; returns IDs/UIDs and revision plus quantized vrcEffective. MF5 sends them inline without Avatar rebuild; arbitrary new image textures still need packaging. Parameters outside supported wire ranges are rejected."
@@ -3390,7 +3412,7 @@ pub fn tools_for_language(language: &str) -> Value {
         tool(
             "publish",
             descriptions[5],
-            json!({"revision":{"type":"integer","minimum":0},"resync":{"type":"boolean"}}),
+            json!({"revision":{"type":"integer","minimum":0},"resync":{"type":"boolean"},"repair":{"type":"boolean","description":"MF5保留显示补播，不得与resync同时开启"},"loopReplay":{"type":"boolean","description":"MF5发送完成后持续循环补播；不会自动开启OSC"},"sendOrder":{"type":"string","enum":["volume","bottom_up","material"]}}),
             vec!["revision"],
         ),
         tool("sync_status", descriptions[6], json!({}), vec![]),

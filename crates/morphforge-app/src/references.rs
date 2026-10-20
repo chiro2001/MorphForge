@@ -76,6 +76,29 @@ fn lookup(workspace: &Workspace, id: &str) -> Result<ReferenceImage> {
         .find(|item| item.id == id)
         .context("参考图片不存在，请重新选择")
 }
+pub fn record(workspace: &Workspace, id: &str) -> Result<ReferenceImage> {
+    lookup(workspace, id)
+}
+pub fn derive(w: &mut Workspace, id: &str, title: &str, prepared: PreparedImage) -> Result<Value> {
+    let parent = lookup(w, id)?;
+    let old = local(&w.root)?;
+    let mut result = import(w, title, prepared)?;
+    let child_id = result["id"].as_str().unwrap().to_owned();
+    if !old.iter().any(|r| r.id == child_id) {
+        let mut records = local(&w.root)?;
+        let child = records.iter_mut().find(|r| r.id == child_id).unwrap();
+        child.author = parent.author.clone();
+        child.source_url = parent.source_url.clone();
+        child.license = parent.license.clone();
+        child.license_url = parent.license_url.clone();
+        child.notes = format!("派生自 {} ({})；{}", parent.title, parent.id, parent.notes);
+        result = child.public();
+        write_json(&w.root.join("references/library.json"), &records)?;
+    }
+    result["parentImageId"] = json!(id);
+    w.event("reference.derived", None, result.clone())?;
+    Ok(result)
+}
 pub fn image(workspace: &Workspace, id: &str, thumbnail: bool) -> Result<(Vec<u8>, &'static str)> {
     let record = lookup(workspace, id)?;
     let filename = if thumbnail {

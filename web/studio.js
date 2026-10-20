@@ -663,6 +663,11 @@ function updateState() {
   setValue("interval", connection.interval);
   setValue("targetCapacity", connection.capacity);
   setValue("refreshSeconds", connection.refreshSeconds);
+  setValue("sendOrder",connection.sendOrder||"volume");
+  setChecked("loopReplay",connection.loopReplay||false);
+  $("loopReplay").disabled=connection.profile!=="mf5";
+  $("sendOrder").disabled=connection.profile!=="mf5";
+  $("replayStatus").textContent=`已完成补播 ${connection.replayCycles||0} 轮 · ${connection.repairing?"正在补播":connection.loopReplay?(connection.enabled?"连续补播已启用":"循环已设置，发送关闭"):"按需发送"}。更新先删除旧几何，再按所选顺序绘制；没有远端ACK。`;
   $("repairPublish").disabled=connection.profile!=="mf5";
   setChecked("autoPublish", connection.auto);
   $("connect").textContent = connection.enabled ? "停止发送" : "开启发送";
@@ -1217,6 +1222,20 @@ $("schemaUpgradeContext").onclick=async()=>{try{await api("harness/control",{act
 $("autoCenterOnFinish").onchange=async()=>{try{await api("project",{autoCenterOnFinish:$("autoCenterOnFinish").checked});await refresh();}catch(cause){error(cause);}};
 function runtimeFields(){const kind=$("runtimeKind").value,proc=["water","cloud","wood","stone"].includes(kind);$("runtimeSurfaceFields").hidden=kind==="color";$("runtimeNoiseFields").hidden=!proc;$("runtimeMetal").disabled=proc;$("runtimeWireHint").textContent=kind==="color"?"RGB24精确颜色；MF5直接发送，无需重新上传头像。":kind==="pbr"?"VRC使用RGB565；金属度/粗糙度/透明度/发光各4档。艺术原值保持。":"VRC颜色RGB444；噪声比例和种子各8档，其他表面参数4档。";}
 $("runtimeKind").onchange=()=>{const kind=$("runtimeKind").value;$("runtimeMetal").value=kind==="water"?.2:kind==="pbr"?.8:0;$("runtimeRough").value=kind==="water"?.12:kind==="cloud"?1:kind==="pbr"?.25:.9;$("runtimeOpacity").value=kind==="water"?.65:kind==="cloud"?.5:1;runtimeFields();};
+let imagePlanePreview=null;
+let imagePlaneProjectId="";
+function imageToolArgs(action){const args={action,imageId:$("imageToolId").value,width:Number($("imageToolWidth").value),filter:$("imageToolFilter").value};if(!$("imageToolAspect").checked)args.height=Number($("imageToolHeight").value);if(action==="voxel_plane"){Object.assign(args,{baseRevision:state.revision,dryRun:true,plane:$("imageToolPlane").value,thickness:Number($("imageToolThickness").value),maxColors:Number($("imageToolColors").value),alphaThreshold:Number($("imageToolAlpha").value),group:"image-plane",canvasMode:$("imageToolCanvas").value});if(!$("imageToolCenter").checked)args.origin=["X","Y","Z"].map(a=>Number($("imageTool"+a).value));}return args;}
+function invalidateImagePlane(){imagePlanePreview=null;$("imageToolApply").disabled=true;$("imageToolPreviewImage").hidden=true;}
+async function imageToolsCatalog(selected){const value=await api("references");$("imageToolId").replaceChildren(...value.images.map(i=>new Option(i.title,i.id)));if(selected)$("imageToolId").value=selected;updateImageToolSource();}
+function updateImageToolSource(){invalidateImagePlane();$("imageToolSource").src="/api/references/"+encodeURIComponent($("imageToolId").value)+"/image";}
+$("imageToolsOpen").onclick=async()=>{try{await imageToolsCatalog(referencePicker.selected()[0]?.id);$("imageToolsDialog").showModal();}catch(cause){error(cause);}};
+$("imageToolsClose").onclick=()=>$("imageToolsDialog").close();
+$("imageToolId").onchange=updateImageToolSource;
+for(const id of ["Width","Height","Aspect","Filter","Colors","Plane","Thickness","Center","X","Y","Z","Alpha","Canvas"])$("imageTool"+id).oninput=invalidateImagePlane;
+$("imageToolInspect").onclick=async()=>{try{const args=imageToolArgs("inspect");args.points=[[0,0]];args.grid=[8,8];const value=await api("harness/tool",{name:"image_tools",arguments:args});$("imageToolReport").textContent=JSON.stringify(value,null,2);}catch(cause){error(cause);}};
+$("imageToolResize").onclick=async()=>{try{const value=await api("harness/tool",{name:"image_tools",arguments:imageToolArgs("resize")});await imageToolsCatalog(value.id);$("imageToolReport").textContent=JSON.stringify({id:value.id,width:value.width,height:value.height,parentImageId:value.parentImageId},null,2);toast("缩放副本已加入图库，原图保留");}catch(cause){error(cause);}};
+$("imageToolPreview").onclick=async()=>{try{const args=imageToolArgs("voxel_plane");const value=await api("harness/tool",{name:"image_tools",arguments:args});imagePlanePreview={...args,dryRun:false};imagePlaneProjectId=state.project.id;$("imageToolPreviewImage").src=value.previewUrl;$("imageToolPreviewImage").hidden=false;$("imageToolReport").textContent=JSON.stringify({size:value.size,generatedBoxes:value.generatedBoxes,paletteColors:value.paletteColors,materialsAdded:value.materialsAdded,target:value.target,canvasMode:value.canvasMode,canvasReplacesRegion:value.canvasReplacesRegion},null,2);$("imageToolApply").disabled=false;}catch(cause){invalidateImagePlane();error(cause);}};
+$("imageToolApply").onclick=async()=>{if(!imagePlanePreview)return;if(imagePlaneProjectId!==state.project.id){invalidateImagePlane();return toast("工程已切换，请重新预览图片平面");}$("imageToolApply").disabled=true;try{const result=await api("harness/tool",{name:"image_tools",arguments:imagePlanePreview});invalidateImagePlane();await refresh(true);renderer.view("front");toast(`图片平面已应用 · v${result.revision}，可撤销`);$("imageToolsDialog").close();}catch(cause){invalidateImagePlane();error(cause);}};
 $("runtimeMaterialOpen").onclick=()=>{runtimeFields();$("runtimeReceipt").textContent="";$("runtimeMaterialDialog").showModal();};
 $("runtimeMaterialClose").onclick=()=>$("runtimeMaterialDialog").close();
 $("runtimeMaterialApply").onclick=async()=>{const button=$("runtimeMaterialApply");button.disabled=true;try{const kind=$("runtimeKind").value,entry={name:$("runtimeName").value,color:$("runtimeColor").value,kind};if(kind!=="color")Object.assign(entry,{metallic:Number($("runtimeMetal").value),roughness:Number($("runtimeRough").value),opacity:Number($("runtimeOpacity").value),emission:Number($("runtimeEmission").value)});if(["water","cloud","wood","stone"].includes(kind))Object.assign(entry,{noiseScale:Number($("runtimeNoiseScale").value),seed:Number($("runtimeSeed").value)});const r=await api("harness/tool",{name:"define_materials",arguments:{baseRevision:state.revision,materials:[entry]}});selectedStyle=r.materials[0].id;$("runtimeReceipt").textContent=JSON.stringify(r.materials[0].vrcEffective,null,2);await refresh(true);toast("材质已添加并选用；MF5实时发送");}catch(cause){error(cause);}finally{button.disabled=false;}};
@@ -1296,6 +1315,8 @@ function connection(enabled = state.connection.enabled) {
     interval: Number($("interval").value),
     capacity: Number($("targetCapacity").value),
     refreshSeconds: Number($("refreshSeconds").value),
+    loopReplay: $("profile").value==="mf5" && $("loopReplay").checked,
+    sendOrder: $("sendOrder").value,
     auto: $("autoPublish").checked,
   };
 }
@@ -1318,6 +1339,8 @@ for (const id of [
   "targetCapacity",
   "refreshSeconds",
   "autoPublish",
+  "loopReplay",
+  "sendOrder",
 ]) {
   $(id).onchange = () => configure(state.connection.enabled);
 }

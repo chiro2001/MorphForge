@@ -74,6 +74,7 @@
         <button id="paintSelection" class="wide">给选中内容换材质</button>
         <button id="runtimeMaterialOpen" class="wide">＋实时颜色 / 程序材质</button>
         <button id="pixelThemeOpen" class="wide">内置方块工坊 · 48种材质</button>
+        <button id="imageToolsOpen" class="wide">图片像素 / 转体素平面</button>
         <button id="packImport" class="wide">导入 Minecraft Java 资源包</button>
         <input id="packFile" type="file" accept=".zip" hidden />
 
@@ -449,6 +450,9 @@ mf.group('main', () => {
               value="0"
               min="0"
           /></label>
+          <label class="check"><input id="loopReplay" type="checkbox" />完成后连续循环补播（MF5）</label>
+          <label>发送顺序<select id="sendOrder"><option value="volume">大块优先，同体积从下到上、从左到右</option><option value="bottom_up">从下到上、从左到右</option><option value="material">材质优先，侧重双体素配对</option></select></label>
+          <p id="replayStatus" class="caption"></p>
           <div id="vrcBoundsStatus" class="status"></div>
           <label class="check"><input id="autoCenterOnFinish" type="checkbox" />AI 完成前自动落地居中</label>
           <p class="caption">允许负 X/Z；目标范围 X/Z -128～127、Y 0～255。显示缩放不扩大编码范围。</p>
@@ -880,6 +884,22 @@ mf.group('main', () => {
         ><button id="timelinePreviewClose">关闭</button>
       </div>
       <div id="timelinePreviewViewport"></div>
+    </dialog>
+    <dialog id="imageToolsDialog" class="modal"><h2>图片像素与体素平面</h2>
+      <label>参考图片<select id="imageToolId"></select></label>
+      <img id="imageToolSource" alt="源参考图" style="max-width:100%;max-height:180px;object-fit:contain" />
+      <div class="double"><label>宽<input id="imageToolWidth" type="number" min="1" max="1024" value="64" /></label><label>高<input id="imageToolHeight" type="number" min="1" max="1024" value="64" /></label></div>
+      <label class="check"><input id="imageToolAspect" type="checkbox" checked />保持宽高比（以宽为准）</label>
+      <div class="double"><label>插值<select id="imageToolFilter"><option value="nearest">最近邻 · 像素画</option><option value="area">平滑缩小</option><option value="lanczos">Lanczos</option></select></label><label>颜色上限<input id="imageToolColors" type="number" min="1" max="4096" value="256" /></label></div>
+      <div class="double"><label>平面<select id="imageToolPlane"><option value="xy">XY · 立面 / 正面朝+Z</option><option value="xz">XZ · 地面</option><option value="yz">YZ · 侧面</option></select></label><label>厚度<input id="imageToolThickness" type="number" min="1" max="64" value="1" /></label></div>
+      <label class="check"><input id="imageToolCenter" type="checkbox" checked />底部中心定位</label>
+      <div class="triple"><label>X<input id="imageToolX" type="number" value="0" /></label><label>Y<input id="imageToolY" type="number" value="0" /></label><label>Z<input id="imageToolZ" type="number" value="0" /></label></div>
+      <label>覆盖方式<select id="imageToolCanvas"><option value="overlay">覆盖像素，透明处保留原场景</option><option value="replace">替换矩形画布，透明处擦除</option></select></label>
+      <label>透明阈值<input id="imageToolAlpha" type="number" min="1" max="255" value="16" /></label>
+      <p class="caption">缩放副本最高1024；体素平面每边最高256。透明阈值后生成不透明有色方块；默认保留透明孔后的原场景，也可整块替换，可撤销。原图始终保留；平面不是三维重建。</p>
+      <img id="imageToolPreviewImage" alt="量化预览" hidden style="max-width:100%;max-height:200px;image-rendering:pixelated" />
+      <pre id="imageToolReport" class="status"></pre>
+      <div class="row"><button id="imageToolInspect">读像素</button><button id="imageToolResize">生成缩放副本</button><button id="imageToolPreview">预览平面</button><button id="imageToolApply" class="primary" disabled>应用平面</button><button id="imageToolsClose">关闭</button></div>
     </dialog>
     <dialog id="referenceDialog" aria-labelledby="referenceTitle">
       <div class="row">

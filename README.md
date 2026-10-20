@@ -4,7 +4,7 @@
 
 - [用户指南](docs/USER-GUIDE.md)：安装、配置、编辑、AI、compact、作品库与 OSC 发布。
 - [交付记录](docs/DELIVERY.md) · [实施状态及证据](docs/plan/STATUS.md) · [已确认设计](docs/plan/README.md) · [验收标准](docs/plan/ACCEPTANCE.md)。
-- gamepc 开发测试副本 **0.9.0 / MF5**：新1%～1000%微缩、实时颜色/程序材质、内置48种原创方块纹理、双粒子池配对发送及保留显示补播。原验收版与数据保留；关闭重开开发副本进入新版。本轮不新增GitHub Release。[设计](docs/mf5/DESIGN.md) · [验证与边界](docs/mf5/RESULTS.md)。
+- gamepc 开发测试副本 **0.10.0**：读取参考图像素、缩放副本、图片转彩色体素平面、连续循环补播和三种发送顺序；兼容MF5 v15、新1%～1000%缩放、实时材质与48种原创纹理。原安装与数据保留，未新增Release。[本轮功能与可行性](docs/image-stream/DESIGN.md) · [验证](docs/image-stream/RESULTS.md)。
 - Windows **0.6.0 候选版**：`dist/windows/MorphForge Desktop_0.6.0_x64-setup.exe`；校验和在同目录。[Harness强化验证](docs/quality-v6/RESULTS.md) · [前缀缓存修复](docs/quality-v4.2/RESULTS.md) · [参考图建模迭代](docs/quality-v4.1/RESULTS.md)。
 
 GitHub公开仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支与完整历史保留。

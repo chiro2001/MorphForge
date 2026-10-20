@@ -1,0 +1,58 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "real UI reads exact source RGBA pixel",
+      "passed": true
+    },
+    {
+      "name": "preview leaves scene unchanged",
+      "passed": true
+    },
+    {
+      "name": "preview diagnoses geometry and target bounds",
+      "passed": true
+    },
+    {
+      "name": "pixel plane applies five colored voxels",
+      "passed": true
+    },
+    {
+      "name": "top image row maps above bottom row without left-right mirroring",
+      "passed": true
+    },
+    {
+      "name": "transparent pixel stays empty",
+      "passed": true
+    },
+    {
+      "name": "generated RGB maps directly to bundled avatar",
+      "passed": true
+    },
+    {
+      "name": "image geometry and palette changes undo together",
+      "passed": true
+    },
+    {
+      "name": "resize creates a separate aspect-preserving reference",
+      "passed": true
+    },
+    {
+      "name": "original and derivative both remain in local library",
+      "passed": true
+    },
+    {
+      "name": "loop setting does not enable OSC",
+      "passed": true
+    },
+    {
+      "name": "loop and order persist through reload",
+      "passed": true
+    },
+    {
+      "name": "no browser or shader errors",
+      "passed": true
+    }
+  ],
+  "scope": "Real browser controls against isolated backend; no real OSC or paid API"
+}

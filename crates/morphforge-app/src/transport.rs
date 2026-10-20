@@ -23,10 +23,17 @@ pub struct Connection {
     pub auto: bool,
     pub capacity: usize,
     pub refresh_seconds: u64,
+    #[serde(default)]
+    pub loop_replay: bool,
+    #[serde(default = "default_send_order")]
+    pub send_order: String,
     pub world: bool,
     pub visible: bool,
     pub scale: f32,
     pub level: bool,
+}
+fn default_send_order() -> String {
+    "volume".into()
 }
 impl Default for Connection {
     fn default() -> Self {
@@ -38,6 +45,8 @@ impl Default for Connection {
             auto: false,
             capacity: 16384,
             refresh_seconds: 0,
+            loop_replay: false,
+            send_order: default_send_order(),
             world: true,
             visible: true,
             scale: morphforge_core::material_wire::SCALE_REFERENCE,
@@ -64,6 +73,7 @@ pub struct State {
     pub connected: bool,
     pub last_error: String,
     pub sent_count: u64,
+    pub replay_cycles: u64,
     pub generation: u64,
     pub controls: BTreeMap<String, Control>,
     pub reset_pulse: u8,
@@ -148,6 +158,7 @@ impl Transport {
                 connected: false,
                 last_error: String::new(),
                 sent_count: 0,
+                replay_cycles: 0,
                 generation: 0,
                 controls: BTreeMap::new(),
                 reset_pulse: 0,
@@ -184,7 +195,7 @@ impl Transport {
             + s.resets as usize
             + usize::from(!s.controls.is_empty())
             + s.reset_pulse as usize;
-        json!({"enabled":s.config.enabled,"sending":s.connected,"port":s.config.port,"interval":s.config.interval,"profile":s.config.profile,"auto":s.config.auto,"capacity":s.config.capacity,"refreshSeconds":s.config.refresh_seconds,"pending":pending,"etaSeconds":pending as f64*s.config.interval,"desiredRevision":s.desired_revision,"sentRevision":s.sent_revision,"sentCommands":s.sent_count,"error":s.last_error,"ack":false,"repairing":s.repair_seen.is_some(),"syncedBits":if ["mf4","mf5"].contains(&s.config.profile.as_str()){240}else if s.config.profile=="mf3"{56}else{88},"placement":{"world":s.config.world,"visible":s.config.visible,"scale":s.config.scale,"level":s.config.level}})
+        json!({"enabled":s.config.enabled,"sending":s.connected,"port":s.config.port,"interval":s.config.interval,"profile":s.config.profile,"auto":s.config.auto,"capacity":s.config.capacity,"refreshSeconds":s.config.refresh_seconds,"loopReplay":s.config.loop_replay,"sendOrder":s.config.send_order,"replayCycles":s.replay_cycles,"pending":pending,"etaSeconds":pending as f64*s.config.interval,"desiredRevision":s.desired_revision,"sentRevision":s.sent_revision,"sentCommands":s.sent_count,"error":s.last_error,"ack":false,"repairing":s.repair_seen.is_some(),"syncedBits":if ["mf4","mf5"].contains(&s.config.profile.as_str()){240}else if s.config.profile=="mf3"{56}else{88},"placement":{"world":s.config.world,"visible":s.config.visible,"scale":s.config.scale,"level":s.config.level}})
     }
     pub fn configure(&self, v: &Value, workspace: &mut Workspace) -> Result<Value> {
         let mut s = self.inner.lock().unwrap();
@@ -196,7 +207,15 @@ impl Transport {
             }
             next[k] = value.clone();
         }
-        let config: Connection = serde_json::from_value(next)?;
+        let mut config: Connection = serde_json::from_value(next)?;
+        if config.profile != "mf5" && !v.get("loopReplay").is_some_and(|x| x == true) {
+            config.loop_replay = false;
+        }
+        if !["volume", "bottom_up", "material"].contains(&config.send_order.as_str())
+            || (config.loop_replay && config.profile != "mf5")
+        {
+            bail!("发送顺序需要volume/bottom_up/material；连续补播仅限MF5");
+        }
         if config.port == 0
             || !config.interval.is_finite()
             || !(0.05..=5.).contains(&config.interval)
@@ -515,8 +534,10 @@ impl Transport {
                 continue;
             }
             let job = {
-                if s.config.refresh_seconds > 0
-                    && s.last_refresh.elapsed().as_secs() >= s.config.refresh_seconds
+                if !s.desired.is_empty()
+                    && (s.config.loop_replay
+                        || (s.config.refresh_seconds > 0
+                            && s.last_refresh.elapsed().as_secs() >= s.config.refresh_seconds))
                     && s.sent_revision == Some(s.desired_revision)
                 {
                     if s.config.profile == "mf5" {
@@ -581,6 +602,9 @@ impl Transport {
                             .map(Job::Command)
                     };
                     if command.is_none() {
+                        if s.repair_seen.is_some() {
+                            s.replay_cycles += 1;
+                        }
                         s.repair_seen = None;
                         if s.sent_revision != Some(s.desired_revision) {
                             s.last_refresh = Instant::now();
@@ -773,6 +797,9 @@ impl Transport {
             }
             next = Instant::now() + Duration::from_secs_f64(interval);
         }
+        // Release the exclusive OSC lease before reporting shutdown complete.
+        drop(channel);
+        self.inner.lock().unwrap().connected = false;
     }
 }
 
@@ -813,10 +840,38 @@ fn wide_queues(s: &State, sent: &[Box3]) -> [Vec<(usize, Command)>; 3] {
                 )
             }) == surface_for(s, b)
     });
+    let deleting = pools
+        .iter()
+        .flatten()
+        .any(|c| matches!(c, Command::Remove { .. } | Command::Erase { .. }));
     for queue in &mut pools {
+        if deleting {
+            queue.retain(|c| matches!(c, Command::Remove { .. } | Command::Erase { .. }));
+        }
         queue.sort_by_key(|c| {
-            let b = command_box(c);
-            (b.is_some(), b.map(|b| surface_for(s, b)), b.map(key))
+            let b = match c {
+                Command::Remove { value } | Command::Erase { value } => Some(value),
+                _ => command_box(c),
+            };
+            let volume = b.map(Box3::volume).unwrap_or(0);
+            let pos = b
+                .map(|b| (b.min[1], b.min[0], b.min[2]))
+                .unwrap_or_default();
+            let surface = b
+                .map(|b| surface_for(s, b))
+                .unwrap_or_else(|| morphforge_core::material_wire::Surface::catalog(0, 0, 0));
+            match s.config.send_order.as_str() {
+                "material" => (
+                    ((surface.mode as u64) << 24)
+                        | morphforge_core::material_wire::bits(surface.bytes) as u64,
+                    pos.0,
+                    pos.1,
+                    pos.2,
+                    u64::MAX - volume,
+                ),
+                "bottom_up" => (0, pos.0, pos.1, pos.2, u64::MAX - volume),
+                _ => (u64::MAX - volume, pos.0, pos.1, pos.2, 0),
+            }
         });
     }
     let paired = s
@@ -830,6 +885,21 @@ fn wide_queues(s: &State, sent: &[Box3]) -> [Vec<(usize, Command)>; 3] {
         let mut next = false;
         while !a.is_empty() || !b.is_empty() {
             if paired {
+                if s.config.send_order == "material" {
+                    if let Some(Command::Voxel { value: first }) = a.front() {
+                        let surface = surface_for(s, first);
+                        if surface.mode <= 2 {
+                            if let Some(index) = b.iter().take(16).position(
+                            |c| matches!(c,Command::Voxel{value} if surface_for(s,value)==surface),
+                        ) {
+                            if index > 0 {
+                                let candidate = b.remove(index).unwrap();
+                                b.push_front(candidate);
+                            }
+                        }
+                        }
+                    }
+                }
                 if let (
                     Some(Command::Voxel { value: first }),
                     Some(Command::Voxel { value: second }),
@@ -886,4 +956,33 @@ fn validate_scene(scene: &Scene, capacity: usize, profile: &str) -> Result<()> {
         }
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod order_tests {
+    use super::*;
+    #[test]
+    fn per_pool_volume_and_bottom_up_orders_are_deterministic() {
+        let dir = tempfile::tempdir().unwrap();
+        let w = Arc::new(Mutex::new(Workspace::open(dir.path().into()).unwrap()));
+        let t = Transport::new(w);
+        let mut s = t.inner.lock().unwrap();
+        s.stop = true;
+        s.config.profile = "mf5".into();
+        let large = Box3::new([0, 20, 0], [8, 8, 8], 1);
+        let small = Box3::new([0, 0, 0], [1; 3], 1);
+        let other = Box3::new([10, 0, 0], [1; 3], 1);
+        s.sent = vec![small.clone(), large.clone(), other.clone()];
+        s.desired = s.sent.clone();
+        s.lanes = [(key(&small), 0), (key(&large), 0), (key(&other), 0)]
+            .into_iter()
+            .collect();
+        s.repair_seen = Some(Default::default());
+        let q = wide_queues(&s, &s.sent);
+        assert_eq!(command_box(&q[0][0].1).unwrap().size, [8, 8, 8]);
+        s.config.send_order = "bottom_up".into();
+        let q = wide_queues(&s, &s.sent);
+        assert_eq!(command_box(&q[0][0].1).unwrap().min, [0, 0, 0]);
+        assert_eq!(command_box(&q[0][1].1).unwrap().min, [10, 0, 0]);
+    }
 }

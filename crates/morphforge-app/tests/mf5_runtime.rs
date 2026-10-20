@@ -15,6 +15,7 @@ use std::{
     sync::{Arc, Mutex},
     time::{Duration, Instant},
 };
+static UDP_TEST_LOCK: std::sync::Mutex<()> = std::sync::Mutex::new(());
 fn catalog() -> AvatarCatalog {
     AvatarCatalog::from_bytes(include_bytes!("../../../materials/mf5/catalog.json")).unwrap()
 }
@@ -205,6 +206,7 @@ fn decode(bytes: &[u8]) -> std::collections::BTreeMap<String, Value> {
 }
 #[test]
 fn actual_udp_packs_two_voxels_and_sends_logarithmic_scale_without_real_vrc() {
+    let _serial = UDP_TEST_LOCK.lock().unwrap();
     let dir = tempfile::tempdir().unwrap();
     let w = Arc::new(Mutex::new(Workspace::open(dir.path().into()).unwrap()));
     let t = Transport::new(w.clone());
@@ -212,6 +214,10 @@ fn actual_udp_packs_two_voxels_and_sends_logarithmic_scale_without_real_vrc() {
     impl Drop for Stop {
         fn drop(&mut self) {
             self.0.inner.lock().unwrap().stop = true;
+            let deadline = Instant::now() + Duration::from_secs(1);
+            while self.0.inner.lock().unwrap().connected && Instant::now() < deadline {
+                std::thread::sleep(Duration::from_millis(5));
+            }
         }
     }
     let _stop = Stop(t.clone());
@@ -460,4 +466,114 @@ fn full_capacity_plan_respects_six_independent_native_pools() {
             |c| matches!(c, Command::Remove { value } if assignments[&protocol::key(value)] == pool)
         ));
     }
+}
+
+#[test]
+fn continuous_replay_never_clears_and_replacement_has_global_delete_barrier() {
+    let _serial = UDP_TEST_LOCK.lock().unwrap();
+    let dir = tempfile::tempdir().unwrap();
+    let w = Arc::new(Mutex::new(Workspace::open(dir.path().into()).unwrap()));
+    let t = Transport::new(w.clone());
+    struct Stop(Transport);
+    impl Drop for Stop {
+        fn drop(&mut self) {
+            self.0.inner.lock().unwrap().stop = true;
+            let deadline = Instant::now() + Duration::from_secs(1);
+            while self.0.inner.lock().unwrap().connected && Instant::now() < deadline {
+                std::thread::sleep(Duration::from_millis(5));
+            }
+        }
+    }
+    let _stop = Stop(t.clone());
+    t.set_catalog(Some(catalog()), dir.path()).unwrap();
+    let rx = std::net::UdpSocket::bind("127.0.0.1:0").unwrap();
+    rx.set_read_timeout(Some(Duration::from_millis(20)))
+        .unwrap();
+    t.configure(&json!({"enabled":true,"profile":"mf5","port":rx.local_addr().unwrap().port(),"interval":0.05,"loopReplay":true,"sendOrder":"volume"}),&mut w.lock().unwrap()).unwrap();
+    let scene = Scene {
+        revision: 1,
+        boxes: (0..12).map(|x| Box3::new([x, 0, 0], [1; 3], 25)).collect(),
+        ..Default::default()
+    };
+    t.publish_with_materials(&scene, &[material()], false)
+        .unwrap();
+    let mut buf = [0; 4096];
+    let mut began = false;
+    let mut draws = 0;
+    let stop = Instant::now() + Duration::from_secs(6);
+    while Instant::now() < stop {
+        if let Ok(n) = rx.recv(&mut buf) {
+            let vals = decode(&buf[..n]);
+            for lane in 0..3 {
+                if let Some(c) = vals.get(&format!("/avatar/parameters/MF5_L{lane}_Ctl")) {
+                    let op = c.as_i64().unwrap() & 31;
+                    if op == 22 {
+                        assert!(
+                            !began,
+                            "continuous loop must not globally clear after startup"
+                        )
+                    }
+                    if (1..=19).contains(&op) {
+                        began = true;
+                        draws += 1;
+                    }
+                }
+            }
+        }
+        if t.state()["replayCycles"].as_u64().unwrap() >= 3 && draws >= 24 {
+            break;
+        }
+    }
+    assert!(draws >= 24, "draws={draws}, state={}", t.state());
+    assert!(t.state()["replayCycles"].as_u64().unwrap() >= 3);
+    assert_eq!(t.inner.lock().unwrap().sent.len(), 12);
+    t.configure(&json!({"loopReplay":false}), &mut w.lock().unwrap())
+        .unwrap();
+    let stop = Instant::now() + Duration::from_secs(2);
+    while Instant::now() < stop {
+        if t.state()["repairing"] == false && t.state()["pending"] == 0 {
+            break;
+        }
+        let _ = rx.recv(&mut buf);
+    }
+    while rx.recv(&mut buf).is_ok() {}
+    let next = Scene {
+        revision: 2,
+        boxes: (0..12)
+            .map(|x| Box3::new([x + 30, 0, 0], [1; 3], 25))
+            .collect(),
+        ..Default::default()
+    };
+    t.publish_with_materials(&next, &[material()], false)
+        .unwrap();
+    let stop = Instant::now() + Duration::from_secs(4);
+    let mut removes = 0;
+    let mut redrew = false;
+    while Instant::now() < stop {
+        if let Ok(n) = rx.recv(&mut buf) {
+            let vals = decode(&buf[..n]);
+            for lane in 0..3 {
+                if let Some(c) = vals.get(&format!("/avatar/parameters/MF5_L{lane}_Ctl")) {
+                    let op = c.as_i64().unwrap() & 31;
+                    if op == 20 || op == 21 {
+                        assert!(!redrew);
+                        removes += 1;
+                    }
+                    if (1..=19).contains(&op) {
+                        assert_eq!(
+                            removes, 12,
+                            "all pools must delete old geometry before drawing replacements"
+                        );
+                        redrew = true;
+                    }
+                }
+            }
+        }
+        if t.inner.lock().unwrap().sent_revision == Some(2) {
+            break;
+        }
+    }
+    assert!(redrew);
+    assert_eq!(removes, 12);
+    assert_eq!(t.inner.lock().unwrap().sent.len(), 12);
 }
