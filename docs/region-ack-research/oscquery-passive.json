@@ -1,0 +1,2776 @@
+{
+  "success": true,
+  "scope": "Read-only real VRChat OSCQuery; no UDP sent, no Avatar or configuration changed",
+  "samples": 25,
+  "distinctSnapshots": 25,
+  "elapsedMs": 3464,
+  "queryPort": 61808,
+  "rows": [
+    {
+      "elapsedMs": 138,
+      "values": {
+        "MF6_Ctl": [
+          136
+        ],
+        "MF6_LastRx": [
+          8
+        ],
+        "MF6_Stage": [
+          2
+        ],
+        "MF6_P0_DoneCount": [
+          4349.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          11
+        ],
+        "MF6_P1_DoneCount": [
+          4371.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          1
+        ],
+        "MF6_P2_DoneCount": [
+          4331.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          9
+        ],
+        "MF6_P3_DoneCount": [
+          4300.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          10
+        ],
+        "MF6_P4_DoneCount": [
+          4278.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          4
+        ],
+        "MF6_P5_DoneCount": [
+          4227.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          1
+        ],
+        "MF6_P6_DoneCount": [
+          4271.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          13
+        ],
+        "MF6_P7_DoneCount": [
+          4265.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          7
+        ]
+      }
+    },
+    {
+      "elapsedMs": 267,
+      "values": {
+        "MF6_Ctl": [
+          152
+        ],
+        "MF6_LastRx": [
+          9
+        ],
+        "MF6_Stage": [
+          2
+        ],
+        "MF6_P0_DoneCount": [
+          4350.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          12
+        ],
+        "MF6_P1_DoneCount": [
+          4371.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          1
+        ],
+        "MF6_P2_DoneCount": [
+          4332.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          10
+        ],
+        "MF6_P3_DoneCount": [
+          4300.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          10
+        ],
+        "MF6_P4_DoneCount": [
+          4279.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          5
+        ],
+        "MF6_P5_DoneCount": [
+          4227.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          1
+        ],
+        "MF6_P6_DoneCount": [
+          4271.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          13
+        ],
+        "MF6_P7_DoneCount": [
+          4266.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          8
+        ]
+      }
+    },
+    {
+      "elapsedMs": 409,
+      "values": {
+        "MF6_Ctl": [
+          152
+        ],
+        "MF6_LastRx": [
+          9
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4351.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          13
+        ],
+        "MF6_P1_DoneCount": [
+          4372.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          2
+        ],
+        "MF6_P2_DoneCount": [
+          4333.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          11
+        ],
+        "MF6_P3_DoneCount": [
+          4300.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          10
+        ],
+        "MF6_P4_DoneCount": [
+          4279.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          5
+        ],
+        "MF6_P5_DoneCount": [
+          4227.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          1
+        ],
+        "MF6_P6_DoneCount": [
+          4271.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          13
+        ],
+        "MF6_P7_DoneCount": [
+          4267.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          9
+        ]
+      }
+    },
+    {
+      "elapsedMs": 540,
+      "values": {
+        "MF6_Ctl": [
+          168
+        ],
+        "MF6_LastRx": [
+          10
+        ],
+        "MF6_Stage": [
+          2
+        ],
+        "MF6_P0_DoneCount": [
+          4351.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          13
+        ],
+        "MF6_P1_DoneCount": [
+          4372.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          2
+        ],
+        "MF6_P2_DoneCount": [
+          4333.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          11
+        ],
+        "MF6_P3_DoneCount": [
+          4300.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          10
+        ],
+        "MF6_P4_DoneCount": [
+          4279.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          5
+        ],
+        "MF6_P5_DoneCount": [
+          4227.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          1
+        ],
+        "MF6_P6_DoneCount": [
+          4271.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          13
+        ],
+        "MF6_P7_DoneCount": [
+          4267.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          9
+        ]
+      }
+    },
+    {
+      "elapsedMs": 661,
+      "values": {
+        "MF6_Ctl": [
+          168
+        ],
+        "MF6_LastRx": [
+          10
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4352.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          14
+        ],
+        "MF6_P1_DoneCount": [
+          4372.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          2
+        ],
+        "MF6_P2_DoneCount": [
+          4334.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          12
+        ],
+        "MF6_P3_DoneCount": [
+          4300.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          10
+        ],
+        "MF6_P4_DoneCount": [
+          4280.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          6
+        ],
+        "MF6_P5_DoneCount": [
+          4228.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          2
+        ],
+        "MF6_P6_DoneCount": [
+          4271.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          13
+        ],
+        "MF6_P7_DoneCount": [
+          4267.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          9
+        ]
+      }
+    },
+    {
+      "elapsedMs": 804,
+      "values": {
+        "MF6_Ctl": [
+          184
+        ],
+        "MF6_LastRx": [
+          11
+        ],
+        "MF6_Stage": [
+          2
+        ],
+        "MF6_P0_DoneCount": [
+          4352.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          14
+        ],
+        "MF6_P1_DoneCount": [
+          4372.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          2
+        ],
+        "MF6_P2_DoneCount": [
+          4334.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          12
+        ],
+        "MF6_P3_DoneCount": [
+          4300.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          10
+        ],
+        "MF6_P4_DoneCount": [
+          4280.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          6
+        ],
+        "MF6_P5_DoneCount": [
+          4228.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          2
+        ],
+        "MF6_P6_DoneCount": [
+          4271.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          13
+        ],
+        "MF6_P7_DoneCount": [
+          4267.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          9
+        ]
+      }
+    },
+    {
+      "elapsedMs": 959,
+      "values": {
+        "MF6_Ctl": [
+          184
+        ],
+        "MF6_LastRx": [
+          11
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4353.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          15
+        ],
+        "MF6_P1_DoneCount": [
+          4372.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          2
+        ],
+        "MF6_P2_DoneCount": [
+          4335.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          13
+        ],
+        "MF6_P3_DoneCount": [
+          4300.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          10
+        ],
+        "MF6_P4_DoneCount": [
+          4281.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          7
+        ],
+        "MF6_P5_DoneCount": [
+          4228.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          2
+        ],
+        "MF6_P6_DoneCount": [
+          4271.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          13
+        ],
+        "MF6_P7_DoneCount": [
+          4268.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          10
+        ]
+      }
+    },
+    {
+      "elapsedMs": 1095,
+      "values": {
+        "MF6_Ctl": [
+          200
+        ],
+        "MF6_LastRx": [
+          12
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4353.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          15
+        ],
+        "MF6_P1_DoneCount": [
+          4372.0
+        ],
+        "MF6_P1_Busy": [
+          true
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          3
+        ],
+        "MF6_P2_DoneCount": [
+          4335.0
+        ],
+        "MF6_P2_Busy": [
+          true
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          14
+        ],
+        "MF6_P3_DoneCount": [
+          4300.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          10
+        ],
+        "MF6_P4_DoneCount": [
+          4281.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          7
+        ],
+        "MF6_P5_DoneCount": [
+          4228.0
+        ],
+        "MF6_P5_Busy": [
+          true
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          3
+        ],
+        "MF6_P6_DoneCount": [
+          4271.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          13
+        ],
+        "MF6_P7_DoneCount": [
+          4268.0
+        ],
+        "MF6_P7_Busy": [
+          true
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          11
+        ]
+      }
+    },
+    {
+      "elapsedMs": 1215,
+      "values": {
+        "MF6_Ctl": [
+          216
+        ],
+        "MF6_LastRx": [
+          12
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4353.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          15
+        ],
+        "MF6_P1_DoneCount": [
+          4373.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          3
+        ],
+        "MF6_P2_DoneCount": [
+          4336.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          14
+        ],
+        "MF6_P3_DoneCount": [
+          4300.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          10
+        ],
+        "MF6_P4_DoneCount": [
+          4281.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          7
+        ],
+        "MF6_P5_DoneCount": [
+          4229.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          3
+        ],
+        "MF6_P6_DoneCount": [
+          4271.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          13
+        ],
+        "MF6_P7_DoneCount": [
+          4269.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          11
+        ]
+      }
+    },
+    {
+      "elapsedMs": 1343,
+      "values": {
+        "MF6_Ctl": [
+          216
+        ],
+        "MF6_LastRx": [
+          13
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4353.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          15
+        ],
+        "MF6_P1_DoneCount": [
+          4373.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          3
+        ],
+        "MF6_P2_DoneCount": [
+          4336.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          true
+        ],
+        "MF6_P2_LastRx": [
+          15
+        ],
+        "MF6_P3_DoneCount": [
+          4300.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          true
+        ],
+        "MF6_P3_LastRx": [
+          11
+        ],
+        "MF6_P4_DoneCount": [
+          4281.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          7
+        ],
+        "MF6_P5_DoneCount": [
+          4229.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          true
+        ],
+        "MF6_P5_LastRx": [
+          4
+        ],
+        "MF6_P6_DoneCount": [
+          4271.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          true
+        ],
+        "MF6_P6_LastRx": [
+          14
+        ],
+        "MF6_P7_DoneCount": [
+          4269.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          11
+        ]
+      }
+    },
+    {
+      "elapsedMs": 1465,
+      "values": {
+        "MF6_Ctl": [
+          232
+        ],
+        "MF6_LastRx": [
+          13
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4353.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          15
+        ],
+        "MF6_P1_DoneCount": [
+          4373.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          3
+        ],
+        "MF6_P2_DoneCount": [
+          4337.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          15
+        ],
+        "MF6_P3_DoneCount": [
+          4301.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          11
+        ],
+        "MF6_P4_DoneCount": [
+          4281.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          7
+        ],
+        "MF6_P5_DoneCount": [
+          4230.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          4
+        ],
+        "MF6_P6_DoneCount": [
+          4272.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          14
+        ],
+        "MF6_P7_DoneCount": [
+          4269.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          11
+        ]
+      }
+    },
+    {
+      "elapsedMs": 1592,
+      "values": {
+        "MF6_Ctl": [
+          232
+        ],
+        "MF6_LastRx": [
+          14
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4353.0
+        ],
+        "MF6_P0_Busy": [
+          true
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          0
+        ],
+        "MF6_P1_DoneCount": [
+          4373.0
+        ],
+        "MF6_P1_Busy": [
+          true
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          4
+        ],
+        "MF6_P2_DoneCount": [
+          4337.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          15
+        ],
+        "MF6_P3_DoneCount": [
+          4301.0
+        ],
+        "MF6_P3_Busy": [
+          true
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          12
+        ],
+        "MF6_P4_DoneCount": [
+          4281.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          7
+        ],
+        "MF6_P5_DoneCount": [
+          4230.0
+        ],
+        "MF6_P5_Busy": [
+          true
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          5
+        ],
+        "MF6_P6_DoneCount": [
+          4272.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          14
+        ],
+        "MF6_P7_DoneCount": [
+          4269.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          11
+        ]
+      }
+    },
+    {
+      "elapsedMs": 1728,
+      "values": {
+        "MF6_Ctl": [
+          248
+        ],
+        "MF6_LastRx": [
+          14
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4354.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          0
+        ],
+        "MF6_P1_DoneCount": [
+          4374.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          4
+        ],
+        "MF6_P2_DoneCount": [
+          4337.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          15
+        ],
+        "MF6_P3_DoneCount": [
+          4302.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          12
+        ],
+        "MF6_P4_DoneCount": [
+          4281.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          7
+        ],
+        "MF6_P5_DoneCount": [
+          4231.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          5
+        ],
+        "MF6_P6_DoneCount": [
+          4272.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          14
+        ],
+        "MF6_P7_DoneCount": [
+          4269.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          11
+        ]
+      }
+    },
+    {
+      "elapsedMs": 1855,
+      "values": {
+        "MF6_Ctl": [
+          248
+        ],
+        "MF6_LastRx": [
+          15
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4354.0
+        ],
+        "MF6_P0_Busy": [
+          true
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          1
+        ],
+        "MF6_P1_DoneCount": [
+          4374.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          4
+        ],
+        "MF6_P2_DoneCount": [
+          4337.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          15
+        ],
+        "MF6_P3_DoneCount": [
+          4302.0
+        ],
+        "MF6_P3_Busy": [
+          true
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          13
+        ],
+        "MF6_P4_DoneCount": [
+          4281.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          7
+        ],
+        "MF6_P5_DoneCount": [
+          4231.0
+        ],
+        "MF6_P5_Busy": [
+          true
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          6
+        ],
+        "MF6_P6_DoneCount": [
+          4272.0
+        ],
+        "MF6_P6_Busy": [
+          true
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          15
+        ],
+        "MF6_P7_DoneCount": [
+          4269.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          11
+        ]
+      }
+    },
+    {
+      "elapsedMs": 1978,
+      "values": {
+        "MF6_Ctl": [
+          8
+        ],
+        "MF6_LastRx": [
+          15
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4355.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          1
+        ],
+        "MF6_P1_DoneCount": [
+          4374.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          4
+        ],
+        "MF6_P2_DoneCount": [
+          4337.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          15
+        ],
+        "MF6_P3_DoneCount": [
+          4303.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          13
+        ],
+        "MF6_P4_DoneCount": [
+          4281.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          7
+        ],
+        "MF6_P5_DoneCount": [
+          4232.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          6
+        ],
+        "MF6_P6_DoneCount": [
+          4273.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          15
+        ],
+        "MF6_P7_DoneCount": [
+          4269.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          11
+        ]
+      }
+    },
+    {
+      "elapsedMs": 2126,
+      "values": {
+        "MF6_Ctl": [
+          8
+        ],
+        "MF6_LastRx": [
+          0
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4355.0
+        ],
+        "MF6_P0_Busy": [
+          true
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          2
+        ],
+        "MF6_P1_DoneCount": [
+          4374.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          4
+        ],
+        "MF6_P2_DoneCount": [
+          4337.0
+        ],
+        "MF6_P2_Busy": [
+          true
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          0
+        ],
+        "MF6_P3_DoneCount": [
+          4303.0
+        ],
+        "MF6_P3_Busy": [
+          true
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          14
+        ],
+        "MF6_P4_DoneCount": [
+          4281.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          7
+        ],
+        "MF6_P5_DoneCount": [
+          4232.0
+        ],
+        "MF6_P5_Busy": [
+          true
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          7
+        ],
+        "MF6_P6_DoneCount": [
+          4273.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          15
+        ],
+        "MF6_P7_DoneCount": [
+          4269.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          11
+        ]
+      }
+    },
+    {
+      "elapsedMs": 2255,
+      "values": {
+        "MF6_Ctl": [
+          24
+        ],
+        "MF6_LastRx": [
+          1
+        ],
+        "MF6_Stage": [
+          1
+        ],
+        "MF6_P0_DoneCount": [
+          4356.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          2
+        ],
+        "MF6_P1_DoneCount": [
+          4374.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          4
+        ],
+        "MF6_P2_DoneCount": [
+          4338.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          0
+        ],
+        "MF6_P3_DoneCount": [
+          4304.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          14
+        ],
+        "MF6_P4_DoneCount": [
+          4281.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          7
+        ],
+        "MF6_P5_DoneCount": [
+          4233.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          7
+        ],
+        "MF6_P6_DoneCount": [
+          4273.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          15
+        ],
+        "MF6_P7_DoneCount": [
+          4269.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          11
+        ]
+      }
+    },
+    {
+      "elapsedMs": 2395,
+      "values": {
+        "MF6_Ctl": [
+          24
+        ],
+        "MF6_LastRx": [
+          1
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4356.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          2
+        ],
+        "MF6_P1_DoneCount": [
+          4374.0
+        ],
+        "MF6_P1_Busy": [
+          true
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          5
+        ],
+        "MF6_P2_DoneCount": [
+          4338.0
+        ],
+        "MF6_P2_Busy": [
+          true
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          1
+        ],
+        "MF6_P3_DoneCount": [
+          4304.0
+        ],
+        "MF6_P3_Busy": [
+          true
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          15
+        ],
+        "MF6_P4_DoneCount": [
+          4281.0
+        ],
+        "MF6_P4_Busy": [
+          true
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          8
+        ],
+        "MF6_P5_DoneCount": [
+          4233.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          7
+        ],
+        "MF6_P6_DoneCount": [
+          4273.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          15
+        ],
+        "MF6_P7_DoneCount": [
+          4269.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          11
+        ]
+      }
+    },
+    {
+      "elapsedMs": 2536,
+      "values": {
+        "MF6_Ctl": [
+          40
+        ],
+        "MF6_LastRx": [
+          2
+        ],
+        "MF6_Stage": [
+          1
+        ],
+        "MF6_P0_DoneCount": [
+          4356.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          2
+        ],
+        "MF6_P1_DoneCount": [
+          4375.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          5
+        ],
+        "MF6_P2_DoneCount": [
+          4339.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          1
+        ],
+        "MF6_P3_DoneCount": [
+          4305.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          15
+        ],
+        "MF6_P4_DoneCount": [
+          4282.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          8
+        ],
+        "MF6_P5_DoneCount": [
+          4233.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          7
+        ],
+        "MF6_P6_DoneCount": [
+          4273.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          15
+        ],
+        "MF6_P7_DoneCount": [
+          4269.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          11
+        ]
+      }
+    },
+    {
+      "elapsedMs": 2674,
+      "values": {
+        "MF6_Ctl": [
+          40
+        ],
+        "MF6_LastRx": [
+          2
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4356.0
+        ],
+        "MF6_P0_Busy": [
+          true
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          3
+        ],
+        "MF6_P1_DoneCount": [
+          4375.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          5
+        ],
+        "MF6_P2_DoneCount": [
+          4339.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          1
+        ],
+        "MF6_P3_DoneCount": [
+          4305.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          15
+        ],
+        "MF6_P4_DoneCount": [
+          4282.0
+        ],
+        "MF6_P4_Busy": [
+          true
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          9
+        ],
+        "MF6_P5_DoneCount": [
+          4233.0
+        ],
+        "MF6_P5_Busy": [
+          true
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          8
+        ],
+        "MF6_P6_DoneCount": [
+          4273.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          15
+        ],
+        "MF6_P7_DoneCount": [
+          4269.0
+        ],
+        "MF6_P7_Busy": [
+          true
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          12
+        ]
+      }
+    },
+    {
+      "elapsedMs": 2810,
+      "values": {
+        "MF6_Ctl": [
+          56
+        ],
+        "MF6_LastRx": [
+          3
+        ],
+        "MF6_Stage": [
+          1
+        ],
+        "MF6_P0_DoneCount": [
+          4357.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          3
+        ],
+        "MF6_P1_DoneCount": [
+          4375.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          5
+        ],
+        "MF6_P2_DoneCount": [
+          4339.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          1
+        ],
+        "MF6_P3_DoneCount": [
+          4305.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          15
+        ],
+        "MF6_P4_DoneCount": [
+          4283.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          9
+        ],
+        "MF6_P5_DoneCount": [
+          4234.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          8
+        ],
+        "MF6_P6_DoneCount": [
+          4273.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          15
+        ],
+        "MF6_P7_DoneCount": [
+          4270.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          12
+        ]
+      }
+    },
+    {
+      "elapsedMs": 2935,
+      "values": {
+        "MF6_Ctl": [
+          56
+        ],
+        "MF6_LastRx": [
+          3
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4357.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          3
+        ],
+        "MF6_P1_DoneCount": [
+          4375.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          5
+        ],
+        "MF6_P2_DoneCount": [
+          4339.0
+        ],
+        "MF6_P2_Busy": [
+          true
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          2
+        ],
+        "MF6_P3_DoneCount": [
+          4305.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          15
+        ],
+        "MF6_P4_DoneCount": [
+          4283.0
+        ],
+        "MF6_P4_Busy": [
+          true
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          10
+        ],
+        "MF6_P5_DoneCount": [
+          4234.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          8
+        ],
+        "MF6_P6_DoneCount": [
+          4273.0
+        ],
+        "MF6_P6_Busy": [
+          true
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          0
+        ],
+        "MF6_P7_DoneCount": [
+          4270.0
+        ],
+        "MF6_P7_Busy": [
+          true
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          13
+        ]
+      }
+    },
+    {
+      "elapsedMs": 3055,
+      "values": {
+        "MF6_Ctl": [
+          72
+        ],
+        "MF6_LastRx": [
+          4
+        ],
+        "MF6_Stage": [
+          1
+        ],
+        "MF6_P0_DoneCount": [
+          4357.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          3
+        ],
+        "MF6_P1_DoneCount": [
+          4375.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          5
+        ],
+        "MF6_P2_DoneCount": [
+          4340.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          2
+        ],
+        "MF6_P3_DoneCount": [
+          4305.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          15
+        ],
+        "MF6_P4_DoneCount": [
+          4284.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          10
+        ],
+        "MF6_P5_DoneCount": [
+          4234.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          8
+        ],
+        "MF6_P6_DoneCount": [
+          4274.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          0
+        ],
+        "MF6_P7_DoneCount": [
+          4271.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          13
+        ]
+      }
+    },
+    {
+      "elapsedMs": 3192,
+      "values": {
+        "MF6_Ctl": [
+          72
+        ],
+        "MF6_LastRx": [
+          4
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4358.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          4
+        ],
+        "MF6_P1_DoneCount": [
+          4375.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          5
+        ],
+        "MF6_P2_DoneCount": [
+          4340.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          2
+        ],
+        "MF6_P3_DoneCount": [
+          4305.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          15
+        ],
+        "MF6_P4_DoneCount": [
+          4284.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          10
+        ],
+        "MF6_P5_DoneCount": [
+          4235.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          9
+        ],
+        "MF6_P6_DoneCount": [
+          4275.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          1
+        ],
+        "MF6_P7_DoneCount": [
+          4272.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          14
+        ]
+      }
+    },
+    {
+      "elapsedMs": 3337,
+      "values": {
+        "MF6_Ctl": [
+          88
+        ],
+        "MF6_LastRx": [
+          5
+        ],
+        "MF6_Stage": [
+          2
+        ],
+        "MF6_P0_DoneCount": [
+          4358.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          4
+        ],
+        "MF6_P1_DoneCount": [
+          4375.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          5
+        ],
+        "MF6_P2_DoneCount": [
+          4340.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          2
+        ],
+        "MF6_P3_DoneCount": [
+          4305.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          15
+        ],
+        "MF6_P4_DoneCount": [
+          4284.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          10
+        ],
+        "MF6_P5_DoneCount": [
+          4235.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          9
+        ],
+        "MF6_P6_DoneCount": [
+          4275.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          1
+        ],
+        "MF6_P7_DoneCount": [
+          4272.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          14
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "poolDoneDeltas": {
+      "P0": 9.0,
+      "P1": 4.0,
+      "P2": 9.0,
+      "P3": 5.0,
+      "P4": 6.0,
+      "P5": 8.0,
+      "P6": 4.0,
+      "P7": 7.0
+    },
+    "totalCompletedWorkerOperations": 52.0,
+    "busySnapshots": 7,
+    "readySnapshots": 1,
+    "distinctControls": 14
+  }
+}

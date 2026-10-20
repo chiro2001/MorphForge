@@ -1,0 +1,219 @@
+{
+  "cases": [
+    {
+      "bestRleScanAxesFastFirst": [
+        0,
+        1,
+        2
+      ],
+      "case": "plane_uniform",
+      "cells": 4096,
+      "dimensions": [
+        64,
+        1,
+        64
+      ],
+      "mergedBoxes": 1,
+      "mf6ActualPlannerFrames": 1,
+      "mf6FrameFormats": {
+        "shared_boxes": 1
+      },
+      "mf6WireSeconds": 0.25,
+      "note": "Proposed numbers measure wire budget only. Indexed/RLE descriptors and palette uploads are included, initial Clear and maintenance replay are excluded for all candidates. Palette entries are 27-bit mode+payload with a 32-bit upload header, at most 7 per frame. RLE chooses the best of six axis orders and uses 1..256 cell runs. Dense decoding still needs native emitter work; no speedup claim for the current Avatar.",
+      "paletteColors": 1,
+      "proposedIndexedFrames": 24,
+      "proposedIndexedWireSeconds": 6.0,
+      "proposedRawRgbFrames": 513,
+      "proposedRawRgbWireSeconds": 128.25,
+      "proposedRleFrames": 3,
+      "rleRuns": 16,
+      "unchangedCellBirthBackendRounds": 512
+    },
+    {
+      "bestRleScanAxesFastFirst": [
+        1,
+        2,
+        0
+      ],
+      "case": "plane_stripes16",
+      "cells": 4096,
+      "dimensions": [
+        64,
+        1,
+        64
+      ],
+      "mergedBoxes": 16,
+      "mf6ActualPlannerFrames": 6,
+      "mf6FrameFormats": {
+        "boxes": 5,
+        "shared_boxes": 1
+      },
+      "mf6WireSeconds": 1.5,
+      "note": "Proposed numbers measure wire budget only. Indexed/RLE descriptors and palette uploads are included, initial Clear and maintenance replay are excluded for all candidates. Palette entries are 27-bit mode+payload with a 32-bit upload header, at most 7 per frame. RLE chooses the best of six axis orders and uses 1..256 cell runs. Dense decoding still needs native emitter work; no speedup claim for the current Avatar.",
+      "paletteColors": 16,
+      "proposedIndexedFrames": 90,
+      "proposedIndexedWireSeconds": 22.5,
+      "proposedRawRgbFrames": 513,
+      "proposedRawRgbWireSeconds": 128.25,
+      "proposedRleFrames": 5,
+      "rleRuns": 16,
+      "unchangedCellBirthBackendRounds": 512
+    },
+    {
+      "bestRleScanAxesFastFirst": [
+        0,
+        1,
+        2
+      ],
+      "case": "plane_checker2",
+      "cells": 4096,
+      "dimensions": [
+        64,
+        1,
+        64
+      ],
+      "mergedBoxes": 4096,
+      "mf6ActualPlannerFrames": 512,
+      "mf6FrameFormats": {
+        "voxels": 512
+      },
+      "mf6WireSeconds": 128.0,
+      "note": "Proposed numbers measure wire budget only. Indexed/RLE descriptors and palette uploads are included, initial Clear and maintenance replay are excluded for all candidates. Palette entries are 27-bit mode+payload with a 32-bit upload header, at most 7 per frame. RLE chooses the best of six axis orders and uses 1..256 cell runs. Dense decoding still needs native emitter work; no speedup claim for the current Avatar.",
+      "paletteColors": 2,
+      "proposedIndexedFrames": 24,
+      "proposedIndexedWireSeconds": 6.0,
+      "proposedRawRgbFrames": 513,
+      "proposedRawRgbWireSeconds": 128.25,
+      "proposedRleFrames": 195,
+      "rleRuns": 4033,
+      "unchangedCellBirthBackendRounds": 512
+    },
+    {
+      "bestRleScanAxesFastFirst": [
+        1,
+        2,
+        0
+      ],
+      "case": "plane_noise16",
+      "cells": 4096,
+      "dimensions": [
+        64,
+        1,
+        64
+      ],
+      "mergedBoxes": 3651,
+      "mf6ActualPlannerFrames": 518,
+      "mf6FrameFormats": {
+        "boxes": 4,
+        "shared_boxes": 113,
+        "voxels": 401
+      },
+      "mf6WireSeconds": 129.5,
+      "note": "Proposed numbers measure wire budget only. Indexed/RLE descriptors and palette uploads are included, initial Clear and maintenance replay are excluded for all candidates. Palette entries are 27-bit mode+payload with a 32-bit upload header, at most 7 per frame. RLE chooses the best of six axis orders and uses 1..256 cell runs. Dense decoding still needs native emitter work; no speedup claim for the current Avatar.",
+      "paletteColors": 16,
+      "proposedIndexedFrames": 90,
+      "proposedIndexedWireSeconds": 22.5,
+      "proposedRawRgbFrames": 513,
+      "proposedRawRgbWireSeconds": 128.25,
+      "proposedRleFrames": 245,
+      "rleRuns": 3846,
+      "unchangedCellBirthBackendRounds": 512
+    },
+    {
+      "bestRleScanAxesFastFirst": [
+        0,
+        1,
+        2
+      ],
+      "case": "plane_unique_rgb",
+      "cells": 4096,
+      "dimensions": [
+        64,
+        1,
+        64
+      ],
+      "mergedBoxes": 4096,
+      "mf6ActualPlannerFrames": 1366,
+      "mf6FrameFormats": {
+        "boxes": 1365,
+        "voxels": 1
+      },
+      "mf6WireSeconds": 341.5,
+      "note": "Proposed numbers measure wire budget only. Indexed/RLE descriptors and palette uploads are included, initial Clear and maintenance replay are excluded for all candidates. Palette entries are 27-bit mode+payload with a 32-bit upload header, at most 7 per frame. RLE chooses the best of six axis orders and uses 1..256 cell runs. Dense decoding still needs native emitter work; no speedup claim for the current Avatar.",
+      "paletteColors": 4096,
+      "proposedIndexedFrames": null,
+      "proposedIndexedWireSeconds": null,
+      "proposedRawRgbFrames": 513,
+      "proposedRawRgbWireSeconds": 128.25,
+      "proposedRleFrames": null,
+      "rleRuns": 4096,
+      "unchangedCellBirthBackendRounds": 512
+    },
+    {
+      "bestRleScanAxesFastFirst": [
+        0,
+        2,
+        1
+      ],
+      "case": "volume_layers16",
+      "cells": 4096,
+      "dimensions": [
+        16,
+        16,
+        16
+      ],
+      "mergedBoxes": 16,
+      "mf6ActualPlannerFrames": 6,
+      "mf6FrameFormats": {
+        "boxes": 5,
+        "shared_boxes": 1
+      },
+      "mf6WireSeconds": 1.5,
+      "note": "Proposed numbers measure wire budget only. Indexed/RLE descriptors and palette uploads are included, initial Clear and maintenance replay are excluded for all candidates. Palette entries are 27-bit mode+payload with a 32-bit upload header, at most 7 per frame. RLE chooses the best of six axis orders and uses 1..256 cell runs. Dense decoding still needs native emitter work; no speedup claim for the current Avatar.",
+      "paletteColors": 16,
+      "proposedIndexedFrames": 90,
+      "proposedIndexedWireSeconds": 22.5,
+      "proposedRawRgbFrames": 513,
+      "proposedRawRgbWireSeconds": 128.25,
+      "proposedRleFrames": 5,
+      "rleRuns": 16,
+      "unchangedCellBirthBackendRounds": 512
+    },
+    {
+      "bestRleScanAxesFastFirst": [
+        1,
+        2,
+        0
+      ],
+      "case": "volume_noise16",
+      "cells": 4096,
+      "dimensions": [
+        16,
+        16,
+        16
+      ],
+      "mergedBoxes": 3516,
+      "mf6ActualPlannerFrames": 516,
+      "mf6FrameFormats": {
+        "boxes": 4,
+        "shared_boxes": 141,
+        "voxels": 371
+      },
+      "mf6WireSeconds": 129.0,
+      "note": "Proposed numbers measure wire budget only. Indexed/RLE descriptors and palette uploads are included, initial Clear and maintenance replay are excluded for all candidates. Palette entries are 27-bit mode+payload with a 32-bit upload header, at most 7 per frame. RLE chooses the best of six axis orders and uses 1..256 cell runs. Dense decoding still needs native emitter work; no speedup claim for the current Avatar.",
+      "paletteColors": 16,
+      "proposedIndexedFrames": 90,
+      "proposedIndexedWireSeconds": 22.5,
+      "proposedRawRgbFrames": 513,
+      "proposedRawRgbWireSeconds": 128.25,
+      "proposedRleFrames": 243,
+      "rleRuns": 3821,
+      "unchangedCellBirthBackendRounds": 512
+    }
+  ],
+  "controlBits": 8,
+  "dataBits": 192,
+  "intervalSeconds": 0.25,
+  "regionHeaderBits": 40,
+  "scope": "Offline deterministic fixtures; current geometry merge + actual MF6 planner and encoder vs proposed bit budgets. No model calls, network traffic or native receiver performance measurement."
+}

@@ -1,0 +1,462 @@
+{
+  "success": true,
+  "scope": "Read-only real VRChat OSCQuery; no UDP sent or Avatar/configuration changed. Completion counters acknowledge local worker lifecycle only, not GPU output or other players.",
+  "samples": 4,
+  "distinctSnapshots": 1,
+  "elapsedMs": 466,
+  "summary": {
+    "totalCompletedWorkerOperations": 0.0,
+    "poolDoneDeltas": {
+      "P0": 0.0,
+      "P1": 0.0,
+      "P2": 0.0,
+      "P3": 0.0,
+      "P4": 0.0,
+      "P5": 0.0,
+      "P6": 0.0,
+      "P7": 0.0
+    }
+  },
+  "rows": [
+    {
+      "elapsedMs": 56,
+      "values": {
+        "MF6_Ctl": [
+          117
+        ],
+        "MF6_LastRx": [
+          7
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4577.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          15
+        ],
+        "MF6_P1_DoneCount": [
+          4596.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          2
+        ],
+        "MF6_P2_DoneCount": [
+          4569.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          7
+        ],
+        "MF6_P3_DoneCount": [
+          4506.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          8
+        ],
+        "MF6_P4_DoneCount": [
+          4482.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          0
+        ],
+        "MF6_P5_DoneCount": [
+          4440.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          6
+        ],
+        "MF6_P6_DoneCount": [
+          4495.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          13
+        ],
+        "MF6_P7_DoneCount": [
+          4482.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          0
+        ]
+      }
+    },
+    {
+      "elapsedMs": 193,
+      "values": {
+        "MF6_Ctl": [
+          117
+        ],
+        "MF6_LastRx": [
+          7
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4577.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          15
+        ],
+        "MF6_P1_DoneCount": [
+          4596.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          2
+        ],
+        "MF6_P2_DoneCount": [
+          4569.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          7
+        ],
+        "MF6_P3_DoneCount": [
+          4506.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          8
+        ],
+        "MF6_P4_DoneCount": [
+          4482.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          0
+        ],
+        "MF6_P5_DoneCount": [
+          4440.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          6
+        ],
+        "MF6_P6_DoneCount": [
+          4495.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          13
+        ],
+        "MF6_P7_DoneCount": [
+          4482.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          0
+        ]
+      }
+    },
+    {
+      "elapsedMs": 322,
+      "values": {
+        "MF6_Ctl": [
+          117
+        ],
+        "MF6_LastRx": [
+          7
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4577.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          15
+        ],
+        "MF6_P1_DoneCount": [
+          4596.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          2
+        ],
+        "MF6_P2_DoneCount": [
+          4569.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          7
+        ],
+        "MF6_P3_DoneCount": [
+          4506.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          8
+        ],
+        "MF6_P4_DoneCount": [
+          4482.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          0
+        ],
+        "MF6_P5_DoneCount": [
+          4440.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          6
+        ],
+        "MF6_P6_DoneCount": [
+          4495.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          13
+        ],
+        "MF6_P7_DoneCount": [
+          4482.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          0
+        ]
+      }
+    },
+    {
+      "elapsedMs": 446,
+      "values": {
+        "MF6_Ctl": [
+          117
+        ],
+        "MF6_LastRx": [
+          7
+        ],
+        "MF6_Stage": [
+          0
+        ],
+        "MF6_P0_DoneCount": [
+          4577.0
+        ],
+        "MF6_P0_Busy": [
+          false
+        ],
+        "MF6_P0_Ready": [
+          false
+        ],
+        "MF6_P0_LastRx": [
+          15
+        ],
+        "MF6_P1_DoneCount": [
+          4596.0
+        ],
+        "MF6_P1_Busy": [
+          false
+        ],
+        "MF6_P1_Ready": [
+          false
+        ],
+        "MF6_P1_LastRx": [
+          2
+        ],
+        "MF6_P2_DoneCount": [
+          4569.0
+        ],
+        "MF6_P2_Busy": [
+          false
+        ],
+        "MF6_P2_Ready": [
+          false
+        ],
+        "MF6_P2_LastRx": [
+          7
+        ],
+        "MF6_P3_DoneCount": [
+          4506.0
+        ],
+        "MF6_P3_Busy": [
+          false
+        ],
+        "MF6_P3_Ready": [
+          false
+        ],
+        "MF6_P3_LastRx": [
+          8
+        ],
+        "MF6_P4_DoneCount": [
+          4482.0
+        ],
+        "MF6_P4_Busy": [
+          false
+        ],
+        "MF6_P4_Ready": [
+          false
+        ],
+        "MF6_P4_LastRx": [
+          0
+        ],
+        "MF6_P5_DoneCount": [
+          4440.0
+        ],
+        "MF6_P5_Busy": [
+          false
+        ],
+        "MF6_P5_Ready": [
+          false
+        ],
+        "MF6_P5_LastRx": [
+          6
+        ],
+        "MF6_P6_DoneCount": [
+          4495.0
+        ],
+        "MF6_P6_Busy": [
+          false
+        ],
+        "MF6_P6_Ready": [
+          false
+        ],
+        "MF6_P6_LastRx": [
+          13
+        ],
+        "MF6_P7_DoneCount": [
+          4482.0
+        ],
+        "MF6_P7_Busy": [
+          false
+        ],
+        "MF6_P7_Ready": [
+          false
+        ],
+        "MF6_P7_LastRx": [
+          0
+        ]
+      }
+    }
+  ]
+}
