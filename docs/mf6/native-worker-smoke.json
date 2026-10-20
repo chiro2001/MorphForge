@@ -1,0 +1,42 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "phase": "initial clear",
+      "passed": true,
+      "expected": 0,
+      "actual": 0,
+      "errors": []
+    },
+    {
+      "phase": "20 native births including full 24-bit maxima and sequence wrap",
+      "passed": true,
+      "expected": 20,
+      "actual": 20,
+      "errors": []
+    },
+    {
+      "phase": "ID rewrite has no duplicate",
+      "passed": true,
+      "expected": 20,
+      "actual": 20,
+      "errors": []
+    },
+    {
+      "phase": "ID erase without visible geometry lookup",
+      "passed": true,
+      "expected": 19,
+      "actual": 19,
+      "errors": []
+    },
+    {
+      "phase": "retained after idle",
+      "passed": true,
+      "expected": 19,
+      "actual": 19,
+      "errors": []
+    }
+  ],
+  "scope": "Real UDP to GestureManager, native Animator birth and Trigger erase, no SetParticles/Emit/C# geometry injection",
+  "interval": 0.3
+}

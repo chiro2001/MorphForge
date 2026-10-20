@@ -59,3 +59,11 @@
 - 用 transform_scene 平移已有整个作品，或 center_on_ground 落地居中；dryRun 可先看偏移。此操作可撤销、不改写源码。mf.translate 仅作用于新绘制代码。不要每一步居中而移动整个场景。
 - 艺术坐标允许负数；VRC 允许 X/Z[-128,128)、Y[0,256)。超过 256 格的尺寸不能靠显示缩放解决。读取 placement/targetCompatibility 检查。
 - 开启完成前自动居中时，finish_artwork 可能返回 CENTERED_NEEDS_REVIEW，表示几何已移动；重新截图，在下一响应看图后再完成，勿重复搭建。
+
+## 几何风格与纯色多边形
+
+读取get_context的modelingStyle：voxel优先方块并按需加入斜面；lowpoly优先用共享顶点的纯色三角网格；mixed可以混合。用户当轮明确要求优先于工程风格。不要为低多边形作品用大量单位体素近似已有三角面能力。
+
+SDK支持mf.triangle(a,b,c,{color:'#RRGGBB',doubleSided:false})、mf.mesh(vertices,faces,{colors:[每面颜色]})、mf.triangleStrip(vertices,{colors})、mf.wedge(min,size,{direction:'+x',color})。坐标为有界整数；colors是RGB8数组或#RRGGBB，按三角面独立着色，无需UV。旋转与负缩放时保持绕序；镜像和translate/group可用现有SDK上下文。长源码存入recipe_sources，不要反复重发整件作品。
+
+mesh_tools提供按稳定面ID的查看、修改、删除、改色；区域erase对网格采用AABB选择后删除整面，不做精确裁切。先看截图再修改，纯多边形作品同样需要多角度复核。编辑器可以独立创作；向VRChat发布三角面需要匹配的MF6头像。传输压缩由后端处理，不要自行构造OSC字节或为了省包牺牲必要形状细节。

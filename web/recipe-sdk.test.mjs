@@ -58,3 +58,22 @@ test("replaceGroup removes only the named group and resource guards reject overs
     /2000000/,
   );
 });
+test("colored indexed mesh and triangle strips preserve winding and transform frames", () => {
+  const faces=run('mf.translate([10,2,3],()=>mf.mirror("x",()=>mf.triangleStrip([[0,0,0],[1,1,0],[2,0,0],[3,1,0]],{colors:["#ff0000",[0,255,0]],doubleSided:true})));');
+  assert.equal(faces.length,2);
+  assert.deepEqual(Array.from(faces[0].color),[255,0,0]);
+  assert.deepEqual(Array.from(faces[1].color),[0,255,0]);
+  assert.equal(faces[0].doubleSided,true);
+  assert.ok(faces.every(f=>f.op==="triangle"&&f.group==="main"));
+  const normals=faces.map(f=>{const [a,b,c]=f.vertices;return (b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);});
+  assert.ok(normals.every(n=>n<0));
+  assert.throws(()=>run('mf.mesh([[0,0,0]],[[0,1,2]])'),/indices/);
+  assert.throws(()=>run('mf.triangle([0,0,0],[1,0,0],[2,0,0])'),/degenerate/);
+});
+test("wedge emits a closed eight-face prism with per-face colors",()=>{
+  const faces=run('mf.group("roof",()=>mf.wedge([0,0,0],[10,6,8],{direction:"-z",color:"#aa6633"}));');
+  assert.equal(faces.length,8);
+  const edges=new Map();
+  for(const face of faces){assert.equal(face.group,"roof");for(let i=0;i<3;i++){const edge=[face.vertices[i].join(),face.vertices[(i+1)%3].join()].sort().join("|");edges.set(edge,(edges.get(edge)||0)+1);}}
+  assert.ok([...edges.values()].every(n=>n===2));
+});

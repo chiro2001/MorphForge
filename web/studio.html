@@ -57,6 +57,23 @@
           <button id="applyPosition" class="wide">在指定位置应用</button>
         </details>
 
+        <details id="meshPanel">
+          <summary>多边形与斜面</summary>
+          <label>AI建模风格<select id="modelingStyle"><option value="mixed">混合 · 体素与多边形</option><option value="voxel">体素 · 可加入斜面</option><option value="lowpoly">低多边形 · 逐面纯色</option></select></label>
+          <label>分组<input id="meshGroup" value="polygon" maxlength="128" /></label>
+          <label>面颜色<input id="meshColor" type="color" value="#e7a34b" /></label>
+          <label><input id="meshDoubleSided" type="checkbox" />双面显示</label>
+          <label>顶点A · X,Y,Z<input id="meshA" value="-8, 0, 0" /></label>
+          <label>顶点B · X,Y,Z<input id="meshB" value="8, 0, 0" /></label>
+          <label>顶点C · X,Y,Z<input id="meshC" value="0, 16, 0" /></label>
+          <div class="double"><button id="meshAdd">添加三角面</button><button id="meshLoadSelection">读取选中面</button><button id="meshUpdate">更新选中面</button><button id="meshDelete">删除选中面</button></div>
+          <label>斜面起点<input id="wedgeMin" value="-8, 0, 0" /></label>
+          <label>斜面尺寸<input id="wedgeSize" value="16, 8, 16" /></label>
+          <label>上升方向<select id="wedgeDirection"><option value="+x">+X</option><option value="-x">−X</option><option value="+z">+Z</option><option value="-z">−Z</option></select></label>
+          <button id="meshWedge" class="wide">添加封闭斜面</button>
+          <p class="caption">坐标为整数格。选择工具可选中面并移动、复制或改色。区域擦除删除相交面整体；向VRC发送需要MF6配套头像。</p>
+        </details>
+
         <div class="section-title">材质</div>
         <input id="styleSearch" placeholder="搜索材质或资源包" />
         <div id="palette" class="palette"></div>
@@ -399,6 +416,7 @@ mf.group('main', () => {
           </p>
           <label
             >协议<select id="profile">
+              <option value="mf6">MF6 · 统一240bit / 压缩 / 三角面</option>
               <option value="mf5">MF5 · 实时材质 / 微缩 / 双体素</option>
               <option value="mf4">MF4 · 240bit三通道（无面捕）</option>
               <option value="mf3">MF3 · 56bit兼容档</option>

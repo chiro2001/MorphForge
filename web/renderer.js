@@ -76,6 +76,8 @@ export class VoxelRenderer {
     this.materials = [];
     this.textures = [];
     this.boxes = [];
+    this.triangles = [];
+    this.triangleMeshes = [];
     this.groupsHidden = new Set();
     this.cellSize = 0.25;
     this.scale = 1;
@@ -437,7 +439,10 @@ export class VoxelRenderer {
     this.renderStyleMap=new Map(styles.map(s=>[s.id,this.effectiveStyle(s,mode)]));
     this.surfaceMasks = surfaces?.masks || {};
     this.surfaceStats = surfaces || {hiddenFaces:0};
-    if (this.tryIncremental(scene, styles, { mode, scale })) return this;
+    if (this.tryIncremental(scene, styles, { mode, scale })) {
+      this.loadTriangles(scene);
+      return this;
+    }
     this.styleSignature = JSON.stringify(styles);
     this.visibilitySignature = [...this.groupsHidden].sort().join("\0");
     this.mode = mode;
@@ -447,6 +452,7 @@ export class VoxelRenderer {
     this.styles = styles;
     this.renderRevision = scene.revision;
     this.gridSize = scene.size ?? 256;
+    this.loadTriangles(scene);
     for (const mesh of this.meshes) {
       this.content.remove(mesh);
       mesh.geometry.dispose();
@@ -712,6 +718,41 @@ export class VoxelRenderer {
     this.textPreviewMesh = null;
     this.textPreviewBoxes = [];
   }
+  loadTriangles(scene) {
+    this.triangles = scene.triangles || [];
+    const signature=JSON.stringify([this.triangles,[...this.groupsHidden].sort(),this.mode,this.cellSize]);
+    if(signature===this.triangleSignature)return;
+    this.triangleSignature=signature;
+    for(const mesh of this.triangleMeshes){this.content.remove(mesh);mesh.geometry.dispose();mesh.material.dispose();}
+    this.triangleMeshes=[];
+    for(const doubleSided of [false,true]){
+      const faces=this.triangles.filter(t=>!!t.doubleSided===doubleSided&&!this.groupsHidden.has(t.group));
+      if(!faces.length)continue;
+      const positions=new Float32Array(faces.length*9),colors=new Float32Array(faces.length*9);
+      faces.forEach((face,i)=>{
+        const [a,b,c]=face.vertices,ab=b.map((v,j)=>v-a[j]),ac=c.map((v,j)=>v-a[j]);
+        const n=new THREE.Vector3(ab[1]*ac[2]-ab[2]*ac[1],ab[2]*ac[0]-ab[0]*ac[2],ab[0]*ac[1]-ab[1]*ac[0]).normalize();
+        const color=new THREE.Color().setRGB(...face.color.map(v=>v/255),THREE.SRGBColorSpace);
+        if(this.mode==="vrc"){
+          const dot=n.dot(new THREE.Vector3(.4,.8,.6).normalize()),light=.28+.72*Math.max(0,doubleSided?Math.abs(dot):dot),t=n.y*.5+.5;
+          color.multiply(new THREE.Color(light+.12+(.35-.12)*t,light+.13+(.42-.13)*t,light+.16+(.52-.16)*t));
+        }
+        // Reflect Z and reverse winding together so front faces agree with Unity.
+        [0,2,1].forEach((source,j)=>{positions.set(toThree(face.vertices[source].map(v=>v*this.cellSize)).toArray(),i*9+j*3);colors.set(color.toArray(),i*9+j*3);});
+      });
+      const geometry=new THREE.BufferGeometry();geometry.setAttribute("position",new THREE.BufferAttribute(positions,3));geometry.setAttribute("color",new THREE.BufferAttribute(colors,3));geometry.computeVertexNormals();geometry.computeBoundingSphere();
+      const parameters={vertexColors:true,side:doubleSided?THREE.DoubleSide:THREE.FrontSide,toneMapped:this.mode!=="vrc"};
+      const material=this.mode==="vrc"?new THREE.MeshBasicMaterial(parameters):new THREE.MeshStandardMaterial({...parameters,flatShading:true,roughness:.9,metalness:0});
+      const mesh=new THREE.Mesh(geometry,material);mesh.userData.faces=faces;mesh.name=doubleSided?"Double-sided triangle faces":"Triangle faces";this.content.add(mesh);this.triangleMeshes.push(mesh);
+    }
+    this.updateSelection();
+  }
+  cameraObjects() {
+    return this.boxes.concat(this.triangles.map(t=>{
+      const min=[0,1,2].map(a=>Math.min(...t.vertices.map(v=>v[a]))),max=[0,1,2].map(a=>Math.max(...t.vertices.map(v=>v[a])));
+      return {id:t.id,group:t.group,min,size:max.map((v,a)=>v-min[a])};
+    }));
+  }
   bounds() {
     const box = new THREE.Box3();
     for (const b of this.boxes) {
@@ -725,6 +766,7 @@ export class VoxelRenderer {
         );
       box.union(new THREE.Box3().setFromCenterAndSize(center, extent));
     }
+    for(const t of this.triangles){if(this.groupsHidden.has(t.group))continue;for(const p of t.vertices)box.expandByPoint(toThree(p.map(v=>v*this.cellSize*this.scale)));}
     return box;
   }
   view(name = "hero", focus = null) {
@@ -811,6 +853,12 @@ export class VoxelRenderer {
       if (!valid || far < 0 || near < 0) continue;
       if (!best || near < best.t) best = { t: near, box: b, axis };
     }
+    this.content.updateMatrixWorld(true);
+    const triangleHit=raycaster.intersectObjects(this.triangleMeshes,false)[0];
+    if(triangleHit&&(!best||triangleHit.distance<best.t*this.cellSize*this.scale)){
+      const triangle=triangleHit.object.userData.faces[triangleHit.faceIndex],point=fromThree(triangleHit.point).map(v=>v/(this.cellSize*this.scale)),normal=fromThree(triangleHit.face.normal);
+      return {pos:point.map((v,a)=>Math.floor(v+normal[a]*(erase?-1e-4:1e-4))),box:null,triangle,normal};
+    }
     if (best) {
       const point = origin.map((v, a) => v + direction[a] * best.t);
       const normal = [0, 0, 0];
@@ -854,12 +902,13 @@ export class VoxelRenderer {
         ),
       );
     }
+    for(const t of this.triangles){if(!this.selection.has(t.id))continue;for(const p of t.vertices)box.expandByPoint(toThree(p.map(v=>v*this.cellSize*this.scale)));}
     this.selectedHelper.box.copy(box);
     this.selectedHelper.visible = !box.isEmpty();
   }
   viewShot(shot, width, height) {
     const spec = resolveCamera(
-      fitBounds(this.boxes, shot.fit),
+      fitBounds(this.cameraObjects(), shot.fit),
       shot,
       width / height,
     );

@@ -45,7 +45,7 @@ struct WorkerText {
     mirrors: [i32; 3],
 }
 const SDK: &str = include_str!("recipe_sdk.js");
-pub const SDK_VERSION: &str = "morphforge-recipe/3";
+pub const SDK_VERSION: &str = "morphforge-recipe/4";
 pub fn worker(input: WorkerInput) -> Result<Value> {
     if input.request.code.len() > 1_000_000 || input.request.max_ops > 100000 {
         bail!("recipe资源预算越界")

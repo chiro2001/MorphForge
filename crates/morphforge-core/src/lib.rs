@@ -6,3 +6,6 @@ pub mod text;
 pub use geometry::*;
 
 pub mod material_wire;
+pub mod mf6;
+pub mod triangles;
+pub use triangles::Triangle3;

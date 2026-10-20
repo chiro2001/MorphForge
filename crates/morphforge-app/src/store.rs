@@ -16,6 +16,9 @@ use uuid::Uuid;
 pub fn now() -> String {
     Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Millis, true)
 }
+fn default_modeling_style() -> String {
+    "mixed".into()
+}
 pub fn hash(bytes: &[u8]) -> String {
     format!("{:x}", Sha256::digest(bytes))
 }
@@ -117,6 +120,8 @@ pub struct TextReceipt {
 pub struct Project {
     pub id: String,
     pub name: String,
+    #[serde(default = "default_modeling_style")]
+    pub modeling_style: String,
     pub scene: Scene,
     pub limits: Limits,
     pub materials: Vec<Material>,
@@ -138,6 +143,7 @@ impl Default for Project {
         Self {
             id: Uuid::new_v4().to_string(),
             name: "未命名作品".into(),
+            modeling_style: default_modeling_style(),
             scene: Scene::default(),
             limits: Limits::default(),
             materials: builtins(),
@@ -158,6 +164,8 @@ pub struct Artwork {
     pub tags: Vec<String>,
     pub created_at: String,
     pub box_count: usize,
+    #[serde(default)]
+    pub triangle_count: usize,
     pub voxel_count: u64,
     pub thumbnail: Option<String>,
     #[serde(default)]
@@ -744,6 +752,7 @@ impl Workspace {
             tags,
             created_at: now(),
             box_count: stats.box_count,
+            triangle_count: stats.triangle_count,
             voxel_count: stats.voxel_count,
             thumbnail: thumbnail.or_else(|| views.first().cloned()),
             views,
@@ -886,7 +895,7 @@ impl Workspace {
         Ok(())
     }
     pub fn state(&self) -> Value {
-        json!({"project":{"id":self.project.id,"name":self.project.name,"cellSize":self.project.scene.cell_size,"size":self.project.scene.size,"pinnedNotes":self.project.pinned_notes,"autoCenterOnFinish":self.project.auto_center_on_finish,"protectedGroups":self.project.protected_groups},"revision":self.project.scene.revision,"stats":self.project.scene.stats(&self.project.limits),"canUndo":!self.undo.is_empty(),"canRedo":!self.redo.is_empty(),"commits":self.project.commits,"eventSeq":self.next_seq-1})
+        json!({"project":{"id":self.project.id,"name":self.project.name,"modelingStyle":self.project.modeling_style,"cellSize":self.project.scene.cell_size,"size":self.project.scene.size,"pinnedNotes":self.project.pinned_notes,"autoCenterOnFinish":self.project.auto_center_on_finish,"protectedGroups":self.project.protected_groups},"revision":self.project.scene.revision,"stats":self.project.scene.stats(&self.project.limits),"canUndo":!self.undo.is_empty(),"canRedo":!self.redo.is_empty(),"commits":self.project.commits,"eventSeq":self.next_seq-1})
     }
     pub(crate) fn ensure_protected_groups_unchanged(
         &self,
@@ -900,7 +909,10 @@ impl Workspace {
             .project
             .protected_groups
             .iter()
-            .filter(|group| protected_boxes(before, group) != protected_boxes(after, group))
+            .filter(|group| {
+                protected_boxes(before, group) != protected_boxes(after, group)
+                    || protected_triangles(before, group) != protected_triangles(after, group)
+            })
             .cloned()
             .collect();
         if !changed.is_empty() {
@@ -939,6 +951,16 @@ fn protected_boxes(scene: &Scene, group: &str) -> Vec<ProtectedBox> {
         .collect();
     boxes.sort();
     boxes
+}
+fn protected_triangles(scene: &Scene, group: &str) -> Vec<(u64, [[i32; 3]; 3], [u8; 3], bool)> {
+    let mut faces: Vec<_> = scene
+        .triangles
+        .iter()
+        .filter(|t| t.group == group)
+        .map(|t| (t.id, t.vertices, t.color, t.double_sided))
+        .collect();
+    faces.sort();
+    faces
 }
 fn validate_text_receipt_key(id: &str, fingerprint: &str) -> Result<()> {
     if id.is_empty() || id.len() > 256 {

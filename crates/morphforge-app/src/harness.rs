@@ -23,8 +23,8 @@ mod prompts;
 mod runtime_materials;
 mod visual_context;
 pub use goal::GoalProgress;
-pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/4.9";
-pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/3.8";
+pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/5.0";
+pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/3.9";
 
 #[derive(Clone, Debug)]
 struct PendingPrompt {
@@ -1887,6 +1887,7 @@ impl Harness {
             "revision":workspace.project.scene.revision,
             "projectId":workspace.project.id,
             "projectName":workspace.project.name,
+            "modelingStyle":workspace.project.modeling_style,
             "stats":stats,
             "targetCompatibility":target_compatibility,
             "placement":crate::scene_tools::target_report(&workspace.project.scene,self.transport.config().capacity),
@@ -1906,6 +1907,7 @@ impl Harness {
             "runtimeSurfaceHints":{"mf5":"define_palette/define_materials可实时发送，不需重传头像；新图片仍需打包。查看工具返回的vrcEffective了解量化。","scale":"placement.scale保持实际倍数；新100%=.05，MF5范围.0005.. .5（1%..1000%）。","transparency":"MF5运行时透明表面暂不带六面遮罩；目录透明材质可剔内部面。"},
             "recipeSources":crate::sources::list(&workspace).unwrap_or(Value::Null),
             "sdkVersion":recipe::SDK_VERSION,
+            "meshSdk":"mf.triangle(a,b,c,{color:'#RRGGBB',doubleSided:false,group}); mf.mesh(vertices,faces,{color,colors:[per-face RGB8 or hex],group,doubleSided}); faces are triples of vertex indices. mf.triangleStrip(vertices,{colors}); mf.wedge(min,size,{direction:'+x'|'-x'|'+z'|'-z',color}); integer coordinates, per-face RGB8, no UV. Same translate/mirror/group frame as mf.box. mesh_tools can inspect/edit stable face IDs. Region erase removes whole faces by AABB; it does not clip triangles. MF6 required for triangle OSC; art-only editing is independent of VRChat.",
             "sdk":"mf.box(min,[w,h,d],{style:'wood',tint:0,motion:0}); mf.erase(min,size); mf.paint(min,size,{style}) recolors existing voxels only and never creates them; use mf.box to add voxels. mf.clear(); mf.removeGroup(name); mf.replaceGroup(name,()=>{}); mf.ellipsoid(center,radii,options); mf.sphere(center,radius,options); mf.capsule(a,b,radius,options); mf.cylinder(base,height,radius,options) Y-axis; mf.tube(points,radius,options); mf.extrude(points2d,origin,depth,{plane:\"xy\",style}); mf.voxelize({min,max},(x,y,z)=>boolean_or_style,options) samples cell centers, max2M cells; mf.group(name,()=>{}); mf.repeat(n,(i)=>{}); mf.mirror('x',()=>{}); mf.translate([x,y,z],()=>{}); mf.line(a,b,{thickness:1,style}); mf.stairs(origin,n,{width:3,depth:1,rise:1,style}); mf.wall(origin,w,h,{thickness:1,style}); mf.roof(origin,w,d,h,{style}); Math.random()/mf.random() deterministic by seed. All coordinates integer signed grid. Y is height. VRC target requires X/Z[-128,128),Y[0,256). Styles are catalog IDs/UID names. mode apply preserves current geometry; replace starts from empty."
         })
     }
@@ -2060,6 +2062,14 @@ impl Harness {
                 let result=self.run_recipe_with_guard(request, run, guard.as_ref()).await?;
                 self.capture_after_recipe(result,args,run,guard).await
             }
+            "mesh_tools" => self.with_workspace_guard(guard.as_ref(), |workspace| {
+                let mut result = crate::mesh_tools::execute(workspace, args, run)?;
+                if args["dryRun"] != true && args["action"] != "inspect" && self.transport.config().enabled && self.transport.config().auto {
+                    workspace.commit(None, "AI网格增量", run)?;
+                    if let Err(error) = self.transport.publish_with_materials(&workspace.project.scene, &workspace.project.materials, false) { result["publishWarning"] = json!(error.to_string()); }
+                }
+                Ok(result)
+            }),
             "voxel_text" => self.voxel_text(args, run, guard.as_ref()).await,
             "capture_views" => self.capture_views_tool(args,run,guard).await,
             "inspect_region" => {
@@ -2071,12 +2081,14 @@ impl Harness {
                     let region = morphforge_core::Box3::new(min, size, 0);
                     region.validate(&workspace.project.limits)?;
                     scene.boxes.retain(|box3| box3.intersects(&region));
+                    scene.triangles.retain(|t| t.intersects(&region));
                 }
-                if let Some(group) = args["group"].as_str() {scene.boxes.retain(|box3|box3.group==group);}
+                if let Some(group) = args["group"].as_str() {scene.boxes.retain(|box3|box3.group==group);scene.triangles.retain(|t|t.group==group);}
                 if let Some(slice)=args.get("slice") {
                     let axis=match slice["axis"].as_str(){Some("x")=>0,Some("y")=>1,Some("z")=>2,_=>bail!("slice轴需要x/y/z")};
                     let index=i32::try_from(slice["index"].as_i64().context("slice需要index")?).context("slice坐标越界")?;
                     scene.boxes.retain_mut(|box3|{if index>=box3.min[axis]&&index<box3.end()[axis]{box3.min[axis]=index;box3.size[axis]=1;true}else{false}});
+                    scene.triangles.retain(|t|{let b=t.bounds();b.min[axis]<=index&&b.max[axis]>=index});
                 }
                 let offset=args["offset"].as_u64().unwrap_or(0).min(usize::MAX as u64) as usize;
                 let limit=args["limit"].as_u64().unwrap_or(20).clamp(1,128) as usize;
@@ -2085,6 +2097,8 @@ impl Harness {
                     "revision":scene.revision,
                     "stats":scene.stats(&workspace.project.limits),
                     "sample":scene.boxes.iter().skip(offset).take(limit).collect::<Vec<_>>(),
+                    "triangles":scene.triangles.iter().skip(offset).take(limit).collect::<Vec<_>>(),
+                    "trianglesNextOffset":if offset.saturating_add(limit)<scene.triangles.len(){Some(offset+limit)}else{None},
                     "offset":offset,"limit":limit,"nextOffset":if offset.saturating_add(limit)<scene.boxes.len(){Some(offset+limit)}else{None},
                     "statsScope":if args.get("slice").is_some(){"one_voxel_slice"}else{"intersecting_boxes"},
                 }))
@@ -3281,6 +3295,30 @@ pub fn tools_for_language(language: &str) -> Value {
                 "styleLimit":{"type":"integer","minimum":1,"maximum":128}
             }),
             vec![],
+        ),
+        tool(
+            "mesh_tools",
+            if en {
+                "Inspect or edit RGB8 triangle faces using stable IDs; apply appends or updates faces, wedge creates a closed slope. Geometry uses integer XYZ, per-face color and optional doubleSided, no UV. baseRevision required for edits; dryRun previews without changes. Region erase selects whole faces by AABB. For large indexed meshes prefer mf.mesh in run_recipe. Requires MF6 only when publishing to VRChat."
+            } else {
+                "查看或编辑逐面RGB8三角网格：inspect分页返回稳定ID；apply新增(id=0)或更新已有面；wedge生成封闭斜面；remove/paint按ID删除或改色。整数XYZ、每面颜色、可选doubleSided，无UV。修改需baseRevision，dryRun只预览。区域擦除按AABB删整面。大型索引网格优先在run_recipe调用mf.mesh；发布到VRChat才要求MF6。"
+            },
+            json!({
+                "action":{"type":"string","enum":["inspect","apply","wedge","remove","paint"]},
+                "baseRevision":{"type":"integer","minimum":0},"dryRun":{"type":"boolean"},
+                "group":{"type":"string","maxLength":128},"offset":{"type":"integer","minimum":0},"limit":{"type":"integer","minimum":1,"maximum":128},
+                "mode":{"type":"string","enum":["append","replace_group","replace_scene"]},
+                "ids":{"type":"array","maxItems":4096,"items":{"type":"integer","minimum":1}},
+                "min":{"type":"array","items":{"type":"integer"},"minItems":3,"maxItems":3},
+                "size":{"type":"array","items":{"type":"integer","minimum":1},"minItems":3,"maxItems":3},
+                "color":{"type":"array","items":{"type":"integer","minimum":0,"maximum":255},"minItems":3,"maxItems":3},
+                "direction":{"type":"string","enum":["+x","-x","+z","-z"]},"doubleSided":{"type":"boolean"},
+                "triangles":{"type":"array","maxItems":512,"items":{"type":"object","properties":{
+                    "id":{"type":"integer","minimum":0},"vertices":{"type":"array","minItems":3,"maxItems":3,"items":{"type":"array","items":{"type":"integer"},"minItems":3,"maxItems":3}},
+                    "color":{"type":"array","items":{"type":"integer","minimum":0,"maximum":255},"minItems":3,"maxItems":3},"group":{"type":"string","maxLength":128},"doubleSided":{"type":"boolean"}
+                },"required":["vertices","color"],"additionalProperties":false}}
+            }),
+            vec!["action"]
         ),
         tool(
             "define_palette",

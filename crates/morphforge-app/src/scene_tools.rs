@@ -56,9 +56,18 @@ pub fn transform(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<V
         }
         _ => bail!("整体定位仅支持translate/center_on_ground"),
     };
-    let ids = w.project.scene.boxes.iter().map(|b| b.id).collect();
+    let ids = w
+        .project
+        .scene
+        .boxes
+        .iter()
+        .map(|b| b.id)
+        .chain(w.project.scene.triangles.iter().map(|t| t.id))
+        .collect();
     let before = target_report(&w.project.scene, w.project.limits.target_boxes);
-    if offset == [0; 3] || w.project.scene.boxes.is_empty() {
+    if offset == [0; 3]
+        || (w.project.scene.boxes.is_empty() && w.project.scene.triangles.is_empty())
+    {
         return Ok(
             json!({"ok":true,"unchanged":true,"dryRun":args["dryRun"]==true,"offset":offset,"revision":base,"before":before,"after":before}),
         );

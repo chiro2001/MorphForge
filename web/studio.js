@@ -2,6 +2,7 @@ import { TimelineView } from "/timeline-ui.js";
 import { ReferencePicker } from "/reference-ui.js";
 import { usageDisplay, supportsFileUpload } from "/usage-ui.js";
 import { VoxelRenderer } from "/renderer.js";
+import { setupMeshUi } from "/mesh-ui.js";
 import {
   groupRows,
   isGroupProtected,
@@ -609,7 +610,7 @@ async function refresh(force = false) {
         loadedPreviewCatalog=previewCatalog;
         selected = new Set(
           [...selected].filter((id) =>
-            sceneData.scene.boxes.some((box) => box.id === id),
+            sceneData.scene.boxes.some((box) => box.id === id) || (sceneData.scene.triangles||[]).some(t=>t.id===id),
           ),
         );
         renderer.selection = selected;
@@ -635,12 +636,13 @@ function updateState() {
   const connection = s.connection;
   const harness = s.harness;
   setValue("projectName", s.project.name);
+  setValue("modelingStyle", s.project.modelingStyle||"mixed");
   $("activeSessionTitle").textContent = harness.context.title || "对话";
   $("schemaUpgradeNotice").hidden=!harness.context.schemaUpgradeRequired;
   $("schemaUpgradeContext").hidden=!harness.context.schemaUpgradeRequired;
   $("saveState").textContent = "已保存 · v" + s.revision;
   $("boxCount").textContent =
-    fmt(s.stats.boxCount) + " Box / 目标 " + fmt(s.stats.targetBoxes);
+    fmt(s.stats.boxCount) + " Box · " + fmt(s.stats.triangleCount||0) + " 面 / 目标 " + fmt(s.stats.targetBoxes);
   $("voxelCount").textContent = fmt(s.stats.voxelCount) + " 格";
   $("bounds").textContent = s.stats.bounds
     ? "范围 " +
@@ -648,7 +650,7 @@ function updateState() {
       " → " +
       s.stats.bounds.max.join(",")
     : "范围为空";
-  $("emptyHint").hidden = s.stats.boxCount > 0;
+  $("emptyHint").hidden = s.stats.boxCount > 0 || s.stats.triangleCount > 0;
   const target=s.targetCompatibility;
   $("vrcBoundsStatus").textContent=target ? `${target.fits?"坐标/容量可发布":"目标预检未通过"} · ${target.outOfBoundsCount} 个越界 Box\n作品尺寸 ${target.extent.join(" × ")} 格${target.outOfBoundsGroups.length?"\n越界分组："+target.outOfBoundsGroups.join("、"):""}` : "";
   const catalog=s.materialCompatibility;
@@ -665,10 +667,10 @@ function updateState() {
   setValue("refreshSeconds", connection.refreshSeconds);
   setValue("sendOrder",connection.sendOrder||"volume");
   setChecked("loopReplay",connection.loopReplay||false);
-  $("loopReplay").disabled=connection.profile!=="mf5";
-  $("sendOrder").disabled=connection.profile!=="mf5";
+  $("loopReplay").disabled=!["mf5","mf6"].includes(connection.profile);
+  $("sendOrder").disabled=!["mf5","mf6"].includes(connection.profile);
   $("replayStatus").textContent=`已完成补播 ${connection.replayCycles||0} 轮 · ${connection.repairing?"正在补播":connection.loopReplay?(connection.enabled?"连续补播已启用":"循环已设置，发送关闭"):"按需发送"}。更新先删除旧几何，再按所选顺序绘制；没有远端ACK。`;
-  $("repairPublish").disabled=connection.profile!=="mf5";
+  $("repairPublish").disabled=!["mf5","mf6"].includes(connection.profile);
   setChecked("autoPublish", connection.auto);
   $("connect").textContent = connection.enabled ? "停止发送" : "开启发送";
   $("connect").classList.toggle("selected", connection.enabled);
@@ -681,7 +683,7 @@ function updateState() {
     (!connection.enabled
       ? "发送已关闭；可继续独立创作。"
       : `本机发包中 · 无远端ACK
-${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${["mf4","mf5"].includes(connection.profile)?" · 本体仅本地":""}
+${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${["mf4","mf5","mf6"].includes(connection.profile)?" · 本体仅本地":""}
 目标 v${connection.desiredRevision} / 已发送 v${connection.sentRevision ?? "—"}
 待发 ${fmt(connection.pending)} 批 · 预计 ${time(connection.etaSeconds)}
 累计 ${fmt(connection.sentCommands)} 批`);
@@ -692,11 +694,11 @@ ${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${["mf4
   const percent=connection.placement.scale/.05*100;
   setValue("scalePercent",Number(percent.toFixed(2)));
   $("scaleValue").value=Number(percent.toFixed(1))+"%";
-  $("scale").min=connection.profile==="mf5"?"0":"2";
-  $("scalePercent").min=connection.profile==="mf5"?"1":"100";
-  $("scale").max=connection.profile==="mf5"?"3":String(Math.log10(2000));
-  $("scalePercent").max=connection.profile==="mf5"?"1000":"2000";
-  $("scaleHint").textContent=`新100%＝旧5% · 当前格长 ${(0.25*connection.placement.scale*1000).toFixed(3)} 毫米。${connection.profile==="mf5"?"1%～1000%，对数刻度，便于微缩。":"旧头像不支持100%以下；请使用MF5配套头像。"}`;
+  $("scale").min=["mf5","mf6"].includes(connection.profile)?"0":"2";
+  $("scalePercent").min=["mf5","mf6"].includes(connection.profile)?"1":"100";
+  $("scale").max=["mf5","mf6"].includes(connection.profile)?"3":String(Math.log10(2000));
+  $("scalePercent").max=["mf5","mf6"].includes(connection.profile)?"1000":"2000";
+  $("scaleHint").textContent=`新100%＝旧5% · 当前格长 ${(0.25*connection.placement.scale*1000).toFixed(3)} 毫米。${["mf5","mf6"].includes(connection.profile)?"1%～1000%，对数刻度，便于微缩。":"旧头像不支持100%以下；请使用MF5配套头像。"}`;
   for (const id of [
     "preset",
     "contextWindowTokens",
@@ -882,7 +884,7 @@ function drawGroups() {
     label.textContent = name;
     label.onclick = () => {
       selected = new Set(
-        sceneData.scene.boxes
+        sceneData.scene.boxes.concat(sceneData.scene.triangles||[])
           .filter((box) => box.group === name)
           .map((box) => box.id),
       );
@@ -955,7 +957,7 @@ async function saveGroupProtection(name, protect, button) {
 
 function selectionInfo() {
   $("selectionInfo").textContent = selected.size
-    ? `已选 ${selected.size} Box · 移动/复制读取精确位置XYZ作为偏移`
+    ? `已选 ${selected.size} 个对象 · 移动/复制读取精确位置XYZ作为偏移`
     : "选择工具点击，Shift多选；拖动框选";
 }
 
@@ -1031,12 +1033,14 @@ renderer.renderer.domElement.addEventListener("pointerup", (event) => {
           selected.add(box.id);
         }
       }
+      for(const face of sceneData.scene.triangles||[]){const point=renderer.projectPoint([0,1,2].map(a=>face.vertices.reduce((sum,p)=>sum+p[a],0)/3*cell));if(point.x>=Math.min(start[0],event.clientX)&&point.x<=Math.max(start[0],event.clientX)&&point.y>=Math.min(start[1],event.clientY)&&point.y<=Math.max(start[1],event.clientY))selected.add(face.id);}
     } else {
       const hit = renderer.pick(event, { erase: true });
-      if (hit?.box) {
-        if (event.shiftKey && selected.has(hit.box.id))
-          selected.delete(hit.box.id);
-        else selected.add(hit.box.id);
+      if (hit?.box || hit?.triangle) {
+        const id=(hit.box||hit.triangle).id;
+        if (event.shiftKey && selected.has(id))
+          selected.delete(id);
+        else selected.add(id);
       }
     }
     renderer.selection = selected;
@@ -1049,7 +1053,8 @@ renderer.renderer.domElement.addEventListener("pointerup", (event) => {
     erase: tool === "erase" || event.shiftKey,
     layer: Number($("layer").value),
   });
-  if (hit) edit(operation(hit.pos, event.shiftKey));
+  if(hit?.triangle&&(tool==="erase"||event.shiftKey))edit({op:"remove_triangles",ids:[hit.triangle.id]});
+  else if (hit) edit(operation(hit.pos, event.shiftKey));
 });
 
 $("applyPosition").onclick = () => edit(operation(coord()));
@@ -1098,6 +1103,8 @@ $("paintSelection").onclick = () => {
       styleId: selectedStyle,
       tintId: Number($("tintId").value) || 0,
     }));
+  const triangleIds=(sceneData.scene.triangles||[]).filter(t=>selected.has(t.id)).map(t=>t.id);
+  if(triangleIds.length){const material=sceneData.materials.find(m=>m.id===selectedStyle);operations.push({op:"paint_triangles",ids:triangleIds,color:(material?.color||[.75,.75,.75]).map(v=>Math.round(Math.max(0,Math.min(1,v))*255))});}
   edit({ operations });
 };
 
@@ -1315,7 +1322,7 @@ function connection(enabled = state.connection.enabled) {
     interval: Number($("interval").value),
     capacity: Number($("targetCapacity").value),
     refreshSeconds: Number($("refreshSeconds").value),
-    loopReplay: $("profile").value==="mf5" && $("loopReplay").checked,
+    loopReplay: ["mf5","mf6"].includes($("profile").value) && $("loopReplay").checked,
     sendOrder: $("sendOrder").value,
     auto: $("autoPublish").checked,
   };
@@ -2287,6 +2294,8 @@ $("textApply").onclick = async () => {
     syncTextButtons();
   }
 };
+
+setupMeshUi({$,getScene:()=>sceneData,getState:()=>state,getSelected:()=>selected,api,edit,refresh,error});
 
 if (captureMode) {
   document.body.classList.add("capture-mode");

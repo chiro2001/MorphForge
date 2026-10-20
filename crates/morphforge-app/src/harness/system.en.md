@@ -52,3 +52,9 @@ Visual quality, materials and positioning:
 - transform_scene translates existing geometry or center_on_ground centers and grounds it; dryRun previews the offset. Undo is supported; source files are unchanged. mf.translate only affects newly emitted operations. Never recenter every drawing step.
 - Art uses signed grid coordinates. VRC permits X/Z[-128,128), Y[0,256). Display scaling does not enlarge this encoded space. Read placement/targetCompatibility.
 - With finish-time auto-centering enabled, CENTERED_NEEDS_REVIEW means geometry was already moved. Capture the new revision, inspect it in a later response, and then finish; do not duplicate geometry.
+
+## Geometry styles and colored polygon meshes
+
+Read modelingStyle from get_context: voxel prefers blocks plus slopes; lowpoly prefers shared-vertex colored triangle meshes; mixed allows both. An explicit current user request takes priority. Use mf.triangle(a,b,c,{color:'#RRGGBB',doubleSided:false}), mf.mesh(vertices,faces,{colors:[per-face RGB8/hex]}), mf.triangleStrip(vertices,{colors}), and mf.wedge(min,size,{direction:'+x',color}). Coordinates are bounded integers. Colors belong to faces, no UV is needed. Existing translate/mirror/group frames apply. Keep long source in recipe_sources.
+
+mesh_tools inspects/edits/removes/recolors stable face IDs. Region erase selects entire faces by AABB instead of clipping topology. Review multiple real views before finishing. Art creation is independent of VRChat; triangle publication requires the matching MF6 avatar. Backend handles compression; do not hand-pack OSC or remove necessary detail just to reduce frames.

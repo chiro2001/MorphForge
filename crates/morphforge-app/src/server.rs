@@ -139,6 +139,7 @@ impl App {
             .route("/api/project", post(project))
             .route("/api/workspaces", get(workspaces).post(workspace_action))
             .route("/api/edit", post(edit))
+            .route("/api/mesh", post(mesh_edit))
             .route("/api/import", post(import))
             .route("/api/history", get(history))
             .route("/api/undo", post(undo))
@@ -340,6 +341,13 @@ async fn project(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     if name.is_some_and(|s| s.len() > 256) || notes.is_some_and(|s| s.len() > 32000) {
         bail_api("名称或固定要求过长")?;
     }
+    let modeling_style = v
+        .get("modelingStyle")
+        .map(|s| s.as_str().context("建模风格须为文本"))
+        .transpose()?;
+    if modeling_style.is_some_and(|style| !["voxel", "lowpoly", "mixed"].contains(&style)) {
+        bail_api("建模风格需要voxel/lowpoly/mixed")?;
+    }
     let mut next = w.project.scene.clone();
     if let Some(value) = v.get("cellSize") {
         next.cell_size = value.as_f64().context("格长须为数字")?;
@@ -360,6 +368,9 @@ async fn project(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     }
     if let Some(notes) = notes {
         w.project.pinned_notes = notes.into();
+    }
+    if let Some(style) = modeling_style {
+        w.project.modeling_style = style.into();
     }
     if let Some(value) = v.get("autoCenterOnFinish") {
         w.project.auto_center_on_finish = value.as_bool().context("自动居中须为布尔值")?;
@@ -407,6 +418,25 @@ async fn edit(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
             return Ok(Json(
                 json!({"ok":true,"revision":w.project.scene.revision,"warning":e.to_string(),"draftSaved":true}),
             ));
+        }
+    }
+    Ok(Json(result))
+}
+async fn mesh_edit(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    let mut w = a.workspace.lock().unwrap();
+    let mut result = crate::mesh_tools::execute(&mut w, &v, None)?;
+    if v["dryRun"] != true
+        && v["action"] != "inspect"
+        && a.transport.config().enabled
+        && a.transport.config().auto
+    {
+        w.commit(None, "多边形编辑自动发布", None)?;
+        if let Err(error) =
+            a.transport
+                .publish_with_materials(&w.project.scene, &w.project.materials, false)
+        {
+            result["warning"] = json!(error.to_string());
+            result["draftSaved"] = json!(true);
         }
     }
     Ok(Json(result))

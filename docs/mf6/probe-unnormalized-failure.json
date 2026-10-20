@@ -1,0 +1,43 @@
+{
+  "status": "failed",
+  "error": "System.Exception: {\r\n  \"phase\": \"20 native births including full 24-bit maxima and sequence wrap\",\r\n  \"passed\": false,\r\n  \"expected\": 20,\r\n  \"actual\": 1,\r\n  \"errors\": [\r\n    \"Packed vertex mismatch ID=19 component=0 actual=100000 expected=7897228\",\r\n    \"Packed vertex mismatch ID=19 component=1 actual=100000 expected=7897236\",\r\n    \"Packed vertex mismatch ID=19 component=2 actual=100000 expected=7900304\",\r\n    \"Missing 0\",\r\n    \"Missing 1\",\r\n    \"Missing 2\",\r\n    \"Missing 3\",\r\n    \"Missing 4\",\r\n    \"Missing 5\",\r\n    \"Missing 6\",\r\n    \"Missing 7\",\r\n    \"Missing 8\",\r\n    \"Missing 9\",\r\n    \"Missing 10\",\r\n    \"Missing 11\",\r\n    \"Missing 12\",\r\n    \"Missing 13\",\r\n    \"Missing 14\",\r\n    \"Missing 15\",\r\n    \"Missing 16\",\r\n    \"Missing 17\",\r\n    \"Missing 18\"\r\n  ]\r\n}\r\n  at Mf6NativeProbe+<>c__DisplayClass7_1.<Run>g__Verify|3 (System.String name) [0x00579] in D:\\Projects\\VRChatProjects2\\MorphForge\\AgentScripts\\Mf6NativeProbe.cs:73 \r\n  at Mf6NativeProbe.Run () [0x006c9] in D:\\Projects\\VRChatProjects2\\MorphForge\\AgentScripts\\Mf6NativeProbe.cs:81 ",
+  "checks": [
+    {
+      "phase": "initial clear",
+      "passed": true,
+      "expected": 0,
+      "actual": 0,
+      "errors": []
+    },
+    {
+      "phase": "20 native births including full 24-bit maxima and sequence wrap",
+      "passed": false,
+      "expected": 20,
+      "actual": 1,
+      "errors": [
+        "Packed vertex mismatch ID=19 component=0 actual=100000 expected=7897228",
+        "Packed vertex mismatch ID=19 component=1 actual=100000 expected=7897236",
+        "Packed vertex mismatch ID=19 component=2 actual=100000 expected=7900304",
+        "Missing 0",
+        "Missing 1",
+        "Missing 2",
+        "Missing 3",
+        "Missing 4",
+        "Missing 5",
+        "Missing 6",
+        "Missing 7",
+        "Missing 8",
+        "Missing 9",
+        "Missing 10",
+        "Missing 11",
+        "Missing 12",
+        "Missing 13",
+        "Missing 14",
+        "Missing 15",
+        "Missing 16",
+        "Missing 17",
+        "Missing 18"
+      ]
+    }
+  ]
+}

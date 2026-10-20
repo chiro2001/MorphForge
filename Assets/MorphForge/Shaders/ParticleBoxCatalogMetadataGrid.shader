@@ -50,9 +50,11 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
         {
             float4 vertex : POSITION;
             float3 normal : NORMAL;
+            float4 tangent : TANGENT;
             float4 color : COLOR;
             float4 uvFace : TEXCOORD0; // xy=face-local tile UV, z=axis, w=unused legacy sign
-            float3 size : TEXCOORD1;   // particle birth SizeXYZ
+            float4 sizeData : TEXCOORD1; // xyz=SizeXYZ, w=world center.x
+            float4 centerLife : TEXCOORD2; // xy=center.yz, z=inverse birth lifetime
             UNITY_VERTEX_INPUT_INSTANCE_ID
         };
 
@@ -68,19 +70,98 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
             UNITY_VERTEX_OUTPUT_STEREO
         };
 
+        bool MF6Triangle(float4 data)
+        {
+            return _WireEncoding > 5.5 && data.a * 255.0 < 6.5;
+        }
+
+        bool MF6Double(float4 data) { return fmod(floor(data.a*255.0+.5),2.0)<.5; }
+        float3 MF6Center(appdata v) { return float3(v.sizeData.w,v.centerLife.xy); }
+        float3 MF6LocalVertex(float bits) { return float3(fmod(bits,16.0),fmod(floor(bits/16.0),16.0),fmod(floor(bits/256.0),16.0)); }
+
+        float3 MF6Vertex(float packed)
+        {
+            // Two exponent ranges preserve all 24 bits while the physical
+            // carrier remains >=1 unit, allowing stable frame reconstruction.
+            float bits = packed<2.0?floor((packed-1.0)*8388608.0):floor(packed*4194304.0);
+            return (float3(fmod(bits,256.0),fmod(floor(bits/256.0),256.0),floor(bits/65536.0)) - 128.0) * _CellSize;
+        }
+
+        void MF6Basis(appdata v,out float3 x,out float3 y,out float3 z,out float3 scale,out float3 corner,out float axis)
+        {
+            float code=floor(v.uvFace.z+.5);axis=floor(code/8.0);code=fmod(code,8.0);
+            corner=float3(fmod(code,2.0),fmod(floor(code/2.0),2.0),floor(code/4.0))-.5;
+            float sign=axis<.5?corner.x*2.0:(axis<1.5?corner.y*2.0:corner.z*2.0);
+            float3 n=normalize(v.normal),t=normalize(v.tangent.xyz),b=normalize(cross(n,t)*v.tangent.w);
+            if(axis<.5){x=n*sign;y=b;z=t;}else if(axis<1.5){x=t;y=n*sign;z=b;}else{x=t;y=b;z=n*sign;}
+            float3 delta=v.vertex.xyz-MF6Center(v);
+            scale=abs(float3(dot(delta,x),dot(delta,y),dot(delta,z))*2.0/max(v.sizeData.xyz,1e-6));
+        }
+
         v2f vert(appdata v)
         {
             v2f o;
             UNITY_SETUP_INSTANCE_ID(v);
             UNITY_INITIALIZE_OUTPUT(v2f, o);
             UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+            if (MF6Triangle(v.color))
+            {
+                float3 a = MF6Vertex(v.sizeData.x);
+                float3 b = MF6Vertex(v.sizeData.y);
+                float3 c = MF6Vertex(v.sizeData.z);
+                if(v.color.a*255.0>2.5)
+                {
+                    float3 bits=lerp(floor((v.sizeData.xyz-1.0)*8388608.0),floor(v.sizeData.xyz*4194304.0),step(2.0,v.sizeData.xyz));
+                    float3 origin=float3(floor(bits.y/65536.0),fmod(bits.z,256.0),floor(bits.z/256.0));
+                    if(v.color.a*255.0<4.5)
+                    {
+                        a=MF6LocalVertex(fmod(bits.x,4096.0));b=MF6LocalVertex(floor(bits.x/4096.0));c=MF6LocalVertex(fmod(bits.y,4096.0));
+                    }
+                    else
+                    {
+                        b=MF6LocalVertex(fmod(floor(bits.x/16.0),4096.0));a=MF6LocalVertex(floor(bits.x/65536.0)+fmod(bits.y,16.0)*256.0);c=MF6LocalVertex(fmod(floor(bits.y/16.0),4096.0));
+                    }
+                    a=(origin+a-128.0)*_CellSize;b=(origin+b-128.0)*_CellSize;c=(origin+c-128.0)*_CellSize;
+                }
+                float corner = floor(v.uvFace.w + 0.5);
+                float3 vertex = corner < 0.5 ? a : (corner < 1.5 ? b : c);
+                float3 bx,by,bz,scale,cube;float axis;MF6Basis(v,bx,by,bz,scale,cube,axis);
+                float id=floor((rcp(v.centerLife.z)-524288.0)/8.0+.5);
+                float3 slot=float3((fmod(id,256.0)-128.0)*_CellSize,-128.0,(floor(id/256.0)-128.0)*_CellSize);
+                float3 world=MF6Center(v)+bx*((vertex.x-slot.x)*scale.x)+by*((vertex.y-slot.y)*scale.y)+bz*((vertex.z-slot.z)*scale.z);
+                o.pos = mul(UNITY_MATRIX_VP,float4(world,1.0));
+                o.world = world;
+                o.local = vertex;
+                o.normal = normalize(cross(b-a,c-a));
+                o.data = v.color;
+                o.uvFace = v.uvFace;
+                o.size = v.sizeData.xyz;
+                return o;
+            }
+            if(_WireEncoding>5.5)
+            {
+                float3 bx,by,bz,scale,corner;float axis;MF6Basis(v,bx,by,bz,scale,corner,axis);
+                float code=255.0-floor(v.color.a*255.0+.5),shape=floor(code/8.0);
+                v.color.a=(255.0-fmod(code,8.0))/255.0;
+                v.uvFace.z=axis;
+                float sign=axis<.5?corner.x*2.0:(axis<1.5?corner.y*2.0:corner.z*2.0);
+                v.normal=axis<.5?float3(sign,0,0):(axis<1.5?float3(0,sign,0):float3(0,0,sign));
+                if(shape>.5&&shape<4.5)
+                {
+                    float3 unit=corner+.5;
+                    float height=shape<1.5?unit.x:(shape<2.5?1.0-unit.x:(shape<3.5?unit.z:1.0-unit.z));
+                    v.vertex.xyz+=by*(unit.y*(height-1.0)*v.sizeData.y*scale.y);
+                    if(axis>.5&&axis<1.5&&v.normal.y>0)
+                        v.normal=normalize(shape<1.5?float3(-v.sizeData.y/v.sizeData.x,1,0):(shape<2.5?float3(v.sizeData.y/v.sizeData.x,1,0):(shape<3.5?float3(0,1,-v.sizeData.y/v.sizeData.z):float3(0,1,v.sizeData.y/v.sizeData.z))));
+                }
+            }
             o.pos = UnityObjectToClipPos(v.vertex);
             o.world = mul(unity_ObjectToWorld, v.vertex).xyz;
             o.local = v.vertex.xyz;
             o.normal = v.normal;
             o.data = v.color;
             o.uvFace = v.uvFace;
-            o.size = max(v.size, 1e-6);
+            o.size = max(v.sizeData.xyz, 1e-6);
             return o;
         }
 
@@ -124,6 +205,7 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
 
         float EarlyFlags(v2f i)
         {
+            if(MF6Triangle(i.data))return 0;
             float mode=MF5Mode(i.data,_WireEncoding);
             if(mode>.5&&mode<1.5)return 0;
             float bits=MF5Bits(i.data);
@@ -135,6 +217,21 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
 
         fixed4 SampleCatalog(v2f i, out float3 baseColor, out float opacity, out float flags)
         {
+            if(MF6Triangle(i.data))
+            {
+                baseColor = GammaToLinearSpace(i.data.rgb);
+                opacity = 1.0;
+                flags = 0.0;
+                float3 n = normalize(i.normal);
+                float light = dot(n,normalize(float3(.4,.8,.6)));
+                if(MF6Double(i.data))light=abs(light);
+                float3 surface = baseColor*(.28+.72*saturate(light));
+                surface += lerp(float3(.12,.13,.16),float3(.35,.42,.52),n.y*.5+.5)*baseColor;
+                #if defined(UNITY_COLORSPACE_GAMMA)
+                surface = LinearToGammaSpace(surface);
+                #endif
+                return fixed4(surface,1.0);
+            }
             float runtimeMode=MF5Mode(i.data,_WireEncoding);
             float4 codes=MF5Codes(i.data,_WireEncoding,runtimeMode);
             float styleId = codes.r + 64.0 * codes.g;
@@ -266,7 +363,7 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
         Pass
         {
             Tags { "LightMode"="ForwardBase" }
-            Cull Back
+            Cull Off
             ZWrite On
             Blend Off
 
@@ -275,9 +372,10 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
             #pragma vertex vert
             #pragma fragment frag
 
-            fixed4 frag(v2f i) : SV_Target
+            fixed4 frag(v2f i, fixed facing : VFACE) : SV_Target
             {
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
+                if(facing<0 && (!MF6Triangle(i.data)||!MF6Double(i.data)))discard;
                 float3 color;float opacity;float flags=EarlyFlags(i);
                 if(fmod(floor(flags/2.0),2.0)>=1.0)discard;
                 fixed4 result = SampleCatalog(i, color, opacity, flags);

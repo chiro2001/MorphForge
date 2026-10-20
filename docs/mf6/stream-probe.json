@@ -1,0 +1,109 @@
+{
+  "success": true,
+  "samples": [
+    {
+      "mode": 0,
+      "value": [
+        2.007348,
+        2.00736141,
+        2.01040649,
+        -1.38750041
+      ]
+    },
+    {
+      "mode": 1,
+      "value": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "mode": 2,
+      "value": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "mode": 3,
+      "value": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "mode": 4,
+      "value": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "mode": 5,
+      "value": [
+        255.0,
+        180.0,
+        40.0,
+        2.0
+      ]
+    },
+    {
+      "mode": 6,
+      "value": [
+        -1.33731675,
+        -4.242406,
+        -1.24535108,
+        1.0
+      ]
+    },
+    {
+      "mode": 7,
+      "value": [
+        0.625,
+        0.375,
+        4.25,
+        -1.0
+      ]
+    },
+    {
+      "mode": 8,
+      "value": [
+        -4.22986031,
+        -1.25791621,
+        1.9068541E-06,
+        1.0
+      ]
+    },
+    {
+      "mode": 9,
+      "value": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "mode": 10,
+      "value": [
+        0.0,
+        0.0,
+        1.00000012,
+        -1.0
+      ]
+    }
+  ],
+  "rendererEnabled": true,
+  "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+  "wireEncoding": 6.0,
+  "streams": "Position,Normal,Tangent,Color,UV,UV2,SizeXYZ,Center,InvStartLifetime",
+  "nativeCount": 1
+}

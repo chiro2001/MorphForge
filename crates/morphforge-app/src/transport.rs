@@ -1,4 +1,5 @@
 use crate::store::Workspace;
+pub mod unified;
 use anyhow::{bail, Context, Result};
 use fs2::FileExt;
 use morphforge_core::protocol::{self, appearance, key, Command, OscValue};
@@ -55,6 +56,7 @@ impl Default for Connection {
     }
 }
 pub struct State {
+    pub unified: unified::Session,
     pub config: Connection,
     pub avatar_catalog: Option<crate::target::AvatarCatalog>,
     pub avatar_catalog_error: String,
@@ -131,7 +133,7 @@ impl Transport {
             .and_then(crate::target::AvatarCatalog::wire_protocol)
         {
             config.profile = protocol.into();
-            if protocol == "mf5" {
+            if ["mf5", "mf6"].contains(&protocol) {
                 config.scale = config.scale.clamp(
                     morphforge_core::material_wire::SCALE_MIN,
                     morphforge_core::material_wire::SCALE_MAX,
@@ -140,6 +142,7 @@ impl Transport {
         }
         let t = Self {
             inner: Arc::new(Mutex::new(State {
+                unified: unified::Session::default(),
                 config,
                 avatar_catalog,
                 avatar_catalog_error,
@@ -182,7 +185,9 @@ impl Transport {
             s.brush,
             s.config.profile == "mf2",
         );
-        let command_batches = if ["mf4", "mf5"].contains(&s.config.profile.as_str()) {
+        let command_batches = if s.config.profile == "mf6" {
+            s.unified.pending_objects().div_ceil(3)
+        } else if ["mf4", "mf5"].contains(&s.config.profile.as_str()) {
             wide_queues(&s, planning_sent)
                 .iter()
                 .map(Vec::len)
@@ -195,7 +200,7 @@ impl Transport {
             + s.resets as usize
             + usize::from(!s.controls.is_empty())
             + s.reset_pulse as usize;
-        json!({"enabled":s.config.enabled,"sending":s.connected,"port":s.config.port,"interval":s.config.interval,"profile":s.config.profile,"auto":s.config.auto,"capacity":s.config.capacity,"refreshSeconds":s.config.refresh_seconds,"loopReplay":s.config.loop_replay,"sendOrder":s.config.send_order,"replayCycles":s.replay_cycles,"pending":pending,"etaSeconds":pending as f64*s.config.interval,"desiredRevision":s.desired_revision,"sentRevision":s.sent_revision,"sentCommands":s.sent_count,"error":s.last_error,"ack":false,"repairing":s.repair_seen.is_some(),"syncedBits":if ["mf4","mf5"].contains(&s.config.profile.as_str()){240}else if s.config.profile=="mf3"{56}else{88},"placement":{"world":s.config.world,"visible":s.config.visible,"scale":s.config.scale,"level":s.config.level}})
+        json!({"enabled":s.config.enabled,"sending":s.connected,"port":s.config.port,"interval":s.config.interval,"profile":s.config.profile,"auto":s.config.auto,"capacity":s.config.capacity,"refreshSeconds":s.config.refresh_seconds,"loopReplay":s.config.loop_replay,"sendOrder":s.config.send_order,"replayCycles":s.replay_cycles,"pending":pending,"etaSeconds":pending as f64*s.config.interval,"desiredRevision":s.desired_revision,"sentRevision":s.sent_revision,"sentCommands":s.sent_count,"error":s.last_error,"ack":false,"repairing":s.repair_seen.is_some()||s.unified.repairing(),"syncedBits":if ["mf4","mf5","mf6"].contains(&s.config.profile.as_str()){240}else if s.config.profile=="mf3"{56}else{88},"pendingObjects":if s.config.profile=="mf6"{Some(s.unified.pending_objects())}else{None},"estimateKind":if s.config.profile=="mf6"{"adaptive-layout estimate; no receiver acknowledgement"}else{"legacy queue estimate"},"placement":{"world":s.config.world,"visible":s.config.visible,"scale":s.config.scale,"level":s.config.level}})
     }
     pub fn configure(&self, v: &Value, workspace: &mut Workspace) -> Result<Value> {
         let mut s = self.inner.lock().unwrap();
@@ -208,11 +213,13 @@ impl Transport {
             next[k] = value.clone();
         }
         let mut config: Connection = serde_json::from_value(next)?;
-        if config.profile != "mf5" && !v.get("loopReplay").is_some_and(|x| x == true) {
+        if !["mf5", "mf6"].contains(&config.profile.as_str())
+            && !v.get("loopReplay").is_some_and(|x| x == true)
+        {
             config.loop_replay = false;
         }
         if !["volume", "bottom_up", "material"].contains(&config.send_order.as_str())
-            || (config.loop_replay && config.profile != "mf5")
+            || (config.loop_replay && !["mf5", "mf6"].contains(&config.profile.as_str()))
         {
             bail!("发送顺序需要volume/bottom_up/material；连续补播仅限MF5");
         }
@@ -221,16 +228,24 @@ impl Transport {
             || !(0.05..=5.).contains(&config.interval)
             || !config.scale.is_finite()
             || !scale_valid(config.scale, &config.profile)
-            || !["mf5", "mf4", "mf3", "mf2"].contains(&config.profile.as_str())
+            || !["mf6", "mf5", "mf4", "mf3", "mf2"].contains(&config.profile.as_str())
             || config.capacity == 0
             || config.capacity > 50000
         {
             bail!("连接配置越界")
         }
-        if ["mf4", "mf5"].contains(&config.profile.as_str()) && config.capacity > 16384 {
+        if ["mf4", "mf5", "mf6"].contains(&config.profile.as_str()) && config.capacity > 16384 {
             bail!("MF4_CAPACITY：三通道头像总容量为16384 Box");
         }
         if config.enabled {
+            if config.profile == "mf6"
+                && !s
+                    .avatar_catalog
+                    .as_ref()
+                    .is_some_and(crate::target::AvatarCatalog::unified_protocol)
+            {
+                bail!("MF6_CATALOG_REQUIRED：请载入已验证的MF6配套目标目录");
+            }
             if let Some(target) = s
                 .avatar_catalog
                 .as_ref()
@@ -277,6 +292,8 @@ impl Transport {
             s.sent.clear();
             s.lanes.clear();
             s.wide_seqs = [1; 3];
+            s.seq = 1;
+            s.unified.clear_sent();
             s.wire_sent.clear();
             s.sent_revision = None;
             s.brush = None;
@@ -302,6 +319,10 @@ impl Transport {
                 &workspace.project.materials,
                 s.avatar_catalog.as_ref(),
             )?;
+            if s.config.profile == "mf6" {
+                s.unified
+                    .set_target(&projection.scene, &projection.surfaces)?;
+            }
             s.desired = projection.scene.boxes;
             s.wire_desired = projection.surfaces;
             s.desired_revision = workspace.project.scene.revision;
@@ -321,6 +342,10 @@ impl Transport {
                 &workspace.project.materials,
                 s.avatar_catalog.as_ref(),
             )?;
+            if s.config.profile == "mf6" {
+                s.unified
+                    .set_target(&projection.scene, &projection.surfaces)?;
+            }
             s.desired = projection.scene.boxes;
             s.wire_desired = projection.surfaces;
             s.desired_revision = workspace.project.scene.revision;
@@ -392,6 +417,9 @@ impl Transport {
     ) -> Result<Value> {
         let mut s = self.inner.lock().unwrap();
         validate_scene(scene, s.config.capacity, &s.config.profile)?;
+        if s.config.profile == "mf6" {
+            s.unified.set_target(scene, &surfaces)?;
+        }
         if s.desired_revision != scene.revision || s.wire_desired != surfaces {
             // New edits take priority over an in-progress maintenance replay.
             s.repair_seen = None;
@@ -412,10 +440,14 @@ impl Transport {
     /// This is blind repair, never a receiver acknowledgement.
     pub fn repair(&self) -> Result<Value> {
         let mut s = self.inner.lock().unwrap();
-        if s.config.profile != "mf5" {
+        if !["mf5", "mf6"].contains(&s.config.profile.as_str()) {
             bail!("补播需要MF5头像；旧协议请使用清空并重建");
         }
-        s.repair_seen = Some(BTreeSet::new());
+        if s.config.profile == "mf6" {
+            s.unified.start_replay();
+        } else {
+            s.repair_seen = Some(BTreeSet::new());
+        }
         s.sent_revision = None;
         s.last_refresh = Instant::now();
         drop(s);
@@ -524,6 +556,7 @@ impl Transport {
                 continue;
             }
             enum Job {
+                Unified(unified::Plan),
                 Batch(Vec<(usize, Command)>),
                 Command(Command),
                 Controls(Vec<(String, Control)>),
@@ -534,13 +567,16 @@ impl Transport {
                 continue;
             }
             let job = {
-                if !s.desired.is_empty()
+                if (!s.desired.is_empty()
+                    || (s.config.profile == "mf6" && !s.unified.target_empty()))
                     && (s.config.loop_replay
                         || (s.config.refresh_seconds > 0
                             && s.last_refresh.elapsed().as_secs() >= s.config.refresh_seconds))
                     && s.sent_revision == Some(s.desired_revision)
                 {
-                    if s.config.profile == "mf5" {
+                    if s.config.profile == "mf6" {
+                        s.unified.start_replay();
+                    } else if s.config.profile == "mf5" {
                         s.repair_seen = Some(BTreeSet::new());
                     } else {
                         s.resets = 2;
@@ -549,7 +585,12 @@ impl Transport {
                     s.last_refresh = Instant::now();
                 }
                 if s.resets > 0 {
-                    Some(if ["mf4", "mf5"].contains(&s.config.profile.as_str()) {
+                    Some(if s.config.profile == "mf6" {
+                        Job::Unified(unified::Plan {
+                            frame: morphforge_core::mf6::Frame::Clear,
+                            actions: vec![],
+                        })
+                    } else if ["mf4", "mf5"].contains(&s.config.profile.as_str()) {
                         Job::Batch(
                             (0..protocol::WIDE_LANES)
                                 .map(|i| {
@@ -573,7 +614,16 @@ impl Transport {
                             .collect(),
                     ))
                 } else {
-                    let command = if ["mf4", "mf5"].contains(&s.config.profile.as_str()) {
+                    let command = if s.config.profile == "mf6" {
+                        match s.unified.next(&s.config.send_order) {
+                            Ok(plan) => plan.map(Job::Unified),
+                            Err(error) => {
+                                s.config.enabled = false;
+                                s.last_error = error.to_string();
+                                continue;
+                            }
+                        }
+                    } else if ["mf4", "mf5"].contains(&s.config.profile.as_str()) {
                         let batch: Vec<_> = wide_queues(&s, &s.sent)
                             .into_iter()
                             .enumerate()
@@ -602,10 +652,11 @@ impl Transport {
                             .map(Job::Command)
                     };
                     if command.is_none() {
-                        if s.repair_seen.is_some() {
+                        if s.repair_seen.is_some() || s.unified.repairing() {
                             s.replay_cycles += 1;
                         }
                         s.repair_seen = None;
+                        s.unified.finish_replay();
                         if s.sent_revision != Some(s.desired_revision) {
                             s.last_refresh = Instant::now();
                         }
@@ -626,6 +677,7 @@ impl Transport {
                 s.config.profile == "mf2",
             );
             let encoded = match &job {
+                Job::Unified(plan) => plan.frame.packet(seq),
                 Job::Command(c) => protocol::packet(c, seq, legacy),
                 Job::Batch(batch) => batch
                     .iter()
@@ -657,7 +709,9 @@ impl Transport {
                                 match v {
                                     Control::Bool(b) => OscValue::Bool(*b),
                                     Control::Float(f) => OscValue::Float(
-                                        if k == "MF_Scale" && s.config.profile == "mf5" {
+                                        if k == "MF_Scale"
+                                            && ["mf5", "mf6"].contains(&s.config.profile.as_str())
+                                        {
                                             morphforge_core::material_wire::scale_wire(*f)
                                         } else {
                                             *f
@@ -700,6 +754,19 @@ impl Transport {
                 }
             }
             match &job {
+                Job::Unified(plan) => {
+                    s.seq = (seq + 1) % 16;
+                    if matches!(plan.frame, morphforge_core::mf6::Frame::Clear) {
+                        s.unified.clear_sent();
+                        s.sent.clear();
+                        s.lanes.clear();
+                        s.wire_sent.clear();
+                        s.sent_revision = None;
+                        s.resets = s.resets.saturating_sub(1);
+                    } else {
+                        s.unified.commit(plan);
+                    }
+                }
                 Job::Batch(batch) => {
                     for (lane, _) in batch {
                         let index = if s.config.profile == "mf5" {
@@ -786,6 +853,9 @@ impl Transport {
                 Job::Pulse(_) => s.reset_pulse = s.reset_pulse.saturating_sub(1),
             }
             let event = match &job {
+                Job::Unified(plan) => {
+                    json!({"seq":seq,"port":port,"protocol":"mf6","objects":plan.frame.objects(),"frame":plan.frame})
+                }
                 Job::Command(c) => json!({"seq":seq,"port":port,"command":c}),
                 Job::Batch(batch) => json!({"seq":seq,"port":port,"lanes":batch}),
                 Job::Controls(_) => json!({"port":port,"placement":true}),
@@ -804,7 +874,7 @@ impl Transport {
 }
 
 fn scale_valid(v: f32, profile: &str) -> bool {
-    if profile == "mf5" {
+    if ["mf5", "mf6"].contains(&profile) {
         (morphforge_core::material_wire::SCALE_MIN..=morphforge_core::material_wire::SCALE_MAX)
             .contains(&v)
     } else {
@@ -943,11 +1013,17 @@ fn wide_queues(s: &State, sent: &[Box3]) -> [Vec<(usize, Command)>; 3] {
     })
 }
 fn validate_scene(scene: &Scene, capacity: usize, profile: &str) -> Result<()> {
-    if profile != "mf5" {
+    if profile != "mf6" && !scene.triangles.is_empty() {
+        bail!("TRIANGLE_PROTOCOL_REQUIRED：三角面需要MF6头像，旧协议不会静默丢弃三角面");
+    }
+    if !["mf5", "mf6"].contains(&profile) {
         return Ok(protocol::validate_target(scene, capacity)?);
     }
-    if scene.boxes.len() > capacity {
+    if scene.boxes.len() + scene.triangles.len() > capacity {
         bail!("MF5容量超限：{capacity} Box");
+    }
+    for t in &scene.triangles {
+        t.wire_vertices()?;
     }
     for b in &scene.boxes {
         protocol::validate_geometry(b)?;

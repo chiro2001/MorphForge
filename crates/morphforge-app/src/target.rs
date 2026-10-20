@@ -85,13 +85,20 @@ impl AvatarCatalog {
         self.capabilities.iter().any(|c| c == CAPABILITY)
     }
     pub fn wire_protocol(&self) -> Option<&str> {
-        if self.runtime_materials() {
+        if self.unified_protocol() {
+            Some("mf6")
+        } else if self.runtime_materials() {
             Some("mf5")
         } else if self.wide_protocol() {
             Some("mf4")
         } else {
             None
         }
+    }
+    pub fn unified_protocol(&self) -> bool {
+        self.capabilities
+            .iter()
+            .any(|c| c == morphforge_core::mf6::CAPABILITY)
     }
     pub fn wide_protocol(&self) -> bool {
         self.capabilities.iter().any(|c| c == "mf4-three-lane/1")

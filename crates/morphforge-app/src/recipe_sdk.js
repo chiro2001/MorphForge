@@ -295,7 +295,63 @@ const removeGroup = (name) => {
   if (ops.length >= settings.maxOps) throw Error("MAX_OPS exceeded");
   ops.push({ op: "remove_group", name });
 };
+const faceColor = (value = "#c0c0c0") => {
+  if (typeof value === "string" && /^#[0-9a-f]{6}$/i.test(value))
+    return [1, 3, 5].map(i => parseInt(value.slice(i, i + 2), 16));
+  if (!Array.isArray(value) || value.length !== 3 || value.some(n => !Number.isInteger(n) || n < 0 || n > 255))
+    throw Error("triangle color requires #rrggbb or RGB8 array");
+  return value.slice();
+};
+const triangle = (a, b, c, o = {}) => {
+  if (ops.length >= settings.maxOps) throw Error("MAX_OPS exceeded");
+  const vertices = [a, b, c].map(p => vector(p, "triangle vertex").map((v, i) => offset[i] + mirrors[i] * v));
+  if (mirrors.reduce((a,b) => a*b, 1) < 0) [vertices[1], vertices[2]] = [vertices[2], vertices[1]];
+  const ab = vertices[1].map((v,i)=>v-vertices[0][i]), ac = vertices[2].map((v,i)=>v-vertices[0][i]);
+  if ([ab[1]*ac[2]-ab[2]*ac[1], ab[2]*ac[0]-ab[0]*ac[2], ab[0]*ac[1]-ab[1]*ac[0]].every(v=>v===0))
+    throw Error("degenerate triangle");
+  ops.push({op:"triangle", vertices, color:faceColor(o.color), doubleSided:!!o.doubleSided, group:o.group ?? currentGroup});
+};
+const mesh = (vertices, faces, o = {}) => {
+  if (!Array.isArray(vertices) || vertices.length > 262144 || !Array.isArray(faces) || faces.length > settings.maxOps)
+    throw Error("bounded mesh vertices/faces required");
+  vertices = vertices.map(p=>vector(p,"mesh vertex"));
+  if (o.colors && (!Array.isArray(o.colors) || o.colors.length !== faces.length)) throw Error("colors must match face count");
+  faces.forEach((face,i) => {
+    if (!Array.isArray(face) || face.length !== 3 || face.some(n=>!Number.isInteger(n)||n<0||n>=vertices.length)) throw Error("mesh faces require three valid vertex indices");
+    triangle(...face.map(n=>vertices[n]), {...o, color:o.colors?.[i] ?? o.color});
+  });
+};
+const triangleStrip = (vertices, o = {}) => {
+  if (!Array.isArray(vertices) || vertices.length < 3 || vertices.length > settings.maxOps + 2) throw Error("invalid triangle strip");
+  const faces = [];
+  for (let i=0;i<vertices.length-2;i++) faces.push(i%2 ? [i+1,i,i+2] : [i,i+1,i+2]);
+  mesh(vertices,faces,o);
+};
+const wedge = (min, size, o = {}) => {
+  min=vector(min,"wedge min");size=vector(size,"wedge size");
+  if (size.some(n=>n<1)) throw Error("wedge size must be positive");
+  const [x,y,z]=min,[ex,ey,ez]=min.map((v,i)=>v+size[i]);
+  const options={
+    "+x":[[x,y,z],[ex,y,z],[ex,ey,z],[x,y,ez],[ex,y,ez],[ex,ey,ez]],
+    "-x":[[ex,y,ez],[x,y,ez],[x,ey,ez],[ex,y,z],[x,y,z],[x,ey,z]],
+    "+z":[[ex,y,z],[ex,y,ez],[ex,ey,ez],[x,y,z],[x,y,ez],[x,ey,ez]],
+    "-z":[[x,y,ez],[x,y,z],[x,ey,z],[ex,y,ez],[ex,y,z],[ex,ey,z]],
+  }, vertices=options[o.direction ?? "+x"];
+  if (!vertices) throw Error("wedge direction requires +x/-x/+z/-z");
+  const center=[0,1,2].map(a=>vertices.reduce((sum,p)=>sum+p[a],0)/6);
+  const faces=[[0,1,2],[3,5,4],[0,3,4],[0,4,1],[1,4,5],[1,5,2],[2,5,3],[2,3,0]].map(face=>{
+    const [a,b,c]=face.map(i=>vertices[i]),ab=b.map((v,i)=>v-a[i]),ac=c.map((v,i)=>v-a[i]);
+    const n=[ab[1]*ac[2]-ab[2]*ac[1],ab[2]*ac[0]-ab[0]*ac[2],ab[0]*ac[1]-ab[1]*ac[0]];
+    const facing=n.reduce((s,v,i)=>s+v*((a[i]+b[i]+c[i])/3-center[i]),0);
+    return facing<0 ? [face[0],face[2],face[1]] : face;
+  });
+  mesh(vertices,faces,o);
+};
 const mf = Object.freeze({
+  triangle,
+  mesh,
+  triangleStrip,
+  wedge,
   voxelize,
   ellipsoid,
   capsule,
