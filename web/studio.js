@@ -54,6 +54,10 @@ let selectedStyle = 2;
 let tool = "box";
 let polling = false;
 let edits = Promise.resolve();
+let connectionQueue = Promise.resolve();
+let connectionPending = 0;
+let connectionGeneration = 0;
+let acceptedConnection = null;
 let lastSeq = 0;
 let eventRows = [];
 let timelineView = null;
@@ -576,8 +580,13 @@ function updateHarnessControls(snapshot) {
 async function refresh(force = false) {
   if (polling) return;
   polling = true;
+  const connectionAtStart=connectionGeneration;
   try {
     const next = await api("state");
+    // A state read may have started before an OSC configuration write. Never
+    // let that old snapshot overwrite a newly accepted setting or draft.
+    if(connectionAtStart!==connectionGeneration)next.connection=acceptedConnection||state?.connection||next.connection;
+    else if(!connectionPending)acceptedConnection=next.connection;
     state = next;
     window.__morphforge.state = next;
     switchUiScope(next.project?.id, next.harness?.context?.referenceImages, next.harness?.context?.id);
@@ -665,18 +674,28 @@ function updateState() {
   $("renderDiagnostics").textContent=`实际 WebGL 抗锯齿样本：${renderer.renderer.getContext().getParameter(renderer.renderer.getContext().SAMPLES)} · 内部透明面 ${renderer.surfaceStats?.hiddenFaces||0} 个\n${renderer.textureWarnings.join("\n")}`;
   $("undo").disabled = !s.canUndo;
   $("redo").disabled = !s.canRedo;
+  if(!connectionPending){
   setValue("profile", connection.profile);
   setValue("targetPort", connection.port);
+  // Preserve an advanced/API-configured value instead of leaving the select
+  // empty and accidentally posting interval=0 on an unrelated settings edit.
+  const intervalValue=String(connection.interval),intervalSelect=$("interval");
+  for(const option of [...intervalSelect.options])if(option.dataset.custom&&option.value!==intervalValue)option.remove();
+  if(![...intervalSelect.options].some(option=>option.value===intervalValue)){
+    const option=new Option(`${connection.interval}秒（自定义）`,intervalValue);option.dataset.custom="true";intervalSelect.add(option);
+  }
   setValue("interval", connection.interval);
   setValue("targetCapacity", connection.capacity);
   setValue("refreshSeconds", connection.refreshSeconds);
   setValue("sendOrder",connection.sendOrder||"volume");
   setChecked("loopReplay",connection.loopReplay||false);
+  setChecked("autoPublish", connection.auto);
+  }
   $("loopReplay").disabled=!["mf5","mf6"].includes(connection.profile);
   $("sendOrder").disabled=!["mf5","mf6"].includes(connection.profile);
   $("replayStatus").textContent=`已完成补播 ${connection.replayCycles||0} 轮 · ${connection.repairing?"正在补播":connection.loopReplay?(connection.enabled?"连续补播已启用":"循环已设置，发送关闭"):"按需发送"}。${connection.repairDeletions?.some(n=>n)?`含 ${connection.repairDeletions.reduce((a,b)=>a+b,0)} 条历史删除。`:""}更新先删除旧几何，再按所选顺序绘制；没有远端ACK。`;
   $("repairPublish").disabled=!["mf5","mf6"].includes(connection.profile);
-  setChecked("autoPublish", connection.auto);
+  $("connect").disabled=connectionPending>0;
   $("connect").textContent = connection.enabled ? "停止发送" : "开启发送";
   $("connect").classList.toggle("selected", connection.enabled);
   $("connectionBadge").textContent = connection.enabled
@@ -1341,11 +1360,24 @@ function connection(enabled = state.connection.enabled) {
 }
 
 async function configure(enabled) {
+  // Capture the user's current controls immediately, then serialize writes.
+  // In-flight status polling must not change controls used by the next edit.
+  const patch=connection(enabled),projectId=state?.project.id;
+  connectionPending++;connectionGeneration++;$("connect").disabled=true;
+  const operation=connectionQueue.then(async()=>{
+    if(state?.project.id!==projectId)throw new Error("工程已切换，旧的发送设置未提交；请在当前工程重新设置。");
+    const accepted=await api("connect",patch);
+    acceptedConnection=accepted;
+    if(state)state.connection=accepted;
+  });
+  connectionQueue=operation.catch(()=>{});
   try {
-    await api("connect", connection(enabled));
-    await refresh();
+    await operation;
   } catch (cause) {
     error(cause);
+  } finally {
+    connectionPending--;connectionGeneration++;
+    if(!connectionPending&&state)updateState();
     await refresh();
   }
 }

@@ -1,0 +1,35 @@
+{
+  "success": true,
+  "version": "0.15.2",
+  "files": [
+    {
+      "sha256": "0528a9d9704c83d86c764a2462dfc76c5107a0192a7375dbe849fd2d26a2a2ba",
+      "name": "morphforge-desktop.exe"
+    },
+    {
+      "sha256": "e8718df6cf319e244ec63e9c5de9787962132dfa5caf803498b90c5f087ff0ad",
+      "name": "morphforge.exe"
+    }
+  ],
+  "testWindowCleaned": true,
+  "mainFiles": [
+    {
+      "Path": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Desktop\\morphforge.exe",
+      "Hash": "D15A43299E438413259A8F837741CCCA90356433B8BCDD849D6562C88FE270FB"
+    },
+    {
+      "Path": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Desktop\\morphforge-desktop.exe",
+      "Hash": "CB3A793D983DA00FAE46A7B329EC138F8DABDC0ED29D3763DCA32664B3023094"
+    }
+  ],
+  "mainProcesses": [
+    {
+      "Name": "morphforge-desktop.exe",
+      "ProcessId": 201512
+    },
+    {
+      "Name": "morphforge.exe",
+      "ProcessId": 210184
+    }
+  ]
+}

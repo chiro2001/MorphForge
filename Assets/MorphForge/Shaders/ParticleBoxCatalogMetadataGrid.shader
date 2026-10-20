@@ -11,6 +11,8 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
         _AtlasSize("Atlas size", Vector) = (1, 1, 1, 1)
         _MetaWidth("Metadata width", Float) = 256
         _MetaHeight("Metadata height", Float) = 64
+        _TriangleOffsetFactor("Triangle depth priority slope", Float) = -1
+        _TriangleOffsetUnits("Triangle depth priority units", Float) = -1
         _CatalogAtlas("Catalog atlas", 2D) = "white" {}
         _CatalogMeta("Catalog metadata", 2D) = "black" {}
     }
@@ -405,13 +407,39 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
         fixed4 frag(v2f i, fixed facing : VFACE) : SV_Target
             {
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
-                if(facing<0 && (!MF6Triangle(i.data)||!MF6Double(i.data)))discard;
+                if(MF6Triangle(i.data)||facing<0)discard;
                 float3 color;float opacity;float flags=EarlyFlags(i);
                 if(fmod(floor(flags/2.0),2.0)>=1.0)discard;
                 fixed4 result = SampleCatalog(i, color, opacity, flags);
                 if (fmod(flags, 4.0) >= 2.0)
                     discard;
                 return fixed4(result.rgb, 1.0);
+            }
+            ENDCG
+        }
+
+        // Polygon detail can share a plane with an opaque voxel face. Apply
+        // hardware depth bias only to triangles, leaving all vertex positions,
+        // voxel depths, transparent media and the OSC wire format unchanged.
+        Pass
+        {
+            Tags { "LightMode"="ForwardBase" }
+            Cull Off
+            ZWrite On
+            Blend Off
+            Offset [_TriangleOffsetFactor], [_TriangleOffsetUnits]
+
+            CGPROGRAM
+            #pragma target 3.5
+            #pragma vertex vert
+            #pragma fragment fragTriangle
+
+            fixed4 fragTriangle(v2f i, fixed facing : VFACE) : SV_Target
+            {
+                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
+                if(!MF6Triangle(i.data)||(facing<0&&!MF6Double(i.data)))discard;
+                float3 color;float opacity;float flags;
+                return SampleCatalog(i,color,opacity,flags);
             }
             ENDCG
         }

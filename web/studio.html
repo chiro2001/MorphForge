@@ -575,12 +575,19 @@
             /></label>
             <label
               >每批间隔<select id="interval">
-                <option value="0.25">0.25秒</option>
-                <option value="0.2">0.20秒</option>
+                <option value="0.1">0.10秒（快速试验）</option>
+                <option value="0.2">0.20秒（快速试验）</option>
+                <option value="0.25" selected>0.25秒</option>
+                <option value="0.28">0.28秒</option>
+                <option value="0.3">0.30秒</option>
+                <option value="0.4">0.40秒</option>
                 <option value="0.5">0.50秒</option>
               </select></label
             >
           </div>
+          <p class="caption" id="intervalHint">
+            间隔只控制发送节拍，不代表其他玩家已经收到。0.10/0.20秒用于试验；较慢档位仍需配合补播，本机ACK也不能确认远端接收。
+          </p>
           <div class="double">
             <button id="unityPort">Unity 9012</button>
             <button id="vrcPort">VRChat 9000</button>

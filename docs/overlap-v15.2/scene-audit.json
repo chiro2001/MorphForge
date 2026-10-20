@@ -1,0 +1,8 @@
+{
+  "scope": "Read-only analysis of the active scene snapshot; original geometry remains in private temporary files and is not committed.",
+  "boxCount": 258,
+  "triangleCount": 298,
+  "boxVolumeOverlapPairs": 0,
+  "coplanarTriangleBoxFaceOverlapPairs": 135,
+  "exactDuplicateTriangles": 0
+}

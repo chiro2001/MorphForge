@@ -4,6 +4,7 @@
 
 - [用户指南](docs/USER-GUIDE.md)：安装、配置、编辑、AI、compact、作品库与 OSC 发布。
 - [交付记录](docs/DELIVERY.md) · [实施状态及证据](docs/plan/STATUS.md) · [已确认设计](docs/plan/README.md) · [验收标准](docs/plan/ACCEPTANCE.md)。
+- gamepc 开发测试副本 **0.15.2**：开放0.10/0.20/0.25/0.28/0.30/0.40/0.50秒发送档位，修复快速切档被旧刷新覆盖；预览增加三角面深度优先级。Avatar着色器修正已通过Unity GPU测试，需重新上传头像才能在VRChat生效，本轮未上传。[修复与验证](docs/overlap-v15.2/RESULTS.md)。
 - gamepc 开发测试副本 **0.15.1**：修复大上下文流式暂停后无法继续；中断未结算单独记为费用未知，不再误报缓存失效，严格前缀保护保留。主安装继续保留0.15.0。[修复与验证](docs/pause-resume-v15.1/RESULTS.md)。
 - gamepc 主安装 **0.15.0**：参考图并排/叠加对照与相机书签、Harness可复用组件、分组关键帧/播放/姿态截图及动画GLB导出。新增可直接播放的风车示例；动画目前用于编辑器与GLB。[使用与验证](docs/creative-v15/RESULTS.md)。
 - gamepc 开发测试副本 **0.14.1**：补测GUI按钮，修复设置/弹窗提示不可见、上下文面板消失及变换/换材质后选区丢失。[按钮验收记录](docs/gui-buttons/RESULTS.md)。

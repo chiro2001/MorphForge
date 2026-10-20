@@ -1,0 +1,580 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "isolated patched project with OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "seven requested send intervals are selectable",
+      "passed": true
+    },
+    {
+      "name": "0.10s persists through the live UI",
+      "passed": true
+    },
+    {
+      "name": "0.20s persists through the live UI",
+      "passed": true
+    },
+    {
+      "name": "0.25s persists through the live UI",
+      "passed": true
+    },
+    {
+      "name": "0.28s persists through the live UI",
+      "passed": true
+    },
+    {
+      "name": "0.30s persists through the live UI",
+      "passed": true
+    },
+    {
+      "name": "0.40s persists through the live UI",
+      "passed": true
+    },
+    {
+      "name": "0.50s persists through the live UI",
+      "passed": true
+    },
+    {
+      "name": "rapid preset edits survive subsequent status polling",
+      "passed": true
+    },
+    {
+      "name": "custom interval survives an unrelated settings edit",
+      "passed": true
+    },
+    {
+      "name": "local ACK is explicitly distinguished from remote delivery",
+      "passed": true
+    },
+    {
+      "name": "WebGL negative control actually exhibits coplanar conflicts",
+      "passed": true
+    },
+    {
+      "name": "biased triangles win in both preview modes, 14 views/orders each",
+      "passed": true
+    },
+    {
+      "name": "visual verification never changes saved geometry",
+      "passed": true
+    },
+    {
+      "name": "no unhandled JavaScript or WebGL errors",
+      "passed": true
+    },
+    {
+      "name": "native test never takes the OSC lease",
+      "passed": true
+    }
+  ],
+  "pixels": [
+    {
+      "mode": "art",
+      "bias": false,
+      "yaw": -65,
+      "first": true,
+      "testedPixels": 5762,
+      "wrongPixels": 5492,
+      "passed": false
+    },
+    {
+      "mode": "art",
+      "bias": false,
+      "yaw": -65,
+      "first": false,
+      "testedPixels": 5762,
+      "wrongPixels": 3,
+      "passed": false
+    },
+    {
+      "mode": "art",
+      "bias": false,
+      "yaw": -40,
+      "first": true,
+      "testedPixels": 10375,
+      "wrongPixels": 9117,
+      "passed": false
+    },
+    {
+      "mode": "art",
+      "bias": false,
+      "yaw": -40,
+      "first": false,
+      "testedPixels": 10375,
+      "wrongPixels": 2,
+      "passed": false
+    },
+    {
+      "mode": "art",
+      "bias": false,
+      "yaw": -15,
+      "first": true,
+      "testedPixels": 12879,
+      "wrongPixels": 11877,
+      "passed": false
+    },
+    {
+      "mode": "art",
+      "bias": false,
+      "yaw": -15,
+      "first": false,
+      "testedPixels": 12879,
+      "wrongPixels": 12,
+      "passed": false
+    },
+    {
+      "mode": "art",
+      "bias": false,
+      "yaw": 0,
+      "first": true,
+      "testedPixels": 13299,
+      "wrongPixels": 13299,
+      "passed": false
+    },
+    {
+      "mode": "art",
+      "bias": false,
+      "yaw": 0,
+      "first": false,
+      "testedPixels": 13299,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "art",
+      "bias": false,
+      "yaw": 15,
+      "first": true,
+      "testedPixels": 12883,
+      "wrongPixels": 12395,
+      "passed": false
+    },
+    {
+      "mode": "art",
+      "bias": false,
+      "yaw": 15,
+      "first": false,
+      "testedPixels": 12883,
+      "wrongPixels": 1,
+      "passed": false
+    },
+    {
+      "mode": "art",
+      "bias": false,
+      "yaw": 40,
+      "first": true,
+      "testedPixels": 10376,
+      "wrongPixels": 5401,
+      "passed": false
+    },
+    {
+      "mode": "art",
+      "bias": false,
+      "yaw": 40,
+      "first": false,
+      "testedPixels": 10376,
+      "wrongPixels": 8,
+      "passed": false
+    },
+    {
+      "mode": "art",
+      "bias": false,
+      "yaw": 65,
+      "first": true,
+      "testedPixels": 5756,
+      "wrongPixels": 5424,
+      "passed": false
+    },
+    {
+      "mode": "art",
+      "bias": false,
+      "yaw": 65,
+      "first": false,
+      "testedPixels": 5756,
+      "wrongPixels": 26,
+      "passed": false
+    },
+    {
+      "mode": "art",
+      "bias": true,
+      "yaw": -65,
+      "first": true,
+      "testedPixels": 5762,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "art",
+      "bias": true,
+      "yaw": -65,
+      "first": false,
+      "testedPixels": 5762,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "art",
+      "bias": true,
+      "yaw": -40,
+      "first": true,
+      "testedPixels": 10375,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "art",
+      "bias": true,
+      "yaw": -40,
+      "first": false,
+      "testedPixels": 10375,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "art",
+      "bias": true,
+      "yaw": -15,
+      "first": true,
+      "testedPixels": 12879,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "art",
+      "bias": true,
+      "yaw": -15,
+      "first": false,
+      "testedPixels": 12879,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "art",
+      "bias": true,
+      "yaw": 0,
+      "first": true,
+      "testedPixels": 13299,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "art",
+      "bias": true,
+      "yaw": 0,
+      "first": false,
+      "testedPixels": 13299,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "art",
+      "bias": true,
+      "yaw": 15,
+      "first": true,
+      "testedPixels": 12883,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "art",
+      "bias": true,
+      "yaw": 15,
+      "first": false,
+      "testedPixels": 12883,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "art",
+      "bias": true,
+      "yaw": 40,
+      "first": true,
+      "testedPixels": 10376,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "art",
+      "bias": true,
+      "yaw": 40,
+      "first": false,
+      "testedPixels": 10376,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "art",
+      "bias": true,
+      "yaw": 65,
+      "first": true,
+      "testedPixels": 5756,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "art",
+      "bias": true,
+      "yaw": 65,
+      "first": false,
+      "testedPixels": 5756,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "vrc",
+      "bias": false,
+      "yaw": -65,
+      "first": true,
+      "testedPixels": 5762,
+      "wrongPixels": 5492,
+      "passed": false
+    },
+    {
+      "mode": "vrc",
+      "bias": false,
+      "yaw": -65,
+      "first": false,
+      "testedPixels": 5762,
+      "wrongPixels": 3,
+      "passed": false
+    },
+    {
+      "mode": "vrc",
+      "bias": false,
+      "yaw": -40,
+      "first": true,
+      "testedPixels": 10375,
+      "wrongPixels": 9117,
+      "passed": false
+    },
+    {
+      "mode": "vrc",
+      "bias": false,
+      "yaw": -40,
+      "first": false,
+      "testedPixels": 10375,
+      "wrongPixels": 2,
+      "passed": false
+    },
+    {
+      "mode": "vrc",
+      "bias": false,
+      "yaw": -15,
+      "first": true,
+      "testedPixels": 12879,
+      "wrongPixels": 11877,
+      "passed": false
+    },
+    {
+      "mode": "vrc",
+      "bias": false,
+      "yaw": -15,
+      "first": false,
+      "testedPixels": 12879,
+      "wrongPixels": 12,
+      "passed": false
+    },
+    {
+      "mode": "vrc",
+      "bias": false,
+      "yaw": 0,
+      "first": true,
+      "testedPixels": 13299,
+      "wrongPixels": 13299,
+      "passed": false
+    },
+    {
+      "mode": "vrc",
+      "bias": false,
+      "yaw": 0,
+      "first": false,
+      "testedPixels": 13299,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "vrc",
+      "bias": false,
+      "yaw": 15,
+      "first": true,
+      "testedPixels": 12883,
+      "wrongPixels": 12395,
+      "passed": false
+    },
+    {
+      "mode": "vrc",
+      "bias": false,
+      "yaw": 15,
+      "first": false,
+      "testedPixels": 12883,
+      "wrongPixels": 1,
+      "passed": false
+    },
+    {
+      "mode": "vrc",
+      "bias": false,
+      "yaw": 40,
+      "first": true,
+      "testedPixels": 10376,
+      "wrongPixels": 5401,
+      "passed": false
+    },
+    {
+      "mode": "vrc",
+      "bias": false,
+      "yaw": 40,
+      "first": false,
+      "testedPixels": 10376,
+      "wrongPixels": 8,
+      "passed": false
+    },
+    {
+      "mode": "vrc",
+      "bias": false,
+      "yaw": 65,
+      "first": true,
+      "testedPixels": 5756,
+      "wrongPixels": 5424,
+      "passed": false
+    },
+    {
+      "mode": "vrc",
+      "bias": false,
+      "yaw": 65,
+      "first": false,
+      "testedPixels": 5756,
+      "wrongPixels": 26,
+      "passed": false
+    },
+    {
+      "mode": "vrc",
+      "bias": true,
+      "yaw": -65,
+      "first": true,
+      "testedPixels": 5762,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "vrc",
+      "bias": true,
+      "yaw": -65,
+      "first": false,
+      "testedPixels": 5762,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "vrc",
+      "bias": true,
+      "yaw": -40,
+      "first": true,
+      "testedPixels": 10375,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "vrc",
+      "bias": true,
+      "yaw": -40,
+      "first": false,
+      "testedPixels": 10375,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "vrc",
+      "bias": true,
+      "yaw": -15,
+      "first": true,
+      "testedPixels": 12879,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "vrc",
+      "bias": true,
+      "yaw": -15,
+      "first": false,
+      "testedPixels": 12879,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "vrc",
+      "bias": true,
+      "yaw": 0,
+      "first": true,
+      "testedPixels": 13299,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "vrc",
+      "bias": true,
+      "yaw": 0,
+      "first": false,
+      "testedPixels": 13299,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "vrc",
+      "bias": true,
+      "yaw": 15,
+      "first": true,
+      "testedPixels": 12883,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "vrc",
+      "bias": true,
+      "yaw": 15,
+      "first": false,
+      "testedPixels": 12883,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "vrc",
+      "bias": true,
+      "yaw": 40,
+      "first": true,
+      "testedPixels": 10376,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "vrc",
+      "bias": true,
+      "yaw": 40,
+      "first": false,
+      "testedPixels": 10376,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "vrc",
+      "bias": true,
+      "yaw": 65,
+      "first": true,
+      "testedPixels": 5756,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "mode": "vrc",
+      "bias": true,
+      "yaw": 65,
+      "first": false,
+      "testedPixels": 5756,
+      "wrongPixels": 0,
+      "passed": true
+    }
+  ],
+  "scope": "Actual Windows Tauri controls and GPU preview pixels; OSC disabled and saved geometry untouched. Does not claim the uploaded Avatar was updated."
+}

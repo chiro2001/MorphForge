@@ -775,7 +775,9 @@ export class VoxelRenderer {
         [0,2,1].forEach((source,j)=>{positions.set(toThree(face.vertices[source].map(v=>v*this.cellSize)).toArray(),i*9+j*3);colors.set(color.toArray(),i*9+j*3);});
       });
       const geometry=new THREE.BufferGeometry();geometry.setAttribute("position",new THREE.BufferAttribute(positions,3));geometry.setAttribute("color",new THREE.BufferAttribute(colors,3));geometry.computeVertexNormals();geometry.computeBoundingSphere();
-      const parameters={vertexColors:true,side:doubleSided?THREE.DoubleSide:THREE.FrontSide,toneMapped:this.mode!=="vrc"};
+      // Coplanar polygon detail wins over a voxel face without moving the
+      // author's vertices; the paired Avatar shader uses the same depth bias.
+      const parameters={vertexColors:true,side:doubleSided?THREE.DoubleSide:THREE.FrontSide,toneMapped:this.mode!=="vrc",polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1};
       const material=this.mode==="vrc"?new THREE.MeshBasicMaterial(parameters):new THREE.MeshStandardMaterial({...parameters,flatShading:true,roughness:.9,metalness:0});
       const mesh=new THREE.Mesh(geometry,material);mesh.userData.faces=faces;mesh.name=doubleSided?"Double-sided triangle faces":"Triangle faces";this.content.add(mesh);this.triangleMeshes.push(mesh);
     }

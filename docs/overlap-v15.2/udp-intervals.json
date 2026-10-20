@@ -1,0 +1,182 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "empty isolated workspace and OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "0.10s continues emitting real bundles",
+      "passed": true
+    },
+    {
+      "name": "0.10s pacing matches configuration",
+      "passed": true
+    },
+    {
+      "name": "0.10s rate change preserves the target",
+      "passed": true
+    },
+    {
+      "name": "0.20s continues emitting real bundles",
+      "passed": true
+    },
+    {
+      "name": "0.20s pacing matches configuration",
+      "passed": true
+    },
+    {
+      "name": "0.20s rate change preserves the target",
+      "passed": true
+    },
+    {
+      "name": "0.25s continues emitting real bundles",
+      "passed": true
+    },
+    {
+      "name": "0.25s pacing matches configuration",
+      "passed": true
+    },
+    {
+      "name": "0.25s rate change preserves the target",
+      "passed": true
+    },
+    {
+      "name": "0.28s continues emitting real bundles",
+      "passed": true
+    },
+    {
+      "name": "0.28s pacing matches configuration",
+      "passed": true
+    },
+    {
+      "name": "0.28s rate change preserves the target",
+      "passed": true
+    },
+    {
+      "name": "0.30s continues emitting real bundles",
+      "passed": true
+    },
+    {
+      "name": "0.30s pacing matches configuration",
+      "passed": true
+    },
+    {
+      "name": "0.30s rate change preserves the target",
+      "passed": true
+    },
+    {
+      "name": "0.40s continues emitting real bundles",
+      "passed": true
+    },
+    {
+      "name": "0.40s pacing matches configuration",
+      "passed": true
+    },
+    {
+      "name": "0.40s rate change preserves the target",
+      "passed": true
+    },
+    {
+      "name": "0.50s continues emitting real bundles",
+      "passed": true
+    },
+    {
+      "name": "0.50s pacing matches configuration",
+      "passed": true
+    },
+    {
+      "name": "0.50s rate change preserves the target",
+      "passed": true
+    }
+  ],
+  "measurements": [
+    {
+      "configuredSeconds": 0.1,
+      "observedSeconds": [
+        0.10644952580332756,
+        0.10608823504298925,
+        0.10618465300649405,
+        0.10570621397346258,
+        0.10654373234137893
+      ],
+      "minimumSeconds": 0.10570621397346258,
+      "medianSeconds": 0.10618465300649405
+    },
+    {
+      "configuredSeconds": 0.2,
+      "observedSeconds": [
+        0.20806017983704805,
+        0.20660499390214682,
+        0.20819925935938954,
+        0.22867589490488172,
+        0.20840712497010827
+      ],
+      "minimumSeconds": 0.20660499390214682,
+      "medianSeconds": 0.20819925935938954
+    },
+    {
+      "configuredSeconds": 0.25,
+      "observedSeconds": [
+        0.25555803906172514,
+        0.2781956852413714,
+        0.25522303488105536,
+        0.2555824238806963,
+        0.25876246904954314
+      ],
+      "minimumSeconds": 0.25522303488105536,
+      "medianSeconds": 0.2555824238806963
+    },
+    {
+      "configuredSeconds": 0.28,
+      "observedSeconds": [
+        0.28825406776741147,
+        0.2847718992270529,
+        0.2854079627431929,
+        0.2851873110048473,
+        0.2843380821868777
+      ],
+      "minimumSeconds": 0.2843380821868777,
+      "medianSeconds": 0.2851873110048473
+    },
+    {
+      "configuredSeconds": 0.3,
+      "observedSeconds": [
+        0.3057820680551231,
+        0.30625238083302975,
+        0.30537572130560875,
+        0.32712269062176347,
+        0.30822637444362044
+      ],
+      "minimumSeconds": 0.30537572130560875,
+      "medianSeconds": 0.30625238083302975
+    },
+    {
+      "configuredSeconds": 0.4,
+      "observedSeconds": [
+        0.406637754291296,
+        0.4261383037082851,
+        0.4039572770707309,
+        0.4051773971877992,
+        0.4068540567532182
+      ],
+      "minimumSeconds": 0.4039572770707309,
+      "medianSeconds": 0.406637754291296
+    },
+    {
+      "configuredSeconds": 0.5,
+      "observedSeconds": [
+        0.5054705473594368,
+        0.5058620958589017,
+        0.5047541027888656,
+        0.5062447162345052,
+        0.5069652069360018
+      ],
+      "minimumSeconds": 0.5047541027888656,
+      "medianSeconds": 0.5058620958589017
+    }
+  ],
+  "scope": "Actual Rust sender and loopback UDP. No native/remote ACK or multiplayer reliability claim.",
+  "realModelRequests": 0,
+  "fixturePort": 43526
+}
