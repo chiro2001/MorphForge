@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
 pub const CAPABILITY: &str = "mf6-unified/1";
+pub const REGION_CAPABILITY: &str = "mf6-region8/1";
 pub const BYTES: usize = 30;
 pub const POOLS: usize = 8;
 pub const ID_LIMIT: u16 = 16384;
@@ -140,10 +141,70 @@ fn put_u16(out: &mut [u8], value: u16) {
     out[..2].copy_from_slice(&value.to_le_bytes());
 }
 
+/// Self-contained eight-worker region. Shape 0..2 is a line along X/Y/Z;
+/// shape 3 is the X-fast 2x2x2 brick. Absolute origin prevents packet loss
+/// from moving the cursor of every later packet. No persistent palette needed.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Region {
+    pub origin: [u8; 3],
+    pub shape: u8,
+    pub first_pool: u8,
+    pub surfaces: Vec<Surface>,
+}
+impl Region {
+    pub fn offset(shape: u8, index: usize) -> [u8; 3] {
+        if shape < 3 {
+            let mut p = [0; 3];
+            p[shape as usize] = index as u8;
+            p
+        } else {
+            [
+                (index & 1) as u8,
+                ((index >> 1) & 1) as u8,
+                ((index >> 2) & 1) as u8,
+            ]
+        }
+    }
+    pub fn records(&self) -> Result<Vec<BoxRecord>> {
+        count(self.surfaces.len(), 8)?;
+        if self.shape > 3
+            || self.first_pool > 7
+            || self
+                .surfaces
+                .iter()
+                .any(|s| s.mode > 7 || s.mode != self.surfaces[0].mode)
+        {
+            return Err(invalid("区域类型/池/表面模式无效"));
+        }
+        self.surfaces
+            .iter()
+            .enumerate()
+            .map(|(i, s)| {
+                let delta = Self::offset(self.shape, i);
+                let mut min = self.origin;
+                for a in 0..3 {
+                    min[a] = min[a]
+                        .checked_add(delta[a])
+                        .ok_or_else(|| invalid("区域越过256³边界"))?;
+                }
+                Ok(BoxRecord {
+                    pool: (self.first_pool + i as u8) % 8,
+                    geometry: Geometry {
+                        min,
+                        extent: [0; 3],
+                    },
+                    surface: *s,
+                })
+            })
+            .collect()
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "format", rename_all = "snake_case")]
 pub enum Frame {
     Idle,
+    Region { region: Region },
     Boxes { shape: u8, records: Vec<BoxRecord> },
     SharedBoxes { records: Vec<BoxRecord> },
     Voxels { records: Vec<BoxRecord> },
@@ -163,6 +224,18 @@ impl Frame {
         let data = &mut out[..29];
         let format = match self {
             Self::Idle => 0,
+            Self::Region { region } => {
+                region.records()?;
+                data[..3].copy_from_slice(&region.origin);
+                data[3] = region.shape
+                    | (((region.surfaces.len() - 1) as u8) << 2)
+                    | (region.surfaces[0].mode << 5);
+                for (i, s) in region.surfaces.iter().enumerate() {
+                    data[4 + i * 3..7 + i * 3].copy_from_slice(&s.bytes);
+                }
+                data[28] = 0xa8 | region.first_pool;
+                0
+            }
             Self::Clear => 15,
             Self::Boxes { shape, records } => {
                 count(records.len(), 3)?;
@@ -307,6 +380,19 @@ impl Frame {
         let format = input[29] & 15;
         let d = &input[..29];
         let frame = match format {
+            0 if d[28] & 0xf8 == 0xa8 => Self::Region {
+                region: Region {
+                    origin: d[..3].try_into().unwrap(),
+                    shape: d[3] & 3,
+                    first_pool: d[28] & 7,
+                    surfaces: (0..(((d[3] >> 2) & 7) + 1) as usize)
+                        .map(|i| Surface {
+                            mode: d[3] >> 5,
+                            bytes: d[4 + i * 3..7 + i * 3].try_into().unwrap(),
+                        })
+                        .collect(),
+                },
+            },
             0 => Self::Idle,
             15 => Self::Clear,
             1 | 11..=14 => {
@@ -467,6 +553,7 @@ impl Frame {
     pub fn objects(&self) -> usize {
         match self {
             Self::Idle | Self::Clear => 0,
+            Self::Region { region } => region.surfaces.len(),
             Self::Boxes { records, .. }
             | Self::SharedBoxes { records }
             | Self::Voxels { records } => records.len(),
@@ -513,6 +600,52 @@ mod tests {
             assert!(frame.packet(seq).unwrap().starts_with(b"#bundle\0"));
         }
     }
+    #[test]
+    fn regions_roundtrip_with_absolute_positions_and_all_modes() {
+        for shape in 0..4 {
+            for mode in 0..8 {
+                for n in 1..=8 {
+                    let region = Region {
+                        origin: [128, 12, 128],
+                        shape,
+                        first_pool: 6,
+                        surfaces: (0..n)
+                            .map(|i| Surface {
+                                mode,
+                                bytes: [i as u8, 255, 17],
+                            })
+                            .collect(),
+                    };
+                    let r = region.records().unwrap();
+                    assert_eq!(r.len(), n);
+                    for (i, v) in r.iter().enumerate() {
+                        assert_eq!(v.pool, (6 + i as u8) % 8);
+                        assert_eq!(v.geometry.extent, [0; 3]);
+                    }
+                    round(Frame::Region { region });
+                }
+            }
+        }
+        let invalid = Region {
+            origin: [255; 3],
+            shape: 0,
+            first_pool: 0,
+            surfaces: vec![Surface::catalog(1, 0, 0); 2],
+        };
+        assert!(Frame::Region { region: invalid }.encode(1).is_err());
+        let a = Frame::Region {
+            region: Region {
+                origin: [0; 3],
+                shape: 0,
+                first_pool: 0,
+                surfaces: vec![Surface::catalog(1, 0, 0); 2],
+            },
+        };
+        let mut wire = a.encode(1).unwrap();
+        wire[27] = 1;
+        assert!(Frame::decode(&wire).is_err(), "unused bytes are canonical");
+    }
+
     #[test]
     fn every_layout_and_surface_roundtrips() {
         round(Frame::Idle);

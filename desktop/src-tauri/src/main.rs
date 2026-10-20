@@ -24,6 +24,7 @@ struct DesktopState {
     stopping: Arc<AtomicBool>,
     page_ready: Arc<AtomicBool>,
     _process_tree: Arc<ProcessTree>,
+    _webview_profile_lease: Arc<Mutex<Option<fs::File>>>,
     log_path: Arc<PathBuf>,
 }
 
@@ -35,6 +36,7 @@ impl DesktopState {
             stopping: Arc::new(AtomicBool::new(false)),
             page_ready: Arc::new(AtomicBool::new(false)),
             _process_tree: Arc::new(process_tree),
+            _webview_profile_lease: Arc::new(Mutex::new(None)),
             log_path: Arc::new(log_path),
         }
     }
@@ -115,8 +117,17 @@ fn startup_window<R: tauri::Runtime>(
 ) -> tauri::Result<WebviewWindow<R>> {
     let expected_port = state.expected_port.clone();
     let page_ready = state.page_ready.clone();
+    let (profile, lease) = desktop_webview_profile()?;
+    *state._webview_profile_lease.lock().unwrap() = lease;
+    // WebView2 environment variables override API options. Keep both in sync;
+    // otherwise launchers that set a shared base folder still share a browser.
+    std::env::set_var("WEBVIEW2_USER_DATA_FOLDER", &profile);
     WebviewWindowBuilder::new(app, "main", WebviewUrl::App("index.html".into()))
         .title("MorphForge")
+        // WebView2 can share one browser process across apps using the same
+        // profile. Keep it private to this native process so closing one Job
+        // tree cannot terminate another instance's browser.
+        .data_directory(profile)
         .inner_size(1440.0, 920.0)
         .min_inner_size(900.0, 600.0)
         .center()
@@ -146,6 +157,52 @@ fn startup_window<R: tauri::Runtime>(
         .build()
 }
 
+fn desktop_webview_profile() -> std::io::Result<(PathBuf, Option<fs::File>)> {
+    let root = std::env::var_os("WEBVIEW2_USER_DATA_FOLDER")
+        .map(PathBuf::from)
+        .unwrap_or_else(|| {
+            std::env::var_os("LOCALAPPDATA")
+                .map(PathBuf::from)
+                .unwrap_or_else(std::env::temp_dir)
+                .join("MorphForge")
+                .join("desktop-webviews")
+        });
+    fs::create_dir_all(&root)?;
+    allocate_webview_profile(&root)
+}
+
+fn allocate_webview_profile(root: &Path) -> std::io::Result<(PathBuf, Option<fs::File>)> {
+    #[cfg(windows)]
+    {
+        use std::os::windows::fs::OpenOptionsExt;
+        // Stable exclusive slots keep browsers isolated without growing a new
+        // 100MB cache on every launch. Windows releases the lease on a crash.
+        for slot in 0..128 {
+            let lock = root.join(format!("slot-{slot}.lock"));
+            match OpenOptions::new()
+                .read(true)
+                .write(true)
+                .create(true)
+                .truncate(false)
+                .share_mode(0)
+                .open(lock)
+            {
+                Ok(file) => return Ok((root.join(format!("slot-{slot}")), Some(file))),
+                Err(e) if e.raw_os_error() == Some(32) => continue,
+                Err(e) => return Err(e),
+            }
+        }
+        Err(std::io::Error::new(
+            std::io::ErrorKind::WouldBlock,
+            "过多并行WebView窗口",
+        ))
+    }
+    #[cfg(not(windows))]
+    {
+        Ok((root.join(format!("instance-{}", std::process::id())), None))
+    }
+}
+
 fn launch_core<R: tauri::Runtime>(
     app: AppHandle<R>,
     state: DesktopState,
@@ -154,7 +211,7 @@ fn launch_core<R: tauri::Runtime>(
     let _monitor = tauri::async_runtime::spawn(async move {
         let mut command = match app.shell().sidecar(SIDECAR_NAME) {
             Ok(command) => command
-                .args(["serve", "--port", "0"])
+                .args(["serve", "--port", "0", "--new-instance-if-busy"])
                 .set_process_group(true),
             Err(error) => {
                 startup_failure(
@@ -500,6 +557,8 @@ unsafe impl Sync for ProcessTree {}
 #[cfg(test)]
 mod tests {
     use super::ready_url;
+    #[cfg(windows)]
+    use super::{allocate_webview_profile, fs};
 
     #[test]
     fn parses_local_core_url() {
@@ -517,5 +576,22 @@ mod tests {
         assert!(ready_url("MorphForge Rust ready: http://127.0.0.1:0").is_none());
         assert!(ready_url("unrelated output").is_none());
     }
+    #[cfg(windows)]
+    #[test]
+    fn webview_profiles_have_exclusive_reusable_slots() {
+        let root = std::env::temp_dir().join(format!(
+            "morphforge-webview-lease-test-{}",
+            std::process::id()
+        ));
+        fs::create_dir_all(&root).unwrap();
+        let (a, lease_a) = allocate_webview_profile(&root).unwrap();
+        let (b, lease_b) = allocate_webview_profile(&root).unwrap();
+        assert_ne!(a, b);
+        drop(lease_a);
+        let (again, lease_again) = allocate_webview_profile(&root).unwrap();
+        assert_eq!(a, again);
+        drop(lease_b);
+        drop(lease_again);
+        fs::remove_dir_all(root).unwrap();
+    }
 }
-

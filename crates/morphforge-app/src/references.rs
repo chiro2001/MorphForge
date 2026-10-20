@@ -114,7 +114,7 @@ pub fn image(workspace: &Workspace, id: &str, thumbnail: bool) -> Result<(Vec<u8
             .to_vec()
     } else {
         validate_id(filename)?;
-        std::fs::read(workspace.root.join("artifacts").join(filename))?
+        std::fs::read(workspace.artifact_path(filename))?
     };
     Ok((bytes, if thumbnail { "image/webp" } else { "image/png" }))
 }
@@ -269,6 +269,62 @@ pub fn remove(workspace: &mut Workspace, id: &str) -> Result<Value> {
         json!({"id":id,"historicalArtifactsRetained":true}),
     )?;
     Ok(json!({"ok":true,"id":id}))
+}
+
+pub(crate) fn artwork_records(w: &Workspace, extra: &Value) -> Result<Value> {
+    let mut wanted = w
+        .project
+        .creative
+        .bookmarks
+        .values()
+        .filter_map(|b| b.comparison.as_ref().map(|c| c.image_id.clone()))
+        .collect::<std::collections::BTreeSet<_>>();
+    for record in extra.as_array().into_iter().flatten() {
+        if let Some(id) = record["id"].as_str().or(record["imageId"].as_str()) {
+            wanted.insert(id.into());
+        }
+    }
+    Ok(json!(local(&w.root)?
+        .into_iter()
+        .filter(|r| wanted.contains(&r.id))
+        .collect::<Vec<_>>()))
+}
+pub(crate) fn restore_artwork_records(w: &Workspace, value: &Value) -> Result<()> {
+    if value.is_null() {
+        return Ok(());
+    }
+    let additions: Vec<ReferenceImage> = serde_json::from_value(value.clone())?;
+    if additions.len() > 256 {
+        bail!("作品参考图记录超过256项")
+    }
+    let mut records = local(&w.root)?;
+    let mut changed = false;
+    for record in additions {
+        if !record.id.starts_with("local:") || uuid::Uuid::parse_str(&record.id[6..]).is_err() {
+            bail!("作品参考图ID无效")
+        }
+        for name in [&record.artifact, &record.thumbnail] {
+            validate_id(name)?;
+            if !w.artifact_path(name).is_file() {
+                bail!("作品参考图文件缺失")
+            }
+        }
+        if let Some(old) = records.iter().find(|r| r.id == record.id) {
+            if old.artifact != record.artifact {
+                bail!("作品参考图ID内容冲突")
+            };
+            continue;
+        }
+        if records.len() >= 4096 {
+            bail!("本机图库已满")
+        }
+        records.push(record);
+        changed = true;
+    }
+    if changed {
+        write_json(&w.root.join("references/library.json"), &records)?;
+    }
+    Ok(())
 }
 
 #[cfg(test)]

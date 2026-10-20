@@ -6,6 +6,13 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
         _VoxelGrid("Debug voxel grid", Float) = 0
         _UseLayeredTextures("Mipmapped texture layers", Float) = 0
         _CatalogLayers("Catalog texture layers", 2DArray) = "" {}
+        _CatalogLayers1("Catalog layers bank 1", 2DArray) = "" {}
+        _CatalogLayers2("Catalog layers bank 2", 2DArray) = "" {}
+        _CatalogLayers3("Catalog layers bank 3", 2DArray) = "" {}
+        _CatalogFaceMap("Catalog face map", 2D) = "black" {}
+        _UseFaceMap("Use deduplicated faces", Float) = 0
+        _FaceMapSize("Face map size", Vector) = (256,1,0,0)
+        _LayerBankSize("Layer bank size", Float) = 2048
         _CellSize("Logical cell size", Float) = 0.25
         _CellPixels("Catalog cell pixels", Float) = 32
         _AtlasSize("Atlas size", Vector) = (1, 1, 1, 1)
@@ -31,6 +38,12 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
         #include "MorphForgeRuntimeSurface.cginc"
 
         UNITY_DECLARE_TEX2DARRAY(_CatalogLayers);
+        UNITY_DECLARE_TEX2DARRAY(_CatalogLayers1);
+        UNITY_DECLARE_TEX2DARRAY(_CatalogLayers2);
+        UNITY_DECLARE_TEX2DARRAY(_CatalogLayers3);
+        sampler2D _CatalogFaceMap;
+        float _UseFaceMap, _LayerBankSize;
+        float4 _FaceMapSize;
         float _UseLayeredTextures;
         float _VoxelGrid;
         float _WireEncoding;
@@ -326,7 +339,17 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
                     float baseLayer = MetaTexel(styleId, 3.0).y;
                     float2 extent = axis < .5 ? i.size.zy : (axis < 1.5 ? i.size.xz : i.size.xy);
                     float2 logical = logicalUV;
-                    texel = _CatalogLayers.SampleGrad(sampler_CatalogLayers, float3(tile, baseLayer + frame * 6.0 + face), ddx(logical), ddy(logical));
+                    float address=baseLayer+frame*6.0+face;
+                    if(_UseFaceMap>0.5){
+                        float2 uv=(float2(fmod(address,_FaceMapSize.x),floor(address/_FaceMapSize.x))+.5)/_FaceMapSize.xy;
+                        float2 code=round(tex2Dlod(_CatalogFaceMap,float4(uv,0,0)).rg*255.0);
+                        address=code.x+code.y*256.0;
+                    }
+                    float bank=floor(address/_LayerBankSize),slice=fmod(address,_LayerBankSize);
+                    if(bank<.5)texel=_CatalogLayers.SampleGrad(sampler_CatalogLayers,float3(tile,slice),ddx(logical),ddy(logical));
+                    else if(bank<1.5)texel=_CatalogLayers1.SampleGrad(sampler_CatalogLayers1,float3(tile,slice),ddx(logical),ddy(logical));
+                    else if(bank<2.5)texel=_CatalogLayers2.SampleGrad(sampler_CatalogLayers2,float3(tile,slice),ddx(logical),ddy(logical));
+                    else texel=_CatalogLayers3.SampleGrad(sampler_CatalogLayers3,float3(tile,slice),ddx(logical),ddy(logical));
                 }
                 else texel = tex2D(_CatalogAtlas, atlasUV);
                 #if defined(UNITY_COLORSPACE_GAMMA)
@@ -407,8 +430,10 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
         fixed4 frag(v2f i, fixed facing : VFACE) : SV_Target
             {
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
-                if(MF6Triangle(i.data)||facing<0)discard;
+                if(MF6Triangle(i.data))discard;
                 float3 color;float opacity;float flags=EarlyFlags(i);
+                // Cutout cubes need their far sides visible through leaf holes.
+                if(facing<0 && fmod(floor(flags/4.0),2.0)<0.5)discard;
                 if(fmod(floor(flags/2.0),2.0)>=1.0)discard;
                 fixed4 result = SampleCatalog(i, color, opacity, flags);
                 if (fmod(flags, 4.0) >= 2.0)

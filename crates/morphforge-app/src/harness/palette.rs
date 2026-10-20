@@ -103,8 +103,8 @@ pub(super) fn define(workspace: &mut Workspace, args: &Value, run: Option<&str>)
     let value = json!({
         "ok":true,"revision":workspace.project.scene.revision,"palette":palette,
         "added":added,"geometryChanged":false,
-        "vrcCatalogExportRequired":added > 0,"mf5RebuildRequired":false,
-        "hint":"Use returned IDs/UIDs in run_recipe at the returned revision. MF5 sends these colors as RGB24 without an Avatar rebuild. MF4/older still need matching catalogs. MF5可直接发送新颜色；旧版仍需材质目录打包。"
+        "vrcCatalogExportRequired":false,"avatarRebuildRequired":false,
+        "hint":"Use returned IDs/UIDs in run_recipe at the returned revision. MF6 sends these colors as RGB24 without an Avatar rebuild. MF6可直接发送新颜色。"
     });
     workspace.event("palette.defined", run, value.clone())?;
     Ok(value)
@@ -140,6 +140,8 @@ mod tests {
         )
         .unwrap();
         assert_eq!(result["added"], 2);
+        assert_eq!(result["vrcCatalogExportRequired"], false);
+        assert_eq!(result["avatarRebuildRequired"], false);
         assert_eq!(result["palette"][0]["id"], result["palette"][1]["id"]);
         assert_eq!(
             serde_json::to_value(&w.project.scene.boxes).unwrap(),

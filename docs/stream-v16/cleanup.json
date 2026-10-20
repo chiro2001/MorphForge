@@ -1,0 +1,16 @@
+{
+  "closedOwnedGui": true,
+  "success": true,
+  "removedOwnedTasks": [
+    "MorphForge-CloseGui-43469acde9664beb8a7ce01d0b67ff0b",
+    "MorphForge-CloseGui-696af6d7f186416886e9b43df6aaffc6",
+    "MorphForge-GuiAudit-d77545386d9342f697c546ccc596a4fb",
+    "MorphForge-GuiAudit-e158264ed2c441dea19e32ecaeeecdaa",
+    "MorphForge-MultiAudit-fc2c0de4de8140c59d1ffc7d41924126",
+    "MorphForge-MultiAudit-df84de34503d483a9ade1dade612559b",
+    "MorphForge-GuiAudit-29d16e040e9d40949ac550be8b1f5c60",
+    "MorphForge-MultiAudit-7b7c0a5ab9884028925f55cc2090602b",
+    "MorphForge-MultiAudit-fd97637a7aca4a0787430f3078bf9f63",
+    "MorphForge-MultiAudit-8392ecc074e7474eb47de7d18f9fc8e1"
+  ]
+}

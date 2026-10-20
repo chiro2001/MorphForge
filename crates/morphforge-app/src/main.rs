@@ -22,6 +22,8 @@ enum Command {
         env_file: Option<PathBuf>,
         #[arg(long)]
         no_capture: bool,
+        #[arg(long)]
+        new_instance_if_busy: bool,
     },
     #[command(hide = true)]
     RecipeWorker,
@@ -64,12 +66,14 @@ async fn main() -> Result<()> {
             port,
             env_file,
             no_capture,
+            new_instance_if_busy,
         } => {
             serve(ServerOptions {
                 root: data.unwrap_or_else(data_root),
                 port,
                 env_file,
                 capture: !no_capture,
+                isolate_if_busy: new_instance_if_busy,
             })
             .await?
         }

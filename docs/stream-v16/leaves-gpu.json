@@ -1,0 +1,24 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "cutout": false,
+      "pixel": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "cutout": true,
+      "pixel": [
+        0.05882353,
+        1.0,
+        0.07450981
+      ],
+      "passed": true
+    }
+  ],
+  "scope": "Production MF6 Shader and native Animator-born box: fully transparent near face, solid green far face. Cutout must show far backface; opaque styles keep normal culling."
+}

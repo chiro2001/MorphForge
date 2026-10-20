@@ -1,0 +1,7 @@
+{
+  "success": true,
+  "actualHash": "c32d7e743bed40fb146a6b07b181059f315959dd07b2600f0f4be0e443c5f1fe",
+  "expectedHash": "c32d7e743bed40fb146a6b07b181059f315959dd07b2600f0f4be0e443c5f1fe",
+  "features": 15,
+  "scope": "Actual GestureManager parameters from the preprocessed Avatar; local defaults, no OSC execution ACK."
+}

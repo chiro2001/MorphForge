@@ -165,13 +165,6 @@
         <details id="meshPanel">
           <summary>多边形与斜面</summary>
           <label
-            >AI建模风格<select id="modelingStyle">
-              <option value="mixed">混合 · 体素与多边形</option>
-              <option value="voxel">体素 · 可加入斜面</option>
-              <option value="lowpoly">低多边形 · 逐面纯色</option>
-            </select></label
-          >
-          <label
             >分组<input id="meshGroup" value="polygon" maxlength="128"
           /></label>
           <label
@@ -232,7 +225,7 @@
           Minecraft 建筑导入与源库
         </button>
         <button id="packImport" class="wide">导入 Minecraft Java 资源包</button>
-        <input id="packFile" type="file" accept=".zip" hidden />
+        <input id="packFile" type="file" accept=".zip,.jar" hidden />
 
         <div class="section-title">分组 · 显示与保护</div>
         <p class="caption group-help">
@@ -386,6 +379,27 @@
               最多6张。选中图片用于后续续作；取消后下次输入更新参考。图片先保存在本机，发送时才交给模型。
             </p>
           </details>
+          <div class="double creation-preferences">
+            <label>建模类型<select id="modelingStyle">
+              <option value="auto">由模型决定</option>
+              <option value="voxel">体素（可含斜面）</option>
+              <option value="lowpoly">多面体（逐面纯色）</option>
+              <option value="mixed">混合</option>
+            </select></label>
+            <label>目标尺寸<select id="modelingExtentPreset">
+              <option value="auto">由模型决定</option>
+              <option value="32">32 × 32 × 32 格以内</option>
+              <option value="64">64 × 64 × 64 格以内</option>
+              <option value="128">128 × 128 × 128 格以内</option>
+              <option value="custom">指定 XYZ 格数</option>
+            </select></label>
+          </div>
+          <div id="modelingExtentCustom" class="triple" hidden>
+            <label>X<input id="modelingExtentX" type="number" min="1" max="4096" value="64" /></label>
+            <label>Y<input id="modelingExtentY" type="number" min="1" max="4096" value="64" /></label>
+            <label>Z<input id="modelingExtentZ" type="number" min="1" max="4096" value="64" /></label>
+          </div>
+          <p id="creationPreferencesHint" class="caption">偏好用于后续创作；尺寸按作品比例控制，不改变已有几何。</p>
           <div class="prompt-meta">
             <label for="prompt">输入</label>
             <div
@@ -556,13 +570,14 @@
           <p class="caption">
             可选发布适配器。草稿可以独立创作；本机发包完成不代表所有玩家已收到。
           </p>
+          <label class="check"><input id="autoDetectAvatar" type="checkbox" checked />自动识别当前 Avatar 能力与材质目录</label>
+          <button id="discoverAvatar" class="wide">识别当前 Avatar</button>
+          <details><summary>高级查询设置</summary><label>OSCQuery端口（留空自动发现）<input id="oscQueryPort" type="number" min="1" max="65535" /></label></details>
+          <div id="discoveryStatus" class="status"></div>
+          <button id="avatarMaterials" class="wide">将所选目录的材质加入当前项目</button>
           <label
             >协议<select id="profile">
-              <option value="mf6">MF6 · 统一240bit / 压缩 / 三角面</option>
-              <option value="mf5">MF5 · 实时材质 / 微缩 / 双体素</option>
-              <option value="mf4">MF4 · 240bit三通道（无面捕）</option>
-              <option value="mf3">MF3 · 56bit兼容档</option>
-              <option value="mf2">MF2 · Stage3兼容</option>
+              <option value="mf6">统一240bit · 自动协商区域编码</option>
             </select></label
           >
           <div class="double">
@@ -605,13 +620,15 @@
           <label class="check"
             ><input id="autoPublish" type="checkbox" />编辑后自动发布</label
           >
+          <label>发布策略<select id="publishStrategy"><option value="auto">自动：选择预计耗时最短</option><option value="incremental">保持显示，优先增量</option><option value="rebuild">清空重建</option></select></label>
+          <div id="publicationPlan" class="status"></div>
           <div class="double">
-            <button id="publish" title="发送相对本机已发记录的差异；补漏请使用保留显示补播。">增量发布当前版本</button>
+            <button id="publish" title="自动比较增量与清空重建的实际发包数；自动重建会暂时清空显示。补漏请使用保留显示补播。">发布当前版本</button>
             <button id="repairPublish">保留显示补播</button>
             <button id="resync">清空并重建</button>
           </div>
           <label
-            >周期刷新（秒，0关闭；MF5/MF6补播）<input
+            >周期刷新（秒，0关闭；MF6补播）<input
               id="refreshSeconds"
               type="number"
               value="0"
@@ -621,7 +638,7 @@
             ><input
               id="loopReplay"
               type="checkbox"
-            />完成后连续循环补播（MF5/MF6）</label
+            />完成后连续循环补播（MF6）</label
           >
           <label
             >发送顺序<select id="sendOrder">
@@ -640,7 +657,13 @@
             允许负 X/Z；目标范围 X/Z -128～127、Y
             0～255。显示缩放不扩大编码范围。
           </p>
-          <button id="catalogExport" class="wide">导出 Avatar 材质目录</button>
+          <details><summary>Avatar 材质打包与开销</summary>
+          <label>打包范围<select id="catalogScope"><option value="all">项目全部材质</option><option value="used">仅当前作品使用的材质</option></select></label>
+          <label>纹理格分辨率<select id="catalogPixels"><option value="16">16 × 16 · Minecraft原生风格</option><option value="32">32 × 32</option><option value="64">64 × 64</option></select></label>
+          <button id="catalogBudget" class="wide">评估纹理与显存开销</button><div id="catalogBudgetStatus" class="status"></div>
+          <p class="caption">可导入Java资源包ZIP或本机客户端JAR。新贴图需打包更新头像；选择16像素不会增加OSC参数或粒子数量。</p>
+          </details>
+          <button id="catalogExport" class="wide">导出 Avatar 材质构建包</button>
           <button id="avatarCatalogImport" class="wide">
             导入目标 Avatar 材质目录
           </button>
@@ -652,13 +675,14 @@
           />
           <div id="materialCompatibility" class="status"></div>
           <button id="avatarCatalogMf6" class="wide">
-            使用配套 MF6 16K 头像目录
+            使用基础目录（Unity／离线测试）
           </button>
-          <button id="avatarCatalogBundled" class="wide">
-            使用配套 MF5 0.9 头像目录
-          </button>
-          <button id="avatarCatalogMf4" class="wide">使用旧版 MF4 目录</button>
           <button id="avatarCatalogClear" class="wide">清除目标目录声明</button>
+          <div class="sync-progress-block">
+            <label id="syncProgressLabel" for="syncProgress">尚未发布</label>
+            <progress id="syncProgress" max="100" value="0" aria-describedby="syncProgressNote"></progress>
+            <small id="syncProgressNote" class="caption">进度表示本机发包，不确认其他玩家接收。</small>
+          </div>
           <div id="syncStatus" class="status">发送已关闭</div>
           <div class="section-title">定位球</div>
           <label class="check"
@@ -705,7 +729,7 @@
           </p>
           <button id="resetAnchor" class="wide">移到面前</button>
           <div class="caption">
-            MF5：240bit三通道＋14bit定位。实时RGB、PBR与程序材质；同材质单位体素可两块合批。本体开关仅本地，无面捕；MF4/MF3为兼容档。
+            MF6：240bit统一通道＋14bit定位。支持实时RGB、表面材质、斜面与三角面；匹配Avatar后可用连续区域包，每帧最多8格。本体开关仅本地，无面捕。
           </div>
         </section>
       </aside>
@@ -1166,7 +1190,7 @@ mf.group('main', () => {
     <dialog id="runtimeMaterialDialog" class="modal">
       <h2>实时材质</h2>
       <p class="caption">
-        MF5可直接传新颜色和表面描述。原始材质完整保存；VRC量化结果在下方显示。新图片贴图仍需打包。
+        MF6可直接传新颜色和表面描述。原始材质完整保存；VRC量化结果在下方显示。新图片贴图仍需打包。
       </p>
       <label
         >名称<input id="runtimeName" value="我的材质" maxlength="128"
@@ -1252,7 +1276,7 @@ mf.group('main', () => {
         <button id="pixelThemeClose">关闭</button>
       </div>
       <p>
-        原创 16×16 Minecraft风格主题 · MIT许可 · 配套MF5头像内置
+        原创 16×16 Minecraft风格主题 · MIT许可 · 配套MF6头像内置
         <label
           >主题<select id="pixelThemeChoice">
             <option value="block-workshop">方块工坊 · 48种</option>
@@ -1280,7 +1304,7 @@ mf.group('main', () => {
         />同时把当前作品的基础木石、草土、砖等映射成像素主题</label
       >
       <p class="caption">
-        新材质随作品保存；配套MF5已内置这两套主题，按身份映射。其他新图片需打包；应用主题前先停止OSC。
+        新材质随作品保存；配套MF6已内置这两套主题，按身份映射。其他新图片需打包；应用主题前先停止OSC。
       </p>
       <button id="applyPixelTheme" class="primary wide">加入当前项目</button>
     </dialog>
@@ -1487,9 +1511,10 @@ mf.group('main', () => {
       <div class="row">
         <label
           >每 MC 方块格数<select id="mcScale">
+            <option value="0" selected>自动 · 按形状及VRC空间选精度</option>
             <option>1</option>
             <option>2</option>
-            <option selected>4</option>
+            <option>4</option>
             <option>8</option>
             <option>16</option>
           </select></label

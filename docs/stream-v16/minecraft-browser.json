@@ -1,0 +1,46 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "textured slope remains one native object",
+      "passed": true
+    },
+    {
+      "name": "slope has GPU template mesh",
+      "passed": true
+    },
+    {
+      "name": "source upload does not change geometry revision",
+      "passed": true
+    },
+    {
+      "name": "independent preview leaves draft unchanged",
+      "passed": true
+    },
+    {
+      "name": "independent preview renders in its own WebGL canvas",
+      "passed": true
+    },
+    {
+      "name": "apply stores compiled geometry and keeps original source",
+      "passed": true
+    },
+    {
+      "name": "preview GPU resources disposed after close",
+      "passed": true
+    },
+    {
+      "name": "undo restores the preimport slope and triangles",
+      "passed": true
+    },
+    {
+      "name": "no JavaScript or shader errors",
+      "passed": true
+    }
+  ],
+  "scope": "Real Chromium file upload, isolated WebGL preview, source preservation, apply, undo and textured slope. No paid model or VRChat requests."
+}

@@ -1,0 +1,79 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "isolated v16 backend with OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "creation selectors sit beside the input and persist",
+      "passed": true
+    },
+    {
+      "name": "noncubic target size reaches dynamic harness context",
+      "passed": true
+    },
+    {
+      "name": "automatic type and size remain available",
+      "passed": true
+    },
+    {
+      "name": "art to VRC preserves normalized camera at scale 0.0005",
+      "passed": true
+    },
+    {
+      "name": "roundtrip keeps orbit and zoom at scale 0.0005",
+      "passed": true
+    },
+    {
+      "name": "art to VRC preserves normalized camera at scale 0.05",
+      "passed": true
+    },
+    {
+      "name": "roundtrip keeps orbit and zoom at scale 0.05",
+      "passed": true
+    },
+    {
+      "name": "art to VRC preserves normalized camera at scale 0.5",
+      "passed": true
+    },
+    {
+      "name": "roundtrip keeps orbit and zoom at scale 0.5",
+      "passed": true
+    },
+    {
+      "name": "publication progress is shown without claiming remote receipt",
+      "passed": true
+    },
+    {
+      "name": "delete button removes only the library record",
+      "passed": true
+    },
+    {
+      "name": "built-in examples never show a delete button",
+      "passed": true
+    },
+    {
+      "name": "leaf holes reveal the far back face in the production WebGL shader",
+      "passed": true
+    },
+    {
+      "name": "no JavaScript or GPU shader errors",
+      "passed": true
+    },
+    {
+      "name": "no OSC or model requests started",
+      "passed": true
+    }
+  ],
+  "leafPixels": {
+    "doubleSided": true,
+    "pixel": [
+      12,
+      185,
+      22,
+      255
+    ]
+  },
+  "scope": "Actual Chromium pointer/controls, persisted HTTP preferences, normalized camera across three physical scales and nondefault art cell size, gallery delete, production WebGL cutout. No OSC/model request."
+}

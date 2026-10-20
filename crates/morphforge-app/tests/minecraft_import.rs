@@ -73,7 +73,7 @@ async fn preview_guards_protection_idempotence_restart_corruption_and_undo() {
     {
         let w = ws.lock().unwrap();
         assert_eq!(w.project.scene.boxes.len(), 1);
-        assert_eq!(w.project.scene.boxes[0].size, [8, 4, 4]);
+        assert_eq!(w.project.scene.boxes[0].size, [2, 1, 1]);
     }
     drop(ws);
     let mut w = Workspace::open(dir.path().into()).unwrap();

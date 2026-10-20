@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "source": "C:\\Users\\Chiro\\tmp\\morphforge\\stream-v16\\source",
+  "files": [
+    {
+      "sha256": "e77bb3e0f5a4ac23ae1620474b675f93ad3581923affaf250029bd6d013f6e3d",
+      "name": "morphforge-desktop.exe"
+    },
+    {
+      "sha256": "40282db83401d43e00fd7633fbc53358641ef1c181f2dff855837574b3fefa22",
+      "name": "morphforge.exe"
+    }
+  ],
+  "version": "0.16.0",
+  "package": "C:\\Users\\Chiro\\tmp\\morphforge\\stream-v16\\package"
+}

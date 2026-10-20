@@ -1,0 +1,34 @@
+{
+  "success": true,
+  "format": "MorphForgeMaterialCatalog/1",
+  "sourceRoot": "D:\\Projects\\VRChatProjects2\\MorphForge\\Docs\\MF6\\MinecraftSource",
+  "atlas": "Assets/MorphForge/Diagnostics/MF6Catalog/CatalogAtlas.png",
+  "metadata": "Assets/MorphForge/Diagnostics/MF6Catalog/CatalogMetadata.asset",
+  "material": "Assets/MorphForge/Diagnostics/MF6Catalog/ParticleBoxCatalog.mat",
+  "styleCount": 1686,
+  "styleIdRange": [
+    1,
+    1725
+  ],
+  "atlasSize": [
+    1,
+    1
+  ],
+  "cellPixels": 16,
+  "metadataWidth": 256,
+  "metadataHeight": 64,
+  "metadataTexels": 16384,
+  "metadataStyles": 4096,
+  "animatedStyles": 67,
+  "transparentStyles": 178,
+  "cutoutStyles": 375,
+  "layeredTextures": 3258,
+  "uniqueTextureSlices": 3258,
+  "layerBanks": 2,
+  "atlasGpuBytes": 687,
+  "layerGpuBytes": 8888736,
+  "faceMapBytes": 160424,
+  "metadataBytes": 524968,
+  "texturedStyles": 1662,
+  "unverified": "Requires the long-run Unity gate before visual/NDMF acceptance."
+}

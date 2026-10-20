@@ -31,3 +31,9 @@ pub mod selection;
 pub mod animation_export;
 pub mod creative;
 pub mod creative_schema;
+
+pub mod shared_library;
+
+pub mod avatar_discovery;
+
+pub mod catalog_budget;

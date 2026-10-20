@@ -1,0 +1,19 @@
+{
+  "version": "0.16.0",
+  "catalogStyles": 1686,
+  "identityHash": "5dde40a53705beee432145e5cfe00c937c1b55097261861588b3ae5e9c61cab8",
+  "newInstanceLauncher": true,
+  "success": true,
+  "files": [
+    {
+      "name": "morphforge-desktop.exe",
+      "passed": true,
+      "sha256": "e77bb3e0f5a4ac23ae1620474b675f93ad3581923affaf250029bd6d013f6e3d"
+    },
+    {
+      "name": "morphforge.exe",
+      "passed": true,
+      "sha256": "40282db83401d43e00fd7633fbc53358641ef1c181f2dff855837574b3fefa22"
+    }
+  ]
+}

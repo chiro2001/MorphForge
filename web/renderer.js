@@ -457,6 +457,9 @@ export class VoxelRenderer {
   }
   async load(scene, styles, { mode = this.mode, scale = this.scale, surfaces = null } = {}) {
     if(this.disposed)return this;
+    if(mode !== this.mode) this.setScale(scale, {
+      preserveView: true, nextCellSize: mode === "vrc" ? .25 : (scene.cellSize ?? .25),
+    });
     const restoringPose=!!this.animationClip;
     this.clearAnimationPose();
     this.renderStyleMap=new Map(styles.map(s=>[s.id,this.effectiveStyle(s,mode)]));
@@ -518,7 +521,7 @@ export class VoxelRenderer {
         opacity: style.opacity ?? 1,
         depthWrite: !transparent,
         toneMapped: mode !== "vrc",
-        side: THREE.FrontSide,
+        side: style.renderMode === "cutout" ? THREE.DoubleSide : THREE.FrontSide,
       };
       let material;
       if (mode === "vrc") material = new THREE.MeshBasicMaterial(parameters);
@@ -676,7 +679,19 @@ export class VoxelRenderer {
   setLayer(layer) {
     this.grid.position.y = layer * this.cellSize * this.scale;
   }
-  setScale(scale) {
+  setScale(scale, { preserveView = false, nextCellSize = this.cellSize } = {}) {
+    if (!(scale > 0) || !Number.isFinite(scale) || !(nextCellSize > 0)) return;
+    if (preserveView) {
+      const ratio = scale * nextCellSize / (this.scale * this.cellSize);
+      this.camera.position.multiplyScalar(ratio);
+      this.controls.target.multiplyScalar(ratio);
+      this.camera.near = Math.max(0.0000001, this.camera.near * ratio);
+      this.camera.far = Math.max(this.camera.near * 1000, this.camera.far * ratio);
+      if (this.camera.isOrthographicCamera)
+        for (const axis of ["left", "right", "top", "bottom"]) this.camera[axis] *= ratio;
+      this.camera.updateProjectionMatrix();
+      this.controls.update();
+    }
     this.scale = scale;
     this.content.scale.setScalar(scale);
     this.textPreviewGroup.scale.setScalar(scale);

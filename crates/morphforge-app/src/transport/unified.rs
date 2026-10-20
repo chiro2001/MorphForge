@@ -57,6 +57,7 @@ pub struct Plan {
 }
 #[derive(Clone, Debug, Default)]
 pub struct Session {
+    pub region_enabled: bool,
     desired_boxes: BTreeMap<GeometryKey, (Box3, Surface)>,
     desired_triangles: BTreeMap<u64, Triangle3>,
     boxes: BTreeMap<GeometryKey, LiveBox>,
@@ -403,6 +404,65 @@ impl Session {
                 best = Some(candidate);
             }
         }
+        // Variable-color contiguous cells can share coordinates. Compare the
+        // number of native births with all ordinary layouts, never force it on
+        // same-color walls (already one merged Box or eight shared voxels).
+        if self.region_enabled && first.shape == 0 && first.size == [1; 3] {
+            let lookup: BTreeMap<_, _> = pending
+                .iter()
+                .copied()
+                .filter(|(b, s)| b.size == [1; 3] && b.shape == 0 && s.mode == surface.mode)
+                .map(|(b, s)| (b.min, (b, s)))
+                .collect();
+            for shape in 0..4 {
+                for first_pool in 0..8u8 {
+                    let mut counts = self.counts();
+                    let mut surfaces = Vec::new();
+                    let mut actions = Vec::new();
+                    for i in 0..8 {
+                        let delta = mf6::Region::offset(shape, i);
+                        let pos = std::array::from_fn(|a| first.min[a] + delta[a] as i32);
+                        let Some((b, s)) = lookup.get(&pos).copied() else {
+                            break;
+                        };
+                        let pool = (first_pool + i as u8) % 8;
+                        if let Some(old) = self.boxes.get(&key(b)) {
+                            if old.pool != pool {
+                                break;
+                            }
+                        } else {
+                            if counts[pool as usize] >= POOL_CAPACITY {
+                                break;
+                            }
+                            counts[pool as usize] += 1;
+                        }
+                        surfaces.push(*s);
+                        actions.push(Action::BoxSet {
+                            value: b.clone(),
+                            surface: *s,
+                            pool,
+                        });
+                    }
+                    if best
+                        .as_ref()
+                        .is_none_or(|b| actions.len() > b.actions.len())
+                        && !actions.is_empty()
+                    {
+                        let region = mf6::Region {
+                            origin: Geometry::from_box(first)?.min,
+                            shape,
+                            first_pool,
+                            surfaces,
+                        };
+                        region.records()?;
+                        best = Some(Plan {
+                            frame: Frame::Region { region },
+                            actions,
+                        });
+                    }
+                }
+            }
+        }
         if best.is_none() {
             bail!("MF6_POOL_CAPACITY：目标分布超过单池2048对象，请清空并重新平衡");
         }
@@ -695,6 +755,12 @@ mod tests {
                             .insert((r.pool, center(&r.geometry)), (r.geometry, r.surface));
                     }
                 }
+                Frame::Region { region } => {
+                    for r in region.records().unwrap() {
+                        self.0
+                            .insert((r.pool, center(&r.geometry)), (r.geometry, r.surface));
+                    }
+                }
                 Frame::RemoveBoxes { records } => {
                     for r in records {
                         self.0.remove(&(r.pool, center(&r.geometry)));
@@ -713,6 +779,41 @@ mod tests {
             values.sort();
             values
         }
+    }
+
+    #[test]
+    fn colorful_region_beats_regular_frames_and_replays_exactly() {
+        let scene = Scene {
+            boxes: (0..16)
+                .map(|i| Box3::new([i, 0, 0], [1; 3], i as u32 + 1))
+                .collect(),
+            ..Default::default()
+        };
+        let mut basic = Session::default();
+        basic.set_target(&scene, &BTreeMap::new()).unwrap();
+        let regular = drain(&mut basic);
+        let mut s = Session {
+            region_enabled: true,
+            ..Default::default()
+        };
+        s.set_target(&scene, &BTreeMap::new()).unwrap();
+        let frames = drain(&mut s);
+        assert_eq!(frames.len(), 2);
+        assert!(regular.len() > frames.len());
+        assert!(frames.iter().all(|f| matches!(f, Frame::Region { .. })));
+        let mut rx = BoxReceiver::default();
+        rx.apply(&frames[1]);
+        assert_eq!(rx.0.len(), 8, "losing one region cannot shift the next");
+        s.start_replay();
+        for f in drain(&mut s) {
+            rx.apply(&f);
+        }
+        assert_eq!(rx.0.len(), 16);
+        let mut expected = BoxReceiver::default();
+        for f in regular {
+            expected.apply(&f);
+        }
+        assert_eq!(rx.contents(), expected.contents());
     }
 
     #[test]

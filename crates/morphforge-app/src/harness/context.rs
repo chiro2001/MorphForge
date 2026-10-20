@@ -52,6 +52,7 @@ pub(super) fn authority_snapshot(context: &Value) -> Value {
         "projectId",
         "projectName",
         "modelingStyle",
+        "modelingExtent",
         "stats",
         "targetCompatibility",
         "protectedGroups",

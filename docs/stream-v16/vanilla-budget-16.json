@@ -1,0 +1,31 @@
+{
+  "additionalAnimatorLayers": 0,
+  "additionalParticleSystems": 0,
+  "additionalSyncedBits": 0,
+  "animatedStyles": 62,
+  "atlasSize": [
+    1,
+    1
+  ],
+  "bytes": {
+    "atlas": 4,
+    "faceMap": 78848,
+    "layerMipmaps": 4366164,
+    "metadata": 262144,
+    "totalGpuEstimate": 4707160
+  },
+  "cellPixels": 16,
+  "faceMapEntries": 19650,
+  "fits": true,
+  "layerBanks": 2,
+  "legacyAtlasBytes": 368179200,
+  "legacyAtlasSize": [
+    8160,
+    11280
+  ],
+  "note": "预估GPU纹理数据；Unity原生报告与实际SDK包体另测，不含CPU可读副本、平台分配和原人物纹理。",
+  "styles": 1166,
+  "textureGroups": 1125,
+  "uniqueSlices": 3201,
+  "uniqueSourcePngs": 1277
+}

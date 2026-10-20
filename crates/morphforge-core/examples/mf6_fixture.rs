@@ -29,9 +29,59 @@ fn push(cases: &mut Vec<Value>, name: String, frame: Frame, verify: bool) {
 fn main() {
     let capacity = std::env::args().any(|arg| arg == "--capacity");
     let random = std::env::args().any(|arg| arg == "--random");
+    let regions = std::env::args().any(|arg| arg == "--regions");
     let mut cases = Vec::new();
     push(&mut cases, "clear".into(), Frame::Clear, true);
-    if random {
+    if regions {
+        for shape in 0..4 {
+            for mode in 0..8 {
+                push(
+                    &mut cases,
+                    format!("region8 shape {shape} mode {mode}"),
+                    Frame::Region {
+                        region: Region {
+                            origin: [180 + shape * 12, 40 + mode * 5, 180],
+                            shape,
+                            first_pool: (5 + mode) % 8,
+                            surfaces: (0..8)
+                                .map(|i| Surface {
+                                    mode,
+                                    bytes: [31 + i * 23, 17 + mode * 11, 221 - i * 13],
+                                })
+                                .collect(),
+                        },
+                    },
+                    true,
+                );
+            }
+        }
+        push(
+            &mut cases,
+            "clear before region burst".into(),
+            Frame::Clear,
+            true,
+        );
+        for i in 0..64u8 {
+            push(
+                &mut cases,
+                format!("continuous variable-color region {i}"),
+                Frame::Region {
+                    region: Region {
+                        origin: [16 + (i % 8) * 8, 12 + (i / 8) * 2, 100],
+                        shape: 0,
+                        first_pool: i % 8,
+                        surfaces: (0..8)
+                            .map(|n| Surface {
+                                mode: 1,
+                                bytes: [i * 3, n * 31, 200 - n * 19],
+                            })
+                            .collect(),
+                    },
+                },
+                i % 16 == 15,
+            );
+        }
+    } else if random {
         let mut state = 17u32;
         let mut next = || {
             state = state.wrapping_mul(1664525).wrapping_add(1013904223);

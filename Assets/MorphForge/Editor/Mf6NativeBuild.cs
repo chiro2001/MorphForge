@@ -22,6 +22,7 @@ namespace MorphForge.Editor
         static Binding B(string p,Type t,string field,float a,float b)=>new Binding{path=p,type=t,property=field,min=a,max=b};
         static Binding[] bindings;
         static int clipId;
+        static Dictionary<Motion,(bool emit,bool erase)> flows;
         static void Folder(string p){string current="Assets";foreach(var part in p.Split('/').Skip(1)){var next=current+"/"+part;if(!AssetDatabase.IsValidFolder(next))AssetDatabase.CreateFolder(current,part);current=next;}}
         static T Save<T>(T value,string p)where T:UnityEngine.Object{var old=AssetDatabase.LoadAssetAtPath<T>(p);if(old){EditorUtility.CopySerialized(value,old);UnityEngine.Object.DestroyImmediate(value);EditorUtility.SetDirty(old);return old;}AssetDatabase.CreateAsset(value,p);return value;}
         static AnimationClip Clip(string name,IEnumerable<Binding> values,bool maximum=false,float duration=.001f)
@@ -47,16 +48,18 @@ namespace MorphForge.Editor
             var so=new SerializedObject(tree);so.FindProperty("m_NormalizedBlendValues").boolValue=false;so.ApplyModifiedPropertiesWithoutUndo();return tree;
         }
         static AnimatorStateMachine Layer(string name){var sm=new AnimatorStateMachine{name=name};AssetDatabase.AddObjectToAsset(sm,fx);fx.AddLayer(new AnimatorControllerLayer{name=name,stateMachine=sm,defaultWeight=1});return sm;}
-        static AnimatorState State(AnimatorStateMachine sm,string name,Motion motion){var s=sm.AddState(name);s.motion=motion;s.writeDefaultValues=false;return s;}
+        static AnimatorState State(AnimatorStateMachine sm,string name,Motion motion){var s=sm.AddState(name);s.motion=motion;s.writeDefaultValues=false;if(flows!=null&&flows.TryGetValue(motion,out var phase)){var d=Driver(s);Set(d,"Emit",phase.emit?1:0);Set(d,"EraseEnable",phase.erase?1:0);}return s;}
         static AnimatorStateTransition To(AnimatorState a,AnimatorState b,bool exit=true){var t=a.AddTransition(b);t.duration=0;t.hasExitTime=exit;t.exitTime=1;t.canTransitionToSelf=false;return t;}
         static VRCAvatarParameterDriver Driver(AnimatorState s){var d=s.AddStateMachineBehaviour<VRCAvatarParameterDriver>();d.localOnly=false;return d;}
         static void Set(VRCAvatarParameterDriver d,string n,float v){d.parameters.Add(new VRC_AvatarParameterDriver.Parameter{name=prefix+n,type=VRC_AvatarParameterDriver.ChangeType.Set,value=v});}
         static void Copy(VRCAvatarParameterDriver d,string a,string b){d.parameters.Add(new VRC_AvatarParameterDriver.Parameter{name=prefix+b,source=prefix+a,type=VRC_AvatarParameterDriver.ChangeType.Copy});}
         static Motion Flow(string name,bool pump,bool erase,float duration=.001f)
         {
-            AnimationClip Values(string suffix,bool regular,bool bounds)=>Clip(name+suffix,new[]{B("Minimum/Center/Pump",typeof(GameObject),"m_IsActive",regular?1:0,regular?1:0),B("BoundsPump",typeof(GameObject),"m_IsActive",bounds?1:0,bounds?1:0),B("Store",typeof(ParticleSystem),"TriggerModule.enabled",erase?1:0,erase?1:0)},false,duration);
-            if(!pump)return Values("",false,false);
-            var tree=new BlendTree{name=name+" exclusive emitter",blendType=BlendTreeType.Simple1D,blendParameter=prefix+"Kind",useAutomaticThresholds=false};AssetDatabase.AddObjectToAsset(tree,fx);tree.AddChild(Values("Regular",true,false),1);tree.AddChild(Values("Bounds",false,true),2);return tree;
+            // Phase booleans and payload W fields go through the same parameter
+            // driver timing. Driving Trigger directly from an earlier layer can
+            // erase at the preceding command's center while W is still pending.
+            var clock=Clip(name+" clock",new[]{B("Store",typeof(ParticleSystemRenderer),"m_Enabled",1,1)},false,duration);
+            flows.Add(clock,(pump,erase));return clock;
         }
         static void Data()
         {
@@ -108,7 +111,26 @@ namespace MorphForge.Editor
             }
             foreach(string scalar in new[]{"scalar","minScalar"})sentinel.Add(B("Store",typeof(ParticleSystem),"InitialModule.startLifetime."+scalar,1000000,1000000));
             var select=new BlendTree{name="Geometry type",blendType=BlendTreeType.Simple1D,blendParameter=prefix+"Kind",useAutomaticThresholds=false};AssetDatabase.AddObjectToAsset(select,fx);select.AddChild(modes[0],0);select.AddChild(modes[1],1);select.AddChild(Basis("Invisible bounds carrier",sentinel.ToArray(),false),2);
-            var state=State(Layer("MF6 immutable data output"),"Drive",select);state.writeDefaultValues=true;
+            var outputLayer=Layer("MF6 immutable data and phase output");
+            AnimatorState Phase(string name,bool regular,bool bounds,bool erase){
+                // Only the phase leaf binds booleans. Geometry leaves bind zero
+                // data for additive direct blending; they must not bind false
+                // to the phase booleans and compete with the active emitter.
+                var values=bindings.Select(v=>B(v.path,v.type,v.property,0,0)).Concat(new[]{
+                    B("Minimum/Center/Pump",typeof(GameObject),"m_IsActive",regular?1:0,regular?1:0),
+                    B("BoundsPump",typeof(GameObject),"m_IsActive",bounds?1:0,bounds?1:0),
+                    B("Store",typeof(ParticleSystem),"TriggerModule.enabled",erase?1:0,erase?1:0)});
+                var phase=Clip("Phase "+name,values);var output=Direct("Atomic "+name,new List<Motion>{select,phase});
+                var state=State(outputLayer,name,output);state.writeDefaultValues=true;return state;
+            }
+            var wait=Phase("Wait",false,false,false);outputLayer.defaultState=wait;
+            var erasing=Phase("Erase",false,false,true);var regularState=Phase("Regular birth",true,false,false);var boundsState=Phase("Bounds birth",false,true,false);
+            AnimatorStateTransition Enter(AnimatorState state){var t=outputLayer.AddAnyStateTransition(state);t.duration=0;t.hasExitTime=false;t.canTransitionToSelf=false;return t;}
+            var idleTransition=Enter(wait);idleTransition.AddCondition(AnimatorConditionMode.Less,.5f,prefix+"Emit");idleTransition.AddCondition(AnimatorConditionMode.Less,.5f,prefix+"EraseEnable");
+            var eraseTransition=Enter(erasing);eraseTransition.AddCondition(AnimatorConditionMode.Greater,.5f,prefix+"EraseEnable");
+            var emitTransition=Enter(regularState);emitTransition.AddCondition(AnimatorConditionMode.Greater,.5f,prefix+"Emit");emitTransition.AddCondition(AnimatorConditionMode.Less,1.5f,prefix+"Kind");
+            var boundsTransition=Enter(boundsState);boundsTransition.AddCondition(AnimatorConditionMode.Greater,.5f,prefix+"Emit");boundsTransition.AddCondition(AnimatorConditionMode.Greater,1.5f,prefix+"Kind");
+
         }
         static void Lifecycle()
         {
@@ -133,15 +155,17 @@ namespace MorphForge.Editor
         public static string BuildWorker(int pool,string materialSource=null)
         {
             if(EditorApplication.isPlaying||EditorApplication.isCompiling||pool<0||pool>7)throw new Exception("Idle Edit Mode and pool0..7 required");
-            Folder(Root);path=Root+"/Pool"+pool;Folder(path);prefix="MF6_P"+pool+"_";clipId=0;
+            Folder(Root);path=Root+"/Pool"+pool;Folder(path);prefix="MF6_P"+pool+"_";clipId=0;flows=new Dictionary<Motion,(bool,bool)>();
             fx=AssetDatabase.LoadAssetAtPath<AnimatorController>(path+"/FX.controller");if(!fx)fx=AnimatorController.CreateAnimatorControllerAtPath(path+"/FX.controller");
             else{fx.layers=new AnimatorControllerLayer[0];fx.parameters=new AnimatorControllerParameter[0];foreach(var item in AssetDatabase.LoadAllAssetsAtPath(path+"/FX.controller"))if(item&&item!=fx)UnityEngine.Object.DestroyImmediate(item,true);}
             fx.AddParameter(prefix+"Ctl",AnimatorControllerParameterType.Int);foreach(string n in new[]{"QOp","Op","LastRx"})fx.AddParameter(new AnimatorControllerParameter{name=prefix+n,type=AnimatorControllerParameterType.Int,defaultInt=n=="LastRx"?255:0});
             foreach(string n in new[]{"Ready","Busy"})fx.AddParameter(new AnimatorControllerParameter{name=prefix+n,type=AnimatorControllerParameterType.Bool,defaultBool=n=="Busy"});
-            foreach(string n in new[]{"QKind","Kind","QClear","Clear","DoneCount"})fx.AddParameter(prefix+n,AnimatorControllerParameterType.Float);
+            foreach(string n in new[]{"QKind","Kind","QClear","Clear","DoneCount","Emit","EraseEnable"})fx.AddParameter(prefix+n,AnimatorControllerParameterType.Float);
             fx.AddParameter(new AnimatorControllerParameter{name=prefix+"One",type=AnimatorControllerParameterType.Float,defaultFloat=1});
             for(int i=0;i<Fields;i++)foreach(string n in new[]{"D","Q","W"})fx.AddParameter(prefix+n+i.ToString("D2"),AnimatorControllerParameterType.Float);
-            Data();Lifecycle();
+            // Latch payload and phase first, then sample both in one final
+            // output. Direct trees retain WD on and bind every driven field.
+            Lifecycle();Data();
             var module=PrefabUtility.LoadPrefabContents(ParticleStage2Build.Root+"/Display.prefab");
             try{
                 module.name="Pool"+pool;var store=module.transform.Find("Store").GetComponent<ParticleSystem>();var main=store.main;main.maxParticles=2056;main.startLifetime=1000000;main.scalingMode=ParticleSystemScalingMode.Hierarchy;main.customSimulationSpace=module.transform;

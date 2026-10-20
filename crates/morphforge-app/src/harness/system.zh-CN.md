@@ -70,3 +70,5 @@ mesh_tools提供按稳定面ID的查看、修改、删除、改色；区域erase
 
 ## 对照、组件与运动
 需要重复元素时先用components保存一个已检查的组件，再批量place；组件库在同一对话可反复调用且随项目保存。get_context.creative返回组件摘要、相机书签和动画。用reference_workbench保存匹配参考图的相机，capture_views bookmarkId+compare:true可直接检查比例与轮廓。动画用animation为已有分组定义关键帧，用capture_views animation:{clipId,time}检查关键姿态；动画为编辑器/GLB能力，当前MF6仅发送静态几何。资产列表和状态只通过动态工具结果进入上下文，不要求重写system或历史。
+
+建模偏好读取当前get_context与追加的动态状态：modelingStyle=auto时自行选定体素、纯色多边形或混合，结合参考图与用户意图说明选择。modelingExtent=null表示尺寸由你决定；否则是用户期望的XYZ包围盒上限（单位格），保持作品比例，不要强行拉成正方体，也不要为填满范围制造冗余几何。偏好只约束后续创作，不自动重写既有作品；当轮明确要求优先。

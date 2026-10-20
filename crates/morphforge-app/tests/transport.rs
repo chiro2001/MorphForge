@@ -1,4 +1,4 @@
-use morphforge_app::{store::Workspace, transport::Transport};
+use morphforge_app::{store::Workspace, target::AvatarCatalog, transport::Transport};
 use morphforge_core::{Box3, Operation, Scene};
 use serde_json::json;
 use std::{
@@ -15,9 +15,9 @@ impl Drop for Stop {
 fn periodic_refresh_waits_until_the_entire_previous_rebuild_was_sent() {
     let folder = tempfile::tempdir().unwrap();
     let w = Arc::new(Mutex::new(Workspace::open(folder.path().into()).unwrap()));
-    let ops = (0..48)
+    let ops = (0..800)
         .map(|i| Operation::Box {
-            value: Box3::new([i * 2 - 48, 0, 0], [1; 3], 1),
+            value: Box3::new([i % 64 * 2 - 64, i / 64 * 2, 0], [1; 3], 1),
         })
         .collect::<Vec<_>>();
     w.lock()
@@ -32,6 +32,14 @@ fn periodic_refresh_waits_until_the_entire_previous_rebuild_was_sent() {
     let port = receiver.local_addr().unwrap().port();
     let t = Transport::new(w.clone());
     let _stop = Stop(t.clone());
+    t.set_catalog(
+        Some(
+            AvatarCatalog::from_bytes(include_bytes!("../../../materials/mf6/catalog.json"))
+                .unwrap(),
+        ),
+        folder.path(),
+    )
+    .unwrap();
     t.configure(
         &json!({"enabled":true,"port":port,"interval":0.05,"refreshSeconds":1}),
         &mut w.lock().unwrap(),
@@ -41,7 +49,7 @@ fn periodic_refresh_waits_until_the_entire_previous_rebuild_was_sent() {
     let mut completed = false;
     while Instant::now() < deadline {
         let s = t.inner.lock().unwrap();
-        if s.sent_revision == Some(1) && s.sent.len() == 48 {
+        if s.sent_revision == Some(1) && s.unified.sent_counts().0 == 800 {
             completed = true;
             break;
         }

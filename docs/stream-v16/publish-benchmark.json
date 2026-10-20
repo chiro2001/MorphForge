@@ -1,0 +1,36 @@
+{
+  "cells": 4096,
+  "elapsedMs": 1532,
+  "replacement": {
+    "baseline": "local_udp_sent; not remote acknowledged",
+    "compactedBoxes": 0,
+    "incrementalFrames": 1536,
+    "incrementalSeconds": 614.4000000000001,
+    "layout": "boxes_and_regions",
+    "reason": "包含两次Clear后重建仍需更少网络时隙",
+    "rebuildFrames": 514,
+    "rebuildSeconds": 205.60000000000002,
+    "selected": "rebuild"
+  },
+  "scope": "Actual planner next/encode/commit including two Clear packets in the rebuild candidate. Synthetic scenes; no UDP, Avatar execution or multiplayer timing claim.",
+  "success": true,
+  "uniformRun": {
+    "baseline": "local_udp_sent; not remote acknowledged",
+    "compactedBoxes": 4095,
+    "incrementalFrames": 1,
+    "incrementalSeconds": 0.25,
+    "layout": "run_boxes",
+    "reason": "增量更快或持平，保留当前显示",
+    "rebuildFrames": 3,
+    "rebuildSeconds": 0.75,
+    "selected": "incremental"
+  },
+  "variableRgb": {
+    "regionFrames": 512,
+    "regularFrames": 1366,
+    "secondsAt040": [
+      546.4,
+      204.8
+    ]
+  }
+}

@@ -1,13 +1,15 @@
 use crate::store::Workspace;
+mod compact;
+pub mod strategy;
 pub mod unified;
 use anyhow::{bail, Context, Result};
 use fs2::FileExt;
-use morphforge_core::protocol::{self, appearance, key, Command, OscValue};
+use morphforge_core::protocol::{self, OscValue};
 use morphforge_core::{Box3, Scene};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use std::{
-    collections::{BTreeMap, BTreeSet},
+    collections::BTreeMap,
     fs,
     net::UdpSocket,
     path::PathBuf,
@@ -21,7 +23,11 @@ pub struct Connection {
     pub port: u16,
     pub interval: f64,
     pub profile: String,
+    #[serde(default = "default_auto_detect")]
+    pub auto_detect: bool,
     pub auto: bool,
+    #[serde(default = "default_strategy")]
+    pub publish_strategy: String,
     pub capacity: usize,
     pub refresh_seconds: u64,
     #[serde(default)]
@@ -33,6 +39,12 @@ pub struct Connection {
     pub scale: f32,
     pub level: bool,
 }
+fn default_auto_detect() -> bool {
+    true
+}
+fn default_strategy() -> String {
+    "auto".into()
+}
 fn default_send_order() -> String {
     "volume".into()
 }
@@ -42,8 +54,10 @@ impl Default for Connection {
             enabled: false,
             port: 9012,
             interval: 0.25,
-            profile: "mf3".into(),
+            profile: "mf6".into(),
             auto: false,
+            auto_detect: true,
+            publish_strategy: default_strategy(),
             capacity: 16384,
             refresh_seconds: 0,
             loop_replay: false,
@@ -57,24 +71,23 @@ impl Default for Connection {
 }
 pub struct State {
     pub unified: unified::Session,
+    pub publication: Option<strategy::Decision>,
+    pub discovery: Value,
     pub config: Connection,
     pub avatar_catalog: Option<crate::target::AvatarCatalog>,
     pub avatar_catalog_error: String,
-    pub sent: Vec<Box3>,
     pub desired: Vec<Box3>,
     pub desired_revision: u64,
+    pub source_signature: String,
     pub sent_revision: Option<u64>,
     pub seq: u8,
-    pub wide_seqs: [u8; 3],
-    pub lanes: BTreeMap<protocol::GeometryKey, usize>,
-    pub wire_sent: BTreeMap<protocol::GeometryKey, morphforge_core::material_wire::Surface>,
     pub wire_desired: BTreeMap<protocol::GeometryKey, morphforge_core::material_wire::Surface>,
-    pub repair_seen: Option<BTreeSet<protocol::GeometryKey>>,
-    pub brush: Option<(u32, u8, u8)>,
     pub resets: u8,
     pub connected: bool,
     pub last_error: String,
     pub sent_count: u64,
+    pub sent_frame_count: u64,
+    pub queued_frame_estimate: Option<(u64, usize)>,
     pub replay_cycles: u64,
     pub generation: u64,
     pub controls: BTreeMap<String, Control>,
@@ -111,29 +124,39 @@ impl Transport {
                 }
             }
         }
-        let (avatar_catalog, avatar_catalog_error) = if root.join("avatar-catalog.json").exists() {
-            match std::fs::read(root.join("avatar-catalog.json"))
-                .map_err(anyhow::Error::from)
-                .and_then(|b| crate::target::AvatarCatalog::from_bytes(&b))
-            {
-                Ok(c) => (Some(c), String::new()),
-                Err(e) => (None, e.to_string()),
-            }
-        } else {
-            (None, String::new())
-        };
+        let (mut avatar_catalog, mut avatar_catalog_error) =
+            if root.join("avatar-catalog.json").exists() {
+                match std::fs::read(root.join("avatar-catalog.json"))
+                    .map_err(anyhow::Error::from)
+                    .and_then(|b| crate::target::AvatarCatalog::from_bytes(&b))
+                {
+                    Ok(c) => (Some(c), String::new()),
+                    Err(e) => (None, e.to_string()),
+                }
+            } else {
+                (None, String::new())
+            };
         let config_path = root.join("connection.json");
         let mut config = fs::read(&config_path)
             .ok()
             .and_then(|b| serde_json::from_slice::<Connection>(&b).ok())
             .unwrap_or_default();
         config.enabled = false;
+        config.profile = "mf6".into();
+        if avatar_catalog
+            .as_ref()
+            .is_some_and(|c| !c.unified_protocol())
+        {
+            avatar_catalog = None;
+            avatar_catalog_error = "旧协议目录已停用，请识别或导入当前统一协议头像目录".into();
+        }
+
         if let Some(protocol) = avatar_catalog
             .as_ref()
             .and_then(crate::target::AvatarCatalog::wire_protocol)
         {
             config.profile = protocol.into();
-            if ["mf5", "mf6"].contains(&protocol) {
+            if protocol == "mf6" {
                 config.scale = config.scale.clamp(
                     morphforge_core::material_wire::SCALE_MIN,
                     morphforge_core::material_wire::SCALE_MAX,
@@ -143,24 +166,23 @@ impl Transport {
         let t = Self {
             inner: Arc::new(Mutex::new(State {
                 unified: unified::Session::default(),
+                publication: None,
+                discovery: json!({"status":"not_queried","executionAck":false}),
                 config,
                 avatar_catalog,
                 avatar_catalog_error,
-                sent: vec![],
                 desired: vec![],
                 desired_revision: 0,
+                source_signature: String::new(),
                 sent_revision: None,
                 seq: 1,
-                wide_seqs: [1; 3],
-                lanes: BTreeMap::new(),
-                wire_sent: BTreeMap::new(),
                 wire_desired: BTreeMap::new(),
-                repair_seen: None,
-                brush: None,
                 resets: 0,
                 connected: false,
                 last_error: String::new(),
                 sent_count: 0,
+                sent_frame_count: 0,
+                queued_frame_estimate: None,
                 replay_cycles: 0,
                 generation: 0,
                 controls: BTreeMap::new(),
@@ -178,29 +200,21 @@ impl Transport {
     }
     pub fn state(&self) -> Value {
         let s = self.inner.lock().unwrap();
-        let planning_sent = if s.resets > 0 { &[][..] } else { &s.sent[..] };
-        let commands = protocol::plan(
-            planning_sent,
-            &s.desired,
-            s.brush,
-            s.config.profile == "mf2",
-        );
-        let command_batches = if s.config.profile == "mf6" {
-            s.unified.pending_objects().div_ceil(3)
-        } else if ["mf4", "mf5"].contains(&s.config.profile.as_str()) {
-            wide_queues(&s, planning_sent)
-                .iter()
-                .map(Vec::len)
-                .max()
-                .unwrap_or(0)
+        let command_batches = s
+            .queued_frame_estimate
+            .map(|(start, n)| n.saturating_sub(s.sent_frame_count.saturating_sub(start) as usize))
+            .unwrap_or_else(|| s.unified.pending_objects().div_ceil(3) + s.resets as usize);
+        let pending =
+            command_batches + usize::from(!s.controls.is_empty()) + s.reset_pulse as usize;
+        let progress = if let Some((start, total)) = s.queued_frame_estimate {
+            let sent = (s.sent_frame_count.saturating_sub(start) as usize).min(total);
+            json!({"totalFrames":total,"sentFrames":sent,"remainingFrames":total-sent,
+                "percent":if total==0{100.}else{sent as f64/total as f64*100.},
+                "kind":"local_udp_sent","receiverConfirmed":false})
         } else {
-            commands.len()
+            json!({"totalFrames":null,"kind":"local_udp_sent","receiverConfirmed":false})
         };
-        let pending = command_batches
-            + s.resets as usize
-            + usize::from(!s.controls.is_empty())
-            + s.reset_pulse as usize;
-        json!({"enabled":s.config.enabled,"sending":s.connected,"port":s.config.port,"interval":s.config.interval,"profile":s.config.profile,"auto":s.config.auto,"capacity":s.config.capacity,"refreshSeconds":s.config.refresh_seconds,"loopReplay":s.config.loop_replay,"sendOrder":s.config.send_order,"replayCycles":s.replay_cycles,"pending":pending,"etaSeconds":pending as f64*s.config.interval,"desiredRevision":s.desired_revision,"sentRevision":s.sent_revision,"sentCommands":s.sent_count,"error":s.last_error,"ack":false,"baselineKind":"local_udp_sent","remoteAcknowledged":false,"sentObjects":if s.config.profile=="mf6"{json!({"boxes":s.unified.sent_counts().0,"triangles":s.unified.sent_counts().1})}else{json!({"boxes":s.sent.len(),"triangles":0})},"repairing":s.repair_seen.is_some()||s.unified.repairing(),"syncedBits":if ["mf4","mf5","mf6"].contains(&s.config.profile.as_str()){240}else if s.config.profile=="mf3"{56}else{88},"repairDeletions":if s.config.profile=="mf6"{Some(s.unified.repair_history_counts())}else{None},"pendingObjects":if s.config.profile=="mf6"{Some(s.unified.pending_objects())}else{None},"estimateKind":if s.config.profile=="mf6"{"adaptive-layout estimate; no receiver acknowledgement"}else{"legacy queue estimate"},"placement":{"world":s.config.world,"visible":s.config.visible,"scale":s.config.scale,"level":s.config.level}})
+        json!({"progress":progress,"enabled":s.config.enabled,"sending":s.connected,"port":s.config.port,"interval":s.config.interval,"profile":s.config.profile,"auto":s.config.auto,"capacity":s.config.capacity,"refreshSeconds":s.config.refresh_seconds,"loopReplay":s.config.loop_replay,"sendOrder":s.config.send_order,"replayCycles":s.replay_cycles,"pending":pending,"etaSeconds":pending as f64*s.config.interval,"desiredRevision":s.desired_revision,"sentRevision":s.sent_revision,"sentCommands":s.sent_count,"error":s.last_error,"ack":false,"baselineKind":"local_udp_sent","publication":s.publication,"publishStrategy":s.config.publish_strategy,"autoDetect":s.config.auto_detect,"discovery":s.discovery,"catalogIdentity":s.avatar_catalog.as_ref().map(|c|c.identity_hash()),"remoteAcknowledged":false,"sentObjects":json!({"boxes":s.unified.sent_counts().0,"triangles":s.unified.sent_counts().1}),"repairing":s.unified.repairing(),"syncedBits":240,"repairDeletions":s.unified.repair_history_counts(),"pendingObjects":s.unified.pending_objects(),"estimateKind":"adaptive-layout estimate; no receiver acknowledgement","placement":{"world":s.config.world,"visible":s.config.visible,"scale":s.config.scale,"level":s.config.level}})
     }
     pub fn configure(&self, v: &Value, workspace: &mut Workspace) -> Result<Value> {
         let mut s = self.inner.lock().unwrap();
@@ -212,32 +226,48 @@ impl Transport {
             }
             next[k] = value.clone();
         }
-        let mut config: Connection = serde_json::from_value(next)?;
-        if !["mf5", "mf6"].contains(&config.profile.as_str())
-            && !v.get("loopReplay").is_some_and(|x| x == true)
-        {
-            config.loop_replay = false;
+        let config: Connection = serde_json::from_value(next)?;
+        if !["volume", "bottom_up", "material"].contains(&config.send_order.as_str()) {
+            bail!("发送顺序需要volume/bottom_up/material");
         }
-        if !["volume", "bottom_up", "material"].contains(&config.send_order.as_str())
-            || (config.loop_replay && !["mf5", "mf6"].contains(&config.profile.as_str()))
-        {
-            bail!("发送顺序需要volume/bottom_up/material；连续补播仅限MF5");
+        if !["auto", "incremental", "rebuild"].contains(&config.publish_strategy.as_str()) {
+            bail!("发布策略须为auto/incremental/rebuild");
         }
         if config.port == 0
             || !config.interval.is_finite()
             || !(0.05..=5.).contains(&config.interval)
             || !config.scale.is_finite()
             || !scale_valid(config.scale, &config.profile)
-            || !["mf6", "mf5", "mf4", "mf3", "mf2"].contains(&config.profile.as_str())
+            || config.profile != "mf6"
             || config.capacity == 0
             || config.capacity > 50000
         {
             bail!("连接配置越界")
         }
-        if ["mf4", "mf5", "mf6"].contains(&config.profile.as_str()) && config.capacity > 16384 {
-            bail!("MF4_CAPACITY：三通道头像总容量为16384 Box");
+        if config.capacity > 16384 {
+            bail!("MF6_CAPACITY：头像总容量为16384对象");
         }
         if config.enabled {
+            let declared = s.discovery["info"]["catalogHash"].as_str();
+            if let Some(hash) = declared {
+                if !s
+                    .avatar_catalog
+                    .as_ref()
+                    .is_some_and(|c| c.identity_hash() == hash)
+                {
+                    bail!("AVATAR_CATALOG_NOT_MATCHED：当前Avatar的材质目录尚未匹配，请先导入其构建目录");
+                }
+            }
+            if config.port == 9000
+                && s.avatar_catalog.as_ref().is_some_and(|c| {
+                    c.capabilities
+                        .iter()
+                        .any(|v| v == morphforge_core::mf6::REGION_CAPABILITY)
+                })
+                && (declared.is_none() || s.discovery["info"]["region8"] != true)
+            {
+                bail!("AVATAR_REGION_NOT_CONFIRMED：请更新/重新切换头像并识别能力后使用区域编码");
+            }
             if config.profile == "mf6"
                 && !s
                     .avatar_catalog
@@ -255,22 +285,6 @@ impl Transport {
                     bail!("PROTOCOL_MISMATCH：目标头像使用 {target}，请切换对应发送协议");
                 }
             }
-            if config.profile == "mf5"
-                && !s
-                    .avatar_catalog
-                    .as_ref()
-                    .is_some_and(crate::target::AvatarCatalog::runtime_materials)
-            {
-                bail!("MF5_CATALOG_REQUIRED：请载入MF5配套目标目录");
-            }
-            if config.profile == "mf4"
-                && !s
-                    .avatar_catalog
-                    .as_ref()
-                    .is_some_and(crate::target::AvatarCatalog::wide_protocol)
-            {
-                bail!("MF4_CATALOG_REQUIRED：请载入MF4配套目标目录");
-            }
         }
         if config.enabled && !s.avatar_catalog_error.is_empty() {
             bail!("MATERIAL_CATALOG_INVALID：{}", s.avatar_catalog_error);
@@ -287,16 +301,16 @@ impl Transport {
         }
         s.config = config;
         if restart {
+            s.queued_frame_estimate = None;
+            s.unified.region_enabled = s.avatar_catalog.as_ref().is_some_and(|c| {
+                c.capabilities
+                    .iter()
+                    .any(|v| v == morphforge_core::mf6::REGION_CAPABILITY)
+            });
             s.generation += 1;
-            s.repair_seen = None;
-            s.sent.clear();
-            s.lanes.clear();
-            s.wide_seqs = [1; 3];
             s.seq = 1;
             s.unified.clear_sent();
-            s.wire_sent.clear();
             s.sent_revision = None;
-            s.brush = None;
             s.resets = 2;
             s.last_error.clear();
             s.controls.clear();
@@ -306,9 +320,7 @@ impl Transport {
                 .insert("MF_Handle".into(), Control::Bool(c.visible));
             s.controls
                 .insert("MF_Scale".into(), Control::Float(c.scale));
-            if c.profile != "mf2" {
-                s.controls.insert("MF_Level".into(), Control::Bool(c.level));
-            }
+            s.controls.insert("MF_Level".into(), Control::Bool(c.level));
             validate_scene(
                 &workspace.project.scene,
                 s.config.capacity,
@@ -374,11 +386,15 @@ impl Transport {
         catalog: Option<crate::target::AvatarCatalog>,
         root: &std::path::Path,
     ) -> Result<()> {
+        if catalog.as_ref().is_some_and(|c| !c.unified_protocol()) {
+            bail!("旧OSC协议已移除；需要统一240bit头像目录");
+        }
         let mut s = self.inner.lock().unwrap();
         if s.config.enabled {
             bail!("请先停止OSC发送，再更换Avatar目录");
         }
         if let Some(ref c) = catalog {
+            crate::avatar_discovery::cache(root, c)?;
             crate::store::write_json(&root.join("avatar-catalog.json"), c)?;
         } else {
             let p = root.join("avatar-catalog.json");
@@ -404,33 +420,141 @@ impl Transport {
             state.avatar_catalog.clone()
         };
         let projected = crate::target::project_wire(scene, materials, profile.as_ref())?;
-        self.publish_projection(&projected.scene, projected.surfaces, resync)
+        self.publish_projection(&projected.scene, projected.surfaces, resync, true)
     }
     pub fn publish(&self, scene: &Scene, resync: bool) -> Result<Value> {
-        self.publish_projection(scene, BTreeMap::new(), resync)
+        self.publish_projection(scene, BTreeMap::new(), resync, true)
+    }
+    pub fn publish_for_repair(
+        &self,
+        scene: &Scene,
+        materials: &[morphforge_core::materials::Material],
+    ) -> Result<Value> {
+        let catalog = self.inner.lock().unwrap().avatar_catalog.clone();
+        let projected = crate::target::project_wire(scene, materials, catalog.as_ref())?;
+        let signature = source_signature(&projected.scene, &projected.surfaces)?;
+        let same = self.inner.lock().unwrap().source_signature == signature;
+        if !same {
+            self.publish_projection(&projected.scene, projected.surfaces, false, false)?;
+        }
+        self.repair()
     }
     fn publish_projection(
         &self,
         scene: &Scene,
         surfaces: BTreeMap<protocol::GeometryKey, morphforge_core::material_wire::Surface>,
         resync: bool,
+        allow_auto: bool,
     ) -> Result<Value> {
+        let signature = source_signature(scene, &surfaces)?;
         let mut s = self.inner.lock().unwrap();
         validate_scene(scene, s.config.capacity, &s.config.profile)?;
-        if s.config.profile == "mf6" {
-            s.unified.set_target(scene, &surfaces)?;
+        let regions = s.avatar_catalog.as_ref().is_some_and(|c| {
+            c.capabilities
+                .iter()
+                .any(|v| v == morphforge_core::mf6::REGION_CAPABILITY)
+        });
+        let mut original = s.unified.clone();
+        original.region_enabled = regions;
+        original.set_target(scene, &surfaces)?;
+        let policy = if resync {
+            "rebuild"
+        } else if !allow_auto {
+            "incremental"
+        } else {
+            &s.config.publish_strategy
+        };
+        let mut decision = strategy::compare(
+            &original,
+            &s.config.send_order,
+            s.config.interval,
+            s.resets as usize,
+            policy,
+        );
+        let catalog = s.avatar_catalog.as_ref();
+        let (compact_scene, compact_surfaces) =
+            compact::candidate(scene, &surfaces, |b, surface, axis| {
+                if surface.mode == 1 {
+                    return true;
+                }
+                if surface.mode == 2 {
+                    return surface.decode().is_some_and(|v| v.opacity >= 1.);
+                }
+                if surface.mode != 0 && surface.mode != 7 {
+                    return false;
+                }
+                let id = morphforge_core::material_wire::bits(surface.bytes) & 4095;
+                let Some(m) = catalog.and_then(|c| c.materials.iter().find(|m| m.id == id)) else {
+                    return false;
+                };
+                if m.opacity < 1.
+                    || m.render_mode != "opaque"
+                    || ["water", "cloud"].contains(&m.family.as_str())
+                {
+                    return false;
+                }
+                if m.textures.is_empty() {
+                    return true;
+                }
+                if m.texture_scale <= 0. {
+                    return false;
+                }
+                let periods = b.size[axis] as f32 / m.texture_scale;
+                (periods - periods.round()).abs() < 0.00001
+            });
+        let mut selected_scene = scene.clone();
+        let mut selected_surfaces = surfaces;
+        let mut selected = original;
+        if compact_scene.boxes.len() < scene.boxes.len() {
+            let mut merged = s.unified.clone();
+            merged.region_enabled = regions;
+            merged.set_target(&compact_scene, &compact_surfaces)?;
+            let mut alternative = strategy::compare(
+                &merged,
+                &s.config.send_order,
+                s.config.interval,
+                s.resets as usize,
+                policy,
+            );
+            let cost = |d: &strategy::Decision| {
+                if d.selected == "rebuild" {
+                    d.rebuild_frames
+                } else {
+                    d.incremental_frames
+                }
+            };
+            if cost(&alternative).is_some_and(|v| cost(&decision).is_none_or(|old| v < old)) {
+                alternative.layout = "run_boxes".into();
+                alternative.compacted_boxes = scene.boxes.len() - compact_scene.boxes.len();
+                decision = alternative;
+                selected = merged;
+                selected_scene = compact_scene;
+                selected_surfaces = compact_surfaces;
+            }
         }
-        if s.desired_revision != scene.revision || s.wire_desired != surfaces {
-            // New edits take priority over an in-progress maintenance replay.
-            s.repair_seen = None;
+        if !allow_auto && decision.incremental_frames.is_none() {
+            bail!("保留显示补播无法重新平衡当前池，请使用清空重建");
         }
+        s.unified = selected;
+        s.source_signature = signature;
+        if allow_auto && decision.selected == "rebuild" {
+            s.resets = s.resets.max(2);
+            s.sent_revision = None;
+        }
+        let frames = if decision.selected == "rebuild" {
+            decision.rebuild_frames
+        } else {
+            decision.incremental_frames
+        };
+        s.queued_frame_estimate = frames.map(|n| (s.sent_frame_count, n));
+        s.publication = Some(decision);
+        let scene = &selected_scene;
+        let surfaces = selected_surfaces;
         s.wire_desired = surfaces;
         s.desired = scene.boxes.clone();
         s.desired_revision = scene.revision;
         if resync {
-            s.repair_seen = None;
             s.resets = s.resets.max(2);
-            s.brush = None;
             s.sent_revision = None;
         }
         drop(s);
@@ -440,14 +564,10 @@ impl Transport {
     /// This is blind repair, never a receiver acknowledgement.
     pub fn repair(&self) -> Result<Value> {
         let mut s = self.inner.lock().unwrap();
-        if !["mf5", "mf6"].contains(&s.config.profile.as_str()) {
-            bail!("补播需要MF5/MF6头像；旧协议请使用清空并重建");
-        }
-        if s.config.profile == "mf6" {
-            s.unified.start_replay();
-        } else {
-            s.repair_seen = Some(BTreeSet::new());
-        }
+        s.unified.start_replay();
+        s.queued_frame_estimate = strategy::frames(s.unified.clone(), &s.config.send_order)
+            .ok()
+            .map(|n| (s.sent_frame_count, n + s.resets as usize));
         s.sent_revision = None;
         s.last_refresh = Instant::now();
         drop(s);
@@ -465,7 +585,7 @@ impl Transport {
             .map(|v| v.as_f64().context("缩放须为数字"))
             .transpose()?;
         if scale.is_some_and(|f| !f.is_finite() || !scale_valid(f as f32, &self.config().profile)) {
-            bail!("缩放超出当前头像范围：MF5为.0005.. .5（新1%..1000%），旧协议为.05..1")
+            bail!("缩放范围为1%..1000%（实际scale .0005.. .5）")
         }
         let mut s = self.inner.lock().unwrap();
         for (key, b) in updates {
@@ -496,6 +616,11 @@ impl Transport {
         Ok(self.state())
     }
     fn worker(&self, workspace: Arc<Mutex<Workspace>>) {
+        enum Job {
+            Frame(unified::Plan),
+            Controls(Vec<(String, Control)>),
+            Pulse(u8),
+        }
         let mut channel: Option<(fs::File, UdpSocket, u64)> = None;
         let mut next = Instant::now();
         loop {
@@ -514,7 +639,7 @@ impl Transport {
                 self.inner.lock().unwrap().connected = false;
             }
             if !enabled {
-                std::thread::sleep(Duration::from_millis(30));
+                std::thread::sleep(Duration::from_millis(20));
                 continue;
             }
             if channel.is_none() {
@@ -533,15 +658,12 @@ impl Transport {
                         .open(directory.join("stage1-osc.lock"))?;
                     file.try_lock_exclusive()
                         .context("另一进程正在占用OSC通道")?;
-                    let socket = UdpSocket::bind("127.0.0.1:0")?;
-                    Ok((file, socket, generation))
+                    Ok((file, UdpSocket::bind("127.0.0.1:0")?, generation))
                 })();
                 match result {
                     Ok(c) => {
                         channel = Some(c);
-                        let mut s = self.inner.lock().unwrap();
-                        s.connected = true;
-                        s.last_error.clear();
+                        self.inner.lock().unwrap().connected = true;
                     }
                     Err(e) => {
                         let mut s = self.inner.lock().unwrap();
@@ -555,168 +677,85 @@ impl Transport {
                 std::thread::sleep(Duration::from_millis(5));
                 continue;
             }
-            enum Job {
-                Unified(unified::Plan),
-                Batch(Vec<(usize, Command)>),
-                Command(Command),
-                Controls(Vec<(String, Control)>),
-                Pulse(u8),
-            }
             let mut s = self.inner.lock().unwrap();
-            if !s.config.enabled || channel.as_ref().is_none_or(|(_, _, g)| *g != s.generation) {
+            if !s.config.enabled || s.generation != generation {
                 continue;
             }
-            let job = {
-                if (!s.desired.is_empty()
-                    || (s.config.profile == "mf6" && s.unified.has_replay_work()))
+            let job = if s.resets > 0 {
+                Some(Job::Frame(unified::Plan {
+                    frame: morphforge_core::mf6::Frame::Clear,
+                    actions: vec![],
+                }))
+            } else if s.reset_pulse > 0 {
+                Some(Job::Pulse(s.reset_pulse))
+            } else if !s.controls.is_empty() {
+                Some(Job::Controls(
+                    s.controls
+                        .iter()
+                        .map(|(k, v)| (k.clone(), v.clone()))
+                        .collect(),
+                ))
+            } else {
+                // A replay starts only after the previous complete target was
+                // sent. Looping never adds an implicit Clear.
+                let should_refresh = s.sent_revision == Some(s.desired_revision)
+                    && !s.unified.repairing()
+                    && s.unified.has_replay_work()
                     && (s.config.loop_replay
                         || (s.config.refresh_seconds > 0
-                            && s.last_refresh.elapsed().as_secs() >= s.config.refresh_seconds))
-                    && s.sent_revision == Some(s.desired_revision)
-                {
-                    if s.config.profile == "mf6" {
-                        s.unified.start_replay();
-                    } else if s.config.profile == "mf5" {
-                        s.repair_seen = Some(BTreeSet::new());
-                    } else {
-                        s.resets = 2;
-                    }
+                            && s.last_refresh.elapsed().as_secs() >= s.config.refresh_seconds));
+                if should_refresh {
+                    s.unified.start_replay();
+                    s.queued_frame_estimate =
+                        strategy::frames(s.unified.clone(), &s.config.send_order)
+                            .ok()
+                            .map(|n| (s.sent_frame_count, n));
                     s.sent_revision = None;
                     s.last_refresh = Instant::now();
                 }
-                if s.resets > 0 {
-                    Some(if s.config.profile == "mf6" {
-                        Job::Unified(unified::Plan {
-                            frame: morphforge_core::mf6::Frame::Clear,
-                            actions: vec![],
-                        })
-                    } else if ["mf4", "mf5"].contains(&s.config.profile.as_str()) {
-                        Job::Batch(
-                            (0..protocol::WIDE_LANES)
-                                .map(|i| {
-                                    (
-                                        if s.config.profile == "mf5" { i * 2 } else { i },
-                                        Command::Clear,
-                                    )
-                                })
-                                .collect(),
-                        )
-                    } else {
-                        Job::Command(Command::Clear)
-                    })
-                } else if s.reset_pulse > 0 {
-                    Some(Job::Pulse(s.reset_pulse))
-                } else if !s.controls.is_empty() {
-                    Some(Job::Controls(
-                        s.controls
-                            .iter()
-                            .map(|(k, v)| (k.clone(), v.clone()))
-                            .collect(),
-                    ))
-                } else {
-                    let command = if s.config.profile == "mf6" {
-                        match s.unified.next(&s.config.send_order) {
-                            Ok(plan) => plan.map(Job::Unified),
-                            Err(error) => {
-                                s.config.enabled = false;
-                                s.last_error = error.to_string();
-                                continue;
-                            }
-                        }
-                    } else if ["mf4", "mf5"].contains(&s.config.profile.as_str()) {
-                        let batch: Vec<_> = wide_queues(&s, &s.sent)
-                            .into_iter()
-                            .enumerate()
-                            .filter_map(|(i, q)| {
-                                q.into_iter().next().map(|(secondary, c)| {
-                                    (
-                                        if s.config.profile == "mf5" {
-                                            i * 2 + secondary
-                                        } else {
-                                            i
-                                        },
-                                        c,
-                                    )
-                                })
-                            })
-                            .collect();
-                        if batch.is_empty() {
-                            None
-                        } else {
-                            Some(Job::Batch(batch))
-                        }
-                    } else {
-                        protocol::plan(&s.sent, &s.desired, s.brush, s.config.profile == "mf2")
-                            .into_iter()
-                            .next()
-                            .map(Job::Command)
-                    };
-                    if command.is_none() {
-                        if s.repair_seen.is_some() || s.unified.repairing() {
+                match s.unified.next(&s.config.send_order) {
+                    Ok(Some(plan)) => Some(Job::Frame(plan)),
+                    Ok(None) => {
+                        if s.unified.repairing() {
                             s.replay_cycles += 1;
+                            s.unified.finish_replay();
                         }
-                        s.repair_seen = None;
-                        s.unified.finish_replay();
                         if s.sent_revision != Some(s.desired_revision) {
                             s.last_refresh = Instant::now();
                         }
                         s.sent_revision = Some(s.desired_revision);
+                        None
                     }
-                    command
+                    Err(e) => {
+                        s.config.enabled = false;
+                        s.last_error = e.to_string();
+                        continue;
+                    }
                 }
             };
             let Some(job) = job else {
                 drop(s);
-                std::thread::sleep(Duration::from_millis(20));
+                std::thread::sleep(Duration::from_millis(10));
                 continue;
             };
-            let (seq, port, interval, legacy) = (
-                s.seq,
-                s.config.port,
-                s.config.interval,
-                s.config.profile == "mf2",
-            );
+            let seq = s.seq;
+            let port = s.config.port;
+            let interval = s.config.interval;
             let encoded = match &job {
-                Job::Unified(plan) => plan.frame.packet(seq),
-                Job::Command(c) => protocol::packet(c, seq, legacy),
-                Job::Batch(batch) => batch
-                    .iter()
-                    .try_fold(Vec::new(), |mut values, (lane, c)| {
-                        values.extend(if s.config.profile == "mf5" {
-                            let surface = command_box(c)
-                                .map(|b| surface_for(&s, b))
-                                .unwrap_or_else(|| {
-                                    morphforge_core::material_wire::Surface::catalog(0, 0, 0)
-                                });
-                            protocol::mf5_pool_values(
-                                c,
-                                s.wide_seqs[*lane / 2],
-                                *lane / 2,
-                                surface,
-                                *lane % 2 == 1,
-                            )?
-                        } else {
-                            protocol::wide_values(c, s.wide_seqs[*lane], *lane)?
-                        });
-                        Ok(values)
-                    })
-                    .map(|values| protocol::bundle(&values)),
-                Job::Controls(v) => Ok(protocol::bundle(
-                    &v.iter()
-                        .map(|(k, v)| {
+                Job::Frame(p) => p.frame.packet(seq),
+                Job::Controls(values) => Ok(protocol::bundle(
+                    &values
+                        .iter()
+                        .map(|(name, value)| {
                             (
-                                k.clone(),
-                                match v {
-                                    Control::Bool(b) => OscValue::Bool(*b),
-                                    Control::Float(f) => OscValue::Float(
-                                        if k == "MF_Scale"
-                                            && ["mf5", "mf6"].contains(&s.config.profile.as_str())
-                                        {
-                                            morphforge_core::material_wire::scale_wire(*f)
-                                        } else {
-                                            *f
-                                        },
-                                    ),
+                                name.clone(),
+                                match value {
+                                    Control::Bool(v) => OscValue::Bool(*v),
+                                    Control::Float(v) => OscValue::Float(if name == "MF_Scale" {
+                                        morphforge_core::material_wire::scale_wire(*v)
+                                    } else {
+                                        *v
+                                    }),
                                 },
                             )
                         })
@@ -725,141 +764,50 @@ impl Transport {
                 Job::Pulse(p) => {
                     let mut v = vec![("MF_Reset".into(), OscValue::Bool(*p == 2))];
                     if *p == 2 {
-                        if legacy {
-                            v.push(("MF_Grab".into(), OscValue::Int(0)))
-                        } else {
-                            v.push(("MF_GrabL".into(), OscValue::Bool(false)));
-                            v.push(("MF_GrabR".into(), OscValue::Bool(false)));
-                        }
+                        v.push(("MF_GrabL".into(), OscValue::Bool(false)));
+                        v.push(("MF_GrabR".into(), OscValue::Bool(false)));
                     }
                     Ok(protocol::bundle(&v))
                 }
             };
-            let result = encoded.map_err(anyhow::Error::from).and_then(|bytes| {
-                let n = channel
+            let sent = encoded.map_err(anyhow::Error::from).and_then(|bytes| {
+                Ok(channel
                     .as_ref()
                     .unwrap()
                     .1
-                    .send_to(&bytes, ("127.0.0.1", port))?;
-                Ok(n)
+                    .send_to(&bytes, ("127.0.0.1", port))?)
             });
-            match result {
-                Err(e) => {
-                    s.config.enabled = false;
-                    s.last_error = e.to_string();
-                    continue;
-                }
-                Ok(_) => {
-                    s.sent_count += 1;
-                }
+            if let Err(e) = sent {
+                s.config.enabled = false;
+                s.last_error = e.to_string();
+                continue;
             }
-            match &job {
-                Job::Unified(plan) => {
+            s.sent_count += 1;
+            let event = match &job {
+                Job::Frame(p) => {
+                    s.sent_frame_count += 1;
                     s.seq = (seq + 1) % 16;
-                    if matches!(plan.frame, morphforge_core::mf6::Frame::Clear) {
+                    if matches!(p.frame, morphforge_core::mf6::Frame::Clear) {
                         s.unified.clear_sent();
-                        s.sent.clear();
-                        s.lanes.clear();
-                        s.wire_sent.clear();
                         s.sent_revision = None;
                         s.resets = s.resets.saturating_sub(1);
                     } else {
-                        s.unified.commit(plan);
+                        s.unified.commit(p);
                     }
+                    json!({"seq":seq,"port":port,"protocol":"mf6","objects":p.frame.objects(),"frame":p.frame})
                 }
-                Job::Batch(batch) => {
-                    for (lane, _) in batch {
-                        let index = if s.config.profile == "mf5" {
-                            *lane / 2
-                        } else {
-                            *lane
-                        };
-                        s.wide_seqs[index] = (s.wide_seqs[index] + 1)
-                            % if s.config.profile == "mf5" { 8 } else { 16 };
-                    }
-                    let clear = batch.iter().any(|(_, c)| matches!(c, Command::Clear));
-                    if clear {
-                        s.sent.clear();
-                        s.lanes.clear();
-                        s.wire_sent.clear();
-                        s.sent_revision = None;
-                        s.brush = None;
-                        s.resets = s.resets.saturating_sub(1);
-                    } else {
-                        for (lane, c) in batch {
-                            match c {
-                                Command::Remove { value } => {
-                                    s.sent.retain(|b| key(b) != key(value));
-                                    s.lanes.remove(&key(value));
-                                    s.wire_sent.remove(&key(value));
-                                }
-                                Command::Box { value } | Command::Voxel { value } => {
-                                    s.sent.retain(|b| key(b) != key(value));
-                                    s.sent.push(value.clone());
-                                    if let Some(seen) = &mut s.repair_seen {
-                                        seen.insert(key(value));
-                                    }
-                                    s.lanes.insert(key(value), *lane);
-                                    let surface = surface_for(&s, value);
-                                    s.wire_sent.insert(key(value), surface);
-                                }
-                                Command::Pair { first, second } => {
-                                    for (offset, value) in [first, second].into_iter().enumerate() {
-                                        s.sent.retain(|b| key(b) != key(value));
-                                        s.sent.push(value.clone());
-                                        if let Some(seen) = &mut s.repair_seen {
-                                            seen.insert(key(value));
-                                        }
-                                        s.lanes.insert(key(value), *lane + offset);
-                                        let surface = surface_for(&s, value);
-                                        s.wire_sent.insert(key(value), surface);
-                                    }
-                                }
-                                _ => {}
-                            }
-                        }
-                    }
-                }
-                Job::Command(c) => {
-                    s.seq = (seq + 1) % if legacy { 32 } else { 16 };
-                    match c {
-                        Command::Clear => {
-                            s.sent.clear();
-                            s.sent_revision = None;
-                            s.brush = None;
-                            s.resets = s.resets.saturating_sub(1)
-                        }
-                        Command::Brush {
-                            style,
-                            tint,
-                            motion,
-                        } => s.brush = Some((*style, *tint, *motion)),
-                        Command::Remove { value } => s.sent.retain(|b| key(b) != key(value)),
-                        Command::Box { value } | Command::Voxel { value } => {
-                            s.sent.retain(|b| key(b) != key(value));
-                            s.sent.push(value.clone());
-                            s.brush = Some(appearance(value));
-                        }
-                        Command::Erase { .. } | Command::Pair { .. } => {}
-                    }
-                }
-                Job::Controls(v) => {
-                    for (k, v) in v {
+                Job::Controls(values) => {
+                    for (k, v) in values {
                         if s.controls.get(k) == Some(v) {
                             s.controls.remove(k);
                         }
                     }
+                    json!({"port":port,"placement":true})
                 }
-                Job::Pulse(_) => s.reset_pulse = s.reset_pulse.saturating_sub(1),
-            }
-            let event = match &job {
-                Job::Unified(plan) => {
-                    json!({"seq":seq,"port":port,"protocol":"mf6","objects":plan.frame.objects(),"frame":plan.frame})
+                Job::Pulse(_) => {
+                    s.reset_pulse = s.reset_pulse.saturating_sub(1);
+                    json!({"port":port,"resetPulse":true})
                 }
-                Job::Command(c) => json!({"seq":seq,"port":port,"command":c}),
-                Job::Batch(batch) => json!({"seq":seq,"port":port,"lanes":batch}),
-                Job::Controls(_) => json!({"port":port,"placement":true}),
-                Job::Pulse(_) => json!({"port":port,"resetPulse":true}),
             };
             drop(s);
             if let Ok(mut w) = workspace.lock() {
@@ -867,201 +815,35 @@ impl Transport {
             }
             next = Instant::now() + Duration::from_secs_f64(interval);
         }
-        // Release the exclusive OSC lease before reporting shutdown complete.
         drop(channel);
         self.inner.lock().unwrap().connected = false;
     }
 }
-
-fn scale_valid(v: f32, profile: &str) -> bool {
-    if ["mf5", "mf6"].contains(&profile) {
-        (morphforge_core::material_wire::SCALE_MIN..=morphforge_core::material_wire::SCALE_MAX)
-            .contains(&v)
-    } else {
-        (0.05..=1.).contains(&v)
-    }
+fn source_signature(
+    scene: &Scene,
+    surfaces: &BTreeMap<protocol::GeometryKey, morphforge_core::material_wire::Surface>,
+) -> Result<String> {
+    Ok(crate::store::hash(&serde_json::to_vec(&(
+        scene,
+        surfaces.iter().collect::<Vec<_>>(),
+    ))?))
 }
-fn command_box(c: &Command) -> Option<&Box3> {
-    match c {
-        Command::Box { value } | Command::Voxel { value } => Some(value),
-        Command::Pair { first, .. } => Some(first),
-        _ => None,
-    }
+fn scale_valid(value: f32, _profile: &str) -> bool {
+    (morphforge_core::material_wire::SCALE_MIN..=morphforge_core::material_wire::SCALE_MAX)
+        .contains(&value)
 }
-fn surface_for(s: &State, b: &Box3) -> morphforge_core::material_wire::Surface {
-    s.wire_desired.get(&key(b)).copied().unwrap_or_else(|| {
-        morphforge_core::material_wire::Surface::catalog(b.style_id, b.tint_id, b.motion_phase)
-    })
-}
-fn wide_queues(s: &State, sent: &[Box3]) -> [Vec<(usize, Command)>; 3] {
-    if s.config.profile != "mf5" {
-        return protocol::wide_plan(sent, &s.desired, &s.lanes)
-            .map(|v| v.into_iter().map(|c| (0, c)).collect());
-    }
-    let mut pools = protocol::pool_plan_by::<6>(sent, &s.desired, &s.lanes, |a, b| {
-        (s.repair_seen
-            .as_ref()
-            .is_none_or(|seen| seen.contains(&key(a))))
-            && s.wire_sent.get(&key(a)).copied().unwrap_or_else(|| {
-                morphforge_core::material_wire::Surface::catalog(
-                    a.style_id,
-                    a.tint_id,
-                    a.motion_phase,
-                )
-            }) == surface_for(s, b)
-    });
-    let deleting = pools
-        .iter()
-        .flatten()
-        .any(|c| matches!(c, Command::Remove { .. } | Command::Erase { .. }));
-    for queue in &mut pools {
-        if deleting {
-            queue.retain(|c| matches!(c, Command::Remove { .. } | Command::Erase { .. }));
-        }
-        queue.sort_by_key(|c| {
-            let b = match c {
-                Command::Remove { value } | Command::Erase { value } => Some(value),
-                _ => command_box(c),
-            };
-            let volume = b.map(Box3::volume).unwrap_or(0);
-            let pos = b
-                .map(|b| (b.min[1], b.min[0], b.min[2]))
-                .unwrap_or_default();
-            let surface = b
-                .map(|b| surface_for(s, b))
-                .unwrap_or_else(|| morphforge_core::material_wire::Surface::catalog(0, 0, 0));
-            match s.config.send_order.as_str() {
-                "material" => (
-                    ((surface.mode as u64) << 24)
-                        | morphforge_core::material_wire::bits(surface.bytes) as u64,
-                    pos.0,
-                    pos.1,
-                    pos.2,
-                    u64::MAX - volume,
-                ),
-                "bottom_up" => (0, pos.0, pos.1, pos.2, u64::MAX - volume),
-                _ => (u64::MAX - volume, pos.0, pos.1, pos.2, 0),
-            }
-        });
-    }
-    let paired = s
-        .avatar_catalog
-        .as_ref()
-        .is_some_and(|c| c.capabilities.iter().any(|v| v == "mf5-dual-pool/1"));
-    std::array::from_fn(|lane| {
-        let mut a = std::collections::VecDeque::from(std::mem::take(&mut pools[lane * 2]));
-        let mut b = std::collections::VecDeque::from(std::mem::take(&mut pools[lane * 2 + 1]));
-        let mut out = Vec::new();
-        let mut next = false;
-        while !a.is_empty() || !b.is_empty() {
-            if paired {
-                if s.config.send_order == "material" {
-                    if let Some(Command::Voxel { value: first }) = a.front() {
-                        let surface = surface_for(s, first);
-                        if surface.mode <= 2 {
-                            if let Some(index) = b.iter().take(16).position(
-                            |c| matches!(c,Command::Voxel{value} if surface_for(s,value)==surface),
-                        ) {
-                            if index > 0 {
-                                let candidate = b.remove(index).unwrap();
-                                b.push_front(candidate);
-                            }
-                        }
-                        }
-                    }
-                }
-                if let (
-                    Some(Command::Voxel { value: first }),
-                    Some(Command::Voxel { value: second }),
-                ) = (a.front(), b.front())
-                {
-                    let surface = surface_for(s, first);
-                    if surface.mode <= 2 && surface == surface_for(s, second) {
-                        out.push((
-                            0,
-                            Command::Pair {
-                                first: first.clone(),
-                                second: second.clone(),
-                            },
-                        ));
-                        a.pop_front();
-                        b.pop_front();
-                        continue;
-                    }
-                }
-            }
-            let secondary = if a.is_empty() {
-                true
-            } else if b.is_empty() {
-                false
-            } else if a.len() == b.len() {
-                next = !next;
-                next
-            } else {
-                b.len() > a.len()
-            };
-            out.push((
-                usize::from(secondary),
-                if secondary {
-                    b.pop_front().unwrap()
-                } else {
-                    a.pop_front().unwrap()
-                },
-            ));
-        }
-        out
-    })
-}
-fn validate_scene(scene: &Scene, capacity: usize, profile: &str) -> Result<()> {
-    if profile != "mf6" && !scene.triangles.is_empty() {
-        bail!("TRIANGLE_PROTOCOL_REQUIRED：三角面需要MF6头像，旧协议不会静默丢弃三角面");
-    }
-    if !["mf5", "mf6"].contains(&profile) {
-        return Ok(protocol::validate_target(scene, capacity)?);
-    }
+fn validate_scene(scene: &Scene, capacity: usize, _profile: &str) -> Result<()> {
     if scene.boxes.len() + scene.triangles.len() > capacity {
-        bail!("MF5容量超限：{capacity} Box");
+        bail!("MF6容量超限：{capacity}对象")
     }
     for t in &scene.triangles {
         t.wire_vertices()?;
     }
     for b in &scene.boxes {
-        if profile != "mf6" && b.shape != 0 {
-            bail!("SHAPE_PROTOCOL_REQUIRED：体素斜面需要MF6头像");
-        }
         protocol::validate_geometry(b)?;
-        if b.tint_id > 63 || b.motion_phase > 63 {
-            bail!("染色/运动编码须在0..63");
+        if b.shape > 4 || b.tint_id > 63 || b.motion_phase > 63 {
+            bail!("几何模板/染色/运动编码越界")
         }
     }
     Ok(())
-}
-
-#[cfg(test)]
-mod order_tests {
-    use super::*;
-    #[test]
-    fn per_pool_volume_and_bottom_up_orders_are_deterministic() {
-        let dir = tempfile::tempdir().unwrap();
-        let w = Arc::new(Mutex::new(Workspace::open(dir.path().into()).unwrap()));
-        let t = Transport::new(w);
-        let mut s = t.inner.lock().unwrap();
-        s.stop = true;
-        s.config.profile = "mf5".into();
-        let large = Box3::new([0, 20, 0], [8, 8, 8], 1);
-        let small = Box3::new([0, 0, 0], [1; 3], 1);
-        let other = Box3::new([10, 0, 0], [1; 3], 1);
-        s.sent = vec![small.clone(), large.clone(), other.clone()];
-        s.desired = s.sent.clone();
-        s.lanes = [(key(&small), 0), (key(&large), 0), (key(&other), 0)]
-            .into_iter()
-            .collect();
-        s.repair_seen = Some(Default::default());
-        let q = wide_queues(&s, &s.sent);
-        assert_eq!(command_box(&q[0][0].1).unwrap().size, [8, 8, 8]);
-        s.config.send_order = "bottom_up".into();
-        let q = wide_queues(&s, &s.sent);
-        assert_eq!(command_box(&q[0][0].1).unwrap().min, [0, 0, 0]);
-        assert_eq!(command_box(&q[0][1].1).unwrap().min, [10, 0, 0]);
-    }
 }

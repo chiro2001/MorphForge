@@ -275,25 +275,24 @@ fn attach_capture_to_the_next_request(h: &Harness, artifact: &str) {
 fn inert_transport() -> Transport {
     Transport {
         inner: Arc::new(Mutex::new(TransportState {
+            publication: None,
+            discovery: json!({}),
             avatar_catalog: None,
             avatar_catalog_error: String::new(),
             config: Connection::default(),
-            sent: vec![],
             desired: vec![],
             desired_revision: 0,
+            source_signature: String::new(),
             sent_revision: None,
             seq: 0,
-            wide_seqs: [1; 3],
-            lanes: Default::default(),
             unified: Default::default(),
-            wire_sent: Default::default(),
             wire_desired: Default::default(),
-            repair_seen: None,
-            brush: None,
             resets: 0,
             connected: false,
             last_error: String::new(),
             sent_count: 0,
+            sent_frame_count: 0,
+            queued_frame_estimate: None,
             replay_cycles: 0,
             generation: 0,
             controls: BTreeMap::<String, Control>::new(),
@@ -2415,4 +2414,45 @@ async fn cache_readiness_is_invalidated_only_when_prompt_or_provider_semantics_c
     h.configure(&json!({"model":"another-model"})).unwrap();
     assert!(h.state()["cacheMonitor"]["lastCachedTokens"].is_null());
     assert_eq!(fake.request_count(), 1);
+}
+
+#[tokio::test]
+async fn mf6_harness_repair_and_loop_replay_use_current_protocol_without_clear() {
+    let root = tempfile::tempdir().unwrap();
+    let workspace = Arc::new(Mutex::new(Workspace::open(root.path().into()).unwrap()));
+    let h = harness(workspace.clone(), "http://127.0.0.1:9");
+    let catalog = morphforge_app::target::AvatarCatalog::from_bytes(include_bytes!(
+        "../../../materials/mf6/catalog.json"
+    ))
+    .unwrap();
+    h.transport.set_catalog(Some(catalog), root.path()).unwrap();
+    {
+        let mut w = workspace.lock().unwrap();
+        w.apply(
+            &[Operation::Box {
+                value: Box3::new([0; 3], [2; 3], 1),
+            }],
+            Some(0),
+            None,
+            None,
+        )
+        .unwrap();
+        w.commit(None, "补播回归", None).unwrap();
+    }
+    h.transport.inner.lock().unwrap().config.publish_strategy = "rebuild".into();
+    let result = h
+        .tool("publish", &json!({"repair":true,"loopReplay":true}), None)
+        .await
+        .unwrap();
+    assert_eq!(result["repairing"], true);
+    assert_eq!(h.transport.inner.lock().unwrap().resets, 0);
+    assert_eq!(result["publication"]["selected"], "incremental");
+    assert!(h.transport.config().loop_replay);
+    assert!(!h.transport.config().enabled);
+    let before = h.transport.state();
+    assert!(h
+        .tool("publish", &json!({"repair":true,"resync":true}), None)
+        .await
+        .is_err());
+    assert_eq!(h.transport.state()["pending"], before["pending"]);
 }

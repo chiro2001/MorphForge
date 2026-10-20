@@ -8,8 +8,8 @@ use std::path::Path;
 
 use crate::store::Workspace;
 
-const MAX_ZIP_BYTES: usize = 64 * 1024 * 1024;
-const MAX_ZIP_ENTRIES: usize = 16_384;
+const MAX_ZIP_BYTES: usize = 128 * 1024 * 1024;
+const MAX_ZIP_ENTRIES: usize = 131_072;
 const MAX_ENTRY_BYTES: u64 = 16 * 1024 * 1024;
 const MAX_TOTAL_BYTES: u64 = 256 * 1024 * 1024;
 const MAX_PATH_BYTES: usize = 512;
@@ -71,7 +71,14 @@ impl TextureAsset {
     }
 }
 
+#[derive(Clone)]
+struct FaceLayer {
+    texture: String,
+    tint: bool,
+    rotation: u32,
+}
 struct ResolvedModel {
+    layers: Option<Vec<Vec<FaceLayer>>>,
     archetype: String,
     textures: BTreeMap<String, String>,
 }
@@ -136,6 +143,7 @@ fn model_path(path: &str) -> Option<(String, String)> {
 
 fn wanted_entry(path: &str) -> bool {
     path == "pack.mcmeta"
+        || path == "version.json"
         || texture_path(path).is_some()
         || model_path(path).is_some()
         || (path.starts_with("assets/")
@@ -163,7 +171,7 @@ fn safe_entry_path(name: &str) -> Result<String> {
 type PackFiles = BTreeMap<String, Vec<u8>>;
 fn read_pack(bytes: &[u8]) -> Result<(PackFiles, Vec<String>)> {
     if bytes.len() > MAX_ZIP_BYTES {
-        bail!("资源包压缩文件超过64MiB");
+        bail!("资源包压缩文件超过128MiB");
     }
     let mut archive = zip::ZipArchive::new(Cursor::new(bytes)).context("无法读取资源包ZIP")?;
     if archive.len() > MAX_ZIP_ENTRIES {
@@ -490,6 +498,8 @@ fn resolve_model(
     let mut current = uid.to_owned();
     let mut seen = BTreeSet::new();
     let mut archetype = None;
+    let mut cube_faces: Option<BTreeMap<String, String>> = None;
+    let mut face_layers = None;
     for _ in 0..MAX_MODEL_PARENT_DEPTH {
         if !seen.insert(current.clone()) {
             warning(warnings, format!("模型父链循环：{uid}"));
@@ -499,15 +509,52 @@ fn resolve_model(
             archetype = Some(current.clone());
             break;
         };
-        if model
+        if let Some(elements) = model
             .get("elements")
             .and_then(Value::as_array)
-            .is_some_and(|elements| !elements.is_empty())
+            .filter(|e| !e.is_empty())
         {
-            warning(
-                warnings,
-                format!("暂不支持含自定义elements的模型：{current}"),
-            );
+            // Official Java packs include the cube template itself. Accept its
+            // full 16³ cuboid and six texture references; reject non-cube custom
+            // geometry instead of silently treating stairs/doors as cubes.
+            if elements.len() <= 4
+                && elements.iter().all(|e| {
+                    e["from"] == json!([0, 0, 0])
+                        && e["to"] == json!([16, 16, 16])
+                        && e.get("rotation").is_none()
+                })
+            {
+                let layers = ["east", "west", "up", "down", "south", "north"]
+                    .into_iter()
+                    .map(|face| {
+                        elements
+                            .iter()
+                            .filter_map(|e| e["faces"].get(face))
+                            .map(|f| {
+                                Some(FaceLayer {
+                                    texture: f["texture"].as_str()?.into(),
+                                    tint: f["tintindex"].is_number(),
+                                    rotation: f["rotation"].as_u64().unwrap_or(0) as u32,
+                                })
+                            })
+                            .collect::<Option<Vec<_>>>()
+                    })
+                    .collect::<Option<Vec<_>>>();
+                if let Some(layers) = layers.filter(|l| l.iter().all(|f| !f.is_empty())) {
+                    cube_faces = Some(
+                        ["east", "west", "up", "down", "south", "north"]
+                            .into_iter()
+                            .zip(layers.iter())
+                            .map(|(f, l)| (f.to_string(), l[0].texture.clone()))
+                            .collect(),
+                    );
+                    face_layers = Some(layers);
+                    archetype = Some("minecraft:block/cube".into());
+                    chain.push(model.clone());
+                    break;
+                }
+            }
+            warning(warnings, format!("未展开非整立方体elements：{current}"));
             return None;
         }
         chain.push(model.clone());
@@ -530,6 +577,13 @@ fn resolve_model(
             }
         }
     }
+    if let Some(faces) = cube_faces {
+        for (face, reference) in faces {
+            if reference != format!("#{face}") {
+                textures.insert(face, reference);
+            }
+        }
+    }
     let archetype = archetype.or_else(|| {
         if textures.contains_key("all") {
             Some("minecraft:block/cube_all".to_owned())
@@ -543,6 +597,7 @@ fn resolve_model(
         }
     })?;
     Some(ResolvedModel {
+        layers: face_layers,
         archetype,
         textures,
     })
@@ -617,8 +672,15 @@ fn blend_pixel(current: Rgba<u8>, next: Rgba<u8>, fraction: f32) -> Rgba<u8> {
 }
 
 fn bake_texture(workspace: &mut Workspace, asset: &TextureAsset, ticks: u32) -> Result<String> {
-    if !asset.animated {
-        return workspace.artifact(&asset.original, "png");
+    if !asset.animated && ticks == 1 {
+        if asset.image.width() == asset.image.height() {
+            return workspace.artifact(&asset.original, "png");
+        }
+        let side = asset.image.width().min(asset.image.height());
+        let first = image::imageops::crop_imm(&asset.image, 0, 0, side, side).to_image();
+        let mut encoded = Cursor::new(Vec::new());
+        DynamicImage::ImageRgba8(first).write_to(&mut encoded, ImageFormat::Png)?;
+        return workspace.artifact(encoded.get_ref(), "png");
     }
     let output_height = asset
         .frame_height
@@ -650,6 +712,109 @@ fn bake_texture(workspace: &mut Workspace, asset: &TextureAsset, ticks: u32) -> 
     let mut encoded = Cursor::new(Vec::new());
     DynamicImage::ImageRgba8(output).write_to(&mut encoded, ImageFormat::Png)?;
     workspace.artifact(encoded.get_ref(), "png")
+}
+
+fn bake_face(
+    workspace: &mut Workspace,
+    layers: &[FaceLayer],
+    bindings: &BTreeMap<String, String>,
+    textures: &BTreeMap<String, TextureAsset>,
+    ticks: u32,
+    block: &str,
+) -> Result<String> {
+    let resolved = layers
+        .iter()
+        .map(|l| {
+            let uid = if let Some(key) = l.texture.strip_prefix('#') {
+                resolve_texture_reference(key, bindings).context("分层纹理引用未解析")?
+            } else {
+                canonical_texture(&l.texture)
+            };
+            let asset = textures.get(&uid).context("分层纹理不存在")?;
+            Ok((asset, l))
+        })
+        .collect::<Result<Vec<_>>>()?;
+    let side = resolved
+        .iter()
+        .map(|(a, _)| a.frame_width)
+        .max()
+        .context("空白面")?;
+    if side as u64 * side as u64 * ticks as u64 > MAX_PNG_PIXELS || side * ticks > MAX_PNG_SIDE {
+        bail!("分层纹理尺寸超过限制")
+    }
+    let mut output = RgbaImage::new(side, side * ticks);
+    let tint = if block.contains("spruce") {
+        [97u32, 153, 97]
+    } else if block.contains("birch") {
+        [128, 167, 85]
+    } else if block.contains("leaves") {
+        [119, 171, 47]
+    } else {
+        [145, 189, 89]
+    };
+    for tick in 0..ticks {
+        for y in 0..side {
+            for x in 0..side {
+                let mut result = Rgba([0u8; 4]);
+                for (asset, layer) in &resolved {
+                    let (mut xx, mut yy) =
+                        (x * asset.frame_width / side, y * asset.frame_height / side);
+                    match layer.rotation % 360 {
+                        90 => (xx, yy) = (yy, asset.frame_width - 1 - xx),
+                        180 => {
+                            xx = asset.frame_width - 1 - xx;
+                            yy = asset.frame_height - 1 - yy
+                        }
+                        270 => (xx, yy) = (asset.frame_height - 1 - yy, xx),
+                        _ => {}
+                    }
+                    let (cur, next, fraction) = asset.sample_tick(tick);
+                    let (cx, cy) = asset.source_frame(cur);
+                    let (nx, ny) = asset.source_frame(next);
+                    let mut pixel = blend_pixel(
+                        *asset.image.get_pixel(cx + xx, cy + yy),
+                        *asset.image.get_pixel(nx + xx, ny + yy),
+                        fraction,
+                    );
+                    if layer.tint {
+                        for c in 0..3 {
+                            pixel[c] = ((pixel[c] as u32 * tint[c] + 127) / 255) as u8;
+                        }
+                    }
+                    let alpha = pixel[3] as u32;
+                    let old_alpha = result[3] as u32;
+                    let final_alpha = alpha + (old_alpha * (255 - alpha) + 127) / 255;
+                    for c in 0..3 {
+                        let numerator = pixel[c] as u32 * alpha
+                            + result[c] as u32 * old_alpha * (255 - alpha) / 255
+                            + final_alpha / 2;
+                        if let Some(value) = numerator.checked_div(final_alpha) {
+                            result[c] = value.min(255) as u8;
+                        }
+                    }
+                    result[3] = final_alpha as u8;
+                }
+                output.put_pixel(x, tick * side + y, result);
+            }
+        }
+    }
+    let mut encoded = Cursor::new(Vec::new());
+    DynamicImage::ImageRgba8(output).write_to(&mut encoded, ImageFormat::Png)?;
+    workspace.artifact(encoded.get_ref(), "png")
+}
+
+pub fn alpha_render_mode(name: &str, partial: bool, holes: bool) -> &'static str {
+    if name.contains("water") {
+        "transparent"
+    } else if name.contains("leaves") {
+        "cutout"
+    } else if partial {
+        "transparent"
+    } else if holes {
+        "cutout"
+    } else {
+        "opaque"
+    }
 }
 
 fn material_uid(uid: &str, pack_id: &str) -> String {
@@ -731,8 +896,18 @@ fn import_model_materials(
             continue;
         };
         let mut urls = Vec::with_capacity(6);
+        if let Some(layers) = &model.layers {
+            let block = model_uid.trim_start_matches("minecraft:block/");
+            for face in layers {
+                urls.push(format!(
+                    "/artifacts/{}",
+                    bake_face(workspace, face, &model.textures, textures, ticks, block)?
+                ));
+            }
+        }
+
         let mut failed = false;
-        for asset in &face_assets {
+        for asset in face_assets.iter().filter(|_| model.layers.is_none()) {
             let key = (asset.uid.clone(), ticks);
             let url = if let Some(url) = baked.get(&key) {
                 url.clone()
@@ -762,7 +937,12 @@ fn import_model_materials(
             .unwrap_or(model_uid)
             .trim_start_matches("block/");
         let is_water = block.contains("water");
-        let cutout = block.contains("leaves") || block.contains("glass");
+        let partial = face_assets
+            .iter()
+            .any(|a| a.image.pixels().any(|p| p[3] > 0 && p[3] < 255));
+        let holes = face_assets
+            .iter()
+            .any(|a| a.image.pixels().any(|p| p[3] < 255));
         let animation = ticks > 1;
         if animation {
             animated_materials += 1;
@@ -784,14 +964,7 @@ fn import_model_materials(
             } else {
                 0.0
             },
-            render_mode: if is_water {
-                "transparent"
-            } else if cutout {
-                "cutout"
-            } else {
-                "opaque"
-            }
-            .into(),
+            render_mode: alpha_render_mode(block, partial, holes).into(),
             textures: urls,
             frames: ticks,
             frame_time: if animation { TICK_SECONDS } else { 0.1 },
@@ -824,17 +997,20 @@ fn import_texture_fallbacks(
     pack_id: &str,
     name: &str,
     warnings: &mut Vec<String>,
+    model_materials: &[Material],
 ) -> Result<(Vec<Material>, usize)> {
     let existing: BTreeSet<String> = workspace
         .project
         .materials
         .iter()
+        .chain(model_materials.iter())
         .map(|material| material.uid.clone())
         .collect();
     let mut next = workspace
         .project
         .materials
         .iter()
+        .chain(model_materials.iter())
         .map(|material| material.id)
         .max()
         .unwrap_or(0)
@@ -875,13 +1051,31 @@ fn import_texture_fallbacks(
             id: next,
             uid,
             name: format!("{block} · {name}"),
-            family: "minecraft".into(),
-            color: [1.0; 3],
+            family: if block.contains("water") {
+                "water"
+            } else {
+                "minecraft"
+            }
+            .into(),
+            color: if block.contains("water") {
+                [63. / 255., 118. / 255., 228. / 255.]
+            } else if block.contains("leaves") {
+                [119. / 255., 171. / 255., 47. / 255.]
+            } else if block.contains("grass_block_top") {
+                [145. / 255., 189. / 255., 89. / 255.]
+            } else {
+                [1.; 3]
+            },
             metallic: 0.0,
             roughness: 0.9,
-            opacity: 1.0,
-            emission: 0.0,
-            render_mode: "opaque".into(),
+            opacity: if block.contains("water") { 0.7 } else { 1.0 },
+            emission: if block.contains("lava") { 1.2 } else { 0. },
+            render_mode: alpha_render_mode(
+                block,
+                asset.image.pixels().any(|p| p[3] > 0 && p[3] < 255),
+                asset.image.pixels().any(|p| p[3] < 255),
+            )
+            .into(),
             textures: vec![url; 6],
             frames: ticks,
             frame_time: if ticks > 1 { TICK_SECONDS } else { 0.1 },
@@ -890,7 +1084,9 @@ fn import_texture_fallbacks(
         });
         next += 1;
     }
-    warning(warnings, "未找到兼容立方体模型，已提供单纹理六面预览材质");
+    if model_materials.is_empty() {
+        warning(warnings, "未找到兼容立方体模型，已提供单纹理六面预览材质");
+    }
     Ok((additions, animated))
 }
 
@@ -907,10 +1103,23 @@ fn canonical_pack_hash(files: &BTreeMap<String, Vec<u8>>) -> String {
 
 pub fn import_java_pack(workspace: &mut Workspace, bytes: &[u8], name: &str) -> Result<Value> {
     let (files, mut warnings) = read_pack(bytes)?;
-    let metadata: Value = files
+    let metadata: Value = if let Some(meta) = files
         .get("pack.mcmeta")
-        .and_then(|value| serde_json::from_slice(value).ok())
-        .context("缺少有效pack.mcmeta：目前支持Minecraft Java资源包")?;
+        .and_then(|v| serde_json::from_slice(v).ok())
+    {
+        meta
+    } else if let Some(version) = files
+        .get("version.json")
+        .and_then(|v| serde_json::from_slice::<Value>(v).ok())
+    {
+        warning(
+            &mut warnings,
+            "从Java客户端JAR读取原版方块资源，原JAR仅保留于本机",
+        );
+        json!({"pack":{"pack_format":0,"description":format!("Minecraft Java {} local client assets",version["id"].as_str().unwrap_or("unknown"))},"vanillaClient":true,"version":version["id"]})
+    } else {
+        bail!("缺少有效pack.mcmeta或Java客户端version.json")
+    };
     if metadata.get("pack").and_then(Value::as_object).is_none() {
         bail!("pack.mcmeta缺少pack对象");
     }
@@ -956,11 +1165,17 @@ pub fn import_java_pack(workspace: &mut Workspace, bytes: &[u8], name: &str) -> 
 
     let (mut additions, mut animated_materials, baked_textures, recognized_models) =
         import_model_materials(workspace, &files, &textures, &pack_id, name, &mut warnings)?;
-    if recognized_models == 0 {
-        let (fallback, animated) =
-            import_texture_fallbacks(workspace, &textures, &pack_id, name, &mut warnings)?;
-        additions = fallback;
-        animated_materials = animated;
+    if recognized_models == 0 || metadata["vanillaClient"] == true {
+        let (fallback, animated) = import_texture_fallbacks(
+            workspace,
+            &textures,
+            &pack_id,
+            name,
+            &mut warnings,
+            &additions,
+        )?;
+        additions.extend(fallback);
+        animated_materials += animated;
     }
 
     let count = additions.len();

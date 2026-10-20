@@ -45,23 +45,25 @@ namespace MorphForge.Editor
         static void Inbox()
         {
             var sm=Layer("MF6 240bit atomic local snapshot");var idle=State(sm,"Wait");sm.defaultState=idle;
-            for(int seq=0;seq<16;seq++)for(int format=1;format<16;format++){
+            for(int seq=0;seq<16;seq++)for(int format=0;format<16;format++){
                 var state=State(sm,"Capture"+seq+"_"+format);var d=Driver(state);
                 for(int i=0;i<29;i++)Copy(d,D(i),Q(i));I(d,"Seq",seq);I(d,"Format",format);I(d,"LastRx",seq);
-                int lo=format==8?24:format==9?16:format==6||format==7||format==10?0:27;
-                int hi=format==8?25:format==6||format==7||format==10?1:28;
+                int lo=format==0?3:format==8?24:format==9?16:format==6||format==7||format==10?0:27;
+                int hi=format==0?28:format==8?25:format==6||format==7||format==10?1:28;
                 Copy(d,D(lo),N("MetaLo"));Copy(d,D(hi),N("MetaHi"));I(d,"Stage",1);
-                var t=sm.AddAnyStateTransition(state);t.duration=0;t.hasExitTime=false;t.canTransitionToSelf=false;Eq(t,"Ctl",seq*16+format);Eq(t,"Stage",0);t.AddCondition(AnimatorConditionMode.NotEqual,seq,N("LastRx"));To(state,idle,true);
+                var t=sm.AddAnyStateTransition(state);t.duration=0;t.hasExitTime=false;t.canTransitionToSelf=false;Eq(t,"Ctl",seq*16+format);if(format==0){t.AddCondition(AnimatorConditionMode.Greater,167,D(28));t.AddCondition(AnimatorConditionMode.Less,176,D(28));}Eq(t,"Stage",0);t.AddCondition(AnimatorConditionMode.NotEqual,seq,N("LastRx"));To(state,idle,true);
             }
         }
         static void Metadata()
         {
             ByteLookup("MF6 low byte",N("MetaLo"),(d,v)=>{
+                I(d,"RegionShape",v&3);I(d,"RegionCount",((v>>2)&7)+1);F(d,"RegionAlpha",255-(v>>5));
                 I(d,"Pool0",v&7);I(d,"Pool1",(v>>3)&7);I(d,"Pool2Low",(v>>6)&3);
                 for(int i=0;i<8;i++)I(d,"Mask"+i,(v>>i)&1);
                 for(int i=0;i<4;i++){I(d,"TriPool"+i,(v+i)&7);F(d,"TriX"+i,(v+i)&255);I(d,"TriCarry"+i,(v+i)>>8);}
             });
             ByteLookup("MF6 high byte",N("MetaHi"),(d,v)=>{
+                I(d,"RegionStart",v&7);
                 I(d,"Pool2High",v&1);I(d,"Pool3",(v>>1)&7);I(d,"CountRaw",((v>>1)&3)+1);I(d,"CountShared",((v>>4)&3)+1);
                 F(d,"Alpha",255-((v>>3)&7));F(d,"VoxelAlpha",255-v);F(d,"TriZ",v&63);F(d,"TriAlpha",(v&64)!=0?2:1);
             });
@@ -102,6 +104,17 @@ namespace MorphForge.Editor
         {
             for(int pool=0;pool<8;pool++){
                 int p=pool;var sm=Layer("MF6 route to native pool "+p);var idle=State(sm,"Wait");sm.defaultState=idle;
+                // Region packets have an absolute origin. Every record maps
+                // to a distinct worker; no persistent decode cursor or ACK.
+                for(int shape=0;shape<4;shape++)for(int i=0;i<8;i++){
+                    int index=i,kind=shape;
+                    var t=Route(sm,idle,"Region"+shape+"_"+i,0,i,"RegionCount",d=>{
+                        Reset(d,p);for(int a=0;a<3;a++)Copy(d,Q(a),P(p,a));
+                        if(kind<3){if(index!=0)Add(d,P(p,kind),index);}
+                        else for(int a=0;a<3;a++){int delta=(index>>a)&1;if(delta!=0)Add(d,P(p,a),delta);}
+                        for(int a=0;a<3;a++)Copy(d,Q(4+index*3+a),P(p,6+a));Copy(d,N("RegionAlpha"),P(p,9));Commit(d,p,1);
+                    });Eq(t,"RegionShape",shape);Eq(t,"RegionStart",(p-i+8)%8);
+                }
                 foreach(int format in new[]{1,11,12,13,14})for(int i=0;i<3;i++){
                     int record=i,f=format;
                     var t=Route(sm,idle,"Box"+f+"_"+i,f,i,"CountRaw",d=>Box(d,p,record*9,record*9+6,"Alpha",f==1?0:-8*(f-10)));
@@ -151,12 +164,12 @@ namespace MorphForge.Editor
             if(!AssetDatabase.IsValidFolder(Root))AssetDatabase.CreateFolder("Assets/MorphForge","MF6");var path=Root+"/Decoder.controller";
             fx=AssetDatabase.LoadAssetAtPath<AnimatorController>(path);if(!fx)fx=AnimatorController.CreateAnimatorControllerAtPath(path);else{fx.layers=new AnimatorControllerLayer[0];fx.parameters=new AnimatorControllerParameter[0];foreach(var asset in AssetDatabase.LoadAllAssetsAtPath(path))if(asset&&asset!=fx)UnityEngine.Object.DestroyImmediate(asset,true);}
             declared=new HashSet<string>();empty=new AnimationClip{name="MF6 empty",frameRate=60};AssetDatabase.AddObjectToAsset(empty,fx);
-            foreach(string name in new[]{"Ctl","Seq","Format","Stage","MetaLo","MetaHi"})IntParam(name);IntParam("LastRx",255);for(int i=0;i<29;i++){IntParam("D"+i.ToString("D2"));IntParam("Q"+i.ToString("D2"));}
+            foreach(string name in new[]{"Ctl","Seq","Format","Stage","MetaLo","MetaHi"})IntParam(name,name=="Ctl"?255:0);IntParam("LastRx",255);for(int i=0;i<29;i++){IntParam("D"+i.ToString("D2"));IntParam("Q"+i.ToString("D2"));}
             for(int p=0;p<8;p++){fx.AddParameter("MF6_P"+p+"_Ctl",AnimatorControllerParameterType.Int);for(int i=0;i<Mf6NativeBuild.Fields;i++)fx.AddParameter("MF6_P"+p+"_D"+i.ToString("D2"),AnimatorControllerParameterType.Float);}
             for(int p=0;p<8;p++)IntParam("NextSeq"+p);
             Inbox();Metadata();Routers();Clock();SequenceWrap();var root=new GameObject("MF6 shared decoder");try{
                 var merge=root.AddComponent<ModularAvatarMergeAnimator>();merge.animator=fx;merge.layerType=VRCAvatarDescriptor.AnimLayerType.FX;merge.pathMode=MergeAnimatorPathMode.Relative;merge.matchAvatarWriteDefaults=false;
-                var parameters=root.AddComponent<ModularAvatarParameters>();foreach(string name in new[]{N("Ctl")}.Concat(Enumerable.Range(0,29).Select(i=>D(i))))parameters.parameters.Add(new ParameterConfig{nameOrPrefix=name,syncType=ParameterSyncType.Int,localOnly=false,saved=false,hasExplicitDefaultValue=true,defaultValue=0,internalParameter=false});
+                var parameters=root.AddComponent<ModularAvatarParameters>();foreach(string name in new[]{N("Ctl")}.Concat(Enumerable.Range(0,29).Select(i=>D(i))))parameters.parameters.Add(new ParameterConfig{nameOrPrefix=name,syncType=ParameterSyncType.Int,localOnly=false,saved=false,hasExplicitDefaultValue=true,defaultValue=name==N("Ctl")?255:0,internalParameter=false});
                 PrefabUtility.SaveAsPrefabAsset(root,Root+"/Decoder.prefab");
             }finally{UnityEngine.Object.DestroyImmediate(root);}
             EditorUtility.SetDirty(fx);AssetDatabase.SaveAssets();return Newtonsoft.Json.JsonConvert.SerializeObject(new{success=true,layers=fx.layers.Length,states=fx.layers.Sum(l=>l.stateMachine.states.Length),parameters=fx.parameters.Length,syncedBits=240});

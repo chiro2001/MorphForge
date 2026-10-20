@@ -35,5 +35,20 @@ export function setupMeshUi({$, getScene, getState, getSelected, getSelectedStyl
     const result=await api("mesh",{action:"wedge",primitive:"voxel",styleId:getSelectedStyle(),baseRevision:state.revision,projectId:state.project.id,min:integerPoint($("wedgeMin").value),size:integerPoint($("wedgeSize").value,"尺寸",true),direction:$("wedgeDirection").value,group:$("meshGroup").value.trim()||"slope"});
     await refresh(true);if(result.warning)throw Error(result.warning);
   });
-  $("modelingStyle").onchange=async()=>{try{await api("project",{modelingStyle:$("modelingStyle").value,baseRevision:getState().revision});await refresh();}catch(cause){error(cause);}};
+  let preferenceSave=Promise.resolve();
+  const persistPreferences=()=>{
+    const preset=$("modelingExtentPreset").value;
+    $("modelingExtentCustom").hidden=preset!=="custom";
+    const extent=preset==="auto"?null:preset==="custom"?["X","Y","Z"].map(a=>Number($("modelingExtent"+a).value)):[Number(preset),Number(preset),Number(preset)];
+    if(extent?.some(n=>!Number.isSafeInteger(n)||n<1||n>4096)){error(Error("目标尺寸每轴须为1..4096格"));return;}
+    const preferences={modelingStyle:$("modelingStyle").value,modelingExtent:extent};
+    preferenceSave=preferenceSave.catch(()=>{}).then(async()=>{
+      await api("project",{...preferences,baseRevision:getState().revision});
+      await refresh();
+    });
+    preferenceSave.catch(error);
+  };
+  for(const id of ["modelingStyle","modelingExtentPreset","modelingExtentX","modelingExtentY","modelingExtentZ"])
+    $(id).onchange=persistPreferences;
+  return { flush: () => preferenceSave };
 }

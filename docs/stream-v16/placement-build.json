@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "scene": "Assets/MorphForge/MF6/MorphForge_MF6.unity",
+  "controller": "Assets/MorphForge/MF6/Placement.controller",
+  "explicitHandSenders": 2,
+  "receiverRadius": 0.16,
+  "visibleDuringGrab": true,
+  "additionalSyncedBits": 0,
+  "additionalAnimatorLayers": 0
+}

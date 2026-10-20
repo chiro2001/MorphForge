@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 fn scale() -> u32 {
-    4
+    0 // automatic: smallest exact grid for the used shapes
 }
 fn group() -> String {
     "minecraft".into()
@@ -721,14 +721,46 @@ pub fn compile_prepared(
     mut materials: Vec<Material>,
     original_material_count: usize,
     building: &Building,
-    options: Options,
+    mut options: Options,
 ) -> Result<Compiled> {
+    let requested_scale = options.block_scale;
+    let mut lossless_scale = options.block_scale;
+    if options.block_scale == 0 {
+        let used: BTreeSet<_> = building.blocks.iter().map(|b| b.state).collect();
+        let coordinates: Vec<i32> = used
+            .into_iter()
+            .flat_map(|i| shapes(&building.palette[i]).0)
+            .flat_map(|(lo, hi)| lo.into_iter().chain(hi))
+            .collect();
+        options.block_scale = [1, 2, 4, 8, 16]
+            .into_iter()
+            .find(|scale| {
+                coordinates
+                    .iter()
+                    .all(|v| (*v as i64 * *scale as i64) % 16 == 0)
+            })
+            .unwrap_or(16);
+        lossless_scale = options.block_scale;
+        if let Some((min, max)) = building.bounds {
+            let extent = (0..3)
+                .map(|a| max[a] as i64 - min[a] as i64)
+                .max()
+                .unwrap_or(1)
+                .max(1);
+            let fit = [1, 2, 4, 8, 16]
+                .into_iter()
+                .filter(|scale| extent * *scale as i64 <= 256)
+                .max()
+                .unwrap_or(1);
+            options.block_scale = options.block_scale.min(fit);
+        }
+    }
     if ![1, 2, 4, 8, 16].contains(&options.block_scale)
         || options.group.is_empty()
         || options.group.len() > 128
         || !["replace", "overlay"].contains(&options.mode.as_str())
     {
-        bail!("建筑选项需要blockScale=1/2/4/8/16、有效分组及replace/overlay");
+        bail!("建筑选项需要blockScale=0(自动)/1/2/4/8/16、有效分组及replace/overlay");
     }
     if options.resource_pack != "builtin"
         && !materials
@@ -884,6 +916,9 @@ pub fn compile_prepared(
     let stats = scene.stats(limits);
     let mut warnings = building.warnings.clone();
     warnings.extend(options.state_warnings.clone());
+    if requested_scale == 0 {
+        warnings.push(format!("自动格精度：每MC方块边长{}格。完整方块仅需1格；半砖、楼梯和薄结构按需提高，并优先适配256格空间；精度不足的细节会单独报告。", options.block_scale));
+    }
     if !unknown.is_empty() {
         warnings.push(
             "部分形状使用整块或近似几何替代；完整方块状态保存在源建筑中，可重新导入。".into(),
@@ -902,7 +937,7 @@ pub fn compile_prepared(
     if options.surface_only {
         warnings.push("本次只导入外壳；内部格未进入可编辑场景，源建筑仍完整保存。".into());
     }
-    let report = json!({"format":building.format,"dataVersion":building.data_version,"sourceBlocks":building.blocks.len(),"sourceCells":building.source_cells,"sourceBounds":building.bounds,"regions":building.regions,"blockScale":options.block_scale,"center":options.center,"translation":offset,"beforeMerge":unmerged,"generatedBoxes":stats.box_count,"hiddenSourceBlocks":hidden,"approximateShapeBlocks":unknown_blocks,"quantizedBlocks":quantized_blocks,"unknownShapes":unknown.iter().take(128).collect::<Vec<_>>(),"quantizedStates":quantized.iter().take(128).collect::<Vec<_>>(),"approximateMaterialStates":approximate_materials.len(),"approximateMaterials":approximate_materials.iter().take(128).collect::<Vec<_>>(),"paletteCount":building.palette.len(),"materialsAdded":materials.len().saturating_sub(original_material_count),"stats":stats,"target":crate::scene_tools::target_report(&scene,limits.target_boxes),"estimatedFrames":scene.boxes.len().div_ceil(3),"estimatedSecondsAt250ms":scene.boxes.len().div_ceil(3) as f64*0.25,"estimateNote":"粗略按3Box/帧计算；实际由共外观、单位体素批量与池分布决定，无远端ACK。","warnings":warnings});
+    let report = json!({"format":building.format,"dataVersion":building.data_version,"sourceBlocks":building.blocks.len(),"sourceCells":building.source_cells,"sourceBounds":building.bounds,"regions":building.regions,"blockScale":options.block_scale,"requestedBlockScale":requested_scale,"losslessBlockScale":lossless_scale,"scaleLimitedByTarget":requested_scale==0&&options.block_scale<lossless_scale,"scaleSelection":if requested_scale==0{"minimum_exact_grid_with_target_cap"}else{"explicit"},"center":options.center,"translation":offset,"beforeMerge":unmerged,"generatedBoxes":stats.box_count,"hiddenSourceBlocks":hidden,"approximateShapeBlocks":unknown_blocks,"quantizedBlocks":quantized_blocks,"unknownShapes":unknown.iter().take(128).collect::<Vec<_>>(),"quantizedStates":quantized.iter().take(128).collect::<Vec<_>>(),"approximateMaterialStates":approximate_materials.len(),"approximateMaterials":approximate_materials.iter().take(128).collect::<Vec<_>>(),"paletteCount":building.palette.len(),"materialsAdded":materials.len().saturating_sub(original_material_count),"stats":stats,"target":crate::scene_tools::target_report(&scene,limits.target_boxes),"estimatedFrames":scene.boxes.len().div_ceil(3),"estimatedSecondsAt250ms":scene.boxes.len().div_ceil(3) as f64*0.25,"estimateNote":"粗略按3Box/帧计算；实际由共外观、单位体素批量与池分布决定，无远端ACK。","warnings":warnings});
     Ok(Compiled {
         scene,
         materials,
@@ -950,15 +985,46 @@ mod tests {
         );
         let c = compile(&mut w, &b, Options::default()).unwrap();
         assert_eq!(c.scene.boxes.len(), 1);
-        assert_eq!(c.scene.boxes[0].size, [12, 4, 4]);
-        assert_eq!(c.scene.boxes[0].min, [-6, 0, -2]);
+        assert_eq!(c.scene.boxes[0].size, [3, 1, 1]);
+        assert_eq!(c.scene.boxes[0].min, [-1, 0, 0]);
         let m = c
             .materials
             .iter()
             .find(|m| m.id == c.scene.boxes[0].style_id)
             .unwrap();
-        assert_eq!(m.texture_scale, 4.);
+        assert_eq!(m.texture_scale, 1.);
         assert_eq!(serde_json::to_value(&w.project).unwrap(), before);
+    }
+    #[test]
+    fn automatic_grid_is_one_for_cubes_two_for_slabs_and_sixteen_for_carpet() {
+        let dir = tempfile::tempdir().unwrap();
+        let mut w = Workspace::open(dir.path().into()).unwrap();
+        for (name, expected) in [
+            ("minecraft:stone", 1),
+            ("minecraft:oak_slab[type=bottom]", 2),
+            ("minecraft:red_carpet", 16),
+        ] {
+            let c = compile(&mut w, &building(name, vec![[0; 3]]), Options::default()).unwrap();
+            assert_eq!(c.report["blockScale"], expected, "{name}");
+            assert_eq!(c.report["quantizedBlocks"], 0, "{name}");
+            assert_eq!(c.report["requestedBlockScale"], 0);
+        }
+    }
+    #[test]
+    fn automatic_grid_prefers_vrc_fit_and_reports_thin_detail_quantization() {
+        let dir = tempfile::tempdir().unwrap();
+        let mut w = Workspace::open(dir.path().into()).unwrap();
+        let c = compile(
+            &mut w,
+            &building("minecraft:red_carpet", vec![[0; 3], [199, 0, 0]]),
+            Options::default(),
+        )
+        .unwrap();
+        assert_eq!(c.report["blockScale"], 1);
+        assert_eq!(c.report["losslessBlockScale"], 16);
+        assert_eq!(c.report["scaleLimitedByTarget"], true);
+        assert_eq!(c.report["quantizedBlocks"], 2);
+        assert_eq!(c.report["target"]["fits"], true);
     }
     #[test]
     fn stair_shapes_have_independent_dense_cell_volume() {
@@ -981,6 +1047,7 @@ mod tests {
                         &mut w,
                         &b,
                         Options {
+                            block_scale: 4,
                             center: false,
                             ..Default::default()
                         },
@@ -1005,6 +1072,7 @@ mod tests {
             &mut w,
             &b,
             Options {
+                block_scale: 4,
                 center: false,
                 ..Default::default()
             },

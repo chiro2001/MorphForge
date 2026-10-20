@@ -72,6 +72,7 @@ let pendingMessages = [];
 let chatEntries = [];
 let previousHarness = null;
 let messageInFlight = false;
+let messagePreparationInFlight = false;
 let retryPayload = null;
 let fontsLoaded = false;
 let fontCatalog = [];
@@ -599,9 +600,9 @@ async function refresh(force = false) {
       if (timelineView && !$("timeline").hidden) timelineView.reload().catch(error);
     }
     updateState();
-    const previewCatalog=JSON.stringify([next.connection.profile,next.materialCompatibility?.fingerprint]);
+    const previewCatalog=JSON.stringify([next.connection.profile,next.materialCompatibility?.fingerprint,$("renderMode").value]);
     const previewScale=$("renderMode").value === "vrc" ? next.connection.placement.scale : 1;
-    if(renderer.scale!==previewScale) renderer.setScale(previewScale);
+    if(renderer.mode===$("renderMode").value && renderer.scale!==previewScale) renderer.setScale(previewScale);
     if ((next.revision !== loadedRevision || previewCatalog!==loadedPreviewCatalog || force) && !loading) {
       loading = true;
       try {
@@ -650,7 +651,12 @@ function updateState() {
   const connection = s.connection;
   const harness = s.harness;
   setValue("projectName", s.project.name);
-  setValue("modelingStyle", s.project.modelingStyle||"mixed");
+  setValue("modelingStyle", s.project.modelingStyle||"auto");
+  const extent=s.project.modelingExtent;
+  const extentPreset=!extent?"auto":extent.every(n=>n===extent[0])&&[32,64,128].includes(extent[0])?String(extent[0]):"custom";
+  setValue("modelingExtentPreset",extentPreset);
+  $("modelingExtentCustom").hidden=extentPreset!=="custom";
+  if(extent)["X","Y","Z"].forEach((axis,i)=>setValue("modelingExtent"+axis,extent[i]));
   $("activeSessionTitle").textContent = harness.context.title || "对话";
   $("schemaUpgradeNotice").hidden=!harness.context.schemaUpgradeRequired;
   $("schemaUpgradeContext").hidden=!harness.context.schemaUpgradeRequired;
@@ -690,11 +696,17 @@ function updateState() {
   setValue("sendOrder",connection.sendOrder||"volume");
   setChecked("loopReplay",connection.loopReplay||false);
   setChecked("autoPublish", connection.auto);
+  setChecked("autoDetectAvatar",connection.autoDetect??true);
+  setValue("publishStrategy",connection.publishStrategy||"auto");
   }
-  $("loopReplay").disabled=!["mf5","mf6"].includes(connection.profile);
-  $("sendOrder").disabled=!["mf5","mf6"].includes(connection.profile);
+  const discovered=connection.discovery||{},info=discovered.info;
+  $("discoveryStatus").textContent=info?`已读取Avatar协议 v${info.version} · ${info.region8?"连续区域编码可用":"基础编码"}\n材质指纹 ${info.catalogHash.slice(0,16)} · ${discovered.catalogKnown?"本机有匹配目录":"本机缺少此目录，请导入构建包"}${discovered.lastError?"\n"+discovered.lastError:""}\n${connection.catalogIdentity===info.catalogHash?"当前目录与Avatar一致。":"当前目录与Avatar不同，发送前需匹配。"}能力查询不确认执行或其他玩家接收。`:(discovered.lastError||"等待识别；Unity测试可手动选择配套目录。");
+  const plan=connection.publication;
+  $("publicationPlan").textContent=plan?`${plan.layout==="run_boxes"?`同材质段合并，减少${plan.compactedBoxes}个显示对象 · `:""}方案：${plan.selected==="rebuild"?"清空重建":"增量"} · ${plan.reason}\n增量 ${plan.incrementalFrames??"不可行"} 帧 / ${plan.incrementalSeconds==null?"—":time(plan.incrementalSeconds)}；重建 ${plan.rebuildFrames??"不可行"} 帧 / ${plan.rebuildSeconds==null?"—":time(plan.rebuildSeconds)}（含Clear）`:"发布时比较真实编码计划；时间为本机节拍估算，不代表远端收到。";
+  $("loopReplay").disabled=connection.profile!=="mf6";
+  $("sendOrder").disabled=connection.profile!=="mf6";
   $("replayStatus").textContent=`已完成补播 ${connection.replayCycles||0} 轮 · ${connection.repairing?"正在补播":connection.loopReplay?(connection.enabled?"连续补播已启用":"循环已设置，发送关闭"):"按需发送"}。${connection.repairDeletions?.some(n=>n)?`含 ${connection.repairDeletions.reduce((a,b)=>a+b,0)} 条历史删除。`:""}更新先删除旧几何，再按所选顺序绘制；没有远端ACK。`;
-  $("repairPublish").disabled=!["mf5","mf6"].includes(connection.profile);
+  $("repairPublish").disabled=connection.profile!=="mf6";
   $("connect").disabled=connectionPending>0;
   $("connect").textContent = connection.enabled ? "停止发送" : "开启发送";
   $("connect").classList.toggle("selected", connection.enabled);
@@ -702,12 +714,21 @@ function updateState() {
     ? "OSC " + connection.port + " · " + connection.pending + "项"
     : "独立创作";
   $("connectionBadge").classList.toggle("live", connection.enabled);
+  const progress=connection.progress;
+  const progressBar=$("syncProgress");
+  if(progress?.totalFrames!=null){
+    progressBar.value=progress.percent;
+    $("syncProgressLabel").textContent=`${connection.repairing?"补播":"发布"} ${progress.percent.toFixed(1)}% · ${fmt(progress.sentFrames)} / ${fmt(progress.totalFrames)} 帧${connection.enabled?"":" · 发送关闭"}`;
+  }else{
+    if(connection.enabled&&connection.pending)progressBar.removeAttribute("value");else progressBar.value=0;
+    $("syncProgressLabel").textContent=connection.pending?`待发 ${fmt(connection.pending)} 批${connection.enabled?"":" · 发送关闭"}`:"尚未发布";
+  }
   $("syncStatus").textContent =
     connection.error ||
     (!connection.enabled
       ? "发送已关闭；可继续独立创作。"
       : `本机发包中 · 无远端ACK
-${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${["mf4","mf5","mf6"].includes(connection.profile)?" · 本体仅本地":""}
+${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${" · 本体仅本地"}
 当前目标 v${connection.desiredRevision} / 最近完整发包 v${connection.sentRevision ?? "—"}
 本机已发记录 ${fmt(connection.sentObjects?.boxes??0)} Box / ${fmt(connection.sentObjects?.triangles??0)} 面；VRC接收情况未知
 待发 ${fmt(connection.pending)} 批 · 预计 ${time(connection.etaSeconds)}
@@ -719,11 +740,11 @@ ${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${["mf4
   const percent=connection.placement.scale/.05*100;
   setValue("scalePercent",Number(percent.toFixed(2)));
   $("scaleValue").value=Number(percent.toFixed(1))+"%";
-  $("scale").min=["mf5","mf6"].includes(connection.profile)?"0":"2";
-  $("scalePercent").min=["mf5","mf6"].includes(connection.profile)?"1":"100";
-  $("scale").max=["mf5","mf6"].includes(connection.profile)?"3":String(Math.log10(2000));
-  $("scalePercent").max=["mf5","mf6"].includes(connection.profile)?"1000":"2000";
-  $("scaleHint").textContent=`新100%＝旧5% · 当前格长 ${(0.25*connection.placement.scale*1000).toFixed(3)} 毫米。${["mf5","mf6"].includes(connection.profile)?"1%～1000%，对数刻度，便于微缩。":"旧头像不支持100%以下；请使用MF5配套头像。"}`;
+  $("scale").min="0";
+  $("scalePercent").min="1";
+  $("scale").max="3";
+  $("scalePercent").max="1000";
+  $("scaleHint").textContent=`新100%＝旧5% · 当前格长 ${(0.25*connection.placement.scale*1000).toFixed(3)} 毫米。${"1%～1000%，对数刻度，便于微缩。"}`;
   for (const id of [
     "preset",
     "contextWindowTokens",
@@ -1146,7 +1167,7 @@ $("fitView").onclick = () => renderer.view();
 document.querySelectorAll("[data-view]").forEach((button) => {
   button.onclick = () => renderer.view(button.dataset.view);
 });
-$("renderMode").onchange = () => refresh(true);
+$("renderMode").onchange = () => refresh(true).catch(error);
 $("projectName").onchange = async () => {
   try {
     await api("project", {
@@ -1262,7 +1283,7 @@ for(const id of ["transformAction","shiftX","shiftY","shiftZ"]) $(id).oninput=()
 $("transformApply").onclick=async()=>{if(!pendingTransform)return;try{await api("harness/tool",{name:"transform_scene",arguments:pendingTransform});pendingTransform=null;$("transformDialog").close();await refresh(true);renderer.view();toast("整体定位已保存，可撤销");}catch(cause){error(cause);}};
 $("schemaUpgradeContext").onclick=async()=>{try{await api("harness/control",{action:"upgrade_context"});await refresh();toast("已升级工具说明；首次请求重新预热，实际缓存仍持续监测");}catch(cause){error(cause);}};
 $("autoCenterOnFinish").onchange=async()=>{try{await api("project",{autoCenterOnFinish:$("autoCenterOnFinish").checked});await refresh();}catch(cause){error(cause);}};
-function runtimeFields(){const kind=$("runtimeKind").value,proc=["water","cloud","wood","stone"].includes(kind);$("runtimeSurfaceFields").hidden=kind==="color";$("runtimeNoiseFields").hidden=!proc;$("runtimeMetal").disabled=proc;$("runtimeWireHint").textContent=kind==="color"?"RGB24精确颜色；MF5直接发送，无需重新上传头像。":kind==="pbr"?"VRC使用RGB565；金属度/粗糙度/透明度/发光各4档。艺术原值保持。":"VRC颜色RGB444；噪声比例和种子各8档，其他表面参数4档。";}
+function runtimeFields(){const kind=$("runtimeKind").value,proc=["water","cloud","wood","stone"].includes(kind);$("runtimeSurfaceFields").hidden=kind==="color";$("runtimeNoiseFields").hidden=!proc;$("runtimeMetal").disabled=proc;$("runtimeWireHint").textContent=kind==="color"?"RGB24精确颜色；MF6直接发送，无需重新上传头像。":kind==="pbr"?"VRC使用RGB565；金属度/粗糙度/透明度/发光各4档。艺术原值保持。":"VRC颜色RGB444；噪声比例和种子各8档，其他表面参数4档。";}
 $("runtimeKind").onchange=()=>{const kind=$("runtimeKind").value;$("runtimeMetal").value=kind==="water"?.2:kind==="pbr"?.8:0;$("runtimeRough").value=kind==="water"?.12:kind==="cloud"?1:kind==="pbr"?.25:.9;$("runtimeOpacity").value=kind==="water"?.65:kind==="cloud"?.5:1;runtimeFields();};
 let imagePlanePreview=null;
 let imagePlaneProjectId="";
@@ -1280,15 +1301,13 @@ $("imageToolPreview").onclick=async()=>{try{const args=imageToolArgs("voxel_plan
 $("imageToolApply").onclick=async()=>{if(!imagePlanePreview)return;if(imagePlaneProjectId!==state.project.id){invalidateImagePlane();return toast("工程已切换，请重新预览图片平面");}$("imageToolApply").disabled=true;try{const result=await api("harness/tool",{name:"image_tools",arguments:imagePlanePreview});invalidateImagePlane();await refresh(true);renderer.view("front");toast(`图片平面已应用 · v${result.revision}，可撤销`);$("imageToolsDialog").close();}catch(cause){invalidateImagePlane();error(cause);}};
 $("runtimeMaterialOpen").onclick=()=>{runtimeFields();$("runtimeReceipt").textContent="";$("runtimeMaterialDialog").showModal();};
 $("runtimeMaterialClose").onclick=()=>$("runtimeMaterialDialog").close();
-$("runtimeMaterialApply").onclick=async()=>{const button=$("runtimeMaterialApply");button.disabled=true;try{const kind=$("runtimeKind").value,entry={name:$("runtimeName").value,color:$("runtimeColor").value,kind};if(kind!=="color")Object.assign(entry,{metallic:Number($("runtimeMetal").value),roughness:Number($("runtimeRough").value),opacity:Number($("runtimeOpacity").value),emission:Number($("runtimeEmission").value)});if(["water","cloud","wood","stone"].includes(kind))Object.assign(entry,{noiseScale:Number($("runtimeNoiseScale").value),seed:Number($("runtimeSeed").value)});const r=await api("harness/tool",{name:"define_materials",arguments:{baseRevision:state.revision,materials:[entry]}});selectedStyle=r.materials[0].id;$("runtimeReceipt").textContent=JSON.stringify(r.materials[0].vrcEffective,null,2);await refresh(true);toast("材质已添加并选用；MF5实时发送");}catch(cause){error(cause);}finally{button.disabled=false;}};
+$("runtimeMaterialApply").onclick=async()=>{const button=$("runtimeMaterialApply");button.disabled=true;try{const kind=$("runtimeKind").value,entry={name:$("runtimeName").value,color:$("runtimeColor").value,kind};if(kind!=="color")Object.assign(entry,{metallic:Number($("runtimeMetal").value),roughness:Number($("runtimeRough").value),opacity:Number($("runtimeOpacity").value),emission:Number($("runtimeEmission").value)});if(["water","cloud","wood","stone"].includes(kind))Object.assign(entry,{noiseScale:Number($("runtimeNoiseScale").value),seed:Number($("runtimeSeed").value)});const r=await api("harness/tool",{name:"define_materials",arguments:{baseRevision:state.revision,materials:[entry]}});selectedStyle=r.materials[0].id;$("runtimeReceipt").textContent=JSON.stringify(r.materials[0].vrcEffective,null,2);await refresh(true);toast("材质已添加并选用；MF6实时发送");}catch(cause){error(cause);}finally{button.disabled=false;}};
 $("pixelThemeOpen").onclick=()=>$("pixelThemeDialog").showModal();
 $("pixelThemeClose").onclick=()=>$("pixelThemeDialog").close();
 $("applyPixelTheme").onclick=async()=>{try{const result=await api("harness/tool",{name:"builtin_materials",arguments:{action:"apply",id:$("pixelThemeChoice").value,baseRevision:state.revision,replaceBaseMaterials:$("pixelThemeReplace").checked}});await refresh(true);$("pixelThemeDialog").close();toast(`像素主题已加入 · 新增${result.materialsAdded}种材质`);}catch(cause){error(cause);}};
 $("avatarCatalogImport").onclick=()=>$("avatarCatalogFile").click();
 $("avatarCatalogFile").onchange=async(event)=>{try{const file=event.target.files[0];if(!file)return;const form=new FormData();form.append("file",file);const r=await fetch("/api/vrc/profile/import",{method:"POST",body:form});const value=await r.json();if(!r.ok)throw new Error(value.error);await refresh();toast(value.matched?"目标目录与已用材质匹配":"已记录目标目录，存在材质差异");}catch(cause){error(cause);}event.target.value="";};
-$("avatarCatalogMf6").onclick=async()=>{try{await api("vrc/profile",{action:"bundled_mf6"});await api("connect",{profile:"mf6",enabled:false,scale:Math.min(.5,Math.max(.0005,state.connection.placement.scale))});await refresh(true);toast("已载入 MF6 16K 目录并选择统一240bit协议，发送保持关闭");}catch(cause){error(cause);}};
-$("avatarCatalogBundled").onclick=async()=>{try{await api("vrc/profile",{action:"bundled_mf5"});await api("connect",{profile:"mf5",enabled:false,scale:Math.min(.5,Math.max(.0005,state.connection.placement.scale))});await refresh(true);toast("已载入MF5目录；请使用配套MF5头像");}catch(cause){error(cause);}};
-$("avatarCatalogMf4").onclick=async()=>{try{await api("vrc/profile",{action:"bundled_mf4"});await api("connect",{profile:"mf4",enabled:false,scale:Math.max(.05,state.connection.placement.scale)});await refresh(true);}catch(cause){error(cause);}};
+$("avatarCatalogMf6").onclick=async()=>{try{await api("vrc/profile",{action:"bundled_mf6"});await api("connect",{profile:"mf6",enabled:false,scale:Math.min(.5,Math.max(.0005,state.connection.placement.scale))});await refresh(true);toast("已载入基础目录；实际Avatar可自动识别或导入上传清单，发送保持关闭");}catch(cause){error(cause);}};
 $("avatarCatalogClear").onclick=async()=>{try{await api("vrc/profile",{action:"clear"});await refresh();}catch(cause){error(cause);}};
 
 $("exportProject").onclick = async () => {
@@ -1321,12 +1340,11 @@ $("projectFile").onchange = async (event) => {
   event.target.value = "";
 };
 $("packReportClose").onclick = () => $("packReportDialog").close();
-$("catalogExport").onclick = () => {
-  const link = document.createElement("a");
-  link.href = "/api/vrc/catalog";
-  link.download = "morphforge-materials.zip";
-  link.click();
-};
+function catalogOptions(){return `usedOnly=${$("catalogScope").value==="used"}&cellPixels=${$("catalogPixels").value}`;}
+$("catalogBudget").onclick=async()=>{const button=$("catalogBudget");button.disabled=true;try{const v=await api("vrc/catalog/budget?"+catalogOptions());$("catalogBudgetStatus").textContent=`${v.styles}种材质 · ${v.uniqueSlices}个去重纹理层 · ${v.layerBanks}组数组\nGPU纹理预计 ${(v.bytes.totalGpuEstimate/1048576).toFixed(2)}MiB（图集 ${(v.bytes.atlas/1048576).toFixed(2)}MiB + 含mipmap数组 ${(v.bytes.layerMipmaps/1048576).toFixed(2)}MiB）\n${v.fits?"预算通过":"预算超限，请减少材质或降低分辨率"} · 不增加同步bit/动画器层/粒子系统\n${v.note}`;}catch(cause){error(cause);}finally{button.disabled=false;}};
+$("catalogExport").onclick=()=>{const link=document.createElement("a");link.href="/api/vrc/catalog?"+catalogOptions();link.download="morphforge-materials.zip";link.click();};
+$("avatarMaterials").onclick=async()=>{const button=$("avatarMaterials");button.disabled=true;try{const r=await api("vrc/materials",{});await refresh(true);toast(`已加入${r.materialsAdded}种头像材质，现有几何保持不变，可在左侧搜索使用`);}catch(cause){error(cause);}finally{button.disabled=false;}};
+$("discoverAvatar").onclick=async()=>{const button=$("discoverAvatar");button.disabled=true;try{const text=$("oscQueryPort").value.trim();await api("vrc/discover",{port:text?Number(text):null});await refresh(true);toast("已识别Avatar能力；查询不会开启发送");}catch(cause){error(cause);}finally{button.disabled=false;}};
 $("packImport").onclick = () => $("packFile").click();
 $("packFile").onchange = async (event) => {
   try {
@@ -1358,9 +1376,11 @@ function connection(enabled = state.connection.enabled) {
     interval: Number($("interval").value),
     capacity: Number($("targetCapacity").value),
     refreshSeconds: Number($("refreshSeconds").value),
-    loopReplay: ["mf5","mf6"].includes($("profile").value) && $("loopReplay").checked,
+    loopReplay: $("profile").value === "mf6" && $("loopReplay").checked,
     sendOrder: $("sendOrder").value,
     auto: $("autoPublish").checked,
+    autoDetect:$("autoDetectAvatar").checked,
+    publishStrategy:$("publishStrategy").value,
   };
 }
 
@@ -1395,6 +1415,8 @@ for (const id of [
   "targetCapacity",
   "refreshSeconds",
   "autoPublish",
+  "autoDetectAvatar",
+  "publishStrategy",
   "loopReplay",
   "sendOrder",
 ]) {
@@ -1679,7 +1701,10 @@ async function postHarnessMessage({
   clearPrompt = false,
   referenceIds,
 }) {
-  if (messageInFlight || (referencePicker.busy && prompt?.trim())) return;
+  if (messageInFlight || messagePreparationInFlight || (referencePicker.busy && prompt?.trim())) return;
+  messagePreparationInFlight = true;
+  try { await creationPreferences.flush(); } catch(cause) { error(cause); return; }
+  finally { messagePreparationInFlight = false; }
   const snapshot = normalizeHarness(state?.harness);
   const submittedPrompt = prompt ?? "";
   if (!submittedPrompt && !(mode === "interrupt" && snapshot.active)) {
@@ -1986,6 +2011,20 @@ async function library() {
       }
     };
     body.append(load);
+    if (artwork.origin !== "builtin") {
+      const remove = document.createElement("button");
+      remove.textContent = "删除"; remove.className = "danger";
+      remove.onclick = async () => {
+        remove.disabled=true;
+        try {
+          const response=await fetch("/api/artworks/"+encodeURIComponent(artwork.id),{method:"DELETE"});
+          const result=await response.json();
+          if(!response.ok)throw Error(result.error||"删除作品失败");
+          await library();toast("作品已从共享库删除；当前工程保留，原文件存入回收归档。");
+        } catch(cause) { error(cause); remove.disabled=false; }
+      };
+      body.append(remove);
+    }
     card.append(img, body);
     $("libraryGrid").append(card);
   }
@@ -2363,7 +2402,7 @@ $("textApply").onclick = async () => {
 
 setupMinecraftUi({$,api,getState:()=>state,getMaterials:()=>sceneData?.materials,refresh,error,toast});
 
-setupMeshUi({$,getScene:()=>sceneData,getState:()=>state,getSelected:()=>selected,getSelectedStyle:()=>selectedStyle,api,edit,refresh,error});
+const creationPreferences=setupMeshUi({$,getScene:()=>sceneData,getState:()=>state,getSelected:()=>selected,getSelectedStyle:()=>selectedStyle,api,edit,refresh,error});
 
 if (captureMode) {
   document.body.classList.add("capture-mode");

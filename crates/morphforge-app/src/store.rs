@@ -17,7 +17,7 @@ pub fn now() -> String {
     Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Millis, true)
 }
 fn default_modeling_style() -> String {
-    "mixed".into()
+    "auto".into()
 }
 pub fn hash(bytes: &[u8]) -> String {
     format!("{:x}", Sha256::digest(bytes))
@@ -124,6 +124,8 @@ pub struct Project {
     pub name: String,
     #[serde(default = "default_modeling_style")]
     pub modeling_style: String,
+    #[serde(default)]
+    pub modeling_extent: Option<[u32; 3]>,
     pub scene: Scene,
     pub limits: Limits,
     pub materials: Vec<Material>,
@@ -149,6 +151,7 @@ impl Default for Project {
             id: Uuid::new_v4().to_string(),
             name: "未命名作品".into(),
             modeling_style: default_modeling_style(),
+            modeling_extent: None,
             scene: Scene::default(),
             limits: Limits::default(),
             materials: builtins(),
@@ -200,6 +203,7 @@ pub struct Event {
 }
 pub struct Workspace {
     pub session_id: String,
+    pub library_root: PathBuf,
     pub root: PathBuf,
     pub project: Project,
     pub events: Vec<Event>,
@@ -277,6 +281,7 @@ impl Workspace {
         }
         let mut w = Self {
             session_id: identity["sessionId"].as_str().unwrap_or("").into(),
+            library_root: root.clone(),
             root,
             project,
             events: events.into_iter().collect(),
@@ -715,10 +720,15 @@ impl Workspace {
     }
     pub fn library(&self) -> Result<Vec<Artwork>> {
         let mut values = vec![];
-        for e in fs::read_dir(self.root.join("artworks"))? {
+        for e in fs::read_dir(self.library_root.join("artworks"))? {
             let p = e?.path();
             if p.extension().is_some_and(|x| x == "json") {
-                if let Ok(v) = serde_json::from_slice::<Value>(&fs::read(p)?) {
+                let bytes = match fs::read(p) {
+                    Ok(bytes) => bytes,
+                    Err(e) if e.kind() == std::io::ErrorKind::NotFound => continue,
+                    Err(e) => return Err(e.into()),
+                };
+                if let Ok(v) = serde_json::from_slice::<Value>(&bytes) {
                     if let Ok(a) = serde_json::from_value::<Artwork>(v["artwork"].clone()) {
                         values.push(a)
                     }
@@ -784,13 +794,10 @@ impl Workspace {
             })
             .map(|event| event.data["references"].clone())
             .unwrap_or_else(|| json!([]));
-        write_json(
-            &self
-                .root
-                .join("artworks")
-                .join(format!("{}.json", artwork.id)),
-            &json!({"artwork":artwork,"project":self.project,"recipe":self.recipes.get(&self.project.scene.revision),"referenceImages":reference_images}),
-        )?;
+        let reference_library = crate::references::artwork_records(self, &reference_images)?;
+        let value = json!({"referenceLibrary":reference_library,"artwork":artwork,"project":self.project,"recipe":self.recipes.get(&self.project.scene.revision),"referenceImages":reference_images});
+        self.publish_library_assets(&value)?;
+        write_json(&self.artwork_path(&artwork.id)?, &value)?;
         self.event("artwork.saved", run, json!(&artwork))?;
         Ok(artwork)
     }
@@ -798,10 +805,7 @@ impl Workspace {
         let v: Value = if id.starts_with("builtin:") {
             crate::examples::get(self, id)?
         } else {
-            validate_id(id)?;
-            serde_json::from_slice(&fs::read(
-                self.root.join("artworks").join(format!("{id}.json")),
-            )?)?
+            self.read_artwork(id)?
         };
         let p: Project = serde_json::from_value(v["project"].clone())?;
         p.creative.validate(&self.project.limits)?;
@@ -912,7 +916,7 @@ impl Workspace {
         Ok(())
     }
     pub fn state(&self) -> Value {
-        json!({"project":{"id":self.project.id,"name":self.project.name,"modelingStyle":self.project.modeling_style,"cellSize":self.project.scene.cell_size,"size":self.project.scene.size,"pinnedNotes":self.project.pinned_notes,"autoCenterOnFinish":self.project.auto_center_on_finish,"protectedGroups":self.project.protected_groups},"revision":self.project.scene.revision,"stats":self.project.scene.stats(&self.project.limits),"creativeRevision":self.project.creative.revision,"canUndo":!self.undo.is_empty(),"canRedo":!self.redo.is_empty(),"commits":self.project.commits,"eventSeq":self.next_seq-1})
+        json!({"project":{"id":self.project.id,"name":self.project.name,"modelingStyle":self.project.modeling_style,"modelingExtent":self.project.modeling_extent,"cellSize":self.project.scene.cell_size,"size":self.project.scene.size,"pinnedNotes":self.project.pinned_notes,"autoCenterOnFinish":self.project.auto_center_on_finish,"protectedGroups":self.project.protected_groups},"revision":self.project.scene.revision,"stats":self.project.scene.stats(&self.project.limits),"creativeRevision":self.project.creative.revision,"canUndo":!self.undo.is_empty(),"canRedo":!self.redo.is_empty(),"commits":self.project.commits,"eventSeq":self.next_seq-1})
     }
     pub(crate) fn ensure_protected_groups_unchanged(
         &self,

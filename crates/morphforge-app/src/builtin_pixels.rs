@@ -739,7 +739,7 @@ fn texture(s: &Spec, face: usize) -> Result<Vec<u8>> {
     Ok(out.into_inner())
 }
 pub fn list() -> Value {
-    json!([{"id":"pixel-workshop","name":"像素工坊","version":"1.0","license":"MIT","author":"MorphForge contributors","materialCount":specs().len(),"description":"原有19种原创像素主题。"},{"id":"block-workshop","name":"方块工坊","version":"1.0","license":"MIT","author":"MorphForge contributors","materialCount":block_specs().len(),"description":"48种原创Minecraft风格16×16像素方块：木石砖瓦、矿物、彩玻璃、羊毛与陶土。MF5头像已内置；不含Mojang素材。"}])
+    json!([{"id":"pixel-workshop","name":"像素工坊","version":"1.0","license":"MIT","author":"MorphForge contributors","materialCount":specs().len(),"description":"原有19种原创像素主题。"},{"id":"block-workshop","name":"方块工坊","version":"1.0","license":"MIT","author":"MorphForge contributors","materialCount":block_specs().len(),"description":"48种原创Minecraft风格16×16像素方块：木石砖瓦、矿物、彩玻璃、羊毛与陶土。MF6头像已内置；不含Mojang素材。"}])
 }
 /// Prepare immutable artwork materials and texture artifacts without changing
 /// the project or its revision. Import previews commit them only on apply.
@@ -839,6 +839,6 @@ pub fn apply(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Value
         json!({"id":args["id"],"license":"MIT","materialsAdded":added,"repaintedBoxes":changed}),
     )?;
     Ok(
-        json!({"ok":true,"revision":result["revision"],"materialsAdded":added,"repaintedBoxes":changed,"license":"MIT","note":"主题已加入；配套MF5头像内置方块工坊，可直接按身份映射。MF4/旧头像或额外新图片需要更新目录。"}),
+        json!({"ok":true,"revision":result["revision"],"materialsAdded":added,"repaintedBoxes":changed,"license":"MIT","note":"主题已加入；配套MF6头像内置方块工坊，可直接按身份映射。额外新图片需要更新目录。"}),
     )
 }

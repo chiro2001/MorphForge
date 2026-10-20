@@ -1,0 +1,30 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "hand": "GestureLeft",
+      "held": 1,
+      "handleVisible": true,
+      "passed": true
+    },
+    {
+      "release": "GestureLeft",
+      "passed": true
+    },
+    {
+      "hand": "GestureRight",
+      "held": 2,
+      "handleVisible": true,
+      "passed": true
+    },
+    {
+      "release": "GestureRight",
+      "passed": true
+    },
+    {
+      "explicitHandSenders": 2,
+      "passed": true
+    }
+  ],
+  "scope": "Actual GestureManager merged Avatar Animator; diagnostic proximity params and real gesture variables. Native sender/receiver configuration checked; not a physical VR hardware or multiplayer test."
+}

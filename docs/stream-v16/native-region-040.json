@@ -1,0 +1,694 @@
+{
+  "success": true,
+  "capacity": false,
+  "checks": [
+    {
+      "phase": "clear",
+      "passed": true,
+      "expected": 0,
+      "actual": 0,
+      "missingCount": 0,
+      "pools": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 0 mode 0",
+      "passed": true,
+      "expected": 8,
+      "actual": 8,
+      "missingCount": 0,
+      "pools": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 0 mode 1",
+      "passed": true,
+      "expected": 16,
+      "actual": 16,
+      "missingCount": 0,
+      "pools": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 0 mode 2",
+      "passed": true,
+      "expected": 24,
+      "actual": 24,
+      "missingCount": 0,
+      "pools": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 0 mode 3",
+      "passed": true,
+      "expected": 32,
+      "actual": 32,
+      "missingCount": 0,
+      "pools": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 0 mode 4",
+      "passed": true,
+      "expected": 40,
+      "actual": 40,
+      "missingCount": 0,
+      "pools": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 0 mode 5",
+      "passed": true,
+      "expected": 48,
+      "actual": 48,
+      "missingCount": 0,
+      "pools": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 0 mode 6",
+      "passed": true,
+      "expected": 56,
+      "actual": 56,
+      "missingCount": 0,
+      "pools": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 0 mode 7",
+      "passed": true,
+      "expected": 64,
+      "actual": 64,
+      "missingCount": 0,
+      "pools": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 1 mode 0",
+      "passed": true,
+      "expected": 72,
+      "actual": 72,
+      "missingCount": 0,
+      "pools": [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 1 mode 1",
+      "passed": true,
+      "expected": 80,
+      "actual": 80,
+      "missingCount": 0,
+      "pools": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 1 mode 2",
+      "passed": true,
+      "expected": 88,
+      "actual": 88,
+      "missingCount": 0,
+      "pools": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 1 mode 3",
+      "passed": true,
+      "expected": 96,
+      "actual": 96,
+      "missingCount": 0,
+      "pools": [
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 1 mode 4",
+      "passed": true,
+      "expected": 104,
+      "actual": 104,
+      "missingCount": 0,
+      "pools": [
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 1 mode 5",
+      "passed": true,
+      "expected": 112,
+      "actual": 112,
+      "missingCount": 0,
+      "pools": [
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 1 mode 6",
+      "passed": true,
+      "expected": 120,
+      "actual": 120,
+      "missingCount": 0,
+      "pools": [
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 1 mode 7",
+      "passed": true,
+      "expected": 128,
+      "actual": 128,
+      "missingCount": 0,
+      "pools": [
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 2 mode 0",
+      "passed": true,
+      "expected": 136,
+      "actual": 136,
+      "missingCount": 0,
+      "pools": [
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 2 mode 1",
+      "passed": true,
+      "expected": 144,
+      "actual": 144,
+      "missingCount": 0,
+      "pools": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 2 mode 2",
+      "passed": true,
+      "expected": 152,
+      "actual": 152,
+      "missingCount": 0,
+      "pools": [
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 2 mode 3",
+      "passed": true,
+      "expected": 160,
+      "actual": 160,
+      "missingCount": 0,
+      "pools": [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 2 mode 4",
+      "passed": true,
+      "expected": 168,
+      "actual": 168,
+      "missingCount": 0,
+      "pools": [
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 2 mode 5",
+      "passed": true,
+      "expected": 176,
+      "actual": 176,
+      "missingCount": 0,
+      "pools": [
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 2 mode 6",
+      "passed": true,
+      "expected": 184,
+      "actual": 184,
+      "missingCount": 0,
+      "pools": [
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 2 mode 7",
+      "passed": true,
+      "expected": 192,
+      "actual": 192,
+      "missingCount": 0,
+      "pools": [
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 3 mode 0",
+      "passed": true,
+      "expected": 200,
+      "actual": 200,
+      "missingCount": 0,
+      "pools": [
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 3 mode 1",
+      "passed": true,
+      "expected": 208,
+      "actual": 208,
+      "missingCount": 0,
+      "pools": [
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26,
+        26
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 3 mode 2",
+      "passed": true,
+      "expected": 216,
+      "actual": 216,
+      "missingCount": 0,
+      "pools": [
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27,
+        27
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 3 mode 3",
+      "passed": true,
+      "expected": 224,
+      "actual": 224,
+      "missingCount": 0,
+      "pools": [
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28,
+        28
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 3 mode 4",
+      "passed": true,
+      "expected": 232,
+      "actual": 232,
+      "missingCount": 0,
+      "pools": [
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29,
+        29
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 3 mode 5",
+      "passed": true,
+      "expected": 240,
+      "actual": 240,
+      "missingCount": 0,
+      "pools": [
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 3 mode 6",
+      "passed": true,
+      "expected": 248,
+      "actual": 248,
+      "missingCount": 0,
+      "pools": [
+        31,
+        31,
+        31,
+        31,
+        31,
+        31,
+        31,
+        31
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 3 mode 7",
+      "passed": true,
+      "expected": 256,
+      "actual": 256,
+      "missingCount": 0,
+      "pools": [
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32
+      ],
+      "errors": []
+    },
+    {
+      "phase": "clear before region burst",
+      "passed": true,
+      "expected": 0,
+      "actual": 0,
+      "missingCount": 0,
+      "pools": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "errors": []
+    },
+    {
+      "phase": "continuous variable-color region 15",
+      "passed": true,
+      "expected": 128,
+      "actual": 128,
+      "missingCount": 0,
+      "pools": [
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16
+      ],
+      "errors": []
+    },
+    {
+      "phase": "continuous variable-color region 31",
+      "passed": true,
+      "expected": 256,
+      "actual": 256,
+      "missingCount": 0,
+      "pools": [
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32
+      ],
+      "errors": []
+    },
+    {
+      "phase": "continuous variable-color region 47",
+      "passed": true,
+      "expected": 384,
+      "actual": 384,
+      "missingCount": 0,
+      "pools": [
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48,
+        48
+      ],
+      "errors": []
+    },
+    {
+      "phase": "continuous variable-color region 63",
+      "passed": true,
+      "expected": 512,
+      "actual": 512,
+      "missingCount": 0,
+      "pools": [
+        64,
+        64,
+        64,
+        64,
+        64,
+        64,
+        64,
+        64
+      ],
+      "errors": []
+    }
+  ],
+  "frames": 98,
+  "intervalMs": 400,
+  "elapsedSeconds": 43.998883199999995,
+  "scope": "Production Rust codec OSC bundles -> real UDP9012 -> GestureManager -> shared 240bit decoder -> eight independent native pools. No SetParticles, Emit, or scripted geometry injection."
+}

@@ -25,7 +25,12 @@ namespace MorphForge.Editor
 
         public const int MaxStyleId = 4095;
         public const int MaxFrames = 1024;
-        public const int CellPixels = 32;
+        public static int CellPixels {get; private set;} = 32;
+        static bool LayeredOnly;
+        static int LayerBankSize;
+        static Texture2DArray[] LayerBanks=new Texture2DArray[4];
+        static Texture2D FaceMap;
+        static int UniqueSlices;
         // Keep the 4096-style address space in a compact two-dimensional data texture.
         // The former 16384x1 layout failed VRChat server checks; 256x64 passed.
         public const int MetadataWidth = 256;
@@ -71,6 +76,11 @@ namespace MorphForge.Editor
                 throw new InvalidOperationException("Material catalog build requires idle Edit Mode.");
 
             var root = ResolveSourceRoot(sourceRoot);
+            var options=Newtonsoft.Json.Linq.JObject.Parse(File.ReadAllText(Path.Combine(root,"catalog.json")))["textureOptions"];
+            CellPixels=(int?)options?["cellPixels"]??32;
+            LayeredOnly=(bool?)options?["layeredOnly"]??false;
+            if(CellPixels!=16&&CellPixels!=32&&CellPixels!=64)throw new InvalidDataException("cellPixels must be 16, 32 or 64");
+
             var materials = LoadManifest(root);
             var prepared = Prepare(materials, root);
             var layout = Pack(prepared);
@@ -83,6 +93,7 @@ namespace MorphForge.Editor
 
             WriteAtlas(layout);
             var layers = WriteLayers(layout);
+            if(LayeredOnly&&!layers&&prepared.Any(p=>p.Textures!=null))throw new InvalidOperationException("Layered-only catalog requires texture arrays");
             WriteMetadata(layout);
             var atlas = AssetDatabase.LoadAssetAtPath<Texture2D>(AtlasAssetPath);
             var metadata = AssetDatabase.LoadAssetAtPath<Texture2D>(MetadataAssetPath);
@@ -97,6 +108,11 @@ namespace MorphForge.Editor
             generated.SetTexture("_CatalogAtlas", atlas);
            generated.SetTexture("_CatalogLayers", layers);
            generated.SetFloat("_UseLayeredTextures", layers ? 1f : 0f);
+           generated.SetFloat("_UseFaceMap", layers&&FaceMap ? 1f : 0f);
+           generated.SetTexture("_CatalogFaceMap",FaceMap);
+           generated.SetVector("_FaceMapSize",FaceMap?new Vector4(FaceMap.width,FaceMap.height,0,0):Vector4.one);
+           generated.SetFloat("_LayerBankSize",Mathf.Max(1,LayerBankSize));
+           for(int bank=1;bank<4;bank++)generated.SetTexture("_CatalogLayers"+bank,LayerBanks[bank]);
            generated.SetFloat("_VoxelGrid", 0f);
             generated.SetTexture("_CatalogMeta", metadata);
             generated.SetVector("_AtlasSize", new Vector4(
@@ -142,7 +158,13 @@ namespace MorphForge.Editor
                 animatedStyles = prepared.Count(item => item.Frames > 1),
                 transparentStyles = prepared.Count(item => (item.Flags & TransparentFlag) != 0),
                 cutoutStyles = prepared.Count(item => (item.Flags & CutoutFlag) != 0),
-                layeredTextures = layers ? layers.depth : 0,
+                layeredTextures = LayerBanks.Where(t=>t).Sum(t=>t.depth),
+                uniqueTextureSlices=UniqueSlices,
+                layerBanks=LayerBanks.Count(t=>t),
+                atlasGpuBytes=UnityEngine.Profiling.Profiler.GetRuntimeMemorySizeLong(atlas),
+                layerGpuBytes=LayerBanks.Where(t=>t).Sum(t=>UnityEngine.Profiling.Profiler.GetRuntimeMemorySizeLong(t)),
+                faceMapBytes=FaceMap?UnityEngine.Profiling.Profiler.GetRuntimeMemorySizeLong(FaceMap):0,
+                metadataBytes=UnityEngine.Profiling.Profiler.GetRuntimeMemorySizeLong(metadata),
                 texturedStyles = prepared.Count(item => (item.Flags & HasTextureFlag) != 0),
                 unverified = "Requires the long-run Unity gate before visual/NDMF acceptance."
             }, Formatting.Indented);
@@ -382,6 +404,7 @@ namespace MorphForge.Editor
 
         static AtlasLayout Pack(List<PreparedMaterial> materials)
         {
+            if(LayeredOnly)return new AtlasLayout{Width=1,Height=1,Items=materials.Select(p=>new PackedMaterial{Prepared=p}).ToList()};
             var maxTextureSize = Mathf.Min(16384, Mathf.Max(256, SystemInfo.maxTextureSize));
             var atlasWidth = Mathf.Min(8192, maxTextureSize);
             if (atlasWidth < CellPixels * 6)
@@ -399,11 +422,14 @@ namespace MorphForge.Editor
             var usedWidth = 0;
             var usedHeight = 0;
             var blockWidth = CellPixels * 6;
+            var reused=new Dictionary<string,PackedMaterial>();
             foreach (var material in materials)
             {
                 var item = new PackedMaterial { Prepared = material };
                 if (material.Textures != null)
                 {
+                    var identity=material.Frames+":"+string.Join("|",material.Textures.Select(t=>t.Path));
+                    if(reused.TryGetValue(identity,out var prior)){item.OffsetX=prior.OffsetX;item.OffsetY=prior.OffsetY;layout.Items.Add(item);continue;}
                     var blockHeight = CellPixels * Mathf.Max(1, material.Frames);
                     if (x + blockWidth > atlasWidth)
                     {
@@ -417,6 +443,7 @@ namespace MorphForge.Editor
                             "; reduce cell size, split material sets, or trim animation frames.");
                     item.OffsetX = x;
                     item.OffsetY = y;
+                    reused[identity]=item;
                     x += blockWidth;
                     rowHeight = Mathf.Max(rowHeight, blockHeight);
                     usedWidth = Mathf.Max(usedWidth, x);
@@ -435,7 +462,7 @@ namespace MorphForge.Editor
         static void WriteAtlas(AtlasLayout layout)
         {
             var pixels = new Color32[layout.Width * layout.Height];
-            foreach (var item in layout.Items.Where(item => item.Prepared.Textures != null))
+            foreach (var item in layout.Items.Where(item => !LayeredOnly && item.Prepared.Textures != null))
             {
                 for (var face = 0; face < 6; face++)
                 {
@@ -459,6 +486,7 @@ namespace MorphForge.Editor
                 }
             }
 
+            if(LayeredOnly)pixels[0]=new Color32(255,255,255,255);
             var texture = new Texture2D(layout.Width, layout.Height, TextureFormat.RGBA32, false, false);
             try
             {
@@ -489,35 +517,46 @@ namespace MorphForge.Editor
         }
 
         static Texture2DArray WriteLayers(AtlasLayout layout)
-       {
-           var textured = layout.Items.Where(i => i.Prepared.Textures != null).ToList();
-           var groups=textured.GroupBy(i=>i.Prepared.Frames+":"+string.Join("|",i.Prepared.Textures.Select(t=>t.Path))).ToList();
-           var count = groups.Sum(g => g.First().Prepared.Frames * 6);
-           if (count == 0 || !SystemInfo.supports2DArrayTextures || count > SystemInfo.maxTextureArraySlices || (long)count*CellPixels*CellPixels*4 > 64*1024*1024)
-               return null;
-           var array = new Texture2DArray(CellPixels, CellPixels, count, TextureFormat.RGBA32, true, false)
-           { name="CatalogLayers", filterMode=FilterMode.Trilinear, wrapMode=TextureWrapMode.Repeat, anisoLevel=8 };
-           var layer=0;
-           foreach (var group in groups)
-           {
-               var item=group.First();
-               foreach(var member in group){member.LayerBase=layer;member.Prepared.Flags|=64;}
-               for(var frame=0;frame<item.Prepared.Frames;frame++) for(var face=0;face<6;face++)
-               {
-                   var source=item.Prepared.Textures[face];
-                   var pixels=new Color32[CellPixels*CellPixels];
-                   var top=source.Height-(frame+1)*source.Width;
-                   for(var y=0;y<CellPixels;y++) for(var x=0;x<CellPixels;x++)
-                       pixels[y*CellPixels+x]=source.Pixels[(top+y*source.Width/CellPixels)*source.Width+x*source.Width/CellPixels];
-                   array.SetPixels32(pixels,layer++,0);
-               }
-           }
-           array.Apply(true,false);
-           var existing=AssetDatabase.LoadAssetAtPath<Texture2DArray>(LayersAssetPath);
-           if(existing){EditorUtility.CopySerialized(array,existing);UnityEngine.Object.DestroyImmediate(array);EditorUtility.SetDirty(existing);array=existing;}
-           else AssetDatabase.CreateAsset(array,LayersAssetPath);
-           return array;
-       }
+        {
+            LayerBanks=new Texture2DArray[4];FaceMap=null;UniqueSlices=0;
+            LayerBankSize=Mathf.Min(2048,SystemInfo.maxTextureArraySlices);
+            if(!SystemInfo.supports2DArrayTextures||LayerBankSize<1)return null;
+            var groups=layout.Items.Where(i=>i.Prepared.Textures!=null).GroupBy(i=>i.Prepared.Frames+":"+string.Join("|",i.Prepared.Textures.Select(t=>t.Path))).ToArray();
+            if(groups.Length==0)return null;
+            var slices=new List<Color32[]>();var hashes=new Dictionary<string,int>();var cache=new Dictionary<string,int>();var map=new List<int>();
+            foreach(var group in groups){
+                foreach(var member in group){member.LayerBase=map.Count;member.Prepared.Flags|=64;}
+                var item=group.First();
+                for(int frame=0;frame<item.Prepared.Frames;frame++)for(int face=0;face<6;face++){
+                    var source=item.Prepared.Textures[face];var key=source.Path+":"+frame;
+                    if(!cache.TryGetValue(key,out int address)){
+                        var pixels=new Color32[CellPixels*CellPixels];var top=source.Height-(frame+1)*source.Width;
+                        for(int y=0;y<CellPixels;y++)for(int x=0;x<CellPixels;x++)pixels[y*CellPixels+x]=source.Pixels[(top+y*source.Width/CellPixels)*source.Width+x*source.Width/CellPixels];
+                        var raw=new byte[pixels.Length*4];for(int i=0;i<pixels.Length;i++){raw[i*4]=pixels[i].r;raw[i*4+1]=pixels[i].g;raw[i*4+2]=pixels[i].b;raw[i*4+3]=pixels[i].a;}
+                        string hash;using(var sha=System.Security.Cryptography.SHA256.Create())hash=Convert.ToBase64String(sha.ComputeHash(raw));
+                        if(!hashes.TryGetValue(hash,out address)){address=slices.Count;hashes.Add(hash,address);slices.Add(pixels);}
+                        cache.Add(key,address);
+                    }
+                    map.Add(address);
+                }
+            }
+            UniqueSlices=slices.Count;
+            if(slices.Count>LayerBankSize*4||(long)slices.Count*CellPixels*CellPixels*4*4/3>64*1024*1024)throw new InvalidOperationException("Unique texture slices exceed four banks / 64MiB; select fewer materials or a lower cell resolution.");
+            for(int bank=0;bank*LayerBankSize<slices.Count;bank++){
+                int count=Mathf.Min(LayerBankSize,slices.Count-bank*LayerBankSize);
+                var array=new Texture2DArray(CellPixels,CellPixels,count,TextureFormat.RGBA32,true,false){name="CatalogLayers"+bank,filterMode=FilterMode.Trilinear,wrapMode=TextureWrapMode.Repeat,anisoLevel=8};
+                for(int i=0;i<count;i++)array.SetPixels32(slices[bank*LayerBankSize+i],i,0);array.Apply(true,false);
+                var path=bank==0?LayersAssetPath:OutputRoot+"/CatalogLayers"+bank+".asset";
+                var existing=AssetDatabase.LoadAssetAtPath<Texture2DArray>(path);
+                if(existing){EditorUtility.CopySerialized(array,existing);UnityEngine.Object.DestroyImmediate(array);EditorUtility.SetDirty(existing);array=existing;}else AssetDatabase.CreateAsset(array,path);
+                LayerBanks[bank]=array;
+            }
+            int width=256,height=Mathf.Max(1,(map.Count+255)/256);var mapping=new Texture2D(width,height,TextureFormat.RGBA32,false,true){name="CatalogFaceMap",filterMode=FilterMode.Point,wrapMode=TextureWrapMode.Clamp};
+            var values=new Color32[width*height];for(int i=0;i<map.Count;i++)values[i]=new Color32((byte)map[i],(byte)(map[i]>>8),0,255);mapping.SetPixels32(values);mapping.Apply(false,false);
+            var oldMap=AssetDatabase.LoadAssetAtPath<Texture2D>(OutputRoot+"/CatalogFaceMap.asset");
+            if(oldMap){EditorUtility.CopySerialized(mapping,oldMap);UnityEngine.Object.DestroyImmediate(mapping);EditorUtility.SetDirty(oldMap);mapping=oldMap;}else AssetDatabase.CreateAsset(mapping,OutputRoot+"/CatalogFaceMap.asset");FaceMap=mapping;
+            return LayerBanks[0];
+        }
 
         static void WriteMetadata(AtlasLayout layout)
         {

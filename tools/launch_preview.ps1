@@ -17,15 +17,7 @@ public static class MorphForgePreviewWindow {
     [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr handle);
 }
 '@
-    $existing=@(Get-CimInstance Win32_Process|Where-Object {$_.Name -eq 'morphforge-desktop.exe' -and $_.ExecutablePath -and $_.ExecutablePath.StartsWith($versions,[StringComparison]::OrdinalIgnoreCase)})
-    if($existing.Count -gt 0){
-        $p=Get-Process -Id $existing[0].ProcessId
-        if($p.MainWindowHandle -ne [IntPtr]::Zero){
-            [MorphForgePreviewWindow]::ShowWindow($p.MainWindowHandle,9)|Out-Null
-            [MorphForgePreviewWindow]::SetForegroundWindow($p.MainWindowHandle)|Out-Null
-        }
-        exit 0
-    }
+    # Each launch is a new independent workspace when the primary is busy.
     $previewProfile=Join-Path $root 'Profile'
     $data=Join-Path $root 'Data'
     foreach($path in @($data,(Join-Path $previewProfile 'localappdata'),(Join-Path $previewProfile 'roaming'),(Join-Path $previewProfile 'WebView2'))){New-Item -ItemType Directory -Path $path -Force|Out-Null}

@@ -1,0 +1,524 @@
+{
+  "success": true,
+  "baselineFailedCases": 22,
+  "fixedCases": 29,
+  "checks": [
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": -65.0,
+      "distance": 4.0,
+      "detailFirst": false,
+      "testedPixels": 6703,
+      "wrongPixels": 6210,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": -65.0,
+      "distance": 4.0,
+      "detailFirst": true,
+      "testedPixels": 6703,
+      "wrongPixels": 6252,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": -65.0,
+      "distance": 40.0,
+      "detailFirst": false,
+      "testedPixels": 33,
+      "wrongPixels": 33,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": -65.0,
+      "distance": 40.0,
+      "detailFirst": true,
+      "testedPixels": 33,
+      "wrongPixels": 33,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": -40.0,
+      "distance": 4.0,
+      "detailFirst": false,
+      "testedPixels": 12006,
+      "wrongPixels": 12006,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": -40.0,
+      "distance": 4.0,
+      "detailFirst": true,
+      "testedPixels": 12006,
+      "wrongPixels": 12006,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": -40.0,
+      "distance": 40.0,
+      "detailFirst": false,
+      "testedPixels": 77,
+      "wrongPixels": 43,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": -40.0,
+      "distance": 40.0,
+      "detailFirst": true,
+      "testedPixels": 77,
+      "wrongPixels": 48,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": -15.0,
+      "distance": 4.0,
+      "detailFirst": false,
+      "testedPixels": 14865,
+      "wrongPixels": 14865,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": -15.0,
+      "distance": 4.0,
+      "detailFirst": true,
+      "testedPixels": 14865,
+      "wrongPixels": 14865,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": -15.0,
+      "distance": 40.0,
+      "detailFirst": false,
+      "testedPixels": 98,
+      "wrongPixels": 98,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": -15.0,
+      "distance": 40.0,
+      "detailFirst": true,
+      "testedPixels": 98,
+      "wrongPixels": 98,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": 0.0,
+      "distance": 4.0,
+      "detailFirst": false,
+      "testedPixels": 15267,
+      "wrongPixels": 15267,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": 0.0,
+      "distance": 4.0,
+      "detailFirst": true,
+      "testedPixels": 15267,
+      "wrongPixels": 15267,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": 0.0,
+      "distance": 40.0,
+      "detailFirst": false,
+      "testedPixels": 105,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": 0.0,
+      "distance": 40.0,
+      "detailFirst": true,
+      "testedPixels": 105,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": 15.0,
+      "distance": 4.0,
+      "detailFirst": false,
+      "testedPixels": 14863,
+      "wrongPixels": 14863,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": 15.0,
+      "distance": 4.0,
+      "detailFirst": true,
+      "testedPixels": 14863,
+      "wrongPixels": 14863,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": 15.0,
+      "distance": 40.0,
+      "detailFirst": false,
+      "testedPixels": 105,
+      "wrongPixels": 76,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": 15.0,
+      "distance": 40.0,
+      "detailFirst": true,
+      "testedPixels": 105,
+      "wrongPixels": 98,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": 40.0,
+      "distance": 4.0,
+      "detailFirst": false,
+      "testedPixels": 12011,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": 40.0,
+      "distance": 4.0,
+      "detailFirst": true,
+      "testedPixels": 12011,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": 40.0,
+      "distance": 40.0,
+      "detailFirst": false,
+      "testedPixels": 78,
+      "wrongPixels": 33,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": 40.0,
+      "distance": 40.0,
+      "detailFirst": true,
+      "testedPixels": 78,
+      "wrongPixels": 37,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": 65.0,
+      "distance": 4.0,
+      "detailFirst": false,
+      "testedPixels": 6708,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": 65.0,
+      "distance": 4.0,
+      "detailFirst": true,
+      "testedPixels": 6708,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": 65.0,
+      "distance": 40.0,
+      "detailFirst": false,
+      "testedPixels": 34,
+      "wrongPixels": 34,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "yaw": 65.0,
+      "distance": 40.0,
+      "detailFirst": true,
+      "testedPixels": 34,
+      "wrongPixels": 34,
+      "passed": false
+    },
+    {
+      "shader": "Hidden/MorphForge/DepthBaseline0151",
+      "kind": "closer-occluder",
+      "leakedRedPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": -65.0,
+      "distance": 4.0,
+      "detailFirst": false,
+      "testedPixels": 6703,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": -65.0,
+      "distance": 4.0,
+      "detailFirst": true,
+      "testedPixels": 6703,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": -65.0,
+      "distance": 40.0,
+      "detailFirst": false,
+      "testedPixels": 33,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": -65.0,
+      "distance": 40.0,
+      "detailFirst": true,
+      "testedPixels": 33,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": -40.0,
+      "distance": 4.0,
+      "detailFirst": false,
+      "testedPixels": 12006,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": -40.0,
+      "distance": 4.0,
+      "detailFirst": true,
+      "testedPixels": 12006,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": -40.0,
+      "distance": 40.0,
+      "detailFirst": false,
+      "testedPixels": 77,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": -40.0,
+      "distance": 40.0,
+      "detailFirst": true,
+      "testedPixels": 77,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": -15.0,
+      "distance": 4.0,
+      "detailFirst": false,
+      "testedPixels": 14865,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": -15.0,
+      "distance": 4.0,
+      "detailFirst": true,
+      "testedPixels": 14865,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": -15.0,
+      "distance": 40.0,
+      "detailFirst": false,
+      "testedPixels": 98,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": -15.0,
+      "distance": 40.0,
+      "detailFirst": true,
+      "testedPixels": 98,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": 0.0,
+      "distance": 4.0,
+      "detailFirst": false,
+      "testedPixels": 15267,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": 0.0,
+      "distance": 4.0,
+      "detailFirst": true,
+      "testedPixels": 15267,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": 0.0,
+      "distance": 40.0,
+      "detailFirst": false,
+      "testedPixels": 105,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": 0.0,
+      "distance": 40.0,
+      "detailFirst": true,
+      "testedPixels": 105,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": 15.0,
+      "distance": 4.0,
+      "detailFirst": false,
+      "testedPixels": 14863,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": 15.0,
+      "distance": 4.0,
+      "detailFirst": true,
+      "testedPixels": 14863,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": 15.0,
+      "distance": 40.0,
+      "detailFirst": false,
+      "testedPixels": 105,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": 15.0,
+      "distance": 40.0,
+      "detailFirst": true,
+      "testedPixels": 105,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": 40.0,
+      "distance": 4.0,
+      "detailFirst": false,
+      "testedPixels": 12011,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": 40.0,
+      "distance": 4.0,
+      "detailFirst": true,
+      "testedPixels": 12011,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": 40.0,
+      "distance": 40.0,
+      "detailFirst": false,
+      "testedPixels": 78,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": 40.0,
+      "distance": 40.0,
+      "detailFirst": true,
+      "testedPixels": 78,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": 65.0,
+      "distance": 4.0,
+      "detailFirst": false,
+      "testedPixels": 6708,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": 65.0,
+      "distance": 4.0,
+      "detailFirst": true,
+      "testedPixels": 6708,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": 65.0,
+      "distance": 40.0,
+      "detailFirst": false,
+      "testedPixels": 34,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "yaw": 65.0,
+      "distance": 40.0,
+      "detailFirst": true,
+      "testedPixels": 34,
+      "wrongPixels": 0,
+      "passed": true
+    },
+    {
+      "shader": "MorphForge/ParticleBoxCatalogMetadataGrid",
+      "kind": "closer-occluder",
+      "leakedRedPixels": 0,
+      "passed": true
+    }
+  ],
+  "scope": "GPU synthetic particle vertex streams in a temporary additive scene; old production shader negative control, fixed production shader, both draw orders, perspective views and a closer occluder. Not native particle birth, OSC, or VRChat multiplayer validation."
+}

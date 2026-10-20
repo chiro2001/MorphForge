@@ -1,0 +1,118 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "isolated project and v16 payload",
+      "passed": true
+    },
+    {
+      "name": "retired protocols and catalog shortcuts removed",
+      "passed": true
+    },
+    {
+      "name": "strategy persists: incremental",
+      "passed": true
+    },
+    {
+      "name": "strategy persists: rebuild",
+      "passed": true
+    },
+    {
+      "name": "strategy persists: auto",
+      "passed": true
+    },
+    {
+      "name": "real OSCQuery HTTP discovers exact known catalog",
+      "passed": true
+    },
+    {
+      "name": "discovery does not become execution or remote ACK",
+      "passed": true
+    },
+    {
+      "name": "readable capability result is visible",
+      "passed": true
+    },
+    {
+      "name": "publish button displays both simulated costs",
+      "passed": true
+    },
+    {
+      "name": "explicit repair never queues an automatic rebuild",
+      "passed": true
+    },
+    {
+      "name": "avatar material button merges definitions without changing geometry",
+      "passed": true
+    },
+    {
+      "name": "material budget uses deduped slices and one-pixel compatibility atlas",
+      "passed": true
+    },
+    {
+      "name": "budget explains no new OSC bits or particle systems",
+      "passed": true
+    },
+    {
+      "name": "no unhandled UI errors",
+      "passed": true
+    },
+    {
+      "name": "test never acquires OSC channel",
+      "passed": true
+    }
+  ],
+  "discovery": {
+    "applied": true,
+    "catalogKnown": true,
+    "info": {
+      "build": 67369,
+      "catalogHash": "17fca98f3f7fba056af0448af0be57d1bbb11fe09dbd2020a7f111378e369047",
+      "executionAck": false,
+      "layeredOnly": false,
+      "protocol": "mf6",
+      "region8": true,
+      "signature": "7:7:67369:17fca98f3f7fba056af0448af0be57d1bbb11fe09dbd2020a7f111378e369047",
+      "surfaceMasks": true,
+      "version": 7,
+      "virtualLight": true
+    },
+    "localOnly": true,
+    "port": 58341,
+    "remoteAcknowledged": false,
+    "status": "identified"
+  },
+  "budget": {
+    "additionalAnimatorLayers": 0,
+    "additionalParticleSystems": 0,
+    "additionalSyncedBits": 0,
+    "animatedStyles": 0,
+    "atlasSize": [
+      1,
+      1
+    ],
+    "bytes": {
+      "atlas": 4,
+      "faceMap": 1024,
+      "layerMipmaps": 1364,
+      "metadata": 262144,
+      "totalGpuEstimate": 264536
+    },
+    "cellPixels": 16,
+    "faceMapEntries": 6,
+    "fits": true,
+    "layerBanks": 1,
+    "legacyAtlasBytes": 6144,
+    "legacyAtlasSize": [
+      96,
+      16
+    ],
+    "note": "预估GPU纹理数据；Unity原生报告与实际SDK包体另测，不含CPU可读副本、平台分配和原人物纹理。",
+    "styles": 26,
+    "textureGroups": 1,
+    "uniqueSlices": 1,
+    "uniqueSourcePngs": 1
+  },
+  "realModelRequests": 0,
+  "scope": "Actual isolated Windows Tauri pointer controls and loopback OSCQuery fixture; OSC disabled. No real Avatar discovery claim."
+}

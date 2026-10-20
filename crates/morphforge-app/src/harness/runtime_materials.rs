@@ -162,7 +162,7 @@ pub(super) fn define(w: &mut Workspace, args: &Value, run: Option<&str>) -> Resu
             added += 1;
         }
         let encoded = Surface::runtime(&m, 0).context("该材质无法编为实时表面")?;
-        entries.push(json!({"id":m.id,"uid":m.uid,"name":m.name,"wireMode":encoded.mode,"vrcEffective":encoded.decode(),"mf5RebuildRequired":false}));
+        entries.push(json!({"id":m.id,"uid":m.uid,"name":m.name,"wireMode":encoded.mode,"vrcEffective":encoded.decode(),"avatarRebuildRequired":false}));
     }
     if added > 0 {
         w.replace_with_materials(
@@ -172,7 +172,7 @@ pub(super) fn define(w: &mut Workspace, args: &Value, run: Option<&str>) -> Resu
             run,
         )?;
     }
-    let receipt = json!({"ok":true,"revision":w.project.scene.revision,"materials":entries,"added":added,"geometryChanged":false,"note":"MF5实时材质可随绘制发送，不需重传头像。PBR/程序材质按vrcEffective量化；原始艺术材质保持不变。MF4及更早仍需目录打包。"});
+    let receipt = json!({"ok":true,"revision":w.project.scene.revision,"materials":entries,"added":added,"geometryChanged":false,"note":"MF6实时材质可随绘制发送，不需重传头像。PBR/程序材质按vrcEffective量化；原始艺术材质保持不变。"});
     w.event("materials.runtime.defined", run, receipt.clone())?;
     Ok(receipt)
 }

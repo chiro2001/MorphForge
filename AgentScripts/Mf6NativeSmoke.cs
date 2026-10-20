@@ -24,6 +24,11 @@ public static class Mf6NativeSmoke
         string format=(string)frame["format"];
         if(format=="clear"){expected.Clear();return;}
         if(format=="boxes"||format=="shared_boxes"||format=="voxels")foreach(var record in frame["records"]){var value=Box(record,(int?)frame["shape"]??0);expected[BoxKey(value.Pool,value.Min,value.Size)]=value;}
+        else if(format=="region"){
+            var r=frame["region"];var origin=V(r["origin"]);int shape=(int)r["shape"],first=(int)r["first_pool"],i=0;
+            foreach(var surface in r["surfaces"]){var min=(int[])origin.Clone();if(shape<3)min[shape]+=i;else for(int a=0;a<3;a++)min[a]+=(i>>a)&1;
+                var value=new Expected{Pool=(first+i)%8,Min=min,Size=new[]{1,1,1},Color=V(surface["bytes"]),Alpha=255-(int)surface["mode"]};expected[BoxKey(value.Pool,min,value.Size)]=value;i++;}
+        }
         else if(format=="remove_boxes")foreach(var record in frame["records"]){var min=V(record["geometry"]["min"]);var size=V(record["geometry"]["extent"]).Select(n=>n+1).ToArray();expected.Remove(BoxKey((int)record["pool"],min,size));}
         else if(format=="triangles")foreach(var record in frame["records"]){int id=(int)record["id"];expected[TriKey(id)]=new Expected{Id=id,Pool=id%8,Vertices=record["vertices"].Select(V).ToArray(),Color=V(record["color"]),Alpha=(bool)record["double_sided"]?2:1};}
         else if(format=="remove_triangles")foreach(var id in frame["ids"])expected.Remove(TriKey((int)id));
@@ -73,6 +78,7 @@ public static class Mf6NativeSmoke
     }
     public static string Start(bool capacity=false)=>Schedule(capacity,"");
     public static string StartRandom()=>Schedule(false,"random");
+    public static string StartRegions()=>Schedule(false,"regions");
     static string Schedule(bool capacity,string variant)
     {
         if(!Application.isPlaying)throw new Exception("Play Mode required");Directory.CreateDirectory(Root);string progress=Root+"/unified-progress.json";
@@ -85,13 +91,13 @@ public static class Mf6NativeSmoke
         try{
             for(int i=0;i<300;i++){var gm=UnityEngine.Object.FindObjectsOfType<GestureManager>().FirstOrDefault(g=>g.gameObject.scene.path==Mf6AvatarBuild.ScenePath);if(gm&&gm.Module is ModuleVrc3)break;await Task.Delay(100);}
             var module=Module();var receiver=UnityEngine.Object.FindObjectsOfType<MorphForgePlayReceiver>().Single(r=>r.gameObject.scene.path==Mf6AvatarBuild.ScenePath);if(!receiver.Running)receiver.TryStart();if(!receiver.Running)throw new Exception(receiver.Error);
-            var fixture=JObject.Parse(File.ReadAllText(Root+(capacity?"/capacity-fixtures.json":variant=="random"?"/random-fixtures.json":"/fixtures.json")));var expected=new Dictionary<string,Expected>();int interval=(int)fixture["intervalMs"];int previous=module.GetParam("MF6_LastRx").IntValue();int sequenceOffset=previous>=0&&previous<16?previous:0;
+            var fixture=JObject.Parse(File.ReadAllText(Root+(capacity?"/capacity-fixtures.json":variant=="random"?"/random-fixtures.json":variant=="regions"?"/region-fixtures.json":"/fixtures.json")));var expected=new Dictionary<string,Expected>();int interval=(int)fixture["intervalMs"];int previous=module.GetParam("MF6_LastRx").IntValue();int sequenceOffset=previous>=0&&previous<16?previous:0;
             using(var udp=new UdpClient())foreach(var item in fixture["cases"]){
                 var bytes=item["packet"].Select(v=>(byte)(int)v).ToArray();int control=bytes[bytes.Length-1];bytes[bytes.Length-1]=(byte)(((((control>>4)+sequenceOffset)%16)<<4)|(control&15));udp.Send(bytes,bytes.Length,"127.0.0.1",9012);Apply(expected,item["frame"]);frames++;await Task.Delay(interval);
                 if((bool)item["verify"]){await Task.Delay(100);var check=Verify(module,expected,(string)item["name"]);checks.Add(check);File.WriteAllText(Root+"/unified-progress.json",new JObject{["status"]=(bool)check["passed"]?"running":"failed",["capacity"]=capacity,["frames"]=frames,["expected"]=expected.Count,["elapsedSeconds"]=watch.Elapsed.TotalSeconds,["latestCheck"]=check}.ToString());if(!(bool)check["passed"])throw new Exception(check.ToString());}
             }
             var report=new JObject{["success"]=true,["capacity"]=capacity,["checks"]=checks,["frames"]=frames,["intervalMs"]=interval,["elapsedSeconds"]=watch.Elapsed.TotalSeconds,["scope"]="Production Rust codec OSC bundles -> real UDP9012 -> GestureManager -> shared 240bit decoder -> eight independent native pools. No SetParticles, Emit, or scripted geometry injection."};
-            File.WriteAllText(Root+(capacity?"/capacity.json":variant=="random"?"/random-smoke.json":"/unified-smoke.json"),report.ToString());File.WriteAllText(Root+"/unified-progress.json",new JObject{["status"]="complete",["capacity"]=capacity,["variant"]=variant,["frames"]=frames}.ToString());
+            File.WriteAllText(Root+(capacity?"/capacity.json":variant=="random"?"/random-smoke.json":variant=="regions"?"/region-smoke.json":"/unified-smoke.json"),report.ToString());File.WriteAllText(Root+"/unified-progress.json",new JObject{["status"]="complete",["capacity"]=capacity,["variant"]=variant,["frames"]=frames}.ToString());
         }catch(Exception e){File.WriteAllText(Root+"/unified-progress.json",new JObject{["status"]="failed",["capacity"]=capacity,["frames"]=frames,["error"]=e.ToString(),["checks"]=checks}.ToString());UnityEngine.Debug.LogError("MF6 native fixture: "+e);}
     }
 }

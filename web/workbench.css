@@ -1666,3 +1666,5 @@ dialog > #toast.visible { display:block; }
 .motion-panel > .row { gap:6px; }
 .motion-panel > .row label { display:flex; align-items:center; gap:6px; }
 .motion-panel summary { margin:3px 0; }
+
+.creation-preferences{gap:8px;margin-top:6px}.creation-preferences label{min-width:0}.sync-progress-block{display:grid;gap:5px;margin:10px 0}.sync-progress-block progress{width:100%;height:12px;accent-color:#e7a34b}.sync-progress-block label{font-size:12px}

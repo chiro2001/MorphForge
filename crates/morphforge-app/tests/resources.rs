@@ -456,7 +456,7 @@ fn preserved_pack_blockstates_select_alias_model_and_orientation() {
         .unwrap();
     assert!(m.uid.starts_with("example:block/active@"));
     assert_eq!(m.texture_rotation, 9);
-    assert_eq!(m.texture_scale, 4.);
+    assert_eq!(m.texture_scale, 1.);
     assert_eq!(compiled.report["approximateMaterialStates"], 0);
     let path = workspace
         .root
@@ -475,4 +475,72 @@ fn preserved_pack_blockstates_select_alias_model_and_orientation() {
     .unwrap()
     .to_string()
     .contains("MC_PACK_CORRUPT"));
+}
+
+#[test]
+fn vanilla_full_cube_templates_preserve_grass_layers_and_face_tint() {
+    let (_dir, mut w) = workspace();
+    let dirt = png(2, 2, &[[100, 50, 25, 255]]);
+    let top = png(2, 2, &[[255, 255, 255, 255]]);
+    let overlay = png(2, 2, &[[255, 255, 255, 128]]);
+    let faces = json!({"east":{"texture":"#side"},"west":{"texture":"#side"},"up":{"texture":"#top","tintindex":0},"down":{"texture":"#bottom"},"south":{"texture":"#side"},"north":{"texture":"#side"}});
+    let mut grass = json!({"textures":{"side":"minecraft:block/dirt","bottom":"minecraft:block/dirt","top":"minecraft:block/grass_top","overlay":"minecraft:block/overlay"},"elements":[{"from":[0,0,0],"to":[16,16,16],"faces":faces},{"from":[0,0,0],"to":[16,16,16],"faces":{"east":{"texture":"#overlay","tintindex":0}}}]});
+    // A template is present in the ZIP, rather than assumed absent as in
+    // ordinary resource packs. Layered full cubes remain valid cube materials.
+    grass["parent"] = json!("minecraft:block/block");
+    let model = serde_json::to_vec(&grass).unwrap();
+    let bytes = zip(&[
+        ("pack.mcmeta", &pack_meta()),
+        ("assets/minecraft/models/block/grass_block.json", &model),
+        ("assets/minecraft/textures/block/dirt.png", &dirt),
+        ("assets/minecraft/textures/block/grass_top.png", &top),
+        ("assets/minecraft/textures/block/overlay.png", &overlay),
+    ]);
+    let r = import_java_pack(&mut w, &bytes, "grass.zip").unwrap();
+    assert_eq!(r["materialsAdded"], 1);
+    let m = w
+        .project
+        .materials
+        .iter()
+        .find(|m| m.uid.starts_with("minecraft:block/grass_block@"))
+        .unwrap();
+    assert_eq!(
+        artifact(&w, &m.textures[0]).get_pixel(0, 0).0,
+        [123, 120, 57, 255]
+    );
+    assert_eq!(
+        artifact(&w, &m.textures[2]).get_pixel(0, 0).0,
+        [145, 189, 89, 255]
+    );
+    assert_eq!(
+        artifact(&w, &m.textures[3]).get_pixel(0, 0).0,
+        [100, 50, 25, 255]
+    );
+}
+
+#[test]
+fn partial_alpha_glass_and_slime_are_blended_instead_of_disappearing_in_cutout() {
+    for name in [
+        "white_stained_glass",
+        "tinted_glass",
+        "slime_block",
+        "nether_portal",
+    ] {
+        assert_eq!(
+            morphforge_app::resources::alpha_render_mode(name, true, true),
+            "transparent"
+        );
+    }
+    assert_eq!(
+        morphforge_app::resources::alpha_render_mode("oak_leaves", true, true),
+        "cutout"
+    );
+    assert_eq!(
+        morphforge_app::resources::alpha_render_mode("iron_bars", false, true),
+        "cutout"
+    );
+    assert_eq!(
+        morphforge_app::resources::alpha_render_mode("stone", false, false),
+        "opaque"
+    );
 }

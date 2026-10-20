@@ -26,7 +26,7 @@ mod runtime_materials;
 mod visual_context;
 pub use goal::GoalProgress;
 pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/5.1";
-pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/4.1";
+pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/4.2";
 
 #[derive(Clone, Debug)]
 struct PendingPrompt {
@@ -1926,6 +1926,7 @@ impl Harness {
             "projectId":workspace.project.id,
             "projectName":workspace.project.name,
             "modelingStyle":workspace.project.modeling_style,
+            "modelingExtent":workspace.project.modeling_extent,
             "stats":stats,
             "targetCompatibility":target_compatibility,
             "placement":crate::scene_tools::target_report(&workspace.project.scene,self.transport.config().capacity),
@@ -1942,7 +1943,7 @@ impl Harness {
             "referenceImages":reference_images,
             "viewConventions":{"front":{"cameraFrom":"+Z","looksToward":"-Z"},"hero":{"cameraFrom":"+X,+Y,+Z"},"placementHint":"脸、眼睛、围裙、门窗、正面文字应位于主体的+Z外表面；更大的Z更靠近front相机。"},
             "sync":self.transport.state(),
-            "runtimeSurfaceHints":{"mf5":"define_palette/define_materials可实时发送，不需重传头像；新图片仍需打包。查看工具返回的vrcEffective了解量化。","scale":"placement.scale保持实际倍数；新100%=.05，MF5范围.0005.. .5（1%..1000%）。","transparency":"MF5运行时透明表面暂不带六面遮罩；目录透明材质可剔内部面。"},
+            "runtimeSurfaceHints":{"mf6":"define_palette/define_materials可实时发送，不需重传头像；新图片仍需打包。查看工具返回的vrcEffective了解量化。","scale":"placement.scale保持实际倍数；新100%=.05，MF6范围.0005.. .5（1%..1000%）。","transparency":"MF6目录透明材质可剔内部面；实时透明表面暂不带六面遮罩。"},
             "recipeSources":crate::sources::list(&workspace).unwrap_or(Value::Null),
             "creative":workspace.project.creative.brief(),
             "sdkVersion":recipe::SDK_VERSION,
@@ -2218,13 +2219,15 @@ impl Harness {
                 if !workspace.project.commits.iter().any(|commit| commit.revision == revision) {
                     bail!("请先commit再publish")
                 }
-                let profile=self.transport.config().profile;
-                if args["repair"]==true && (profile!="mf5"||args["resync"]==true){bail!("补播仅支持MF5，且不能与resync同时使用");}
-                if args["loopReplay"]==true && profile!="mf5"{bail!("连续补播需要MF5");}
+                if args["repair"]==true && args["resync"]==true{bail!("补播不可与清空重建同时使用");}
                 if let Some(order)=args.get("sendOrder"){if !["volume","bottom_up","material"].iter().any(|s|order==*s){bail!("sendOrder无效");}}
                 let scene = workspace.scene_at(revision)?;
-                let mut state = self.transport.publish_with_materials(&scene,&workspace.materials_at(revision)?,args["resync"]==true)?;
-                if args["repair"]==true {state=self.transport.repair()?;}
+                let materials=workspace.materials_at(revision)?;
+                let mut state = if args["repair"]==true {
+                    self.transport.publish_for_repair(&scene,&materials)?
+                } else {
+                    self.transport.publish_with_materials(&scene,&materials,args["resync"]==true)?
+                };
                 let mut options=serde_json::Map::new();for key in ["loopReplay","sendOrder"]{if let Some(value)=args.get(key){options.insert(key.into(),value.clone());}}
                 if !options.is_empty(){state=self.transport.configure(&Value::Object(options),workspace)?;}
                 workspace.event(
@@ -3406,16 +3409,16 @@ pub fn tools_for_language(language: &str) -> Value {
         tool(
             "minecraft_import",
             if en {
-                "Import a locally uploaded Minecraft building: list sources, inspect paginated palette, preview compilation without changing the draft, then apply using previewId + baseRevision. Source files remain preserved. Formats: litematic, Sponge schem, legacy schematic, Java structure NBT. options.blockScale=1/2/4/8/16; higher values preserve thin structures. center uses bottom center; resourcePack=builtin or imported pack ID. Preview returns unknown/quantized states and capacity report; inspect this before applying. Apply is undoable and idempotent with requestId. Unsupported block shapes are approximated and reported. No Minecraft game logic."
+                "Import a locally uploaded Minecraft building: list sources, inspect paginated palette, preview compilation without changing the draft, then apply using previewId + baseRevision. Source files remain preserved. Formats: litematic, Sponge schem, legacy schematic, Java structure NBT. options.blockScale=0/1/2/4/8/16; default 0 automatically selects the smallest exact shape grid (1 for full cubes), capped to fit the 256-cell target when possible; any resulting thin-detail quantization is reported. Explicit higher values preserve thin structures. center uses bottom center; resourcePack=builtin or imported pack ID. Preview returns unknown/quantized states and capacity report; inspect this before applying. Apply is undoable and idempotent with requestId. Unsupported block shapes are approximated and reported. No Minecraft game logic."
             } else {
-                "导入用户已上传的Minecraft建筑：list查看源库；inspect分页查看方块状态；preview编译并返回报告但不修改草稿；确认报告后用previewId和baseRevision调用apply，可撤销且requestId幂等。支持litematic、Sponge schem、旧schematic、Java结构NBT。options.blockScale=1/2/4/8/16，越高越能保留薄结构；center地面居中；resourcePack=builtin或已导入资源包ID。先检查未知形状、量化、材质近似和容量报告，超限时调整精度或只保留外壳。保留原建筑，不模拟游戏逻辑。"
+                "导入用户已上传的Minecraft建筑：list查看源库；inspect分页查看方块状态；preview编译并返回报告但不修改草稿；确认报告后用previewId和baseRevision调用apply，可撤销且requestId幂等。支持litematic、Sponge schem、旧schematic、Java结构NBT。options.blockScale=0/1/2/4/8/16，默认0按形状选最小精度（完整方块1:1），优先适配256格空间并报告被量化的薄细节；显式提高可保留薄结构；center地面居中；resourcePack=builtin或已导入资源包ID。先检查未知形状、量化、材质近似和容量报告，超限时调整精度或只保留外壳。保留原建筑，不模拟游戏逻辑。"
             },
             json!({
               "action":{"type":"string","enum":["list","inspect","preview","apply"]},
               "sourceId":{"type":"string"},"previewId":{"type":"string"},"requestId":{"type":"string"},"projectId":{"type":"string"},"baseRevision":{"type":"integer","minimum":0},
               "offset":{"type":"integer","minimum":0},"limit":{"type":"integer","minimum":1,"maximum":128},
               "options":{"type":"object","properties":{
-                "blockScale":{"type":"integer","enum":[1,2,4,8,16]},"center":{"type":"boolean"},"surfaceOnly":{"type":"boolean"},"resourcePack":{"type":"string"},"mode":{"type":"string","enum":["replace","overlay"]},"group":{"type":"string"},"offset":{"type":"array","items":{"type":"integer"},"minItems":3,"maxItems":3}
+                "blockScale":{"type":"integer","enum":[0,1,2,4,8,16]},"center":{"type":"boolean"},"surfaceOnly":{"type":"boolean"},"resourcePack":{"type":"string"},"mode":{"type":"string","enum":["replace","overlay"]},"group":{"type":"string"},"offset":{"type":"array","items":{"type":"integer"},"minItems":3,"maxItems":3}
               },"additionalProperties":false}
             }),
             vec!["action"]
@@ -3448,9 +3451,9 @@ pub fn tools_for_language(language: &str) -> Value {
         tool(
             "define_palette",
             if en {
-                "Define 1–32 exact opaque sRGB colors (#RRGGBB) for reference matching. Reuse returned style IDs/UIDs and revision in geometry calls. Adds missing colors without changing existing materials or geometry. MF5 sends new colors directly as RGB24; MF4/older require Avatar catalog rebuild."
+                "Define 1–32 exact opaque sRGB colors (#RRGGBB) for reference matching. Reuse returned style IDs/UIDs and revision in geometry calls. Adds missing colors without changing existing materials or geometry. MF6 sends new colors directly as RGB24 without rebuilding the Avatar."
             } else {
-                "按#RRGGBB（sRGB）定义1至32个不透明纯色，匹配参考图肤色、藏蓝等。返回材质ID/UID和最新revision，后续几何使用这些返回值；同色复用，不改已有材质或几何。MF5可直接实时发送新颜色；MF4及更早需要更新Avatar目录。"
+                "按#RRGGBB（sRGB）定义1至32个不透明纯色，匹配参考图肤色、藏蓝等。返回材质ID/UID和最新revision，后续几何使用这些返回值；同色复用，不改已有材质或几何。MF6可直接实时发送新颜色，无需更新Avatar目录。"
             },
             json!({
                 "baseRevision":{"type":"integer","minimum":0},
@@ -3466,9 +3469,9 @@ pub fn tools_for_language(language: &str) -> Value {
         tool(
             "image_tools",
             if en {
-                "Local reference-image tools: list; inspect exact RGBA8 pixels/compact sample grid; resize/crop to a new reference while keeping the original and attribution; voxel_plane previews by default or applies with dryRun=false + baseRevision. width/height select pixel resolution, one side preserves aspect. Image top-left maps to minimum u/maximum v (xy: x/y, xz: x/z, yz: z/y). Default canvasMode=overlay replaces opaque pixels only; replace erases the whole rectangle including transparent holes. maxColors median-cut quantizes colors; materialIds instead maps to existing materials. New RGB goes directly to MF5. This creates a pixel-art plane, not 3D reconstruction."
+                "Local reference-image tools: list; inspect exact RGBA8 pixels/compact sample grid; resize/crop to a new reference while keeping the original and attribution; voxel_plane previews by default or applies with dryRun=false + baseRevision. width/height select pixel resolution, one side preserves aspect. Image top-left maps to minimum u/maximum v (xy: x/y, xz: x/z, yz: z/y). Default canvasMode=overlay replaces opaque pixels only; replace erases the whole rectangle including transparent holes. maxColors median-cut quantizes colors; materialIds instead maps to existing materials. New RGB goes directly to MF6. This creates a pixel-art plane, not 3D reconstruction."
             } else {
-                "本机参考图工具：list列图库；inspect读取精确RGBA8像素和紧凑采样网格；resize裁剪/缩放为新参考图，保留原图与署名；voxel_plane默认只预览，dryRun=false并提供baseRevision才应用。width/height控制像素分辨率，只给一边等比缩放。顶行映射较大v；xy的u/v=x/y，xz=x/z，yz=z/y。默认canvasMode=overlay仅覆盖不透明像素；replace替换整个矩形画布（透明孔也擦除）；alphaThreshold后按不透明方块显示；maxColors中位切分量化颜色，或materialIds映射已有材质。新RGB可直接发MF5。这是像素画平面，不是自动三维重建。"
+                "本机参考图工具：list列图库；inspect读取精确RGBA8像素和紧凑采样网格；resize裁剪/缩放为新参考图，保留原图与署名；voxel_plane默认只预览，dryRun=false并提供baseRevision才应用。width/height控制像素分辨率，只给一边等比缩放。顶行映射较大v；xy的u/v=x/y，xz=x/z，yz=z/y。默认canvasMode=overlay仅覆盖不透明像素；replace替换整个矩形画布（透明孔也擦除）；alphaThreshold后按不透明方块显示；maxColors中位切分量化颜色，或materialIds映射已有材质。新RGB可直接发MF6。这是像素画平面，不是自动三维重建。"
             },
             json!({"action":{"type":"string","enum":["list","inspect","resize","voxel_plane"]},"imageId":{"type":"string"},"width":{"type":"integer","minimum":1,"maximum":1024},"height":{"type":"integer","minimum":1,"maximum":1024},"crop":{"type":"object","properties":{"x":{"type":"integer","minimum":0},"y":{"type":"integer","minimum":0},"width":{"type":"integer","minimum":1},"height":{"type":"integer","minimum":1}},"required":["x","y","width","height"],"additionalProperties":false},"filter":{"type":"string","enum":["nearest","area","lanczos"]},"points":{"type":"array","maxItems":256,"items":{"type":"array","items":{"type":"integer","minimum":0},"minItems":2,"maxItems":2}},"grid":{"type":"array","items":{"type":"integer","minimum":1,"maximum":64},"minItems":2,"maxItems":2},"baseRevision":{"type":"integer","minimum":0},"dryRun":{"type":"boolean"},"plane":{"type":"string","enum":["xy","xz","yz"]},"origin":{"type":"array","items":{"type":"integer"},"minItems":3,"maxItems":3},"thickness":{"type":"integer","minimum":1,"maximum":64},"alphaThreshold":{"type":"integer","minimum":1,"maximum":255},"maxColors":{"type":"integer","minimum":1,"maximum":4096},"materialIds":{"type":"array","minItems":1,"maxItems":256,"items":{"type":"integer","minimum":1,"maximum":65535}},"group":{"type":"string"},"title":{"type":"string"},"canvasMode":{"type":"string","enum":["overlay","replace"]}}),
             vec!["action"]
@@ -3476,9 +3479,9 @@ pub fn tools_for_language(language: &str) -> Value {
         tool(
             "define_materials",
             if en {
-                "Define runtime color/PBR/water/cloud/wood/stone materials; returns IDs/UIDs and revision plus quantized vrcEffective. MF5 sends them inline without Avatar rebuild; arbitrary new image textures still need packaging. Parameters outside supported wire ranges are rejected."
+                "Define runtime color/PBR/water/cloud/wood/stone materials; returns IDs/UIDs and revision plus quantized vrcEffective. MF6 sends them inline without Avatar rebuild; arbitrary new image textures still need packaging. Parameters outside supported wire ranges are rejected."
             } else {
-                "定义实时纯色/PBR/水/云/木纹/石纹材质。返回材质ID/UID、revision和VRC量化后的vrcEffective；MF5无需重传头像。新图片贴图仍需打包。kind=color为精确RGB哑光；pbr可指定表面参数；程序材质支持noiseScale/seed。"
+                "定义实时纯色/PBR/水/云/木纹/石纹材质。返回材质ID/UID、revision和VRC量化后的vrcEffective；MF6无需重传头像。新图片贴图仍需打包。kind=color为精确RGB哑光；pbr可指定表面参数；程序材质支持noiseScale/seed。"
             },
             json!({"baseRevision":{"type":"integer","minimum":0},"materials":{"type":"array","minItems":1,"maxItems":32,"items":{"type":"object","properties":{"name":{"type":"string","minLength":1,"maxLength":128},"color":{"type":"string","pattern":"^#[0-9a-fA-F]{6}$"},"kind":{"type":"string","enum":["color","pbr","water","cloud","wood","stone"]},"metallic":{"type":"number","minimum":0,"maximum":1},"roughness":{"type":"number","minimum":0,"maximum":1},"opacity":{"type":"number","minimum":0,"maximum":1},"emission":{"type":"number","minimum":0,"maximum":3},"noiseScale":{"type":"number","minimum":0.25,"maximum":8},"seed":{"type":"integer","minimum":0,"maximum":4294967295u64}},"required":["name","color","kind"],"additionalProperties":false}}}),
             vec!["baseRevision", "materials"]
@@ -3520,9 +3523,9 @@ pub fn tools_for_language(language: &str) -> Value {
         tool(
             "builtin_materials",
             if en {
-                "List offline original pixel material themes or add one to the current project. apply requires baseRevision and id. replaceBaseMaterials optionally repaints built-in base styles. Bundled MF5 pixel textures are already in the matching Avatar and resolve by identity. Arbitrary new textures require an Avatar rebuild; stop OSC before applying."
+                "List offline original pixel material themes or add one to the current project. apply requires baseRevision and id. replaceBaseMaterials optionally repaints built-in base styles. Bundled MF6 pixel textures are already in the matching Avatar and resolve by identity. Arbitrary new textures require an Avatar rebuild; stop OSC before applying."
             } else {
-                "查看离线内置原创像素材质主题，或加入当前工程。apply需id和baseRevision；replaceBaseMaterials可将基础材质映射为像素风。配套MF5头像已内置此主题，作品编号不同也能映射；额外新贴图仍需打包，应用前停止OSC。"
+                "查看离线内置原创像素材质主题，或加入当前工程。apply需id和baseRevision；replaceBaseMaterials可将基础材质映射为像素风。配套MF6头像已内置此主题，作品编号不同也能映射；额外新贴图仍需打包，应用前停止OSC。"
             },
             json!({"action":{"type":"string","enum":["list","apply"]},"id":{"type":"string","enum":["pixel-workshop","block-workshop"]},"baseRevision":{"type":"integer","minimum":0},"replaceBaseMaterials":{"type":"boolean"}}),
             vec!["action"]
@@ -3575,7 +3578,7 @@ pub fn tools_for_language(language: &str) -> Value {
         tool(
             "publish",
             descriptions[5],
-            json!({"revision":{"type":"integer","minimum":0},"resync":{"type":"boolean"},"repair":{"type":"boolean","description":"MF5保留显示补播，不得与resync同时开启"},"loopReplay":{"type":"boolean","description":"MF5发送完成后持续循环补播；不会自动开启OSC"},"sendOrder":{"type":"string","enum":["volume","bottom_up","material"]}}),
+            json!({"revision":{"type":"integer","minimum":0},"resync":{"type":"boolean"},"repair":{"type":"boolean","description":"MF6保留显示补播，不得与resync同时开启"},"loopReplay":{"type":"boolean","description":"MF6发送完成后持续循环补播；不会自动开启OSC"},"sendOrder":{"type":"string","enum":["volume","bottom_up","material"]}}),
             vec!["revision"],
         ),
         tool("sync_status", descriptions[6], json!({}), vec![]),

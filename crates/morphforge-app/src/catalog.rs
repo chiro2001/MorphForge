@@ -13,6 +13,17 @@ pub fn export_with_materials(
     w: &Workspace,
     source_materials: &[morphforge_core::materials::Material],
 ) -> Result<Vec<u8>> {
+    export_configured(w, source_materials, 32)
+}
+pub fn export_configured(
+    w: &Workspace,
+    source_materials: &[morphforge_core::materials::Material],
+    cell_pixels: u32,
+) -> Result<Vec<u8>> {
+    let budget = crate::catalog_budget::estimate(w, source_materials, cell_pixels)?;
+    if budget["fits"] != true {
+        bail!("Avatar材质预算超限，请减少材质、动画或使用16像素格：{budget}")
+    }
     let mut ids = BTreeSet::new();
     let mut textures = BTreeSet::new();
     let mut materials: Vec<_> = source_materials
@@ -64,7 +75,11 @@ pub fn export_with_materials(
     let options = zip::write::SimpleFileOptions::default()
         .compression_method(zip::CompressionMethod::Deflated);
     zip.start_file("catalog.json", options)?;
-    zip.write_all(serde_json::to_string_pretty(&json!({"format":"MorphForgeMaterialCatalog/1","version":crate::store::hash(&serde_json::to_vec(source_materials)?),"capabilities":["virtual-light/1",crate::target::SURFACE_CAPABILITY,"texture-scale/1","texture-rotation/1"],"virtualLighting":{"direction":[0.4,0.8,0.6],"voxelGrid":false},"colorSpace":"sRGB","cellSize":0.25,"materials":materials,"sourceStyleIdMap":source_mapping,"sourceProject":w.project.id,"sourceRevision":w.project.scene.revision}))?.as_bytes())?;
+    zip.write_all(serde_json::to_string_pretty(&json!({"format":"MorphForgeMaterialCatalog/1","textureOptions":{"cellPixels":cell_pixels,"deduplicateFaces":true,"maxLayerBanks":4,"layeredOnly":true},"version":crate::store::hash(&serde_json::to_vec(source_materials)?),"capabilities":["virtual-light/1",crate::target::SURFACE_CAPABILITY,"texture-scale/1","texture-rotation/1"],"virtualLighting":{"direction":[0.4,0.8,0.6],"voxelGrid":false},"colorSpace":"sRGB","cellSize":0.25,"materials":materials,"sourceStyleIdMap":source_mapping,"sourceProject":w.project.id,"sourceRevision":w.project.scene.revision}))?.as_bytes())?;
+    zip.start_file("build-budget.json", options)?;
+    zip.write_all(serde_json::to_string_pretty(&budget)?.as_bytes())?;
+    zip.start_file("licenses/RESOURCE-SOURCES.json", options)?;
+    zip.write_all(serde_json::to_string_pretty(&json!({"sourceCredits":w.project.source_credits,"materials":materials.iter().map(|m|json!({"uid":m.uid,"source":m.source,"pack":m.pack})).collect::<Vec<_>>(),"note":"原始资源保留来源许可；MorphForge原创像素材质的MIT声明仅适用于原创像素材质。"}))?.as_bytes())?;
     zip.start_file("licenses/MorphForge-Pixel-MIT.txt", options)?;
     zip.write_all(crate::builtin_pixels::LICENSE.as_bytes())?;
     let mut total = 0usize;

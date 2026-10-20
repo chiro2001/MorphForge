@@ -128,7 +128,10 @@ impl App {
     pub fn router(&self) -> Router {
         Router::new()
             .route("/api/vrc/catalog", get(catalog))
+            .route("/api/vrc/catalog/budget", get(catalog_budget))
             .route("/api/vrc/profile", post(avatar_profile))
+            .route("/api/vrc/discover", post(avatar_discover))
+            .route("/api/vrc/materials", post(avatar_materials))
             .route("/api/vrc/profile/import", post(avatar_profile_import))
             .route("/api/packs", get(packs))
             .route("/api/diagnostics", get(diagnostics))
@@ -169,7 +172,10 @@ impl App {
             .route("/api/timeline", get(timeline_page))
             .route("/api/timeline/{seq}", get(timeline_detail))
             .route("/api/artworks", get(artworks).post(artwork_action))
-            .route("/api/artworks/{id}", get(artwork_get))
+            .route(
+                "/api/artworks/{id}",
+                get(artwork_get).delete(artwork_delete),
+            )
             .route("/api/packs/import", post(pack_import))
             .route("/api/harness/tools", get(harness_tools))
             .route("/api/harness/state", get(harness_state))
@@ -297,6 +303,7 @@ async fn state(State(a): State<App>) -> ApiResult {
     let mut value = {
         let w = a.workspace.lock().unwrap();
         let mut value = w.state();
+        value["workspaceInstance"] = json!({"independent":w.root.parent().is_some_and(|p|p.file_name().is_some_and(|n|n=="instances")),"sharedArtworks":true});
         value["targetCompatibility"] =
             crate::scene_tools::target_report(&w.project.scene, a.transport.config().capacity);
         value["materialCompatibility"] = a
@@ -325,6 +332,147 @@ async fn scene(State(a): State<App>, Query(q): Query<Revision>) -> ApiResult {
         json!({"scene":crate::target::decorate_preview(&scene,&materials,transport.avatar_catalog.as_ref()),"materials":crate::target::preview_materials(&materials,transport.avatar_catalog.as_ref()),"surfaces":surfaces}),
     ))
 }
+async fn avatar_discover(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    let port = v
+        .get("port")
+        .filter(|v| !v.is_null())
+        .map(|v| {
+            v.as_u64()
+                .and_then(|n| u16::try_from(n).ok())
+                .context("查询端口须为1..65535")
+        })
+        .transpose()?;
+    let report = discover_avatar(&a, port, false).await?;
+    Ok(Json(report))
+}
+async fn discover_avatar(a: &App, port: Option<u16>, automatic: bool) -> anyhow::Result<Value> {
+    let mut report = crate::avatar_discovery::query(port).await?;
+    let _gate = if automatic {
+        Some(a.workspace_gate.read().await)
+    } else {
+        None
+    };
+    if automatic && !a.transport.config().auto_detect {
+        return Ok(json!({"status":"disabled"}));
+    }
+    let root = a.workspace.lock().unwrap().root.clone();
+    let shared = a.workspace.lock().unwrap().library_root.clone();
+    let hash = report["info"]["catalogHash"]
+        .as_str()
+        .context("目录指纹缺失")?;
+    let current = a.transport.inner.lock().unwrap().avatar_catalog.clone();
+    let features = [
+        (morphforge_core::mf6::REGION_CAPABILITY, "region8"),
+        (crate::target::SURFACE_CAPABILITY, "surfaceMasks"),
+        ("virtual-light/1", "virtualLight"),
+    ];
+    let already_selected = current.as_ref().is_some_and(|c| {
+        c.identity_hash() == hash
+            && features.iter().all(|(cap, field)| {
+                c.capabilities.iter().any(|v| v == cap) == (report["info"][*field] == true)
+            })
+    });
+    if let Some(c) = &current {
+        crate::avatar_discovery::cache(&shared, c)?;
+    }
+    let target = current
+        .filter(|c| c.identity_hash() == hash)
+        .or(crate::avatar_discovery::lookup(&shared, hash)?)
+        .or(crate::avatar_discovery::lookup(&root, hash)?);
+    report["catalogKnown"] = json!(target.is_some());
+    let signature = report["info"]["signature"].clone();
+    {
+        let mut state = a.transport.inner.lock().unwrap();
+        let old = &state.discovery["info"]["signature"];
+        if old.is_string() && old != &signature {
+            state.config.enabled = false;
+            state.generation += 1;
+            state.sent_revision = None;
+            state.unified.clear_sent();
+            state.last_error = "Avatar能力/构建已改变，已停止发送；确认新目标后重新开启".into();
+            report["senderStopped"] = json!(true);
+        }
+    }
+    if let Some(mut c) = target {
+        let expected_layered = c
+            .texture_options
+            .as_ref()
+            .is_some_and(|v| v["layeredOnly"] == true);
+        if expected_layered != (report["info"]["layeredOnly"] == true) {
+            anyhow::bail!("Avatar纹理布局标记与所声明目录不符");
+        }
+        for (cap, field) in features {
+            c.capabilities.retain(|v| v != cap);
+            if report["info"][field] == true {
+                c.capabilities.push(cap.into());
+            }
+        }
+        if !a.transport.config().enabled && !already_selected {
+            a.transport.set_catalog(Some(c), &root)?;
+            a.transport
+                .configure(&json!({"profile":"mf6"}), &mut a.workspace.lock().unwrap())?;
+            report["applied"] = json!(true);
+        }
+    }
+    a.transport.inner.lock().unwrap().discovery = report.clone();
+    Ok(report)
+}
+
+async fn avatar_materials(State(a): State<App>) -> ApiResult {
+    let catalog = a
+        .transport
+        .inner
+        .lock()
+        .unwrap()
+        .avatar_catalog
+        .clone()
+        .context("请先识别Avatar或导入上传目录")?;
+    let mut w = a.workspace.lock().unwrap();
+    let mut materials = w.project.materials.clone();
+    let mut used = materials
+        .iter()
+        .map(|m| m.id)
+        .collect::<std::collections::BTreeSet<_>>();
+    let mut next = 1;
+    let mut added = 0;
+    for mut m in catalog.materials.clone() {
+        if materials.iter().any(|old| {
+            old.uid == m.uid
+                && crate::target::signature(old, false) == crate::target::signature(&m, false)
+        }) {
+            continue;
+        }
+        for path in &m.textures {
+            let name = path.strip_prefix("/artifacts/").context("无效目标纹理")?;
+            validate_id(name)?;
+            if !w.artifact_path(name).is_file() {
+                bail_api("目录只有材质声明，缺少图像；请导入包含artifacts的Avatar构建包")?;
+            }
+        }
+        if materials.iter().any(|old| old.uid == m.uid) {
+            m.uid = format!("{}@avatar-{}", m.uid, &catalog.identity_hash()[..8]);
+        }
+        if used.contains(&m.id) {
+            while used.contains(&next) && next <= 65535 {
+                next += 1;
+            }
+            if next > 65535 {
+                bail_api("项目材质编号已满")?;
+            }
+            m.id = next;
+        }
+        used.insert(m.id);
+        materials.push(m);
+        added += 1;
+    }
+    if added > 0 {
+        w.update_materials(materials)?;
+    }
+    Ok(Json(
+        json!({"ok":true,"materialsAdded":added,"revision":w.project.scene.revision,"catalogHash":catalog.identity_hash(),"geometryChanged":false}),
+    ))
+}
+
 async fn avatar_profile(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     let w = a.workspace.lock().unwrap();
     let catalog = match v["action"].as_str() {
@@ -332,14 +480,8 @@ async fn avatar_profile(State(a): State<App>, Json(v): Json<Value>) -> ApiResult
         Some("bundled_mf6") => Some(crate::target::AvatarCatalog::from_bytes(include_bytes!(
             "../../../materials/mf6/catalog.json"
         ))?),
-        Some("bundled_mf5") => Some(crate::target::AvatarCatalog::from_bytes(include_bytes!(
-            "../../../materials/mf5/catalog.json"
-        ))?),
-        Some("bundled_mf4") => Some(crate::target::AvatarCatalog::from_bytes(include_bytes!(
-            "../../../materials/mf4/catalog.json"
-        ))?),
         _ => {
-            bail_api("请选择配套MF6/MF5/MF4目录、清除，或通过文件导入目录")?;
+            bail_api("请选择配套统一协议目录、清除，或通过文件导入目录")?;
             None
         }
     };
@@ -356,8 +498,11 @@ async fn avatar_profile_import(State(a): State<App>, mut files: Multipart) -> Ap
             bytes = Some(field.bytes().await?);
         }
     }
-    let catalog = crate::target::AvatarCatalog::from_bytes(&bytes.context("请选择目录JSON或ZIP")?)?;
+    let bytes = bytes.context("请选择目录JSON或ZIP")?;
+    let catalog = crate::target::AvatarCatalog::from_bytes(&bytes)?;
     let mut w = a.workspace.lock().unwrap();
+    crate::avatar_discovery::import_assets(&w.library_root, &bytes, &catalog)?;
+    crate::avatar_discovery::cache(&w.library_root, &catalog)?;
     a.transport.set_catalog(Some(catalog), &w.root)?;
     w.event(
         "target.catalog.imported",
@@ -441,9 +586,18 @@ async fn project(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
         .get("modelingStyle")
         .map(|s| s.as_str().context("建模风格须为文本"))
         .transpose()?;
-    if modeling_style.is_some_and(|style| !["voxel", "lowpoly", "mixed"].contains(&style)) {
-        bail_api("建模风格需要voxel/lowpoly/mixed")?;
+    if modeling_style.is_some_and(|style| !["auto", "voxel", "lowpoly", "mixed"].contains(&style)) {
+        bail_api("建模风格需要auto/voxel/lowpoly/mixed")?;
     }
+    let modeling_extent = if let Some(value) = v.get("modelingExtent") {
+        let extent: Option<[u32; 3]> = serde_json::from_value(value.clone())?;
+        if extent.is_some_and(|e| e.iter().any(|n| *n == 0 || *n > 4096)) {
+            bail_api("目标尺寸每轴须为1..4096格，或null由模型决定")?;
+        }
+        Some(extent)
+    } else {
+        None
+    };
     let mut next = w.project.scene.clone();
     if let Some(value) = v.get("cellSize") {
         next.cell_size = value.as_f64().context("格长须为数字")?;
@@ -464,6 +618,9 @@ async fn project(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     }
     if let Some(notes) = notes {
         w.project.pinned_notes = notes.into();
+    }
+    if let Some(extent) = modeling_extent {
+        w.project.modeling_extent = extent;
     }
     if let Some(style) = modeling_style {
         w.project.modeling_style = style.into();
@@ -740,23 +897,24 @@ async fn connect(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
 }
 async fn publish(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     if v["repair"].as_bool().unwrap_or(false)
-        && (!["mf5", "mf6"].contains(&a.transport.config().profile.as_str())
-            || v["resync"].as_bool().unwrap_or(false))
+        && (a.transport.config().profile != "mf6" || v["resync"].as_bool().unwrap_or(false))
     {
-        return Err(anyhow::anyhow!("补播仅支持MF5/MF6，且不可与清空重建同时使用").into());
+        return Err(anyhow::anyhow!("补播不可与清空重建同时使用").into());
     }
     let mut w = a.workspace.lock().unwrap();
     let rev = v["revision"].as_u64().unwrap_or(w.project.scene.revision);
     let _ = w.commit(Some(rev), v["title"].as_str().unwrap_or("手动发布"), None)?;
     let scene = w.scene_at(rev)?;
-    let mut result = a.transport.publish_with_materials(
-        &scene,
-        &w.materials_at(rev)?,
-        v["resync"].as_bool().unwrap_or(false),
-    )?;
-    if v["repair"].as_bool().unwrap_or(false) {
-        result = a.transport.repair()?;
-    }
+    let materials = w.materials_at(rev)?;
+    let result = if v["repair"].as_bool().unwrap_or(false) {
+        a.transport.publish_for_repair(&scene, &materials)?
+    } else {
+        a.transport.publish_with_materials(
+            &scene,
+            &materials,
+            v["resync"].as_bool().unwrap_or(false),
+        )?
+    };
     w.event(
         "revision.published",
         None,
@@ -829,6 +987,10 @@ async fn artworks(State(a): State<App>) -> ApiResult {
 async fn artwork_action(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     Ok(Json(a.harness.tool("artworks", &v, None).await?))
 }
+async fn artwork_delete(State(a): State<App>, AxPath(id): AxPath<String>) -> ApiResult {
+    let mut w = a.workspace.lock().unwrap();
+    Ok(Json(w.remove_artwork(&id)?))
+}
 async fn artwork_get(State(a): State<App>, AxPath(id): AxPath<String>) -> ApiResult {
     if id.starts_with("builtin:") {
         return Ok(Json(crate::examples::get(
@@ -838,9 +1000,7 @@ async fn artwork_get(State(a): State<App>, AxPath(id): AxPath<String>) -> ApiRes
     }
     validate_id(&id)?;
     let w = a.workspace.lock().unwrap();
-    Ok(Json(serde_json::from_slice(&std::fs::read(
-        w.root.join("artworks").join(format!("{id}.json")),
-    )?)?))
+    Ok(Json(w.read_artwork(&id)?))
 }
 async fn pack_import(State(a): State<App>, mut multipart: Multipart) -> ApiResult {
     let mut data = None;
@@ -976,7 +1136,7 @@ async fn artifact(State(a): State<App>, AxPath(id): AxPath<String>) -> Response 
     if validate_id(&id).is_err() {
         return StatusCode::BAD_REQUEST.into_response();
     };
-    let path = a.workspace.lock().unwrap().root.join("artifacts").join(&id);
+    let path = a.workspace.lock().unwrap().artifact_path(&id);
     match tokio::fs::read(path).await {
         Ok(bytes) => (
             [
@@ -1087,19 +1247,86 @@ pub struct ServerOptions {
     pub env_file: Option<PathBuf>,
     pub port: u16,
     pub capture: bool,
+    pub isolate_if_busy: bool,
 }
-pub async fn serve(options: ServerOptions) -> Result<()> {
+pub async fn serve(mut options: ServerOptions) -> Result<()> {
     use fs2::FileExt;
     std::fs::create_dir_all(&options.root)?;
-    let lock = std::fs::OpenOptions::new()
-        .create(true)
-        .truncate(false)
-        .read(true)
-        .write(true)
-        .open(options.root.join("workspace.lock"))?;
-    lock.try_lock_exclusive()
-        .context("同一作品目录已有后端运行")?;
+    let shared_root = std::env::var_os("MORPHFORGE_LIBRARY_ROOT")
+        .map(PathBuf::from)
+        .unwrap_or_else(|| options.root.clone());
+    let lock_at = |root: &std::path::Path| -> anyhow::Result<std::fs::File> {
+        std::fs::create_dir_all(root)?;
+        let file = std::fs::OpenOptions::new()
+            .create(true)
+            .truncate(false)
+            .read(true)
+            .write(true)
+            .open(root.join("workspace.lock"))?;
+        file.try_lock_exclusive()
+            .context("同一作品目录已有后端运行")?;
+        Ok(file)
+    };
+    let lock = match lock_at(&options.root) {
+        Ok(file) => file,
+        Err(e)
+            if options.isolate_if_busy
+                && e.downcast_ref::<std::io::Error>().is_some_and(|io| {
+                    io.raw_os_error() == fs2::lock_contended_error().raw_os_error()
+                }) =>
+        {
+            let primary = options.root.clone();
+            let instances = primary.join("instances");
+            std::fs::create_dir_all(&instances)?;
+            let mut candidates = std::fs::read_dir(&instances)?
+                .filter_map(|e| e.ok())
+                .filter(|e| {
+                    e.file_type().is_ok_and(|t| t.is_dir())
+                        && uuid::Uuid::parse_str(&e.file_name().to_string_lossy()).is_ok()
+                })
+                .map(|e| e.path())
+                .collect::<Vec<_>>();
+            candidates.sort_by_key(|p| std::fs::metadata(p).and_then(|m| m.created()).ok());
+            let mut existing = None;
+            for path in candidates {
+                if let Ok(file) = lock_at(&path) {
+                    existing = Some((path, file));
+                    break;
+                }
+            }
+            let (path, file) = if let Some(pair) = existing {
+                pair
+            } else {
+                let path = instances.join(uuid::Uuid::new_v4().to_string());
+                let file = lock_at(&path)?;
+                (path, file)
+            };
+            options.root = path;
+            let fresh = !options.root.join("project.json").is_file();
+            // Connection settings only, never an active task, conversation or
+            // cache ledger. Each instance owns its fresh project and context.
+            for name in [
+                "provider-connection.json",
+                "provider.env",
+                "harness.json",
+                "avatar-catalog.json",
+                "connection.json",
+            ] {
+                let src = primary.join(name);
+                if fresh && src.is_file() {
+                    std::fs::copy(src, options.root.join(name))?;
+                }
+            }
+            eprintln!("Independent workspace selected; original workspace stays locked: {e}");
+            file
+        }
+        Err(e) => return Err(e),
+    };
     let app = App::open(options.root.clone(), options.env_file)?;
+    app.workspace
+        .lock()
+        .unwrap()
+        .use_shared_library(shared_root)?;
     let listener =
         tokio::net::TcpListener::bind((std::net::Ipv4Addr::LOCALHOST, options.port)).await?;
     let port = listener.local_addr()?.port();
@@ -1198,6 +1425,22 @@ async fn metrics(State(a): State<App>) -> ApiResult {
 struct CatalogQuery {
     #[serde(default)]
     builtin_minecraft: bool,
+    #[serde(default)]
+    used_only: bool,
+    #[serde(default = "default_catalog_pixels")]
+    cell_pixels: u32,
+}
+fn default_catalog_pixels() -> u32 {
+    32
+}
+async fn catalog_budget(State(a): State<App>, Query(o): Query<CatalogQuery>) -> ApiResult {
+    let w = a.workspace.lock().unwrap();
+    let materials = crate::catalog_budget::selected(&w, o.used_only);
+    Ok(Json(crate::catalog_budget::estimate(
+        &w,
+        &materials,
+        o.cell_pixels,
+    )?))
 }
 async fn catalog(
     State(a): State<App>,
@@ -1208,9 +1451,10 @@ async fn catalog(
         if options.builtin_minecraft {
             let source = w.project.materials.clone();
             let materials = crate::minecraft::compile::prepare_builtin_variants(&mut w, &source)?;
-            crate::catalog::export_with_materials(&w, &materials)?
+            crate::catalog::export_configured(&w, &materials, options.cell_pixels)?
         } else {
-            crate::catalog::export(&w)?
+            let materials = crate::catalog_budget::selected(&w, options.used_only);
+            crate::catalog::export_configured(&w, &materials, options.cell_pixels)?
         }
     };
     Ok((

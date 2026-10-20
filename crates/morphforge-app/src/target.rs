@@ -14,6 +14,7 @@ use std::{
 };
 pub const SURFACE_CAPABILITY: &str = "transparent-face-mask/1";
 #[derive(Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct AvatarCatalog {
     pub format: String,
     #[serde(default)]
@@ -21,6 +22,8 @@ pub struct AvatarCatalog {
     pub materials: Vec<Material>,
     #[serde(default)]
     pub capabilities: Vec<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub texture_options: Option<Value>,
 }
 fn rendering(m: &Material) -> Value {
     let mut v = json!({"id":m.id,"uid":m.uid,"family":m.family,"color":m.color,"metallic":m.metallic,"roughness":m.roughness,"opacity":m.opacity,"emission":m.emission,"renderMode":m.render_mode,"textures":m.textures,"frames":m.frames,"frameTime":m.frame_time});
@@ -36,6 +39,61 @@ fn rendering(m: &Material) -> Value {
     v
 }
 impl AvatarCatalog {
+    /// Versioned binary identity, also implemented by the Unity builder. Floats
+    /// use little-endian IEEE754, avoiding JSON float/ordering differences.
+    pub fn identity_hash(&self) -> String {
+        fn string(out: &mut Vec<u8>, s: &str) {
+            out.extend_from_slice(&(s.len() as u32).to_le_bytes());
+            out.extend_from_slice(s.as_bytes());
+        }
+        let mut out = b"MorphForgeCatalogIdentity/1".to_vec();
+        out.extend_from_slice(
+            &(self
+                .texture_options
+                .as_ref()
+                .and_then(|v| v["cellPixels"].as_u64())
+                .unwrap_or(32) as u32)
+                .to_le_bytes(),
+        );
+        out.push(u8::from(
+            self.texture_options
+                .as_ref()
+                .is_some_and(|v| v["layeredOnly"] == true),
+        ));
+        let mut materials = self.materials.iter().collect::<Vec<_>>();
+        materials.sort_by_key(|m| m.id);
+        out.extend_from_slice(&(materials.len() as u32).to_le_bytes());
+        for m in materials {
+            out.extend_from_slice(&m.id.to_le_bytes());
+            string(&mut out, &m.uid);
+            string(&mut out, &m.family);
+            for v in m.color.into_iter().chain([
+                m.metallic,
+                m.roughness,
+                m.opacity,
+                m.emission,
+                m.texture_scale,
+                m.frame_time,
+            ]) {
+                out.extend_from_slice(&v.to_le_bytes());
+            }
+            out.push(m.texture_rotation);
+            out.extend_from_slice(&m.frames.to_le_bytes());
+            string(&mut out, &m.render_mode);
+            out.extend_from_slice(&(m.textures.len() as u32).to_le_bytes());
+            for t in &m.textures {
+                string(&mut out, t);
+            }
+            out.push(u8::from(m.procedural.is_some()));
+            if let Some(p) = &m.procedural {
+                string(&mut out, &p.kind);
+                out.extend_from_slice(&p.scale.to_le_bytes());
+                out.extend_from_slice(&p.seed.to_le_bytes());
+            }
+        }
+        crate::store::hash(&out)
+    }
+
     pub fn from_bytes(bytes: &[u8]) -> Result<Self> {
         if bytes.len() > 16 * 1024 * 1024 {
             bail!("目标目录文件超过16MiB");
@@ -177,7 +235,7 @@ pub fn legacy_project(
     Ok(result)
 }
 
-fn signature(m: &Material, ignore_color: bool) -> Value {
+pub(crate) fn signature(m: &Material, ignore_color: bool) -> Value {
     let mut v = rendering(m);
     v.as_object_mut().unwrap().remove("id");
     v.as_object_mut().unwrap().remove("uid");
@@ -219,7 +277,7 @@ fn resolve(m: &Material, tint: u8, motion: u8, target: &AvatarCatalog) -> Result
             ));
         }
     }
-    bail!("MF5_TEXTURE_NOT_BUILTIN：材质 {} 的贴图/裁切定义不在头像中；颜色、PBR和程序材质可实时发送，新图片仍需打包",m.name)
+    bail!("MF6_TEXTURE_NOT_BUILTIN：材质 {} 的贴图/裁切定义不在头像中；颜色、PBR和程序材质可实时发送，新图片仍需打包",m.name)
 }
 fn runtime_compatibility(scene: &Scene, materials: &[Material], target: &AvatarCatalog) -> Value {
     let used: BTreeSet<_> = scene.boxes.iter().map(|b| b.style_id).collect();
@@ -244,7 +302,7 @@ fn runtime_compatibility(scene: &Scene, materials: &[Material], target: &AvatarC
             None => missing.push(*id),
         }
     }
-    json!({"status":if missing.is_empty(){"matched"}else{"mismatch"},"matched":missing.is_empty(),"usedStyles":used.len(),"targetStyles":target.materials.len(),"fingerprint":target.version,"missingIds":missing,"differentIds":[],"runtimeIds":runtime,"remappedIds":remapped,"details":details,"surfaceMasks":target.surface_masks(),"runtimeMaterials":true,"remoteVerified":false,"note":"MF5：纯色、PBR、程序化材质实时发送；内置贴图按身份映射，不依赖作品编号。新图片贴图需重新打包。"})
+    json!({"status":if missing.is_empty(){"matched"}else{"mismatch"},"matched":missing.is_empty(),"usedStyles":used.len(),"targetStyles":target.materials.len(),"fingerprint":target.version,"missingIds":missing,"differentIds":[],"runtimeIds":runtime,"remappedIds":remapped,"details":details,"surfaceMasks":target.surface_masks(),"runtimeMaterials":true,"remoteVerified":false,"note":"MF6：纯色、PBR、程序化材质实时发送；内置贴图按身份映射，不依赖作品编号。新图片贴图需重新打包。"})
 }
 #[derive(Clone)]
 pub struct Projection {

@@ -1,0 +1,564 @@
+{
+  "status": "failed",
+  "capacity": false,
+  "frames": 27,
+  "error": "System.Exception: {\r\n  \"phase\": \"region8 shape 3 mode 1\",\r\n  \"passed\": false,\r\n  \"expected\": 208,\r\n  \"actual\": 200,\r\n  \"missingCount\": 8,\r\n  \"pools\": [\r\n    25,\r\n    25,\r\n    25,\r\n    25,\r\n    25,\r\n    25,\r\n    25,\r\n    25\r\n  ],\r\n  \"errors\": [\r\n    \"Missing 5:B:216,40,180/1,1,1\",\r\n    \"Missing 6:B:217,40,180/1,1,1\",\r\n    \"Missing 7:B:216,41,180/1,1,1\",\r\n    \"Missing 0:B:217,41,180/1,1,1\",\r\n    \"Missing 1:B:216,40,181/1,1,1\",\r\n    \"Missing 2:B:217,40,181/1,1,1\",\r\n    \"Missing 3:B:216,41,181/1,1,1\",\r\n    \"Missing 4:B:217,41,181/1,1,1\"\r\n  ],\r\n  \"stage\": 0,\r\n  \"sequence\": 10,\r\n  \"format\": 0,\r\n  \"workers\": [\r\n    {\r\n      \"pool\": 0,\r\n      \"receivedSeq\": 11,\r\n      \"done\": 29.0,\r\n      \"busy\": false,\r\n      \"ready\": false\r\n    },\r\n    {\r\n      \"pool\": 1,\r\n      \"receivedSeq\": 11,\r\n      \"done\": 29.0,\r\n      \"busy\": false,\r\n      \"ready\": false\r\n    },\r\n    {\r\n      \"pool\": 2,\r\n      \"receivedSeq\": 11,\r\n      \"done\": 29.0,\r\n      \"busy\": false,\r\n      \"ready\": false\r\n    },\r\n    {\r\n      \"pool\": 3,\r\n      \"receivedSeq\": 11,\r\n      \"done\": 29.0,\r\n      \"busy\": false,\r\n      \"ready\": false\r\n    },\r\n    {\r\n      \"pool\": 4,\r\n      \"receivedSeq\": 11,\r\n      \"done\": 29.0,\r\n      \"busy\": false,\r\n      \"ready\": false\r\n    },\r\n    {\r\n      \"pool\": 5,\r\n      \"receivedSeq\": 11,\r\n      \"done\": 29.0,\r\n      \"busy\": false,\r\n      \"ready\": false\r\n    },\r\n    {\r\n      \"pool\": 6,\r\n      \"receivedSeq\": 11,\r\n      \"done\": 29.0,\r\n      \"busy\": false,\r\n      \"ready\": false\r\n    },\r\n    {\r\n      \"pool\": 7,\r\n      \"receivedSeq\": 11,\r\n      \"done\": 29.0,\r\n      \"busy\": false,\r\n      \"ready\": false\r\n    }\r\n  ]\r\n}\r\n  at Mf6NativeSmoke.Run (System.Boolean capacity, System.String variant) [0x005d4] in D:\\Projects\\VRChatProjects2\\MorphForge\\AgentScripts\\Mf6NativeSmoke.cs:97 ",
+  "checks": [
+    {
+      "phase": "clear",
+      "passed": true,
+      "expected": 0,
+      "actual": 0,
+      "missingCount": 0,
+      "pools": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 0 mode 0",
+      "passed": true,
+      "expected": 8,
+      "actual": 8,
+      "missingCount": 0,
+      "pools": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 0 mode 1",
+      "passed": true,
+      "expected": 16,
+      "actual": 16,
+      "missingCount": 0,
+      "pools": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 0 mode 2",
+      "passed": true,
+      "expected": 24,
+      "actual": 24,
+      "missingCount": 0,
+      "pools": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 0 mode 3",
+      "passed": true,
+      "expected": 32,
+      "actual": 32,
+      "missingCount": 0,
+      "pools": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 0 mode 4",
+      "passed": true,
+      "expected": 40,
+      "actual": 40,
+      "missingCount": 0,
+      "pools": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 0 mode 5",
+      "passed": true,
+      "expected": 48,
+      "actual": 48,
+      "missingCount": 0,
+      "pools": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 0 mode 6",
+      "passed": true,
+      "expected": 56,
+      "actual": 56,
+      "missingCount": 0,
+      "pools": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 0 mode 7",
+      "passed": true,
+      "expected": 64,
+      "actual": 64,
+      "missingCount": 0,
+      "pools": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 1 mode 0",
+      "passed": true,
+      "expected": 72,
+      "actual": 72,
+      "missingCount": 0,
+      "pools": [
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 1 mode 1",
+      "passed": true,
+      "expected": 80,
+      "actual": 80,
+      "missingCount": 0,
+      "pools": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 1 mode 2",
+      "passed": true,
+      "expected": 88,
+      "actual": 88,
+      "missingCount": 0,
+      "pools": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 1 mode 3",
+      "passed": true,
+      "expected": 96,
+      "actual": 96,
+      "missingCount": 0,
+      "pools": [
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12,
+        12
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 1 mode 4",
+      "passed": true,
+      "expected": 104,
+      "actual": 104,
+      "missingCount": 0,
+      "pools": [
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13,
+        13
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 1 mode 5",
+      "passed": true,
+      "expected": 112,
+      "actual": 112,
+      "missingCount": 0,
+      "pools": [
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 1 mode 6",
+      "passed": true,
+      "expected": 120,
+      "actual": 120,
+      "missingCount": 0,
+      "pools": [
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 1 mode 7",
+      "passed": true,
+      "expected": 128,
+      "actual": 128,
+      "missingCount": 0,
+      "pools": [
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 2 mode 0",
+      "passed": true,
+      "expected": 136,
+      "actual": 136,
+      "missingCount": 0,
+      "pools": [
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 2 mode 1",
+      "passed": true,
+      "expected": 144,
+      "actual": 144,
+      "missingCount": 0,
+      "pools": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 2 mode 2",
+      "passed": true,
+      "expected": 152,
+      "actual": 152,
+      "missingCount": 0,
+      "pools": [
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19,
+        19
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 2 mode 3",
+      "passed": true,
+      "expected": 160,
+      "actual": 160,
+      "missingCount": 0,
+      "pools": [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 2 mode 4",
+      "passed": true,
+      "expected": 168,
+      "actual": 168,
+      "missingCount": 0,
+      "pools": [
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21,
+        21
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 2 mode 5",
+      "passed": true,
+      "expected": 176,
+      "actual": 176,
+      "missingCount": 0,
+      "pools": [
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22,
+        22
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 2 mode 6",
+      "passed": true,
+      "expected": 184,
+      "actual": 184,
+      "missingCount": 0,
+      "pools": [
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 2 mode 7",
+      "passed": true,
+      "expected": 192,
+      "actual": 192,
+      "missingCount": 0,
+      "pools": [
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24,
+        24
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 3 mode 0",
+      "passed": true,
+      "expected": 200,
+      "actual": 200,
+      "missingCount": 0,
+      "pools": [
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25
+      ],
+      "errors": []
+    },
+    {
+      "phase": "region8 shape 3 mode 1",
+      "passed": false,
+      "expected": 208,
+      "actual": 200,
+      "missingCount": 8,
+      "pools": [
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25
+      ],
+      "errors": [
+        "Missing 5:B:216,40,180/1,1,1",
+        "Missing 6:B:217,40,180/1,1,1",
+        "Missing 7:B:216,41,180/1,1,1",
+        "Missing 0:B:217,41,180/1,1,1",
+        "Missing 1:B:216,40,181/1,1,1",
+        "Missing 2:B:217,40,181/1,1,1",
+        "Missing 3:B:216,41,181/1,1,1",
+        "Missing 4:B:217,41,181/1,1,1"
+      ],
+      "stage": 0,
+      "sequence": 10,
+      "format": 0,
+      "workers": [
+        {
+          "pool": 0,
+          "receivedSeq": 11,
+          "done": 29.0,
+          "busy": false,
+          "ready": false
+        },
+        {
+          "pool": 1,
+          "receivedSeq": 11,
+          "done": 29.0,
+          "busy": false,
+          "ready": false
+        },
+        {
+          "pool": 2,
+          "receivedSeq": 11,
+          "done": 29.0,
+          "busy": false,
+          "ready": false
+        },
+        {
+          "pool": 3,
+          "receivedSeq": 11,
+          "done": 29.0,
+          "busy": false,
+          "ready": false
+        },
+        {
+          "pool": 4,
+          "receivedSeq": 11,
+          "done": 29.0,
+          "busy": false,
+          "ready": false
+        },
+        {
+          "pool": 5,
+          "receivedSeq": 11,
+          "done": 29.0,
+          "busy": false,
+          "ready": false
+        },
+        {
+          "pool": 6,
+          "receivedSeq": 11,
+          "done": 29.0,
+          "busy": false,
+          "ready": false
+        },
+        {
+          "pool": 7,
+          "receivedSeq": 11,
+          "done": 29.0,
+          "busy": false,
+          "ready": false
+        }
+      ]
+    }
+  ]
+}

@@ -27,7 +27,7 @@ def main():
  try:
   b.call(b.path+'/url',{'url':a.url});b.wait('return window.__morphforge?.ready',30);initial=api('scene')['scene'];revision=api('state')['revision'];check('OSC disabled',not api('state')['connection']['enabled'])
   b.js('document.getElementById("meshPanel").open=true;');b.click('voxelWedge');b.wait('return window.__morphforge.renderer.boxes.some(b=>b.shape>0)',15)
-  slope=api('scene')['scene']['boxes'][-1];check('textured slope remains one native object',slope['shape']==1)
+  slopes=[box for box in api('scene')['scene']['boxes'] if box.get('shape')==1];check('textured slope remains one native object',len(slopes)==1)
   mesh=b.js('return window.__morphforge.renderer.meshes.filter(m=>m.userData.shape>0).map(m=>({count:m.count,min:m.geometry.attributes.position.array.reduce((a,n)=>Math.min(a,n),1)}))');check('slope has GPU template mesh',len(mesh)>0)
   b.click('minecraftOpen');b.wait('return document.getElementById("minecraftDialog").open');fixture=a.out/'building.nbt';fixture.write_bytes(structure())
   el=b.call(b.path+'/element',{'using':'css selector','value':'#mcFile'})['element-6066-11e4-a52e-4f735466cecf'];b.call(b.path+'/element/'+el+'/value',{'text':str(fixture.resolve())});b.wait('return document.getElementById("mcSource").options.length>0&&!document.getElementById("mcPreview").disabled',20)

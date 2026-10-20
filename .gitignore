@@ -36,3 +36,8 @@ provider-connection.*.tmp
 provider-prefix.json
 cache-monitor.json
 provider-model-limits.json
+
+# Locally supplied game textures and private Unity catalog inputs.
+/Docs/MF6/MinecraftSource/
+/Docs/StreamV16/catalog.json
+/minecraft-*-client.jar

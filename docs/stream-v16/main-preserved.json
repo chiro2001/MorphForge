@@ -1,0 +1,7 @@
+{
+  "oscPort": 9000,
+  "oscEnabled": true,
+  "version": "0.15.3",
+  "coreAlive": true,
+  "shellAlive": true
+}

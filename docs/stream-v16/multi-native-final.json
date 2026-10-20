@@ -1,0 +1,72 @@
+{
+  "oscEnabled": false,
+  "success": true,
+  "scope": "Four real Windows Tauri launches, independent durable projects/contexts, shared artwork load, WebView2 browser survival, normal close. No main install or Avatar changes.",
+  "checks": [
+    {
+      "name": "two real native windows run v16",
+      "passed": true
+    },
+    {
+      "name": "projects and conversations are independent",
+      "passed": true
+    },
+    {
+      "name": "second instance uses a separate durable workspace",
+      "passed": true
+    },
+    {
+      "name": "saved artwork immediately appears in the other library",
+      "passed": true
+    },
+    {
+      "name": "library sharing did not change second geometry",
+      "passed": true
+    },
+    {
+      "name": "second window can fork shared artwork",
+      "passed": true
+    },
+    {
+      "name": "closing own idle window only",
+      "passed": true
+    },
+    {
+      "name": "closing first window leaves second core alive",
+      "passed": true
+    },
+    {
+      "name": "second WebView2 browser survives first Job close",
+      "passed": true
+    },
+    {
+      "name": "reopening primary restores its project",
+      "passed": true
+    },
+    {
+      "name": "closing own idle window only",
+      "passed": true
+    },
+    {
+      "name": "reopening an idle independent slot restores project and context",
+      "passed": true
+    },
+    {
+      "name": "independent slot retains its loaded geometry",
+      "passed": true
+    },
+    {
+      "name": "closing own idle window only",
+      "passed": true
+    },
+    {
+      "name": "closing own idle window only",
+      "passed": true
+    },
+    {
+      "name": "WebView cache slots are reused across reopening",
+      "passed": true
+    }
+  ],
+  "realModelRequests": 0
+}

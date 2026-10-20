@@ -1,0 +1,59 @@
+{
+  "success": true,
+  "rust": {
+    "passed": 251,
+    "failed": 0,
+    "workspace": true,
+    "docTestsCompleted": true,
+    "followupPaletteTests": 2,
+    "note": "Full workspace 251 passes, followed by the two palette regression tests after correcting its metadata receipt."
+  },
+  "node": {
+    "passed": 58,
+    "failed": 0
+  },
+  "windowsNativeControls": {
+    "passed": 22,
+    "failed": 0,
+    "report": "native-final.json"
+  },
+  "windowsMultiInstance": {
+    "passed": 16,
+    "failed": 0,
+    "report": "multi-native-final.json"
+  },
+  "chromiumWorkbench": {
+    "passed": 16,
+    "failed": 0,
+    "report": "browser-workbench.json"
+  },
+  "unity": {
+    "regionFramesAt400ms": 98,
+    "regularFramesAt400ms": 177,
+    "textureBanksGpuChecks": 292,
+    "depthChecks": 29,
+    "cutoutChecks": 2,
+    "placementChecks": 5,
+    "capabilityHashMatched": true,
+    "final16kLongRunRetested": false
+  },
+  "avatar": {
+    "version": 5,
+    "generic": true,
+    "standard": true,
+    "security": true
+  },
+  "realPaidModelRequests": 0,
+  "sentToRealVrchatPort9000ByTests": false,
+  "multiplayerAcknowledged": false,
+  "chromiumMinecraft": {
+    "passed": 10,
+    "failed": 0,
+    "report": "minecraft-browser.json"
+  },
+  "windowsDesktopUnitTests": {
+    "passed": 3,
+    "failed": 0,
+    "covers": "exclusive and reusable WebView2 profile leases; core URL boundary"
+  }
+}

@@ -500,7 +500,7 @@ pub fn action(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Valu
             }
         }
     }
-    let result = json!({"ok":true,"action":"voxel_plane","dryRun":dry,"revision":revision,"imageId":id,"size":[width,height],"plane":plane,"origin":origin,"thickness":thickness,"generatedBoxes":generated_count,"paletteColors":palette.values().collect::<BTreeSet<_>>().len(),"materialsAdded":new_colors,"previewUrl":preview_url,"imageRole":"reinspection","images":[{"view":"pixel-plane-preview","artifact":preview_url.trim_start_matches("/artifacts/"),"url":preview_url}],"target":target,"alphaMode":"threshold cutout then opaque; no texture upload","orientation":"image top row maps to positive v, left column maps to minimum u","canvasMode":canvas_mode,"canvasReplacesRegion":canvas_mode=="replace","note":"图片本身保留；像素平面不是三维重建。MF5可直接发送新RGB；其他Avatar需要烘焙目录。"});
+    let result = json!({"ok":true,"action":"voxel_plane","dryRun":dry,"revision":revision,"imageId":id,"size":[width,height],"plane":plane,"origin":origin,"thickness":thickness,"generatedBoxes":generated_count,"paletteColors":palette.values().collect::<BTreeSet<_>>().len(),"materialsAdded":new_colors,"previewUrl":preview_url,"imageRole":"reinspection","images":[{"view":"pixel-plane-preview","artifact":preview_url.trim_start_matches("/artifacts/"),"url":preview_url}],"target":target,"alphaMode":"threshold cutout then opaque; no texture upload","orientation":"image top row maps to positive v, left column maps to minimum u","canvasMode":canvas_mode,"canvasReplacesRegion":canvas_mode=="replace","note":"图片本身保留；像素平面不是三维重建。MF6可直接发送新RGB；其他Avatar需要烘焙目录。"});
     if !dry {
         w.event("image.voxel_plane", run, result.clone())?;
     }
