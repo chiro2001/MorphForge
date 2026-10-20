@@ -137,7 +137,7 @@ pub async fn preview(
         .as_str()
         .context("需要sourceId")?
         .to_owned();
-    let options: Options =
+    let mut options: Options =
         serde_json::from_value(args.get("options").cloned().unwrap_or_else(|| json!({})))?;
     let (root, project_id, scene, limits, materials, original_material_count, material_hash) = {
         let mut w = workspace.lock().unwrap();
@@ -173,6 +173,8 @@ pub async fn preview(
     let worker_source = source.clone();
     let compiled = tokio::task::spawn_blocking(move || {
         let (_, building) = load(&worker_root, &worker_source)?;
+        (options.state_materials, options.state_warnings) =
+            super::blockstates::resolve(&worker_root, &options.resource_pack, &building.palette)?;
         compile::compile_prepared(
             &scene,
             &limits,

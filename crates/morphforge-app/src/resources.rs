@@ -135,7 +135,12 @@ fn model_path(path: &str) -> Option<(String, String)> {
 }
 
 fn wanted_entry(path: &str) -> bool {
-    path == "pack.mcmeta" || texture_path(path).is_some() || model_path(path).is_some()
+    path == "pack.mcmeta"
+        || texture_path(path).is_some()
+        || model_path(path).is_some()
+        || (path.starts_with("assets/")
+            && path.contains("/blockstates/")
+            && path.ends_with(".json"))
 }
 
 fn safe_entry_path(name: &str) -> Result<String> {
@@ -918,6 +923,32 @@ pub fn import_java_pack(workspace: &mut Workspace, bytes: &[u8], name: &str) -> 
     }
 
     let pack_id = canonical_pack_hash(&files);
+    let mut blockstates = BTreeMap::<String, Value>::new();
+    for (path, data) in &files {
+        let Some(rest) = path.strip_prefix("assets/") else {
+            continue;
+        };
+        let Some((namespace, relative)) = rest.split_once("/blockstates/") else {
+            continue;
+        };
+        let Some(block) = relative.strip_suffix(".json") else {
+            continue;
+        };
+        if !valid_resource_path(block, false) {
+            continue;
+        }
+        match serde_json::from_slice(data) {
+            Ok(value) => {
+                blockstates.insert(format!("{namespace}:{block}"), value);
+            }
+            Err(e) => warning(&mut warnings, format!("忽略无效blockstate {path}: {e}")),
+        }
+    }
+    let state_bytes = serde_json::to_vec(&blockstates)?;
+    if state_bytes.len() > 32 * 1024 * 1024 {
+        bail!("方块状态索引超过32MiB保护值");
+    }
+
     let textures = load_textures(&files, &mut warnings);
     if textures.is_empty() {
         bail!("没有可导入的assets/<namespace>/textures/block/*.png");
@@ -938,10 +969,21 @@ pub fn import_java_pack(workspace: &mut Workspace, bytes: &[u8], name: &str) -> 
     // Preserve the validated source for later re-baking, independently of project edits.
     let source_path = workspace.root.join("packs").join(format!("{pack_id}.zip"));
     crate::store::atomic(&source_path, bytes)?;
+    crate::store::atomic(
+        &workspace
+            .root
+            .join("packs")
+            .join(format!("{pack_id}-blockstates.json")),
+        &state_bytes,
+    )?;
+
     workspace.update_materials(materials)?;
     let report = json!({
         "ok": true,
         "packId": pack_id,
+        "blockstateCount":blockstates.len(),
+        "blockstatesHash":crate::store::hash(&state_bytes),
+        "originalZipPreserved":true,
         "name": name,
         "metadata": metadata,
         "materialsAdded": count,

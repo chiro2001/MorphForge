@@ -64,7 +64,7 @@ pub fn export_with_materials(
     let options = zip::write::SimpleFileOptions::default()
         .compression_method(zip::CompressionMethod::Deflated);
     zip.start_file("catalog.json", options)?;
-    zip.write_all(serde_json::to_string_pretty(&json!({"format":"MorphForgeMaterialCatalog/1","version":crate::store::hash(&serde_json::to_vec(source_materials)?),"capabilities":["virtual-light/1",crate::target::SURFACE_CAPABILITY,"texture-scale/1"],"virtualLighting":{"direction":[0.4,0.8,0.6],"voxelGrid":false},"colorSpace":"sRGB","cellSize":0.25,"materials":materials,"sourceStyleIdMap":source_mapping,"sourceProject":w.project.id,"sourceRevision":w.project.scene.revision}))?.as_bytes())?;
+    zip.write_all(serde_json::to_string_pretty(&json!({"format":"MorphForgeMaterialCatalog/1","version":crate::store::hash(&serde_json::to_vec(source_materials)?),"capabilities":["virtual-light/1",crate::target::SURFACE_CAPABILITY,"texture-scale/1","texture-rotation/1"],"virtualLighting":{"direction":[0.4,0.8,0.6],"voxelGrid":false},"colorSpace":"sRGB","cellSize":0.25,"materials":materials,"sourceStyleIdMap":source_mapping,"sourceProject":w.project.id,"sourceRevision":w.project.scene.revision}))?.as_bytes())?;
     zip.start_file("licenses/MorphForge-Pixel-MIT.txt", options)?;
     zip.write_all(crate::builtin_pixels::LICENSE.as_bytes())?;
     let mut total = 0usize;

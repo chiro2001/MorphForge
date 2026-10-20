@@ -11,9 +11,9 @@
 | 原生容量 | 2049帧、524.58秒；16,384有效对象，8池各2048，0缺失／重复；每池8个隐藏边界角点不变量通过。`capacity.json` |
 | 参数预算 | 240几何＋14定位＝254bit，37个同步参数。共享解码器22层、1697状态，构建后FX约102层。`final-budget.json`、`prepared.json` |
 | 三角面显示 | 实际生产粒子Renderer正/背/斜视通过，非C#注入Mesh或粒子；最终8角点方案及近距离全画面覆盖已复核。`native-visual.json` |
-| Rust回归 | 一轮完整工作区202项通过；随后新增保护组／斜面测试，Minecraft集成3项通过 |
+| Rust回归 | 最终一轮完整工作区207项通过；包括删除帧丢失恢复、ID复用及Minecraft集成测试 |
 | 前端回归 | 44项Node测试通过；真实Chromium三角面编辑13项、Minecraft上传／预览／应用／撤销与斜面10项通过 |
-| Windows交付 | 0.11.0 Rust MSVC与Tauri/NSIS构建完成；独立不可变Preview安装成功，旧进程未关闭。`preview-v011.json` |
+| Windows交付 | 0.11.0、0.12.0 Rust MSVC与Tauri/NSIS构建完成；0.12完整Windows测试及打包程序10项验收通过，独立不可变Preview安装成功。`preview-v011.json`、`preview-v012.json`、`windows-v012.json` |
 
 实际原生路径：Rust codec OSC bundle → UDP9012 → GestureManager → 统一240bit解码器 → 8独立原生出生池。未使用SetParticles、Emit或运行时几何注入替代Avatar能力。
 
@@ -31,7 +31,7 @@
 
 ## 仍需完成
 
-- 配套MF6独立私有Avatar已开始上传，待generic／standard／security服务端终态分析。
-- 新目录贴图朝向与缩放的原生可视验证、近看与定位变换，后续版本安装与文档收尾。
+- MF6私有头像已上传为v3，generic／standard／security三项均已终态通过，评级VeryPoor。`analysis.json`。SDK首次上传的版权弹窗按现有自有内容上传授权通过标准UI确认，未修改SDK包。
+- 新目录24种贴图朝向×6面×2种定位状态，以及4种重复比例，292项实际GPU像素检查通过。`catalog-gpu.json`。待最终0.13入口、安装与文档收尾。
 - 真实VRChat多人及后来者尚未验证。OSC无远端ACK；本地发送完成不代表远端已收到，维护补播只能逐渐修复。
 - Minecraft复杂自定义elements/CTM/自定义Shader等没有完整模拟；不支持的形状和材质会报告并近似。Bedrock与完整世界目录未纳入本轮。

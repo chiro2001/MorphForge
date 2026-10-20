@@ -200,7 +200,7 @@ impl Transport {
             + s.resets as usize
             + usize::from(!s.controls.is_empty())
             + s.reset_pulse as usize;
-        json!({"enabled":s.config.enabled,"sending":s.connected,"port":s.config.port,"interval":s.config.interval,"profile":s.config.profile,"auto":s.config.auto,"capacity":s.config.capacity,"refreshSeconds":s.config.refresh_seconds,"loopReplay":s.config.loop_replay,"sendOrder":s.config.send_order,"replayCycles":s.replay_cycles,"pending":pending,"etaSeconds":pending as f64*s.config.interval,"desiredRevision":s.desired_revision,"sentRevision":s.sent_revision,"sentCommands":s.sent_count,"error":s.last_error,"ack":false,"repairing":s.repair_seen.is_some()||s.unified.repairing(),"syncedBits":if ["mf4","mf5","mf6"].contains(&s.config.profile.as_str()){240}else if s.config.profile=="mf3"{56}else{88},"pendingObjects":if s.config.profile=="mf6"{Some(s.unified.pending_objects())}else{None},"estimateKind":if s.config.profile=="mf6"{"adaptive-layout estimate; no receiver acknowledgement"}else{"legacy queue estimate"},"placement":{"world":s.config.world,"visible":s.config.visible,"scale":s.config.scale,"level":s.config.level}})
+        json!({"enabled":s.config.enabled,"sending":s.connected,"port":s.config.port,"interval":s.config.interval,"profile":s.config.profile,"auto":s.config.auto,"capacity":s.config.capacity,"refreshSeconds":s.config.refresh_seconds,"loopReplay":s.config.loop_replay,"sendOrder":s.config.send_order,"replayCycles":s.replay_cycles,"pending":pending,"etaSeconds":pending as f64*s.config.interval,"desiredRevision":s.desired_revision,"sentRevision":s.sent_revision,"sentCommands":s.sent_count,"error":s.last_error,"ack":false,"repairing":s.repair_seen.is_some()||s.unified.repairing(),"syncedBits":if ["mf4","mf5","mf6"].contains(&s.config.profile.as_str()){240}else if s.config.profile=="mf3"{56}else{88},"repairDeletions":if s.config.profile=="mf6"{Some(s.unified.repair_history_counts())}else{None},"pendingObjects":if s.config.profile=="mf6"{Some(s.unified.pending_objects())}else{None},"estimateKind":if s.config.profile=="mf6"{"adaptive-layout estimate; no receiver acknowledgement"}else{"legacy queue estimate"},"placement":{"world":s.config.world,"visible":s.config.visible,"scale":s.config.scale,"level":s.config.level}})
     }
     pub fn configure(&self, v: &Value, workspace: &mut Workspace) -> Result<Value> {
         let mut s = self.inner.lock().unwrap();
@@ -568,7 +568,7 @@ impl Transport {
             }
             let job = {
                 if (!s.desired.is_empty()
-                    || (s.config.profile == "mf6" && !s.unified.target_empty()))
+                    || (s.config.profile == "mf6" && s.unified.has_replay_work()))
                     && (s.config.loop_replay
                         || (s.config.refresh_seconds > 0
                             && s.last_refresh.elapsed().as_secs() >= s.config.refresh_seconds))

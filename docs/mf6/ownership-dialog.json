@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "contentId": "avtr_9ebb3bdb-6991-42cd-8c3e-b9a35f176e90",
+  "scope": "Standard SDK ownership dialog for the task-owned private MF6 upload",
+  "windows": [
+    "Copyright ownership agreement",
+    "MorphForge - MorphForge_MF6 - Windows, Mac, Linux - Unity 2022.3.22f1 <DX11>"
+  ],
+  "action": "SDK dialog OK invoked under existing owned-content upload authorization"
+}

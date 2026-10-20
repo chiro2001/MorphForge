@@ -653,7 +653,7 @@ function updateState() {
     : "范围为空";
   $("emptyHint").hidden = s.stats.boxCount > 0 || s.stats.triangleCount > 0;
   const target=s.targetCompatibility;
-  $("vrcBoundsStatus").textContent=target ? `${target.fits?"坐标/容量可发布":"目标预检未通过"} · ${target.outOfBoundsCount} 个越界 Box\n作品尺寸 ${target.extent.join(" × ")} 格${target.outOfBoundsGroups.length?"\n越界分组："+target.outOfBoundsGroups.join("、"):""}` : "";
+  $("vrcBoundsStatus").textContent=target ? `${target.fits?"坐标/容量可发布":"目标预检未通过"} · ${target.outOfBoundsCount} 个越界对象\n作品尺寸 ${target.extent.join(" × ")} 格${target.outOfBoundsGroups.length?"\n越界分组："+target.outOfBoundsGroups.join("、"):""}` : "";
   const catalog=s.materialCompatibility;
   $("materialCompatibility").textContent=catalog ? (catalog.status==="unknown"?"未声明目标目录，未核实上传的Avatar。":catalog.matched?`目录匹配${catalog.runtimeMaterials?" / 支持实时材质":""} · ${catalog.usedStyles} 种已用材质 · ${catalog.fingerprint.slice(0,12)}\n用户导入的目录，非远端确认。`:`目录不匹配：缺少 [${catalog.missingIds.join(",")}]，定义不同 [${catalog.differentIds.join(",")}]\n${catalog.note||"请更新Avatar目录后再发布。"}`) : "";
   setChecked("autoCenterOnFinish",s.project.autoCenterOnFinish);
@@ -670,7 +670,7 @@ function updateState() {
   setChecked("loopReplay",connection.loopReplay||false);
   $("loopReplay").disabled=!["mf5","mf6"].includes(connection.profile);
   $("sendOrder").disabled=!["mf5","mf6"].includes(connection.profile);
-  $("replayStatus").textContent=`已完成补播 ${connection.replayCycles||0} 轮 · ${connection.repairing?"正在补播":connection.loopReplay?(connection.enabled?"连续补播已启用":"循环已设置，发送关闭"):"按需发送"}。更新先删除旧几何，再按所选顺序绘制；没有远端ACK。`;
+  $("replayStatus").textContent=`已完成补播 ${connection.replayCycles||0} 轮 · ${connection.repairing?"正在补播":connection.loopReplay?(connection.enabled?"连续补播已启用":"循环已设置，发送关闭"):"按需发送"}。${connection.repairDeletions?.some(n=>n)?`含 ${connection.repairDeletions.reduce((a,b)=>a+b,0)} 条历史删除。`:""}更新先删除旧几何，再按所选顺序绘制；没有远端ACK。`;
   $("repairPublish").disabled=!["mf5","mf6"].includes(connection.profile);
   setChecked("autoPublish", connection.auto);
   $("connect").textContent = connection.enabled ? "停止发送" : "开启发送";

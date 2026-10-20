@@ -42,6 +42,12 @@ pub enum Action {
     TriangleRemove {
         id: u64,
     },
+    ReplayBoxRemove {
+        key: GeometryKey,
+    },
+    ReplayTriangleRemove {
+        wire_id: u16,
+    },
 }
 #[derive(Clone, Debug)]
 pub struct Plan {
@@ -56,6 +62,10 @@ pub struct Session {
     triangles: BTreeMap<u64, LiveTriangle>,
     replay: Option<BTreeSet<Object>>,
     turn: u64,
+    box_tombstones: BTreeMap<GeometryKey, LiveBox>,
+    triangle_tombstones: BTreeSet<u16>,
+    replayed_box_deletions: BTreeSet<GeometryKey>,
+    replayed_triangle_deletions: BTreeSet<u16>,
 }
 impl Session {
     pub fn set_target(
@@ -100,9 +110,20 @@ impl Session {
         self.boxes.clear();
         self.triangles.clear();
         self.replay = None;
+        self.box_tombstones.clear();
+        self.triangle_tombstones.clear();
+        self.replayed_box_deletions.clear();
+        self.replayed_triangle_deletions.clear();
+    }
+    pub fn has_replay_work(&self) -> bool {
+        !self.target_empty()
+            || !self.box_tombstones.is_empty()
+            || !self.triangle_tombstones.is_empty()
     }
     pub fn start_replay(&mut self) {
         self.replay = Some(BTreeSet::new());
+        self.replayed_box_deletions.clear();
+        self.replayed_triangle_deletions.clear();
     }
     pub fn repairing(&self) -> bool {
         self.replay.is_some()
@@ -117,15 +138,30 @@ impl Session {
         self.replay.as_ref().is_none_or(|seen| seen.contains(key))
     }
     pub fn pending_objects(&self) -> usize {
-        self.desired_boxes
-            .iter()
-            .filter(|(k, (b, s))| {
-                self.boxes
-                    .get(k)
-                    .is_none_or(|old| old.surface != *s || old.value.shape != b.shape)
-                    || !self.seen(&Object::Box(**k))
-            })
-            .count()
+        let deletes = if self.repairing() {
+            self.box_tombstones
+                .keys()
+                .filter(|k| !self.replayed_box_deletions.contains(k))
+                .count()
+                + self
+                    .triangle_tombstones
+                    .iter()
+                    .filter(|id| !self.replayed_triangle_deletions.contains(id))
+                    .count()
+        } else {
+            0
+        };
+        deletes
+            + self
+                .desired_boxes
+                .iter()
+                .filter(|(k, (b, s))| {
+                    self.boxes
+                        .get(k)
+                        .is_none_or(|old| old.surface != *s || old.value.shape != b.shape)
+                        || !self.seen(&Object::Box(**k))
+                })
+                .count()
             + self
                 .desired_triangles
                 .iter()
@@ -194,6 +230,47 @@ impl Session {
                 frame: Frame::RemoveTriangles { ids },
                 actions,
             }));
+        }
+        if self.repairing() {
+            let mut records = Vec::new();
+            let mut actions = Vec::new();
+            used.clear();
+            for (key, b) in &self.box_tombstones {
+                if !self.replayed_box_deletions.contains(key) && used.insert(b.pool) {
+                    records.push(EraseRecord {
+                        pool: b.pool,
+                        geometry: Geometry::from_box(&b.value)?,
+                    });
+                    actions.push(Action::ReplayBoxRemove { key: *key });
+                    if records.len() == 4 {
+                        break;
+                    }
+                }
+            }
+            if !records.is_empty() {
+                return Ok(Some(Plan {
+                    frame: Frame::RemoveBoxes { records },
+                    actions,
+                }));
+            }
+            let mut ids = Vec::new();
+            let mut actions = Vec::new();
+            used.clear();
+            for id in &self.triangle_tombstones {
+                if !self.replayed_triangle_deletions.contains(id) && used.insert((id % 8) as u8) {
+                    ids.push(*id);
+                    actions.push(Action::ReplayTriangleRemove { wire_id: *id });
+                    if ids.len() == 8 {
+                        break;
+                    }
+                }
+            }
+            if !ids.is_empty() {
+                return Ok(Some(Plan {
+                    frame: Frame::RemoveTriangles { ids },
+                    actions,
+                }));
+            }
         }
         let has_boxes = self.desired_boxes.iter().any(|(k, (b, s))| {
             self.boxes
@@ -482,6 +559,16 @@ impl Session {
                     pool,
                 } => {
                     let k = key(value);
+                    let center = std::array::from_fn::<_, 3, _>(|a| {
+                        2 * value.min[a] as i64 + value.size[a] as i64
+                    });
+                    // A native birth replaces its center only within its pool.
+                    self.box_tombstones.retain(|_, b| {
+                        b.pool != *pool
+                            || std::array::from_fn::<_, 3, _>(|a| {
+                                2 * b.value.min[a] as i64 + b.value.size[a] as i64
+                            }) != center
+                    });
                     self.boxes.insert(
                         k,
                         LiveBox {
@@ -495,9 +582,15 @@ impl Session {
                     }
                 }
                 Action::BoxRemove { key } => {
-                    self.boxes.remove(key);
+                    if let Some(old) = self.boxes.remove(key) {
+                        self.box_tombstones.insert(*key, old);
+                        if self.box_tombstones.len() > 32768 {
+                            self.box_tombstones.pop_first();
+                        }
+                    }
                 }
                 Action::TriangleSet { value, wire_id } => {
+                    self.triangle_tombstones.remove(wire_id);
                     self.triangles.insert(
                         value.id,
                         LiveTriangle {
@@ -510,11 +603,22 @@ impl Session {
                     }
                 }
                 Action::TriangleRemove { id } => {
-                    self.triangles.remove(id);
+                    if let Some(old) = self.triangles.remove(id) {
+                        self.triangle_tombstones.insert(old.wire_id);
+                    }
+                }
+                Action::ReplayBoxRemove { key } => {
+                    self.replayed_box_deletions.insert(*key);
+                }
+                Action::ReplayTriangleRemove { wire_id } => {
+                    self.replayed_triangle_deletions.insert(*wire_id);
                 }
             }
         }
         self.turn += 1;
+    }
+    pub fn repair_history_counts(&self) -> (usize, usize) {
+        (self.box_tombstones.len(), self.triangle_tombstones.len())
     }
     pub fn sent_counts(&self) -> (usize, usize) {
         (self.boxes.len(), self.triangles.len())
@@ -606,5 +710,89 @@ mod tests {
         let frames = drain(&mut s);
         assert!(matches!(&frames[0],Frame::SharedBoxes{records}if records.len()==4));
         assert_eq!(s.pending_objects(), 0);
+    }
+    #[test]
+    fn dropped_erasures_are_replayed_even_for_an_empty_target() {
+        let source = scene();
+        let mut s = Session::default();
+        s.set_target(&source, &BTreeMap::new()).unwrap();
+        drain(&mut s);
+        let original_boxes = s.boxes.len();
+        let original_faces = s.triangles.len();
+        s.set_target(&Scene::default(), &BTreeMap::new()).unwrap();
+        // Local UDP succeeds but the receiver loses every initial erase.
+        let lost = drain(&mut s);
+        assert!(lost
+            .iter()
+            .all(|f| matches!(f, Frame::RemoveBoxes { .. } | Frame::RemoveTriangles { .. })));
+        assert_eq!(s.sent_counts(), (0, 0));
+        assert!(s.has_replay_work());
+        for _ in 0..2 {
+            s.start_replay();
+            let frames = drain(&mut s);
+            let boxes: usize = frames
+                .iter()
+                .map(|f| {
+                    if let Frame::RemoveBoxes { records } = f {
+                        records.len()
+                    } else {
+                        0
+                    }
+                })
+                .sum();
+            let faces: usize = frames
+                .iter()
+                .map(|f| {
+                    if let Frame::RemoveTriangles { ids } = f {
+                        ids.len()
+                    } else {
+                        0
+                    }
+                })
+                .sum();
+            assert_eq!((boxes, faces), (original_boxes, original_faces));
+            assert_eq!(s.pending_objects(), 0);
+            assert!(!frames.iter().any(|f| matches!(f, Frame::Clear)));
+            s.finish_replay();
+        }
+        s.clear_sent();
+        assert!(!s.has_replay_work());
+    }
+    #[test]
+    fn retired_ids_and_centers_never_erase_their_live_replacements() {
+        let mut s = Session::default();
+        let original = scene();
+        s.set_target(&original, &BTreeMap::new()).unwrap();
+        drain(&mut s);
+        s.set_target(&Scene::default(), &BTreeMap::new()).unwrap();
+        drain(&mut s);
+        let mut replacement = original.clone();
+        for t in &mut replacement.triangles {
+            t.id += 1000;
+            t.color = [255, 0, 0];
+        }
+        s.set_target(&replacement, &BTreeMap::new()).unwrap();
+        drain(&mut s);
+        s.start_replay();
+        let frames = drain(&mut s);
+        for frame in frames {
+            match frame {
+                Frame::RemoveTriangles { ids } => assert!(ids
+                    .iter()
+                    .all(|id| !s.triangles.values().any(|t| t.wire_id == *id))),
+                Frame::RemoveBoxes { records } => {
+                    for r in records {
+                        assert!(!s.boxes.values().any(|b| b.pool == r.pool
+                            && Geometry::from_box(&b.value).unwrap() == r.geometry));
+                    }
+                }
+                Frame::Clear => panic!("maintenance must not clear the display"),
+                _ => {}
+            }
+        }
+        assert_eq!(
+            s.sent_counts(),
+            (replacement.boxes.len(), replacement.triangles.len())
+        );
     }
 }

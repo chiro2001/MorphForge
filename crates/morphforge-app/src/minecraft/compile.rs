@@ -37,6 +37,10 @@ pub struct Options {
     pub resource_pack: String,
     #[serde(default = "mode")]
     pub mode: String,
+    #[serde(skip)]
+    pub state_materials: super::blockstates::Mapping,
+    #[serde(skip)]
+    pub state_warnings: Vec<String>,
 }
 impl Default for Options {
     fn default() -> Self {
@@ -48,6 +52,8 @@ impl Default for Options {
             surface_only: false,
             resource_pack: pack(),
             mode: mode(),
+            state_materials: Default::default(),
+            state_warnings: Vec::new(),
         }
     }
 }
@@ -600,7 +606,11 @@ fn material(
             .cloned()
     } else {
         let candidates = [
-            format!("{ns}:block/{name}"),
+            options
+                .state_materials
+                .get(&state.canonical())
+                .map(|(name, _)| name.clone())
+                .unwrap_or_else(|| format!("{ns}:block/{name}")),
             format!("{ns}:block/{base_name}"),
         ];
         let exact = materials
@@ -623,24 +633,29 @@ fn material(
         })
     }
     .context("无法找到建筑材质，请先加入内置方块工坊或所选资源包")?;
-    let rotation = match state.properties.get("axis").map(String::as_str) {
-        Some("x") => 4,
-        Some("z") => 8,
-        _ => {
-            if name.ends_with("_stairs") || name.ends_with("_wall") || name.ends_with("_fence") {
-                0
-            } else {
-                match state.properties.get("facing").map(String::as_str) {
-                    Some("east") => 1,
-                    Some("south") => 2,
-                    Some("west") => 3,
-                    Some("up") => 8,
-                    Some("down") => 12,
-                    _ => 0,
+    let rotation = options
+        .state_materials
+        .get(&state.canonical())
+        .map(|(_, rotation)| *rotation)
+        .unwrap_or_else(|| match state.properties.get("axis").map(String::as_str) {
+            Some("x") => 4,
+            Some("z") => 8,
+            _ => {
+                if name.ends_with("_stairs") || name.ends_with("_wall") || name.ends_with("_fence")
+                {
+                    0
+                } else {
+                    match state.properties.get("facing").map(String::as_str) {
+                        Some("east") => 1,
+                        Some("south") => 2,
+                        Some("west") => 3,
+                        Some("up") => 8,
+                        Some("down") => 12,
+                        _ => 0,
+                    }
                 }
             }
-        }
-    };
+        });
     let mut variant = orient_variant(tile_variant(&base, options.block_scale), rotation);
     // Coloring a shared original wool/glass tile does not allocate a texture.
     let dyes = [
@@ -685,7 +700,9 @@ fn material(
     materials.push(variant);
     Ok((id, approximate))
 }
-pub fn compile(w: &mut Workspace, building: &Building, options: Options) -> Result<Compiled> {
+pub fn compile(w: &mut Workspace, building: &Building, mut options: Options) -> Result<Compiled> {
+    (options.state_materials, options.state_warnings) =
+        super::blockstates::resolve(&w.root, &options.resource_pack, &building.palette)?;
     let originals = w.project.materials.clone();
     let (materials, _, _) = crate::builtin_pixels::prepare_theme(w, "block-workshop", &originals)?;
     compile_prepared(
@@ -866,6 +883,7 @@ pub fn compile_prepared(
     }
     let stats = scene.stats(limits);
     let mut warnings = building.warnings.clone();
+    warnings.extend(options.state_warnings.clone());
     if !unknown.is_empty() {
         warnings.push(
             "部分形状使用整块或近似几何替代；完整方块状态保存在源建筑中，可重新导入。".into(),
@@ -884,7 +902,7 @@ pub fn compile_prepared(
     if options.surface_only {
         warnings.push("本次只导入外壳；内部格未进入可编辑场景，源建筑仍完整保存。".into());
     }
-    let report = json!({"format":building.format,"dataVersion":building.data_version,"sourceBlocks":building.blocks.len(),"sourceCells":building.source_cells,"sourceBounds":building.bounds,"regions":building.regions,"blockScale":options.block_scale,"center":options.center,"translation":offset,"beforeMerge":unmerged,"generatedBoxes":stats.box_count,"hiddenSourceBlocks":hidden,"approximateShapeBlocks":unknown_blocks,"quantizedBlocks":quantized_blocks,"unknownShapes":unknown.iter().take(128).collect::<Vec<_>>(),"quantizedStates":quantized.iter().take(128).collect::<Vec<_>>(),"approximateMaterialStates":approximate_materials.len(),"paletteCount":building.palette.len(),"materialsAdded":materials.len().saturating_sub(original_material_count),"stats":stats,"target":crate::scene_tools::target_report(&scene,limits.target_boxes),"estimatedFrames":scene.boxes.len().div_ceil(3),"estimatedSecondsAt250ms":scene.boxes.len().div_ceil(3) as f64*0.25,"estimateNote":"粗略按3Box/帧计算；实际由共外观、单位体素批量与池分布决定，无远端ACK。","warnings":warnings});
+    let report = json!({"format":building.format,"dataVersion":building.data_version,"sourceBlocks":building.blocks.len(),"sourceCells":building.source_cells,"sourceBounds":building.bounds,"regions":building.regions,"blockScale":options.block_scale,"center":options.center,"translation":offset,"beforeMerge":unmerged,"generatedBoxes":stats.box_count,"hiddenSourceBlocks":hidden,"approximateShapeBlocks":unknown_blocks,"quantizedBlocks":quantized_blocks,"unknownShapes":unknown.iter().take(128).collect::<Vec<_>>(),"quantizedStates":quantized.iter().take(128).collect::<Vec<_>>(),"approximateMaterialStates":approximate_materials.len(),"approximateMaterials":approximate_materials.iter().take(128).collect::<Vec<_>>(),"paletteCount":building.palette.len(),"materialsAdded":materials.len().saturating_sub(original_material_count),"stats":stats,"target":crate::scene_tools::target_report(&scene,limits.target_boxes),"estimatedFrames":scene.boxes.len().div_ceil(3),"estimatedSecondsAt250ms":scene.boxes.len().div_ceil(3) as f64*0.25,"estimateNote":"粗略按3Box/帧计算；实际由共外观、单位体素批量与池分布决定，无远端ACK。","warnings":warnings});
     Ok(Compiled {
         scene,
         materials,

@@ -1,0 +1,3778 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "kind": "face",
+      "rotation": 0,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 0,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 0,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 0,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 0,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 0,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.02745098
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 1,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03137255
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 1,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 1,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 1,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 1,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 1,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 2,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 2,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 2,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 2,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 2,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03137255
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 2,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 3,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 3,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.02745098
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 3,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 3,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 3,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 3,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 4,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 4,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 4,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 4,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 4,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 4,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.02745098
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 5,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03137255
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 5,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 5,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 5,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 5,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 5,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 6,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 6,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 6,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 6,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 6,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03137255
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 6,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 7,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 7,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.02745098
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 7,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 7,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 7,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 7,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 8,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 8,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 8,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03529412
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 8,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 8,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 8,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 9,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 9,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 9,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03529412
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 9,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 9,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 9,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 10,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 10,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 10,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03529412
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 10,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 10,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 10,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 11,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 11,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 11,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03529412
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 11,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 11,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 11,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 12,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 12,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 12,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 12,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.0235294122
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 12,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 12,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 13,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 13,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 13,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 13,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.0235294122
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 13,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 13,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 14,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 14,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 14,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 14,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.0235294122
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 14,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 14,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 15,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 15,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 15,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 15,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.0235294122
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 15,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 15,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 16,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 16,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 16,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 16,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 16,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 16,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.02745098
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 17,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03137255
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 17,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 17,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 17,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 17,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 17,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 18,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 18,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 18,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 18,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 18,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03137255
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 18,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 19,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 19,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.02745098
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 19,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 19,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 19,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 19,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 20,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 20,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 20,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 20,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 20,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 20,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.02745098
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 21,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03137255
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 21,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 21,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 21,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 21,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 21,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 22,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 22,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 22,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 22,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 22,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03137255
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 22,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 23,
+      "view": 0,
+      "transformed": false,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 23,
+      "view": 1,
+      "transformed": false,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.02745098
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 23,
+      "view": 2,
+      "transformed": false,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 23,
+      "view": 3,
+      "transformed": false,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 23,
+      "view": 4,
+      "transformed": false,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 23,
+      "view": 5,
+      "transformed": false,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 0,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 0,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 0,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 0,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 0,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 0,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.02745098
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 1,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03137255
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 1,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 1,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 1,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 1,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 1,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 2,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 2,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 2,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 2,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 2,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03137255
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 2,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 3,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 3,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.02745098
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 3,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 3,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 3,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 3,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 4,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 4,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 4,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 4,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 4,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 4,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.02745098
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 5,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03137255
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 5,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 5,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 5,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 5,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 5,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 6,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 6,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 6,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 6,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 6,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03137255
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 6,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 7,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 7,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.02745098
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 7,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 7,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 7,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 7,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 8,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 8,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 8,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03529412
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 8,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 8,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 8,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 9,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 9,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 9,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03529412
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 9,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 9,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 9,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 10,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 10,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 10,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03529412
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 10,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 10,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 10,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 11,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 11,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 11,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03529412
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 11,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 11,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 11,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 12,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 12,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 12,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 12,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.0235294122
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 12,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 12,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 13,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 13,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 13,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 13,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.0235294122
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 13,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 13,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 14,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 14,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 14,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 14,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.0235294122
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 14,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 14,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 15,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 15,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 15,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 15,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.0235294122
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 15,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 15,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 16,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 16,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 16,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 16,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 16,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 16,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.02745098
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 17,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03137255
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 17,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 17,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 17,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 17,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 17,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 18,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 18,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 18,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 18,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 18,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03137255
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 18,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 19,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 19,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.02745098
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 19,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 19,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 19,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 19,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 20,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 20,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 20,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 20,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 20,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 20,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.02745098
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 21,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03137255
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 21,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 21,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 21,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 21,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 21,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 22,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 22,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 22,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 22,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 22,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.03137255
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 22,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 23,
+      "view": 0,
+      "transformed": true,
+      "expectedFace": 4,
+      "pixel": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 23,
+      "view": 1,
+      "transformed": true,
+      "expectedFace": 5,
+      "pixel": [
+        1.0,
+        1.0,
+        0.02745098
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 23,
+      "view": 2,
+      "transformed": true,
+      "expectedFace": 1,
+      "pixel": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 23,
+      "view": 3,
+      "transformed": true,
+      "expectedFace": 0,
+      "pixel": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 23,
+      "view": 4,
+      "transformed": true,
+      "expectedFace": 3,
+      "pixel": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "face",
+      "rotation": 23,
+      "view": 5,
+      "transformed": true,
+      "expectedFace": 2,
+      "pixel": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "passed": true
+    },
+    {
+      "kind": "repeat",
+      "cellsPerTile": 0.0,
+      "transitions": 1,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "kind": "repeat",
+      "cellsPerTile": 1.0,
+      "transitions": 15,
+      "expected": 15,
+      "passed": true
+    },
+    {
+      "kind": "repeat",
+      "cellsPerTile": 4.0,
+      "transitions": 3,
+      "expected": 3,
+      "passed": true
+    },
+    {
+      "kind": "repeat",
+      "cellsPerTile": 8.0,
+      "transitions": 1,
+      "expected": 1,
+      "passed": true
+    }
+  ],
+  "scope": "Production MF6 shader and native Animator-born Box; diagnostic six-face texture array and metadata, 24 cube orientations, anchor rotation/scale, tile repeat. No MeshRenderer stand-in or scripted particle injection."
+}

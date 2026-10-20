@@ -401,3 +401,78 @@ fn reports_invalid_animation_frame_but_keeps_fallback_frames() {
         .unwrap();
     assert_eq!(material.frames, 2);
 }
+#[test]
+fn preserved_pack_blockstates_select_alias_model_and_orientation() {
+    use morphforge_app::minecraft::{
+        compile::{self, Options},
+        formats::{Block, BlockState, Building},
+    };
+    let (_dir, mut workspace) = workspace();
+    let texture = png(2, 2, &[[200, 100, 20, 255]]);
+    let model = cube_all("example:block/amber");
+    let states=serde_json::to_vec(&json!({"variants":{"lit=true":{"model":"example:block/active","x":90,"y":90},"lit=false":{"model":"example:block/active"}}})).unwrap();
+    let bytes = zip(&[
+        ("pack.mcmeta", &pack_meta()),
+        ("assets/example/textures/block/amber.png", &texture),
+        ("assets/example/models/block/active.json", &model),
+        ("assets/example/blockstates/lamp.json", &states),
+    ]);
+    let report = import_java_pack(&mut workspace, &bytes, "lamp.zip").unwrap();
+    let pack = report["packId"].as_str().unwrap();
+    assert_eq!(report["blockstateCount"], 1);
+    assert_eq!(
+        std::fs::read(workspace.root.join("packs").join(format!("{pack}.zip"))).unwrap(),
+        bytes
+    );
+    let building = Building {
+        format: "fixture".into(),
+        data_version: None,
+        palette: vec![BlockState::parse("example:lamp[lit=true]").unwrap()],
+        blocks: vec![Block {
+            position: [0; 3],
+            state: 0,
+        }],
+        regions: vec![],
+        bounds: Some(([0; 3], [1; 3])),
+        entities: 0,
+        block_entities: 0,
+        overwritten_cells: 0,
+        source_cells: 1,
+        warnings: vec![],
+    };
+    let compiled = compile::compile(
+        &mut workspace,
+        &building,
+        Options {
+            resource_pack: pack.into(),
+            ..Default::default()
+        },
+    )
+    .unwrap();
+    let m = compiled
+        .materials
+        .iter()
+        .find(|m| m.id == compiled.scene.boxes[0].style_id)
+        .unwrap();
+    assert!(m.uid.starts_with("example:block/active@"));
+    assert_eq!(m.texture_rotation, 9);
+    assert_eq!(m.texture_scale, 4.);
+    assert_eq!(compiled.report["approximateMaterialStates"], 0);
+    let path = workspace
+        .root
+        .join("packs")
+        .join(format!("{pack}-blockstates.json"));
+    std::fs::write(path, b"{}").unwrap();
+    assert!(compile::compile(
+        &mut workspace,
+        &building,
+        Options {
+            resource_pack: pack.into(),
+            ..Default::default()
+        }
+    )
+    .err()
+    .unwrap()
+    .to_string()
+    .contains("MC_PACK_CORRUPT"));
+}

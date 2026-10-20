@@ -463,13 +463,13 @@ mf.group('main', () => {
             <button id="resync">清空并重建</button>
           </div>
           <label
-            >周期刷新（秒，0关闭；MF5补播）<input
+            >周期刷新（秒，0关闭；MF5/MF6补播）<input
               id="refreshSeconds"
               type="number"
               value="0"
               min="0"
           /></label>
-          <label class="check"><input id="loopReplay" type="checkbox" />完成后连续循环补播（MF5）</label>
+          <label class="check"><input id="loopReplay" type="checkbox" />完成后连续循环补播（MF5/MF6）</label>
           <label>发送顺序<select id="sendOrder"><option value="volume">大块优先，同体积从下到上、从左到右</option><option value="bottom_up">从下到上、从左到右</option><option value="material">材质优先，侧重双体素配对</option></select></label>
           <p id="replayStatus" class="caption"></p>
           <div id="vrcBoundsStatus" class="status"></div>

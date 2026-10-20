@@ -1,3 +1,4 @@
+pub mod blockstates;
 pub mod compile;
 pub mod formats;
 pub mod imports;

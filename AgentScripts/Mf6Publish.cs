@@ -21,6 +21,7 @@ public static class Mf6Publish
     const string AvatarName="MorphForge MF6 16K";
     static string StateFile=>"Docs/MF6/upload.json";
     static JObject State()=>File.Exists(StateFile)?JObject.Parse(File.ReadAllText(StateFile)):new JObject();
+    static void Progress(string phase,string message,float? fraction=null){var s=State();s["phase"]=phase;s["message"]=message;s["progress"]=fraction;s["updatedUtc"]=DateTime.UtcNow.ToString("O");Save(s);}
     static void Save(JObject s){Directory.CreateDirectory("Docs/MF6");File.WriteAllText(StateFile,s.ToString());}
     static GameObject Target(){
         if(EditorApplication.isPlaying||EditorApplication.isCompiling)throw new Exception("Idle Edit Mode required");
@@ -52,21 +53,40 @@ public static class Mf6Publish
         EditorSceneManager.MarkSceneDirty(avatar.scene);EditorSceneManager.SaveScene(avatar.scene);AssetDatabase.SaveAssets();
         var catalog=JObject.Parse(File.ReadAllText("Docs/MF6/avatar-catalog.json"));catalog["targetAvatarId"]=id;File.WriteAllText("Docs/MF6/avatar-catalog.json",catalog.ToString());
     }
+    public static async Task<string> AdoptReserved(){
+        if(EditorApplication.isPlaying)throw new Exception("Edit Mode required");
+        var scene=SceneManager.GetSceneByPath(Mf6AvatarBuild.ScenePath);var avatar=scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<VRCAvatarDescriptor>(true)).Single().gameObject;
+        string id=avatar.GetComponent<PipelineManager>().blueprintId;
+        if(avatar.name!="MorphForge_MF6_Avatar"||string.IsNullOrEmpty(id)||(!string.IsNullOrEmpty(Mf6AvatarBuild.AvatarId)&&Mf6AvatarBuild.AvatarId!=id)||id==Mf5AvatarBuild.AvatarId)throw new Exception("Reserved identity scope mismatch");
+        var remote=await VRCApi.GetAvatar(id,forceRefresh:true);
+        if(remote.AuthorId!=UserId||remote.ReleaseStatus!="private"||remote.Name!=AvatarName)throw new Exception("Reserved identity owner/name mismatch");
+        PersistIdentity(avatar);var state=new JObject{["status"]="reserved",["targetAvatarId"]=id,["name"]=remote.Name,["pendingUpload"]=remote.PendingUpload,["avatarVersion"]=remote.Version,["timeUtc"]=DateTime.UtcNow.ToString("O")};Save(state);return state.ToString();
+    }
     public static string Status()=>State().ToString();
     public static async Task<string> Start(){
         var avatar=Target();Preflight();if((string)State()["status"]=="running")throw new Exception("MF6 upload already running");
         if(APIUser.CurrentUser==null&&ApiCredentials.Load())APIUser.InitialFetchCurrentUser(_=>{},null);for(int i=0;i<60&&APIUser.CurrentUser==null;i++)await Task.Delay(250);
         var user=APIUser.CurrentUser;if(user==null||user.id!=UserId||!user.canPublishAvatars)throw new Exception("Expected SDK publisher account");
         VRCAvatar remote;bool create=string.IsNullOrEmpty(Mf6AvatarBuild.AvatarId);
+        if(create){
+            Progress("sdk-warmup","Read existing private MF5 identity before first SDK POST");
+            var existing=await VRCApi.GetAvatar(Mf5AvatarBuild.AvatarId,forceRefresh:true);
+            if(existing.AuthorId!=UserId||existing.ReleaseStatus!="private")throw new Exception("MF5 publisher warmup identity mismatch");
+        }
         if(create)remote=new VRCAvatar{Name=AvatarName,Description="MorphForge unified 240-bit geometry; native 16K boxes, textured slopes and RGB polygon faces. Standalone MF6 test avatar.",Tags=new List<string>(),ReleaseStatus="private"};
-        else{remote=await VRCApi.GetAvatar(Mf6AvatarBuild.AvatarId,forceRefresh:true);if(remote.AuthorId!=UserId||remote.ReleaseStatus!="private"||remote.PendingUpload)throw new Exception("Expected idle owned private MF6 Avatar");remote.Name=AvatarName;}
+        else{remote=await VRCApi.GetAvatar(Mf6AvatarBuild.AvatarId,forceRefresh:true);if(remote.AuthorId!=UserId||remote.ReleaseStatus!="private")throw new Exception("Expected owned private MF6 Avatar");remote.Name=AvatarName;}
         if(!VRCSdkControlPanel.TryGetBuilder(out IVRCSdkAvatarBuilderApi builder)){EditorWindow.GetWindow<VRCSdkControlPanel>(false,"VRChat SDK",true).Show();if(!VRCSdkControlPanel.TryGetBuilder(out builder))throw new Exception("SDK builder unavailable");}
         if(builder.BuildState!=SdkBuildState.Idle||builder.UploadState!=SdkUploadState.Idle)throw new Exception("SDK busy");
-        string thumbnail=create?Thumbnail(avatar):null;string operation=Guid.NewGuid().ToString("N");Save(new JObject{["status"]="running",["operation"]=operation,["createIndependentPrivateAvatar"]=create,["targetAvatarId"]=Mf6AvatarBuild.AvatarId,["startedUtc"]=DateTime.UtcNow.ToString("O")});
-        EditorApplication.CallbackFunction start=null;start=()=>{EditorApplication.update-=start;Upload(builder,avatar,remote,thumbnail,operation);};EditorApplication.update+=start;return State().ToString();
+        string thumbnail=(create||remote.PendingUpload)?Thumbnail(avatar):null;string operation=Guid.NewGuid().ToString("N");Save(new JObject{["status"]="running",["operation"]=operation,["createIndependentPrivateAvatar"]=create,["targetAvatarId"]=Mf6AvatarBuild.AvatarId,["startedUtc"]=DateTime.UtcNow.ToString("O")});
+        EditorApplication.CallbackFunction start=null;start=()=>{EditorApplication.update-=start;Upload(builder,avatar,remote,thumbnail,operation);};EditorApplication.update+=start;EditorApplication.QueuePlayerLoopUpdate();UnityEditorInternal.InternalEditorUtility.RepaintAllViews();return State().ToString();
     }
     static async void Upload(IVRCSdkAvatarBuilderApi builder,GameObject avatar,VRCAvatar remote,string thumbnail,string operation){
+        EventHandler<string> buildProgress=(sender,message)=>Progress("build",message);
+        EventHandler<(string status,float percentage)> uploadProgress=(sender,value)=>Progress("upload",value.status,value.percentage);
+        builder.OnSdkBuildProgress+=buildProgress;builder.OnSdkUploadProgress+=uploadProgress;
+        Progress("sdk-invoked","Public SDK BuildAndUpload invoked");
         try{await builder.BuildAndUpload(avatar,remote,thumbnail,CancellationToken.None);PersistIdentity(avatar);var latest=await VRCApi.GetAvatar(Mf6AvatarBuild.AvatarId,forceRefresh:true);var s=State();s["status"]="success";s["targetAvatarId"]=latest.ID;s["avatarVersion"]=latest.Version;s["pendingUpload"]=latest.PendingUpload;s["completedUtc"]=DateTime.UtcNow.ToString("O");Save(s);}
         catch(Exception e){PersistIdentity(avatar);var s=State();s["status"]="failed";s["targetAvatarId"]=Mf6AvatarBuild.AvatarId;s["error"]=e.Message;s["completedUtc"]=DateTime.UtcNow.ToString("O");Save(s);Debug.LogError("MF6 upload failed: "+e.Message);}
+        finally{builder.OnSdkBuildProgress-=buildProgress;builder.OnSdkUploadProgress-=uploadProgress;}
     }
 }

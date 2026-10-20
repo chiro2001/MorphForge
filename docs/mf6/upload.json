@@ -1,0 +1,14 @@
+{
+  "status": "success",
+  "operation": "b412898583a84a9eb98c60e34adea285",
+  "createIndependentPrivateAvatar": false,
+  "targetAvatarId": "avtr_9ebb3bdb-6991-42cd-8c3e-b9a35f176e90",
+  "startedUtc": "2026-10-20T08:00:00.3591914Z",
+  "phase": "upload",
+  "message": "File upload finished",
+  "progress": 1.0,
+  "updatedUtc": "2026-10-20T08:02:02.4365739Z",
+  "avatarVersion": 3,
+  "pendingUpload": false,
+  "completedUtc": "2026-10-20T08:02:07.8722149Z"
+}
