@@ -1,0 +1,9 @@
+{
+  "requests": 28,
+  "totalTokens": 3903703,
+  "inputTokens": 3806855,
+  "cachedInputTokens": 3729920,
+  "outputTokens": 96848,
+  "prefixHitRate": 0.9797904044151932,
+  "uncachedInputTokens": 76935
+}

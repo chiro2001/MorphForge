@@ -1,0 +1,28 @@
+{
+  "id": "reference-cottage-expanded-budget",
+  "geometry": "voxels",
+  "referenceIds": [
+    "builtin:cottage"
+  ],
+  "settings": {
+    "preset": "detailed",
+    "model": "deepseek-flash",
+    "reasoning": "high",
+    "language": "zh-CN",
+    "goalMode": false,
+    "maxSteps": 48,
+    "maxRunTokens": 8000000,
+    "maxRunSeconds": 7200,
+    "maxOutputTokens": 393216,
+    "cacheGuard": "strict",
+    "sendImages": true,
+    "detailInstructions": ""
+  },
+  "maxObjects": 3000,
+  "maxBoxes": 3000,
+  "targetVrc": true,
+  "requireVisualIteration": true,
+  "requireSavedViews": true,
+  "prompt": "延续先前的小屋复刻验证。累计预算现放宽到800万Token、48步、2小时，单次输出上限384K；不要为耗尽预算添加内容。此前模型因预算保护停止、由验收者手动归档，不代表你已经完成自动保存。先get_context确认当前revision。源码工作区里最后一份patch尚未运行；检查它是否改善参考图比例，适用则运行并截图，否则用精确patch做一次确有意义的比例/结构修正。保留现有红顶小屋与参考图特征，不载入其他作品。看过真实截图后核对正面、侧面、顶部比例和门窗台阶，至少一次几何修正后重新截图。最终hero/front/top三视图必须为当前revision，实际看过后调用finish_artwork自动提交和入库，summary如实说明差异。保留MF6坐标和3000对象上限，OSC禁用。源码修改使用read/write返回的file.hash作为expectedHash，不要用sourceHash。不要长篇规划，完成满足验收的作品即可结束。",
+  "continue": true
+}

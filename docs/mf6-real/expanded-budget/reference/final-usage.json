@@ -1,0 +1,76 @@
+{
+  "usage": {
+    "prefixDenominator": "cache_reported_input_tokens",
+    "run": {
+      "cacheReportedInputTokens": 1026402,
+      "cacheReportedRequests": 12,
+      "cachedInputTokens": 994944,
+      "inputTokens": 1026402,
+      "outputTokens": 19981,
+      "prefixHitRate": 0.9693511898846651,
+      "reportedRequests": 12,
+      "requests": 12,
+      "totalTokens": 1046383,
+      "unreportedRequests": 0
+    },
+    "scope": "workspace",
+    "source": "upstream_reported_usage",
+    "total": {
+      "cacheReportedInputTokens": 1396783,
+      "cacheReportedRequests": 23,
+      "cachedInputTokens": 1336192,
+      "inputTokens": 1396783,
+      "outputTokens": 45965,
+      "prefixHitRate": 0.9566210356225698,
+      "reportedRequests": 23,
+      "requests": 23,
+      "totalTokens": 1442748,
+      "unreportedRequests": 0
+    }
+  },
+  "cacheMonitor": {
+    "alert": null,
+    "cacheReportedRequests": 5,
+    "cacheRequired": true,
+    "clientPrefixIsNotCacheHit": true,
+    "lastCachedTokens": 105088,
+    "lastHitRate": 0.9945864092371759,
+    "lastInputTokens": 105660,
+    "mode": "strict",
+    "prefix": {
+      "appendOnly": true,
+      "contextEpoch": 0,
+      "currentMessages": 65,
+      "expectedReset": false,
+      "field": "input",
+      "firstChangedMessage": null,
+      "previousMessages": 62,
+      "reason": "append_only",
+      "resetAuthorization": null,
+      "scope": "wire_messages",
+      "sharedMessages": 62,
+      "staticPrefixUnchanged": true
+    },
+    "recentHitRate": 0.976376627150745,
+    "requests": 23,
+    "source": "upstream_usage",
+    "status": "observing",
+    "windowRequests": 5
+  },
+  "run": {
+    "activeRequestId": null,
+    "epoch": 1,
+    "error": "",
+    "finishedAt": "2026-10-20T08:56:13.856Z",
+    "id": "0f651401-3b80-479b-98bc-9e80da070479",
+    "language": "zh-CN",
+    "message": "按选中的小屋参考图从零搭建的体素小屋（revision 8，184 个对象，边界 X/Z −48…48、Y 0…70，位于 MF6/VRChat 允许范围内，未连接、未发送 OSC）。\n\n保留的识别点：宽大的红色分层四坡屋顶（每级 3 格阶梯 + 暗红瓦楞立边，出檐 8 格、长屋脊）；左后方浅灰烟囱（正面看在他左侧、从屋面斜坡穿出并高出屋脊，带石缝暗带与顶部烟囱帽）；暖橙色墙体；正面两侧蓝窗（白灰窗框、窗台、窗楣与 2×3 分格）；正中内凹门洞（暖褐门框 + 深棕门板 + 浅灰门槛）；门前三层浅灰入户台阶；96×96×3 的方形薄草地底座。\n\n与参考图的差异（已如实说明）：参考图每块砖/瓦都有贴图网格，本作用纯色材质 + 分层暗红勾出瓦楞层次，墙面与草地为纯色、没有逐块纹理；烟囱顶部简化为“帽檐 + 暗灰顶盖”两段；台阶为 4 层阶梯的简化体块；屋顶阶梯节奏按出檐宽度近似（参考图约 8–9 级，本作 9 级），背面没有参考图可依，按对称四坡处理。反复修正过程：先建大形 → 发现烟囱太矮且偏右、屋顶层级过粗/过细、门窗偏小、台阶过矮，逐轮把烟囱移到 +X 左后并加高、屋顶改为 3 格阶梯、墙高加到 34 格、门窗放大到 10×18、台阶加高到 6 格、门框换成暖褐，最终用当前 revision 的 hero/front/top 三视图核对轮廓、门窗位置与接地。",
+    "prompt": "延续先前的小屋复刻验证。累计预算现放宽到800万Token、48步、2小时，单次输出上限384K；不要为耗尽预算添加内容。此前模型因预算保护停止、由验收者手动归档，不代表你已经完成自动保存。先get_context确认当前revision。源码工作区里最后一份patch尚未运行；检查它是否改善参考图比例，适用则运行并截图，否则用精确patch做一次确有意义的比例/结构修正。保留现有红顶小屋与参考图特征，不载入其他作品。看过真实截图后核对正面、侧面、顶部比例和门窗台阶，至少一次几何修正后重新截图。最终hero/front/top三视图必须为当前revision，实际看过后调用finish_artwork自动提交和入库，summary如实说明差异。保留MF6坐标和3000对象上限，OSC禁用。源码修改使用read/write返回的file.hash作为expectedHash，不要用sourceHash。不要长篇规划，完成满足验收的作品即可结束。",
+    "promptVersion": "morphforge-system/5.0",
+    "startedAt": "2026-10-20T08:53:37.524Z",
+    "status": "completed",
+    "steps": 12,
+    "tokens": 1046383,
+    "toolsVersion": "morphforge-tools/4.0"
+  }
+}

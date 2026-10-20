@@ -1,0 +1,264 @@
+{
+  "case": "polygon-kingfisher-expanded-budget",
+  "caseSha256": "d51f18761a12d84f16c6b747851b49c8eb17e8cf1d53285f2473446a13d5e8d9",
+  "backend": "http://127.0.0.1:18902",
+  "initialRunId": "1ab14ada-6394-4112-a580-0a8d5fa519e3",
+  "settings": {
+    "preset": "detailed",
+    "model": "deepseek-flash",
+    "reasoning": "high",
+    "language": "zh-CN",
+    "goalMode": false,
+    "maxSteps": 48,
+    "maxRunTokens": 8000000,
+    "maxRunSeconds": 7200,
+    "maxOutputTokens": 393216,
+    "cacheGuard": "strict",
+    "sendImages": true,
+    "detailInstructions": ""
+  },
+  "versions": {
+    "software": {
+      "apiVersion": "mf-http/2",
+      "name": "MorphForge",
+      "version": "0.13.0"
+    },
+    "tools": "morphforge-tools/4.0",
+    "prompt": "morphforge-system/5.0",
+    "language": "zh-CN",
+    "schemaSha256": "74abf24a8abd5eeb13379e4610ee06ed9a54838eb92c286d3838e999b50d5f9c"
+  },
+  "actions": [],
+  "success": true,
+  "requireCacheHit": true,
+  "lifetimeTokenLimit": 8600000,
+  "checks": {
+    "runCompleted": true,
+    "allActionsExercised": true,
+    "nonemptyScene": true,
+    "objectCapacity": true,
+    "triangleCapacity": true,
+    "boxCapacity": true,
+    "modelUsedVisualFeedback": true,
+    "modelCommitted": true,
+    "modelSavedArtwork": true,
+    "oscRemainsDisabled": true,
+    "noCacheAlert": true,
+    "geometryRevisedAfterVisualFeedback": true,
+    "vrcCoordinateRange": true,
+    "usesTriangleBackend": true,
+    "savedArtworkHasActualViews": true
+  },
+  "run": {
+    "activeRequestId": null,
+    "epoch": 1,
+    "error": "",
+    "finishedAt": "2026-10-20T08:59:40.082Z",
+    "id": "1ab14ada-6394-4112-a580-0a8d5fa519e3",
+    "language": "zh-CN",
+    "message": "纯三角形网格翠鸟站在不规则河石上，0 Box、1134 面（鸟 932、石 154、水 48），MF6 坐标内（约 62×65×72 格）。\n\n全部几何由持久源码 main.js 参数化生成（截面放样、棱柱、锥顶收尾、逐面纯色，同组内按索引共享顶点）；喙朝 +Z 并整体偏转 16° 稍向 +X。\n\n拓扑：源码内置「按坐标焊接统计边」审计，strict 模式不闭合即报错。修掉初版 3 条开放边与 16 条非流形边的真实成因——体部端环过小导致取整重合、退化面被剔除留孔；四趾同点出发且 y 跨度相同导致共柱共边。现为 0 开放边 / 0 非流形边 / 0 退化面。诚实说明：鸟体是多个各自闭合、互相穿插的独立壳体，不共享顶点，未做并集焊接。\n\n美术：多轮侧视/正交/局部复核后改窄喙、露出下颌白喉、上提橙胸并分区、翼羽三层上移露出橙腹、眼后浅斑贴面、缩短腿并整体下沉贴近石面；趾在特写中与石顶接触（趾底潜在石面下 0.5–1 格）。简化项：无细横斑、上下喙合为一体、趾为棱柱、尾未逐根分离、水面为低面浅盘+3 条短涟漪。未连接或发送 OSC，未载入任何作品。",
+    "prompt": "延续先前《溪石上的翠鸟》的纯三角面验证。累计预算现放宽到800万Token、48步、2小时，单次输出上限384K；不要为耗尽预算添加内容。此前你因预算停止，未看到最终第三版截图或自动保存，由验收者手动归档。先get_context确认revision和几何状态。最终离线拓扑诊断：1135面、0Box；同组相同坐标焊接后593个顶点，退化面0、绕序冲突0，但3条开放边、16条非流形边。请读现有源码，以代码诊断定位问题，修复真正开放边与不必要共面的退化接触；重叠独立壳体请诚实区分，不要把双面渲染当作闭合修复。可以在源码中实现按位置统计边以验证，避免浮点到整数舍入造成薄片消失。检查脚与腹部连接、橙胸和白喉、头身和翼羽的流线轮廓，不要加不必要装饰。保持真正逐面纯色三角网格，0Box，最多3500面，MF6坐标。主动用侧面/局部相机，至少一次几何修正后截图复核；最终hero/front/top必须对应最后revision，实际看过后finish_artwork自动提交入库，summary/goalAssessment诚实说明拓扑与美术局限。不要载入其他作品或发送OSC。源码修改用file.hash，不是sourceHash；优先精确patch。不要长篇规划，完成满足验收的作品即可结束。",
+    "promptVersion": "morphforge-system/5.0",
+    "startedAt": "2026-10-20T08:53:38.768Z",
+    "status": "completed",
+    "steps": 16,
+    "tokens": 2857320,
+    "toolsVersion": "morphforge-tools/4.0"
+  },
+  "interaction": {
+    "activeRequestId": null,
+    "activeSecondsRemaining": null,
+    "epoch": 1,
+    "paused": false,
+    "phase": "completed",
+    "queue": [],
+    "runId": "1ab14ada-6394-4112-a580-0a8d5fa519e3"
+  },
+  "scene": {
+    "revision": 7,
+    "boxes": 0,
+    "triangles": 1134,
+    "objects": 1134,
+    "styles": 0,
+    "groups": [
+      "kingfisher-bird",
+      "kingfisher-rock",
+      "kingfisher-water"
+    ]
+  },
+  "triangleTopology": {
+    "method": "equal_position_weld_per_group",
+    "uniqueVertices": 618,
+    "degenerateFaces": 0,
+    "boundaryEdges": 0,
+    "nonmanifoldEdges": 0,
+    "inconsistentWindingEdges": 0
+  },
+  "eventCounts": {
+    "harness.started": 1,
+    "harness.message.accepted": 1,
+    "harness.message.applied": 1,
+    "harness.request.prepared": 16,
+    "provider.request": 16,
+    "provider.attempt": 16,
+    "provider.first_byte": 16,
+    "provider.reasoning_delta": 324,
+    "provider.response": 16,
+    "cache.guard.status": 16,
+    "tool.request": 16,
+    "tool.result": 16,
+    "provider.text_delta": 460,
+    "source.changed": 5,
+    "geometry.applied": 4,
+    "recipe.completed": 4,
+    "capture.completed": 4,
+    "artwork.reference_sources": 2,
+    "revision.committed": 2,
+    "artwork.saved": 1,
+    "harness.finished": 1
+  },
+  "toolCalls": 16,
+  "usage": {
+    "prefixDenominator": "cache_reported_input_tokens",
+    "run": {
+      "cacheReportedInputTokens": 2780453,
+      "cacheReportedRequests": 16,
+      "cachedInputTokens": 2734976,
+      "inputTokens": 2780453,
+      "outputTokens": 76867,
+      "prefixHitRate": 0.9836440321055597,
+      "reportedRequests": 16,
+      "requests": 16,
+      "totalTokens": 2857320,
+      "unreportedRequests": 0
+    },
+    "scope": "workspace",
+    "source": "upstream_reported_usage",
+    "total": {
+      "cacheReportedInputTokens": 3277254,
+      "cacheReportedRequests": 25,
+      "cachedInputTokens": 3174784,
+      "inputTokens": 3277254,
+      "outputTokens": 145701,
+      "prefixHitRate": 0.9687329697362487,
+      "reportedRequests": 25,
+      "requests": 25,
+      "totalTokens": 3422955,
+      "unreportedRequests": 0
+    }
+  },
+  "visualContext": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "referenceImages": [],
+  "toolNames": {
+    "get_context": 1,
+    "recipe_sources": 12,
+    "capture_views": 1,
+    "finish_artwork": 2
+  },
+  "toolErrors": [
+    {
+      "name": "recipe_sources",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "RECIPE_ERROR: Error: TOPOLOGY bird:v472,f892,open0,nonman13,deg0 | rock:v79,f154,open0,nonman0,deg0 | water:v32,f48,open0,nonman0,deg0 || birdN8@2/22/0|2/24/0 birdN6@2/24/0|4/24/-1 birdN6@2/22/0|4/22/-1 birdN6@4/22/-1|4/24/-1"
+        },
+        "ok": false
+      }
+    },
+    {
+      "name": "recipe_sources",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "PATCH_MATCH：find匹配0处；需要唯一匹配或明确all=true"
+        },
+        "ok": false
+      }
+    },
+    {
+      "name": "recipe_sources",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "每次截图需要1至5个不同视角"
+        },
+        "ok": false
+      }
+    },
+    {
+      "name": "finish_artwork",
+      "result": {
+        "error": {
+          "code": "TOOL_ERROR",
+          "message": "作品图片artifact不存在"
+        },
+        "ok": false
+      }
+    }
+  ],
+  "images": [
+    {
+      "view": "hero",
+      "file": "hero.png",
+      "sha256": "57df9cd429f193e3f12c3bad6aba4ba6fe7d31d7005a610b4917bedef21f3736"
+    },
+    {
+      "view": "front",
+      "file": "front.png",
+      "sha256": "257bfe8c5dbfbb99a43c4d3893bbd81f40a10e6c2cdcde3103cb350d979fe92e"
+    },
+    {
+      "view": "top",
+      "file": "top.png",
+      "sha256": "3d6fa900f88b268303b1a1121802d9e172c21038498e6388e11d6e540915fe5d"
+    }
+  ],
+  "seconds": 365.2724699047394,
+  "cacheMonitor": {
+    "alert": null,
+    "cacheReportedRequests": 5,
+    "cacheRequired": true,
+    "clientPrefixIsNotCacheHit": true,
+    "lastCachedTokens": 216064,
+    "lastHitRate": 0.9990105327402695,
+    "lastInputTokens": 216278,
+    "mode": "strict",
+    "prefix": {
+      "appendOnly": true,
+      "contextEpoch": 0,
+      "currentMessages": 80,
+      "expectedReset": false,
+      "field": "input",
+      "firstChangedMessage": null,
+      "previousMessages": 76,
+      "reason": "append_only",
+      "resetAuthorization": null,
+      "scope": "wire_messages",
+      "sharedMessages": 76,
+      "staticPrefixUnchanged": true
+    },
+    "recentHitRate": 0.9859960323211305,
+    "requests": 25,
+    "source": "upstream_usage",
+    "status": "observing",
+    "windowRequests": 5
+  }
+}

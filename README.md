@@ -84,13 +84,13 @@ GitHub公开仓库：`chiro2001/MorphForge`，默认分支`main`，开发分支�
 
 [用法、素材出处与许可](docs/references/README.md)。复杂角色的比例、遮挡与配色仍需人工复核，参考图片不等于自动重建保证。
 
-已支持精确RGB色板，缺少颜色时由模型创建并保存。普通请求只追加内容，system保持稳定，旧截图清理移到compact边界。下面是2026-10-20使用真实DeepSeek-V4.1-Flash看图生成的红顶小屋：162 Box，包含截图后的实际几何修改。参考图为项目原创；最终截图来自工作台实际渲染。
+已支持精确RGB色板，缺少颜色时由模型创建并保存。普通请求只追加内容，system保持稳定，旧截图清理移到compact边界。下面是2026-10-20使用真实DeepSeek-V4.1-Flash看图生成的红顶小屋：184 Box，包含截图后的实际几何修改和自动保存。参考图为项目原创；最终截图来自工作台实际渲染。
 
 ![真实DeepSeek看图复刻的红顶小屋](docs/media/reference-cottage.webp)
 
-小屋生成阶段上游实际缓存命中率95.56%。建模与视觉修改完成，但初次及收尾续作均被累计预算保护停止，最终由验收者检查截图后手动归档；不将手动保存计为模型自动完成。屋顶、烟囱和门窗比例仍是近似。[参考图、用量及完整验证记录](docs/mf6-real/RESULTS.md) · [可导入作品JSON](docs/mf6-real/reference/finish-artwork.json)。
+放宽评测预算后，小屋新增12个模型响应、约105万累计Token，上游实际输入缓存命中96.94%，已自动复核、提交并保存，全部评测项通过。屋顶、烟囱和门窗比例仍是近似。[预算扩展后的验证记录](docs/mf6-real/expanded-budget/RESULTS.md) · [可导入作品JSON](docs/mf6-real/expanded-budget/reference/artwork.json) · [首轮预算不足的原始记录](docs/mf6-real/RESULTS.md)。
 
-同轮还验证了[纯三角面翠鸟](docs/mf6-real/RESULTS.md)：模型生成并修改三版，最终1,135面、0 Box。实际缓存命中88.87%；自动收尾与闭合拓扑仍有未通过项，原始失败记录和实际截图一起保留。
+同轮还验证了[纯三角面翠鸟](docs/mf6-real/expanded-budget/RESULTS.md)：续作最终1,134面、0 Box，模型自动复核并保存；实际输入缓存命中98.36%，开放边、非流形边、退化面与共享边绕序冲突均为0。作品仍由多个闭合壳体构成，未做布尔并集；首轮失败与续作的实际记录均保留。
 
 ## 创作速度与精度
 

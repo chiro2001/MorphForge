@@ -1,0 +1,25 @@
+{
+  "id": "polygon-kingfisher-expanded-budget",
+  "geometry": "triangles",
+  "settings": {
+    "preset": "detailed",
+    "model": "deepseek-flash",
+    "reasoning": "high",
+    "language": "zh-CN",
+    "goalMode": false,
+    "maxSteps": 48,
+    "maxRunTokens": 8000000,
+    "maxRunSeconds": 7200,
+    "maxOutputTokens": 393216,
+    "cacheGuard": "strict",
+    "sendImages": true,
+    "detailInstructions": ""
+  },
+  "maxObjects": 3500,
+  "maxTriangles": 3500,
+  "targetVrc": true,
+  "requireVisualIteration": true,
+  "requireSavedViews": true,
+  "prompt": "延续先前《溪石上的翠鸟》的纯三角面验证。累计预算现放宽到800万Token、48步、2小时，单次输出上限384K；不要为耗尽预算添加内容。此前你因预算停止，未看到最终第三版截图或自动保存，由验收者手动归档。先get_context确认revision和几何状态。最终离线拓扑诊断：1135面、0Box；同组相同坐标焊接后593个顶点，退化面0、绕序冲突0，但3条开放边、16条非流形边。请读现有源码，以代码诊断定位问题，修复真正开放边与不必要共面的退化接触；重叠独立壳体请诚实区分，不要把双面渲染当作闭合修复。可以在源码中实现按位置统计边以验证，避免浮点到整数舍入造成薄片消失。检查脚与腹部连接、橙胸和白喉、头身和翼羽的流线轮廓，不要加不必要装饰。保持真正逐面纯色三角网格，0Box，最多3500面，MF6坐标。主动用侧面/局部相机，至少一次几何修正后截图复核；最终hero/front/top必须对应最后revision，实际看过后finish_artwork自动提交入库，summary/goalAssessment诚实说明拓扑与美术局限。不要载入其他作品或发送OSC。源码修改用file.hash，不是sourceHash；优先精确patch。不要长篇规划，完成满足验收的作品即可结束。",
+  "continue": true
+}
