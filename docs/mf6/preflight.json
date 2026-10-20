@@ -1,11 +1,11 @@
 {
   "success": true,
-  "targetAvatarId": "",
+  "targetAvatarId": "avtr_9ebb3bdb-6991-42cd-8c3e-b9a35f176e90",
   "scene": "Assets/MorphForge/MF6/MorphForge_MF6.unity",
   "stores": 8,
   "editableCapacity": 16384,
   "physicalCapacity": 16448,
   "catalogStyles": 544,
-  "dependencyHash": "dad1f8d16ec7ac7877d6feb0b8d21a6e",
-  "timeUtc": "2026-10-20T07:27:46.7747551Z"
+  "dependencyHash": "13a6d5c4e84c417bb87fff07ccd77d2e",
+  "timeUtc": "2026-10-20T08:15:07.6056940Z"
 }

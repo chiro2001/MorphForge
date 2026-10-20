@@ -38,6 +38,10 @@
       "passed": true
     },
     {
+      "name": "bundled MF6 preset selects the unified protocol with OSC off",
+      "passed": true
+    },
+    {
       "name": "free-view screenshot pipeline includes polygon geometry",
       "passed": true
     },

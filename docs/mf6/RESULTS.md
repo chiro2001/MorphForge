@@ -1,6 +1,6 @@
-# MF6 验证记录（进行中）
+# MF6 0.13 交付与验证记录
 
-2026-10-20，0.11 已部署到 gamepc 独立 Preview。后续阶段继续推进，不创建 GitHub Release。
+2026-10-20，本轮范围已完成。0.11、0.12、0.13分阶段构建并安装到gamepc独立Preview；最终为0.13.0，用户旧窗口与原验收版保留。本轮没有创建GitHub Release，也没有付费模型请求。
 
 ## 已通过
 
@@ -12,8 +12,8 @@
 | 参数预算 | 240几何＋14定位＝254bit，37个同步参数。共享解码器22层、1697状态，构建后FX约102层。`final-budget.json`、`prepared.json` |
 | 三角面显示 | 实际生产粒子Renderer正/背/斜视通过，非C#注入Mesh或粒子；最终8角点方案及近距离全画面覆盖已复核。`native-visual.json` |
 | Rust回归 | 最终一轮完整工作区207项通过；包括删除帧丢失恢复、ID复用及Minecraft集成测试 |
-| 前端回归 | 44项Node测试通过；真实Chromium三角面编辑13项、Minecraft上传／预览／应用／撤销与斜面10项通过 |
-| Windows交付 | 0.11.0、0.12.0 Rust MSVC与Tauri/NSIS构建完成；0.12完整Windows测试及打包程序10项验收通过，独立不可变Preview安装成功。`preview-v011.json`、`preview-v012.json`、`windows-v012.json` |
+| 前端回归 | 44项Node测试通过；真实Chromium编辑与MF6入口14项、Minecraft上传／预览／应用／撤销与斜面10项，以及材质／单面性152项像素检查通过。`browser-mesh.json`、`browser-minecraft.json`、`browser-materials.json` |
+| Windows交付 | 0.11.0、0.12.0、0.13.0 Rust MSVC与Tauri/NSIS构建完成；0.12完整Windows测试通过，0.13新增入口回归与打包程序11项验收通过。`preview-v011.json`、`preview-v012.json`、`preview-v013.json`、`windows-v013.json` |
 
 实际原生路径：Rust codec OSC bundle → UDP9012 → GestureManager → 统一240bit解码器 → 8独立原生出生池。未使用SetParticles、Emit或运行时几何注入替代Avatar能力。
 
@@ -29,9 +29,20 @@
 - 初次材质复制仍指向旧Shader；MF6明确改用扩展后的MetadataGrid。
 - 有限出生寿命`524288+8×ID`允许0.0625秒级浮点偏差；验证恢复后的ID与24bit顶点字，不能要求寿命浮点值逐值相等。
 
-## 仍需完成
+## 配套头像与渲染
 
 - MF6私有头像已上传为v3，generic／standard／security三项均已终态通过，评级VeryPoor。`analysis.json`。SDK首次上传的版权弹窗按现有自有内容上传授权通过标准UI确认，未修改SDK包。
-- 新目录24种贴图朝向×6面×2种定位状态，以及4种重复比例，292项实际GPU像素检查通过。`catalog-gpu.json`。待最终0.13入口、安装与文档收尾。
+- 新目录24种贴图朝向×6面×2种定位状态，以及4种重复比例，292项实际GPU像素检查通过。`catalog-gpu.json`。原生单面正面46217像素／背面0像素、三角面定位旋转与缩放亦通过。`native-single-visual.json`、`native-transformed-visual.json`。
+
+## 交付范围以外的限制
+
 - 真实VRChat多人及后来者尚未验证。OSC无远端ACK；本地发送完成不代表远端已收到，维护补播只能逐渐修复。
 - Minecraft复杂自定义elements/CTM/自定义Shader等没有完整模拟；不支持的形状和材质会报告并近似。Bedrock与完整世界目录未纳入本轮。
+
+## 开始验收
+
+重开桌面“MorphForge - 开发测试副本”，版本应为0.13.0。Avatar选择私有“**MorphForge MF6 16K**”（v3，`avtr_9ebb3bdb-6991-42cd-8c3e-b9a35f176e90`），在VRC发布页点击“使用配套MF6 16K头像目录”；使用Unity9012或VRChat9000，默认250ms。加载目录不会开启OSC。
+
+左侧提供多边形／斜面及Minecraft建筑导入。Harness工具版本为4.0，旧对话需要显式升级或新开，不能静默改写前缀。作品库继续保存体素与三角面并支持撤销；新外部图片需要更新头像目录。
+
+Unity最终停在Edit Mode的单Avatar MF6场景；原MF5头像与场景保留。没有向真实VRChat9000发测试数据，没有自动切换用户当前Avatar。

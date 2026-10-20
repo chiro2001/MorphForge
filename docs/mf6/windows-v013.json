@@ -1,0 +1,302 @@
+{
+  "success": true,
+  "scope": "Packaged Windows core and recipe worker, real loopback UDP, Minecraft import. Isolated data, no paid model or VRChat traffic.",
+  "checks": [
+    {
+      "name": "QA uses a fresh workspace",
+      "passed": true
+    },
+    {
+      "name": "packaged core version and OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "mesh and Minecraft tools are embedded",
+      "passed": true
+    },
+    {
+      "name": "packaged recipe subprocess creates indexed RGB mesh",
+      "passed": true
+    },
+    {
+      "name": "expanded original builtin catalog exported",
+      "passed": true
+    },
+    {
+      "name": "bundled MF6 directory loads with OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "real UDP contains the unified 29-byte payload and control",
+      "passed": true
+    },
+    {
+      "name": "empty target retains and replays both deletion types",
+      "passed": true
+    },
+    {
+      "name": "Minecraft preview leaves the Windows draft unchanged",
+      "passed": true
+    },
+    {
+      "name": "Minecraft compiled geometry and source survive apply",
+      "passed": true
+    },
+    {
+      "name": "Minecraft apply is undoable on Windows",
+      "passed": true
+    }
+  ],
+  "error": null,
+  "finalState": {
+    "canRedo": true,
+    "canUndo": true,
+    "capture": {
+      "browserPid": null
+    },
+    "commits": [
+      {
+        "createdAt": "2026-10-20T08:18:24.557Z",
+        "id": "b2d08827-888c-4ca6-93a7-7a948464f4d6",
+        "revision": 2,
+        "sceneHash": "b19908a00b79d0f319ecfa6ebe55bb3cb039d1945316ea57206c43d8ae7e9ea7",
+        "title": "手动发布"
+      },
+      {
+        "createdAt": "2026-10-20T08:18:26.48Z",
+        "id": "0edeff4f-b55b-49cf-b642-2cfcd5675824",
+        "revision": 3,
+        "sceneHash": "f1fb98c4f9ac1047f8780d1a80b6b6561da2caf6509fa309207a3a979a2acb58",
+        "title": "手动发布"
+      }
+    ],
+    "connection": {
+      "ack": false,
+      "auto": false,
+      "capacity": 16384,
+      "desiredRevision": 3,
+      "enabled": false,
+      "error": "",
+      "estimateKind": "adaptive-layout estimate; no receiver acknowledgement",
+      "etaSeconds": 0.25,
+      "interval": 0.25,
+      "loopReplay": true,
+      "pending": 1,
+      "pendingObjects": 2,
+      "placement": {
+        "level": true,
+        "scale": 0.05000000074505806,
+        "visible": true,
+        "world": true
+      },
+      "port": 58048,
+      "profile": "mf6",
+      "refreshSeconds": 0,
+      "repairDeletions": [
+        1,
+        2
+      ],
+      "repairing": true,
+      "replayCycles": 3,
+      "sendOrder": "volume",
+      "sending": false,
+      "sentCommands": 15,
+      "sentRevision": null,
+      "syncedBits": 240
+    },
+    "eventSeq": 34,
+    "harness": {
+      "cacheMonitor": {
+        "alert": null,
+        "cacheReportedRequests": 0,
+        "cacheRequired": false,
+        "clientPrefixIsNotCacheHit": true,
+        "lastCachedTokens": null,
+        "lastHitRate": null,
+        "lastInputTokens": null,
+        "mode": "",
+        "prefix": null,
+        "recentHitRate": null,
+        "requests": 0,
+        "source": "upstream_usage",
+        "status": "warming",
+        "windowRequests": 0
+      },
+      "context": {
+        "compactCount": 0,
+        "createdAt": "2026-10-20T08:18:23.906Z",
+        "currentTools": "morphforge-tools/4.0",
+        "estimatedTokens": 0,
+        "goal": null,
+        "goals": [],
+        "id": "77951050-b68a-4bb0-858a-727424684052",
+        "messages": 0,
+        "referenceImages": [],
+        "schemaTools": "morphforge-tools/4.0",
+        "schemaUpgradeRequired": false,
+        "summary": "",
+        "title": ""
+      },
+      "interaction": {
+        "activeRequestId": null,
+        "activeSecondsRemaining": null,
+        "epoch": 0,
+        "paused": false,
+        "phase": "idle",
+        "queue": [],
+        "runId": null
+      },
+      "modelLimits": {
+        "advertised": {
+          "contextWindow": null,
+          "maxOutputTokens": null
+        },
+        "effectiveContextWindow": 1048576,
+        "effectiveOutputCeiling": 393216,
+        "model": "deepseek-flash",
+        "source": "configured"
+      },
+      "paused": false,
+      "provider": {
+        "apiType": "responses",
+        "baseUrl": "https://api.deepseek.com",
+        "chatTokenField": "max_tokens",
+        "configured": false,
+        "fileUpload": false,
+        "imageDelivery": "inline",
+        "interface": "responses",
+        "keyConfigured": false,
+        "requiresApiKey": true,
+        "sendReasoning": true,
+        "stream": true,
+        "supportsFileUpload": true
+      },
+      "queued": [],
+      "run": null,
+      "settings": {
+        "autoCompact": true,
+        "budgetDefaultsVersion": 1,
+        "cacheGuard": "auto",
+        "compactTokens": 900000,
+        "contextWindowTokens": 1048576,
+        "detailInstructions": "",
+        "goalCriteria": "",
+        "goalMaxContinuations": 6,
+        "goalMinReviewRounds": 1,
+        "goalMode": false,
+        "language": "zh-CN",
+        "maxOutputTokens": 393216,
+        "maxRunSeconds": 7200,
+        "maxRunTokens": 8000000,
+        "maxSteps": 24,
+        "model": "deepseek-flash",
+        "preset": "standard",
+        "reasoning": "high",
+        "sendImages": true,
+        "uploadImages": true
+      },
+      "usage": {
+        "prefixDenominator": "cache_reported_input_tokens",
+        "run": null,
+        "scope": "workspace",
+        "source": "upstream_reported_usage",
+        "total": {
+          "cacheReportedInputTokens": 0,
+          "cacheReportedRequests": 0,
+          "cachedInputTokens": 0,
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "prefixHitRate": null,
+          "reportedRequests": 0,
+          "requests": 0,
+          "totalTokens": 0,
+          "unreportedRequests": 0
+        }
+      }
+    },
+    "materialCompatibility": {
+      "details": [],
+      "differentIds": [],
+      "fingerprint": "33583a986db763350aed4a323dc2475c5c14fcbd8dfb364286620983d01abae0",
+      "matched": true,
+      "missingIds": [],
+      "note": "MF5：纯色、PBR、程序化材质实时发送；内置贴图按身份映射，不依赖作品编号。新图片贴图需重新打包。",
+      "remappedIds": [],
+      "remoteVerified": false,
+      "runtimeIds": [],
+      "runtimeMaterials": true,
+      "status": "matched",
+      "surfaceMasks": true,
+      "targetStyles": 544,
+      "usedStyles": 0
+    },
+    "project": {
+      "autoCenterOnFinish": false,
+      "cellSize": 0.25,
+      "id": "e22586cb-c43b-4e38-8b5d-11a59bd68614",
+      "modelingStyle": "mixed",
+      "name": "未命名作品",
+      "pinnedNotes": "",
+      "protectedGroups": [],
+      "size": 256
+    },
+    "revision": 5,
+    "software": {
+      "apiVersion": "mf-http/2",
+      "name": "MorphForge",
+      "version": "0.13.0"
+    },
+    "stats": {
+      "bounds": null,
+      "boxCount": 0,
+      "groups": {},
+      "objectCount": 0,
+      "styleIds": [],
+      "targetBoxes": 16384,
+      "triangleCount": 0,
+      "voxelCount": 0,
+      "warnings": []
+    },
+    "targetCompatibility": {
+      "bounds": null,
+      "boxCount": 0,
+      "canCenterToFit": true,
+      "capacity": 16384,
+      "centerOffset": [
+        0,
+        0,
+        0
+      ],
+      "coordinateSpace": "signed integer grid; Box max bounds exclusive, triangle vertex max inclusive",
+      "extent": [
+        0,
+        0,
+        0
+      ],
+      "fits": true,
+      "invalidStyleIds": [],
+      "note": "X/Z允许负数；显示缩放不会扩大256³编码范围。",
+      "objectCount": 0,
+      "outOfBoundsCount": 0,
+      "outOfBoundsGroups": [],
+      "outOfBoundsTriangleCount": 0,
+      "targetMax": [
+        128,
+        256,
+        128
+      ],
+      "targetMin": [
+        -128,
+        0,
+        -128
+      ],
+      "triangleCount": 0,
+      "triangleVertexMax": [
+        127,
+        255,
+        127
+      ]
+    }
+  },
+  "finishedAt": "2026-10-20T08:18:28.3234081+00:00"
+}

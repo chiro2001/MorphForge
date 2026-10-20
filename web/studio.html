@@ -446,7 +446,7 @@ mf.group('main', () => {
             <button id="vrcPort">VRChat 9000</button>
           </div>
           <label
-            >目标Box容量<input
+            >目标对象容量（Box＋面）<input
               id="targetCapacity"
               type="number"
               value="16384"
@@ -479,6 +479,7 @@ mf.group('main', () => {
           <button id="avatarCatalogImport" class="wide">导入目标 Avatar 材质目录</button>
           <input id="avatarCatalogFile" type="file" accept=".json,.zip" hidden />
           <div id="materialCompatibility" class="status"></div>
+          <button id="avatarCatalogMf6" class="wide">使用配套 MF6 16K 头像目录</button>
           <button id="avatarCatalogBundled" class="wide">使用配套 MF5 0.9 头像目录</button>
           <button id="avatarCatalogMf4" class="wide">使用旧版 MF4 目录</button>
           <button id="avatarCatalogClear" class="wide">清除目标目录声明</button>

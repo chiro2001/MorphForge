@@ -1252,6 +1252,7 @@ $("pixelThemeClose").onclick=()=>$("pixelThemeDialog").close();
 $("applyPixelTheme").onclick=async()=>{try{const result=await api("harness/tool",{name:"builtin_materials",arguments:{action:"apply",id:$("pixelThemeChoice").value,baseRevision:state.revision,replaceBaseMaterials:$("pixelThemeReplace").checked}});await refresh(true);$("pixelThemeDialog").close();toast(`像素主题已加入 · 新增${result.materialsAdded}种材质`);}catch(cause){error(cause);}};
 $("avatarCatalogImport").onclick=()=>$("avatarCatalogFile").click();
 $("avatarCatalogFile").onchange=async(event)=>{try{const file=event.target.files[0];if(!file)return;const form=new FormData();form.append("file",file);const r=await fetch("/api/vrc/profile/import",{method:"POST",body:form});const value=await r.json();if(!r.ok)throw new Error(value.error);await refresh();toast(value.matched?"目标目录与已用材质匹配":"已记录目标目录，存在材质差异");}catch(cause){error(cause);}event.target.value="";};
+$("avatarCatalogMf6").onclick=async()=>{try{await api("vrc/profile",{action:"bundled_mf6"});await api("connect",{profile:"mf6",enabled:false,scale:Math.min(.5,Math.max(.0005,state.connection.placement.scale))});await refresh(true);toast("已载入 MF6 16K 目录并选择统一240bit协议，发送保持关闭");}catch(cause){error(cause);}};
 $("avatarCatalogBundled").onclick=async()=>{try{await api("vrc/profile",{action:"bundled_mf5"});await api("connect",{profile:"mf5",enabled:false,scale:Math.min(.5,Math.max(.0005,state.connection.placement.scale))});await refresh(true);toast("已载入MF5目录；请使用配套MF5头像");}catch(cause){error(cause);}};
 $("avatarCatalogMf4").onclick=async()=>{try{await api("vrc/profile",{action:"bundled_mf4"});await api("connect",{profile:"mf4",enabled:false,scale:Math.max(.05,state.connection.placement.scale)});await refresh(true);}catch(cause){error(cause);}};
 $("avatarCatalogClear").onclick=async()=>{try{await api("vrc/profile",{action:"clear"});await refresh();}catch(cause){error(cause);}};
@@ -1880,7 +1881,7 @@ async function library() {
     const info = document.createElement("p");
     const load = document.createElement("button");
     name.textContent = artwork.title;
-    info.textContent = `${artwork.origin === "builtin" ? "内置示例" : "我的作品"} · ${fmt(artwork.boxCount)} Box · ${fmt(artwork.voxelCount)} 格`;
+    info.textContent = `${artwork.origin === "builtin" ? "内置示例" : "我的作品"} · ${fmt(artwork.boxCount)} Box · ${fmt(artwork.triangleCount||0)} 面 · ${fmt(artwork.voxelCount)} 格`;
     load.textContent =
       artwork.origin === "builtin" ? "载入可编辑副本" : "载入并继续";
     body.append(name, info);

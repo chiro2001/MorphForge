@@ -1,0 +1,48 @@
+{
+  "success": true,
+  "diagnosticBoundsOverride": false,
+  "checks": [
+    {
+      "view": "front",
+      "visiblePixels": 46205,
+      "passed": true
+    },
+    {
+      "view": "back",
+      "visiblePixels": 46205,
+      "passed": true
+    },
+    {
+      "view": "hero",
+      "visiblePixels": 39334,
+      "passed": true
+    },
+    {
+      "view": "close",
+      "visiblePixels": 262144,
+      "passed": true
+    }
+  ],
+  "nativeCount": 9,
+  "lossyScale": [
+    0.0150000034,
+    0.0150000034,
+    0.0150000025
+  ],
+  "localToWorld": "0.01189\t0.00125\t0.00906\t0.00000\n0.00245\t0.01388\t-0.00513\t2.17014\n-0.00881\t0.00554\t0.01080\t0.34208\n0.00000\t0.00000\t0.00000\t1.00000\n",
+  "rendererBounds": {
+    "center": [
+      -0.05509957,
+      1.55936575,
+      0.09812111
+    ],
+    "size": [
+      1.88725734,
+      2.939205,
+      2.50142026
+    ]
+  },
+  "scope": "Actual production particle renderer after native Animator birth; native invisible bounds carrier, no transient bounds override. No MeshRenderer stand-in or particle injection.",
+  "singleSided": false,
+  "transformed": true
+}

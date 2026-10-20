@@ -135,6 +135,26 @@ async fn http_upload_preview_harness_apply_original_and_invalid_upload() {
     let router = app.router();
     let server = tokio::spawn(async move { axum::serve(listener, router).await.unwrap() });
     let c = reqwest::Client::new();
+    let profile = c
+        .post(format!("{base}/api/vrc/profile"))
+        .json(&json!({"action":"bundled_mf6"}))
+        .send()
+        .await
+        .unwrap();
+    assert!(profile.status().is_success());
+    assert!(app
+        .transport
+        .inner
+        .lock()
+        .unwrap()
+        .avatar_catalog
+        .as_ref()
+        .unwrap()
+        .unified_protocol());
+    assert!(
+        !app.transport.config().enabled,
+        "choosing a catalog must not enable OSC"
+    );
     let bytes = structure();
     let part = reqwest::multipart::Part::bytes(bytes.clone()).file_name("two.nbt");
     let response = c

@@ -1,0 +1,1955 @@
+{
+  "checks": [
+    {
+      "code": 0,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        206,
+        37,
+        38,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 0,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        177,
+        31,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 0,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        45,
+        46,
+        255,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 0,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        153,
+        154,
+        25,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 0,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        39,
+        226,
+        232,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 0,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        29,
+        186,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 1,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        206,
+        37,
+        218,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 1,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        177,
+        186,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 1,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        45,
+        46,
+        255,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 1,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        153,
+        154,
+        25,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 1,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        222,
+        40,
+        42,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 1,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        177,
+        31,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 2,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        36,
+        211,
+        38,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 2,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        29,
+        31,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 2,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        45,
+        46,
+        255,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 2,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        153,
+        154,
+        25,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 2,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        222,
+        40,
+        232,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 2,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        177,
+        186,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 3,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        36,
+        211,
+        218,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 3,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        29,
+        186,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 3,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        45,
+        46,
+        255,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 3,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        153,
+        154,
+        25,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 3,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        39,
+        226,
+        42,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 3,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        29,
+        31,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 4,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        206,
+        211,
+        38,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 4,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        29,
+        186,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 4,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        246,
+        46,
+        48,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 4,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        24,
+        154,
+        25,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 4,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        39,
+        226,
+        232,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 4,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        29,
+        186,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 5,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        206,
+        37,
+        218,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 5,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        177,
+        186,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 5,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        246,
+        46,
+        48,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 5,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        24,
+        154,
+        25,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 5,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        222,
+        226,
+        42,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 5,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        29,
+        186,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 6,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        36,
+        37,
+        218,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 6,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        177,
+        31,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 6,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        246,
+        46,
+        48,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 6,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        24,
+        154,
+        25,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 6,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        222,
+        40,
+        232,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 6,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        177,
+        186,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 7,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        36,
+        211,
+        218,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 7,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        29,
+        186,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 7,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        246,
+        46,
+        48,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 7,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        24,
+        154,
+        25,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 7,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        39,
+        40,
+        232,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 7,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        177,
+        31,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 8,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        206,
+        37,
+        38,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 8,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        177,
+        31,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 8,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        246,
+        46,
+        255,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 8,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        24,
+        154,
+        159,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 8,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        39,
+        40,
+        232,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 8,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        177,
+        31,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 9,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        206,
+        211,
+        38,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 9,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        29,
+        186,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 9,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        246,
+        46,
+        255,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 9,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        24,
+        154,
+        159,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 9,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        222,
+        40,
+        42,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 9,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        177,
+        31,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 10,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        36,
+        211,
+        38,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 10,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        29,
+        31,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 10,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        246,
+        46,
+        255,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 10,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        24,
+        154,
+        159,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 10,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        222,
+        226,
+        42,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 10,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        29,
+        186,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 11,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        36,
+        37,
+        218,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 11,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        177,
+        31,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 11,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        246,
+        46,
+        255,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 11,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        24,
+        154,
+        159,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 11,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        39,
+        226,
+        42,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 11,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        29,
+        31,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 12,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        206,
+        37,
+        38,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 12,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        177,
+        31,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 12,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        45,
+        253,
+        255,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 12,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        153,
+        24,
+        159,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 12,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        222,
+        226,
+        42,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 12,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        29,
+        186,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 13,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        36,
+        37,
+        218,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 13,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        177,
+        31,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 13,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        45,
+        253,
+        255,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 13,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        153,
+        24,
+        159,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 13,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        222,
+        40,
+        42,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 13,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        177,
+        31,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 14,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        36,
+        211,
+        38,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 14,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        29,
+        31,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 14,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        45,
+        253,
+        255,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 14,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        153,
+        24,
+        159,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 14,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        39,
+        40,
+        232,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 14,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        177,
+        31,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 15,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        206,
+        211,
+        38,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 15,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        29,
+        186,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 15,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        45,
+        253,
+        255,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 15,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        153,
+        24,
+        159,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 15,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        39,
+        226,
+        42,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 15,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        29,
+        31,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 16,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        36,
+        211,
+        38,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 16,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        29,
+        31,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 16,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        246,
+        253,
+        48,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 16,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        24,
+        24,
+        159,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 16,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        39,
+        226,
+        232,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 16,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        29,
+        186,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 17,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        206,
+        37,
+        218,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 17,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        177,
+        186,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 17,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        246,
+        253,
+        48,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 17,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        24,
+        24,
+        159,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 17,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        39,
+        226,
+        42,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 17,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        29,
+        31,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 18,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        206,
+        37,
+        38,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 18,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        177,
+        31,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 18,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        246,
+        253,
+        48,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 18,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        24,
+        24,
+        159,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 18,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        222,
+        40,
+        232,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 18,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        177,
+        186,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 19,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        36,
+        211,
+        218,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 19,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        29,
+        186,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 19,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        246,
+        253,
+        48,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 19,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        24,
+        24,
+        159,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 19,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        222,
+        40,
+        42,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 19,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        177,
+        31,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 20,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        36,
+        37,
+        218,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 20,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        177,
+        31,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 20,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        45,
+        253,
+        48,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 20,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        153,
+        24,
+        25,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 20,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        39,
+        226,
+        232,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 20,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        29,
+        186,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 21,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        206,
+        37,
+        218,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 21,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        177,
+        186,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 21,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        45,
+        253,
+        48,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 21,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        153,
+        24,
+        25,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 21,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        39,
+        40,
+        232,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 21,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        177,
+        31,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 22,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        206,
+        211,
+        38,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 22,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        29,
+        186,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "code": 22,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        45,
+        253,
+        48,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 22,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        153,
+        24,
+        25,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 22,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        222,
+        40,
+        232,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 22,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        177,
+        186,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 23,
+      "face": 0,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        36,
+        211,
+        218,
+        255
+      ],
+      "source": 4
+    },
+    {
+      "code": 23,
+      "face": 1,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        171,
+        29,
+        186,
+        255
+      ],
+      "source": 5
+    },
+    {
+      "code": 23,
+      "face": 2,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        45,
+        253,
+        48,
+        255
+      ],
+      "source": 1
+    },
+    {
+      "code": 23,
+      "face": 3,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        153,
+        24,
+        25,
+        255
+      ],
+      "source": 0
+    },
+    {
+      "code": 23,
+      "face": 4,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        222,
+        226,
+        42,
+        255
+      ],
+      "source": 3
+    },
+    {
+      "code": 23,
+      "face": 5,
+      "kind": "face",
+      "passed": true,
+      "pixel": [
+        28,
+        29,
+        186,
+        255
+      ],
+      "source": 2
+    },
+    {
+      "expected": 1,
+      "kind": "repeat",
+      "passed": true,
+      "scale": 0,
+      "transitions": 1
+    },
+    {
+      "expected": 15,
+      "kind": "repeat",
+      "passed": true,
+      "scale": 1,
+      "transitions": 15
+    },
+    {
+      "expected": 3,
+      "kind": "repeat",
+      "passed": true,
+      "scale": 4,
+      "transitions": 3
+    },
+    {
+      "expected": 1,
+      "kind": "repeat",
+      "passed": true,
+      "scale": 8,
+      "transitions": 1
+    },
+    {
+      "doubleSided": false,
+      "face": 4,
+      "kind": "triangle",
+      "passed": true,
+      "pixel": [
+        245,
+        176,
+        40,
+        255
+      ]
+    },
+    {
+      "doubleSided": false,
+      "face": 5,
+      "kind": "triangle",
+      "passed": true,
+      "pixel": [
+        16,
+        25,
+        35,
+        255
+      ]
+    },
+    {
+      "doubleSided": true,
+      "face": 4,
+      "kind": "triangle",
+      "passed": true,
+      "pixel": [
+        245,
+        176,
+        40,
+        255
+      ]
+    },
+    {
+      "doubleSided": true,
+      "face": 5,
+      "kind": "triangle",
+      "passed": true,
+      "pixel": [
+        245,
+        176,
+        40,
+        255
+      ]
+    }
+  ],
+  "scope": "Actual production WebGL shader, original six-face textures, 24 proper quaternion frames, tiling and single/double-sided RGB faces; no model calls or OSC.",
+  "success": true,
+  "browserErrors": []
+}

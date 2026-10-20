@@ -275,6 +275,9 @@ async fn avatar_profile(State(a): State<App>, Json(v): Json<Value>) -> ApiResult
     let w = a.workspace.lock().unwrap();
     let catalog = match v["action"].as_str() {
         Some("clear") => None,
+        Some("bundled_mf6") => Some(crate::target::AvatarCatalog::from_bytes(include_bytes!(
+            "../../../materials/mf6/catalog.json"
+        ))?),
         Some("bundled_mf5") => Some(crate::target::AvatarCatalog::from_bytes(include_bytes!(
             "../../../materials/mf5/catalog.json"
         ))?),
@@ -282,7 +285,7 @@ async fn avatar_profile(State(a): State<App>, Json(v): Json<Value>) -> ApiResult
             "../../../materials/mf4/catalog.json"
         ))?),
         _ => {
-            bail_api("请选择清除、配套MF4目录，或通过文件导入目录")?;
+            bail_api("请选择配套MF6/MF5/MF4目录、清除，或通过文件导入目录")?;
             None
         }
     };

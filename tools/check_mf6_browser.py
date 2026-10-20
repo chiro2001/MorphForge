@@ -23,6 +23,7 @@ def main():
   check('selected face translates with its stable ID',api('scene')['scene']['triangles'][0]['vertices'][0]==[-5,2,-1]);b.click('undo');b.wait('return window.__morphforge.renderer.triangles[0]?.vertices[0][0]===-8',15);check('undo restores triangle vertices',True)
   b.click('meshWedge');b.wait('return window.__morphforge.state.stats.triangleCount===9',20);check('slope tool creates closed eight-face prism',len(api('scene')['scene']['triangles'])==9)
   b.js('document.getElementById("modelingStyle").value="lowpoly";document.getElementById("modelingStyle").dispatchEvent(new Event("change"));');b.wait('return window.__morphforge.state.project.modelingStyle==="lowpoly"',15);check('modeling style is persisted for the harness',api('state')['project']['modelingStyle']=='lowpoly')
+  b.js('document.querySelector("[data-tab=sync]").click()');b.click('avatarCatalogMf6');b.wait('return window.__morphforge.state.connection.profile==="mf6"',15);check('bundled MF6 preset selects the unified protocol with OSC off',api('state')['connection']['profile']=='mf6' and not api('state')['connection']['enabled'])
   b.js('window.__morphforge.renderer.view("hero")');b.screenshot(a.out/'mesh-editor.png')
   images=b.js('return window.__morphforge.renderer.capture(["front","hero","top"],384,320)')
   for image in images:(a.out/('mesh-'+image['view']+'.png')).write_bytes(base64.b64decode(image['data'].split(',',1)[1]))

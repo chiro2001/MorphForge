@@ -1,0 +1,30 @@
+{
+  "success": true,
+  "date": "2026-10-20",
+  "version": "0.13.0",
+  "rustFull": 207,
+  "rustFinalCatalogRegression": 3,
+  "node": 44,
+  "browserEditor": 14,
+  "browserMinecraft": 10,
+  "browserMaterialPixels": 152,
+  "nativeMaterialPixels": 292,
+  "nativeSingleFaceViews": 4,
+  "nativeTransformedFaceViews": 4,
+  "nativeUnifiedFrames": 177,
+  "nativeRandomFrames": 129,
+  "nativeCapacityFrames": 2049,
+  "nativeCapacityObjects": 16384,
+  "windowsPackagedChecks": 11,
+  "avatarAnalysis": {
+    "generic": true,
+    "standard": true,
+    "security": true,
+    "version": 3,
+    "rating": "VeryPoor"
+  },
+  "paidModelCalls": 0,
+  "realVrchatOscPackets": 0,
+  "multiplayerVerified": false,
+  "githubReleaseCreated": false
+}

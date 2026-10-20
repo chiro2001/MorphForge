@@ -1,5 +1,5 @@
 #requires -Version 7.0
-param([Parameter(Mandatory)][string]$PackageDir,[Parameter(Mandatory)][string]$ValidationRoot,[Parameter(Mandatory)][string]$CatalogPath,[string]$ExpectedVersion='0.12.0')
+param([Parameter(Mandatory)][string]$PackageDir,[Parameter(Mandatory)][string]$ValidationRoot,[Parameter(Mandatory)][string]$CatalogPath,[string]$ExpectedVersion='0.13.0')
 $ErrorActionPreference='Stop'
 Set-StrictMode -Version Latest
 $checks=[Collections.Generic.List[object]]::new();$core=$null;$udp=$null;$base=$null
@@ -20,6 +20,7 @@ try{
  $zip=Join-Path $ValidationRoot 'builtin-catalog.zip';Invoke-WebRequest ($base+'/api/vrc/catalog?builtinMinecraft=true') -OutFile $zip -NoProxy
  Add-Type -AssemblyName System.IO.Compression.FileSystem;$archive=[IO.Compression.ZipFile]::OpenRead($zip);try{$reader=[IO.StreamReader]::new($archive.GetEntry('catalog.json').Open());try{$catalog=$reader.ReadToEnd()|ConvertFrom-Json}finally{$reader.Dispose()}}finally{$archive.Dispose()}
  Check 'expanded original builtin catalog exported' ($catalog.materials.Count-ge 500)
+ $null=Api 'vrc/profile' @{action='bundled_mf6'};Check 'bundled MF6 directory loads with OSC disabled' (-not (Api 'state').connection.enabled)
  $null=Invoke-RestMethod ($base+'/api/vrc/profile/import') -Method Post -Form @{file=(Get-Item -LiteralPath $CatalogPath)} -NoProxy
  $udp=[Net.Sockets.UdpClient]::new(0);$udp.Client.ReceiveTimeout=1000;$oscPort=([Net.IPEndPoint]$udp.Client.LocalEndPoint).Port
  $null=Api 'connect' @{profile='mf6';enabled=$true;port=$oscPort;interval=.25;capacity=16384;loopReplay=$true;auto=$false}

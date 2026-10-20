@@ -1,6 +1,6 @@
-# 私有源码仓库与可复现克隆
+# 源码仓库与可复现克隆
 
-GitHub仓库：`chiro2001/MorphForge`，可见性为private。默认分支`main`，保留开发分支
+GitHub仓库：`chiro2001/MorphForge`，可见性为public。默认分支`main`，保留开发分支
 `feat/harness-interaction-and-voxel-text`、基线标签和全部阶段提交。
 
 ```powershell
