@@ -1,0 +1,139 @@
+{
+  "success": true,
+  "apiType": "responses",
+  "checks": [
+    {
+      "name": "isolated project ID and patched version",
+      "passed": true
+    },
+    {
+      "name": "OSC remains disabled",
+      "passed": true
+    },
+    {
+      "name": "request 1 calibrates from upstream input",
+      "passed": true
+    },
+    {
+      "name": "request 1 uses upstream window",
+      "passed": true
+    },
+    {
+      "name": "request 1 displays k and percent beside composer",
+      "passed": true
+    },
+    {
+      "name": "request 2 calibrates from upstream input",
+      "passed": true
+    },
+    {
+      "name": "request 2 uses upstream window",
+      "passed": true
+    },
+    {
+      "name": "request 2 displays k and percent beside composer",
+      "passed": true
+    },
+    {
+      "name": "current context differs from accumulated billing",
+      "passed": true
+    },
+    {
+      "name": "actual HTTP request input remains append only",
+      "passed": true
+    },
+    {
+      "name": "static instructions and tools remain unchanged",
+      "passed": true
+    },
+    {
+      "name": "context accounting metadata never enters wire requests",
+      "passed": true
+    },
+    {
+      "name": "strict cache checks remain enabled without alert",
+      "passed": true
+    },
+    {
+      "name": "compact discards prior input calibration",
+      "passed": true
+    },
+    {
+      "name": "MF6 repair is queued without clear or OSC",
+      "passed": true
+    },
+    {
+      "name": "no unhandled UI errors",
+      "passed": true
+    }
+  ],
+  "meters": [
+    {
+      "estimated": true,
+      "historyTokensEstimate": 521,
+      "lastMeasuredAt": "2026-10-20T18:28:15.706Z",
+      "note": "当前会话输入上下文估算，含系统说明与工具。以上次上游输入usage校准并估算新增历史；图片和tokenizer可能影响精度。不是累计计费用量，也不把尚未生成的输出预算计作已用。",
+      "remainingTokens": 374945,
+      "source": "upstream_input_plus_estimated_growth",
+      "upstreamInputTokens": 125000,
+      "usedPercent": 25.011,
+      "usedTokens": 125055,
+      "windowTokens": 500000
+    },
+    {
+      "estimated": true,
+      "historyTokensEstimate": 782,
+      "lastMeasuredAt": "2026-10-20T18:28:16.474Z",
+      "note": "当前会话输入上下文估算，含系统说明与工具。以上次上游输入usage校准并估算新增历史；图片和tokenizer可能影响精度。不是累计计费用量，也不把尚未生成的输出预算计作已用。",
+      "remainingTokens": 249945,
+      "source": "upstream_input_plus_estimated_growth",
+      "upstreamInputTokens": 250000,
+      "usedPercent": 50.011,
+      "usedTokens": 250055,
+      "windowTokens": 500000
+    }
+  ],
+  "connection": {
+    "ack": false,
+    "auto": false,
+    "baselineKind": "local_udp_sent",
+    "capacity": 16384,
+    "desiredRevision": 0,
+    "enabled": false,
+    "error": "",
+    "estimateKind": "adaptive-layout estimate; no receiver acknowledgement",
+    "etaSeconds": 0,
+    "interval": 0.25,
+    "loopReplay": false,
+    "pending": 0,
+    "pendingObjects": 0,
+    "placement": {
+      "level": true,
+      "scale": 0.05000000074505806,
+      "visible": true,
+      "world": true
+    },
+    "port": 9012,
+    "profile": "mf6",
+    "refreshSeconds": 0,
+    "remoteAcknowledged": false,
+    "repairDeletions": [
+      0,
+      0
+    ],
+    "repairing": true,
+    "replayCycles": 0,
+    "sendOrder": "volume",
+    "sending": false,
+    "sentCommands": 0,
+    "sentObjects": {
+      "boxes": 0,
+      "triangles": 0
+    },
+    "sentRevision": null,
+    "syncedBits": 240
+  },
+  "requestCount": 3,
+  "realModelRequests": 0,
+  "scope": "Actual Windows Tauri/WebView2 controls and loopback HTTP fixture. Synthetic usage, no upstream billing/cache claims, OSC disabled."
+}

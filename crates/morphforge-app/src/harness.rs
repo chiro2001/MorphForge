@@ -16,6 +16,8 @@ use std::{
     time::Duration,
 };
 mod context;
+mod context_usage;
+pub use context_usage::ContextUsageAnchor;
 mod goal;
 pub(crate) mod lifecycle;
 mod palette;
@@ -84,6 +86,12 @@ pub struct Conversation {
     pub runtime_context: Value,
     #[serde(default)]
     pub requested_input_length: usize,
+    #[serde(
+        default,
+        skip_serializing_if = "Option::is_none",
+        deserialize_with = "context_usage::decode_anchor"
+    )]
+    pub context_usage: Option<ContextUsageAnchor>,
 }
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -317,10 +325,19 @@ impl Harness {
                 .map(|deadline| deadline.saturating_duration_since(tokio::time::Instant::now()))
         }
         .map(|remaining| remaining.as_secs_f64());
+        let model_limits = self.provider.limits_status(&s.settings);
+        let usage_meter = context_usage::meter(
+            &s.conversation,
+            &s.settings,
+            &context_usage::provider_scope(&self.provider.connection()),
+            model_limits["effectiveContextWindow"]
+                .as_u64()
+                .unwrap_or(s.settings.context_window_tokens as u64) as usize,
+        );
         json!({
             "settings":s.settings,
             "provider":self.provider.status(),
-            "modelLimits":self.provider.limits_status(&s.settings),
+            "modelLimits":model_limits,
             "usage":self.provider.usage(s.run.as_ref().map(|run|run.id.as_str())),
             "run":s.run,
             "paused":s.paused,
@@ -337,7 +354,8 @@ impl Harness {
             },
             "context":{
                 "id":s.conversation.id,"title":s.conversation.title,"createdAt":s.conversation.created_at,"schemaUpgradeRequired":Self::schema_upgrade_required(&s.conversation),"schemaTools":s.conversation.schema_tools,"currentTools":TOOL_SCHEMA_VERSION,
-                "estimatedTokens":estimate(&s.conversation.input),
+                "estimatedTokens":usage_meter["historyTokensEstimate"],
+                "usage":usage_meter,
                 "messages":s.conversation.input.len(),
                 "compactCount":s.conversation.compact_count,
                 "summary":s.conversation.summary,
@@ -1326,6 +1344,7 @@ impl Harness {
                 omit_images(&mut delivery_input);
             }
             let request_id = uuid::Uuid::new_v4().to_string();
+            let requested_history_tokens = estimate(&delivery_input);
             let payload = json!({
                 "model":settings.model,
                 "instructions":system,
@@ -1335,7 +1354,7 @@ impl Harness {
                 "max_output_tokens":effective_output_tokens,
                 "stream":true
             });
-            {
+            let usage_scope = {
                 let mut state = self.inner.lock().unwrap();
                 if state
                     .run
@@ -1396,7 +1415,12 @@ impl Harness {
                         "referenceImages":state.conversation.reference_images,
                     }),
                 )?;
-            }
+                context_usage::scope(
+                    &state.conversation,
+                    &settings,
+                    &context_usage::provider_scope(&self.provider.connection()),
+                )
+            };
             let trace = ProviderRequestTrace {
                 request_id: Some(request_id.clone()),
                 prompt_version: Some(SYSTEM_PROMPT_VERSION.into()),
@@ -1450,6 +1474,19 @@ impl Harness {
                 estimate
             });
             self.record_request_attempt(&guard, &request_id, usage);
+            if let Some(input_tokens) = response["usage"]["input_tokens"].as_u64() {
+                let mut state = self.inner.lock().unwrap();
+                if guard_matches_locked(&state, &guard) {
+                    state.conversation.context_usage = Some(ContextUsageAnchor {
+                        request_id: request_id.clone(),
+                        scope: usage_scope,
+                        input_tokens,
+                        history_messages: requested_input_length,
+                        history_tokens_estimate: requested_history_tokens,
+                        measured_at: now(),
+                    });
+                }
+            }
 
             if response["status"] == "incomplete" {
                 let reason = response["incomplete_details"]["reason"]
@@ -2904,6 +2941,7 @@ impl Harness {
                 state.conversation.reference_snapshot = None;
                 state.conversation.runtime_context = Value::Null;
                 state.conversation.requested_input_length = 0;
+                state.conversation.context_usage = None;
                 state.conversation.compact_count += 1;
                 state.conversation.boundaries = vec![state.conversation.input.len()];
                 let mut workspace = self.workspace.lock().unwrap();

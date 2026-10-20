@@ -22,6 +22,18 @@ export function usageDisplay(usage = {}) {
   };
 }
 
+export function contextUsageDisplay(meter = {}) {
+  const used=meter.usedTokens,window=meter.windowTokens;
+  if(!Number.isFinite(used)||used<0||!Number.isFinite(window)||window<=0)
+    return {text:"上下文 —",title:"尚无有效上下文窗口信息。",level:"unknown"};
+  const percent=used/window*100,calibrated=meter.source==="upstream_input_plus_estimated_growth";
+  return {
+    text:`上下文 ≈${(used/1000).toFixed(1)}k / ${(window/1000).toFixed(1)}k · ${percent.toFixed(1)}%`,
+    title:`当前会话上下文约 ${count(used)} / ${count(window)} Token，1k=1000 Token。${calibrated?`以上次上游输入 ${count(meter.upstreamInputTokens)} Token 校准，并估算此后新增历史。`:"当前为本地估算，含系统说明、工具及消息；尚无适用的上游输入校准。"}图片和tokenizer可能影响精度；生成中的输出在完整响应后更新。窗口采用配置与上游限制的较小值。不是累计计费用量，不把预留的最大输出当作已用上下文。`,
+    level:percent>=100?"over":percent>=90?"near":"normal",
+  };
+}
+
 export function supportsFileUpload(base, api) {
   try {
     const url = new URL(base);

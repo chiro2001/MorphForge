@@ -43,6 +43,7 @@ pub enum Action {
         id: u64,
     },
     ReplayBoxRemove {
+        pool: u8,
         key: GeometryKey,
     },
     ReplayTriangleRemove {
@@ -62,9 +63,11 @@ pub struct Session {
     triangles: BTreeMap<u64, LiveTriangle>,
     replay: Option<BTreeSet<Object>>,
     turn: u64,
-    box_tombstones: BTreeMap<GeometryKey, LiveBox>,
+    // A retired geometry can still exist in several native pools after lost
+    // erases and subsequent pool reassignment. Keep every physical deletion.
+    box_tombstones: BTreeMap<(u8, GeometryKey), LiveBox>,
     triangle_tombstones: BTreeSet<u16>,
-    replayed_box_deletions: BTreeSet<GeometryKey>,
+    replayed_box_deletions: BTreeSet<(u8, GeometryKey)>,
     replayed_triangle_deletions: BTreeSet<u16>,
 }
 impl Session {
@@ -241,7 +244,10 @@ impl Session {
                         pool: b.pool,
                         geometry: Geometry::from_box(&b.value)?,
                     });
-                    actions.push(Action::ReplayBoxRemove { key: *key });
+                    actions.push(Action::ReplayBoxRemove {
+                        pool: key.0,
+                        key: key.1,
+                    });
                     if records.len() == 4 {
                         break;
                     }
@@ -583,7 +589,7 @@ impl Session {
                 }
                 Action::BoxRemove { key } => {
                     if let Some(old) = self.boxes.remove(key) {
-                        self.box_tombstones.insert(*key, old);
+                        self.box_tombstones.insert((old.pool, *key), old);
                         if self.box_tombstones.len() > 32768 {
                             self.box_tombstones.pop_first();
                         }
@@ -607,8 +613,8 @@ impl Session {
                         self.triangle_tombstones.insert(old.wire_id);
                     }
                 }
-                Action::ReplayBoxRemove { key } => {
-                    self.replayed_box_deletions.insert(*key);
+                Action::ReplayBoxRemove { pool, key } => {
+                    self.replayed_box_deletions.insert((*pool, *key));
                 }
                 Action::ReplayTriangleRemove { wire_id } => {
                     self.replayed_triangle_deletions.insert(*wire_id);
@@ -668,6 +674,141 @@ mod tests {
             s.commit(&plan);
         }
         panic!("planner did not converge")
+    }
+
+    // Mirrors native center-based replacement inside each physical pool. The
+    // input is round-tripped wire frames, never the planner's Action ledger.
+    #[derive(Default)]
+    struct BoxReceiver(BTreeMap<(u8, [u16; 3]), (Geometry, Surface)>);
+    impl BoxReceiver {
+        fn apply(&mut self, frame: &Frame) {
+            let center = |g: &Geometry| {
+                std::array::from_fn(|a| 2 * g.min[a] as u16 + g.extent[a] as u16 + 1)
+            };
+            let wire = frame.encode(0).unwrap();
+            match Frame::decode(&wire).unwrap().1 {
+                Frame::Voxels { records }
+                | Frame::SharedBoxes { records }
+                | Frame::Boxes { records, .. } => {
+                    for r in records {
+                        self.0
+                            .insert((r.pool, center(&r.geometry)), (r.geometry, r.surface));
+                    }
+                }
+                Frame::RemoveBoxes { records } => {
+                    for r in records {
+                        self.0.remove(&(r.pool, center(&r.geometry)));
+                    }
+                }
+                Frame::Clear => self.0.clear(),
+                _ => panic!("Box fixture received a different primitive"),
+            }
+        }
+        fn contents(&self) -> Vec<([u8; 3], [u8; 3], Surface)> {
+            let mut values = self
+                .0
+                .values()
+                .map(|(g, s)| (g.min, g.extent, *s))
+                .collect::<Vec<_>>();
+            values.sort();
+            values
+        }
+    }
+
+    #[test]
+    fn partial_publish_uses_sent_objects_even_when_a_new_target_skips_the_draft() {
+        let mut s = Session::default();
+        let mut receiver = BoxReceiver::default();
+        let a = Scene {
+            boxes: (0..4)
+                .map(|i| Box3::new([i * 3, 0, 0], [1; 3], 1))
+                .collect(),
+            ..Default::default()
+        };
+        s.set_target(&a, &BTreeMap::new()).unwrap();
+        for frame in drain(&mut s) {
+            receiver.apply(&frame);
+        }
+        let b = Scene {
+            boxes: vec![
+                Box3::new([0, 0, 0], [1; 3], 2),
+                Box3::new([3, 0, 0], [1; 3], 2),
+                a.boxes[2].clone(),
+                Box3::new([12, 0, 0], [1; 3], 2),
+            ],
+            ..Default::default()
+        };
+        s.set_target(&b, &BTreeMap::new()).unwrap();
+        let first = s.next("volume").unwrap().unwrap();
+        assert!(matches!(first.frame, Frame::RemoveBoxes { .. }));
+        receiver.apply(&first.frame);
+        s.commit(&first);
+        // B's new color at x=0 was desired but never emitted. C requests the
+        // same color: diffing B rather than the sent ledger would miss it.
+        let c = Scene {
+            boxes: vec![
+                b.boxes[0].clone(),
+                a.boxes[2].clone(),
+                Box3::new([15, 0, 0], [1; 3], 3),
+            ],
+            ..Default::default()
+        };
+        s.set_target(&c, &BTreeMap::new()).unwrap();
+        for frame in drain(&mut s) {
+            receiver.apply(&frame);
+        }
+        let mut expected = Session::default();
+        let mut fresh = BoxReceiver::default();
+        expected.set_target(&c, &BTreeMap::new()).unwrap();
+        for frame in drain(&mut expected) {
+            fresh.apply(&frame);
+        }
+        assert_eq!(receiver.contents(), fresh.contents());
+        assert_eq!(s.pending_objects(), 0);
+    }
+
+    #[test]
+    fn replay_keeps_both_erasures_when_the_same_geometry_moves_between_pools() {
+        let a = Box3::new([0, 0, 0], [1; 3], 1);
+        let b = Box3::new([10, 0, 0], [1; 3], 1);
+        let mut s = Session::default();
+        let mut receiver = BoxReceiver::default();
+        for boxes in [
+            vec![a.clone()],
+            vec![b.clone()],
+            vec![a, b.clone()],
+            vec![b.clone()],
+        ] {
+            s.set_target(
+                &Scene {
+                    boxes,
+                    ..Default::default()
+                },
+                &BTreeMap::new(),
+            )
+            .unwrap();
+            // Lose every initial erase while still committing successful local
+            // UDP writes. A is born in pool 0, then pool 1 after B takes pool 0.
+            for frame in drain(&mut s) {
+                if !matches!(frame, Frame::RemoveBoxes { .. }) {
+                    receiver.apply(&frame);
+                }
+            }
+        }
+        assert_eq!(
+            receiver.0.len(),
+            3,
+            "receiver retained both physical copies of A"
+        );
+        s.start_replay();
+        for frame in drain(&mut s) {
+            receiver.apply(&frame);
+        }
+        assert_eq!(receiver.0.len(), 1, "repair must erase A from both pools");
+        assert_eq!(
+            receiver.0.values().next().unwrap().0,
+            Geometry::from_box(&b).unwrap()
+        );
     }
     #[test]
     fn compression_replay_and_deletion_barrier_converge() {

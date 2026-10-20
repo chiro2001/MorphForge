@@ -226,7 +226,7 @@ impl Provider {
                 prefix::PrefixTracker::default()
             })),
             guard: Arc::new(Mutex::new(guard::CacheGuard::load(root)?)),
-            limits: Arc::new(Mutex::new(limits::LimitCache::default())),
+            limits: Arc::new(Mutex::new(limits::LimitCache::load(root))),
             file_path,
         })
     }
@@ -405,6 +405,10 @@ impl Provider {
             cache.connection = connection.identity();
             cache.attempted = true;
             cache.models = limits::parse_models(&value);
+            // Optional advisory cache; failing to persist it must not turn a
+            // successful provider capability response into an API failure.
+            let _ =
+                crate::store::write_json(&self.root.join("provider-model-limits.json"), &*cache);
         }
         Ok(value)
     }

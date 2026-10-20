@@ -35,3 +35,4 @@ provider-connection.*.tmp
 # Local cache diagnostics contain connection fingerprints and conversation state.
 provider-prefix.json
 cache-monitor.json
+provider-model-limits.json

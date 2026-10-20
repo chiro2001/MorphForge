@@ -948,6 +948,7 @@ body.capture-mode .view-toolbar {
 .api-usage span {
   cursor: help;
 }
+#usageContext[data-level="near"],#usageContext[data-level="over"]{color:var(--danger);}
 .usage-run {
   font-size: 10px;
   text-align: right;

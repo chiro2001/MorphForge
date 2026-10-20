@@ -1,0 +1,31 @@
+{
+  "checks": [
+    {
+      "closed": true,
+      "mode": "responses",
+      "alreadyClosed": true
+    },
+    {
+      "closed": true,
+      "projectId": "d0a54f25-9398-4496-8361-10bc4ef095c3",
+      "mode": "chat",
+      "oscDisabled": true
+    }
+  ],
+  "success": true,
+  "main": {
+    "shellHash": "cb3a793d983da00fae46a7b329ec138f8dabdc0ed29d3763dca32664b3023094",
+    "coreHash": "d15a43299e438413259a8f837741ccca90356433b8bcdd849d6562c88fe270fb",
+    "processes": [
+      {
+        "Id": 210184,
+        "Path": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Desktop\\morphforge.exe"
+      },
+      {
+        "Id": 201512,
+        "Path": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Desktop\\morphforge-desktop.exe"
+      }
+    ]
+  },
+  "temporaryProcesses": []
+}

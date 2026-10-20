@@ -5,7 +5,7 @@ import { ActivityView } from "/activity-ui.js";
 import { setupDesktopMenus } from "/desktop-menu.js";
 import { TimelineView } from "/timeline-ui.js";
 import { ReferencePicker } from "/reference-ui.js";
-import { usageDisplay, supportsFileUpload } from "/usage-ui.js";
+import { usageDisplay, contextUsageDisplay, supportsFileUpload } from "/usage-ui.js";
 import { VoxelRenderer } from "/renderer.js";
 import { setupMinecraftUi } from "/minecraft-ui.js";
 import { setupMeshUi } from "/mesh-ui.js";
@@ -708,7 +708,8 @@ function updateState() {
       ? "发送已关闭；可继续独立创作。"
       : `本机发包中 · 无远端ACK
 ${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${["mf4","mf5","mf6"].includes(connection.profile)?" · 本体仅本地":""}
-目标 v${connection.desiredRevision} / 已发送 v${connection.sentRevision ?? "—"}
+当前目标 v${connection.desiredRevision} / 最近完整发包 v${connection.sentRevision ?? "—"}
+本机已发记录 ${fmt(connection.sentObjects?.boxes??0)} Box / ${fmt(connection.sentObjects?.triangles??0)} 面；VRC接收情况未知
 待发 ${fmt(connection.pending)} 批 · 预计 ${time(connection.etaSeconds)}
 累计 ${fmt(connection.sentCommands)} 批`);
   setChecked("world", connection.placement.world);
@@ -743,6 +744,10 @@ ${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${["mf4
   $("usagePrefix").title = usage.prefixTitle;
   $("usageRun").textContent = usage.run;
   $("usageRun").hidden = !usage.run;
+  const contextUsage=contextUsageDisplay(harness.context.usage);
+  $("usageContext").textContent=contextUsage.text;
+  $("usageContext").title=contextUsage.title;
+  $("usageContext").dataset.level=contextUsage.level;
   setChecked("sendImages", harness.settings.sendImages ?? true);
   setChecked("goalMode", harness.settings.goalMode ?? false);
   $("presetHint").textContent =
@@ -813,7 +818,7 @@ ${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${["mf4
     : "需要配置Key";
   $("providerState").classList.toggle("live", harness.provider.configured);
   $("contextStats").textContent =
-    `上下文约 ${fmt(harness.context.estimatedTokens)} Token\n` +
+    `${contextUsage.text}\n` +
     `${harness.context.messages} 条消息 · compact ${harness.context.compactCount} 次`;
   $("contextSummary").textContent = harness.context.summary || "暂无";
   syncHarness(harness);
@@ -1405,11 +1410,11 @@ $("vrcPort").onclick = () => {
 };
 $("publish").onclick = async () => {
   try {
-    await api("publish", {});
+    const queued=await api("publish", {});
     await refresh();
     toast(
-      state.connection.enabled
-        ? "版本已进入发送队列"
+      queued.enabled
+        ? queued.pending>0?"版本已进入发送队列":"当前版本与本机已发记录一致；需要补漏可使用保留显示补播"
         : "版本已准备；开启发送后执行",
     );
   } catch (cause) {

@@ -1,5 +1,5 @@
 use super::{Provider, ProviderSettings};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use std::collections::BTreeMap;
 
@@ -8,7 +8,7 @@ pub const DEFAULT_OUTPUT_TOKENS: u32 = 393_216;
 pub const DEFAULT_COMPACT_TOKENS: usize = 900_000;
 pub const DEFAULT_RUN_TOKENS: u64 = 8_000_000;
 
-#[derive(Clone, Default, Serialize)]
+#[derive(Clone, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ModelLimits {
     pub context_window: Option<usize>,
@@ -41,11 +41,23 @@ impl ModelLimits {
     }
 }
 
-#[derive(Default)]
+#[derive(Default, Serialize, Deserialize)]
+#[serde(default)]
 pub(super) struct LimitCache {
     pub connection: String,
+    // Keep known limits for the idle UI after restart, but re-read /models on
+    // the next run rather than treating persisted metadata as freshly queried.
+    #[serde(skip)]
     pub attempted: bool,
     pub models: BTreeMap<String, ModelLimits>,
+}
+impl LimitCache {
+    pub fn load(root: &std::path::Path) -> Self {
+        std::fs::read(root.join("provider-model-limits.json"))
+            .ok()
+            .and_then(|b| serde_json::from_slice(&b).ok())
+            .unwrap_or_default()
+    }
 }
 
 pub(super) fn parse_models(value: &Value) -> BTreeMap<String, ModelLimits> {
@@ -122,6 +134,26 @@ impl Provider {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn known_limits_survive_restart_but_next_discovery_is_not_skipped() {
+        let dir = tempfile::tempdir().unwrap();
+        let mut cache = LimitCache {
+            connection: "fixture".into(),
+            attempted: true,
+            ..Default::default()
+        };
+        cache.models.insert(
+            "x".into(),
+            ModelLimits {
+                context_window: Some(500000),
+                max_output_tokens: Some(8192),
+            },
+        );
+        crate::store::write_json(&dir.path().join("provider-model-limits.json"), &cache).unwrap();
+        let restored = LimitCache::load(dir.path());
+        assert_eq!(restored.models["x"].context_window, Some(500000));
+        assert!(!restored.attempted);
+    }
     #[test]
     fn upstream_limits_clip_defaults_and_preserve_available_output_headroom() {
         let settings = ProviderSettings::default();

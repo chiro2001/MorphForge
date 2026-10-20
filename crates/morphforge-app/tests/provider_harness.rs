@@ -372,6 +372,64 @@ async fn completion_reserve_uses_observed_visual_input_cost() {
 }
 
 #[tokio::test]
+async fn current_context_meter_is_calibrated_persistent_and_not_cumulative_usage() {
+    let reply = |input: u64| {
+        sse([json!({"type":"response.completed","response":{
+            "status":"completed","output":[{"type":"message","role":"assistant","content":[{"type":"output_text","text":"保留当前作品继续检查。"}]}],
+            "usage":{"input_tokens":input,"output_tokens":10,"total_tokens":input+10,"input_tokens_details":{"cached_tokens":input-1000}}
+        }})])
+    };
+    let fake = FakeResponses::start(vec![reply(125000), reply(250000)]).await;
+    *fake.state.models.lock().unwrap() =
+        json!({"data":[{"id":"deepseek-flash","context_window":500000,"max_output_tokens":8192}]});
+    let dir = TempDir::new().unwrap();
+    let w = workspace(&dir);
+    let h = harness(w.clone(), &fake.base);
+    h.configure(&json!({"autoCompact":false,"contextWindowTokens":1048576}))
+        .unwrap();
+    h.start("读取当前上下文占用").unwrap();
+    assert_eq!(terminal_run(&h).await.status, "completed");
+    let first = h.state();
+    let m = &first["context"]["usage"];
+    assert_eq!(m["upstreamInputTokens"], 125000);
+    assert_eq!(m["windowTokens"], 500000);
+    assert!(m["usedTokens"].as_u64().unwrap() >= 125000);
+    assert!(m["usedTokens"].as_u64().unwrap() < 126000);
+    h.start("接着检查，不能把两次输入计费用量相加当作上下文")
+        .unwrap();
+    assert_eq!(terminal_run(&h).await.status, "completed");
+    let state = h.state();
+    let m = &state["context"]["usage"];
+    assert_eq!(state["usage"]["total"]["inputTokens"], 375000);
+    assert_eq!(m["upstreamInputTokens"], 250000);
+    assert!(m["usedTokens"].as_u64().unwrap() < 251000);
+    assert!((50.0..50.2).contains(&m["usedPercent"].as_f64().unwrap()));
+    let requests = fake.requests();
+    let before = requests[0]["input"].as_array().unwrap();
+    let after = requests[1]["input"].as_array().unwrap();
+    assert_eq!(&after[..before.len()], before.as_slice());
+    assert!(
+        !requests[1].to_string().contains("contextUsage"),
+        "meter metadata must stay outside model history"
+    );
+    let reloaded = harness(w, &fake.base);
+    assert_eq!(
+        reloaded.state()["context"]["usage"],
+        state["context"]["usage"]
+    );
+    reloaded.configure(&json!({"model":"other-model"})).unwrap();
+    assert_eq!(
+        reloaded.state()["context"]["usage"]["source"],
+        "local_estimate"
+    );
+    assert_eq!(
+        fake.request_count(),
+        2,
+        "meter state queries never call the model"
+    );
+}
+
+#[tokio::test]
 async fn requests_preserve_historical_images_and_append_only_at_the_wire_boundary() {
     use base64::{engine::general_purpose::STANDARD, Engine};
     let fake = FakeResponses::start(vec![

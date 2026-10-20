@@ -395,6 +395,7 @@
             >
               <span id="usageTokens">API累计 0 Token</span>
               <span id="usagePrefix">Prefix 未报告</span>
+              <span id="usageContext" role="status">上下文 —</span>
             </div>
           </div>
           <div id="usageRun" class="caption usage-run" hidden></div>
@@ -605,7 +606,7 @@
             ><input id="autoPublish" type="checkbox" />编辑后自动发布</label
           >
           <div class="double">
-            <button id="publish">发布当前版本</button>
+            <button id="publish" title="发送相对本机已发记录的差异；补漏请使用保留显示补播。">增量发布当前版本</button>
             <button id="repairPublish">保留显示补播</button>
             <button id="resync">清空并重建</button>
           </div>

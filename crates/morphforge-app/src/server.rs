@@ -740,9 +740,10 @@ async fn connect(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
 }
 async fn publish(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     if v["repair"].as_bool().unwrap_or(false)
-        && (a.transport.config().profile != "mf5" || v["resync"].as_bool().unwrap_or(false))
+        && (!["mf5", "mf6"].contains(&a.transport.config().profile.as_str())
+            || v["resync"].as_bool().unwrap_or(false))
     {
-        return Err(anyhow::anyhow!("补播仅支持MF5，且不可与清空重建同时使用").into());
+        return Err(anyhow::anyhow!("补播仅支持MF5/MF6，且不可与清空重建同时使用").into());
     }
     let mut w = a.workspace.lock().unwrap();
     let rev = v["revision"].as_u64().unwrap_or(w.project.scene.revision);
