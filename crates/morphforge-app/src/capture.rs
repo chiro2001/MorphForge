@@ -72,11 +72,11 @@ impl CaptureBroker {
         let id = uuid::Uuid::new_v4().to_string();
         let value = {
             let w = workspace.lock().unwrap();
-            let rev = options
-                .get("revision")
-                .and_then(Value::as_u64)
-                .unwrap_or(w.project.scene.revision);
-            json!({"id":id,"revision":rev,"scene":w.scene_at(rev)?,"materials":w.materials_at(rev)?,"views":views,"shots":shots,"width":width,"height":height,"mode":mode,"quality":quality,"supersampling":supersampling,"voxelGrid":options["voxelGrid"].as_bool().unwrap_or(false),"surfaceCulling":options["surfaceCulling"].as_bool().unwrap_or(true),"comparison":options["comparison"],"animationClip":options["animationClip"],"animationTime":options["animationTime"],"surfaces":morphforge_core::surfaces::transparent_interfaces(&w.scene_at(rev)?,&w.materials_at(rev)?)})
+            let source=options["source"].as_str().unwrap_or("draft");
+            if !["draft","committed"].contains(&source){bail!("source须为draft/committed")}
+            let rev=if source=="committed" {w.project.commits.last().context("没有已提交快照")?.revision} else {options["revision"].as_u64().unwrap_or(w.project.scene.revision)};
+            let (scene,inspection)=crate::inspection::apply(&w.scene_at(rev)?,&options["inspection"])?;
+            json!({"id":id,"revision":rev,"scene":scene,"source":source,"inspection":inspection,"inspectionOnly":!options["inspection"].is_null(),"materials":w.materials_at(rev)?,"views":views,"shots":shots,"width":width,"height":height,"mode":mode,"quality":quality,"supersampling":supersampling,"voxelGrid":options["voxelGrid"].as_bool().unwrap_or(false),"surfaceCulling":options["surfaceCulling"].as_bool().unwrap_or(true),"comparison":options["comparison"],"animationClip":options["animationClip"],"animationTime":options["animationTime"],"surfaces":morphforge_core::surfaces::transparent_interfaces(&scene,&w.materials_at(rev)?)})
         };
         let (tx, rx) = oneshot::channel();
         self.jobs.lock().unwrap().insert(
@@ -156,7 +156,7 @@ impl CaptureBroker {
             let name = workspace.artifact(&bytes, "png")?;
             artifacts.push(json!({"view":view,"artifact":name,"url":format!("/artifacts/{name}"),"width":job.value["width"],"height":job.value["height"],"camera":image.get("camera"),"rendering":image.get("rendering"),"comparison":job.value["comparison"],"animationTime":job.value["animationTime"]}));
         }
-        let result = json!({"ok":true,"id":id,"revision":job.value["revision"],"images":artifacts,"stats":job.value["scene"].get("boxes").and_then(Value::as_array).map(|a|json!({"boxCount":a.len()}))});
+        let result = json!({"ok":true,"id":id,"revision":job.value["revision"],"images":artifacts,"source":job.value["source"],"inspection":job.value["inspection"],"inspectionOnly":job.value["inspectionOnly"],"stats":job.value["scene"].get("boxes").and_then(Value::as_array).map(|a|json!({"boxCount":a.len()}))});
         let _ = job.tx.send(Ok(result.clone()));
         Ok(result)
     }
@@ -357,5 +357,27 @@ mod shot_tests {
         let (views,shots)=view_options(&json!({"views":["hero","front"],"shots":[{"id":"front","projection":"orthographic"},{"id":"fin","fit":{"group":"fins"}}]})).unwrap();
         assert_eq!(views, json!(["hero", "front", "fin"]));
         assert_eq!(shots.as_array().unwrap().len(), 2);
+    }
+}
+
+#[cfg(test)]
+mod inspection_capture_tests {
+    use super::*;
+    use morphforge_core::{Box3,Operation};
+    #[tokio::test]
+    async fn filtered_capture_marks_receipt_and_keeps_authoritative_geometry() {
+        let dir=tempfile::tempdir().unwrap();let mut w=Workspace::open(dir.path().into()).unwrap();
+        let mut inside=Box3::new([0,0,0],[2,2,2],1);inside.group="inside".into();
+        let mut wall=Box3::new([4,0,0],[2,2,2],1);wall.group="wall".into();
+        w.apply(&[Operation::Box{value:inside},Operation::Box{value:wall}],Some(0),Some("fixture"),None).unwrap();
+        let before=serde_json::to_value(&w.project.scene).unwrap();let workspace=Arc::new(Mutex::new(w));
+        let broker=CaptureBroker::new();let worker=broker.clone();let data=workspace.clone();
+        let task=tokio::spawn(async move{worker.request(data,&json!({"views":["front"],"inspection":{"hideGroups":["wall"]}}),None).await});
+        let job=tokio::time::timeout(Duration::from_secs(2),async{loop{let job=broker.claim();if !job.is_null(){break job}tokio::task::yield_now().await;}}).await.unwrap();
+        assert_eq!(job["scene"]["boxes"].as_array().unwrap().len(),1);
+        let reply=json!({"id":job["id"],"revision":job["revision"],"images":[{"view":"front","data":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jY8sAAAAASUVORK5CYII="}]});
+        broker.complete(&mut workspace.lock().unwrap(),&reply).unwrap();
+        let result=task.await.unwrap().unwrap();assert_eq!(result["inspectionOnly"],true);assert_eq!(result["inspection"]["visibleBoxCount"],1);
+        assert_eq!(serde_json::to_value(&workspace.lock().unwrap().project.scene).unwrap(),before);
     }
 }

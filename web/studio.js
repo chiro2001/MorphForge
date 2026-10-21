@@ -52,6 +52,7 @@ let sceneData = null;
 let loadedRevision = -1;
 let selectedStyle = 2;
 let tool = "box";
+let manualEditing=false;
 let polling = false;
 let edits = Promise.resolve();
 let connectionQueue = Promise.resolve();
@@ -400,6 +401,7 @@ function addCompletedSummary(summary) {
 function renderPending() {
   pendingMessages = dedupeMessages(pendingMessages);
   $("pendingCount").textContent = String(pendingMessages.length);
+  $("composerOptionSummary").textContent=pendingMessages.length?` · 队列${pendingMessages.length}`:"";
   $("pendingCount").classList.toggle(
     "pending",
     pendingMessages.some((message) =>
@@ -576,6 +578,7 @@ function updateHarnessControls(snapshot) {
     if (run.error) status.push(friendlyError({ message: run.error }));
   }
   $("runStatus").textContent = status.join("\n");
+  $("viewportRunStatus").textContent=status.join(" · ");
 }
 
 async function refresh(force = false) {
@@ -663,6 +666,14 @@ function updateState() {
   $("saveState").textContent = "已保存 · v" + s.revision;
   $("boxCount").textContent =
     fmt(s.stats.boxCount) + " Box · " + fmt(s.stats.triangleCount||0) + " 面 / 目标 " + fmt(s.stats.targetBoxes);
+  const usedIds=new Set((sceneData?.scene.boxes||[]).map(b=>b.styleId));
+  const usedStyles=(sceneData?.materials||[]).filter(m=>usedIds.has(m.id));
+  $("usedMaterialCount").textContent=String(usedStyles.length);
+  const materialSignature=JSON.stringify(usedStyles.map(m=>[m.id,m.color,m.name]));
+  if($("usedMaterialList").dataset.signature!==materialSignature){
+    $("usedMaterialList").dataset.signature=materialSignature;$("usedMaterialList").replaceChildren();
+    for(const m of usedStyles){const n=document.createElement("span"),swatch=document.createElement("i");n.className="used-material";swatch.style.background=`rgb(${(m.color||[.5,.5,.5]).map(v=>Math.round(v*255)).join(",")})`;n.append(swatch,document.createTextNode(m.name||String(m.id)));$("usedMaterialList").append(n);}
+  }
   $("voxelCount").textContent = fmt(s.stats.voxelCount) + " 格";
   $("bounds").textContent = s.stats.bounds
     ? "范围 " +
@@ -723,6 +734,9 @@ function updateState() {
     if(connection.enabled&&connection.pending)progressBar.removeAttribute("value");else progressBar.value=0;
     $("syncProgressLabel").textContent=connection.pending?`待发 ${fmt(connection.pending)} 批${connection.enabled?"":" · 发送关闭"}`:"尚未发布";
   }
+  $("viewportSyncProgress").value=progressBar.value;
+  $("viewportSyncLabel").textContent=$("syncProgressLabel").textContent;
+  $("viewportETA").textContent=connection.enabled&&connection.pending?`预计剩余 ${time(connection.etaSeconds)} · 本机发送`:"";
   $("syncStatus").textContent =
     connection.error ||
     (!connection.enabled
@@ -814,11 +828,16 @@ ${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${" · 
   setValue("model", harness.settings.model);
   setValue("reasoning", harness.settings.reasoning);
   setValue("cacheGuard", harness.settings.cacheGuard || "auto");
+  setChecked("strictAppendOnly", harness.settings.strictAppendOnly ?? true);
+  setChecked("enforceTargetLimits",harness.settings.enforceTargetLimits ?? true);
+  document.body.classList.toggle("ai-editing",!!harness.manualEditLocked);
+  $("manualEditToggle").disabled=!!harness.manualEditLocked;
   const monitor = harness.cacheMonitor || {};
   $("cacheMonitorStatus").textContent =
     `前缀 ${monitor.prefix?.appendOnly === false ? "发生重置/变化" : monitor.prefix?.appendOnly === true ? "保持追加" : "待观察"} · 最近缓存 ${typeof monitor.recentHitRate === "number" ? (monitor.recentHitRate * 100).toFixed(1) + "%" : "未报告"} · ${monitor.alert || (monitor.mode ? (monitor.cacheRequired ? "严格监测" : "观察模式") : "等待首次请求；保护按配置启用")}${monitor.unreportedInterruptions ? ` · ${monitor.unreportedInterruptions} 次中断未回报缓存，费用未知，未计入命中率` : ""}`;
   $("cacheMonitorStatus").classList.toggle("kind-error", !!monitor.alert);
-  $("cacheLiveStatus").textContent = $("cacheMonitorStatus").textContent;
+  $("cacheLiveStatus").textContent = monitor.alert ? "缓存告警 · 查看设置" : monitor.prefix?.appendOnly===false ? "前缀发生变化" : "";
+  $("cacheLiveStatus").title=$("cacheMonitorStatus").textContent;
   $("cacheLiveStatus").classList.toggle("kind-error", !!monitor.alert);
   $("cacheShowConfig").hidden = !monitor.alert;
   setValue("maxSteps", harness.settings.maxSteps);
@@ -849,6 +868,7 @@ ${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${" · 
 }
 
 function edit(value) {
+  if(state?.harness?.manualEditLocked){toast("AI正在修改，暂停后再手工编辑");return Promise.resolve();}
   edits = edits.then(async () => {
     try {
       const result = await api("edit", {
@@ -1040,7 +1060,7 @@ renderer.renderer.domElement.addEventListener("pointermove", (event) => {
   if (hoverFrame) return;
   hoverFrame = requestAnimationFrame(() => {
     hoverFrame = 0;
-    if (!state || loading) return;
+    if (!state || loading || !manualEditing || state.harness?.manualEditLocked) return;
     const hit = renderer.pick(lastPointer, {
       erase: tool === "erase" || lastPointer.shiftKey,
       layer: Number($("layer").value),
@@ -1061,10 +1081,10 @@ renderer.renderer.domElement.addEventListener("contextmenu", (event) =>
   event.preventDefault(),
 );
 renderer.renderer.domElement.addEventListener("pointerdown", (event) => {
-  if (event.button === 0) pointerStart = [event.clientX, event.clientY];
+  if (event.button === 0 && manualEditing && !state?.harness?.manualEditLocked && !event.altKey) pointerStart = [event.clientX, event.clientY];
 });
 renderer.renderer.domElement.addEventListener("pointerup", (event) => {
-  if (event.button !== 0 || !pointerStart || loading || renderer.animationClip) return;
+  if (event.button !== 0 || !pointerStart || loading || renderer.animationClip || !manualEditing || state?.harness?.manualEditLocked) return;
   const start = pointerStart;
   pointerStart = null;
   const distance = Math.hypot(
@@ -1527,7 +1547,7 @@ for (const [id, key] of [
     configHarness({ [key]: numeric ? Number($(id).value) : $(id).value });
   };
 }
-for (const key of ["sendImages", "goalMode"]) {
+for (const key of ["sendImages", "goalMode", "strictAppendOnly", "enforceTargetLimits"]) {
   $(key).onchange = () => configHarness({ [key]: $(key).checked });
 }
 for (const id of [
@@ -1582,7 +1602,7 @@ function backToWorkbench() {
     renderSettingsPage();
   }
 }
-$("settingsOpen").onclick = openSettings;
+$("settingsOpen").onclick = () => location.hash==="#settings"?backToWorkbench():openSettings();
 $("aiSettingsOpen").onclick = openSettings;
 $("settingsBack").onclick = backToWorkbench;
 window.addEventListener("hashchange", renderSettingsPage);
@@ -2468,3 +2488,9 @@ if (captureMode) {
   setInterval(pollEvents, 700);
   setInterval(()=>activityView.load().catch(error),1500);
 }
+
+$("manualEditToggle").onclick=()=>{manualEditing=!manualEditing;$("manualEditToggle").textContent=`手工编辑：${manualEditing?"开启":"关闭"}`;$("manualEditToggle").setAttribute("aria-pressed",String(manualEditing));renderer.ghost.visible=false;};
+const pendingFold=$("pendingMessages").closest("details");
+$("composerQueueSlot").append($("pendingMessages").parentElement);pendingFold.remove();
+$("composerOptions").prepend($("preset").closest("details"));
+for(const dialog of document.querySelectorAll("dialog"))dialog.addEventListener("click",event=>{if(event.target!==dialog)return;const rect=dialog.getBoundingClientRect();if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)dialog.close();});

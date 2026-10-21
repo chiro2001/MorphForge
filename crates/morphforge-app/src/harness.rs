@@ -25,8 +25,8 @@ mod prompts;
 mod runtime_materials;
 mod visual_context;
 pub use goal::GoalProgress;
-pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/5.1";
-pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/4.2";
+pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/5.2";
+pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/4.3";
 
 #[derive(Clone, Debug)]
 struct PendingPrompt {
@@ -341,6 +341,7 @@ impl Harness {
             "usage":self.provider.usage(s.run.as_ref().map(|run|run.id.as_str())),
             "run":s.run,
             "paused":s.paused,
+            "manualEditLocked":(is_active_phase(&s.phase) && s.phase != "paused") || s.worker_epoch.is_some(),
             "cacheMonitor":self.provider.cache_status(),
             "queued":queued_prompts,
             "interaction":{
@@ -364,6 +365,13 @@ impl Harness {
                 "referenceImages":s.conversation.reference_images
             }
         })
+    }
+    pub fn ensure_manual_edit(&self) -> Result<()> {
+        let state=self.inner.lock().unwrap();
+        if (is_active_phase(&state.phase) && state.phase != "paused") || state.worker_epoch.is_some() {
+            bail!("RUN_CONFLICT：AI正在修改，请暂停并等待当前执行结束后再手工编辑")
+        }
+        Ok(())
     }
     pub fn redact_display(&self, value: Value) -> Value {
         serde_json::from_str(&self.provider.redact(&value.to_string())).unwrap_or(Value::Null)
@@ -1431,6 +1439,7 @@ impl Harness {
                 image_policy: Some(settings.send_images),
                 compact: false,
                 cache_guard: settings.cache_guard.clone(),
+                strict_append_only: Some(settings.strict_append_only),
                 estimated_input_tokens: estimated_input_tokens_u64,
             };
             let response_result = tokio::select! {
@@ -1848,11 +1857,12 @@ impl Harness {
         self.context_with_options(&json!({}))
     }
     fn context_with_options(&self, args: &Value) -> Value {
-        let (active_goal, reference_images) = {
+        let (active_goal, reference_images, enforce_target) = {
             let state = self.inner.lock().unwrap();
             (
                 state.conversation.goal.clone(),
                 state.conversation.reference_images.clone(),
+                state.settings.enforce_target_limits,
             )
         };
         let workspace = self.workspace.lock().unwrap();
@@ -1925,6 +1935,7 @@ impl Harness {
             "revision":workspace.project.scene.revision,
             "projectId":workspace.project.id,
             "projectName":workspace.project.name,
+            "deliveryTarget":if enforce_target {"vrchat"}else{"art"},
             "modelingStyle":workspace.project.modeling_style,
             "modelingExtent":workspace.project.modeling_extent,
             "stats":stats,
@@ -1952,7 +1963,8 @@ impl Harness {
         })
     }
     pub async fn tool(&self, name: &str, args: &Value, run: Option<&str>) -> Result<Value> {
-        self.tool_inner(name, args, run, None).await
+        let result=self.tool_inner(name,args,run,None).await?;
+        Ok(self.with_resource_receipt(result))
     }
 
     async fn tool_with_guard(
@@ -1962,9 +1974,19 @@ impl Harness {
         run: Option<&str>,
         guard: RunGuard,
     ) -> Result<Value> {
-        self.tool_inner(name, args, run, Some(guard)).await
+        let result=self.tool_inner(name,args,run,Some(guard)).await?;
+        Ok(self.with_resource_receipt(result))
     }
 
+    fn with_resource_receipt(&self,mut result:Value)->Value {
+        if result.is_object() {
+            let workspace=self.workspace.lock().unwrap();
+            let capacity=self.transport.config().capacity;
+            let stats=workspace.project.scene.stats(&workspace.project.limits);
+            result["resources"]=json!({"revision":workspace.project.scene.revision,"boxCount":stats.box_count,"triangleCount":workspace.project.scene.triangles.len(),"voxelCount":stats.voxel_count,"voxelCountMeaning":"occupied Box-cell volume; triangle surfaces are counted separately","target":crate::scene_tools::target_report(&workspace.project.scene,capacity)});
+        }
+        result
+    }
     async fn tool_inner(
         &self,
         name: &str,
@@ -2307,7 +2329,7 @@ impl Harness {
                 && goal::geometry_hash(&workspace) == signature
                 && result["revision"].as_u64() == Some(workspace.project.scene.revision)
         };
-        if matches && args.get("animation").is_none() {
+        if matches && args.get("animation").is_none() && result["inspectionOnly"]!=true {
             self.record_goal_capture(&project_id, signature, &result)?;
         }
         Ok(result)
@@ -2438,7 +2460,7 @@ impl Harness {
                 run,
                 json!({"references":state.conversation.reference_images}),
             )?;
-            let result = finish_artwork_in_workspace(&mut workspace, args, title, summary, run)?;
+            let result = finish_artwork_in_workspace(&mut workspace, args, title, summary, run, state.settings.enforce_target_limits, self.transport.config().capacity)?;
             if state.settings.goal_mode {
                 if let Some(goal) = state.conversation.goal.as_mut() {
                     goal.status = "achieved".into();
@@ -2473,7 +2495,7 @@ impl Harness {
                 run,
                 json!({"references":state.conversation.reference_images}),
             )?;
-            let result = finish_artwork_in_workspace(&mut workspace, args, title, summary, run)?;
+            let result = finish_artwork_in_workspace(&mut workspace, args, title, summary, run, state.settings.enforce_target_limits, self.transport.config().capacity)?;
             if state.settings.goal_mode {
                 if let Some(goal) = state.conversation.goal.as_mut() {
                     goal.status = "achieved".into();
@@ -2865,6 +2887,7 @@ impl Harness {
                 image_policy: Some(settings.send_images),
                 compact: true,
                 cache_guard: settings.cache_guard.clone(),
+                strict_append_only: Some(settings.strict_append_only),
                 estimated_input_tokens: compact_input_estimate as u64,
             };
             let compact_estimate = estimate(std::slice::from_ref(&payload));
@@ -3179,6 +3202,7 @@ fn latest_capture_images(workspace: &Workspace) -> Option<Vec<(String, String)>>
         event.kind == "capture.completed"
             && event.data["revision"].as_u64() == Some(revision)
             && event.data["ok"] == true
+            && event.data["inspectionOnly"] != true
     })?;
     let images = event.data["images"].as_array()?;
     Some(
@@ -3299,7 +3323,13 @@ fn finish_artwork_in_workspace(
     title: &str,
     summary: &str,
     run: Option<&str>,
+    enforce_target: bool,
+    capacity: usize,
 ) -> Result<Value> {
+    if enforce_target {
+        let target=crate::scene_tools::target_report(&workspace.project.scene,capacity);
+        if target["fits"]!=true {bail!("TARGET_LIMIT：作品尚不满足VRChat空间/容量约束：{}；修正后重新截图再交付，或由用户在设置中明确选择不限制目标。",target);}
+    }
     let revision = workspace.project.scene.revision;
     if latest_capture_images(workspace).is_none_or(|images| images.is_empty()) {
         bail!("FINISH_CAPTURE_REQUIRED：请先为当前revision完成至少一个真实截图")
@@ -3556,6 +3586,8 @@ pub fn tools_for_language(language: &str) -> Value {
             descriptions[3],
             json!({
                 "revision":{"type":"integer","minimum":0},
+                "source":{"type":"string","enum":["draft","committed"],"description":"draft当前草稿/指定revision；committed最后提交快照，不代表远端接收。"},
+                "inspection":{"type":"object","description":"临时剖视/移开副本，不修改作品，也不能作为最终完整截图。hideBounds隐藏相交整个对象。","properties":{"includeGroups":{"type":"array","items":{"type":"string"}},"hideGroups":{"type":"array","items":{"type":"string"}},"hideBounds":{"type":"object","properties":{"min":{"type":"array","items":{"type":"integer"},"minItems":3,"maxItems":3},"max":{"type":"array","items":{"type":"integer"},"minItems":3,"maxItems":3}},"required":["min","max"],"additionalProperties":false},"offsets":{"type":"array","items":{"type":"object","properties":{"group":{"type":"string"},"offset":{"type":"array","items":{"type":"integer"},"minItems":3,"maxItems":3}},"required":["group","offset"],"additionalProperties":false}}},"additionalProperties":false},
                 "mode":{"type":"string","enum":["art","vrc"]},"quality":{"type":"string","enum":["standard","high"]},"supersampling":{"type":"integer","minimum":1,"maximum":3},"voxelGrid":{"type":"boolean"},"surfaceCulling":{"type":"boolean"},
                 "shots":{"type":"array","minItems":1,"maxItems":5,"description":"自由/局部取景；可与views组合，同名覆盖预设，合计最多5个视角。坐标为体素格。yaw=0从+Z看正面；pitch=0为平视。","items":{"type":"object","properties":{
                     "id":{"type":"string","pattern":"^[A-Za-z0-9_-]{1,64}$"},"projection":{"type":"string","enum":["perspective","orthographic"]},

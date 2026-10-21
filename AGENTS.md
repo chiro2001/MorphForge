@@ -8,10 +8,12 @@
 - Pipeline 复用 Roadster 的 Unity 2022 适配包，先阅读其 `Documentation~/unity2022-compatibility.md`，不能用未适配的注册表包直接覆盖。
 - 创建或修改 Unity 序列化资源通过 Pipeline；批量脚本放 `AgentScripts/`，用 `run_script` 调用。
 - Nemesis 使用用户已有资源，原模型与商业资产留在 Windows 工程，不公开发布。
-- 当前范围是 Avatar + OSC 几何显示方案；研究文档见相邻 `../vrc-ai-world/`。暂不做语音识别。
+- 当前范围是 Avatar + OSC 几何显示方案；研究文档见相邻 `../vrc-ai-world/`。2026-10-22本轮已授权实现语音识别，范围以docs/text-animation/REQUIREMENTS.md为准。
 - 不自动上传 Avatar、启动真实 VRChat 客户端或改动其他项目场景。
 
 ## 本轮已授权范围
+
+- 2026-10-22：用户要求创建持续目标并完整实现文字/语音/动画/工作台mini与悬浮窗/定位/本人预览等本轮需求；**暂不实现SteamVR HUD，不自动创建GitHub Release**。在隔离副本开展Windows Cable和GUI验证，保护用户正在运行的任务；版本可递增。
 
 - 2026-10-21用户选择并要求开始实现发布优化、Avatar能力识别、连续区域编码、多实例共享库、旧协议清理，以及闪烁修复更新到真实Avatar；包含本项目Avatar的SDK构建上传。执行ACK明确排除。原版Minecraft资源仅在gamepc私人路径使用，不放公共仓库。
 

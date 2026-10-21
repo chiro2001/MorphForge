@@ -37,3 +37,5 @@ pub mod shared_library;
 pub mod avatar_discovery;
 
 pub mod catalog_budget;
+
+pub mod inspection;

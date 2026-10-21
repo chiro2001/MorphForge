@@ -1,0 +1,73 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "isolated workspace, OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "manual tools and drawing start closed",
+      "passed": true
+    },
+    {
+      "name": "manual drawing toggle works",
+      "passed": true
+    },
+    {
+      "name": "camera hero",
+      "passed": true
+    },
+    {
+      "name": "camera front",
+      "passed": true
+    },
+    {
+      "name": "camera top",
+      "passed": true
+    },
+    {
+      "name": "camera side",
+      "passed": true
+    },
+    {
+      "name": "camera pending pan/zoom reset",
+      "passed": true
+    },
+    {
+      "name": "camera capture restore",
+      "passed": true
+    },
+    {
+      "name": "one input options fold contains type, references and queue",
+      "passed": true
+    },
+    {
+      "name": "send mode is in settings, strict prefix default enabled",
+      "passed": true
+    },
+    {
+      "name": "strict prefix setting persisted",
+      "passed": true
+    },
+    {
+      "name": "single-line stream follows right edge",
+      "passed": true
+    },
+    {
+      "name": "manual scroll detaches follow",
+      "passed": true
+    },
+    {
+      "name": "expanded stream has internal max-height and follows bottom",
+      "passed": true
+    },
+    {
+      "name": "status and materials overlays exist",
+      "passed": true
+    },
+    {
+      "name": "no JavaScript or WebGL errors",
+      "passed": true
+    }
+  ]
+}

@@ -3,6 +3,7 @@ import { textureOrientationShader } from "/texture-orientation.js";
 import { proceduralShader } from "/procedural-shader.js";
 import { captureSampling, viewPixelRatio } from "/render-settings.js";
 import { fitBounds, resolveCamera } from "/camera-spec.js";
+import { SceneNavigation } from "/navigation.js";
 import { LinearCompositor } from "/linear-compositor.js";
 import * as THREE from "three";
 import { OrbitControls } from "/vendor/OrbitControls.js";
@@ -153,7 +154,9 @@ export class VoxelRenderer {
     this.resizeObserver.observe(container);
     this.resize();
     this.controls.addEventListener("change", () => this.sortTransparency());
+    if(interactive)this.navigation=new SceneNavigation(this);
     this.animationLoop = (time) => {
+      this.navigation?.update(time/1000);
       this.onAnimationFrame?.(time / 1000);
       this.controls.update();
       for (const uniforms of this.uniforms) uniforms.mfTime.value = time / 1000;
@@ -828,37 +831,31 @@ export class VoxelRenderer {
     for(const t of this.triangles){if(this.groupsHidden.has(t.group))continue;for(const p of t.vertices)box.expandByPoint(toThree(p.map(v=>v*this.cellSize*this.scale)));}
     return box;
   }
+  bindCamera(camera, target) {
+    const enabled = this.controls.enabled;
+    this.controls.dispose();
+    this.camera = camera;
+    this.controls = new OrbitControls(camera, this.renderer.domElement);
+    this.controls.enabled = enabled;
+    this.controls.enableDamping = true;
+    this.controls.mouseButtons = {LEFT: null, MIDDLE: THREE.MOUSE.PAN, RIGHT: THREE.MOUSE.ROTATE};
+    this.controls.target.copy(target);
+    this.controls.addEventListener("change", () => this.sortTransparency());
+    this.camera.lookAt(target);
+    this.controls.update();
+  }
   view(name = "hero", focus = null) {
     const box = this.bounds();
-    let center = box.isEmpty()
-      ? new THREE.Vector3(0, 0.6, 0)
-      : box.getCenter(new THREE.Vector3());
-    let span = box.isEmpty()
-      ? 4
-      : Math.max(...box.getSize(new THREE.Vector3()).toArray(), this.mode==="vrc"?this.cellSize*this.scale*2:0.3);
-    if (focus) {
-      center = toThree(focus.map((v) => v * this.cellSize * this.scale));
-      span = Math.min(span, 2);
-    }
-    const directions = {
-      hero: [1, 0.75, 1.25],
-      front: [0, 0.12, 1],
-      top: [0, 1, 0.0001],
-      side: [1, 0.1, 0],
-      detail: [1, 0.6, 1.1],
-    };
-    const direction = toThree(directions[name] || directions.hero).normalize();
-    this.controls.target.copy(center);
-    this.camera.up.set(0, 1, 0);
-    if (name === "top") this.camera.up.set(0, 0, 1);
-    this.camera.position
-      .copy(center)
-      .addScaledVector(direction, span * 1.9 + this.cellSize * this.scale);
-    this.camera.near = Math.max(0.000001, Math.min(0.005,span / 1000));
-    this.camera.far = Math.max(500, span * 20);
-    this.camera.updateProjectionMatrix();
-    this.camera.lookAt(center);
-    this.controls.update();
+    if (box.isEmpty()) box.set(new THREE.Vector3(-1, 0, -1), new THREE.Vector3(1, 2, 1));
+    const bounds = {min: fromThree(new THREE.Vector3(box.min.x,box.min.y,box.max.z)), max: fromThree(new THREE.Vector3(box.max.x,box.max.y,box.min.z))};
+    const presets = {hero:{yaw:39,pitch:25},front:{yaw:0,pitch:0},top:{yaw:0,pitch:90},side:{yaw:90,pitch:0},detail:{yaw:42,pitch:24}};
+    const rect=this.renderer.domElement.getBoundingClientRect();
+    const aspect=rect.width/Math.max(1,rect.height);
+    const shot={...(presets[name]||presets.hero),...(focus?{target:focus.map(v=>v*this.cellSize*this.scale)}:{})};
+    const spec=resolveCamera(bounds,shot,aspect);
+    const camera=new THREE.PerspectiveCamera(spec.fov,aspect,spec.near,spec.far);
+    camera.position.copy(toThree(spec.position));camera.up.copy(toThree(spec.up));
+    this.bindCamera(camera,toThree(spec.target));
     this.render();
   }
   projectPoint(p) {
@@ -1038,15 +1035,12 @@ export class VoxelRenderer {
       );
     this.camera.position.copy(toThree(spec.position.map((v) => v * unit)));
     this.camera.up.copy(toThree(spec.up));
-    this.controls.object = this.camera;
-    this.controls.target.copy(toThree(spec.target.map((v) => v * unit)));
-    this.camera.lookAt(this.controls.target);
-    this.controls.update();
+    this.bindCamera(this.camera,toThree(spec.target.map((v) => v * unit)));
     return spec;
   }
   dispose() {
     if(this.disposed)return;this.disposed=true;
-    this.renderer.setAnimationLoop(null);this.resizeObserver.disconnect();this.controls.dispose();
+    this.renderer.setAnimationLoop(null);this.navigation?.dispose();this.resizeObserver.disconnect();this.controls.dispose();
     const geometries=new Set(),materials=new Set(),textures=new Set(this.textures);
     this.scene.traverse(object=>{if(object.geometry)geometries.add(object.geometry);if(object.material)for(const material of (Array.isArray(object.material)?object.material:[object.material]))materials.add(material);});
     for(const material of materials){for(const value of Object.values(material))if(value?.isTexture)textures.add(value);material.dispose();}
@@ -1104,9 +1098,7 @@ export class VoxelRenderer {
     } finally {
       this.camera = original;
       this.camera.copy(originalState);
-      this.controls.object = this.camera;
-      this.controls.target.copy(target);
-      this.controls.update();
+      this.bindCamera(this.camera,target);
       this.helpers.visible = helpersVisible;
       this.textPreviewGroup.visible = previewVisible;
       this.setViewOptions({voxelGrid:priorGrid,surfaceCulling:priorCull});

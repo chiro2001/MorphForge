@@ -49,6 +49,10 @@ impl CacheGuard {
         prefix: &Value,
     ) -> Result<Value> {
         self.in_compact = trace.compact;
+        if trace.strict_append_only == Some(false)
+            && self.alert.as_deref() == Some("检测到未经授权的客户端前缀改写；请求未发送") {
+            self.alert = None;
+        }
         if trace.compact {
             if (trace.cache_guard == "strict" || self.mode == "strict") && self.alert.is_some() {
                 bail!("CACHE_GUARD_PAUSED：缓存告警尚未确认，compact不会绕过费用暂停");

@@ -202,6 +202,9 @@ impl App {
     }
 }
 async fn workspace_gate(State(a): State<App>, request: Request, next: Next) -> Response {
+    if request.method()==axum::http::Method::POST && matches!(request.uri().path(),"/api/edit"|"/api/mesh"|"/api/import"|"/api/undo"|"/api/text/apply") {
+        if let Err(error)=a.harness.ensure_manual_edit(){return ApiError(error).into_response();}
+    }
     if request.method() == axum::http::Method::POST
         && ["/api/workspaces", "/api/harness/control"].contains(&request.uri().path())
     {

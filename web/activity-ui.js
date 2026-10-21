@@ -1,5 +1,5 @@
 import { projectActivity } from "/activity-model.js";
-import { readableText } from "/readable-text.js";
+import { StreamText } from "/stream-text.js";
 import { ScrollFollow } from "/scroll-follow.js";
 const el = (tag, text, cls) => {
   const n = document.createElement(tag);
@@ -138,7 +138,7 @@ export class ActivityView {
     head.append(title, meta);
     const thought = el("details", undefined, "activity-thought"),
       summary = el("summary"),
-      thoughtText = el("pre");
+      thoughtText = el("div");
     thought.append(summary, thoughtText);
     const body = el("div", undefined, "activity-text"),
       tools = el("div", undefined, "activity-tools"),
@@ -154,6 +154,8 @@ export class ActivityView {
       tools,
       images,
     };
+    n.streamText = new StreamText(body);
+    n.thoughtStream = new StreamText(thoughtText,{label:"展开思考"});
     n.imageKeys = new Set();
     n.toolNodes = new Map();
     thought.addEventListener("toggle", async () => {
@@ -162,8 +164,8 @@ export class ActivityView {
       try {
         const d = await this.api("timeline/" + n.responseSeq);
         const t = d.body?.reasoning;
-        if (t && t.length > thoughtText.textContent.length)
-          thoughtText.textContent = t;
+        if (t && t.length > n.thoughtStream.text.length)
+          n.thoughtStream.setText(t);
         n.loadedThought = n.responseSeq;
       } catch (e) {
         this.onError(e);
@@ -191,12 +193,12 @@ export class ActivityView {
     p.thought.hidden = !c.thought;
     p.summary.textContent = `思考${c.status === "进行中" ? "中" : ""} · ${c.thought.length.toLocaleString()} 字符（上游返回）`;
     if (
-      p.thoughtText.textContent !== c.thought &&
+      n.thoughtStream.text !== c.thought &&
       n.loadedThought !== c.responseSeq
     )
-      p.thoughtText.textContent = c.thought;
+      n.thoughtStream.setText(c.thought);
     if (n.lastText !== c.text) {
-      readableText(p.body, c.text);
+      n.streamText.setText(c.text);
       n.lastText = c.text;
     }
     p.body.hidden = !c.text;

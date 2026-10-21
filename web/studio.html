@@ -10,7 +10,7 @@
       { "imports": { "three": "/vendor/three.module.js" } }
     </script>
   </head>
-  <body>
+  <body class="hide-tools">
     <header>
       <div class="brand">
         <b>M</b><span>MorphForge<small>体素艺术工作台</small></span>
@@ -253,7 +253,7 @@
         </div>
         <p class="caption">
           左键绘制 · Shift擦除<br />
-          右键旋转 · 中键平移 · 滚轮缩放<br />
+          Alt+左键环绕 · 中键平移 · 滚轮缩放<br />右键查看 / WASD移动 · QE升降 · F聚焦<br />
           Ctrl+Z撤销 · Ctrl+Y重做
         </p>
       </aside>
@@ -276,6 +276,9 @@
           <button id="centerScene">整体定位</button>
           <button id="comparisonOpen">参考对照</button><button id="componentOpen">组件库</button><button id="animationOpen">动画</button>
         </div>
+        <details id="usedMaterialOverlay" class="viewport-materials"><summary>已用材质 <span id="usedMaterialCount">0</span></summary><div id="usedMaterialList"></div></details>
+        <div class="viewport-status" id="viewportStatus"><span id="viewportRunStatus">待命</span><progress id="viewportSyncProgress" max="100" value="0"></progress><span id="viewportSyncLabel">尚未发布</span><span id="viewportETA"></span></div>
+        <button id="manualEditToggle" class="manual-edit-toggle" aria-pressed="false">手工编辑：关闭</button>
         <div id="emptyHint">
           <h1>从想象，到一块一块</h1>
           <p>点击放置，载入作品，或在右侧告诉AI你的想法。</p>
@@ -346,6 +349,7 @@
             </div>
           </details>
 
+          <details id="composerOptions" class="advanced-fold"><summary>创作选项 · 类型、尺寸、参考图与队列 <span id="composerOptionSummary"></span></summary>
           <details class="reference-composer" id="referenceComposer">
             <summary>
               参考图片 · <span id="referenceSummary">不使用参考图片</span>
@@ -400,6 +404,7 @@
             <label>Z<input id="modelingExtentZ" type="number" min="1" max="4096" value="64" /></label>
           </div>
           <p id="creationPreferencesHint" class="caption">偏好用于后续创作；尺寸按作品比例控制，不改变已有几何。</p>
+          <div id="composerQueueSlot"></div></details>
           <div class="prompt-meta">
             <label for="prompt">输入</label>
             <div
@@ -423,14 +428,6 @@
             placeholder="例如：搭一座云上的铜色灯塔，保留负空间，用三视图检查轮廓…"
           ></textarea>
           <div class="composer-actions">
-            <label class="message-mode"
-              >发送方式
-              <select id="messageMode">
-                <option value="steer">插话 · 下一安全点</option>
-                <option value="interrupt">打断并继续</option>
-                <option value="queue">排队下一轮</option>
-              </select>
-            </label>
             <button id="sendMessage" class="primary">开始创作</button>
           </div>
           <p id="messageModeHint" class="caption composer-hint">
@@ -851,6 +848,16 @@
                 <option value="observe">观察（不上报缓存的服务）</option>
               </select></label
             >
+            <label class="check"><input id="enforceTargetLimits" type="checkbox" checked />完成时检查 VRChat 空间与容量（独立创作可关闭）</label>
+            <label class="check"><input id="strictAppendOnly" type="checkbox" checked />严格检查 append-only（异常时阻止请求）</label>
+            <label class="message-mode"
+              >发送方式
+              <select id="messageMode">
+                <option value="steer">插话 · 下一安全点</option>
+                <option value="interrupt">打断并继续</option>
+                <option value="queue">排队下一轮</option>
+              </select>
+            </label>
             <p id="cacheMonitorStatus" class="caption"></p>
             <button id="cacheAcknowledge">已检查上游，确认缓存告警</button>
             <p id="presetHint" class="caption"></p>

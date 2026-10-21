@@ -2456,3 +2456,32 @@ async fn mf6_harness_repair_and_loop_replay_use_current_protocol_without_clear()
         .is_err());
     assert_eq!(h.transport.state()["pending"], before["pending"]);
 }
+
+#[tokio::test]
+async fn explicit_prefix_monitor_opt_out_warns_and_sends_without_disabling_default() {
+    use morphforge_app::provider::ProviderRequestTrace;
+    let fake=FakeResponses::start(vec![completed(vec![]),completed(vec![])]).await;
+    let dir=TempDir::new().unwrap();let w=workspace(&dir);
+    let provider=Provider::new_for_loopback_test(dir.path(),&fake.base).unwrap();let cancel=Cancellation::new();
+    let first=json!({"model":"test","instructions":"stable","input":[{"role":"user","content":"one"}],"max_output_tokens":1024,"stream":true});
+    provider.response(first.clone(),w.clone(),"r",&cancel).await.unwrap();
+    let mut changed=first;changed["instructions"]=json!("changed");
+    assert!(provider.response(changed.clone(),w.clone(),"r",&cancel).await.is_err());
+    assert_eq!(fake.request_count(),1);
+    provider.response_with_trace(changed,w.clone(),"r",&cancel,ProviderRequestTrace{strict_append_only:Some(false),..Default::default()}).await.unwrap();
+    assert_eq!(fake.request_count(),2);
+    assert!(w.lock().unwrap().events.iter().any(|e|e.kind=="cache.guard.warning"));
+    assert!(ProviderSettings::default().strict_append_only);
+}
+
+#[tokio::test]
+async fn manual_edits_wait_for_ai_worker_and_can_resume_after_pause() {
+    let fake=FakeResponses::start(vec![]).await;let dir=TempDir::new().unwrap();let h=harness(workspace(&dir),&fake.base);
+    assert!(h.ensure_manual_edit().is_ok());
+    {let mut state=h.inner.lock().unwrap();state.phase="running".into();state.worker_epoch=Some(1);}
+    assert!(h.ensure_manual_edit().is_err());assert_eq!(h.state()["manualEditLocked"],true);
+    {let mut state=h.inner.lock().unwrap();state.phase="paused".into();}
+    assert!(h.ensure_manual_edit().is_err());
+    {h.inner.lock().unwrap().worker_epoch=None;}
+    assert!(h.ensure_manual_edit().is_ok());assert_eq!(h.state()["manualEditLocked"],false);
+}

@@ -57,6 +57,8 @@ pub struct ProviderSettings {
     pub goal_max_continuations: u32,
     pub goal_criteria: String,
     pub cache_guard: String,
+    pub strict_append_only: bool,
+    pub enforce_target_limits: bool,
 }
 impl Default for ProviderSettings {
     fn default() -> Self {
@@ -81,6 +83,8 @@ impl Default for ProviderSettings {
             goal_max_continuations: 6,
             goal_criteria: String::new(),
             cache_guard: "auto".into(),
+            strict_append_only: true,
+            enforce_target_limits: true,
         }
     }
 }
@@ -152,6 +156,7 @@ pub struct ProviderRequestTrace {
     pub compact: bool,
     pub cache_guard: String,
     pub estimated_input_tokens: u64,
+    pub strict_append_only: Option<bool>,
 }
 
 impl ProviderRequestTrace {
@@ -634,7 +639,11 @@ impl Provider {
         let start = std::time::Instant::now();
         let mut candidate = self.prefix.lock().unwrap().clone();
         let prefix = candidate.observe(&payload, &connection, &trace);
-        if prefix["appendOnly"] == false && prefix["expectedReset"] != true {
+        let unexpected_prefix = prefix["appendOnly"] == false && prefix["expectedReset"] != true;
+        if unexpected_prefix && !trace.strict_append_only.unwrap_or(true) {
+            self.record_event(&workspace,"cache.guard.warning",Some(run),json!({"reason":"unexpected_prefix_rewrite","prefix":prefix,"strictAppendOnly":false}))?;
+        }
+        if unexpected_prefix && trace.strict_append_only.unwrap_or(true) {
             {
                 let mut guard = self.guard.lock().unwrap();
                 guard.block_prefix(&prefix);
