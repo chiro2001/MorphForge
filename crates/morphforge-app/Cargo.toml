@@ -13,6 +13,7 @@ name = "morphforge"
 path = "src/main.rs"
 
 [dependencies]
+unicode-normalization = "0.1"
 morphforge-core = { path = "../morphforge-core" }
 serde.workspace = true
 serde_json.workspace = true

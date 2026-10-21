@@ -756,6 +756,7 @@ ${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${" · 
 累计 ${fmt(connection.sentCommands)} 批`);
   setChecked("world", connection.placement.world);
   setChecked("visible", connection.placement.visible);
+  setChecked("allowGrab",connection.placement.allowGrab!==false);
   setChecked("level", connection.placement.level);
   setValue("scale", Math.log10(connection.placement.scale/.0005));
   const percent=connection.placement.scale/.05*100;
@@ -1491,7 +1492,7 @@ async function placement(value) {
   }
 }
 
-for (const id of ["world", "visible", "level"]) {
+for (const id of ["world", "visible", "level", "allowGrab"]) {
   $(id).onchange = () => placement({ [id]: $(id).checked });
 }
 function showScale(physical){const p=physical/.05*100;$("scaleValue").value=Number(p.toFixed(1))+"%";$("scalePercent").value=Number(p.toFixed(2));if($("renderMode").value==="vrc")renderer.setScale(physical);}

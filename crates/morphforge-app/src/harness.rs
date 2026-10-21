@@ -2144,7 +2144,10 @@ impl Harness {
         }
         match name {
             "get_context" => Ok(self.context_with_options(args)),
-            "text_panels" => {if guard.is_none()&&!matches!(args["action"].as_str(),Some("list"|"inspect")){self.ensure_manual_edit()?;}self.with_workspace_guard(guard.as_ref(),|w|crate::text_panels::apply(w,args,run))},
+            "text_panels" => {if guard.is_none()&&!matches!(args["action"].as_str(),Some("list"|"inspect")){self.ensure_manual_edit()?;}self.with_workspace_guard(guard.as_ref(),|w|{let mut result=crate::text_panels::apply(w,args,run)?;
+                if args["dryRun"]!=true&&!matches!(args["action"].as_str(),Some("list"|"inspect"))&&self.transport.config().enabled&&self.transport.config().auto{
+                    match self.transport.publish_with_materials(&w.project.scene,&w.project.materials,false){Ok(v)=>result["sync"]=v,Err(e)=>result["publishWarning"]=json!(e.to_string())}
+                }Ok(result)})},
             "components" | "reference_workbench" | "animation" => {
                 if name == "reference_workbench" && args["action"] == "capture" {
                     return self.capture_views_tool(args,run,guard).await;

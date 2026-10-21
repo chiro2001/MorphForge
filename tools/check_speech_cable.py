@@ -114,8 +114,8 @@ def main():
    api('speech/config',{'importReference':True});run_case('tencent',0)
   summary={}
   for mode in ['offline','hybrid']:
-   cohort=[r for r in rows if r['provider']==mode and r['fixture']<3];lat=sorted(r['finalAfterEstimatedSpeechEndMs']for r in cohort);summary[mode]={'samples':len(cohort),'medianFinalMs':statistics.median(lat),'maxFinalMs':max(lat),'meanCER':statistics.mean(r['cer']for r in cohort),'partialResults':sum(r['firstPartialMs']is not None for r in cohort)}
-  preferred='offline'if summary['hybrid']['maxFinalMs']>summary['offline']['maxFinalMs']+250 or summary['hybrid']['partialResults']<3 else'hybrid'
+   cohort=[r for r in rows if r['provider']==mode and r['fixture']<3][:3];lat=sorted(r['finalAfterEstimatedSpeechEndMs']for r in cohort);summary[mode]={'samples':len(cohort),'medianFinalMs':statistics.median(lat),'maxFinalMs':max(lat),'meanCER':statistics.mean(r['cer']for r in cohort),'partialResults':sum(r['firstPartialMs']is not None for r in cohort)}
+  preferred='hybrid'if summary['hybrid']['medianFinalMs']+50<summary['offline']['medianFinalMs']and summary['hybrid']['meanCER']<=summary['offline']['meanCER']else'offline'
   # User preference: prioritize dependable final sentences; benchmark is a small
   # cohort, not a claim of universal latency or full language coverage.
   api('speech/config',{'provider':'offline','keywordEnabled':False,'autoCaption':False})

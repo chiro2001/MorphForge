@@ -45,3 +45,5 @@ pub mod text_panels;
 pub mod desktop_window;
 
 pub mod speech;
+
+pub mod text_wire;

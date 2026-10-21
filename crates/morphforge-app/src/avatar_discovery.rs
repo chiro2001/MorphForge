@@ -33,7 +33,7 @@ pub fn parse(tree: &Value) -> Result<Value> {
         .map(|b| format!("{b:02x}"))
         .collect::<String>();
     Ok(
-        json!({"protocol":"mf6","version":version,"region8":flags&1!=0,"surfaceMasks":flags&2!=0,"virtualLight":flags&4!=0,"layeredOnly":flags&8!=0,"catalogHash":fingerprint,"build":build,"signature":format!("{version}:{flags}:{build}:{fingerprint}"),"executionAck":false}),
+        json!({"protocol":"mf6","version":version,"region8":flags&1!=0,"surfaceMasks":flags&2!=0,"virtualLight":flags&4!=0,"layeredOnly":flags&8!=0,"textPanels":flags&16!=0,"placementControlsSeparated":flags&32!=0,"catalogHash":fingerprint,"build":build,"signature":format!("{version}:{flags}:{build}:{fingerprint}"),"executionAck":false}),
     )
 }
 pub fn native_ports() -> Result<Vec<u16>> {

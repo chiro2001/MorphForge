@@ -1,0 +1,18 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "slot": 0,
+      "inkPixels": 4963,
+      "differentPixels": 0,
+      "pass": true
+    },
+    {
+      "slot": 1,
+      "inkPixels": 7536,
+      "differentPixels": 0,
+      "pass": true
+    }
+  ],
+  "scope": "Actual received text materials and binary font GPU. Camera/layer isolation is diagnostic only and restored; no duplicate Avatar or user scene changes."
+}

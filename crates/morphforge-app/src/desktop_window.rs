@@ -17,6 +17,7 @@ pub struct Preferences {
     pub main_visible: bool,
     pub mini_width: u32,
     pub mini_height: u32,
+    pub mini_opacity: f64,
 }
 impl Default for Preferences {
     fn default() -> Self {
@@ -31,6 +32,7 @@ impl Default for Preferences {
             main_visible: true,
             mini_width: 460,
             mini_height: 320,
+            mini_opacity: 1.,
         }
     }
 }
@@ -94,13 +96,18 @@ impl Windows {
                     _ => bail!("未知窗口"),
                 }
             }
+            "appearance" => {
+                p.mini_opacity = value["opacity"].as_f64().context("缺少透明度")?;
+            }
             "resize" => {
                 p.mini_width = value["width"].as_u64().context("缺少width")?.try_into()?;
                 p.mini_height = value["height"].as_u64().context("缺少height")?.try_into()?;
             }
             _ => bail!("未知窗口命令"),
         }
-        if !matches!(p.mode.as_str(), "speech" | "progress" | "custom")
+        if !p.mini_opacity.is_finite()
+            || !(0.35..=1.).contains(&p.mini_opacity)
+            || !matches!(p.mode.as_str(), "speech" | "progress" | "custom")
             || !(320..=1600).contains(&p.mini_width)
             || !(180..=1600).contains(&p.mini_height)
         {

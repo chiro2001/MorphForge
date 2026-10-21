@@ -40,7 +40,7 @@ namespace MorphForge.Editor {
                 fx.AddParameter(new AnimatorControllerParameter{name=name,type=AnimatorControllerParameterType.Int,defaultInt=value});
                 parameters.parameters.Add(new ParameterConfig{nameOrPrefix=name,syncType=ParameterSyncType.Int,localOnly=true,saved=false,hasExplicitDefaultValue=true,defaultValue=value,internalParameter=false});
             };
-            var identity=Identity(catalog);add("MF_InfoVersion",7);add("MF_InfoFeatures",1|(((JArray)catalog["capabilities"]).Any(v=>(string)v=="transparent-face-mask/1")?2:0)|(((JArray)catalog["capabilities"]).Any(v=>(string)v=="virtual-light/1")?4:0)|(((bool?)catalog["textureOptions"]?["layeredOnly"]??false)?8:0));int build=(int)(DateTime.UtcNow.Ticks%16777215);for(int i=0;i<3;i++)add("MF_InfoBuild"+i,(build>>(8*i))&255);
+            var identity=Identity(catalog);add("MF_InfoVersion",7);add("MF_InfoFeatures",32|16|1|(((JArray)catalog["capabilities"]).Any(v=>(string)v=="transparent-face-mask/1")?2:0)|(((JArray)catalog["capabilities"]).Any(v=>(string)v=="virtual-light/1")?4:0)|(((bool?)catalog["textureOptions"]?["layeredOnly"]??false)?8:0));int build=(int)(DateTime.UtcNow.Ticks%16777215);for(int i=0;i<3;i++)add("MF_InfoBuild"+i,(build>>(8*i))&255);
             var bytes=Enumerable.Range(0,32).Select(i=>Convert.ToByte(identity.Substring(i*2,2),16)).Concat(new byte[]{0}).ToArray();
             for(int i=0;i<32;i++)add("MF_Catalog"+i.ToString("D2"),bytes[i]);
             EditorUtility.SetDirty(fx);EditorUtility.SetDirty(parameters);

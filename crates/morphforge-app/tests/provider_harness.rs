@@ -275,6 +275,7 @@ fn attach_capture_to_the_next_request(h: &Harness, artifact: &str) {
 fn inert_transport() -> Transport {
     Transport {
         inner: Arc::new(Mutex::new(TransportState {
+            text: morphforge_app::text_wire::Session::default(),
             publication: None,
             discovery: json!({}),
             avatar_catalog: None,

@@ -41,17 +41,10 @@ pub fn layouts(scene: &Scene) -> Result<Value> {
         .map(Value::Array)
 }
 pub fn target_report(scene: &Scene) -> Value {
-    let counts = scene
-        .text_panels
-        .iter()
-        .map(|p| {
-            layout(p)
-                .ok()
-                .and_then(|l| l["glyphs"].as_array().map(Vec::len))
-                .unwrap_or(usize::MAX)
-        })
-        .collect::<Vec<_>>();
-    json!({"panelCount":scene.text_panels.len(),"panelCapacity":16,"glyphsPerPanel":128,"visibleGlyphCounts":counts,"fits":scene.text_panels.len()<=16&&counts.iter().all(|n|*n<=128),"fontIds":["pixel16-zh","pixel16-jp"]})
+    let counts=scene.text_panels.iter().map(|p|crate::text_wire::characters(p).ok().map(|v|v.0.len())).collect::<Vec<_>>();
+    let glyphs=scene.text_panels.iter().map(|p|layout(p).ok().and_then(|v|v["glyphs"].as_array().map(Vec::len))).collect::<Vec<_>>();
+    let errors=scene.text_panels.iter().enumerate().filter_map(|(slot,p)|crate::text_wire::encode(p,slot as u8).err().map(|e|json!({"id":p.id,"error":e.to_string()}))).collect::<Vec<_>>();
+    json!({"panelCount":scene.text_panels.len(),"panelCapacity":crate::text_wire::SLOTS,"characterSlotsPerPanel":128,"characterSlotCounts":counts,"visibleGlyphCounts":glyphs,"fits":scene.text_panels.len()<=crate::text_wire::SLOTS&&errors.is_empty(),"errors":errors,"fontIds":["pixel16-zh","pixel16-jp"]})
 }
 pub fn apply(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Value> {
     let action = args["action"].as_str().unwrap_or("list");

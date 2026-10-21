@@ -16,10 +16,10 @@ async function start(api,target,fail){if(current?.state.active){await stop(api,f
 async function stop(api,cancel){if(browserInput){await browserInput.stop();browserInput=null;}await api('speech/control',{action:cancel?'cancel':'stop'});await poll();}
 function caption(v){const labels={idle:'就绪',loading:'加载模型',recording:'录音中',finishing:'正在识别句末',cancelling:'取消中',cancelled:'已取消',error:'识别失败'};return `${labels[v.state.phase]||v.state.phase} · ${{offline:'句末离线',hybrid:'中文流式＋句末校正',tencent:'在线识别'}[v.settings.provider]||v.settings.provider}`;}
 export function setupMiniSpeech({$,api,fail,getState}){
- let targetSignature='',draftShown='',lastSession='';const target=()=>{const value=$('speechTarget').value;return {kind:value.startsWith('panel:')?'text_panel':value,panelId:value.startsWith('panel:')?value.slice(6):'',projectId:getState()?.project.id||''};};
+ let targetSignature='',draftShown='',lastSession='',applyBusy=false,submission=null;const target=()=>{const value=$('speechTarget').value;return {kind:value.startsWith('panel:')?'text_panel':value,panelId:value.startsWith('panel:')?value.slice(6):'',projectId:getState()?.project.id||''};};
  $('speechStart').onclick=()=>start(api,target(),fail).catch(fail);$('speechStop').onclick=()=>stop(api,false).catch(fail);$('speechCancel').onclick=()=>stop(api,true).catch(fail);
- $('speechSend').onclick=()=>api('speech/apply',{text:$('speechText').value,target:target(),requestId:crypto.randomUUID()}).then(()=>poll()).catch(fail);
- $('speechBuild').onclick=()=>api('speech/apply',{text:$('speechText').value,target:target(),submit:true,requestId:crypto.randomUUID()}).then(()=>poll()).catch(fail);
+ async function apply(submit){if(applyBusy)return;applyBusy=true;const text=$('speechText').value,t=target(),signature=JSON.stringify([text,t,submit,lastSession]);if(!submission||submission.signature!==signature)submission={signature,key:crypto.randomUUID()};$('speechSend').disabled=$('speechBuild').disabled=true;try{await api('speech/apply',{text,target:t,submit,requestId:submission.key});await poll();}catch(e){fail(e);}finally{applyBusy=false;$('speechSend').disabled=$('speechBuild').disabled=false;}}
+ $('speechSend').onclick=()=>apply(false);$('speechBuild').onclick=()=>apply(true);
  $('speechCopy').onclick=()=>navigator.clipboard.writeText($('speechText').value).catch(fail);
  $('speechClear').onclick=()=>api('speech/control',{action:'clear'}).then(()=>{$('speechText').value='';draftShown='';poll();}).catch(fail);
  $('speechAuto').onchange=()=>api('speech/config',{autoCaption:$('speechAuto').checked}).then(()=>poll()).catch(fail);

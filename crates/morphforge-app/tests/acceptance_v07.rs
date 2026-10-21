@@ -52,13 +52,12 @@ async fn transform_and_theme_preserve_sources_protection_and_undo() {
         .unwrap();
     assert_eq!(moved["revision"], 2);
     assert!(moved["after"]["fits"].as_bool().unwrap());
-    assert_eq!(
-        sources,
-        app.harness
-            .tool("recipe_sources", &json!({"action":"list"}), None)
-            .await
-            .unwrap()
-    );
+    let mut after_sources=app.harness.tool("recipe_sources",&json!({"action":"list"}),None).await.unwrap();
+    assert_eq!(after_sources["resources"]["revision"],2);
+    // Resource receipts intentionally describe the current geometry, while
+    // the authoring source identity must survive transforms unchanged.
+    let mut source_identity=sources.clone();source_identity.as_object_mut().unwrap().remove("resources");after_sources.as_object_mut().unwrap().remove("resources");
+    assert_eq!(source_identity,after_sources);
     app.workspace.lock().unwrap().undo(false, None).unwrap();
     assert_eq!(
         app.workspace.lock().unwrap().project.scene.boxes[0].min,

@@ -33,6 +33,7 @@ struct Surface {
     double: bool,
     image: Option<usize>,
     clamp: bool,
+    unlit: bool,
 }
 #[derive(Clone)]
 struct Face {
@@ -227,6 +228,7 @@ fn build(scene: &Scene, materials: &[Material], root: &Path, cell_size: f64) -> 
                     double: m.opacity < 1.,
                     image,
                     clamp: m.texture_scale < 0.5,
+                    unlit: false,
                 });
                 surface_ids.insert(key, id);
                 id
@@ -280,6 +282,7 @@ fn build(scene: &Scene, materials: &[Material], root: &Path, cell_size: f64) -> 
                 double: t.double_sided,
                 image: None,
                 clamp: false,
+                unlit: false,
             });
             id
         });
@@ -299,10 +302,158 @@ fn build(scene: &Scene, materials: &[Material], root: &Path, cell_size: f64) -> 
             });
         }
     }
+    append_text_panels(&mut mesh, scene)?;
     if mesh.faces.is_empty() {
         bail!("作品为空或没有可导出的有效面")
     }
     Ok(mesh)
+}
+// Portable pixel outlines preserve binary fonts without custom GPU shaders.
+// Front/back have independent mirrored layouts and single-sided materials.
+fn append_text_panels(mesh: &mut Mesh, scene: &Scene) -> Result<()> {
+    fn quad(
+        mesh: &mut Mesh,
+        p: &morphforge_core::text_panel::TextPanel,
+        rect: [f64; 4],
+        back: bool,
+        z: f64,
+        material: usize,
+    ) -> Result<()> {
+        let [mut x0, mut y0, mut x1, mut y1] = rect;
+        x0 = x0.max(-p.size[0] / 2.);
+        x1 = x1.min(p.size[0] / 2.);
+        y0 = y0.max(0.);
+        y1 = y1.min(p.size[1]);
+        if x1 <= x0 || y1 <= y0 {
+            return Ok(());
+        }
+        if mesh.faces.len() + 2 > 500_000 {
+            bail!("点阵文字与模型合计超过500,000面；请减少文字或拆分导出")
+        }
+        let q = crate::creative::quaternion(p.rotation);
+        let [qx, qy, qz, qw] = q;
+        let positions = [[x0, y0, z], [x1, y0, z], [x1, y1, z], [x0, y1, z]].map(|v| {
+            let c = [
+                qy * v[2] - qz * v[1],
+                qz * v[0] - qx * v[2],
+                qx * v[1] - qy * v[0],
+            ];
+            let c2 = [
+                qy * c[2] - qz * c[1],
+                qz * c[0] - qx * c[2],
+                qx * c[1] - qy * c[0],
+            ];
+            std::array::from_fn(|a| {
+                ((p.position[a] * if a == 2 { -1. } else { 1. }
+                    + v[a]
+                    + 2. * qw * c[a]
+                    + 2. * c2[a])
+                    * mesh.cell_size) as f32
+            })
+        });
+        for ids in if back {
+            [[0, 2, 1], [0, 3, 2]]
+        } else {
+            [[0, 1, 2], [0, 2, 3]]
+        } {
+            let points = ids.map(|i| positions[i]);
+            if let Some(n) = normal(&points) {
+                mesh.faces.push(Face {
+                    positions: points,
+                    normal: n,
+                    uv: [[0.; 2]; 3],
+                    tint: [1.; 3],
+                    material,
+                    group: p.group.clone(),
+                });
+            }
+        }
+        Ok(())
+    }
+    fn surface(mesh: &mut Mesh, name: String, color: [u8; 3], opacity: f32) -> usize {
+        let id = mesh.materials.len();
+        mesh.materials.push(Surface {
+            name,
+            color: color.map(|v| v as f32 / 255.),
+            metallic: 0.,
+            roughness: 1.,
+            opacity,
+            emission: 0.,
+            mode: if opacity < 1. {
+                "transparent".into()
+            } else {
+                "opaque".into()
+            },
+            double: false,
+            image: None,
+            clamp: false,
+            unlit: true,
+        });
+        id
+    }
+    for panel in &scene.text_panels {
+        panel.validate()?;
+        if panel.opacity <= 0. {
+            continue;
+        }
+        let layout =
+            morphforge_core::text_panel::layout(panel, crate::text_panels::widths(&panel.font))?;
+        if panel.background[3] > 0 {
+            let mat = surface(
+                mesh,
+                format!("{} background", panel.name),
+                panel.background[..3].try_into().unwrap(),
+                (panel.opacity * panel.background[3] as f64 / 255.) as f32,
+            );
+            for back in [false, true] {
+                quad(
+                    mesh,
+                    panel,
+                    [-panel.size[0] / 2., 0., panel.size[0] / 2., panel.size[1]],
+                    back,
+                    0.,
+                    mat,
+                )?;
+            }
+        }
+        let mat = surface(mesh, panel.name.clone(), panel.color, panel.opacity as f32);
+        let bitmap = crate::text_panels::asset(&panel.font, "bitmap").context("点阵字库缺失")?;
+        for glyph in layout.glyphs {
+            let step = glyph.height / 16.;
+            let epsilon = step * 0.01;
+            for row in 0..16usize {
+                let bit = |col: usize| {
+                    bitmap[glyph.glyph as usize * 32 + row * 2 + col / 8] & (1 << (7 - col % 8))
+                        != 0
+                };
+                let mut x = 0usize;
+                while x < glyph.pixels as usize {
+                    if !bit(x) {
+                        x += 1;
+                        continue;
+                    }
+                    let start = x;
+                    while x < glyph.pixels as usize && bit(x) {
+                        x += 1;
+                    }
+                    let left = glyph.x + start as f64 * step - panel.size[0] / 2.;
+                    let right = glyph.x + x as f64 * step - panel.size[0] / 2.;
+                    let bottom = glyph.y + (15 - row) as f64 * step;
+                    let top = bottom + step;
+                    quad(mesh, panel, [left, bottom, right, top], false, epsilon, mat)?;
+                    quad(
+                        mesh,
+                        panel,
+                        [-right, bottom, -left, top],
+                        true,
+                        -epsilon,
+                        mat,
+                    )?;
+                }
+            }
+        }
+    }
+    Ok(())
 }
 fn append_aligned(buffer: &mut Vec<u8>, data: &[u8]) -> (usize, usize) {
     while !buffer.len().is_multiple_of(4) {
@@ -412,17 +563,28 @@ fn glb(mesh: &Mesh) -> Result<Vec<u8>> {
                     json!({"KHR_materials_emissive_strength":{"emissiveStrength":m.emission}});
             }
         }
+        if m.unlit {
+            v["extensions"]["KHR_materials_unlit"] = json!({});
+        }
         mats.push(v);
     }
-    let mut document = json!({"asset":{"version":"2.0","generator":"MorphForge"},"scene":0,"scenes":[{"nodes":(0..nodes.len()).collect::<Vec<_>>()}],"nodes":nodes,"meshes":meshes,"materials":mats,"buffers":[{"byteLength":bin.len()}],"bufferViews":views,"accessors":accessors,"extras":{"cellSizeMeters":mesh.cell_size,"note":"Static surface export; animated textures use first frame. Procedural materials use base color. Independent shells and internal faces are retained."}});
+    let mut document = json!({"asset":{"version":"2.0","generator":"MorphForge"},"scene":0,"scenes":[{"nodes":(0..nodes.len()).collect::<Vec<_>>()}],"nodes":nodes,"meshes":meshes,"materials":mats,"buffers":[{"byteLength":bin.len()}],"bufferViews":views,"accessors":accessors,"extras":{"cellSizeMeters":mesh.cell_size,"note":"Static surface export; animated textures use first frame. Procedural materials use base color. Independent shells and internal faces are retained. Binary text panels are baked as readable front/back pixel-outline surfaces, without font shaders."}});
     if !images.is_empty() {
         document["images"] = json!(images);
         document["textures"] = json!(textures);
         document["samplers"] = json!([{"magFilter":9728,"minFilter":9728,"wrapS":10497,"wrapT":10497},{"magFilter":9728,"minFilter":9728,"wrapS":33071,"wrapT":33071}]);
     }
+    let mut extensions = Vec::new();
     if emission_extension {
-        document["extensionsUsed"] = json!(["KHR_materials_emissive_strength"]);
+        extensions.push("KHR_materials_emissive_strength");
     }
+    if mesh.materials.iter().any(|m| m.unlit) {
+        extensions.push("KHR_materials_unlit");
+    }
+    if !extensions.is_empty() {
+        document["extensionsUsed"] = json!(extensions);
+    }
+
     let mut text = serde_json::to_vec(&document)?;
     while !text.len().is_multiple_of(4) {
         text.push(b' ')
@@ -628,6 +790,47 @@ mod tests {
         serde_json::from_slice(&bytes[20..20 + length]).unwrap()
     }
     use serde_json::Value;
+    #[test]
+    fn text_only_exports_keep_pixels_and_readable_opposite_faces() {
+        let dir = tempfile::tempdir().unwrap();
+        let mut s = Scene::default();
+        s.text_panels.push(morphforge_core::text_panel::TextPanel {
+            text: "F中あ".into(),
+            font: "pixel16-jp".into(),
+            ..Default::default()
+        });
+        let mesh = build(&s, &[], dir.path(), 0.25).unwrap();
+        assert!(!mesh.faces.is_empty());
+        assert_eq!(
+            mesh.faces.iter().filter(|f| f.normal[2] > 0.9).count(),
+            mesh.faces.iter().filter(|f| f.normal[2] < -0.9).count()
+        );
+        assert!(mesh
+            .faces
+            .iter()
+            .all(|f| mesh.materials[f.material].unlit && !mesh.materials[f.material].double));
+        for format in ["glb", "obj", "ply", "stl"] {
+            let out = export(
+                &s,
+                &[],
+                dir.path(),
+                &Options {
+                    format: format.into(),
+                    cell_size: None,
+                },
+            )
+            .unwrap();
+            assert!(!out.bytes.is_empty());
+            if format == "glb" {
+                let d = document(&out.bytes);
+                assert!(d["extensionsUsed"]
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .any(|v| v == "KHR_materials_unlit"));
+            }
+        }
+    }
     #[test]
     fn box_and_slopes_have_outward_non_degenerate_faces() {
         let dir = tempfile::tempdir().unwrap();

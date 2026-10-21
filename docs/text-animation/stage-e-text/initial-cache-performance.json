@@ -1,0 +1,20 @@
+{
+  "available": true,
+  "marker": "Animators.Update",
+  "unit": "TimeNanoseconds",
+  "rows": [
+    {
+      "activeCharacterSlots": 0,
+      "samples": 25,
+      "meanRaw": 2781808.0,
+      "maxRaw": 4351600
+    },
+    {
+      "activeCharacterSlots": 512,
+      "samples": 101,
+      "meanRaw": 7943969.3069306929,
+      "maxRaw": 11611200
+    }
+  ],
+  "scope": "Editor-only whole Avatar Animator, zero enabled text pages versus 4x128 enabled slots. Includes Avatar baseline and Editor noise; not a VRChat CPU benchmark."
+}

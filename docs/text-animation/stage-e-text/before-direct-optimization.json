@@ -1,0 +1,44 @@
+{
+  "available": true,
+  "marker": "Animators.Update",
+  "unit": "TimeNanoseconds",
+  "rows": [
+    {
+      "phase": "disabled",
+      "samples": 28,
+      "meanRaw": 2493078.5714285714,
+      "maxRaw": 3693700
+    },
+    {
+      "phase": "received",
+      "samples": 13,
+      "meanRaw": 3619576.923076923,
+      "maxRaw": 4900300
+    },
+    {
+      "phase": "512 CJK slots",
+      "samples": 81,
+      "meanRaw": 11871871.604938272,
+      "maxRaw": 18497300
+    },
+    {
+      "phase": "512 CJK slots",
+      "samples": 81,
+      "meanRaw": 11751524.691358024,
+      "maxRaw": 14891200
+    },
+    {
+      "phase": "received",
+      "samples": 14,
+      "meanRaw": 3417664.2857142859,
+      "maxRaw": 4813600
+    },
+    {
+      "phase": "disabled",
+      "samples": 25,
+      "meanRaw": 2651560.0,
+      "maxRaw": 3972400
+    }
+  ],
+  "scope": "Editor-only whole Avatar Animator, disabled/received/4x128 populated CJK slots, forward and reverse phases. Includes Avatar baseline and Editor noise; not a VRChat CPU benchmark."
+}

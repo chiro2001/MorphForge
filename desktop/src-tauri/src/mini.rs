@@ -101,6 +101,7 @@ fn apply<R: tauri::Runtime>(
         let expected = port;
         let w = WebviewWindowBuilder::new(app, "mini", WebviewUrl::External(url))
             .title("MorphForge Mini")
+            .transparent(true)
             .inner_size(
                 v["miniWidth"].as_u64().unwrap_or(460) as f64,
                 v["miniHeight"].as_u64().unwrap_or(320) as f64,

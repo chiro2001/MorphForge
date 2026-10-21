@@ -167,7 +167,7 @@ namespace MorphForge.Editor
             foreach(string name in new[]{"Ctl","Seq","Format","Stage","MetaLo","MetaHi"})IntParam(name,name=="Ctl"?255:0);IntParam("LastRx",255);for(int i=0;i<29;i++){IntParam("D"+i.ToString("D2"));IntParam("Q"+i.ToString("D2"));}
             for(int p=0;p<8;p++){fx.AddParameter("MF6_P"+p+"_Ctl",AnimatorControllerParameterType.Int);for(int i=0;i<Mf6NativeBuild.Fields;i++)fx.AddParameter("MF6_P"+p+"_D"+i.ToString("D2"),AnimatorControllerParameterType.Float);}
             for(int p=0;p<8;p++)IntParam("NextSeq"+p);
-            Inbox();Metadata();Routers();Clock();SequenceWrap();var root=new GameObject("MF6 shared decoder");try{
+            Inbox();Metadata();Routers();Clock();SequenceWrap();Mf6TextBuild.ExtendInbox(fx);var root=new GameObject("MF6 shared decoder");try{
                 var merge=root.AddComponent<ModularAvatarMergeAnimator>();merge.animator=fx;merge.layerType=VRCAvatarDescriptor.AnimLayerType.FX;merge.pathMode=MergeAnimatorPathMode.Relative;merge.matchAvatarWriteDefaults=false;
                 var parameters=root.AddComponent<ModularAvatarParameters>();foreach(string name in new[]{N("Ctl")}.Concat(Enumerable.Range(0,29).Select(i=>D(i))))parameters.parameters.Add(new ParameterConfig{nameOrPrefix=name,syncType=ParameterSyncType.Int,localOnly=false,saved=false,hasExplicitDefaultValue=true,defaultValue=name==N("Ctl")?255:0,internalParameter=false});
                 PrefabUtility.SaveAsPrefabAsset(root,Root+"/Decoder.prefab");

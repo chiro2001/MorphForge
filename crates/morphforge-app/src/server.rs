@@ -158,6 +158,7 @@ impl App {
             )
             .route("/api/scene", get(scene))
             .route("/api/text-panels", get(text_panels_list).post(text_panels_action))
+            .route("/api/text-panels/latest",post(text_panels_latest))
             .route("/pixel-fonts/{font}/{kind}", get(pixel_font_asset))
             .route("/api/creative", get(creative_list))
             .route("/api/creative/{domain}", post(creative_action))
@@ -365,6 +366,12 @@ async fn speech_apply(State(a):State<App>,Json(v):Json<Value>)->ApiResult{Ok(Jso
 async fn desktop_window_state(State(a):State<App>)->ApiResult {Ok(Json(a.desktop.status()))}
 async fn desktop_window_action(State(a):State<App>,Json(v):Json<Value>)->ApiResult {Ok(Json(a.desktop.command(&v)?))}
 async fn text_panels_list(State(a):State<App>)->ApiResult {Ok(Json(crate::text_panels::apply(&mut a.workspace.lock().unwrap(),&json!({"action":"list"}),None)?))}
+async fn text_panels_latest(State(a):State<App>,Json(v):Json<Value>)->ApiResult {
+    let id=v["id"].as_str().context("需要文本框id")?;let text=v["text"].as_str().context("需要text")?;
+    if text.len()>32000{return Err(anyhow::anyhow!("实时文字过长").into())}
+    {let w=a.workspace.lock().unwrap();if v["projectId"].as_str()!=Some(w.project.id.as_str()){return Err(anyhow::anyhow!("WORKSPACE_CONFLICT").into())}}
+    a.transport.latest_text(id,text)?;Ok(Json(json!({"ok":true,"latestWindow":14,"persisted":false,"receiverConfirmed":false})))
+}
 async fn text_panels_action(State(a):State<App>,Json(v):Json<Value>)->ApiResult {Ok(Json(a.harness.tool("text_panels",&v,None).await?))}
 async fn pixel_font_asset(AxPath((font,kind)):AxPath<(String,String)>)->Response {
     match crate::text_panels::asset(&font,&kind){Some(bytes)=>([("content-type","application/octet-stream"),("cache-control","public, max-age=86400")],bytes).into_response(),None=>StatusCode::NOT_FOUND.into_response()}
@@ -402,6 +409,9 @@ async fn discover_avatar(a: &App, port: Option<u16>, automatic: bool) -> anyhow:
         (morphforge_core::mf6::REGION_CAPABILITY, "region8"),
         (crate::target::SURFACE_CAPABILITY, "surfaceMasks"),
         ("virtual-light/1", "virtualLight"),
+        (crate::text_wire::CAPABILITY,"textPanels"),
+        ("mf6-text-latest14/1","textPanels"),
+        ("local-placement-controls/1","placementControlsSeparated"),
     ];
     let already_selected = current.as_ref().is_some_and(|c| {
         c.identity_hash() == hash
@@ -426,6 +436,7 @@ async fn discover_avatar(a: &App, port: Option<u16>, automatic: bool) -> anyhow:
             state.generation += 1;
             state.sent_revision = None;
             state.unified.clear_sent();
+            state.text.reset();
             state.last_error = "Avatar能力/构建已改变，已停止发送；确认新目标后重新开启".into();
             report["senderStopped"] = json!(true);
         }

@@ -1,0 +1,34 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "visible=True allowed=True",
+      "pass": true
+    },
+    {
+      "name": "visible=True allowed=False",
+      "pass": true
+    },
+    {
+      "name": "visible=False allowed=True",
+      "pass": true
+    },
+    {
+      "name": "visible=False allowed=False",
+      "pass": true
+    },
+    {
+      "name": "hiding sphere preserves held hand",
+      "pass": true
+    },
+    {
+      "name": "disabling grab releases at current position",
+      "pass": true
+    },
+    {
+      "name": "front dock faces avatar without negative scale",
+      "pass": true
+    }
+  ],
+  "scope": "Actual merged GestureManager Animator with controlled self-contact parameters; no physical VR or remote-player claim."
+}
