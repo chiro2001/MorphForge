@@ -37,6 +37,9 @@ pub fn target_report(scene: &Scene, capacity: usize) -> Value {
             offset[a] = (offset[a] as i64).clamp(lower[a], upper[a]) as i32;
         }
     }
+    for p in &scene.text_panels {let b=p.bounds();for a in 0..3 {lower[a]=lower[a].max(target_min[a]-b.min[a] as i64);upper[a]=upper[a].min(if a==1{256}else{128}-b.max[a] as i64);}}
+    let can_center=(0..3).all(|a|lower[a]<=upper[a]);
+    if can_center {for a in 0..3{offset[a]=(offset[a] as i64).clamp(lower[a],upper[a])as i32;}}
     let extent = bounds
         .as_ref()
         .map(|b| std::array::from_fn::<_, 3, _>(|a| b.max[a] - b.min[a]))
@@ -65,13 +68,15 @@ pub fn target_report(scene: &Scene, capacity: usize) -> Value {
         .iter()
         .filter(|t| t.wire_vertices().is_err())
         .collect();
+    let invalid_text=scene.text_panels.iter().filter(|p|{let b=p.bounds();(0..3).any(|a|b.min[a]<(if a==1{0}else{-128})||b.max[a]>(if a==1{256}else{128}))}).collect::<Vec<_>>();
+    let text_target=crate::text_panels::target_report(scene);
     let object_count = scene.boxes.len() + scene.triangles.len();
     let groups: std::collections::BTreeSet<_> = invalid
         .iter()
         .map(|b| b.group.as_str())
         .chain(invalid_triangles.iter().map(|t| t.group.as_str()))
         .collect();
-    json!({"bounds":bounds,"extent":extent,"targetMin":[-128,0,-128],"targetMax":[128,256,128],"triangleVertexMax":[127,255,127],"centerOffset":offset,"canCenterToFit":can_center,"outOfBoundsCount":invalid.len()+invalid_triangles.len(),"outOfBoundsTriangleCount":invalid_triangles.len(),"outOfBoundsGroups":groups,"boxCount":scene.boxes.len(),"triangleCount":scene.triangles.len(),"objectCount":object_count,"capacity":capacity,"invalidStyleIds":invalid_styles,"fits":invalid.is_empty()&&invalid_triangles.is_empty()&&invalid_styles.is_empty()&&object_count<=capacity,"coordinateSpace":"signed integer grid; Box max bounds exclusive, triangle vertex max inclusive","note":"X/Z允许负数；显示缩放不会扩大256³编码范围。"})
+    json!({"bounds":bounds,"extent":extent,"targetMin":[-128,0,-128],"targetMax":[128,256,128],"triangleVertexMax":[127,255,127],"centerOffset":offset,"canCenterToFit":can_center,"outOfBoundsCount":invalid.len()+invalid_triangles.len()+invalid_text.len(),"outOfBoundsTriangleCount":invalid_triangles.len(),"outOfBoundsGroups":groups,"boxCount":scene.boxes.len(),"triangleCount":scene.triangles.len(),"objectCount":object_count,"capacity":capacity,"invalidStyleIds":invalid_styles,"textPanels":text_target,"fits":invalid.is_empty()&&invalid_triangles.is_empty()&&invalid_text.is_empty()&&text_target["fits"]==true&&invalid_styles.is_empty()&&object_count<=capacity,"coordinateSpace":"signed integer grid; Box max bounds exclusive, triangle vertex max inclusive","note":"X/Z允许负数；显示缩放不会扩大256³编码范围。"})
 }
 pub fn transform(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Value> {
     let base = args["baseRevision"]
@@ -100,19 +105,20 @@ pub fn transform(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<V
         .collect();
     let before = target_report(&w.project.scene, w.project.limits.target_boxes);
     if offset == [0; 3]
-        || (w.project.scene.boxes.is_empty() && w.project.scene.triangles.is_empty())
+        || (w.project.scene.boxes.is_empty() && w.project.scene.triangles.is_empty() && w.project.scene.text_panels.is_empty())
     {
         return Ok(
             json!({"ok":true,"unchanged":true,"dryRun":args["dryRun"]==true,"offset":offset,"revision":base,"before":before,"after":before}),
         );
     }
-    let ops = [Operation::Transform {
+    let mut ops = vec![Operation::Transform {
         ids,
         offset,
         turns: 0,
         mirror: None,
         copy: false,
     }];
+    for p in &w.project.scene.text_panels{let mut p=p.clone();for a in 0..3{p.position[a]+=offset[a]as f64;}ops.push(Operation::TextPanel{value:p});}
     let preview = w.project.scene.apply(&ops, &w.project.limits)?;
     w.ensure_protected_groups_unchanged(&w.project.scene, &preview)?;
     let after = target_report(&preview, w.project.limits.target_boxes);

@@ -17,7 +17,7 @@ pub struct GoalProgress {
 }
 
 pub(super) fn geometry_hash(workspace: &Workspace) -> String {
-    crate::store::hash(&serde_json::to_vec(&json!({"boxes":workspace.project.scene.boxes,"triangles":workspace.project.scene.triangles})).unwrap_or_default())
+    crate::store::hash(&serde_json::to_vec(&json!({"boxes":workspace.project.scene.boxes,"triangles":workspace.project.scene.triangles,"textPanels":workspace.project.scene.text_panels})).unwrap_or_default())
 }
 
 impl Harness {

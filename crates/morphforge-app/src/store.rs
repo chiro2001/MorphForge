@@ -933,6 +933,7 @@ impl Workspace {
             .filter(|group| {
                 protected_boxes(before, group) != protected_boxes(after, group)
                     || protected_triangles(before, group) != protected_triangles(after, group)
+                    || before.text_panels.iter().filter(|p|&p.group==*group).collect::<Vec<_>>() != after.text_panels.iter().filter(|p|&p.group==*group).collect::<Vec<_>>()
             })
             .cloned()
             .collect();

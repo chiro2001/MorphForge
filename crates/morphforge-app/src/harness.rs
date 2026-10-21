@@ -25,8 +25,8 @@ mod prompts;
 mod runtime_materials;
 mod visual_context;
 pub use goal::GoalProgress;
-pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/5.2";
-pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/4.3";
+pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/5.3";
+pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/4.4";
 
 #[derive(Clone, Debug)]
 struct PendingPrompt {
@@ -2143,6 +2143,7 @@ impl Harness {
         }
         match name {
             "get_context" => Ok(self.context_with_options(args)),
+            "text_panels" => {if guard.is_none()&&!matches!(args["action"].as_str(),Some("list"|"inspect")){self.ensure_manual_edit()?;}self.with_workspace_guard(guard.as_ref(),|w|crate::text_panels::apply(w,args,run))},
             "components" | "reference_workbench" | "animation" => {
                 if name == "reference_workbench" && args["action"] == "capture" {
                     return self.capture_views_tool(args,run,guard).await;
@@ -3656,6 +3657,7 @@ pub fn tools_for_language(language: &str) -> Value {
             vec!["title", "summary"]
         ),
     ]);
+    schemas.as_array_mut().unwrap().push(tool("text_panels",if en {"Textured text panels, only when explicitly requested for labels/subtitles. Default authored text remains voxel_text. list/inspect are read-only. create/update/append/remove need baseRevision. panel fields: text,font(pixel16-zh/jp),position(bottom center),rotation(XYZ degrees),size([width,height] cells),fontSize(fullwidth glyph height in cells, default8),letterSpacing,lineGap,align(left/center/right),verticalAlign(top/middle/bottom),overflow(clip/tail/shrink),color(RGB8),background(RGBA8),opacity. Front and back are readable. dryRun previews; capacity and unsupported glyphs are reported."}else{"贴图文本框，仅用于明确要求的字幕/贴图文字；默认艺术文字仍用voxel_text。list/inspect只读；create/update/append/remove需baseRevision。panel字段：text,font(pixel16-zh/jp),position(底部中心),rotation(XYZ角度),size([宽,高]格),fontSize(全宽字高占格数，默认8),letterSpacing,lineGap,align(left/center/right),verticalAlign(top/middle/bottom),overflow(clip/tail/shrink),color(RGB8),background(RGBA8),opacity。正反面均正常可读。dryRun预览，返回排版与缺字。"},json!({"action":{"type":"string","enum":["list","inspect","create","update","append","remove"]},"id":{"type":"string"},"baseRevision":{"type":"integer","minimum":0},"text":{"type":"string"},"panel":{"type":"object"},"dryRun":{"type":"boolean"}}),vec!["action"]));
     let mut capture = schemas
         .as_array()
         .unwrap()

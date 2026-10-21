@@ -28,9 +28,11 @@ pub fn apply(scene:&Scene,value:&Value)->Result<(Scene,Value)> {
     let mut output=scene.clone();
     output.boxes.retain(|b|visible(&b.group,b.min,b.end()));
     output.triangles.retain(|t|{let b=t.bounds();visible(&t.group,b.min,b.max.map(|v|v.saturating_add(1)))});
+    output.text_panels.retain(|p|{let b=p.bounds();visible(&p.group,b.min,b.max.map(|v|v.saturating_add(1)))});
     let offset=|group:&str|spec.offsets.iter().find(|x|x.group==group).map(|x|x.offset).unwrap_or([0;3]);
     for b in &mut output.boxes{let off=offset(&b.group);for a in 0..3{b.min[a]=b.min[a].checked_add(off[a]).context("inspection坐标溢出")?;}}
     for t in &mut output.triangles{let off=offset(&t.group);for p in &mut t.vertices{for a in 0..3{p[a]=p[a].checked_add(off[a]).context("inspection坐标溢出")?;}}}
+    for p in &mut output.text_panels{let off=offset(&p.group);for a in 0..3{p.position[a]+=off[a] as f64;}}
     let report=json!({"inspectionOnly":true,"filter":value,"sourceBoxCount":scene.boxes.len(),"visibleBoxCount":output.boxes.len(),"sourceTriangleCount":scene.triangles.len(),"visibleTriangleCount":output.triangles.len(),"note":"临时观察副本；hideBounds隐藏与范围相交的整个对象，不裁切三角面；不修改作品，不作为完整交付截图。"});
     Ok((output,report))
 }

@@ -1,0 +1,22 @@
+{
+  "format": "MorphForgePixelFont/1",
+  "sourceVersion": "GNU Unifont 18.0.01",
+  "textureWidth": 2048,
+  "textureHeight": 1024,
+  "bytesPerGlyph": 32,
+  "codepoints": 65536,
+  "fonts": {
+    "zh": {
+      "glyphs": 57086,
+      "bitmapBytes": 2097152,
+      "widthBytes": 65536,
+      "sha256": "54c4160bbc82ed2306587d1e53e67cf236f14c77b3a74b4cfe7f5784437d9ac5"
+    },
+    "jp": {
+      "glyphs": 57086,
+      "bitmapBytes": 2097152,
+      "widthBytes": 65536,
+      "sha256": "1ffeb1ad3a5e8aedc61f80a4f14b2a533dfe4faaea11001193113eaf1719aa2e"
+    }
+  }
+}

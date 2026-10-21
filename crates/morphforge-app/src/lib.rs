@@ -39,3 +39,5 @@ pub mod avatar_discovery;
 pub mod catalog_budget;
 
 pub mod inspection;
+
+pub mod text_panels;

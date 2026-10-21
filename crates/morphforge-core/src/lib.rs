@@ -9,3 +9,5 @@ pub mod material_wire;
 pub mod mf6;
 pub mod triangles;
 pub use triangles::Triangle3;
+
+pub mod text_panel;

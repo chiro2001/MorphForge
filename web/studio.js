@@ -1,3 +1,4 @@
+import {setupTextPanelUi} from "/text-panel-ui.js";
 import { setupCreativeUi } from "/creative-ui.js";
 import { composeCapture } from "/comparison.js";
 import { createFeedback } from "/feedback-ui.js";
@@ -64,6 +65,7 @@ let eventRows = [];
 let timelineView = null;
 let activityView = null;
 let creativeUi = null;
+let textPanelUi=null;
 
 let pointerStart = null;
 let loading = false;
@@ -617,12 +619,14 @@ async function refresh(force = false) {
         }
         await renderer.load(sceneData.scene, sceneData.materials, {
           surfaces: sceneData.surfaces,
+          textLayouts:sceneData.textLayouts,
           mode: $("renderMode").value,
           scale:
             $("renderMode").value === "vrc"
               ? state.connection.placement.scale
               : 1,
         });
+        textPanelUi?.sync(sceneData);
         loadedRevision = sceneData.scene.revision;
         loadedPreviewCatalog=previewCatalog;
         selected = new Set(
@@ -681,7 +685,7 @@ function updateState() {
       " → " +
       s.stats.bounds.max.join(",")
     : "范围为空";
-  $("emptyHint").hidden = s.stats.boxCount > 0 || s.stats.triangleCount > 0;
+  $("emptyHint").hidden = s.stats.boxCount > 0 || s.stats.triangleCount > 0 || (sceneData?.scene.textPanels||[]).length>0;
   const target=s.targetCompatibility;
   $("vrcBoundsStatus").textContent=target ? `${target.fits?"坐标/容量可发布":"目标预检未通过"} · ${target.outOfBoundsCount} 个越界对象\n作品尺寸 ${target.extent.join(" × ")} 格${target.outOfBoundsGroups.length?"\n越界分组："+target.outOfBoundsGroups.join("、"):""}` : "";
   const catalog=s.materialCompatibility;
@@ -2420,6 +2424,8 @@ $("textApply").onclick = async () => {
   }
 };
 
+textPanelUi=setupTextPanelUi({$,api,getScene:()=>sceneData,getState:()=>state,renderer,refresh,error,toast,canEdit:()=>manualEditing&&!state?.harness?.manualEditLocked});
+
 setupMinecraftUi({$,api,getState:()=>state,getMaterials:()=>sceneData?.materials,refresh,error,toast});
 
 const creationPreferences=setupMeshUi({$,getScene:()=>sceneData,getState:()=>state,getSelected:()=>selected,getSelectedStyle:()=>selectedStyle,api,edit,refresh,error});
@@ -2440,6 +2446,7 @@ if (captureMode) {
           mode: job.mode,
           scale: 1,
           surfaces: job.surfaces,
+          textLayouts:job.textLayouts,
         });
         if(job.animationClip)renderer.setAnimationPose(job.animationClip,job.animationTime||0);
         const images = await renderer.capture(

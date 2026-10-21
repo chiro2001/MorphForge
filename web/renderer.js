@@ -3,6 +3,7 @@ import { textureOrientationShader } from "/texture-orientation.js";
 import { proceduralShader } from "/procedural-shader.js";
 import { captureSampling, viewPixelRatio } from "/render-settings.js";
 import { fitBounds, resolveCamera } from "/camera-spec.js";
+import { TextPanelRenderer } from "/text-panels.js";
 import { SceneNavigation } from "/navigation.js";
 import { LinearCompositor } from "/linear-compositor.js";
 import * as THREE from "three";
@@ -89,6 +90,7 @@ export class VoxelRenderer {
     this.controls.target.copy(toThree([0, 0.8, 0]));
     this.content = new THREE.Group();
     this.scene.add(this.content);
+    this.textPanels=new TextPanelRenderer(this);
     this.meshes = [];
     this.materials = [];
     this.textures = [];
@@ -464,7 +466,7 @@ export class VoxelRenderer {
     this.updateSelection();
     return true;
   }
-  async load(scene, styles, { mode = this.mode, scale = this.scale, surfaces = null } = {}) {
+  async load(scene, styles, { mode = this.mode, scale = this.scale, surfaces = null, textLayouts = [] } = {}) {
     if(this.disposed)return this;
     if(mode !== this.mode) this.setScale(scale, {
       preserveView: true, nextCellSize: mode === "vrc" ? .25 : (scene.cellSize ?? .25),
@@ -476,6 +478,7 @@ export class VoxelRenderer {
     this.surfaceStats = surfaces || {hiddenFaces:0};
     if (this.tryIncremental(scene, styles, { mode, scale })) {
       this.loadTriangles(scene);
+      await this.textPanels.load(scene.textPanels||[],textLayouts,this.cellSize);
       // Leaving a pose restores all instances, even if only one object was edited.
       if(restoringPose)for(const mesh of this.meshes){mesh.instanceMatrix.clearUpdateRanges();mesh.instanceMatrix.needsUpdate=true;}
       return this;
@@ -490,6 +493,7 @@ export class VoxelRenderer {
     this.renderRevision = scene.revision;
     this.gridSize = scene.size ?? 256;
     this.loadTriangles(scene);
+    await this.textPanels.load(scene.textPanels||[],textLayouts,this.cellSize);
     for (const mesh of this.meshes) {
       this.content.remove(mesh);
       mesh.geometry.dispose();
@@ -808,11 +812,13 @@ export class VoxelRenderer {
     this.updateSelection();
   }
   cameraObjects() {
-    if(this.animationClip)return poseBounds(this.boxes,this.triangles,this.animationClip,this.animationTime);
-    return this.boxes.concat(this.triangles.map(t=>{
+    const geometry=this.animationClip?poseBounds(this.boxes,this.triangles,this.animationClip,this.animationTime):this.boxes.concat(this.triangles.map(t=>{
       const min=[0,1,2].map(a=>Math.min(...t.vertices.map(v=>v[a]))),max=[0,1,2].map(a=>Math.max(...t.vertices.map(v=>v[a])));
       return {id:t.id,group:t.group,min,size:max.map((v,a)=>v-min[a])};
     }));
+    const unit=this.cellSize*this.scale;
+    for(const root of this.textPanels.items.values()){root.updateWorldMatrix(true,true);const b=new THREE.Box3().setFromObject(root);if(b.isEmpty())continue;const min=fromThree(new THREE.Vector3(b.min.x,b.min.y,b.max.z)).map(v=>v/unit),max=fromThree(new THREE.Vector3(b.max.x,b.max.y,b.min.z)).map(v=>v/unit);geometry.push({id:root.userData.textPanel.id,group:root.userData.textPanel.group,min,size:max.map((v,a)=>v-min[a])});}
+    return geometry;
   }
   bounds() {
     const box = new THREE.Box3();
@@ -829,6 +835,7 @@ export class VoxelRenderer {
       box.union(new THREE.Box3().setFromCenterAndSize(center, extent));
     }
     for(const t of this.triangles){if(this.groupsHidden.has(t.group))continue;for(const p of t.vertices)box.expandByPoint(toThree(p.map(v=>v*this.cellSize*this.scale)));}
+    for(const root of this.textPanels.items.values()){root.updateWorldMatrix(true,true);box.union(new THREE.Box3().setFromObject(root));}
     return box;
   }
   bindCamera(camera, target) {
@@ -1040,7 +1047,7 @@ export class VoxelRenderer {
   }
   dispose() {
     if(this.disposed)return;this.disposed=true;
-    this.renderer.setAnimationLoop(null);this.navigation?.dispose();this.resizeObserver.disconnect();this.controls.dispose();
+    this.renderer.setAnimationLoop(null);this.navigation?.dispose();this.textPanels.dispose();this.resizeObserver.disconnect();this.controls.dispose();
     const geometries=new Set(),materials=new Set(),textures=new Set(this.textures);
     this.scene.traverse(object=>{if(object.geometry)geometries.add(object.geometry);if(object.material)for(const material of (Array.isArray(object.material)?object.material:[object.material]))materials.add(material);});
     for(const material of materials){for(const value of Object.values(material))if(value?.isTexture)textures.add(value);material.dispose();}

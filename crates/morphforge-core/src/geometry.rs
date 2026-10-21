@@ -134,6 +134,8 @@ pub struct Scene {
     pub boxes: Vec<Box3>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub triangles: Vec<crate::Triangle3>,
+    #[serde(default,skip_serializing_if="Vec::is_empty",rename="textPanels")]
+    pub text_panels: Vec<crate::text_panel::TextPanel>,
 }
 fn format_default() -> String {
     "MorphForgeScene/1".into()
@@ -147,12 +149,15 @@ impl Default for Scene {
             revision: 0,
             boxes: vec![],
             triangles: vec![],
+            text_panels:vec![],
         }
     }
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "op", rename_all = "snake_case")]
 pub enum Operation {
+    TextPanel { #[serde(flatten)] value:crate::text_panel::TextPanel },
+    RemoveTextPanels { ids:Vec<String> },
     Triangle {
         #[serde(flatten)]
         value: crate::Triangle3,
@@ -406,6 +411,10 @@ impl Scene {
                 bounds = Some(b);
             }
         }
+        for panel in &self.text_panels {
+            *groups.entry(panel.group.clone()).or_insert(0)+=1;
+            let b=panel.bounds();if let Some(ref mut value)=bounds{for a in 0..3{value.min[a]=value.min[a].min(b.min[a]);value.max[a]=value.max[a].max(b.max[a]);}}else{bounds=Some(b);}
+        }
         let mut warnings = vec![];
         if self.boxes.len() + self.triangles.len() > limits.target_boxes {
             warnings.push(format!(
@@ -450,6 +459,8 @@ impl Scene {
         for triangle in &self.triangles {
             triangle.validate(limits)?;
         }
+        if self.text_panels.len()>256{return Err(GeometryError("文本框数量超过256".into()))}
+        let mut text_ids=BTreeSet::new();for panel in &self.text_panels{panel.validate()?;if !text_ids.insert(&panel.id){return Err(GeometryError("文本框id重复".into()))}}
         Ok(())
     }
     pub fn apply(&self, operations: &[Operation], limits: &Limits) -> Result<Self> {
@@ -468,6 +479,7 @@ impl Scene {
             index.add(&b);
             all.insert(b.id, b);
         }
+        let mut text_panels=self.text_panels.iter().cloned().map(|p|(p.id.clone(),p)).collect::<BTreeMap<_,_>>();
         let mut triangles = BTreeMap::new();
         for item in &self.triangles {
             let mut t = item.clone();
@@ -500,6 +512,8 @@ impl Scene {
         }
         for op in operations {
             match op {
+                Operation::TextPanel{value}=>{value.validate()?;text_panels.insert(value.id.clone(),value.clone());if text_panels.len()>256{return Err(GeometryError("文本框数量超过256".into()))}}
+                Operation::RemoveTextPanels{ids}=>{for id in ids{text_panels.remove(id);}}
                 Operation::Triangle { value } => {
                     value.validate(limits)?;
                     let mut value = value.clone();
@@ -539,11 +553,13 @@ impl Scene {
                         }
                     }
                     triangles.retain(|_, t| t.group != *name);
+                    text_panels.retain(|_,p|p.group!=*name);
                 }
                 Operation::Clear => {
                     all.clear();
                     index = Index::default();
                     triangles.clear();
+                    text_panels.clear();
                 }
                 Operation::Box { value } => {
                     value.validate(limits)?;
@@ -722,6 +738,7 @@ impl Scene {
             },
             boxes,
             triangles: triangles.into_values().collect(),
+            text_panels:text_panels.into_values().collect(),
             ..self.clone()
         })
     }

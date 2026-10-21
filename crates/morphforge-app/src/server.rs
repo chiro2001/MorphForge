@@ -142,6 +142,8 @@ impl App {
                 get(view_settings).post(view_settings_save),
             )
             .route("/api/scene", get(scene))
+            .route("/api/text-panels", get(text_panels_list).post(text_panels_action))
+            .route("/pixel-fonts/{font}/{kind}", get(pixel_font_asset))
             .route("/api/creative", get(creative_list))
             .route("/api/creative/{domain}", post(creative_action))
             .route("/api/creative/animation/{id}/export", get(animation_export))
@@ -332,8 +334,13 @@ async fn scene(State(a): State<App>, Query(q): Query<Revision>) -> ApiResult {
     let surfaces = morphforge_core::surfaces::transparent_interfaces(&scene, &materials);
     let transport = a.transport.inner.lock().unwrap();
     Ok(Json(
-        json!({"scene":crate::target::decorate_preview(&scene,&materials,transport.avatar_catalog.as_ref()),"materials":crate::target::preview_materials(&materials,transport.avatar_catalog.as_ref()),"surfaces":surfaces}),
+        json!({"scene":crate::target::decorate_preview(&scene,&materials,transport.avatar_catalog.as_ref()),"materials":crate::target::preview_materials(&materials,transport.avatar_catalog.as_ref()),"surfaces":surfaces,"textLayouts":crate::text_panels::layouts(&scene)?}),
     ))
+}
+async fn text_panels_list(State(a):State<App>)->ApiResult {Ok(Json(crate::text_panels::apply(&mut a.workspace.lock().unwrap(),&json!({"action":"list"}),None)?))}
+async fn text_panels_action(State(a):State<App>,Json(v):Json<Value>)->ApiResult {Ok(Json(a.harness.tool("text_panels",&v,None).await?))}
+async fn pixel_font_asset(AxPath((font,kind)):AxPath<(String,String)>)->Response {
+    match crate::text_panels::asset(&font,&kind){Some(bytes)=>([("content-type","application/octet-stream"),("cache-control","public, max-age=86400")],bytes).into_response(),None=>StatusCode::NOT_FOUND.into_response()}
 }
 async fn avatar_discover(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     let port = v

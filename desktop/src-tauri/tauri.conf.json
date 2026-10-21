@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "MorphForge Desktop",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "identifier": "com.morphforge.desktop",
   "build": {
     "frontendDist": "../ui"
@@ -47,7 +47,9 @@
       "../../references/ATTRIBUTION.md": "licenses/REFERENCE-ATTRIBUTION.md",
       "../../examples/ATTRIBUTION.md": "licenses/EXAMPLE-ATTRIBUTION.md",
       "../../examples/licenses/": "licenses/examples/",
-      "../../materials/PIXEL-WORKSHOP-LICENSE.txt": "licenses/PIXEL-WORKSHOP-MIT.txt"
+      "../../materials/PIXEL-WORKSHOP-LICENSE.txt": "licenses/PIXEL-WORKSHOP-MIT.txt",
+      "../../fonts/pixel16/UNIFONT-OFL-1.1.txt": "licenses/pixel16/OFL-1.1.txt",
+      "../../fonts/pixel16/ATTRIBUTION.md": "licenses/pixel16/ATTRIBUTION.md"
     }
   }
 }

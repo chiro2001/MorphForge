@@ -314,6 +314,7 @@ pub fn project_wire(
     materials: &[Material],
     profile: Option<&AvatarCatalog>,
 ) -> Result<Projection> {
+    if !scene.text_panels.is_empty() && !profile.is_some_and(|c|c.capabilities.iter().any(|v|v=="mf6-text-panels/1")) {bail!("AVATAR_TEXT_UNSUPPORTED：当前Avatar未声明贴图文本框能力，请更新插件后识别；没有静默丢弃文字。");}
     if !profile.is_some_and(AvatarCatalog::runtime_materials) {
         return Ok(Projection {
             scene: legacy_project(scene, materials, profile)?,
@@ -361,6 +362,7 @@ pub fn project(
     materials: &[Material],
     profile: Option<&AvatarCatalog>,
 ) -> Result<Scene> {
+
     Ok(project_wire(scene, materials, profile)?.scene)
 }
 

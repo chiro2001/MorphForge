@@ -1691,3 +1691,8 @@ body.ai-editing .manual-edit-toggle {opacity:.6;}
 
 .composer-actions #sendMessage {grid-column:1/-1;width:100%;}
 #tab-ai>#runStatus {display:none;}
+
+.panel-move-buttons {display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin:8px 0;}
+.panel-move-buttons button{padding:6px 2px;}
+#textPanelEditor textarea{width:100%;}
+#textPanelEditor .triple input{width:100%;}
