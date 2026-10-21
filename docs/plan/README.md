@@ -68,6 +68,8 @@ Rust核心、共享前端、Harness、MF3发布适配器、材质目录与Window
 
 ## 文档索引
 
+- [2026-10-22 下一轮文字、语音与交互需求（待实现）](../text-animation/REQUIREMENTS.md)
+
 - [架构与前端](ARCHITECTURE.md)
 - [Harness、日志、作品库、compact](HARNESS.md)
 - [材质与Minecraft](MATERIALS.md)
