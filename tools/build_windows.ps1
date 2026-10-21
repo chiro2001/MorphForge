@@ -81,6 +81,15 @@ if ($recipeSource -notmatch "std::env::current_exe" -or $recipeSource -notmatch 
     throw "The recipe worker no longer invokes current_exe() with the recipe-worker subcommand."
 }
 
+$versionMatch = [regex]::Match((Get-Content -LiteralPath $coreManifest -Raw), '(?m)^version\s*=\s*"([^"]+)"')
+if (-not $versionMatch.Success) { throw "Cannot read workspace version from $coreManifest" }
+$expectedCoreVersion = "morphforge " + $versionMatch.Groups[1].Value
+$actualCoreVersion = (& $coreToStage --version | Out-String).Trim()
+if ($LASTEXITCODE -ne 0 -or $actualCoreVersion -ne $expectedCoreVersion) {
+    throw "Core version mismatch: expected '$expectedCoreVersion', got '$actualCoreVersion'. Rebuild the core before bundling."
+}
+$coreHash = (Get-FileHash -LiteralPath $coreToStage -Algorithm SHA256).Hash
+
 New-Item -ItemType Directory -Path $sidecarDir -Force | Out-Null
 if ($coreToStage -ne $sidecar) {
     Copy-Item -LiteralPath $coreToStage -Destination $sidecar -Force
@@ -124,6 +133,9 @@ $releaseRuntime = Join-Path $desktopTargetDir "$Target\release"
 $bundledCore = Join-Path $releaseRuntime "morphforge.exe"
 if (-not (Test-Path -LiteralPath $bundledCore)) {
     throw "Tauri build did not stage the sidecar as morphforge.exe at $bundledCore"
+}
+if ((Get-FileHash -LiteralPath $bundledCore -Algorithm SHA256).Hash -ne $coreHash) {
+    throw "Bundled core differs from the version-checked core binary."
 }
 $bundle = Join-Path $releaseRuntime "bundle\nsis"
 if (-not (Test-Path -LiteralPath $bundle)) {
