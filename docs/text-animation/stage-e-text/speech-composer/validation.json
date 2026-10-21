@@ -1,0 +1,34 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "dictation inserts once at existing caret",
+      "passed": true
+    },
+    {
+      "name": "mini apply does not duplicate already inserted dictation",
+      "passed": true
+    },
+    {
+      "name": "explicit correction replaces the inserted segment",
+      "passed": true
+    },
+    {
+      "name": "ongoing dictation preserves manual edits",
+      "passed": true
+    },
+    {
+      "name": "new session appends at new caret instead of replacing old session",
+      "passed": true
+    },
+    {
+      "name": "stop button preserves the final insertion boundary",
+      "passed": true
+    },
+    {
+      "name": "foreign project target never writes the current composer",
+      "passed": true
+    }
+  ],
+  "scope": "Actual Chromium DOM and production speech UI, local API fixture only; no microphone/model/OSC."
+}

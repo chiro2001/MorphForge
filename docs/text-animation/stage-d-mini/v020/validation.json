@@ -1,0 +1,80 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "expected isolated native version, OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "native controller available",
+      "passed": true
+    },
+    {
+      "name": "mini opens and hides main without starting recording",
+      "passed": true
+    },
+    {
+      "name": "pin queries actual native topmost and preserves draft",
+      "passed": true
+    },
+    {
+      "name": "mini opacity is durable and rendered",
+      "passed": true
+    },
+    {
+      "name": "compact controls remain usable",
+      "passed": true
+    },
+    {
+      "name": "small desktop width keeps header controls inside window",
+      "passed": true
+    },
+    {
+      "name": "progress-only mode is actually shown",
+      "passed": true
+    },
+    {
+      "name": "progress-only network/button errors are visible outside speech panel",
+      "passed": true
+    },
+    {
+      "name": "mini text reaches the existing main composer without running AI",
+      "passed": true
+    },
+    {
+      "name": "return-to-main keeps project and backend alive",
+      "passed": true
+    },
+    {
+      "name": "closing mini restores main without stopping backend",
+      "passed": true
+    },
+    {
+      "name": "main topmost is independent",
+      "passed": true
+    },
+    {
+      "name": "no native mini controller error",
+      "passed": true
+    },
+    {
+      "name": "no unexpected model, audio or OSC tasks",
+      "passed": true
+    }
+  ],
+  "embeddedFiles": [
+    {
+      "file": "speech-ui.js",
+      "sha256": "f15778353e608aa8fd8f5adfbb722d32a3f3a6b3582b47e74f23b5b1a1058c7d"
+    },
+    {
+      "file": "mini.js",
+      "sha256": "5c0dbdd32be21c9a8dab7423c46f67c548b6fe89d26a3dfc722cd2e58c1d3740"
+    },
+    {
+      "file": "text-panels.js",
+      "sha256": "772cd2769dc9f140a95342fc091b59581978f21f966a3b5024bd7dfbc8fb27e9"
+    }
+  ],
+  "scope": "Actual isolated Tauri windows/CDP mouse input and OS window state. No microphone, model request or VRChat OSC."
+}

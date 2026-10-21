@@ -44,7 +44,7 @@ def main():
    try:
     with urllib.request.urlopen(req,timeout=30)as f:return json.load(f)
    except urllib.error.HTTPError as e:raise RuntimeError(json.load(e).get('error','HTTP failure'))from None
-  state=api('state');check('expected isolated core version and OSC disabled',state['software']['version']==a.expected_versionand not state['connection']['enabled'])
+  state=api('state');check('expected isolated core version and OSC disabled',state['software']['version']==a.expected_version and not state['connection']['enabled'])
   api('provider/config',{'baseUrl':f'http://127.0.0.1:{fixture.server_port}','apiType':'responses','apiKey':'fixture-local-only','imageDelivery':'inline','stream':True})
   api('harness/config',{'model':'fixture-model','cacheGuard':'observe','strictAppendOnly':True,'maxSteps':2,'goalMode':False})
   import numpy as np,sounddevice as sd

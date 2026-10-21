@@ -16,8 +16,18 @@ try{
  check('mini opens and hides main without starting recording',!(await api('speech')).state.active);
  await mini.js('document.getElementById("speechText").value="小窗草稿必须保留";');await mini.click('#miniPin');await wait(async()=>{const s=await api('desktop/window');return s.nativeStatus?.mini?.pinned===true;});
  check('pin queries actual native topmost and preserves draft',await mini.js('return document.getElementById("speechText").value==="小窗草稿必须保留"'));
+ await mini.click('#miniAppearance summary');await mini.js('const n=document.getElementById("miniOpacity");n.value="0.6";n.dispatchEvent(new Event("input"));n.dispatchEvent(new Event("change"));');await wait(async()=>(await api('desktop/window')).preferences.miniOpacity===.6);
+ check('mini opacity is durable and rendered',await mini.js('return document.body.style.opacity==="0.6"'));
+ await mini.click('#miniCompact');check('compact controls remain usable',await mini.js('return document.body.classList.contains("compact")'));
+ await api('desktop/window',{action:'resize',width:320,height:240});await wait(()=>mini.js('return innerWidth<=330'));check('small desktop width keeps header controls inside window',await mini.js('return [...document.querySelectorAll("header button,header select")].filter(n=>!n.hidden).every(n=>n.getBoundingClientRect().right<=innerWidth+1)'));
+ await api('desktop/window',{action:'resize',width:460,height:360});await wait(()=>mini.js('return innerWidth>=450'));
+
  await mini.js('const n=document.getElementById("miniMode");n.value="progress";n.dispatchEvent(new Event("change"));');await wait(()=>mini.js('return location.search.includes("progress")&&document.getElementById("miniSpeech").hidden&&!document.getElementById("miniProgress").hidden'));
  check('progress-only mode is actually shown',true);
+ await mini.send('Network.enable');await mini.send('Network.setBlockedURLs',{urls:[session.base+'/api/desktop/window']});await mini.click('#miniMain');await wait(()=>mini.js('return !document.getElementById("miniError").hidden'));
+ check('progress-only network/button errors are visible outside speech panel',await mini.js('return document.getElementById("miniSpeech").hidden&&document.getElementById("miniErrorText").textContent.length>0'));
+ await mini.send('Network.setBlockedURLs',{urls:[]});await mini.click('#miniErrorClose');await wait(()=>mini.js('return document.getElementById("miniError").hidden'));
+
  await mini.js('const n=document.getElementById("miniMode");n.value="speech";n.dispatchEvent(new Event("change"));');await wait(()=>mini.js('return location.search.includes("speech")&&document.getElementById("speechStatus").textContent.includes("就绪")'));
  await mini.js('document.getElementById("speechText").value="从语音小窗填入建模输入";');await mini.click('#speechSend');await wait(()=>main.js('return document.getElementById("prompt").value.includes("从语音小窗填入建模输入")'));
  check('mini text reaches the existing main composer without running AI',(await api('state')).harness.run===null);

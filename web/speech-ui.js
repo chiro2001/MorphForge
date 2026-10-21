@@ -38,16 +38,17 @@ export function setupComposerSpeech({$,api,getState,getPanelId,toast,fail}){
  const panelButton=document.createElement('button');panelButton.id='voicePanelText';panelButton.textContent='语音输入';$('panelText').after(panelButton);
  const voxelButton=document.createElement('button');voxelButton.id='voiceVoxelText';voxelButton.textContent='语音输入';$('textContent').after(voxelButton);
  const status=document.createElement('span');status.id='voiceComposerState';status.className='caption';floating.after(status);
- let insertion=null,lastKey='',lastApply='';
+ let insertion=null,lastKey='',lastApply='',insertionSession='';
  function fieldFor(t){if(t.kind==='modeling')return $('prompt');if(t.kind==='voxel_input')return $('textContent');return t.panelId===getPanelId()?$('panelText'):null;}
- async function begin(kind){const t={kind,panelId:kind==='text_panel'?getPanelId():'',projectId:getState()?.project.id};if(kind==='text_panel'&&!t.panelId){toast('请先新建或选择文本框');return;}const field=fieldFor(t);insertion=field?{field,prefix:field.value.slice(0,field.selectionStart),suffix:field.value.slice(field.selectionEnd),written:field.value,touched:false}:null;await start(api,t,fail);}
+ async function begin(kind){if(current?.state.active){await stop(api,false);return;}const t={kind,panelId:kind==='text_panel'?getPanelId():'',projectId:getState()?.project.id};if(kind==='text_panel'&&!t.panelId){toast('请先新建或选择文本框');return;}const field=fieldFor(t);insertion=field?{field,prefix:field.value.slice(0,field.selectionStart),suffix:field.value.slice(field.selectionEnd),written:field.value,touched:false}:null;insertionSession='pending';await start(api,t,fail);}
  promptButton.onclick=()=>begin('modeling').catch(fail);panelButton.onclick=()=>begin('text_panel').catch(fail);voxelButton.onclick=()=>begin('voxel_input').catch(fail);
  for(const field of [$('prompt'),$('panelText'),$('textContent')])field.addEventListener('input',()=>{if(insertion?.field===field&&field.value!==insertion.written)insertion.touched=true;});
  connect(api,v=>{if(v.error){status.textContent=v.error;return;}status.textContent=v.state.active?caption(v):'';for(const button of [promptButton,panelButton,voxelButton])button.textContent=v.state.active?'结束录音':'语音输入';
+ const session=v.state.sessionId||'';if(session!==insertionSession){if(insertionSession!=='pending')insertion=null;insertionSession=session;}
  const t=v.state.target,key=(v.state.sessionId||'')+':'+(v.state.draftVersion||0),apply=v.state.applyRequestId||'';
  if(!t||t.projectId!==getState()?.project.id||key===lastKey&&apply===lastApply)return;lastKey=key;const explicit=apply&&apply!==lastApply;lastApply=apply;
  const field=fieldFor(t);if(!field)return;const text=v.state.draft||'';if(!text&&!explicit)return;
- if(!insertion||insertion.field!==field||explicit){insertion={field,prefix:field.value.slice(0,field.selectionStart),suffix:field.value.slice(field.selectionEnd),written:field.value,touched:false};}
+ if(!insertion||insertion.field!==field||(explicit&&field.value!==insertion.written)){insertion={field,prefix:field.value.slice(0,field.selectionStart),suffix:field.value.slice(field.selectionEnd),written:field.value,touched:false};}
  if(insertion.touched&&!explicit){toast('输入已被手工修改，识别结果保留在语音小窗');return;}
  field.value=t.kind==='text_panel'&&v.settings.autoCaption?text:insertion.prefix+text+insertion.suffix;insertion.written=field.value;field.dispatchEvent(new Event('input',{bubbles:true}));insertion.touched=false;
  });
