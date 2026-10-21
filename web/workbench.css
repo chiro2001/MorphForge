@@ -1696,3 +1696,6 @@ body.ai-editing .manual-edit-toggle {opacity:.6;}
 .panel-move-buttons button{padding:6px 2px;}
 #textPanelEditor textarea{width:100%;}
 #textPanelEditor .triple input{width:100%;}
+
+#voicePrompt,#voiceFloating {min-height:28px;font-size:11px;padding:4px 8px;margin:0 4px 5px 0;}
+#voiceComposerState {font-size:10px;}

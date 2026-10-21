@@ -14,9 +14,9 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 PATTERNS = (
-    "Cargo.toml", "Cargo.lock", "crates/**/Cargo.toml", "crates/**/*.rs",
+    "Cargo.toml", "Cargo.lock", ".cargo/config.toml", "crates/**/Cargo.toml", "crates/**/*.rs",
     "crates/**/*.js", "crates/**/*.md", "crates/**/*.txt", "web/**/*",
-    "fonts/*.otf", "fonts/*.ttf", "fonts/*.txt", "fonts/pixel16/*", "desktop/Cargo.toml",
+    "fonts/*.otf", "fonts/*.ttf", "fonts/*.txt", "fonts/pixel16/*", "models/speech/manifest.json", "models/speech/silero_vad.onnx", "licenses/*.txt", "desktop/Cargo.toml",
     "desktop/Cargo.lock", "desktop/app-icon.svg", "desktop/ui/*",
     "desktop/src-tauri/Cargo.toml", "desktop/src-tauri/build.rs",
     "desktop/src-tauri/tauri.conf.json", "desktop/src-tauri/src/*.rs",

@@ -1,5 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod mini;
+
 use std::fs::{self, OpenOptions};
 use std::io::Write;
 use std::path::{Path, PathBuf};
@@ -116,13 +118,14 @@ fn startup_window<R: tauri::Runtime>(
     state: DesktopState,
 ) -> tauri::Result<WebviewWindow<R>> {
     let expected_port = state.expected_port.clone();
+    let close_port=state.expected_port.clone();
     let page_ready = state.page_ready.clone();
     let (profile, lease) = desktop_webview_profile()?;
     *state._webview_profile_lease.lock().unwrap() = lease;
     // WebView2 environment variables override API options. Keep both in sync;
     // otherwise launchers that set a shared base folder still share a browser.
     std::env::set_var("WEBVIEW2_USER_DATA_FOLDER", &profile);
-    WebviewWindowBuilder::new(app, "main", WebviewUrl::App("index.html".into()))
+    let window=WebviewWindowBuilder::new(app, "main", WebviewUrl::App("index.html".into()))
         .title("MorphForge")
         // WebView2 can share one browser process across apps using the same
         // profile. Keep it private to this native process so closing one Job
@@ -154,7 +157,14 @@ fn startup_window<R: tauri::Runtime>(
                 );
             }
         })
-        .build()
+        .build()?;
+    let handle=window.app_handle().clone();
+    window.on_window_event(move|event|{
+        if let tauri::WindowEvent::CloseRequested{api,..}=event {
+            if handle.get_webview_window("mini").is_some(){api.prevent_close();mini::notify(close_port.load(Ordering::SeqCst),"hide_main");if let Some(main)=handle.get_webview_window("main"){if let Err(e)=main.hide(){eprintln!("[mini] hide main: {e}");}}}
+        }
+    });
+    Ok(window)
 }
 
 fn desktop_webview_profile() -> std::io::Result<(PathBuf, Option<fs::File>)> {
@@ -212,6 +222,7 @@ fn launch_core<R: tauri::Runtime>(
         let mut command = match app.shell().sidecar(SIDECAR_NAME) {
             Ok(command) => command
                 .args(["serve", "--port", "0", "--new-instance-if-busy"])
+                .env("MORPHFORGE_DESKTOP_RUNTIME","1")
                 .set_process_group(true),
             Err(error) => {
                 startup_failure(
@@ -330,6 +341,7 @@ fn launch_core<R: tauri::Runtime>(
                             match window.navigate(url) {
                                 Ok(()) => {
                                     ready = true;
+                                    mini::start(app.clone(),state.clone(),&line);
                                     state.append(&format!(
                                         "[desktop] opening core HTTP UI on 127.0.0.1:{port}"
                                     ));

@@ -1,3 +1,4 @@
+import {setupComposerSpeech,setupSpeechSettings} from "/speech-ui.js";
 import {setupTextPanelUi} from "/text-panel-ui.js";
 import { setupCreativeUi } from "/creative-ui.js";
 import { composeCapture } from "/comparison.js";
@@ -669,7 +670,7 @@ function updateState() {
   $("schemaUpgradeContext").hidden=!harness.context.schemaUpgradeRequired;
   $("saveState").textContent = "已保存 · v" + s.revision;
   $("boxCount").textContent =
-    fmt(s.stats.boxCount) + " Box · " + fmt(s.stats.triangleCount||0) + " 面 / 目标 " + fmt(s.stats.targetBoxes);
+    fmt(s.stats.boxCount) + " Box · " + fmt(s.stats.triangleCount||0) + " 面 · "+fmt(s.stats.textPanelCount||0)+" 文本框 / 目标 " + fmt(s.stats.targetBoxes);
   const usedIds=new Set((sceneData?.scene.boxes||[]).map(b=>b.styleId));
   const usedStyles=(sceneData?.materials||[]).filter(m=>usedIds.has(m.id));
   $("usedMaterialCount").textContent=String(usedStyles.length);
@@ -685,7 +686,7 @@ function updateState() {
       " → " +
       s.stats.bounds.max.join(",")
     : "范围为空";
-  $("emptyHint").hidden = s.stats.boxCount > 0 || s.stats.triangleCount > 0 || (sceneData?.scene.textPanels||[]).length>0;
+  $("emptyHint").hidden = s.stats.boxCount > 0 || s.stats.triangleCount > 0 || s.stats.textPanelCount>0;
   const target=s.targetCompatibility;
   $("vrcBoundsStatus").textContent=target ? `${target.fits?"坐标/容量可发布":"目标预检未通过"} · ${target.outOfBoundsCount} 个越界对象\n作品尺寸 ${target.extent.join(" × ")} 格${target.outOfBoundsGroups.length?"\n越界分组："+target.outOfBoundsGroups.join("、"):""}` : "";
   const catalog=s.materialCompatibility;
@@ -693,6 +694,8 @@ function updateState() {
   setChecked("autoCenterOnFinish",s.project.autoCenterOnFinish);
   if(pendingTransform) $("transformApply").disabled=pendingTransform.baseRevision!==s.revision;
   $("renderDiagnostics").textContent=`实际 WebGL 抗锯齿样本：${renderer.renderer.getContext().getParameter(renderer.renderer.getContext().SAMPLES)} · 内部透明面 ${renderer.surfaceStats?.hiddenFaces||0} 个\n${renderer.textureWarnings.join("\n")}`;
+  $("voiceRecordingBadge").hidden=!s.speechStatus?.active;
+  $("voiceRecordingBadge").disabled=s.speechStatus?.phase==="finishing";
   $("undo").disabled = !s.canUndo;
   $("redo").disabled = !s.canRedo;
   if(!connectionPending){
@@ -2493,7 +2496,7 @@ if (captureMode) {
   loadFonts();
   setInterval(() => refresh(), 700);
   setInterval(pollEvents, 700);
-  setInterval(()=>activityView.load().catch(error),1500);
+  let lastActivityPoll=0;setInterval(()=>{const active=["running","compacting","interrupting"].includes(state?.harness?.interaction?.phase);if(document.hidden||Date.now()-lastActivityPoll<(active?250:1500))return;lastActivityPoll=Date.now();activityView.load().catch(error);},250);
 }
 
 $("manualEditToggle").onclick=()=>{manualEditing=!manualEditing;$("manualEditToggle").textContent=`手工编辑：${manualEditing?"开启":"关闭"}`;$("manualEditToggle").setAttribute("aria-pressed",String(manualEditing));renderer.ghost.visible=false;};
@@ -2501,3 +2504,12 @@ const pendingFold=$("pendingMessages").closest("details");
 $("composerQueueSlot").append($("pendingMessages").parentElement);pendingFold.remove();
 $("composerOptions").prepend($("preset").closest("details"));
 for(const dialog of document.querySelectorAll("dialog"))dialog.addEventListener("click",event=>{if(event.target!==dialog)return;const rect=dialog.getBoundingClientRect();if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)dialog.close();});
+
+$("miniOpen").onclick=async()=>{try{const status=await api("desktop/window");if(!status.native){window.open("/mini.html?mode=speech","morphforge-mini","width=480,height=360");return;}await api("desktop/window",{action:"open",mode:"speech"});await api("desktop/window",{action:"hide_main"});}catch(e){error(e);}};
+$("mainWindowPin").onchange=()=>api("desktop/window",{action:"pin",window:"main",pinned:$("mainWindowPin").checked}).catch(error);
+api("desktop/window").then(v=>{$("mainWindowPin").checked=!!v.preferences.mainPinned;$("mainWindowPin").disabled=!v.native;}).catch(error);
+
+if(!captureMode){setupComposerSpeech({$,api,getState:()=>state,getPanelId:()=>textPanelUi?.selected()||"",toast,fail:error});
+setupSpeechSettings({$,api,fail:error});}
+
+$("voiceRecordingBadge").onclick=()=>api("speech/control",{action:"stop"}).catch(error);

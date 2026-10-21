@@ -46,3 +46,7 @@ provider-model-limits.json
 !Assets/MorphForgeAvatar/CatalogSource/artifacts/
 !Assets/MorphForgeAvatar/CatalogSource/artifacts/**
 !dist/avatar/MorphForge-public-catalog.zip
+
+# Speech cloud credentials and local recordings never enter source control.
+speech-credentials.json
+speech-settings.json

@@ -127,7 +127,7 @@
         ><button id="saveArtwork">保存到作品库</button
         ><button id="importProject">导入</button>
       </div>
-      <button id="libraryOpen">作品库</button
+      <button id="voiceRecordingBadge" hidden>●录音中 · 结束</button><button id="miniOpen">Mini</button><button id="libraryOpen">作品库</button
       ><button id="settingsOpen">设置</button>
       <input type="file" id="projectFile" accept=".json" hidden />
       <span id="connectionBadge" class="badge">独立创作</span>
@@ -848,6 +848,7 @@
                 <option value="observe">观察（不上报缓存的服务）</option>
               </select></label
             >
+            <label class="check"><input id="mainWindowPin" type="checkbox" />主窗口置顶</label>
             <label class="check"><input id="enforceTargetLimits" type="checkbox" checked />完成时检查 VRChat 空间与容量（独立创作可关闭）</label>
             <label class="check"><input id="strictAppendOnly" type="checkbox" checked />严格检查 append-only（异常时阻止请求）</label>
             <label class="message-mode"

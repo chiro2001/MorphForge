@@ -36,6 +36,14 @@ image = { version = "0.25", default-features = false, features = ["png", "jpeg",
 fontdue = "0.9"
 flate2 = "1"
 ttf-parser = { version = "0.25", default-features = false, features = ["std"] }
+sherpa-onnx = "=1.13.0"
+sherpa-onnx-sys = "=1.13.0"
+hmac = "0.12"
+sha1 = "0.10"
+tar = "0.4.44"
+bzip2 = "0.4"
+urlencoding = "2"
+tokio-tungstenite = {version="0.21",default-features=false,features=["connect","rustls-tls-webpki-roots"]}
 
 [target.'cfg(unix)'.dependencies]
 libc = "0.2"
@@ -44,4 +52,5 @@ libc = "0.2"
 tempfile = "3"
 
 [target.'cfg(windows)'.dependencies]
+cpal = "=0.15.3"
 windows-sys = { version = "0.61", features = ["Win32_Foundation", "Win32_System_JobObjects", "Win32_System_Threading", "Win32_Security"] }

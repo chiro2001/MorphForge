@@ -35,6 +35,8 @@ pub struct App {
     pub harness: Harness,
     pub browser: Arc<Mutex<Option<u32>>>,
     pub fonts: Arc<FontCatalog>,
+    pub desktop:Arc<crate::desktop_window::Windows>,
+    pub speech:Arc<crate::speech::Speech>,
     workspace_gate: Arc<tokio::sync::RwLock<()>>,
     text_jobs: Arc<tokio::sync::Semaphore>,
     reference_jobs: Arc<tokio::sync::Semaphore>,
@@ -102,6 +104,8 @@ impl App {
         let transport = Transport::new(workspace.clone());
         let capture = CaptureBroker::new();
         let provider = Provider::new(&root, env.as_deref())?;
+        let desktop=Arc::new(crate::desktop_window::Windows::new(root.clone())?);
+        let speech=crate::speech::Speech::new(root.clone())?;
         let fonts = fonts::shared_default()?;
         let harness = Harness::new_with_fonts(
             workspace.clone(),
@@ -119,6 +123,8 @@ impl App {
             harness,
             browser: Arc::new(Mutex::new(None)),
             fonts,
+            desktop,
+            speech,
             text_jobs: Arc::new(tokio::sync::Semaphore::new(2)),
             reference_jobs: Arc::new(tokio::sync::Semaphore::new(2)),
             minecraft_jobs: Arc::new(tokio::sync::Semaphore::new(2)),
@@ -137,6 +143,15 @@ impl App {
             .route("/api/diagnostics", get(diagnostics))
             .route("/api/metrics", get(metrics))
             .route("/api/state", get(state))
+            .route("/api/speech",get(speech_state))
+            .route("/api/speech/config",post(speech_config))
+            .route("/api/speech/models/download",post(speech_download))
+            .route("/api/speech/devices",get(speech_devices))
+            .route("/api/speech/start",post(speech_start))
+            .route("/api/speech/audio",post(speech_audio))
+            .route("/api/speech/control",post(speech_control))
+            .route("/api/speech/apply",post(speech_apply))
+            .route("/api/desktop/window",get(desktop_window_state).post(desktop_window_action))
             .route(
                 "/api/view-settings",
                 get(view_settings).post(view_settings_save),
@@ -322,6 +337,7 @@ async fn state(State(a): State<App>) -> ApiResult {
         "apiVersion": "mf-http/2"
     });
     value["connection"] = a.transport.state();
+    value["speechStatus"]=a.speech.brief_status();
     value["harness"] = a.harness.state();
     value["capture"] = json!({"browserPid":*a.browser.lock().unwrap()});
     Ok(Json(value))
@@ -337,6 +353,17 @@ async fn scene(State(a): State<App>, Query(q): Query<Revision>) -> ApiResult {
         json!({"scene":crate::target::decorate_preview(&scene,&materials,transport.avatar_catalog.as_ref()),"materials":crate::target::preview_materials(&materials,transport.avatar_catalog.as_ref()),"surfaces":surfaces,"textLayouts":crate::text_panels::layouts(&scene)?}),
     ))
 }
+fn speech_context(a:&App)->crate::speech::SpeechContext{crate::speech::SpeechContext{workspace:a.workspace.clone(),harness:a.harness.clone(),transport:a.transport.clone()}}
+async fn speech_state(State(a):State<App>)->ApiResult{Ok(Json(a.speech.status()))}
+async fn speech_download(State(a):State<App>,Json(v):Json<Value>)->ApiResult{Ok(Json(a.speech.download_models(&v)?))}
+async fn speech_config(State(a):State<App>,Json(v):Json<Value>)->ApiResult{Ok(Json(a.speech.configure(&v)?))}
+async fn speech_devices()->ApiResult{Ok(Json(crate::speech::native::devices()?))}
+async fn speech_start(State(a):State<App>,Json(v):Json<Value>)->ApiResult{Ok(Json(a.speech.start(speech_context(&a),&v)?))}
+async fn speech_audio(State(a):State<App>,Json(v):Json<Value>)->ApiResult{Ok(Json(a.speech.audio(&v)?))}
+async fn speech_control(State(a):State<App>,Json(v):Json<Value>)->ApiResult{Ok(Json(a.speech.control(&v)?))}
+async fn speech_apply(State(a):State<App>,Json(v):Json<Value>)->ApiResult{Ok(Json(a.speech.apply(&speech_context(&a),&v)?))}
+async fn desktop_window_state(State(a):State<App>)->ApiResult {Ok(Json(a.desktop.status()))}
+async fn desktop_window_action(State(a):State<App>,Json(v):Json<Value>)->ApiResult {Ok(Json(a.desktop.command(&v)?))}
 async fn text_panels_list(State(a):State<App>)->ApiResult {Ok(Json(crate::text_panels::apply(&mut a.workspace.lock().unwrap(),&json!({"action":"list"}),None)?))}
 async fn text_panels_action(State(a):State<App>,Json(v):Json<Value>)->ApiResult {Ok(Json(a.harness.tool("text_panels",&v,None).await?))}
 async fn pixel_font_asset(AxPath((font,kind)):AxPath<(String,String)>)->Response {

@@ -1,0 +1,64 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "isolated native v0.19, OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "native controller available",
+      "passed": true
+    },
+    {
+      "name": "mini opens and hides main without starting recording",
+      "passed": true
+    },
+    {
+      "name": "pin queries actual native topmost and preserves draft",
+      "passed": true
+    },
+    {
+      "name": "progress-only mode is actually shown",
+      "passed": true
+    },
+    {
+      "name": "mini text reaches the existing main composer without running AI",
+      "passed": true
+    },
+    {
+      "name": "return-to-main keeps project and backend alive",
+      "passed": true
+    },
+    {
+      "name": "closing mini restores main without stopping backend",
+      "passed": true
+    },
+    {
+      "name": "main topmost is independent",
+      "passed": true
+    },
+    {
+      "name": "no native mini controller error",
+      "passed": true
+    },
+    {
+      "name": "no unexpected model, audio or OSC tasks",
+      "passed": true
+    }
+  ],
+  "embeddedFiles": [
+    {
+      "file": "speech-ui.js",
+      "sha256": "043bb2a42ba2d90e073b824aff0d5d325512208e778a7f716e8a23bf8cb2becd"
+    },
+    {
+      "file": "mini.js",
+      "sha256": "f3d19a125c57b09d9ecac9d3852894686e18225ca6f4d84b93e65eb569f7a6f8"
+    },
+    {
+      "file": "text-panels.js",
+      "sha256": "07fd60c027fba2ac7a5122d38e37ac91bf27c1a4c7e341c42517dafb6ffe6c3c"
+    }
+  ],
+  "scope": "Actual isolated Tauri windows/CDP mouse input and OS window state. No microphone, model request or VRChat OSC."
+}

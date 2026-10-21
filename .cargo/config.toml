@@ -1,0 +1,4 @@
+# sherpa-onnx's official Windows static bundle uses the static MSVC CRT.
+# Keep the application and its native model libraries on the same runtime.
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]

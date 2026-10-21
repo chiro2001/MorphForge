@@ -41,3 +41,7 @@ pub mod catalog_budget;
 pub mod inspection;
 
 pub mod text_panels;
+
+pub mod desktop_window;
+
+pub mod speech;

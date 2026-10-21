@@ -503,6 +503,7 @@ impl Harness {
         let run_id;
         {
             let mut state = self.inner.lock().unwrap();
+            if value["projectId"].as_str().is_some_and(|id|id!=self.workspace.lock().unwrap().project.id) {bail!("WORKSPACE_CONFLICT：消息目标项目已切换");}
             if let Some(receipt) = state.message_acks.get(&request_id) {
                 let same_run = match (&receipt.requested_run_id, &supplied_run_id) {
                     (Some(old), Some(new)) => old == new,
