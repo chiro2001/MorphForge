@@ -65,7 +65,7 @@ try{
    for(const bias of [false,true])for(const yaw of [-65,-40,-15,0,15,40,65])for(const first of [true,false]){
     triangle.material.polygonOffset=bias;triangle.material.needsUpdate=true;triangle.renderOrder=first?0:2;box.renderOrder=1;
     const angle=yaw*Math.PI/180;r.viewShot({id:'probe',projection:'perspective',position:[Math.sin(angle)*16,4.5,Math.cos(angle)*16],target:[0,4,0],fov:42},256,256);
-    const render=()=>{r.renderer.render(r.scene,r.camera);context.drawImage(r.renderer.domElement,0,0);return context.getImageData(0,0,256,256).data;};
+    const render=()=>{r.render();context.drawImage(r.renderer.domElement,0,0);return context.getImageData(0,0,256,256).data;};
     box.visible=false;triangle.visible=false;const empty=render();triangle.visible=true;const tri=render();box.visible=true;triangle.visible=false;const vox=render();triangle.visible=true;const actual=render();let total=0,wrong=0;
     // Art mode adds environment/specular light to pure colors. Compare with
     // actual reference pixels rather than assuming a particular RGB hue.

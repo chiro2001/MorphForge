@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ParticleBoxCatalog
+  m_Shader: {fileID: 4800000, guid: f14cb4041b22eb540ad48c47ab719585, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _CatalogAtlas:
+        m_Texture: {fileID: 2800000, guid: 8f260a141da06d04a87317047b8c69ec, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CatalogFaceMap:
+        m_Texture: {fileID: 2800000, guid: c20ee3f0b9d87564cb3fffd8e740395c, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CatalogLayers:
+        m_Texture: {fileID: 18700000, guid: 78fc65970b885614a8074cadc38b54b9, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CatalogLayers1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CatalogLayers2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CatalogLayers3:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CatalogMeta:
+        m_Texture: {fileID: 2800000, guid: bc6c0466b1050dd4eb106b883505c756, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _CellPixels: 32
+    - _CellSize: 0.25
+    - _LayerBankSize: 2048
+    - _MetaHeight: 64
+    - _MetaWidth: 256
+    - _TriangleOffsetFactor: -1
+    - _TriangleOffsetUnits: -1
+    - _UseFaceMap: 1
+    - _UseLayeredTextures: 1
+    - _VoxelGrid: 0
+    - _WireEncoding: 6
+    m_Colors:
+    - _AtlasSize: {r: 8064, g: 160, b: 0.00012400794, a: 0.00625}
+    - _FaceMapSize: {r: 256, g: 2, b: 0, a: 0}
+  m_BuildTextureStacks: []

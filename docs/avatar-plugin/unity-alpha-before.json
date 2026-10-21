@@ -1,0 +1,132 @@
+{
+  "colorSpace": "Linear",
+  "results": [
+    {
+      "opacity": 0.0,
+      "samplesLinear": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      ],
+      "measuredAlpha": 0.0
+    },
+    {
+      "opacity": 0.1,
+      "samplesLinear": [
+        [
+          0.0197868552,
+          0.0206467267,
+          0.0220440142,
+          0.909999967
+        ],
+        [
+          0.9197868,
+          0.9206467,
+          0.922044,
+          0.909999967
+        ]
+      ],
+      "measuredAlpha": 0.100000046
+    },
+    {
+      "opacity": 0.333333343,
+      "samplesLinear": [
+        [
+          0.06595619,
+          0.06882242,
+          0.07348005,
+          0.777777731
+        ],
+        [
+          0.7326228,
+          0.7354891,
+          0.7401467,
+          0.777777731
+        ]
+      ],
+      "measuredAlpha": 0.333333373
+    },
+    {
+      "opacity": 0.5,
+      "samplesLinear": [
+        [
+          0.09893428,
+          0.103233628,
+          0.110220067,
+          0.75
+        ],
+        [
+          0.5989343,
+          0.603233635,
+          0.6102201,
+          0.75
+        ]
+      ],
+      "measuredAlpha": 0.5
+    },
+    {
+      "opacity": 0.6666667,
+      "samplesLinear": [
+        [
+          0.13191238,
+          0.137644842,
+          0.1469601,
+          0.7777778
+        ],
+        [
+          0.4652457,
+          0.470978141,
+          0.4802934,
+          0.7777778
+        ]
+      ],
+      "measuredAlpha": 0.6666667
+    },
+    {
+      "opacity": 0.9,
+      "samplesLinear": [
+        [
+          0.178081691,
+          0.18582052,
+          0.198396116,
+          0.909999967
+        ],
+        [
+          0.278081715,
+          0.285820544,
+          0.29839614,
+          0.909999967
+        ]
+      ],
+      "measuredAlpha": 0.9
+    },
+    {
+      "opacity": 1.0,
+      "samplesLinear": [
+        [
+          0.197868556,
+          0.206467256,
+          0.220440134,
+          1.0
+        ],
+        [
+          0.197868556,
+          0.206467256,
+          0.220440134,
+          1.0
+        ]
+      ],
+      "measuredAlpha": 1.0
+    }
+  ],
+  "scope": "Production material and Shader, actual GPU, diagnostic standard cube and precise catalog alpha. Two backgrounds isolate the blend factor. Not a native particle execution test."
+}

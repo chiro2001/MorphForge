@@ -24,7 +24,7 @@ def main():
    const convert=n=>new THREE.Vector3(n.x,n.y,-n.z),normals=[new THREE.Vector3(1,0,0),new THREE.Vector3(-1,0,0),new THREE.Vector3(0,1,0),new THREE.Vector3(0,-1,0),new THREE.Vector3(0,0,1),new THREE.Vector3(0,0,-1)];
    const colors=[[1,0,0],[0,1,0],[0,0,1],[1,1,0],[0,1,1],[1,0,1]],axes=[new THREE.Quaternion(),new THREE.Quaternion().setFromAxisAngle(normals[4],Math.PI/2),new THREE.Quaternion().setFromAxisAngle(normals[0],Math.PI/2),new THREE.Quaternion().setFromAxisAngle(normals[0],-Math.PI/2),new THREE.Quaternion().setFromAxisAngle(normals[4],Math.PI),new THREE.Quaternion().setFromAxisAngle(normals[4],-Math.PI/2)];
    const scene={format:'MorphForgeScene/2',revision:1,cellSize:.25,size:256,boxes:[{id:1,min:[-4,-4,-4],size:[8,8,8],styleId:arguments[0].id,tintId:0,motionPhase:0,group:'gpu'}],triangles:[]};
-   function view(n){r.helpers.visible=false;r.camera.position.copy(convert(n.clone().multiplyScalar(5)));r.camera.up.copy(convert(Math.abs(n.y)>.5?normals[4]:normals[2]));r.camera.lookAt(0,0,0);r.camera.updateMatrixWorld();r.renderer.render(r.scene,r.camera);}
+   function view(n){r.helpers.visible=false;r.camera.position.copy(convert(n.clone().multiplyScalar(5)));r.camera.up.copy(convert(Math.abs(n.y)>.5?normals[4]:normals[2]));r.camera.lookAt(0,0,0);r.camera.updateMatrixWorld();r.render();}
    function pixel(point){const gl=r.renderer.getContext(),size=r.renderer.getDrawingBufferSize(new THREE.Vector2()),p=convert(point).project(r.camera),out=new Uint8Array(4);gl.readPixels(Math.floor((p.x+1)*.5*size.x),Math.floor((p.y+1)*.5*size.y),1,1,gl.RGBA,gl.UNSIGNED_BYTE,out);return [...out];}
    for(let code=0;code<24;code++){
     await r.load(scene,[{...arguments[0],textureRotation:code,textureScale:4}],{mode:'vrc',scale:1});

@@ -476,7 +476,7 @@ Shader "MorphForge/ParticleBoxCatalogMetadataGrid"
             Tags { "Queue"="Transparent" "RenderType"="Transparent" }
             Cull Back
             ZWrite Off
-            Blend SrcAlpha OneMinusSrcAlpha
+            Blend SrcAlpha OneMinusSrcAlpha, One OneMinusSrcAlpha
 
             CGPROGRAM
             #pragma target 3.5

@@ -55,7 +55,7 @@ def main():
    const r=window.__morphforge.renderer,THREE=await import('three');r.renderer.setAnimationLoop(null);r.controls.enabled=false;r.helpers.visible=false;
    const s={id:900,uid:'fixture:leaves',name:'leaf',family:'foliage',color:[1,1,1],roughness:.8,opacity:1,emission:0,renderMode:'cutout',textures:[arguments[0],arguments[0],arguments[0],arguments[0],arguments[0],arguments[1]],frames:1};
    const scene={revision:200,cellSize:.25,size:256,boxes:[{id:1,min:[-4,-4,-4],size:[8,8,8],styleId:900,group:'leaves'}],triangles:[]};
-   await r.load(scene,[s],{mode:'vrc',scale:1});r.camera.position.set(0,0,-5);r.controls.target.set(0,0,0);r.camera.up.set(0,1,0);r.camera.lookAt(0,0,0);r.camera.updateMatrixWorld();r.renderer.render(r.scene,r.camera);
+   await r.load(scene,[s],{mode:'vrc',scale:1});r.camera.position.set(0,0,-5);r.controls.target.set(0,0,0);r.camera.up.set(0,1,0);r.camera.lookAt(0,0,0);r.camera.updateMatrixWorld();r.render();
    const gl=r.renderer.getContext(),size=r.renderer.getDrawingBufferSize(new THREE.Vector2()),pixel=new Uint8Array(4);gl.readPixels(Math.floor(size.x/2),Math.floor(size.y/2),1,1,gl.RGBA,gl.UNSIGNED_BYTE,pixel);
    return {pixel:[...pixel],doubleSided:r.meshes[0].material.side===THREE.DoubleSide};
   })();''',transparent,green)

@@ -1,0 +1,978 @@
+{
+  "success": true,
+  "vrcFury": true,
+  "checks": [
+    {
+      "name": "uncompressible over-budget rejected without changing sync flags",
+      "pass": true
+    },
+    {
+      "name": "compressed geometry rejected even when budget fits",
+      "pass": true
+    },
+    {
+      "name": "standalone duplicate install blocked",
+      "pass": true
+    },
+    {
+      "name": "standalone SDK preprocessing",
+      "pass": true
+    },
+    {
+      "name": "menu-compression duplicate install blocked",
+      "pass": true
+    },
+    {
+      "name": "menu-compression SDK preprocessing",
+      "pass": true
+    }
+  ],
+  "reports": [
+    {
+      "name": "standalone",
+      "built": true,
+      "error": null,
+      "budget": {
+        "success": true,
+        "totalBits": 253,
+        "remainingBits": 3,
+        "geometryBits": 240,
+        "invalidDirectParameters": [],
+        "parameters": [
+          {
+            "name": "MF_World",
+            "type": "Bool",
+            "networkSynced": true
+          },
+          {
+            "name": "MF_Handle",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Scale",
+            "type": "Float",
+            "networkSynced": true
+          },
+          {
+            "name": "MF_Reset",
+            "type": "Bool",
+            "networkSynced": true
+          },
+          {
+            "name": "MF_GrabL",
+            "type": "Bool",
+            "networkSynced": true
+          },
+          {
+            "name": "MF_GrabR",
+            "type": "Bool",
+            "networkSynced": true
+          },
+          {
+            "name": "MF_Level",
+            "type": "Bool",
+            "networkSynced": true
+          },
+          {
+            "name": "MF_Grab",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF5_ScaleDummy",
+            "type": "Float",
+            "networkSynced": false
+          },
+          {
+            "name": "MF5_ScalePreset",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF6_Ctl",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D00",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D01",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D02",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D03",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D04",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D05",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D06",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D07",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D08",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D09",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D10",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D11",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D12",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D13",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D14",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D15",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D16",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D17",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D18",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D19",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D20",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D21",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D22",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D23",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D24",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D25",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D26",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D27",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D28",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF_InfoVersion",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_InfoFeatures",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_InfoBuild0",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_InfoBuild1",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_InfoBuild2",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog00",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog01",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog02",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog03",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog04",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog05",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog06",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog07",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog08",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog09",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog10",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog11",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog12",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog13",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog14",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog15",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog16",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog17",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog18",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog19",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog20",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog21",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog22",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog23",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog24",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog25",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog26",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog27",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog28",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog29",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog30",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog31",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Plugin",
+            "type": "Int",
+            "networkSynced": false
+          }
+        ],
+        "note": "检查在 VRCFury 压缩之后执行；不会关闭其他参数的同步。"
+      }
+    },
+    {
+      "name": "menu-compression",
+      "built": true,
+      "error": null,
+      "budget": {
+        "success": true,
+        "totalBits": 256,
+        "remainingBits": 0,
+        "geometryBits": 240,
+        "invalidDirectParameters": [],
+        "parameters": [
+          {
+            "name": "VF WNV",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "VF 2022.3.22f1",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "VF 3.10.5",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "VF 1.1430.0",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "Clothes0",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "Clothes1",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "Clothes2",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "Clothes3",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "Clothes4",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "Clothes5",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "Clothes6",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "Clothes7",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_World",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Handle",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Scale",
+            "type": "Float",
+            "networkSynced": true
+          },
+          {
+            "name": "MF_Reset",
+            "type": "Bool",
+            "networkSynced": true
+          },
+          {
+            "name": "MF_GrabL",
+            "type": "Bool",
+            "networkSynced": true
+          },
+          {
+            "name": "MF_GrabR",
+            "type": "Bool",
+            "networkSynced": true
+          },
+          {
+            "name": "MF_Level",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Grab",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF5_ScaleDummy",
+            "type": "Float",
+            "networkSynced": false
+          },
+          {
+            "name": "MF5_ScalePreset",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF6_Ctl",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D00",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D01",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D02",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D03",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D04",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D05",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D06",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D07",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D08",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D09",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D10",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D11",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D12",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D13",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D14",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D15",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D16",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D17",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D18",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D19",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D20",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D21",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D22",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D23",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D24",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D25",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D26",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D27",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF6_D28",
+            "type": "Int",
+            "networkSynced": true
+          },
+          {
+            "name": "MF_InfoVersion",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_InfoFeatures",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_InfoBuild0",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_InfoBuild1",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_InfoBuild2",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog00",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog01",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog02",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog03",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog04",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog05",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog06",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog07",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog08",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog09",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog10",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog11",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog12",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog13",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog14",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog15",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog16",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog17",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog18",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog19",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog20",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog21",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog22",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog23",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog24",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog25",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog26",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog27",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog28",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog29",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog30",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Catalog31",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "MF_Plugin",
+            "type": "Int",
+            "networkSynced": false
+          },
+          {
+            "name": "VF56_SyncIndex0",
+            "type": "Bool",
+            "networkSynced": true
+          },
+          {
+            "name": "VF56_SyncIndex1",
+            "type": "Bool",
+            "networkSynced": true
+          },
+          {
+            "name": "VF56_SyncIndex2",
+            "type": "Bool",
+            "networkSynced": true
+          },
+          {
+            "name": "VF56_SyncDataBool0",
+            "type": "Bool",
+            "networkSynced": true
+          },
+          {
+            "name": "VF56_SyncDataBool1",
+            "type": "Bool",
+            "networkSynced": true
+          },
+          {
+            "name": "VF56_Clothes0",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "VF56_Clothes1",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "VF56_Clothes2",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "VF56_Clothes3",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "VF56_Clothes4",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "VF56_Clothes5",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "VF56_Clothes6",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "VF56_Clothes7",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "VF56_MF_World",
+            "type": "Bool",
+            "networkSynced": false
+          },
+          {
+            "name": "VF56_MF_Level",
+            "type": "Bool",
+            "networkSynced": false
+          }
+        ],
+        "note": "检查在 VRCFury 压缩之后执行；不会关闭其他参数的同步。"
+      }
+    }
+  ],
+  "scope": "Synthetic humanoid fixture, real MA/NDMF and SDK preprocessing callbacks. No commercial Avatar asset or real VRChat connection."
+}

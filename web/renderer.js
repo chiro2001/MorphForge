@@ -3,6 +3,7 @@ import { textureOrientationShader } from "/texture-orientation.js";
 import { proceduralShader } from "/procedural-shader.js";
 import { captureSampling, viewPixelRatio } from "/render-settings.js";
 import { fitBounds, resolveCamera } from "/camera-spec.js";
+import { LinearCompositor } from "/linear-compositor.js";
 import * as THREE from "three";
 import { OrbitControls } from "/vendor/OrbitControls.js";
 
@@ -74,6 +75,7 @@ export class VoxelRenderer {
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.15;
+    this.compositor = new LinearCompositor(this.renderer);
     container.append(this.renderer.domElement);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enabled = interactive;
@@ -155,9 +157,13 @@ export class VoxelRenderer {
       this.onAnimationFrame?.(time / 1000);
       this.controls.update();
       for (const uniforms of this.uniforms) uniforms.mfTime.value = time / 1000;
-      this.renderer.render(this.scene, this.camera);
+      this.render();
     };
     this.renderer.setAnimationLoop(this.animationLoop);
+  }
+  render() {
+    this.compositor.material.toneMapped = this.mode !== "vrc";
+    this.compositor.render(this.scene, this.camera);
   }
   setViewOptions({quality = this.quality, voxelGrid = this.voxelGrid, surfaceCulling = this.surfaceCulling, showTargetBounds = this.targetBounds.visible} = {}) {
     this.quality = quality;
@@ -655,7 +661,7 @@ export class VoxelRenderer {
     this.content.scale.setScalar(scale);
     this.makeGrid();
     this.updateSelection();
-    this.renderer.render(this.scene, this.camera);
+    this.render();
     return this;
   }
   makeGrid() {
@@ -853,7 +859,7 @@ export class VoxelRenderer {
     this.camera.updateProjectionMatrix();
     this.camera.lookAt(center);
     this.controls.update();
-    this.renderer.render(this.scene, this.camera);
+    this.render();
   }
   projectPoint(p) {
     const v = toThree(p).multiplyScalar(this.scale).project(this.camera),
@@ -1045,7 +1051,7 @@ export class VoxelRenderer {
     this.scene.traverse(object=>{if(object.geometry)geometries.add(object.geometry);if(object.material)for(const material of (Array.isArray(object.material)?object.material:[object.material]))materials.add(material);});
     for(const material of materials){for(const value of Object.values(material))if(value?.isTexture)textures.add(value);material.dispose();}
     for(const geometry of geometries)geometry.dispose();for(const texture of textures)texture.dispose();this.environment?.dispose?.();
-    this.renderer.dispose();this.renderer.domElement.remove();
+    this.compositor.dispose();this.renderer.dispose();this.renderer.domElement.remove();
   }
   async capture(views, width = 768, height = 640, shots = null, options = {}) {
     const pixelRatio = this.renderer.getPixelRatio(),
@@ -1081,7 +1087,7 @@ export class VoxelRenderer {
         }
         for (const uniforms of this.uniforms) uniforms.mfTime.value = 0;
         this.sortTransparency();
-        this.renderer.render(this.scene, this.camera);
+        this.render();
         images.push({
           view,
           data: (()=>{const canvas=document.createElement("canvas");canvas.width=width;canvas.height=height;const c=canvas.getContext("2d");c.imageSmoothingEnabled=true;c.imageSmoothingQuality="high";c.drawImage(this.renderer.domElement,0,0,width,height);return canvas.toDataURL("image/png");})(),

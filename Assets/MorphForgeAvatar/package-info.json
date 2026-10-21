@@ -1,0 +1,12 @@
+{
+  "name": "MorphForge Avatar",
+  "version": "1.0.0",
+  "protocol": "mf6",
+  "capacity": 16384,
+  "geometryBits": 240,
+  "placementBits": 13,
+  "unity": "2022.3",
+  "required": ["com.vrchat.avatars", "nadena.dev.modular-avatar"],
+  "optional": ["com.vrcfury.vrcfury"],
+  "catalogIdentity": "17fca98f3f7fba056af0448af0be57d1bbb11fe09dbd2020a7f111378e369047"
+}

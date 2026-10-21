@@ -41,3 +41,8 @@ provider-model-limits.json
 /Docs/MF6/MinecraftSource/
 /Docs/StreamV16/catalog.json
 /minecraft-*-client.jar
+
+# Original public Avatar textures and the small matching catalog deliverable.
+!Assets/MorphForgeAvatar/CatalogSource/artifacts/
+!Assets/MorphForgeAvatar/CatalogSource/artifacts/**
+!dist/avatar/MorphForge-public-catalog.zip

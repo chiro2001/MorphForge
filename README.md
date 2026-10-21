@@ -62,6 +62,8 @@ Box 是可以合并的长方体，数量与实际占用格数不同。展示作�
 - **摆放与抓取**：使用金色定位球移动整体作品，选择世界固定／跟随 Avatar、保持水平和缩放；光球显示时可用手势抓放。
 - **切换与补播**：读取 Avatar 能力参数匹配协议和材质目录，使用作品库切换内容，通过周期或连续补播帮助晚加入者和漏帧恢复。
 
+可导入[独立 Avatar 插件](dist/avatar/MorphForgeAvatar-1.0.0.unitypackage)，在 Unity 的 `Tools > MorphForge Avatar > 安装与检查` 一键安装到自己的模型；需要 Modular Avatar，可选 VRCFury 压缩服装等菜单参数。安装与材质目录说明见[插件使用文档](Assets/MorphForgeAvatar/README.md)。
+
 发布需要已配置 MorphForge 显示模块的 **PC/PCVR Avatar**。在工作台识别并匹配目录后，选择 `VRChat 9000` 开启发送；多个窗口中只有一个可以占用 OSC。
 
 <details>
@@ -79,7 +81,7 @@ Box 是可以合并的长方体，数量与实际占用格数不同。展示作�
 
 | 项目 | 当前支持 |
 | --- | --- |
-| 协议与空间 | MF6，240 bit 几何通道 + 14 bit 定位；`256³` 逻辑空间，配置容量 16,384 个 Box／三角面。 |
+| 协议与空间 | MF6，240 bit 几何通道；独立插件默认定位 13 bit（旧配套 Avatar 为 14 bit）；`256³` 逻辑空间，配置容量 16,384 个 Box／三角面。 |
 | 发送与恢复 | 0.10／0.20／0.25／0.28／0.30／0.40／0.50 秒档，支持保留显示的补播；进度条表示本机 UDP 写出。 |
 | 颜色与贴图 | 新纯色、量化 PBR 和程序材质可实时发送；新的图片贴图需要重新构建 Avatar。 |
 | Minecraft 材质 | 公开程序包含原创像素资源，也支持导入用户资源包。私人配套 Avatar 已验证原版 1.21.1 材质；原版 PNG/JAR 不随公开安装包分发。 |
@@ -90,6 +92,7 @@ Box 是可以合并的长方体，数量与实际占用格数不同。展示作�
 
 ## 文档与开发
 
+- [Avatar 插件与透明度验证](docs/avatar-plugin/README.md) · [插件安装说明](Assets/MorphForgeAvatar/README.md)
 - [使用指南](docs/USER-GUIDE.md) · [参考图用法与来源](docs/references/README.md) · [创作工具说明](docs/HARNESS-QUALITY-TOOLS.md)
 - [参考对照、组件与动画 API](docs/creative-v15/API.md) · [版本记录](docs/DELIVERY.md) · [0.16 正式安装与验证](docs/release-v16/RESULTS.md)
 - [源码与克隆](docs/GIT-SOURCE.md) · [Windows 桌面构建](desktop/README.md) · [Unity 操作规范](UNITY-GUIDE.md) · [历史原型](docs/history/README-stage1-3.md)

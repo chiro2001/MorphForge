@@ -237,7 +237,7 @@ def main():
                 r.helpers.visible=false;
                 const render=visible=>{
                   r.textPreviewGroup.visible=visible;
-                  r.renderer.render(r.scene,r.camera);
+                  r.render();
                   const copy=document.createElement('canvas');
                   copy.width=canvas.width;copy.height=canvas.height;
                   const ctx=copy.getContext('2d',{willReadFrequently:true});
@@ -389,7 +389,7 @@ def main():
                 const r=window.__morphforge.renderer;
                 const canvas=r.renderer.domElement;
                 r.content.visible=false;r.helpers.visible=false;r.textPreviewGroup.visible=true;
-                r.renderer.render(r.scene,r.camera);
+                r.render();
                 return canvas.toDataURL('image/png');
                 """
             )

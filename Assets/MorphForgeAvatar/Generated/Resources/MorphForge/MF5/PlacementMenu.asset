@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -340790334, guid: 67cc4cb7839cd3741b63733d5adf0442, type: 3}
+  m_Name: MorphForge placement(Clone)
+  m_EditorClassIdentifier: 
+  Parameters: {fileID: 0}
+  controls:
+  - name: "\u56FA\u5B9A\u5728\u4E16\u754C"
+    icon: {fileID: 0}
+    type: 102
+    parameter:
+      name: MF_World
+    value: 1
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: "\u663E\u793A\u5B9A\u4F4D\u7403"
+    icon: {fileID: 0}
+    type: 102
+    parameter:
+      name: MF_Handle
+    value: 1
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: "\u7F29\u653E\u6BD4\u4F8B"
+    icon: {fileID: 0}
+    type: 103
+    parameter:
+      name: 
+    value: 1
+    style: 0
+    subMenu: {fileID: 11400000, guid: bd0bd6ac8f69c0e448c54918409ca3d9, type: 2}
+    subParameters: []
+    labels: []
+  - name: "\u79FB\u5230\u9762\u524D"
+    icon: {fileID: 0}
+    type: 101
+    parameter:
+      name: MF_Reset
+    value: 1
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: "\u5DE6\u624B\u8DDF\u968F\uFF08\u83DC\u5355\uFF09"
+    icon: {fileID: 0}
+    type: 102
+    parameter:
+      name: MF_Grab
+    value: 1
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: "\u53F3\u624B\u8DDF\u968F\uFF08\u83DC\u5355\uFF09"
+    icon: {fileID: 0}
+    type: 102
+    parameter:
+      name: MF_Grab
+    value: 2
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: "\u4FDD\u6301\u6C34\u5E73"
+    icon: {fileID: 0}
+    type: 102
+    parameter:
+      name: MF_Level
+    value: 1
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
