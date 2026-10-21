@@ -25,13 +25,13 @@ namespace MorphForgeAvatar.Editor {
         void OnEnable() { if (Selection.activeGameObject) avatar = Selection.activeGameObject.GetComponentInParent<VRCAvatarDescriptor>(); }
         void OnGUI() {
             scroll = EditorGUILayout.BeginScrollView(scroll);
-            EditorGUILayout.LabelField("MorphForge Avatar 1.0 · MF6 / 16K", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("在 VCC Avatar 工程安装 Modular Avatar 后，选择人物并安装。上传后由 MorphForge Desktop 经 OSC 驱动。PC / Windows；总容量 16,384 个 box 或三角面。", MessageType.Info);
+            EditorGUILayout.LabelField("MorphForge Avatar 1.1 · MF6 / 16K", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("在 VCC Avatar 工程安装 Modular Avatar 后，选择人物并安装。上传后由 MorphForge Desktop 经 OSC 驱动。PC / Windows；几何总容量16,384个Box或三角面，另有4个128槽中日英点阵文本框。", MessageType.Info);
             avatar = (VRCAvatarDescriptor)EditorGUILayout.ObjectField("目标 Avatar", avatar, typeof(VRCAvatarDescriptor), true);
             EditorGUILayout.LabelField("Modular Avatar", HasMA ? "已检测" : "未安装（必需）");
             EditorGUILayout.LabelField("VRCFury", HasFury ? "已检测（可选）" : "未安装（可选）");
             fury = EditorGUILayout.Toggle("启用 VRCFury 参数压缩桥", fury);
-            EditorGUILayout.HelpBox("几何固定使用 240 bit。定位默认使用 13 bit；光球可见性仅本人本地控制。VRCFury 可压缩菜单中的定位/服装等低频参数，不能压缩逐帧面捕和 OSC 数据。预算超出会阻止构建，不会擅自取消任何其他参数的同步。", MessageType.Info);
+            EditorGUILayout.HelpBox("几何固定使用 240 bit。定位默认使用 13 bit；光球可见性与允许本人抓握独立，本地控制。VRCFury 可压缩菜单中的定位/服装等低频参数，不能压缩逐帧面捕和 OSC 数据。预算超出会阻止构建，不会擅自取消任何其他参数的同步。", MessageType.Info);
             if (avatar) {
                 int cost = avatar.expressionParameters ? avatar.expressionParameters.CalcTotalCost() : 0;
                 EditorGUILayout.LabelField("当前人物参数（合并前）", cost + " / 256 bit");

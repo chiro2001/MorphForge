@@ -37,7 +37,7 @@ public static class PluginAcceptance {
   } finally { UnityEngine.Object.DestroyImmediate(root);UnityEngine.Object.DestroyImmediate(p); }
  }
  public static string Import(){
-  AssetDatabase.ImportPackage("E:/tmp/morphforge/avatar-plugin/dist/MorphForgeAvatar-1.0.0.unitypackage",false);return "Imported via AssetDatabase.ImportPackage";
+  AssetDatabase.ImportPackage("E:/tmp/morphforge/avatar-plugin/dist/MorphForgeAvatar-1.1.0.unitypackage",false);return "Imported via AssetDatabase.ImportPackage";
  }
  public static string Run(){
   var checks=GateChecks();var reports=new JArray();bool hasFury=AvatarSetupWindow.HasFury;

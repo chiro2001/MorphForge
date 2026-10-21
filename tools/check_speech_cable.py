@@ -10,7 +10,7 @@ from pathlib import Path
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 
 def main():
- p=argparse.ArgumentParser();p.add_argument('--exe',type=Path,required=True);p.add_argument('--data',type=Path,required=True);p.add_argument('--out',type=Path,required=True);p.add_argument('--online',action='store_true');a=p.parse_args();a.out.mkdir(parents=True,exist_ok=True)
+ p=argparse.ArgumentParser();p.add_argument('--exe',type=Path,required=True);p.add_argument('--data',type=Path,required=True);p.add_argument('--out',type=Path,required=True);p.add_argument('--expected-version',default='0.20.0');p.add_argument('--online',action='store_true');a=p.parse_args();a.out.mkdir(parents=True,exist_ok=True)
  if a.data.exists():raise RuntimeError('Acceptance data directory must be new')
  checks=[];rows=[];report={'success':False};process=None
  def check(name,value):
@@ -44,7 +44,7 @@ def main():
    try:
     with urllib.request.urlopen(req,timeout=30)as f:return json.load(f)
    except urllib.error.HTTPError as e:raise RuntimeError(json.load(e).get('error','HTTP failure'))from None
-  state=api('state');check('v0.19 isolated core and OSC disabled',state['software']['version']=='0.19.0'and not state['connection']['enabled'])
+  state=api('state');check('expected isolated core version and OSC disabled',state['software']['version']==a.expected_versionand not state['connection']['enabled'])
   api('provider/config',{'baseUrl':f'http://127.0.0.1:{fixture.server_port}','apiType':'responses','apiKey':'fixture-local-only','imageDelivery':'inline','stream':True})
   api('harness/config',{'model':'fixture-model','cacheGuard':'observe','strictAppendOnly':True,'maxSteps':2,'goalMode':False})
   import numpy as np,sounddevice as sd
