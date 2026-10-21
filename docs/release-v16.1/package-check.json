@@ -1,0 +1,28 @@
+{
+  "payload": {
+    "core": "bcb60f1026dff3778ef966583c1c2d5b3e468dcc681808199f29ea674c44efaf",
+    "shell": "c14a304711682036d205cdbe6b87dabca0b74e1e7be521e6f3ad944753b9eb0b"
+  },
+  "finishedAt": "2026-10-21T16:46:06.3345190+00:00",
+  "success": true,
+  "embeddedFiles": [
+    {
+      "sha256": "8e686c7fd65e7d607b338bc5578239f93ff8f13698b546db3977bdce4910eaa7",
+      "file": "renderer.js"
+    },
+    {
+      "sha256": "a23f6eebae8f65310b15c162b878b70a03618090b6ba922ff426878dd4702628",
+      "file": "linear-compositor.js"
+    },
+    {
+      "sha256": "96a8c3d63917d65e02d56188d8af2b7716796bfe811bcf7c52a86da5f916cd8a",
+      "file": "studio.html"
+    }
+  ],
+  "installerBytes": 18315884,
+  "version": "morphforge 0.16.1",
+  "oscEnabled": false,
+  "scope": "Extracted NSIS payload, isolated data, no installation or model requests",
+  "referenceImages": 8,
+  "installerSha256": "203c14194a2fe7a8e67d3ecd08ee5ba07af26d6a535dffd556263221b8c79d91"
+}
