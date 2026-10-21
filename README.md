@@ -4,7 +4,7 @@
 
 MorphForge 是独立的桌面创作工作台：手工编辑、AI Harness、作品库和多视角预览共用一个前端，使用 Tauri + Rust。也可以通过 OSC，把作品逐步搭建到 VRChat Avatar 身边。
 
-**[下载 Windows v0.16.0](https://github.com/chiro2001/MorphForge/releases/tag/v0.16.0)** · [使用指南](docs/USER-GUIDE.md) · [版本与验证记录](docs/DELIVERY.md)
+**[下载 Windows v0.16.1](https://github.com/chiro2001/MorphForge/releases/tag/v0.16.1)** · [使用指南](docs/USER-GUIDE.md) · [版本与验证记录](docs/DELIVERY.md)
 
 ## 作品展示
 
@@ -47,7 +47,7 @@ Box 是可以合并的长方体，数量与实际占用格数不同。展示作�
 
 ## 快速开始
 
-1. 从 [Release](https://github.com/chiro2001/MorphForge/releases/tag/v0.16.0) 安装 Windows x64 版本，打开程序后新建项目，或从作品库载入示例。
+1. 从 [Release](https://github.com/chiro2001/MorphForge/releases/tag/v0.16.1) 安装 Windows x64 版本，打开程序后新建项目，或从作品库载入示例。
 2. 在「设置」中配置 API 地址、模型和 Key。支持 DeepSeek 官方接口，以及兼容的 **Chat Completions / Responses** 服务；兼容接口使用内嵌图片，无需专用图片上传通道。
 3. 在输入区选择建模类型、目标尺寸和参考图，使用快速草图／标准创作／精细作品预设开始创作。也可以直接手工编辑。
 4. 观察截图并继续修改，完成后保存到作品库或导出。连接 VRChat 是可选步骤。

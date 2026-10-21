@@ -15,7 +15,9 @@ $desktop = Join-Path $root "desktop"
 $tauriDir = Join-Path $desktop "src-tauri"
 $sidecarDir = Join-Path $tauriDir "binaries"
 $sidecar = Join-Path $sidecarDir "morphforge-$Target.exe"
-$coreExe = Join-Path $root "target\$Target\release\morphforge.exe"
+$coreTargetDir = if ($env:CARGO_TARGET_DIR) { $env:CARGO_TARGET_DIR } else { Join-Path $root "target" }
+$desktopTargetDir = if ($env:CARGO_TARGET_DIR) { $env:CARGO_TARGET_DIR } else { Join-Path $desktop "target" }
+$coreExe = Join-Path $coreTargetDir "$Target\release\morphforge.exe"
 $iconSource = Join-Path $desktop "app-icon.svg"
 $iconDir = Join-Path $tauriDir "icons"
 
@@ -109,7 +111,7 @@ if ($CheckOnly) {
 
 if ($SkipBundle) {
     Invoke-Checked $cargo.Source @("build", "--manifest-path", (Join-Path $desktop "Cargo.toml"), "--target", $Target) $desktop
-    $debugRuntime = Join-Path $desktop "target\$Target\debug"
+    $debugRuntime = Join-Path $desktopTargetDir "$Target\debug"
     New-Item -ItemType Directory -Path $debugRuntime -Force | Out-Null
     Copy-Item -LiteralPath $sidecar -Destination (Join-Path $debugRuntime "morphforge.exe") -Force
     Write-Host "Desktop shell built without installer: $debugRuntime\morphforge-desktop.exe"
@@ -118,7 +120,7 @@ if ($SkipBundle) {
 }
 
 Invoke-Checked $tauri.Source @("build", "--target", $Target, "--bundles", "nsis") $desktop
-$releaseRuntime = Join-Path $desktop "target\$Target\release"
+$releaseRuntime = Join-Path $desktopTargetDir "$Target\release"
 $bundledCore = Join-Path $releaseRuntime "morphforge.exe"
 if (-not (Test-Path -LiteralPath $bundledCore)) {
     throw "Tauri build did not stage the sidecar as morphforge.exe at $bundledCore"
