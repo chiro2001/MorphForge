@@ -3,6 +3,7 @@ pub mod engine;
 mod models;
 pub mod native;
 pub mod tencent;
+mod translation;
 use crate::{harness::Harness, store::Workspace, transport::Transport};
 use anyhow::{bail, Context, Result};
 use base64::Engine as _;
@@ -52,6 +53,8 @@ pub struct Speech {
     state: Mutex<Value>,
     session: Mutex<Option<Session>>,
     engines: Mutex<Option<engine::Engines>>,
+    translation: Mutex<translation::Queue>,
+    translation_notify: tokio::sync::Notify,
 }
 impl Speech {
     pub fn new(root: PathBuf) -> Result<Arc<Self>> {
@@ -69,6 +72,8 @@ impl Speech {
             ),
             session: Mutex::new(None),
             engines: Mutex::new(None),
+            translation: Mutex::new(translation::Queue::default()),
+            translation_notify: tokio::sync::Notify::new(),
         }))
     }
     pub fn brief_status(&self) -> Value {
@@ -87,9 +92,17 @@ impl Speech {
             bail!("请等待模型下载完成后修改语音配置")
         }
         if self.state.lock().unwrap()["active"] == true
-            && fields
-                .keys()
-                .any(|k| !matches!(k.as_str(), "autoCaption" | "keywordEnabled" | "keyword"))
+            && fields.keys().any(|k| {
+                !matches!(
+                    k.as_str(),
+                    "autoCaption"
+                        | "keywordEnabled"
+                        | "keyword"
+                        | "translationEnabled"
+                        | "translationLanguage"
+                        | "translationModel"
+                )
+            })
         {
             bail!("请结束录音后再更换模型、设备或凭证")
         }
@@ -123,6 +136,14 @@ impl Speech {
         next.validate()?;
         crate::store::write_json(&self.root.join("speech-settings.json"), &next)?;
         *self.settings.lock().unwrap() = next;
+        if fields.keys().any(|k| {
+            matches!(
+                k.as_str(),
+                "translationEnabled" | "translationLanguage" | "translationModel" | "autoCaption"
+            )
+        }) {
+            self.invalidate_translation();
+        }
         Ok(self.status())
     }
     fn save_credentials(&self, c: &Credentials) -> Result<()> {
@@ -194,6 +215,7 @@ impl Speech {
         if !matches!(source, "device" | "pcm") {
             bail!("语音输入源无效")
         }
+        self.invalidate_translation();
         let id = uuid::Uuid::new_v4().to_string();
         let start = Instant::now();
         let stop = Arc::new(AtomicU8::new(0));
@@ -292,6 +314,9 @@ impl Speech {
     }
     pub fn control(&self, value: &Value) -> Result<Value> {
         let action = value["action"].as_str().unwrap_or("");
+        if matches!(action, "clear" | "cancel") {
+            self.invalidate_translation();
+        }
         if action == "clear" {
             let mut v = self.state.lock().unwrap();
             v["draft"] = json!("");
@@ -322,14 +347,20 @@ impl Speech {
         drop(session);
         Ok(self.status())
     }
-    pub fn apply(&self, context: &SpeechContext, value: &Value) -> Result<Value> {
+    pub fn apply(self: &Arc<Self>, context: &SpeechContext, value: &Value) -> Result<Value> {
         let text = value["text"].as_str().context("需要文字")?;
         let target = Self::target(context, &value["target"])?;
         let key = value["requestId"]
             .as_str()
             .map(str::to_owned)
             .unwrap_or_else(|| uuid::Uuid::new_v4().to_string());
-        self.deliver(context, &target, text, value["submit"] == true, &key)?;
+        let translating =
+            target.kind == "text_panel" && self.settings.lock().unwrap().translation_enabled;
+        if translating {
+            self.queue_translation(context, &target, text, true, &key, None)?;
+        } else {
+            self.deliver(context, &target, text, value["submit"] == true, &key)?;
+        }
         {
             let mut state = self.state.lock().unwrap();
             state["target"] = json!(target);
@@ -348,6 +379,17 @@ impl Speech {
         text: &str,
         submit: bool,
         key: &str,
+    ) -> Result<()> {
+        self.deliver_checked(context, target, text, submit, key, None)
+    }
+    fn deliver_checked(
+        &self,
+        context: &SpeechContext,
+        target: &Target,
+        text: &str,
+        submit: bool,
+        key: &str,
+        expected: Option<&str>,
     ) -> Result<()> {
         if text.len() > 32000 {
             bail!("识别文字超过32k字节")
@@ -394,6 +436,9 @@ impl Speech {
             .find(|p| p.id == target.panel_id)
             .cloned()
             .context("目标文本框已删除")?;
+        if expected.is_some_and(|before| panel.text != before) {
+            bail!("字幕已被手工或模型修改，旧译文未应用；原文仍保留在草稿")
+        }
         panel.text = text.into();
         let base = w.project.scene.revision;
         w.apply(
@@ -412,13 +457,28 @@ impl Speech {
         }
         Ok(())
     }
-    fn partial(&self, id: &str, text: String, target: &Target, context: &SpeechContext) {
+    fn partial(self: &Arc<Self>, id: &str, text: String, target: &Target, context: &SpeechContext) {
         self.update(id, |v| {
             v["partial"] = json!(text);
         });
-        self.latest_caption(id, &text, target, context);
+        let complete = {
+            let state = self.state.lock().unwrap();
+            let draft = state["draft"].as_str().unwrap_or("");
+            if draft.is_empty() {
+                text
+            } else {
+                format!("{draft}\n{text}")
+            }
+        };
+        self.latest_caption(id, &complete, target, context);
     }
-    fn latest_caption(&self, id: &str, text: &str, target: &Target, context: &SpeechContext) {
+    fn latest_caption(
+        self: &Arc<Self>,
+        id: &str,
+        text: &str,
+        target: &Target,
+        context: &SpeechContext,
+    ) {
         if self.state.lock().unwrap()["sessionId"] != id {
             return;
         }
@@ -435,6 +495,14 @@ impl Speech {
         if !config.enabled || !config.auto {
             return;
         }
+        if self.settings.lock().unwrap().translation_enabled {
+            if let Err(e) =
+                self.queue_translation(context, target, text, false, "speech-live", Some(id))
+            {
+                self.update(id, |v| v["error"] = json!(e.to_string()));
+            }
+            return;
+        }
         // The short live window is transient. It never changes Scene revision
         // or opens a second sender; final text still goes through transactions.
         if let Err(e) = context.transport.latest_text(&target.panel_id, text) {
@@ -442,7 +510,7 @@ impl Speech {
         }
     }
     fn publish(
-        &self,
+        self: &Arc<Self>,
         id: &str,
         text: String,
         inference_ms: f64,
@@ -463,7 +531,11 @@ impl Speech {
         self.update(id,|v|{let seq=v["sequence"].as_u64().unwrap_or(0)+1;v["sequence"]=json!(seq);let version=v["draftVersion"].as_u64().unwrap_or(0)+1;v["draftVersion"]=json!(version);v["partial"]=json!("");v["finalText"]=json!(text);draft=format!("{}{}{}",v["draft"].as_str().unwrap_or(""),if v["draft"].as_str().unwrap_or("").is_empty(){""}else{"\n"},text);if draft.len()<=32000{v["draft"]=json!(draft);}else{v["error"]=json!("识别草稿超过32k字节，请先发送或清空");stop.store(1,Ordering::SeqCst);}key=format!("speech-{id}-{seq}");let records=v["sentences"].as_array_mut().unwrap();records.push(json!({"sequence":seq,"text":text,"inferenceMs":inference_ms,"finalLatencyMs":latency_ms}));if records.len()>32{records.remove(0);}});
         self.latest_caption(id, &draft, target, context);
         let result = if target.kind == "text_panel" && settings.auto_caption {
-            self.deliver(context, target, &draft, false, &key)
+            if settings.translation_enabled {
+                self.queue_translation(context, target, &draft, true, &key, Some(id))
+            } else {
+                self.deliver(context, target, &draft, false, &key)
+            }
         } else if target.kind == "modeling" && settings.keyword_enabled {
             if let Some(prompt) = keyword_prompt(&draft, &settings.keyword) {
                 if prompt.is_empty() {
@@ -721,7 +793,7 @@ impl Speech {
         }
     }
     fn drain_segments(
-        &self,
+        self: &Arc<Self>,
         id: &str,
         start: Instant,
         engines: &engine::Engines,

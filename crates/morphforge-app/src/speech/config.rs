@@ -20,6 +20,9 @@ pub struct Settings {
     pub keyword: String,
     pub auto_caption: bool,
     pub tencent_engine: String,
+    pub translation_enabled: bool,
+    pub translation_language: String,
+    pub translation_model: String,
 }
 impl Default for Settings {
     fn default() -> Self {
@@ -39,6 +42,9 @@ impl Default for Settings {
             keyword: "开始建模".into(),
             auto_caption: false,
             tencent_engine: "16k_zh".into(),
+            translation_enabled: false,
+            translation_language: "en".into(),
+            translation_model: String::new(),
         }
     }
 }
@@ -75,6 +81,9 @@ impl Settings {
             || !(0.15..=2.).contains(&self.silence_seconds)
             || !(0.05..=1.).contains(&self.min_speech_seconds)
             || !(2.0..=60.).contains(&self.max_sentence_seconds)
+            || !matches!(self.translation_language.as_str(), "zh" | "ja" | "en")
+            || self.translation_model.len() > 256
+            || self.translation_model.chars().any(char::is_control)
             || self.keyword.is_empty()
             || self.keyword.len() > 128
             || self.tencent_engine.len() > 64

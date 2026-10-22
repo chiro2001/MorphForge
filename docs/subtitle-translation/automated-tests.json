@@ -1,0 +1,7 @@
+{
+  "success": true,
+  "rustPassed": 160,
+  "rustSuites": 5,
+  "javascriptPassed": 62,
+  "scope": "App lib plus speech_http, speech_translation, text_http, text_transport; node --test web/*.test.mjs. Local mock APIs only."
+}

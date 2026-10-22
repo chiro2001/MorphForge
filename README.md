@@ -6,7 +6,7 @@ MorphForge 是独立的桌面创作工作台：手工编辑、AI Harness、作�
 
 **[下载 Windows v0.16.1](https://github.com/chiro2001/MorphForge/releases/tag/v0.16.1)** · [使用指南](docs/USER-GUIDE.md) · [版本与验证记录](docs/DELIVERY.md)
 
-当前开发版本为 Desktop **0.23.0** / Avatar **1.3.0**，增加原生点线、多行字幕与动画恢复，修复文字闪烁并降低空载开销；[本轮验证与验收清单](docs/optimization-20261023/RESULTS.md)。本轮不创建 GitHub Release，上方下载仍指向已有公开发行版。
+当前开发版本为 Desktop **0.24.0** / Avatar **1.3.0**，增加原生点线、多行字幕、字幕自动翻译与动画恢复，修复文字闪烁并降低空载开销；[本轮验证与验收清单](docs/optimization-20261023/RESULTS.md)。本轮不创建 GitHub Release，上方下载仍指向已有公开发行版。
 
 ## 作品展示
 
@@ -47,6 +47,7 @@ Box 是可以合并的长方体，数量与实际占用格数不同。展示作�
 | 作品与组件复用 | 保存、载入和删除个人作品，从已有选区创建组件；多实例共享作品库，各自保留工程和对话。 |
 | 材质与 Minecraft 导入 | 使用纯色、金属、发光、水、云及像素材质；导入 Java 资源包和 `.litematic`、`.schem`、`.schematic`、结构 `.nbt` 建筑。 |
 | 点阵文字与语音 | 可编辑双面中日英文本框；支持离线句末、流式临时文字及在线前置VAD，语音可填建模输入或字幕，关键词可触发建模。 |
+| 字幕自动翻译 | 可选中文、日文或英文，复用现有大模型API；保留原文，字幕输出译文，失败回退原文，默认关闭；[使用说明](docs/subtitle-translation/RESULTS.md)。 |
 | 桌面小窗 | mini模式可仅显示语音/字幕或AI及发送进度，支持置顶、透明度和紧凑布局，与主窗共享会话。 |
 | 动画与模型导出 | 为分组设置关键帧、播放与截图；导出 GLB、OBJ ZIP、PLY、STL，GLB 可保留分组动画。 |
 

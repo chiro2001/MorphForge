@@ -427,9 +427,14 @@ async fn text_panels_latest(State(a): State<App>, Json(v): Json<Value>) -> ApiRe
             return Err(anyhow::anyhow!("WORKSPACE_CONFLICT").into());
         }
     }
-    a.transport.latest_text(id, text)?;
+    a.speech.latest_panel(
+        &speech_context(&a),
+        id,
+        v["projectId"].as_str().unwrap_or(""),
+        text,
+    )?;
     Ok(Json(
-        json!({"ok":true,"latestWindow":128,"layoutApplied":true,"persisted":false,"receiverConfirmed":false}),
+        json!({"ok":true,"latestWindow":128,"layoutApplied":true,"translationQueued":a.speech.status()["settings"]["translationEnabled"]==true,"persisted":false,"receiverConfirmed":false}),
     ))
 }
 async fn text_panels_action(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {

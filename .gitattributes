@@ -43,3 +43,7 @@ docs/text-animation/stage-e-motion/rust-tests.txt whitespace=-blank-at-eof
 # Preserve verbatim Windows optimization evidence.
 docs/optimization-20261023/**/*.json whitespace=cr-at-eol
 docs/optimization-20261023/windows-build.txt whitespace=-blank-at-eof,cr-at-eol
+
+# Preserve verbatim Windows subtitle-translation evidence.
+docs/subtitle-translation/**/*.json whitespace=cr-at-eol
+docs/subtitle-translation/windows-build.txt whitespace=-blank-at-eof,cr-at-eol

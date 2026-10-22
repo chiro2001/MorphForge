@@ -1,0 +1,19 @@
+Tauri CLI: tauri-cli 2.10.1
+> C:\Users\Chiro\.cargo\bin\cargo.exe build --manifest-path D:\Projects\VRChatProjects2\MorphForge\Cargo.toml --release --package morphforge-app --bin morphforge --target x86_64-pc-windows-msvc
+   Compiling morphforge-core v0.24.0 (D:\Projects\VRChatProjects2\MorphForge\crates\morphforge-core)
+   Compiling morphforge-app v0.24.0 (D:\Projects\VRChatProjects2\MorphForge\crates\morphforge-app)
+    Finished `release` profile [optimized] target(s) in 49.74s
+> C:\Users\Chiro\AppData\Roaming\npm\tauri.ps1 build --target x86_64-pc-windows-msvc --bundles nsis
+        Info Looking up installed tauri packages to check mismatched versions...
+   Compiling morphforge-desktop v0.24.0 (D:\Projects\VRChatProjects2\MorphForge\desktop\src-tauri)
+warning: morphforge-desktop@0.24.0: STATIC_VCRUNTIME is deprecated; use build.windows.staticVCRuntime in tauri.conf.json or tauri_build::WindowsAttributes::static_vc_runtime instead.
+    Finished `release` profile [optimized] target(s) in 29.16s
+       Built application at: D:\Projects\VRChatProjects2\MorphForge\desktop\target\x86_64-pc-windows-msvc\release\morphforge-desktop.exe
+        Info Patching D:\Projects\VRChatProjects2\MorphForge\desktop\target\x86_64-pc-windows-msvc\release\morphforge-desktop.exe with bundle type information: nsis
+        Info Target: x64
+     Running makensis to produce D:\Projects\VRChatProjects2\MorphForge\desktop\target\x86_64-pc-windows-msvc\release\bundle\nsis\MorphForge Desktop_0.24.0_x64-setup.exe
+    Finished 1 bundle at:
+        D:\Projects\VRChatProjects2\MorphForge\desktop\target\x86_64-pc-windows-msvc\release\bundle\nsis\MorphForge Desktop_0.24.0_x64-setup.exe
+
+MorphForge Windows build complete: D:\Projects\VRChatProjects2\MorphForge\desktop\target\x86_64-pc-windows-msvc\release\bundle\nsis
+Verified bundled sidecar: D:\Projects\VRChatProjects2\MorphForge\desktop\target\x86_64-pc-windows-msvc\release\morphforge.exe (base name morphforge.exe).

@@ -1,0 +1,18 @@
+{
+  "success": true,
+  "translationLanguage": "en",
+  "captionFontSize": 8.0,
+  "captionMaxLines": 3,
+  "microphoneActive": false,
+  "translationEnabled": false,
+  "projectId": "510333ea-3981-4cb4-bfd8-fd78637b7c5a",
+  "revision": 51,
+  "oscEnabled": false,
+  "pending": 0,
+  "scope": "Updated main installation; existing project and provider connection preserved; only credential booleans recorded",
+  "version": "0.24.0",
+  "taskPhase": "idle",
+  "translationModelUsesCurrent": true,
+  "providerConnectionPreserved": true,
+  "tencentCredentialsConfigured": true
+}

@@ -5,6 +5,7 @@ mod limits;
 mod prefix;
 mod progress;
 mod usage;
+mod translation;
 pub use config::{ApiType, Connection, ImageDelivery};
 pub use limits::{
     ModelLimits, DEFAULT_COMPACT_TOKENS, DEFAULT_CONTEXT_TOKENS, DEFAULT_OUTPUT_TOKENS,
