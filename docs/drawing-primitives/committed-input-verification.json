@@ -1,0 +1,8 @@
+{
+  "success": true,
+  "sourceCommit": "1fd7bc61ff52adedbae03dee86b2ccdca0533c72",
+  "inputSha256": "043448e312ae119f0133fa06c82187a4781c7c934df357ab32d3560aaf37881b",
+  "verifiedFiles": 276,
+  "mismatches": [],
+  "method": "SHA-256 of committed Git blobs compared with the frozen build input manifest"
+}

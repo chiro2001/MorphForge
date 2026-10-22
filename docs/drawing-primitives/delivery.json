@@ -20,5 +20,7 @@
   "avatarProtocolChanged": false,
   "realVrchatTested": false,
   "avatarUploaded": false,
-  "githubReleaseCreated": false
+  "githubReleaseCreated": false,
+  "sourceCommit": "1fd7bc61ff52adedbae03dee86b2ccdca0533c72",
+  "committedInputFilesVerified": 276
 }
