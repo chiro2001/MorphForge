@@ -1,5 +1,6 @@
 import {setupComposerSpeech,setupSpeechSettings} from "/speech-ui.js";
 import {setupTextPanelUi} from "/text-panel-ui.js";
+import {setupDrawingUi} from "/drawing-ui.js";
 import { setupCreativeUi } from "/creative-ui.js";
 import { composeCapture } from "/comparison.js";
 import { createFeedback } from "/feedback-ui.js";
@@ -67,6 +68,7 @@ let timelineView = null;
 let activityView = null;
 let creativeUi = null;
 let textPanelUi=null;
+let drawingUi=null;
 
 let pointerStart = null;
 let loading = false;
@@ -606,6 +608,7 @@ async function refresh(force = false) {
       if (timelineView && !$("timeline").hidden) timelineView.reload().catch(error);
     }
     updateState();
+    drawingUi?.sync();
     const previewCatalog=JSON.stringify([next.connection.profile,next.materialCompatibility?.fingerprint,$("renderMode").value]);
     const previewScale=$("renderMode").value === "vrc" ? next.connection.placement.scale : 1;
     if(renderer.mode===$("renderMode").value && renderer.scale!==previewScale) renderer.setScale(previewScale);
@@ -2429,6 +2432,7 @@ $("textApply").onclick = async () => {
 };
 
 textPanelUi=setupTextPanelUi({$,api,getScene:()=>sceneData,getState:()=>state,renderer,refresh,error,toast,canEdit:()=>manualEditing&&!state?.harness?.manualEditLocked});
+drawingUi=setupDrawingUi({$,api,getState:()=>state,renderer,refresh,error,toast});
 
 setupMinecraftUi({$,api,getState:()=>state,getMaterials:()=>sceneData?.materials,refresh,error,toast});
 

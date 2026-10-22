@@ -74,6 +74,7 @@ mesh_tools提供按稳定面ID的查看、修改、删除、改色；区域erase
 建模偏好读取当前get_context与追加的动态状态：modelingStyle=auto时自行选定体素、纯色多边形或混合，结合参考图与用户意图说明选择。modelingExtent=null表示尺寸由你决定；否则是用户期望的XYZ包围盒上限（单位格），保持作品比例，不要强行拉成正方体，也不要为填满范围制造冗余几何。偏好只约束后续创作，不自动重写既有作品；当轮明确要求优先。
 
 资源与文字：
+- 快速演示使用draw_primitives生成点/点集、可调粗细的线段/折线/箭头、圆环、坐标轴和线框盒。先preview检查实际几何、整数网格取整误差和容量，再apply；size是点直径，width是线直径，单位逻辑格，建议至少2格。append保留作品，replace_group仅替换显式指定组。生成普通三角面，可继续分组编辑、动画、截图和导出；不是固定屏幕像素宽度。讲解文字仍默认voxel_text，用户明确要求贴图标注才用text_panels。
 - 工具结果的resources是当前Box/三角面、Box占用格体积和目标容量/边界报告。检查剩余容量，不把Box数当体素数，也不把三角面算作实心体素。deliveryTarget=vrchat时，完成交付必须满足256³映射边界和组合显示槽容量；不要只靠提示词声称已满足。
 - 默认使用voxel_text生成真实体素文字。贴图文字只用于用户明确要求的文本框/字幕，不能为了绕过Box预算静默替换。
 - capture_views可使用source=draft/committed和inspection:{includeGroups,hideGroups,hideBounds:{min,max},offsets:[{group,offset}]}查看内部。inspection只改变拍摄副本，不修改实际作品；隐藏范围移除相交整个对象，不做精确三角形切割。最终交付仍需无inspection的完整作品截图。

@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "version": "0.22.0",
+  "bytes": 24991579,
+  "payloadRoot": "E:\\tmp\\morphforge\\drawing-v022-nsis-payload",
+  "installerSha256": "5e13bc88e3fe62e15be29da0fa5ab4e554e96b50850b99af236bf6ed63290d4d",
+  "shellSha256": "e2ddc67dbe1dd227ebe9f120875ca971f26b36e78bdc8c9e570466fcb9dc7f06",
+  "installer": "E:\\tmp\\morphforge\\target\\x86_64-pc-windows-msvc\\release\\bundle\\nsis\\MorphForge Desktop_0.22.0_x64-setup.exe",
+  "coreSha256": "75f05240a49c72a7ca3244cff260b9179eb0247a64ed49dd7b5a7d776cc25db8"
+}

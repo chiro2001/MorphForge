@@ -25,8 +25,8 @@ mod prompts;
 mod runtime_materials;
 mod visual_context;
 pub use goal::GoalProgress;
-pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/5.5";
-pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/4.6";
+pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/5.6";
+pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/4.7";
 
 #[derive(Clone, Debug)]
 struct PendingPrompt {
@@ -1593,6 +1593,7 @@ impl Harness {
                                 || name == "run_recipe"
                                 || (name == "voxel_text" && arguments["mode"] == "apply")
                                 || (name == "components" && arguments["action"] == "place")
+                                || (name == "draw_primitives" && arguments["action"] == "apply")
                             {
                                 arguments["requestId"] = json!(call_id);
                             }
@@ -1958,6 +1959,7 @@ impl Harness {
             "runtimeSurfaceHints":{"mf6":"define_palette/define_materials可实时发送，不需重传头像；新图片仍需打包。查看工具返回的vrcEffective了解量化。","scale":"placement.scale保持实际倍数；新100%=.05，MF6范围.0005.. .5（1%..1000%）。","transparency":"MF6目录透明材质可剔内部面；实时透明表面暂不带六面遮罩。"},
             "recipeSources":crate::sources::list(&workspace).unwrap_or(Value::Null),
             "creative":workspace.project.creative.brief(),
+            "drawingPrimitives":crate::drawing::catalog(),
             "sdkVersion":recipe::SDK_VERSION,
             "meshSdk":"mf.triangle(a,b,c,{color:'#RRGGBB',doubleSided:false,group}); mf.mesh(vertices,faces,{color,colors:[per-face RGB8 or hex],group,doubleSided}); faces are triples of vertex indices. mf.triangleStrip(vertices,{colors}); mf.slope(min,size,{style:styleId,direction:'+x'|'-x'|'+z'|'-z',group}); // textured voxel slope, one object. mf.wedge(min,size,{direction:'+x'|'-x'|'+z'|'-z',color}); integer coordinates, per-face RGB8, no UV. Same translate/mirror/group frame as mf.box. mesh_tools can inspect/edit stable face IDs. Region erase removes whole faces by AABB; it does not clip triangles. MF6 required for triangle OSC; art-only editing is independent of VRChat.",
             "sdk":"mf.box(min,[w,h,d],{style:'wood',tint:0,motion:0}); mf.erase(min,size); mf.paint(min,size,{style}) recolors existing voxels only and never creates them; use mf.box to add voxels. mf.clear(); mf.removeGroup(name); mf.replaceGroup(name,()=>{}); mf.ellipsoid(center,radii,options); mf.sphere(center,radius,options); mf.capsule(a,b,radius,options); mf.cylinder(base,height,radius,options) Y-axis; mf.tube(points,radius,options); mf.extrude(points2d,origin,depth,{plane:\"xy\",style}); mf.voxelize({min,max},(x,y,z)=>boolean_or_style,options) samples cell centers, max2M cells; mf.group(name,()=>{}); mf.repeat(n,(i)=>{}); mf.mirror('x',()=>{}); mf.translate([x,y,z],()=>{}); mf.line(a,b,{thickness:1,style}); mf.stairs(origin,n,{width:3,depth:1,rise:1,style}); mf.wall(origin,w,h,{thickness:1,style}); mf.roof(origin,w,d,h,{style}); Math.random()/mf.random() deterministic by seed. All coordinates integer signed grid. Y is height. VRC target requires X/Z[-128,128),Y[0,256). Styles are catalog IDs/UID names. mode apply preserves current geometry; replace starts from empty."
@@ -2144,6 +2146,19 @@ impl Harness {
         }
         match name {
             "get_context" => Ok(self.context_with_options(args)),
+            "draw_primitives" => {
+                if guard.is_none() && args["action"] == "apply" { self.ensure_manual_edit()?; }
+                self.with_workspace_guard(guard.as_ref(), |w| {
+                    let mut result = crate::drawing::execute(w, args, run)?;
+                    if args["action"] == "apply" && result["replayed"] != true && self.transport.config().enabled && self.transport.config().auto {
+                        match self.transport.publish_with_materials(&w.project.scene, &w.project.materials, false) {
+                            Ok(value) => result["sync"] = value,
+                            Err(error) => result["publishWarning"] = json!(error.to_string()),
+                        }
+                    }
+                    Ok(result)
+                })
+            },
             "text_panels" => {if guard.is_none()&&!matches!(args["action"].as_str(),Some("list"|"inspect")){self.ensure_manual_edit()?;}self.with_workspace_guard(guard.as_ref(),|w|{let mut result=crate::text_panels::apply(w,args,run)?;
                 if args["dryRun"]!=true&&!matches!(args["action"].as_str(),Some("list"|"inspect"))&&self.transport.config().enabled&&self.transport.config().auto{
                     match self.transport.publish_with_materials(&w.project.scene,&w.project.materials,false){Ok(v)=>result["sync"]=v,Err(e)=>result["publishWarning"]=json!(e.to_string())}
@@ -3686,6 +3701,34 @@ pub fn tools_for_language(language: &str) -> Value {
         ),
     ]);
     schemas.as_array_mut().unwrap().push(tool("text_panels",if en {"Textured text panels, only when explicitly requested for labels/subtitles. Default authored text remains voxel_text. list/inspect are read-only. create/update/append/remove need baseRevision. panel fields: text,font(pixel16-zh/jp),position(bottom center),rotation(XYZ degrees),size([width,height] cells),fontSize(fullwidth glyph height in cells, default8),letterSpacing,lineGap,align(left/center/right),verticalAlign(top/middle/bottom),overflow(clip/tail/shrink),color(RGB8),background(RGBA8),opacity. Front and back are readable. dryRun previews; capacity and unsupported glyphs are reported."}else{"贴图文本框，仅用于明确要求的字幕/贴图文字；默认艺术文字仍用voxel_text。list/inspect只读；create/update/append/remove需baseRevision。panel字段：text,font(pixel16-zh/jp),position(底部中心),rotation(XYZ角度),size([宽,高]格),fontSize(全宽字高占格数，默认8),letterSpacing,lineGap,align(left/center/right),verticalAlign(top/middle/bottom),overflow(clip/tail/shrink),color(RGB8),background(RGBA8),opacity。正反面均正常可读。dryRun预览，返回排版与缺字。"},json!({"action":{"type":"string","enum":["list","inspect","create","update","append","remove"]},"id":{"type":"string"},"baseRevision":{"type":"integer","minimum":0},"text":{"type":"string"},"panel":{"type":"object"},"dryRun":{"type":"boolean"}}),vec!["action"]));
+    schemas.as_array_mut().unwrap().push(tool(
+        "draw_primitives",
+        if en {
+            "Quick demonstration geometry: points, thick 3D segments, polylines, arrows, circles, XYZ axes and wire boxes. catalog is read-only; preview returns the actual integer mesh and capacity report without mutation. apply requires baseRevision and is undoable. size is point diameter, width is line diameter, both in scene cells (prefer >=2). Vertices are rounded to the existing integer mesh grid; rounding/collapsed faces are disclosed. Not screen-pixel widths. append preserves existing work; replace_group requires explicit group and replaces only that group. Shapes become ordinary editable RGB8 triangles, support existing exports/group animation and MF6 publication; no new Avatar protocol."
+        } else {
+            "快速演示几何：点/点集、可控粗细3D线段、折线、箭头、圆环、XYZ坐标轴、线框盒。catalog只读；preview返回实际整数网格及容量，不修改作品；apply需baseRevision，可撤销。size为点直径，width为线直径，单位逻辑格，建议至少2格。顶点对齐整数网格，回执报告取整误差与退化面；不是固定屏幕像素宽度。append保留原作品；replace_group须显式group，仅替换该组。输出普通RGB8三角面，支持保存/导出/分组动画和既有MF6发布，不新增同步协议。"
+        },
+        json!({
+            "action":{"type":"string","enum":["catalog","preview","apply"]},
+            "projectId":{"type":"string"},"baseRevision":{"type":"integer","minimum":0},"requestId":{"type":"string","maxLength":128},
+            "mode":{"type":"string","enum":["append","replace_group"]},"group":{"type":"string","minLength":1,"maxLength":128},
+            "primitives":{"type":"array","minItems":1,"maxItems":64,"items":{"type":"object","properties":{
+                "kind":{"type":"string","enum":["point","points","segment","polyline","arrow","circle","axes","wire_box"]},
+                "position":{"type":"array","items":{"type":"number"},"minItems":3,"maxItems":3},
+                "start":{"type":"array","items":{"type":"number"},"minItems":3,"maxItems":3},
+                "end":{"type":"array","items":{"type":"number"},"minItems":3,"maxItems":3},
+                "points":{"type":"array","minItems":1,"maxItems":256,"items":{"type":"array","items":{"type":"number"},"minItems":3,"maxItems":3}},
+                "size":{"type":"number","minimum":1,"maximum":4096},"width":{"type":"number","minimum":1,"maximum":4096},
+                "radius":{"type":"number","minimum":1,"maximum":4096},"length":{"type":"number","minimum":1,"maximum":4096},
+                "extent":{"type":"array","items":{"type":"number","minimum":1,"maximum":4096},"minItems":3,"maxItems":3},
+                "color":{"type":"array","items":{"type":"integer","minimum":0,"maximum":255},"minItems":3,"maxItems":3},
+                "group":{"type":"string","minLength":1,"maxLength":128},"shape":{"type":"string","enum":["sphere","cube"]},
+                "plane":{"type":"string","enum":["xy","xz","yz"]},"sides":{"type":"integer","minimum":4,"maximum":16},
+                "segments":{"type":"integer","minimum":8,"maximum":128},"closed":{"type":"boolean"},"dashed":{"type":"boolean"},
+                "dashLength":{"type":"number","minimum":1,"maximum":4096},"gapLength":{"type":"number","minimum":1,"maximum":4096}
+            },"required":["kind"],"additionalProperties":false}}
+        }), vec!["action"]
+    ));
     let mut capture = schemas
         .as_array()
         .unwrap()

@@ -1,0 +1,76 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "isolated native desktop 0.22.0 and OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "native host serves the expected private project",
+      "passed": true
+    },
+    {
+      "name": "embedded drawing-ui.js matches frozen source",
+      "passed": true
+    },
+    {
+      "name": "embedded drawing.css matches frozen source",
+      "passed": true
+    },
+    {
+      "name": "embedded studio.js matches frozen source",
+      "passed": true
+    },
+    {
+      "name": "combination preview has a native WebView canvas and six primitives",
+      "passed": true
+    },
+    {
+      "name": "native preview does not mutate the project",
+      "passed": true
+    },
+    {
+      "name": "native add button persists the actual colored mesh",
+      "passed": true
+    },
+    {
+      "name": "all generated vertices fit MF6 integer coordinates",
+      "passed": true
+    },
+    {
+      "name": "native main camera frames the applied mesh",
+      "passed": true
+    },
+    {
+      "name": "native controls accept adjustable line thickness",
+      "passed": true
+    },
+    {
+      "name": "closing native preview frees its extra canvas",
+      "passed": true
+    },
+    {
+      "name": "no model, microphone or OSC task was started",
+      "passed": true
+    },
+    {
+      "name": "no unhandled native JavaScript exception",
+      "passed": true
+    }
+  ],
+  "embeddedFiles": [
+    {
+      "file": "drawing-ui.js",
+      "sha256": "3b1220e99fdcc1e0d4b3907fec2a00a36adc0bc002792484af599a721e916f48"
+    },
+    {
+      "file": "drawing.css",
+      "sha256": "778e779f8ec1c7579b6db8e570d48f60dfe5b44987a8cea9bd68e44ba4d97c5c"
+    },
+    {
+      "file": "studio.js",
+      "sha256": "11d586dea3dfb4fc225daf96bdc9170a0168c13dc942ed7a84f4653638606365"
+    }
+  ],
+  "scope": "Actual isolated Tauri/WebView2 CDP mouse input and packaged Rust geometry; no microphone/model/VRChat OSC."
+}

@@ -1,0 +1,16 @@
+#drawingDialog{width:min(1000px,94vw);max-height:92vh;padding:18px;overflow:auto}
+#drawingDialog .dialog-title{display:flex;align-items:center;justify-content:space-between;gap:12px;background:none;padding:0 0 12px}
+#drawingDialog .dialog-title h2{font-size:18px;margin:0}
+.drawing-layout{display:grid;grid-template-columns:minmax(240px,320px) minmax(280px,1fr);gap:18px}
+.drawing-fields{max-height:65vh;overflow:auto;padding-right:6px}
+.drawing-fields>label,.drawing-fields>details{margin-bottom:10px}
+.drawing-fields label{display:flex;flex-direction:column;gap:5px}
+.drawing-fields label.check{flex-direction:row;align-items:center}
+.drawing-fields [hidden]{display:none!important}
+#drawingViewport{height:340px;min-height:180px;position:relative;background:#17212b;border-radius:8px;overflow:hidden}
+#drawingViewport canvas{display:block;width:100%;height:100%}
+.drawing-preview{min-width:0}
+#drawMetrics{white-space:normal;line-height:1.6}
+#drawError{color:#ffb5a9;white-space:pre-wrap;line-height:1.5}
+.drawing-actions{padding-top:14px;gap:8px;flex-wrap:wrap}
+@media(max-width:700px){.drawing-layout{grid-template-columns:1fr}.drawing-fields{max-height:36vh}#drawingViewport{height:220px}.drawing-actions button{flex:1}}

@@ -1,0 +1,21 @@
+{
+  "version": "0.22.0",
+  "success": true,
+  "drawingEntry": true,
+  "oscEnabled": false,
+  "mainVisible": true,
+  "primitiveKinds": [
+    "point",
+    "points",
+    "segment",
+    "polyline",
+    "arrow",
+    "circle",
+    "axes",
+    "wire_box"
+  ],
+  "projectPreserved": true,
+  "installedCoreHash": "75f05240a49c72a7ca3244cff260b9179eb0247a64ed49dd7b5a7d776cc25db8",
+  "corePid": 91664,
+  "phase": "idle"
+}

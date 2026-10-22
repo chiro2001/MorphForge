@@ -169,6 +169,7 @@ impl App {
             .route("/api/workspaces", get(workspaces).post(workspace_action))
             .route("/api/edit", post(edit))
             .route("/api/mesh", post(mesh_edit))
+            .route("/api/draw-primitives", get(drawing_catalog).post(drawing_action))
             .route(
                 "/api/minecraft",
                 get(minecraft_sources).post(minecraft_action),
@@ -851,6 +852,10 @@ async fn mesh_edit(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
         }
     }
     Ok(Json(result))
+}
+async fn drawing_catalog() -> ApiResult { Ok(Json(crate::drawing::catalog())) }
+async fn drawing_action(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    Ok(Json(a.harness.tool("draw_primitives", &v, None).await?))
 }
 async fn import(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     let mut w = a.workspace.lock().unwrap();

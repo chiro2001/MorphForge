@@ -49,3 +49,4 @@ pub mod speech;
 pub mod text_wire;
 
 pub mod avatar_motion;
+pub mod drawing;
