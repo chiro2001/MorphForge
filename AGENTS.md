@@ -13,6 +13,8 @@
 
 ## 本轮已授权范围
 
+- 2026-10-22：用户明确要求“构建并上传当前 Unity 头像”。已通过公共VRChat SDK更新当前MF6场景绑定的既有私有Avatar，线上版本5→6，ID、名称和可见性保持一致，pendingUpload=false。同步预算254/256bit，几何240bit保持直接同步。上传入口`AgentScripts/AvatarUpload20261022.cs`，验证见`docs/avatar-upload-20261022/RESULTS.md`；Unity已恢复干净源场景，原Prefab依赖哈希未变，SDK临时状态另存Windows验证快照。未启动真实VRChat客户端，未创建GitHub Release。
+
 - 2026-10-22：用户新增快速演示显示需求，已实现点/点集、可调粗细线段/折线、箭头、圆环、坐标轴与线框盒。复用普通三角面和现有Avatar 1.2.0协议；Desktop 0.22.0已按默认主安装约定备份、安装并启动，数据校验一致。备份在`E:\tmp\morphforge\main-backup-v022-drawing`，验证见`docs/drawing-primitives/RESULTS.md`。本轮未发Release、未上传Avatar。点线演示源码与交付记录纳入本轮Git提交。
 
 - 2026-10-22：用户要求创建持续目标并完整实现文字/语音/动画/工作台mini与悬浮窗/定位/本人预览等本轮需求；**暂不实现SteamVR HUD，不自动创建GitHub Release**。在隔离副本开展Windows Cable和GUI验证，保护用户正在运行的任务；版本可递增。

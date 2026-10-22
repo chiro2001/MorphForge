@@ -1,0 +1,106 @@
+{
+  "success": true,
+  "platform": "standalonewindows",
+  "unityVersion": "2022.3.22f1",
+  "sdkVersion": "3.10.5",
+  "upload": {
+    "status": "success",
+    "phase": "complete",
+    "operation": "4248a5fccf944174a432461c5bdafe00",
+    "avatarId": "avtr_9ebb3bdb-6991-42cd-8c3e-b9a35f176e90",
+    "avatarName": "MorphForge MF6 16K",
+    "releaseStatus": "private",
+    "versionBefore": 5,
+    "versionAfter": 6,
+    "pendingUpload": false,
+    "startedUtc": "2026-10-22T13:59:11.5671963Z",
+    "completedUtc": "2026-10-22T14:07:41.7575895Z"
+  },
+  "remoteBefore": {
+    "avatarId": "avtr_9ebb3bdb-6991-42cd-8c3e-b9a35f176e90",
+    "name": "MorphForge MF6 16K",
+    "version": 5,
+    "releaseStatus": "private",
+    "pendingUpload": false,
+    "ownedBySdkUser": true,
+    "timeUtc": "2026-10-22T13:58:28.2169199Z"
+  },
+  "remoteAfter": {
+    "avatarId": "avtr_9ebb3bdb-6991-42cd-8c3e-b9a35f176e90",
+    "name": "MorphForge MF6 16K",
+    "version": 6,
+    "releaseStatus": "private",
+    "pendingUpload": false,
+    "ownedBySdkUser": true,
+    "timeUtc": "2026-10-22T14:10:05.7986405Z"
+  },
+  "sourceBefore": {
+    "success": true,
+    "scene": "Assets/MorphForge/MF6/MorphForge_MF6.unity",
+    "sceneDirty": false,
+    "prefabDependencyHash": "f7fc16f0e5b238c2fbf4fd122adb93de",
+    "sceneDependencyHash": "0b5e9e1565d1a1778ab2e370956ab95f",
+    "stores": 8,
+    "physicalParticles": 16448,
+    "missingScripts": 0,
+    "receiverFlags": 127,
+    "textRenderers": 4,
+    "motionControllers": 1,
+    "previewCameras": 1,
+    "previewTargets": [
+      {
+        "name": "Camera",
+        "width": 512,
+        "height": 384
+      }
+    ],
+    "shaderErrors": []
+  },
+  "sourceAfter": {
+    "success": true,
+    "scene": "Assets/MorphForge/MF6/MorphForge_MF6.unity",
+    "sceneDirty": false,
+    "prefabDependencyHash": "f7fc16f0e5b238c2fbf4fd122adb93de",
+    "sceneDependencyHash": "8a8e703363d0f032b86a3dc40c999b22",
+    "stores": 8,
+    "physicalParticles": 16448,
+    "missingScripts": 0,
+    "receiverFlags": 127,
+    "textRenderers": 4,
+    "motionControllers": 1,
+    "previewCameras": 1,
+    "previewTargets": [
+      {
+        "name": "Camera",
+        "width": 512,
+        "height": 384
+      }
+    ],
+    "shaderErrors": []
+  },
+  "budget": {
+    "success": true,
+    "totalBits": 254,
+    "geometryBits": 240,
+    "placementBits": 14,
+    "remainingBits": 2,
+    "compressedGeometry": []
+  },
+  "restoration": {
+    "success": true,
+    "restoredSavedSource": true,
+    "postSdkSnapshot": "Assets/MorphForge/Validation/Upload20261022-AfterSdk.unity",
+    "scene": "Assets/MorphForge/MF6/MorphForge_MF6.unity",
+    "sceneDirty": false,
+    "sourcePrefabUnchanged": true
+  },
+  "sourcePrefabUnchanged": true,
+  "vrchatClientStartedByAgent": false,
+  "realClientAcceptancePerformed": false,
+  "sdkFinalState": {
+    "buildState": "Idle",
+    "uploadState": "Idle",
+    "selectedAvatar": "MorphForge_MF6_Avatar",
+    "checkedUtc": "2026-10-22T14:15:01.2436658Z"
+  }
+}
