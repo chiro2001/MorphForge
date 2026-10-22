@@ -1,0 +1,21 @@
+{
+  "version": "0.21.1",
+  "avatarVersion": "1.2.0",
+  "sourceCommit": "74ac23176244dd4580586d27824deef4ebf51b7c",
+  "inputSha256": "a4c9f38c01b9120087dda28e9b54ac1d6ca87c02cc014da25acb6bb89bf1a49c",
+  "installerSha256": "813aa56c08c7b0f30b82aa23d76a90631ec155359d4fdc5f2e6d33a855d487d9",
+  "coreSha256": "a42f50eedc7613ea078d144c5470b474f14878169c154ddea0227073b04fb022",
+  "shellSha256": "f7134b5ea99f3d54adf34d44a511aed9870845a2d4f7348fab459c8f593ab080",
+  "avatarPackageSha256": "d7f18fe3c21fc25be3efbc6ce4190bd62f6bc5ebfe274002f20565a1ef235ee7",
+  "rustTests": 283,
+  "rustSuites": 30,
+  "windowsCapabilityChecks": 12,
+  "nativeMiniChecks": 15,
+  "sourceCableChecks": 33,
+  "mainInstalled": true,
+  "mainVisible": true,
+  "originalDataBackedUp": true,
+  "dataUnchangedByInstaller": true,
+  "githubReleaseCreated": false,
+  "avatarUploaded": false
+}

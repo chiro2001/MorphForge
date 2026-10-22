@@ -275,5 +275,7 @@
     "web/vendor/three.core.js": "eb077d2417f61d3e6d9264c317cabc4ea35769ed6b0ab533067292a550784c20",
     "web/vendor/three.module.js": "c8211c69345d2e9949dc7a8ac969380497aa0600a5a8ac6a459c8cd02dd9cb8a",
     "web/workbench.css": "6c98e94193422ed97b36cd450955a5144607d4336ff0cdbe702463da5dc31814"
-  }
+  },
+  "sourceCommit": "74ac23176244dd4580586d27824deef4ebf51b7c",
+  "note": "gitCommit records HEAD at freeze; sourceCommit contains the exact frozen source files. Input SHA-256 is unchanged."
 }
