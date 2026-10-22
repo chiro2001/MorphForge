@@ -1,0 +1,24 @@
+{
+  "success": true,
+  "captures": [
+    {
+      "name": "zero",
+      "inkPixels": 6144,
+      "width": 192,
+      "height": 32
+    },
+    {
+      "name": "quarter",
+      "inkPixels": 2112,
+      "width": 66,
+      "height": 32
+    },
+    {
+      "name": "stop",
+      "inkPixels": 6144,
+      "width": 192,
+      "height": 32
+    }
+  ],
+  "scope": "Actual received Box particle + production shader GPU at zero, quarter-turn and stopped static pose; isolated diagnostic camera/layer restored."
+}

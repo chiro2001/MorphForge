@@ -27,7 +27,7 @@ public static class TextReceiverProbe {
         if(descriptors.Length==0)return new JObject{["available"]=false,["note"]="Animator profiler marker unavailable; no CPU estimate invented"}.ToString();
         var descriptor=descriptors.FirstOrDefault(d=>d.Name=="Animator.Update");if(string.IsNullOrEmpty(descriptor.Name))descriptor=descriptors[0];
         var m=UnityEngine.Object.FindObjectsOfType<GestureManager>().Single().Module as ModuleVrc3;if(m==null)throw new Exception("Play Mode required");
-        var names=new System.Collections.Generic.List<string>{"MF6_Ctl","MF6_D28"};for(int slot=0;slot<4;slot++){names.Add("MF6_Text"+slot+"_Count");for(int page=0;page<11;page++)names.Add("MF6_Text"+slot+"_Page"+page);for(int field=0;field<256;field++)names.Add("MF6_Text"+slot+"_B"+field.ToString("D3"));}
+        var names=new System.Collections.Generic.List<string>{"MF6_Ctl","MF6_D28"};for(int slot=0;slot<4;slot++){names.Add("MF6_Text"+slot+"_Count");for(int page=0;page<11;page++)names.Add("MF6_Text"+slot+"_Page"+page);}
         var values=names.Select(n=>m.GetParam(n).FloatValue()).ToArray();var rows=new JArray();void Set(string n,float v){m.GetParam(n).Set(m,v);}
         try {
             Set("MF6_D28",0);Set("MF6_Ctl",0);await Task.Delay(200);
@@ -35,16 +35,15 @@ public static class TextReceiverProbe {
                 for(int i=2;i<names.Count;i++)Set(names[i],values[i]);
                 if(mode!=1)for(int slot=0;slot<4;slot++){
                     Set("MF6_Text"+slot+"_Count",mode==2?128:0);for(int page=0;page<11;page++)Set("MF6_Text"+slot+"_Page"+page,mode==2?1:0);
-                    if(mode==2)for(int field=0;field<256;field++)Set("MF6_Text"+slot+"_B"+field.ToString("D3"),field%2==0?45:78);
                 }
                 await Task.Delay(250);
                 using(var recorder=Unity.Profiling.ProfilerRecorder.StartNew(descriptor.Category,descriptor.Name,128)) {
                     await Task.Delay(1800);var samples=Enumerable.Range(0,recorder.Count).Select(i=>recorder.GetSample(i).Value).ToArray();
-                    rows.Add(new JObject{["phase"]=mode==0?"disabled":mode==1?"received":"512 CJK slots",["samples"]=samples.Length,["meanRaw"]=samples.Length>0?samples.Average():0,["maxRaw"]=samples.Length>0?samples.Max():0});
+                    rows.Add(new JObject{["phase"]=mode==0?"disabled":mode==1?"received":"four 128-slot panels; existing cached glyphs",["samples"]=samples.Length,["meanRaw"]=samples.Length>0?samples.Average():0,["maxRaw"]=samples.Length>0?samples.Max():0});
                 }
             }
         }finally{for(int i=0;i<names.Count;i++)Set(names[i],values[i]);}
-        var result=new JObject{["available"]=true,["marker"]=descriptor.Name,["unit"]=descriptor.UnitType.ToString(),["rows"]=rows,["scope"]="Editor-only whole Avatar Animator, disabled/received/4x128 populated CJK slots, forward and reverse phases. Includes Avatar baseline and Editor noise; not a VRChat CPU benchmark."};Directory.CreateDirectory("Docs/TextAnimation");File.WriteAllText("Docs/TextAnimation/text-performance.json",result.ToString());return result.ToString();
+        var result=new JObject{["available"]=true,["marker"]=descriptor.Name,["unit"]=descriptor.UnitType.ToString(),["rows"]=rows,["scope"]="Editor-only whole Avatar Animator, disabled/received/four 128-slot panels using existing received glyphs. Packed AAP caches are never synthetically overwritten. Includes baseline and Editor noise; not a VRChat CPU benchmark."};Directory.CreateDirectory("Docs/TextAnimation");File.WriteAllText("Docs/TextAnimation/text-performance.json",result.ToString());return result.ToString();
     }
     public static string Visual() {
         if(!EditorApplication.isPlaying)throw new Exception("Play Mode required");

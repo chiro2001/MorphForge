@@ -1,0 +1,290 @@
+{
+  "scene": "Assets/MorphForge/MF6/MorphForge_MF6.unity",
+  "dirty": false,
+  "timeUtc": "2026-10-22T14:48:19.3333117Z",
+  "textures": [
+    {
+      "path": "Assets/MorphForgeAvatar/Generated/Text/zh-widths.asset",
+      "name": "zh-widths",
+      "type": "Texture2D",
+      "width": 256,
+      "height": 256,
+      "bytes": 131840
+    },
+    {
+      "path": "Assets/MorphForgeAvatar/Generated/LocalPreview/ReceivedView.renderTexture",
+      "name": "ReceivedView",
+      "type": "RenderTexture",
+      "width": 512,
+      "height": 384,
+      "bytes": 512
+    },
+    {
+      "path": "Assets/MorphForgeAvatar/Generated/Text/zh.asset",
+      "name": "zh",
+      "type": "Texture2D",
+      "width": 2048,
+      "height": 1024,
+      "bytes": 4195072
+    },
+    {
+      "path": "Assets/MorphForge/Diagnostics/MF5Catalog/CatalogAtlas.png",
+      "name": "CatalogAtlas",
+      "type": "Texture2D",
+      "width": 2048,
+      "height": 41,
+      "bytes": 672512
+    },
+    {
+      "path": "Assets/MorphForgeAvatar/Generated/Text/jp.asset",
+      "name": "jp",
+      "type": "Texture2D",
+      "width": 2048,
+      "height": 1024,
+      "bytes": 4195072
+    },
+    {
+      "path": "Assets/MorphForgeAvatar/Generated/Text/jp-widths.asset",
+      "name": "jp-widths",
+      "type": "Texture2D",
+      "width": 256,
+      "height": 256,
+      "bytes": 131840
+    },
+    {
+      "path": "Assets/MorphForge/Diagnostics/MF5Catalog/CatalogLayers.asset",
+      "name": "CatalogLayers",
+      "type": "Texture2DArray",
+      "width": 32,
+      "height": 32,
+      "bytes": 3341976
+    },
+    {
+      "path": "Assets/MorphForge/MaterialsCatalog/CatalogMetadata.asset",
+      "name": "CatalogMetadata",
+      "type": "Texture2D",
+      "width": 256,
+      "height": 64,
+      "bytes": 262824
+    },
+    {
+      "path": "Assets/MorphForge/Diagnostics/MF5Catalog/CatalogMetadata.asset",
+      "name": "CatalogMetadata",
+      "type": "Texture2D",
+      "width": 256,
+      "height": 64,
+      "bytes": 524968
+    },
+    {
+      "path": "Assets/MorphForge/MaterialsCatalog/CatalogAtlas.png",
+      "name": "CatalogAtlas",
+      "type": "Texture2D",
+      "width": 384,
+      "height": 96,
+      "bytes": 148136
+    }
+  ],
+  "controllers": [
+    {
+      "path": "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_Action.controller",
+      "layers": 1,
+      "parameters": 9,
+      "clips": 24,
+      "bindings": 2667,
+      "fileBytes": 77224
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Shield/Shield_FX.controller",
+      "layers": 1,
+      "parameters": 3,
+      "clips": 5,
+      "bindings": 8,
+      "fileBytes": 12076
+    },
+    {
+      "path": "Assets/MorphForgeAvatar/Generated/LocalPreview/Preview.controller",
+      "layers": 5,
+      "parameters": 6,
+      "clips": 14,
+      "bindings": 44,
+      "fileBytes": 90529
+    },
+    {
+      "path": "Assets/MorphForge/Stage4/Placement/Placement.controller",
+      "layers": 6,
+      "parameters": 13,
+      "clips": 28,
+      "bindings": 194,
+      "fileBytes": 65786
+    },
+    {
+      "path": "Assets/MorphForge/MF6/Decoder.controller",
+      "layers": 23,
+      "parameters": 352,
+      "clips": 3,
+      "bindings": 2,
+      "fileBytes": 14649623
+    },
+    {
+      "path": "Assets/MorphForge/MF6/Pool7/FX.controller",
+      "layers": 3,
+      "parameters": 74,
+      "clips": 116,
+      "bindings": 3307,
+      "fileBytes": 5398161
+    },
+    {
+      "path": "Assets/MorphForge/MF6/Pool4/FX.controller",
+      "layers": 3,
+      "parameters": 74,
+      "clips": 116,
+      "bindings": 3307,
+      "fileBytes": 5398032
+    },
+    {
+      "path": "Assets/MorphForgeAvatar/Generated/Text/Text.controller",
+      "layers": 8,
+      "parameters": 1293,
+      "clips": 1181,
+      "bindings": 1785,
+      "fileBytes": 5310930
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/RailGun/LRG_FX.controller",
+      "layers": 1,
+      "parameters": 6,
+      "clips": 6,
+      "bindings": 8,
+      "fileBytes": 21714
+    },
+    {
+      "path": "Assets/MorphForge/MF6/Pool0/FX.controller",
+      "layers": 3,
+      "parameters": 74,
+      "clips": 116,
+      "bindings": 3307,
+      "fileBytes": 5398183
+    },
+    {
+      "path": "Assets/MorphForge/Stage4/Geometry/FX.controller",
+      "layers": 3,
+      "parameters": 39,
+      "clips": 41,
+      "bindings": 752,
+      "fileBytes": 545960
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/LaserBit/WL36_Contoroller.controller",
+      "layers": 1,
+      "parameters": 2,
+      "clips": 2,
+      "bindings": 2,
+      "fileBytes": 5952
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Fire/Menu/DarkFIRE.controller",
+      "layers": 2,
+      "parameters": 2,
+      "clips": 4,
+      "bindings": 18,
+      "fileBytes": 8286
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Reticle/Reticle.controller",
+      "layers": 1,
+      "parameters": 2,
+      "clips": 2,
+      "bindings": 2,
+      "fileBytes": 5133
+    },
+    {
+      "path": "Assets/MorphForgeAvatar/Generated/Motion/Motion.controller",
+      "layers": 20,
+      "parameters": 734,
+      "clips": 691,
+      "bindings": 11341,
+      "fileBytes": 20797967
+    },
+    {
+      "path": "Assets/MorphForge/MF6/Pool6/FX.controller",
+      "layers": 3,
+      "parameters": 74,
+      "clips": 116,
+      "bindings": 3307,
+      "fileBytes": 5398095
+    },
+    {
+      "path": "Assets/MorphForge/MF6/Pool2/FX.controller",
+      "layers": 3,
+      "parameters": 74,
+      "clips": 116,
+      "bindings": 3307,
+      "fileBytes": 5398140
+    },
+    {
+      "path": "Assets/MorphForge/MF6/Placement.controller",
+      "layers": 7,
+      "parameters": 16,
+      "clips": 52,
+      "bindings": 338,
+      "fileBytes": 864782
+    },
+    {
+      "path": "Assets/MorphForge/FullFT/Nemesis_Locomotion_NoSleep.controller",
+      "layers": 5,
+      "parameters": 21,
+      "clips": 21,
+      "bindings": 1370,
+      "fileBytes": 339453
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Avatar/Controller/Nemesis_FX_v_1_1_0.controller",
+      "layers": 21,
+      "parameters": 46,
+      "clips": 89,
+      "bindings": 18726,
+      "fileBytes": 625461
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Animation/WandController.controller",
+      "layers": 7,
+      "parameters": 27,
+      "clips": 23,
+      "bindings": 802,
+      "fileBytes": 138774
+    },
+    {
+      "path": "Assets/MorphForge/MF6/Pool5/FX.controller",
+      "layers": 3,
+      "parameters": 74,
+      "clips": 116,
+      "bindings": 3307,
+      "fileBytes": 5398087
+    },
+    {
+      "path": "Assets/MorphForge/MF6/Pool1/FX.controller",
+      "layers": 3,
+      "parameters": 74,
+      "clips": 116,
+      "bindings": 3307,
+      "fileBytes": 5397860
+    },
+    {
+      "path": "Packages/com.vrchat.avatars/Samples/AV3 Demo Assets/Animation/Controllers/vrc_AvatarV3LocomotionLayer.controller",
+      "layers": 1,
+      "parameters": 9,
+      "clips": 24,
+      "bindings": 1678,
+      "fileBytes": 165665
+    },
+    {
+      "path": "Assets/MorphForge/MF6/Pool3/FX.controller",
+      "layers": 3,
+      "parameters": 74,
+      "clips": 116,
+      "bindings": 3307,
+      "fileBytes": 5398109
+    }
+  ],
+  "prefabHash": "f7fc16f0e5b238c2fbf4fd122adb93de"
+}

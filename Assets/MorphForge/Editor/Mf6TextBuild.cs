@@ -34,15 +34,19 @@ namespace MorphForge.Editor {
             var children=t.children;for(int i=0;i<children.Length;i++)children[i].directBlendParameter="MF6_TextOne";t.children=children;
             var so=new SerializedObject(t);so.FindProperty("m_NormalizedBlendValues").boolValue=false;so.ApplyModifiedPropertiesWithoutUndo();return t;
         }
-        struct Term {public string property;public int field;public float multiplier,constant;}
+        struct Term {public string property;public int field;public float multiplier,constant;public bool packed;}
         static Term Byte(string p,int field,float multiplier=1)=>new Term{property=p,field=field,multiplier=multiplier};
         static Term Fixed(string p,float value)=>new Term{property=p,field=-1,constant=value};
-        static IEnumerable<Term> Word(string p,int low,float scale=1)=>new[]{Byte(p,low,scale),Byte(p,low+1,scale*256)};
+        static IEnumerable<Term> Word(string p,int low,float scale=1)=>new[]{new Term{property=p,field=low,multiplier=scale,packed=true}};
         static string Cache(int slot,int field)=>"MF6_Text"+slot+"_B"+field.ToString("D3");
+        public static readonly int[] CachedFields=Enumerable.Range(0,Slots).Select(i=>i*2).Concat(new[]{256,258,260,262,264,266,268,270,272,274,275,276,277,288,289,290,291,292,293,294,295,297,299}).ToArray();
         static string Count(int slot)=>"MF6_Text"+slot+"_Count";
         static string Gate(int slot,int page)=>"MF6_Text"+slot+"_Page"+page;
         static Motion Map(int slot,string name,IEnumerable<Term> input) {
             var terms=input.ToArray();var motions=terms.Select(term=>(Motion)Clip(name+" "+term.property+" "+term.field,new[]{B(slot,term.property,term.field<0?term.constant:term.multiplier)})).ToArray();
+            // Keep packed AAP values sampled after the receive state exits.
+            // Rendering and local storage share the same coefficient clip.
+            for(int i=0;i<terms.Length;i++)if(terms[i].packed)AnimationUtility.SetEditorCurve((AnimationClip)motions[i],EditorCurveBinding.FloatCurve("",typeof(Animator),Cache(slot,terms[i].field)),AnimationCurve.Constant(0,.02f,1));
             var result=Direct(name,motions);var children=result.children;
             // Verified unnormalized Direct weights can exceed one. Each cached
             // byte multiplies a constant coefficient, replacing a two-leaf 1D
@@ -56,8 +60,10 @@ namespace MorphForge.Editor {
             config.AddRange(Word("_Width",268,1f/64));config.AddRange(Word("_Height",270,1f/64));config.AddRange(Word("_FontSize",272,1f/64));config.AddRange(new[]{Byte("_Red",274),Byte("_Green",275),Byte("_Blue",276),Byte("_Opacity",277)});
             config.AddRange(new[]{Byte("_BackR",288),Byte("_BackG",289),Byte("_BackB",290),Byte("_BackA",291),Byte("_Font",292),Byte("_Align",293),Byte("_Vertical",294)});config.AddRange(Word("_Spacing",295,1f/64));config.AddRange(Word("_Gap",297,1f/64));config.Add(Byte("_MotionGroup",299));
             var baseline=config.Select(t=>t.property).Concat(new[]{"_Count"}).Concat(Enumerable.Range(0,Slots).Select(i=>"_G"+i.ToString("D3"))).Distinct().Select(p=>B(slot,p,0));
-            var motions=new List<Motion>{Clip("Zero output baseline "+slot,baseline),Map(slot,"Config output "+slot,config)};var weights=new List<string>{"MF6_TextOne",Gate(slot,0)};
-            for(int page=0;page<11;page++){var terms=new List<Term>();for(int i=0;i<12&&page*12+i<Slots;i++)terms.AddRange(Word("_G"+(page*12+i).ToString("D3"),(page*12+i)*2));motions.Add(Map(slot,"Glyph output "+slot+"/"+page,terms));weights.Add(Gate(slot,page));}
+            var motions=new List<Motion>{Clip("Zero output baseline "+slot,baseline),Map(slot,"Config words "+slot,config.Where(t=>t.packed||t.field<0)),Map(slot,"Config bytes "+slot,config.Where(t=>!t.packed&&t.field>=0))};var weights=new List<string>{"MF6_TextOne","MF6_TextOne",Gate(slot,0)};
+            // Words must remain active even while a panel is empty or before
+            // its final configuration arrives. Count and opacity hide output.
+            for(int page=0;page<11;page++){var terms=new List<Term>();for(int i=0;i<12&&page*12+i<Slots;i++)terms.AddRange(Word("_G"+(page*12+i).ToString("D3"),(page*12+i)*2));motions.Add(Map(slot,"Glyph output "+slot+"/"+page,terms));weights.Add("MF6_TextOne");}
             var count=Clip("Count coefficient "+slot,new[]{B(slot,"_Count",1)});motions.Add(count);weights.Add(Count(slot));
             var result=Direct("Cached output "+slot,motions);var children=result.children;for(int i=0;i<children.Length;i++)children[i].directBlendParameter=weights[i];result.children=children;return result;
         }
@@ -83,7 +89,7 @@ namespace MorphForge.Editor {
             EditorUtility.SetDirty(decoder);
         }
         public static void ExtendInbox(AnimatorController decoder) {
-            if(decoder.parameters.Any(p=>p.name=="MF6_TextSnapshot")){SnapshotEpochs(decoder);return;}
+            if(decoder.parameters.Any(p=>p.name=="MF6_TextSnapshot")){SnapshotEpochs(decoder);WordCacheBuild.ExtendSnapshot(decoder);return;}
             decoder.AddParameter("MF6_TextSnapshot",AnimatorControllerParameterType.Int);decoder.AddParameter("MF6_TextSlot",AnimatorControllerParameterType.Int);
             for(int i=0;i<29;i++)decoder.AddParameter(T(i),AnimatorControllerParameterType.Float);
             var sm=decoder.layers.Single(l=>l.name=="MF6 240bit atomic local snapshot").stateMachine;
@@ -107,7 +113,7 @@ namespace MorphForge.Editor {
                 else{Condition(t,"MF6_D28",254);t.AddCondition(AnimatorConditionMode.NotEqual,seq,"MF6_LastRx");}
                 var leave=state.AddTransition(idle);leave.hasExitTime=true;leave.exitTime=1;leave.duration=0;
             }
-            SnapshotEpochs(decoder);EditorUtility.SetDirty(decoder);
+            SnapshotEpochs(decoder);WordCacheBuild.ExtendSnapshot(decoder);EditorUtility.SetDirty(decoder);
         }
         static Texture2D Font(string name,int width,int height) {
             string path=Root+"/"+name+".asset";var existing=AssetDatabase.LoadAssetAtPath<Texture2D>(path);if(existing)return existing;
@@ -129,6 +135,7 @@ namespace MorphForge.Editor {
             var path=Root+"/Text.controller";fx=AssetDatabase.LoadAssetAtPath<AnimatorController>(path);
             if(!fx)fx=AnimatorController.CreateAnimatorControllerAtPath(path);
             else {fx.layers=new AnimatorControllerLayer[0];fx.parameters=new AnimatorControllerParameter[0];foreach(var a in AssetDatabase.LoadAllAssetsAtPath(path))if(a&&a!=fx)UnityEngine.Object.DestroyImmediate(a,true);}
+            WordCacheBuild.Begin(fx);
             empty=new AnimationClip{name="Text buffer control tick",frameRate=60};AnimationUtility.SetEditorCurve(empty,EditorCurveBinding.FloatCurve("",typeof(Transform),"m_LocalScale.x"),AnimationCurve.Constant(0,.02f,1));AssetDatabase.AddObjectToAsset(empty,fx);
             foreach(string n in new[]{"MF6_Stage","MF6_Format","MF6_TextSnapshot","MF6_TextSlot","MF6_TextEpoch","MF6_Q00","MF6_Q01","MF6_Q02","MF6_Q14","MF6_Q25","MF6_Q28"})fx.AddParameter(n,AnimatorControllerParameterType.Int);
             for(int i=0;i<29;i++)fx.AddParameter(T(i),AnimatorControllerParameterType.Float);
@@ -137,7 +144,7 @@ namespace MorphForge.Editor {
             // make a thousands-entry controller quadratic to build/import.
             var cacheParameters=fx.parameters.ToList();
             for(int slot=0;slot<Panels;slot++){
-                for(int field=0;field<300;field++)cacheParameters.Add(new AnimatorControllerParameter{name=Cache(slot,field),type=AnimatorControllerParameterType.Float});
+                foreach(int field in CachedFields)cacheParameters.Add(new AnimatorControllerParameter{name=Cache(slot,field),type=AnimatorControllerParameterType.Float});
                 cacheParameters.Add(new AnimatorControllerParameter{name=Count(slot),type=AnimatorControllerParameterType.Float});
                 cacheParameters.Add(new AnimatorControllerParameter{name="MF6_Text"+slot+"_Epoch",type=AnimatorControllerParameterType.Int});
                 for(int page=0;page<11;page++)cacheParameters.Add(new AnimatorControllerParameter{name=Gate(slot,page),type=AnimatorControllerParameterType.Float});
@@ -154,19 +161,19 @@ namespace MorphForge.Editor {
                     var output=Output(slot);
                     var outputSm=new AnimatorStateMachine{name="Text output "+slot};AssetDatabase.AddObjectToAsset(outputSm,fx);fx.AddLayer(new AnimatorControllerLayer{name=outputSm.name,stateMachine=outputSm,defaultWeight=1});outputSm.defaultState=State(outputSm,"Cached output",output);
                     var sm=new AnimatorStateMachine{name="Text buffer "+slot};AssetDatabase.AddObjectToAsset(sm,fx);fx.AddLayer(new AnimatorControllerLayer{name=sm.name,stateMachine=sm,defaultWeight=1});var idle=State(sm,"Wait for page",empty);idle.writeDefaultValues=false;sm.defaultState=idle;
-                    AnimatorState Command(string name,int op,int page=-1) {
-                        var state=State(sm,name,empty);state.writeDefaultValues=false;var t=Enter(sm,state);Condition(t,"MF6_TextSnapshot",0);Condition(t,"MF6_Q28",254);Condition(t,"MF6_Q00",op);Condition(t,"MF6_Q01",slot);if(page>=0)Condition(t,"MF6_Q02",page);Leave(state,idle);return state;
+                    AnimatorState Command(string name,int op,int page=-1,Motion decoded=null) {
+                        var state=State(sm,name,decoded?decoded:empty);state.writeDefaultValues=false;var t=Enter(sm,state);Condition(t,"MF6_TextSnapshot",0);Condition(t,"MF6_Q28",254);Condition(t,"MF6_Q00",op);Condition(t,"MF6_Q01",slot);if(page>=0)Condition(t,"MF6_Q02",page);Leave(state,idle);return state;
                     }
                     VRCAvatarParameterDriver Buffer(AnimatorState state){var d=state.AddStateMachineBehaviour<VRCAvatarParameterDriver>();d.localOnly=false;return d;}
-                    var cfg=Buffer(Command("Configure",1));for(int i=2;i<=25;i++)CopyCache(cfg,slot,i,256+i-2);UpdateCount(cfg,slot,24);DriverCopy(cfg,"MF6_Q25","MF6_Text"+slot+"_Epoch");
-                    var style=Buffer(Command("Style",3));for(int i=2;i<=13;i++)CopyCache(style,slot,i,288+i-2);DriverCopy(style,"MF6_Q14","MF6_Text"+slot+"_Epoch");
+                    var cfg=Buffer(Command("Configure",1,decoded:WordCacheBuild.Receive("MF6_TextOne",Enumerable.Range(0,9).Select(i=>WordCacheBuild.Pair(Cache(slot,256+i*2),2+i*2)))));for(int i=20;i<=23;i++)CopyCache(cfg,slot,i,256+i-2);UpdateCount(cfg,slot,24);DriverCopy(cfg,"MF6_Q25","MF6_Text"+slot+"_Epoch");
+                    var style=Buffer(Command("Style",3,decoded:WordCacheBuild.Receive("MF6_TextOne",new[]{WordCacheBuild.Pair(Cache(slot,295),9),WordCacheBuild.Pair(Cache(slot,297),11)})));for(int i=2;i<=8;i++)CopyCache(style,slot,i,288+i-2);CopyCache(style,slot,13,299);DriverCopy(style,"MF6_Q14","MF6_Text"+slot+"_Epoch");
                     void Clear(VRCAvatarParameterDriver d){DriverSet(d,Count(slot),0);for(int page=0;page<11;page++)DriverSet(d,Gate(slot,page),0);}
                     var delete=Buffer(Command("Delete",4));Clear(delete);DriverCopy(delete,"MF6_Q02","MF6_Text"+slot+"_Epoch");
-                    for(int page=0;page<11;page++) {var d=Buffer(Command("Page "+page,2,page));for(int i=0;i<12&&page*12+i<Slots;i++){CopyCache(d,slot,3+i*2,(page*12+i)*2);CopyCache(d,slot,4+i*2,(page*12+i)*2+1);}}
+                    for(int page=0;page<11;page++) {int start=page*12;Command("Page "+page,2,page,WordCacheBuild.Receive("MF6_TextOne",Enumerable.Range(0,Math.Min(12,Slots-start)).Select(i=>WordCacheBuild.Pair(Cache(slot,(start+i)*2),3+i*2))));}
                     var clear=State(sm,"Clear all",empty);clear.writeDefaultValues=false;var ct=sm.AddAnyStateTransition(clear);ct.duration=0;ct.hasExitTime=false;ct.canTransitionToSelf=false;Condition(ct,"MF6_Stage",2);Condition(ct,"MF6_Format",15);Leave(clear,idle);Clear(Buffer(clear));
                     for(int epoch=0;epoch<4;epoch++) {
-                        var snapshot=State(sm,"Latest 14 characters epoch "+epoch,empty);snapshot.writeDefaultValues=false;var enter=Enter(sm,snapshot);Condition(enter,"MF6_TextSnapshot",1);Condition(enter,"MF6_TextSlot",slot);Condition(enter,"MF6_TextEpoch",epoch);Condition(enter,"MF6_Text"+slot+"_Epoch",epoch);Leave(snapshot,idle);
-                        var sd=Buffer(snapshot);for(int i=0;i<28;i++)CopyCache(sd,slot,i,i);UpdateCount(sd,slot,28,true);
+                        var snapshot=State(sm,"Latest 14 characters epoch "+epoch,WordCacheBuild.Receive("MF6_TextOne",Enumerable.Range(0,14).Select(i=>WordCacheBuild.Pair(Cache(slot,i*2),i*2))));snapshot.writeDefaultValues=false;var enter=Enter(sm,snapshot);Condition(enter,"MF6_TextSnapshot",1);Condition(enter,"MF6_TextSlot",slot);Condition(enter,"MF6_TextEpoch",epoch);Condition(enter,"MF6_Text"+slot+"_Epoch",epoch);Leave(snapshot,idle);
+                        var sd=Buffer(snapshot);UpdateCount(sd,slot,28,true);
                     }
                 }
                 var merge=root.AddComponent<ModularAvatarMergeAnimator>();merge.animator=fx;merge.layerType=VRCAvatarDescriptor.AnimLayerType.FX;merge.pathMode=MergeAnimatorPathMode.Relative;merge.matchAvatarWriteDefaults=false;

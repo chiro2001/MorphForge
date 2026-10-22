@@ -1,0 +1,1027 @@
+{
+  "bundle": "uploaded-v6.vrca",
+  "types": {
+    "MonoBehaviour": 3711,
+    "Transform": 706,
+    "AnimationClip": 3083,
+    "GameObject": 706,
+    "ParticleSystemRenderer": 175,
+    "Material": 61,
+    "Mesh": 43,
+    "Texture2D": 50,
+    "BoxCollider": 9,
+    "Shader": 21,
+    "ParticleSystem": 175,
+    "AnimatorController": 8,
+    "MonoScript": 19,
+    "AvatarMask": 1,
+    "Light": 6,
+    "PositionConstraint": 2,
+    "SkinnedMeshRenderer": 21,
+    "Texture2DArray": 1,
+    "MeshFilter": 6,
+    "MeshRenderer": 6,
+    "RotationConstraint": 1,
+    "ParentConstraint": 3,
+    "AssetBundle": 1,
+    "Avatar": 1,
+    "Camera": 1,
+    "RenderTexture": 1,
+    "Animator": 1,
+    "SphereCollider": 1
+  },
+  "serializedBytesByType": {
+    "Mesh": 29990380,
+    "AnimationClip": 9788076,
+    "MonoBehaviour": 4899052,
+    "AnimatorController": 2739048,
+    "Texture2D": 1703640,
+    "Texture2DArray": 1670868,
+    "ParticleSystem": 1312860,
+    "Shader": 968516,
+    "Material": 309848,
+    "AssetBundle": 106176,
+    "Avatar": 95912,
+    "SkinnedMeshRenderer": 60200,
+    "Transform": 56444,
+    "ParticleSystemRenderer": 52392,
+    "GameObject": 34786,
+    "MonoScript": 2552,
+    "Light": 1584,
+    "MeshRenderer": 936,
+    "BoxCollider": 612,
+    "ParentConstraint": 312,
+    "Camera": 184,
+    "MeshFilter": 144,
+    "PositionConstraint": 136,
+    "RenderTexture": 92,
+    "RotationConstraint": 84,
+    "AvatarMask": 80,
+    "SphereCollider": 60,
+    "Animator": 56
+  },
+  "textures": [
+    {
+      "type": "Texture2D",
+      "name": "ネメシス腕バナー (4)",
+      "bytes": 236,
+      "m_Width": 2048,
+      "m_Height": 2048,
+      "m_Depth": null,
+      "m_TextureFormat": 12,
+      "m_CompleteImageSize": 5592432,
+      "m_IsReadable": false,
+      "m_MipCount": 12
+    },
+    {
+      "type": "Texture2D",
+      "name": "Lod_22",
+      "bytes": 212,
+      "m_Width": 2048,
+      "m_Height": 2048,
+      "m_Depth": null,
+      "m_TextureFormat": 12,
+      "m_CompleteImageSize": 5592432,
+      "m_IsReadable": false,
+      "m_MipCount": 12
+    },
+    {
+      "type": "Texture2D",
+      "name": "Nemesis_Skin (32)",
+      "bytes": 224,
+      "m_Width": 2048,
+      "m_Height": 2048,
+      "m_Depth": null,
+      "m_TextureFormat": 12,
+      "m_CompleteImageSize": 5592432,
+      "m_IsReadable": false,
+      "m_MipCount": 12
+    },
+    {
+      "type": "Texture2D",
+      "name": "Nemesis_Cloth2 (29)",
+      "bytes": 224,
+      "m_Width": 2048,
+      "m_Height": 2048,
+      "m_Depth": null,
+      "m_TextureFormat": 12,
+      "m_CompleteImageSize": 5592432,
+      "m_IsReadable": false,
+      "m_MipCount": 12
+    },
+    {
+      "type": "Texture2D",
+      "name": "Nemesis_Cloth2_EmissionMask",
+      "bytes": 232,
+      "m_Width": 2048,
+      "m_Height": 2048,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 2796216,
+      "m_IsReadable": false,
+      "m_MipCount": 12
+    },
+    {
+      "type": "Texture2D",
+      "name": "Nemesis_Eye_EmissionMask",
+      "bytes": 228,
+      "m_Width": 2048,
+      "m_Height": 2048,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 2796216,
+      "m_IsReadable": false,
+      "m_MipCount": 12
+    },
+    {
+      "type": "Texture2D",
+      "name": "Lod_23",
+      "bytes": 212,
+      "m_Width": 2048,
+      "m_Height": 2048,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 2796216,
+      "m_IsReadable": false,
+      "m_MipCount": 12
+    },
+    {
+      "type": "Texture2D",
+      "name": "Nemesis_Eye (22)",
+      "bytes": 220,
+      "m_Width": 2048,
+      "m_Height": 2048,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 2796216,
+      "m_IsReadable": false,
+      "m_MipCount": 12
+    },
+    {
+      "type": "Texture2D",
+      "name": "noizu",
+      "bytes": 212,
+      "m_Width": 2048,
+      "m_Height": 2048,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 2796216,
+      "m_IsReadable": false,
+      "m_MipCount": 12
+    },
+    {
+      "type": "Texture2D",
+      "name": "Nemesis_Hairs (17)",
+      "bytes": 224,
+      "m_Width": 2048,
+      "m_Height": 2048,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 2796216,
+      "m_IsReadable": false,
+      "m_MipCount": 12
+    },
+    {
+      "type": "Texture2D",
+      "name": "Nemesis_Cloth1 (29)",
+      "bytes": 224,
+      "m_Width": 2048,
+      "m_Height": 2048,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 2796216,
+      "m_IsReadable": false,
+      "m_MipCount": 12
+    },
+    {
+      "type": "Texture2D",
+      "name": "noizu2",
+      "bytes": 212,
+      "m_Width": 2048,
+      "m_Height": 2048,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 2796216,
+      "m_IsReadable": false,
+      "m_MipCount": 12
+    },
+    {
+      "type": "Texture2D",
+      "name": "jp",
+      "bytes": 208,
+      "m_Width": 2048,
+      "m_Height": 1024,
+      "m_Depth": null,
+      "m_TextureFormat": 63,
+      "m_CompleteImageSize": 2097152,
+      "m_IsReadable": false,
+      "m_MipCount": 1
+    },
+    {
+      "type": "Texture2D",
+      "name": "zh",
+      "bytes": 208,
+      "m_Width": 2048,
+      "m_Height": 1024,
+      "m_Depth": null,
+      "m_TextureFormat": 63,
+      "m_CompleteImageSize": 2097152,
+      "m_IsReadable": false,
+      "m_MipCount": 1
+    },
+    {
+      "type": "Texture2D",
+      "name": "ネメシス魔法陣 (6)",
+      "bytes": 232,
+      "m_Width": 1024,
+      "m_Height": 1024,
+      "m_Depth": null,
+      "m_TextureFormat": 12,
+      "m_CompleteImageSize": 1398128,
+      "m_IsReadable": false,
+      "m_MipCount": 11
+    },
+    {
+      "type": "Texture2D",
+      "name": "FireTex",
+      "bytes": 1398252,
+      "m_Width": 1024,
+      "m_Height": 1024,
+      "m_Depth": null,
+      "m_TextureFormat": 12,
+      "m_CompleteImageSize": 1398128,
+      "m_IsReadable": true,
+      "m_MipCount": 11
+    },
+    {
+      "type": "Texture2D",
+      "name": "Nemesis_Alpha_edit",
+      "bytes": 224,
+      "m_Width": 1024,
+      "m_Height": 1024,
+      "m_Depth": null,
+      "m_TextureFormat": 12,
+      "m_CompleteImageSize": 1398128,
+      "m_IsReadable": false,
+      "m_MipCount": 11
+    },
+    {
+      "type": "Texture2D",
+      "name": "ネメシス魔法陣 (3)",
+      "bytes": 232,
+      "m_Width": 1024,
+      "m_Height": 1024,
+      "m_Depth": null,
+      "m_TextureFormat": 12,
+      "m_CompleteImageSize": 1398128,
+      "m_IsReadable": false,
+      "m_MipCount": 11
+    },
+    {
+      "type": "Texture2D",
+      "name": "イラスト154 (20)",
+      "bytes": 224,
+      "m_Width": 512,
+      "m_Height": 512,
+      "m_Depth": null,
+      "m_TextureFormat": 12,
+      "m_CompleteImageSize": 349552,
+      "m_IsReadable": false,
+      "m_MipCount": 10
+    },
+    {
+      "type": "Texture2D",
+      "name": "particle1001 (6) 1",
+      "bytes": 224,
+      "m_Width": 512,
+      "m_Height": 512,
+      "m_Depth": null,
+      "m_TextureFormat": 12,
+      "m_CompleteImageSize": 349552,
+      "m_IsReadable": false,
+      "m_MipCount": 10
+    },
+    {
+      "type": "Texture2D",
+      "name": "texture 1",
+      "bytes": 216,
+      "m_Width": 512,
+      "m_Height": 512,
+      "m_Depth": null,
+      "m_TextureFormat": 12,
+      "m_CompleteImageSize": 349552,
+      "m_IsReadable": false,
+      "m_MipCount": 10
+    },
+    {
+      "type": "Texture2D",
+      "name": "CatalogAtlas",
+      "bytes": 216,
+      "m_Width": 2048,
+      "m_Height": 41,
+      "m_Depth": null,
+      "m_TextureFormat": 4,
+      "m_CompleteImageSize": 335872,
+      "m_IsReadable": false,
+      "m_MipCount": 1
+    },
+    {
+      "type": "Texture2D",
+      "name": "CatalogMetadata",
+      "bytes": 262276,
+      "m_Width": 256,
+      "m_Height": 64,
+      "m_Depth": null,
+      "m_TextureFormat": 20,
+      "m_CompleteImageSize": 262144,
+      "m_IsReadable": true,
+      "m_MipCount": 1
+    },
+    {
+      "type": "Texture2D",
+      "name": "circleglow_00",
+      "bytes": 220,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 12,
+      "m_CompleteImageSize": 87408,
+      "m_IsReadable": false,
+      "m_MipCount": 9
+    },
+    {
+      "type": "Texture2D",
+      "name": "flash_00",
+      "bytes": 212,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 12,
+      "m_CompleteImageSize": 87408,
+      "m_IsReadable": false,
+      "m_MipCount": 9
+    },
+    {
+      "type": "Texture2D",
+      "name": "tex_eff_prism_aura01",
+      "bytes": 224,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 12,
+      "m_CompleteImageSize": 87408,
+      "m_IsReadable": false,
+      "m_MipCount": 9
+    },
+    {
+      "type": "Texture2D",
+      "name": "star_00",
+      "bytes": 212,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 12,
+      "m_CompleteImageSize": 87408,
+      "m_IsReadable": false,
+      "m_MipCount": 9
+    },
+    {
+      "type": "Texture2D",
+      "name": "circle_02",
+      "bytes": 216,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 12,
+      "m_CompleteImageSize": 87408,
+      "m_IsReadable": false,
+      "m_MipCount": 9
+    },
+    {
+      "type": "Texture2D",
+      "name": "aura_03",
+      "bytes": 212,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 12,
+      "m_CompleteImageSize": 87408,
+      "m_IsReadable": false,
+      "m_MipCount": 9
+    },
+    {
+      "type": "Texture2D",
+      "name": "aura_04",
+      "bytes": 212,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 12,
+      "m_CompleteImageSize": 87408,
+      "m_IsReadable": false,
+      "m_MipCount": 9
+    },
+    {
+      "type": "Texture2D",
+      "name": "zh-widths",
+      "bytes": 216,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 63,
+      "m_CompleteImageSize": 65536,
+      "m_IsReadable": false,
+      "m_MipCount": 1
+    },
+    {
+      "type": "Texture2D",
+      "name": "jp-widths",
+      "bytes": 216,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 63,
+      "m_CompleteImageSize": 65536,
+      "m_IsReadable": false,
+      "m_MipCount": 1
+    },
+    {
+      "type": "Texture2D",
+      "name": "transition_01",
+      "bytes": 220,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 43704,
+      "m_IsReadable": false,
+      "m_MipCount": 9
+    },
+    {
+      "type": "Texture2D",
+      "name": "noise_06",
+      "bytes": 212,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 43704,
+      "m_IsReadable": false,
+      "m_MipCount": 9
+    },
+    {
+      "type": "Texture2D",
+      "name": "noise_17",
+      "bytes": 212,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 43704,
+      "m_IsReadable": false,
+      "m_MipCount": 9
+    },
+    {
+      "type": "Texture2D",
+      "name": "noise_08",
+      "bytes": 212,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 43704,
+      "m_IsReadable": false,
+      "m_MipCount": 9
+    },
+    {
+      "type": "Texture2D",
+      "name": "tex_eff_line03",
+      "bytes": 220,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 43704,
+      "m_IsReadable": false,
+      "m_MipCount": 9
+    },
+    {
+      "type": "Texture2D",
+      "name": "noise_00",
+      "bytes": 212,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 43704,
+      "m_IsReadable": false,
+      "m_MipCount": 9
+    },
+    {
+      "type": "Texture2D",
+      "name": "noise_16",
+      "bytes": 212,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 43704,
+      "m_IsReadable": false,
+      "m_MipCount": 9
+    },
+    {
+      "type": "Texture2D",
+      "name": "noise_23",
+      "bytes": 212,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 43704,
+      "m_IsReadable": false,
+      "m_MipCount": 9
+    },
+    {
+      "type": "Texture2D",
+      "name": "noise_18",
+      "bytes": 212,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 43704,
+      "m_IsReadable": false,
+      "m_MipCount": 9
+    },
+    {
+      "type": "Texture2D",
+      "name": "noise_15",
+      "bytes": 212,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 43704,
+      "m_IsReadable": false,
+      "m_MipCount": 9
+    },
+    {
+      "type": "Texture2D",
+      "name": "noise_05",
+      "bytes": 212,
+      "m_Width": 256,
+      "m_Height": 256,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 43704,
+      "m_IsReadable": false,
+      "m_MipCount": 9
+    },
+    {
+      "type": "Texture2D",
+      "name": "tex_eff_fire02",
+      "bytes": 22004,
+      "m_Width": 128,
+      "m_Height": 128,
+      "m_Depth": null,
+      "m_TextureFormat": 12,
+      "m_CompleteImageSize": 21872,
+      "m_IsReadable": true,
+      "m_MipCount": 8
+    },
+    {
+      "type": "Texture2D",
+      "name": "tex_eff_glow02",
+      "bytes": 220,
+      "m_Width": 128,
+      "m_Height": 128,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 10936,
+      "m_IsReadable": false,
+      "m_MipCount": 8
+    },
+    {
+      "type": "Texture2D",
+      "name": "tex_eff_hit05",
+      "bytes": 220,
+      "m_Width": 128,
+      "m_Height": 128,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 10936,
+      "m_IsReadable": false,
+      "m_MipCount": 8
+    },
+    {
+      "type": "Texture2D",
+      "name": "tex_eff_glass02",
+      "bytes": 11068,
+      "m_Width": 128,
+      "m_Height": 128,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 10936,
+      "m_IsReadable": true,
+      "m_MipCount": 8
+    },
+    {
+      "type": "Texture2D",
+      "name": "tex_eff_loop_buff02",
+      "bytes": 224,
+      "m_Width": 128,
+      "m_Height": 128,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 10936,
+      "m_IsReadable": false,
+      "m_MipCount": 8
+    },
+    {
+      "type": "Texture2D",
+      "name": "tex_eff_flame_pattern_01",
+      "bytes": 228,
+      "m_Width": 128,
+      "m_Height": 128,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 10936,
+      "m_IsReadable": false,
+      "m_MipCount": 8
+    },
+    {
+      "type": "Texture2D",
+      "name": "WhiteMask",
+      "bytes": 216,
+      "m_Width": 64,
+      "m_Height": 64,
+      "m_Depth": null,
+      "m_TextureFormat": 10,
+      "m_CompleteImageSize": 2744,
+      "m_IsReadable": false,
+      "m_MipCount": 7
+    },
+    {
+      "type": "Texture2DArray",
+      "name": "CatalogLayers",
+      "bytes": 1670868,
+      "m_Width": 32,
+      "m_Height": 32,
+      "m_Depth": 306,
+      "m_TextureFormat": null,
+      "m_CompleteImageSize": null,
+      "m_IsReadable": true,
+      "m_MipCount": 6
+    },
+    {
+      "type": "RenderTexture",
+      "name": "ReceivedView",
+      "bytes": 92,
+      "m_Width": 512,
+      "m_Height": 384,
+      "m_Depth": null,
+      "m_TextureFormat": null,
+      "m_CompleteImageSize": null,
+      "m_IsReadable": null,
+      "m_MipCount": -1
+    }
+  ],
+  "controllers": [
+    {
+      "type": "AnimatorController",
+      "name": "vrc_AvatarV3IdleLayer",
+      "bytes": 1532,
+      "keys": [
+        "m_LayerArray",
+        "m_StateMachineArray",
+        "m_Values",
+        "m_DefaultValues"
+      ],
+      "controllerArrayCounts": {
+        "m_LayerArray": 1,
+        "m_StateMachineArray": 1
+      }
+    },
+    {
+      "type": "AnimatorController",
+      "name": "Nemesis_Locomotion_NoSleep",
+      "bytes": 24712,
+      "keys": [
+        "m_LayerArray",
+        "m_StateMachineArray",
+        "m_Values",
+        "m_DefaultValues"
+      ],
+      "controllerArrayCounts": {
+        "m_LayerArray": 5,
+        "m_StateMachineArray": 5
+      }
+    },
+    {
+      "type": "AnimatorController",
+      "name": "vrc_AvatarV3UtilityTPose",
+      "bytes": 560,
+      "keys": [
+        "m_LayerArray",
+        "m_StateMachineArray",
+        "m_Values",
+        "m_DefaultValues"
+      ],
+      "controllerArrayCounts": {
+        "m_LayerArray": 1,
+        "m_StateMachineArray": 1
+      }
+    },
+    {
+      "type": "AnimatorController",
+      "name": "vrc_AvatarV3SittingLayer",
+      "bytes": 2740,
+      "keys": [
+        "m_LayerArray",
+        "m_StateMachineArray",
+        "m_Values",
+        "m_DefaultValues"
+      ],
+      "controllerArrayCounts": {
+        "m_LayerArray": 1,
+        "m_StateMachineArray": 1
+      }
+    },
+    {
+      "type": "AnimatorController",
+      "name": "Nemesis_Action",
+      "bytes": 16172,
+      "keys": [
+        "m_LayerArray",
+        "m_StateMachineArray",
+        "m_Values",
+        "m_DefaultValues"
+      ],
+      "controllerArrayCounts": {
+        "m_LayerArray": 1,
+        "m_StateMachineArray": 1
+      }
+    },
+    {
+      "type": "AnimatorController",
+      "name": "Nemesis_FX_v_1_1_0",
+      "bytes": 2687516,
+      "keys": [
+        "m_LayerArray",
+        "m_StateMachineArray",
+        "m_Values",
+        "m_DefaultValues"
+      ],
+      "controllerArrayCounts": {
+        "m_LayerArray": 136,
+        "m_StateMachineArray": 136
+      }
+    },
+    {
+      "type": "AnimatorController",
+      "name": "vrc_AvatarV3HandsLayer",
+      "bytes": 5248,
+      "keys": [
+        "m_LayerArray",
+        "m_StateMachineArray",
+        "m_Values",
+        "m_DefaultValues"
+      ],
+      "controllerArrayCounts": {
+        "m_LayerArray": 3,
+        "m_StateMachineArray": 3
+      }
+    },
+    {
+      "type": "AnimatorController",
+      "name": "vrc_AvatarV3UtilityIKPose",
+      "bytes": 568,
+      "keys": [
+        "m_LayerArray",
+        "m_StateMachineArray",
+        "m_Values",
+        "m_DefaultValues"
+      ],
+      "controllerArrayCounts": {
+        "m_LayerArray": 1,
+        "m_StateMachineArray": 1
+      }
+    }
+  ],
+  "shaders": [
+    {
+      "type": "Shader",
+      "name": "MegamiVFX/Distotion",
+      "bytes": 15620,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "NiiyaChanShader/Particles/Unlit Lite",
+      "bytes": 10220,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "Hidden/ltspass_cutout",
+      "bytes": 118276,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "Hidden/lilToonOutline",
+      "bytes": 47908,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "Hidden/ltspass_opaque",
+      "bytes": 111968,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "Particles/Standard Unlit",
+      "bytes": 48240,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "NiiyaChanShader/Particles/Aura Unlit",
+      "bytes": 11588,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "Unlit/Texture",
+      "bytes": 6516,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "Hidden/lilToonCutout",
+      "bytes": 43660,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "MorphForgeAvatar/LocalPreview",
+      "bytes": 4808,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "Hidden/lilToonTwoPassTransparent",
+      "bytes": 47600,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "lilToon",
+      "bytes": 43616,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "Hidden/lilToonTransparent",
+      "bytes": 45464,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "Legacy Shaders/VertexLit",
+      "bytes": 24684,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "MegamiVFX/Add",
+      "bytes": 17804,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "Hidden/ltspass_transparent",
+      "bytes": 140312,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "MorphForgeAvatar/ParticleBoxCatalogMetadataGrid",
+      "bytes": 104144,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "_lil/[Optional] lilToonFakeShadow",
+      "bytes": 12176,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "Hidden/lilToonTransparentOutline",
+      "bytes": 49752,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "MorphForgeAvatar/PixelText16",
+      "bytes": 59132,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    },
+    {
+      "type": "Shader",
+      "name": "MorphForge/AnchorHandle",
+      "bytes": 5028,
+      "m_DecompressedSize": null,
+      "m_CompressedSize": null
+    }
+  ],
+  "clips": {
+    "count": 3083,
+    "bytes": 9788076,
+    "largest": [
+      {
+        "type": "AnimationClip",
+        "name": "AFK2-init",
+        "bytes": 89604
+      },
+      {
+        "type": "AnimationClip",
+        "name": "AFK1-init_Aciton",
+        "bytes": 76364
+      },
+      {
+        "type": "AnimationClip",
+        "name": "AFK2-out",
+        "bytes": 53120
+      },
+      {
+        "type": "AnimationClip",
+        "name": "Motion zero baseline 1",
+        "bytes": 43540
+      },
+      {
+        "type": "AnimationClip",
+        "name": "Motion zero baseline 2",
+        "bytes": 43540
+      },
+      {
+        "type": "AnimationClip",
+        "name": "Motion zero baseline 3",
+        "bytes": 43540
+      },
+      {
+        "type": "AnimationClip",
+        "name": "AFK1-init_FX",
+        "bytes": 43492
+      },
+      {
+        "type": "AnimationClip",
+        "name": "AFK1-idle_Action",
+        "bytes": 28276
+      },
+      {
+        "type": "AnimationClip",
+        "name": "AFK2-init_FX",
+        "bytes": 25184
+      },
+      {
+        "type": "AnimationClip",
+        "name": "AFK2-init_FX",
+        "bytes": 25184
+      },
+      {
+        "type": "AnimationClip",
+        "name": "AFK1-idle_FX",
+        "bytes": 24856
+      },
+      {
+        "type": "AnimationClip",
+        "name": "Facial_13_Kirakira",
+        "bytes": 21536
+      }
+    ]
+  },
+  "readErrors": []
+}

@@ -1,0 +1,138 @@
+{
+  "scenes": {
+    "count": 2,
+    "scenes": [
+      {
+        "name": "MorphForge_MF6",
+        "path": "Assets/MorphForge/MF6/MorphForge_MF6.unity",
+        "isLoaded": true,
+        "isDirty": false,
+        "isActive": true,
+        "rootCount": 4
+      },
+      {
+        "name": "___NDMF Preview___",
+        "path": "Packages/nadena.dev.ndmf/Runtime/___NDMF Preview___.unity",
+        "isLoaded": true,
+        "isDirty": false,
+        "isActive": false,
+        "rootCount": 5
+      }
+    ]
+  },
+  "sdk": {
+    "available": true,
+    "buildState": "Idle",
+    "uploadState": "Idle",
+    "selectedAvatar": "MorphForge_MF6_Avatar",
+    "timeUtc": "2026-10-22T15:57:18.0901944Z"
+  },
+  "source": {
+    "success": true,
+    "scene": "Assets/MorphForge/MF6/MorphForge_MF6.unity",
+    "sceneDirty": false,
+    "avatarName": "MorphForge_MF6_Avatar",
+    "avatarId": "avtr_9ebb3bdb-6991-42cd-8c3e-b9a35f176e90",
+    "prefabDependencyHash": "f7fc16f0e5b238c2fbf4fd122adb93de",
+    "sceneDependencyHash": "e9b90ebc7f8b6c52f0e8ec3bb0b6a987",
+    "stores": 8,
+    "physicalParticles": 16448,
+    "missingScripts": 0,
+    "receiverFlags": 127,
+    "textRenderers": 4,
+    "motionControllers": 1,
+    "previewCameras": 1,
+    "previewTargets": [
+      {
+        "name": "Camera",
+        "width": 512,
+        "height": 384
+      }
+    ],
+    "shaderErrors": [],
+    "controllers": [
+      {
+        "object": "NemesisWandPrefab",
+        "path": "Assets/Nemesis/Nemesis_Lod/Animation/WandController.controller"
+      },
+      {
+        "object": "Reticle",
+        "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Reticle/Reticle.controller"
+      },
+      {
+        "object": "Reticle",
+        "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Reticle/Reticle.controller"
+      },
+      {
+        "object": "火炎放射_Black",
+        "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Fire/Menu/DarkFIRE.controller"
+      },
+      {
+        "object": "LusterRailGun",
+        "path": "Assets/Nemesis/Nemesis_Lod/Gimic/RailGun/LRG_FX.controller"
+      },
+      {
+        "object": "WarpurgisLaser_36",
+        "path": "Assets/Nemesis/Nemesis_Lod/Gimic/LaserBit/WL36_Contoroller.controller"
+      },
+      {
+        "object": "Shield",
+        "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Shield/Shield_FX.controller"
+      },
+      {
+        "object": "MorphForgePlacement",
+        "path": "Assets/MorphForge/MF6/Placement.controller"
+      },
+      {
+        "object": "ProtocolCenter",
+        "path": "Assets/MorphForgeAvatar/Generated/Motion/Motion.controller"
+      },
+      {
+        "object": "Pool0",
+        "path": "Assets/MorphForge/MF6/Pool0/FX.controller"
+      },
+      {
+        "object": "Pool1",
+        "path": "Assets/MorphForge/MF6/Pool1/FX.controller"
+      },
+      {
+        "object": "Pool2",
+        "path": "Assets/MorphForge/MF6/Pool2/FX.controller"
+      },
+      {
+        "object": "Pool3",
+        "path": "Assets/MorphForge/MF6/Pool3/FX.controller"
+      },
+      {
+        "object": "Pool4",
+        "path": "Assets/MorphForge/MF6/Pool4/FX.controller"
+      },
+      {
+        "object": "Pool5",
+        "path": "Assets/MorphForge/MF6/Pool5/FX.controller"
+      },
+      {
+        "object": "Pool6",
+        "path": "Assets/MorphForge/MF6/Pool6/FX.controller"
+      },
+      {
+        "object": "Pool7",
+        "path": "Assets/MorphForge/MF6/Pool7/FX.controller"
+      },
+      {
+        "object": "MF6Decoder",
+        "path": "Assets/MorphForge/MF6/Decoder.controller"
+      },
+      {
+        "object": "TextDisplay",
+        "path": "Assets/MorphForgeAvatar/Generated/Text/Text.controller"
+      },
+      {
+        "object": "LocalPreview",
+        "path": "Assets/MorphForgeAvatar/Generated/LocalPreview/Preview.controller"
+      }
+    ],
+    "sdkAvatarVersion": "3.10.5",
+    "timeUtc": "2026-10-22T15:57:18.7744807Z"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "name": "MorphForge Avatar",
-  "version": "1.0.0",
+  "version": "1.2.1",
   "protocol": "mf6",
   "capacity": 16384,
   "geometryBits": 240,

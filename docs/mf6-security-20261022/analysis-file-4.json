@@ -1,0 +1,27 @@
+{
+  "avatarId": "avtr_9ebb3bdb-6991-42cd-8c3e-b9a35f176e90",
+  "avatarVersion": 6,
+  "fileId": "file_29e323cf-176b-4353-bf4a-aedb8149e0a2",
+  "fileVersion": 4,
+  "latestFileVersion": 4,
+  "pendingUpload": false,
+  "timeUtc": "2026-10-22T14:54:19.133178Z",
+  "results": [
+    {
+      "endpoint": "analysis/file_29e323cf-176b-4353-bf4a-aedb8149e0a2/4",
+      "httpStatus": 403,
+      "error": "File forbidden"
+    },
+    {
+      "endpoint": "analysis/file_29e323cf-176b-4353-bf4a-aedb8149e0a2/4/standard",
+      "httpStatus": 403,
+      "error": "File forbidden"
+    },
+    {
+      "endpoint": "analysis/file_29e323cf-176b-4353-bf4a-aedb8149e0a2/4/security",
+      "httpStatus": 403,
+      "error": "File forbidden"
+    }
+  ],
+  "networkUploadStarted": false
+}

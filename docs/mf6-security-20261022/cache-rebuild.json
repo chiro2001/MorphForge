@@ -1,0 +1,81 @@
+{
+  "success": true,
+  "words": "State motions latch packed words directly; no ParameterDriver copies from animated parameters.",
+  "textParameters": 755,
+  "attempt": 4,
+  "motion": {
+    "success": true,
+    "layers": 20,
+    "states": 472,
+    "parameters": 462,
+    "syncedBits": 0
+  },
+  "merged": {
+    "parameters": 1926,
+    "layers": 136,
+    "syncedBits": 254,
+    "wordParameters": 0,
+    "textRenderers": 4,
+    "cachedFloatBindings": 70726,
+    "invalidCachePaths": []
+  },
+  "characterPrefabs": [
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Assets/Asset/BlackFire.prefab",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/RotationParticle/RotationEffect.prefab",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/LaserBit/WarpurgisLaser_36.prefab",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Lance/LanceMain.prefab",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Shield/Shield.prefab",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Assets/Asset/WorldAnchor.prefab",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/RailGun/LusterRailGun.prefab",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Nemesis/AFK_Effects.prefab",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Lod_FBX&Material&Texture/Nemesis_Lod.prefab",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Dummy/火炎放射_Black.prefab",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Lance/LanceElect.prefab",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Nemesis/NemesisWandPrefab.prefab",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Reticle/Reticle.prefab",
+      "unchanged": true
+    }
+  ],
+  "publicDependencyCount": 99,
+  "publicExternalAssets": [],
+  "prefabHash": "f7fc16f0e5b238c2fbf4fd122adb93de",
+  "publicPrefabHash": "0146c093b6981daec896b5964276b8ee",
+  "timeUtc": "2026-10-22T15:39:29.3037752Z"
+}

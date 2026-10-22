@@ -1,0 +1,9 @@
+{
+  "sourceLog": "output_log_2026-10-22_22-42-53.txt",
+  "clientLocalDate": "2026-10-22",
+  "avatarId": "avtr_9ebb3bdb-6991-42cd-8c3e-b9a35f176e90",
+  "firstObservedAtLocal": "22:43:11",
+  "error": "AssetBundleFailedServerSideChecks",
+  "message": "Avatar did not pass initial checks and will not be downloaded",
+  "scope": "Only the target Avatar error is retained. User/world/chat records and request URLs are omitted."
+}

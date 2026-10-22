@@ -1,0 +1,83 @@
+{
+  "fileBytes": 12341512,
+  "types": {
+    "MonoBehaviour": 3635,
+    "ParticleSystemRenderer": 175,
+    "Transform": 706,
+    "AnimationClip": 1902,
+    "GameObject": 706,
+    "Material": 61,
+    "ParticleSystem": 175,
+    "Mesh": 43,
+    "Texture2D": 50,
+    "Shader": 21,
+    "MeshFilter": 6,
+    "ParentConstraint": 3,
+    "MeshRenderer": 6,
+    "SkinnedMeshRenderer": 21,
+    "MonoScript": 19,
+    "BoxCollider": 9,
+    "Light": 6,
+    "Texture2DArray": 1,
+    "AnimatorController": 8,
+    "PositionConstraint": 2,
+    "Camera": 1,
+    "SphereCollider": 1,
+    "AvatarMask": 1,
+    "AssetBundle": 1,
+    "Avatar": 1,
+    "Animator": 1,
+    "RenderTexture": 1,
+    "RotationConstraint": 1
+  },
+  "controllers": [
+    {
+      "name": "vrc_AvatarV3HandsLayer",
+      "layers": 3,
+      "parameters": 6,
+      "states": 16
+    },
+    {
+      "name": "vrc_AvatarV3UtilityTPose",
+      "layers": 1,
+      "parameters": 2,
+      "states": 1
+    },
+    {
+      "name": "vrc_AvatarV3UtilityIKPose",
+      "layers": 1,
+      "parameters": 2,
+      "states": 1
+    },
+    {
+      "name": "Nemesis_FX_v_1_1_0",
+      "layers": 128,
+      "parameters": 1541,
+      "states": 3563
+    },
+    {
+      "name": "vrc_AvatarV3IdleLayer",
+      "layers": 1,
+      "parameters": 4,
+      "states": 2
+    },
+    {
+      "name": "Nemesis_Locomotion_NoSleep",
+      "layers": 5,
+      "parameters": 23,
+      "states": 28
+    },
+    {
+      "name": "vrc_AvatarV3SittingLayer",
+      "layers": 1,
+      "parameters": 4,
+      "states": 6
+    },
+    {
+      "name": "Nemesis_Action",
+      "layers": 1,
+      "parameters": 11,
+      "states": 33
+    }
+  ]
+}

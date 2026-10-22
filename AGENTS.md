@@ -13,6 +13,8 @@
 
 ## 本轮已授权范围
 
+- 2026-10-22：用户报告 MF6 Avatar 在线服务端检查失败。已在同一私有 Avatar ID 上进行单项对照，确认内部参数规模触发问题；完整修复版已上传为 Avatar v10 / file v8，generic/standard/security 均200且success=true。FX内部参数2794→1926，网络254/256bit及240bit几何直同步不变；4×128槽文字、3组动画、预览与16K几何保留。公共Avatar包1.2.1，Desktop仍0.22.0。源场景恢复干净，原人物Prefab依赖未变，未启动VRChat或推送远端；证据见`docs/mf6-security-20261022/RESULTS.md`。
+
 - 2026-10-22：用户明确要求“构建并上传当前 Unity 头像”。已通过公共VRChat SDK更新当前MF6场景绑定的既有私有Avatar，线上版本5→6，ID、名称和可见性保持一致，pendingUpload=false。同步预算254/256bit，几何240bit保持直接同步。上传入口`AgentScripts/AvatarUpload20261022.cs`，验证见`docs/avatar-upload-20261022/RESULTS.md`；Unity已恢复干净源场景，原Prefab依赖哈希未变，SDK临时状态另存Windows验证快照。未启动真实VRChat客户端，未创建GitHub Release。
 
 - 2026-10-22：用户新增快速演示显示需求，已实现点/点集、可调粗细线段/折线、箭头、圆环、坐标轴与线框盒。复用普通三角面和现有Avatar 1.2.0协议；Desktop 0.22.0已按默认主安装约定备份、安装并启动，数据校验一致。备份在`E:\tmp\morphforge\main-backup-v022-drawing`，验证见`docs/drawing-primitives/RESULTS.md`。本轮未发Release、未上传Avatar。点线演示源码与交付记录纳入本轮Git提交。
