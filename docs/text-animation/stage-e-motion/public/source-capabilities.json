@@ -1,0 +1,7 @@
+{
+  "success": true,
+  "nativeMotionAdvertised": true,
+  "additionalSyncBits": 0,
+  "bodyParametersChanged": false,
+  "note": "Source development Avatar receiver now advertises validated features; other body parameters and upload are unchanged."
+}

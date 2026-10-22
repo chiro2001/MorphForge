@@ -1,0 +1,46 @@
+{
+  "available": true,
+  "marker": "Animators.Update",
+  "unit": "TimeNanoseconds",
+  "rows": [
+    {
+      "phase": "motion output layers weight0",
+      "samples": 75,
+      "meanRaw": 6164301.333333333,
+      "maxRaw": 8986300
+    },
+    {
+      "phase": "motion idle gates0",
+      "samples": 96,
+      "meanRaw": 6284969.791666667,
+      "maxRaw": 7578600
+    },
+    {
+      "phase": "3 active motion banks",
+      "samples": 86,
+      "meanRaw": 7895737.2093023257,
+      "maxRaw": 12651400
+    },
+    {
+      "phase": "3 active motion banks",
+      "samples": 87,
+      "meanRaw": 7786464.3678160915,
+      "maxRaw": 9849800
+    },
+    {
+      "phase": "motion idle gates0",
+      "samples": 97,
+      "meanRaw": 6274825.7731958767,
+      "maxRaw": 7749500
+    },
+    {
+      "phase": "motion output layers weight0",
+      "samples": 99,
+      "meanRaw": 5971006.0606060605,
+      "maxRaw": 6931400
+    }
+  ],
+  "controllerYamlBytes": 20797967,
+  "runtimeAssetBytesEstimate": 14402216,
+  "scope": "Whole Avatar Editor Animator sampling, forward/reverse layer-off, idle and three populated motion banks. Includes base avatar/text/other native layers; not VRChat FPS or causal isolated CPU guarantee. All test parameters/weights restored."
+}

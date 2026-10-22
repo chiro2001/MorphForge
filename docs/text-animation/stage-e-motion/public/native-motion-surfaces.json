@@ -1,0 +1,32 @@
+{
+  "success": true,
+  "triangleTranslationAndRotation": true,
+  "textSharedRotation": true,
+  "captures": [
+    {
+      "name": "native-triangle-pose0",
+      "ink": 25760,
+      "left": 176,
+      "width": 160
+    },
+    {
+      "name": "native-triangle-poseHalf",
+      "ink": 18211,
+      "left": 240,
+      "width": 113
+    },
+    {
+      "name": "native-text-pose0",
+      "ink": 9088,
+      "left": 0,
+      "width": 440
+    },
+    {
+      "name": "native-text-poseQuarter",
+      "ink": 0,
+      "left": 0,
+      "width": 0
+    }
+  ],
+  "scope": "Actual received triangle/text definitions + production GPU shaders, isolated camera/layer. Only playback pose parameters are set for deterministic capture; UDP receiver/clock validated separately. All parameters restored."
+}

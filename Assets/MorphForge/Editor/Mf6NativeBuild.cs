@@ -70,6 +70,7 @@ namespace MorphForge.Editor
             }
             foreach(char c in "rgba")foreach(string field in new[]{"minColor","maxColor"})list.Add(B("Store",typeof(ParticleSystem),"InitialModule.startColor."+field+"."+c,0,0));bindings=list.ToArray();
             foreach(string field in new[]{"scalar","minScalar"})list.Add(B("Store",typeof(ParticleSystem),"InitialModule.startLifetime."+field,0,0));bindings=list.ToArray();
+            foreach(char axis in "XYZ")foreach(string scalar in new[]{"scalar","minScalar"})list.Add(B("Store",typeof(ParticleSystem),"InitialModule.startRotation"+(axis=='Z'?"":axis.ToString())+"."+scalar,0,0));bindings=list.ToArray();
             var modes=new List<Motion>();
             foreach(bool triangle in new[]{false,true}){
                 var motions=new List<Motion>();
@@ -99,6 +100,14 @@ namespace MorphForge.Editor
                 foreach(int a in Enumerable.Range(0,4)){
                     string c="rgba"[a].ToString();int field=a<3?a+6:9;
                     motions.Add(Linear((triangle?"Tri":"Box")+"Color"+c,"W"+field.ToString("D2"),new[]{B("Store",typeof(ParticleSystem),"InitialModule.startColor.minColor."+c,0,1),B("Store",typeof(ParticleSystem),"InitialModule.startColor.maxColor."+c,0,1)}));
+                }
+                var alphaGroup=Basis((triangle?"Tri":"Box")+" birth group alpha",new[]{"minColor","maxColor"}.Select(field=>B("Store",typeof(ParticleSystem),"InitialModule.startColor."+field+".a",(triangle?6f:-40f)/255,(triangle?6f:-40f)/255)).ToArray(),false);
+                var groupTree=Direct("Persistent group code",new List<Motion>{alphaGroup});var groupChildren=groupTree.children;groupChildren[0].directBlendParameter=prefix+"W16";groupTree.children=groupChildren;motions.Add(groupTree);
+                if(!triangle){
+                    Binding[] Rot(char axis,float coefficient)=>new[]{"scalar","minScalar"}.Select(field=>B("Store",typeof(ParticleSystem),"InitialModule.startRotation"+(axis=='Z'?"":axis.ToString())+"."+field,0,coefficient*255)).ToArray();
+                    var rotationParts=new List<Motion>{Basis("Birth center constants",Rot('X',0).Select(b=>B(b.path,b.type,b.property,1f/1048576,1f/1048576)).Concat(Rot('Z',0).Select(b=>B(b.path,b.type,b.property,513f/1048576,513f/1048576))).ToArray(),false)};
+                    foreach(var part in new[]{new{axis='X',field=2,c=2f/1048576},new{axis='X',field=5,c=1f/1048576},new{axis='Z',field=0,c=2f/1048576},new{axis='Z',field=3,c=1f/1048576},new{axis='Z',field=1,c=1024f/1048576},new{axis='Z',field=4,c=512f/1048576}})rotationParts.Add(Linear("Birth center "+part.axis+part.field,"W"+part.field.ToString("D2"),Rot(part.axis,part.c)));
+                    var rotation=Direct("Encoded box birth center",rotationParts);var gate=new BlendTree{name="Animated box center gate",blendType=BlendTreeType.Simple1D,blendParameter=prefix+"W16",useAutomaticThresholds=false};AssetDatabase.AddObjectToAsset(gate,fx);gate.AddChild(Basis("Static box zero birth rotation", "XYZ".SelectMany(a=>Rot(a,0)).ToArray(),false),0);gate.AddChild(rotation,1);motions.Add(gate);
                 }
                 motions.Add(Linear((triangle?"Tri":"Box")+"Eraser","Clear", "xyz".Select(a=>B("Minimum/Center/Eraser",typeof(Transform),"m_LocalScale."+a,.025f,1024)).ToArray(),1));
                 modes.Add(Direct(triangle?"Triangle data":"Box data",motions));
@@ -168,7 +177,7 @@ namespace MorphForge.Editor
             Lifecycle();Data();
             var module=PrefabUtility.LoadPrefabContents(ParticleStage2Build.Root+"/Display.prefab");
             try{
-                module.name="Pool"+pool;var store=module.transform.Find("Store").GetComponent<ParticleSystem>();var main=store.main;main.maxParticles=2056;main.startLifetime=1000000;main.scalingMode=ParticleSystemScalingMode.Hierarchy;main.customSimulationSpace=module.transform;
+                module.name="Pool"+pool;var store=module.transform.Find("Store").GetComponent<ParticleSystem>();var main=store.main;main.maxParticles=2056;main.startLifetime=1000000;main.startRotation3D=true;main.scalingMode=ParticleSystemScalingMode.Hierarchy;main.customSimulationSpace=module.transform;
                 var trigger=store.trigger;trigger.radiusScale=0;
                 var pump=module.transform.Find("Minimum/Center/Pump").GetComponent<ParticleSystem>().main;pump.startLifetime=.5f;
                 // Eight tiny hidden corners keep shader-displaced geometry in
@@ -188,8 +197,8 @@ namespace MorphForge.Editor
                     var tangent=axis==0?Vector3.forward:Vector3.right;float sign=axis==0?n.x:axis==1?n.y:n.z;tangents[i]=new Vector4(tangent.x,tangent.y,tangent.z,axis==2?sign:-sign);
                 }
                 mesh.uv=uv;mesh.uv2=uv2;mesh.tangents=tangents;mesh.RecalculateBounds();renderer.mesh=Save(mesh,path+"/Carrier.asset");
-                renderer.SetActiveVertexStreams(new List<ParticleSystemVertexStream>{ParticleSystemVertexStream.Position,ParticleSystemVertexStream.Normal,ParticleSystemVertexStream.Tangent,ParticleSystemVertexStream.Color,ParticleSystemVertexStream.UV,ParticleSystemVertexStream.UV2,ParticleSystemVertexStream.SizeXYZ,ParticleSystemVertexStream.Center,ParticleSystemVertexStream.InvStartLifetime});
-                var material=UnityEngine.Object.Instantiate(AssetDatabase.LoadAssetAtPath<Material>(materialSource??"Assets/MorphForge/Diagnostics/MF5Catalog/ParticleBoxCatalog.mat"));material.name="MF6 catalogue and triangles";material.shader=Shader.Find("MorphForge/ParticleBoxCatalogMetadataGrid");material.SetFloat("_WireEncoding",6);renderer.sharedMaterial=Save(material,path+"/Surface.mat");
+                renderer.SetActiveVertexStreams(new List<ParticleSystemVertexStream>{ParticleSystemVertexStream.Position,ParticleSystemVertexStream.Normal,ParticleSystemVertexStream.Tangent,ParticleSystemVertexStream.Color,ParticleSystemVertexStream.UV,ParticleSystemVertexStream.UV2,ParticleSystemVertexStream.SizeXYZ,ParticleSystemVertexStream.Center,ParticleSystemVertexStream.InvStartLifetime,ParticleSystemVertexStream.Rotation3D});
+                var material=UnityEngine.Object.Instantiate(AssetDatabase.LoadAssetAtPath<Material>(materialSource??"Assets/MorphForge/Diagnostics/MF5Catalog/ParticleBoxCatalog.mat"));material.name="MF6 catalogue and triangles";material.shader=Shader.Find("MorphForgeAvatar/ParticleBoxCatalogMetadataGrid");material.SetFloat("_WireEncoding",6);renderer.sharedMaterial=Save(material,path+"/Surface.mat");
                 module.GetComponent<ModularAvatarMergeAnimator>().animator=fx;module.GetComponent<ModularAvatarParameters>().parameters.Clear();
                 PrefabUtility.SaveAsPrefabAsset(module,path+"/Display.prefab");
             }finally{PrefabUtility.UnloadPrefabContents(module);}

@@ -1,0 +1,56 @@
+{
+  "success": true,
+  "version": "0.21.1",
+  "exeSha256": "a42f50eedc7613ea078d144c5470b474f14878169c154ddea0227073b04fb022",
+  "checks": [
+    {
+      "name": "packaged version and no UDP",
+      "passed": true
+    },
+    {
+      "name": "packaged renderer motion and text UI match frozen sources",
+      "passed": true
+    },
+    {
+      "name": "fresh install recognizes bundled material hash without prior import",
+      "passed": true
+    },
+    {
+      "name": "full native text placement motion flags accepted",
+      "passed": true
+    },
+    {
+      "name": "detected port9000 target permits motion",
+      "passed": true
+    },
+    {
+      "name": "publication remains explicit and does not start UDP",
+      "passed": true
+    },
+    {
+      "name": "later geometry edits revalidate attached motion envelope",
+      "passed": true
+    },
+    {
+      "name": "detach republishes static draft and clears group tags",
+      "passed": true
+    },
+    {
+      "name": "animation can be published again after detach",
+      "passed": true
+    },
+    {
+      "name": "switch to static-only receiver removes motion",
+      "passed": true
+    },
+    {
+      "name": "reserved future capability rejected",
+      "passed": true
+    },
+    {
+      "name": "all checks leave model and OSC inactive",
+      "passed": true
+    }
+  ],
+  "scope": "Packaged Rust core with localhost OSCQuery fixture; no VRChat, no UDP/model requests"
+}

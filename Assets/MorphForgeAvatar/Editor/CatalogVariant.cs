@@ -14,6 +14,10 @@ namespace MorphForgeAvatar.Editor {
             var jsonPath = Path.Combine(source, "catalog.json");
             var catalog = JObject.Parse(File.ReadAllText(jsonPath));
             if ((string)catalog["format"] != "MorphForgeMaterialCatalog/1") throw new InvalidOperationException("材质目录格式不支持。");
+            // Receiver abilities come from the shipped template, not an older
+            // Desktop material export that predates text/motion support.
+            var templateCatalog = JObject.Parse(File.ReadAllText(AvatarSetupWindow.Root + "/CatalogSource/catalog.json"));
+            catalog["capabilities"] = templateCatalog["capabilities"].DeepClone();
             EnsureFolder(AvatarSetupWindow.Root + "/Variants");
             var root = AssetDatabase.GenerateUniqueAssetPath(AvatarSetupWindow.Root + "/Variants/Catalog");
             if (string.IsNullOrEmpty(root)) throw new InvalidOperationException("无法创建独立材质目录。");

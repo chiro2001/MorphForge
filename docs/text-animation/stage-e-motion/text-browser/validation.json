@@ -1,0 +1,41 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "isolated project with OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "text-only groups are authorable animation targets",
+      "passed": true
+    },
+    {
+      "name": "viewer moves and rotates the actual text root",
+      "passed": true
+    },
+    {
+      "name": "repeated posing never accumulates transforms",
+      "passed": true
+    },
+    {
+      "name": "leaving animation restores text matrix and automatic updates",
+      "passed": true
+    },
+    {
+      "name": "animated camera bounds include text",
+      "passed": true
+    },
+    {
+      "name": "preview never mutates persisted text",
+      "passed": true
+    },
+    {
+      "name": "animated GLB exports text geometry under its motion group",
+      "passed": true
+    },
+    {
+      "name": "no JavaScript or GPU errors",
+      "passed": true
+    }
+  ]
+}

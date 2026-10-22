@@ -47,7 +47,7 @@ public static class AvatarPluginBuild {
    if(dependencies.Any(p=>p.IndexOf("Nemesis",StringComparison.OrdinalIgnoreCase)>=0||p.EndsWith(".prefab")||p.EndsWith(".unity")||p.EndsWith(".cs")))throw new Exception("Unsafe dependency: "+string.Join("\n",dependencies));
    var map=new Dictionary<string,UnityEngine.Object>();var copied=new List<string>();
    foreach(var old in dependencies){
-    string dest=Root+"/Generated/Resources/"+old.Substring("Assets/".Length);Folder(Path.GetDirectoryName(dest).Replace('\\','/'));
+    string dest=Root+"/Generated/ResourcesV12/"+old.Substring("Assets/".Length);Folder(Path.GetDirectoryName(dest).Replace('\\','/'));
     if(AssetDatabase.LoadMainAssetAtPath(dest))throw new Exception("Refusing to overwrite generated asset: "+dest);
     if(!AssetDatabase.CopyAsset(old,dest))throw new Exception("Copy failed: "+old);
     var newObjects=AssetDatabase.LoadAllAssetsAtPath(dest).ToDictionary(o=>{AssetDatabase.TryGetGUIDAndLocalFileIdentifier(o,out string g,out long id);return id;});
@@ -64,7 +64,10 @@ public static class AvatarPluginBuild {
    var t=shown.AddTransition(remote);t.hasExitTime=false;t.duration=0;t.AddCondition(AnimatorConditionMode.IfNot,0,"IsLocal");
    t=remote.AddTransition(shown);t.hasExitTime=false;t.duration=0;t.AddCondition(AnimatorConditionMode.If,0,"IsLocal");
    placement.AddLayer(new AnimatorControllerLayer{name="MorphForge owner helper",stateMachine=machine,defaultWeight=1});EditorUtility.SetDirty(placement);
-   var catalog=JObject.Parse(File.ReadAllText(Root+"/CatalogSource/catalog.json"));var identity=CatalogIdentity.Apply(module,catalog);
+   var catalog=JObject.Parse(File.ReadAllText(Root+"/CatalogSource/catalog.json"));var capabilities=(JArray)catalog["capabilities"];
+   foreach(var capability in new[]{"mf6-region8/1","mf6-text-panels/1","mf6-text-latest14/1","local-placement-controls/1","mf6-motion4/1","local-avatar-preview-prototype/1"})if(!capabilities.Any(c=>(string)c==capability))capabilities.Add(capability);
+   if(!module.GetComponentsInChildren<ModularAvatarMergeAnimator>(true).Any(m=>m.animator&&AssetDatabase.GetAssetPath(m.animator).EndsWith("/Motion.controller"))||!module.transform.Find("LocalPreview"))throw new Exception("Missing native motion or preview assets; refusing capability advertisement");
+   File.WriteAllText(Root+"/CatalogSource/catalog.json",catalog.ToString());var identity=CatalogIdentity.Apply(module,catalog);
    var marker=module.AddComponent<MorphForgeAvatarModule>();marker.catalogIdentity=identity;
    module.transform.SetParent(null,false);module.hideFlags=HideFlags.None;
    try{PrefabUtility.SaveAsPrefabAsset(module,AvatarSetupWindow.PrefabPath);}finally{UnityEngine.Object.DestroyImmediate(module);}
@@ -86,10 +89,11 @@ public static class AvatarPluginBuild {
   for(int i=floats.arraySize-1;i>=0;i--)if(floats.GetArrayElementAtIndex(i).FindPropertyRelative("first").stringValue=="_SurfacePass")floats.DeleteArrayElementAtIndex(i);
   saved.ApplyModifiedPropertiesWithoutUndo();AssetDatabase.SaveAssets();AssetDatabase.Refresh();
   // Never export user-created/private catalog variants.
-  var files=AssetDatabase.FindAssets("",new[]{Root}).Select(AssetDatabase.GUIDToAssetPath).Where(p=>!AssetDatabase.IsValidFolder(p)&&!p.StartsWith(Root+"/Variants/",StringComparison.Ordinal)).ToArray();
+  var active=new HashSet<string>(AssetDatabase.GetDependencies(AvatarSetupWindow.PrefabPath,true));
+  var files=AssetDatabase.FindAssets("",new[]{Root}).Select(AssetDatabase.GUIDToAssetPath).Where(p=>!AssetDatabase.IsValidFolder(p)&&!p.StartsWith(Root+"/Variants/",StringComparison.Ordinal)&&(!p.StartsWith(Root+"/Generated/",StringComparison.Ordinal)||active.Contains(p))).ToArray();
   var dependencies=AssetDatabase.GetDependencies(files,true).Where(p=>p.StartsWith("Assets/")&&!p.StartsWith(Root+"/")).ToArray();
   if(dependencies.Length!=0)throw new Exception("Unsafe export dependencies: "+string.Join("\n",dependencies));
-  Directory.CreateDirectory("E:/tmp/morphforge/avatar-plugin/dist");string path="E:/tmp/morphforge/avatar-plugin/dist/MorphForgeAvatar-1.1.0.unitypackage";
+  Directory.CreateDirectory("E:/tmp/morphforge/avatar-plugin/dist");string path="E:/tmp/morphforge/avatar-plugin/dist/MorphForgeAvatar-1.2.0.unitypackage";
   AssetDatabase.ExportPackage(files,path,ExportPackageOptions.Default);
   CatalogVariant.ExportBuiltin("E:/tmp/morphforge/avatar-plugin/dist/MorphForge-public-catalog.zip");
   return new JObject{["success"]=true,["path"]=path,["bytes"]=new FileInfo(path).Length,["files"]=files.Length}.ToString();

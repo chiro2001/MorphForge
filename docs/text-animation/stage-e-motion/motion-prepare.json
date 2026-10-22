@@ -1,0 +1,86 @@
+{
+  "complete": true,
+  "workers": [
+    {
+      "success": true,
+      "pool": 0,
+      "layers": 3,
+      "parameters": 74,
+      "clips": 116,
+      "prefab": "Assets/MorphForge/MF6/Pool0/Display.prefab",
+      "syncedBits": 0
+    },
+    {
+      "success": true,
+      "pool": 1,
+      "layers": 3,
+      "parameters": 74,
+      "clips": 116,
+      "prefab": "Assets/MorphForge/MF6/Pool1/Display.prefab",
+      "syncedBits": 0
+    },
+    {
+      "success": true,
+      "pool": 2,
+      "layers": 3,
+      "parameters": 74,
+      "clips": 116,
+      "prefab": "Assets/MorphForge/MF6/Pool2/Display.prefab",
+      "syncedBits": 0
+    },
+    {
+      "success": true,
+      "pool": 3,
+      "layers": 3,
+      "parameters": 74,
+      "clips": 116,
+      "prefab": "Assets/MorphForge/MF6/Pool3/Display.prefab",
+      "syncedBits": 0
+    },
+    {
+      "success": true,
+      "pool": 4,
+      "layers": 3,
+      "parameters": 74,
+      "clips": 116,
+      "prefab": "Assets/MorphForge/MF6/Pool4/Display.prefab",
+      "syncedBits": 0
+    },
+    {
+      "success": true,
+      "pool": 5,
+      "layers": 3,
+      "parameters": 74,
+      "clips": 116,
+      "prefab": "Assets/MorphForge/MF6/Pool5/Display.prefab",
+      "syncedBits": 0
+    },
+    {
+      "success": true,
+      "pool": 6,
+      "layers": 3,
+      "parameters": 74,
+      "clips": 116,
+      "prefab": "Assets/MorphForge/MF6/Pool6/Display.prefab",
+      "syncedBits": 0
+    },
+    {
+      "success": true,
+      "pool": 7,
+      "layers": 3,
+      "parameters": 74,
+      "clips": 116,
+      "prefab": "Assets/MorphForge/MF6/Pool7/Display.prefab",
+      "syncedBits": 0
+    }
+  ],
+  "decoder": {
+    "success": true,
+    "layers": 23,
+    "states": 2010,
+    "parameters": 315,
+    "syncedBits": 240
+  },
+  "motionPlaybackAdvertised": false,
+  "scope": "Experimental group-tag geometry receiver only. Clock/definition player not yet installed; no Avatar upload."
+}

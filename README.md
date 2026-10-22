@@ -6,6 +6,8 @@ MorphForge 是独立的桌面创作工作台：手工编辑、AI Harness、作�
 
 **[下载 Windows v0.16.1](https://github.com/chiro2001/MorphForge/releases/tag/v0.16.1)** · [使用指南](docs/USER-GUIDE.md) · [版本与验证记录](docs/DELIVERY.md)
 
+本轮开发版本为 Desktop **0.21.1** / Avatar **1.2.0**，新增文字、语音、小窗和原生分组动画；[实现与验证记录](docs/text-animation/MOTION-IMPLEMENTATION.md)。本轮不创建 GitHub Release，上方下载仍指向已有公开发行版。
+
 ## 作品展示
 
 以下画面取自主程序个人作品库中已保存作品的实际渲染，涵盖体素场景、体素与三角面混合建模，以及低多边形作品。图片经过 WebP 压缩，保留原来的取景和内容。
@@ -43,6 +45,8 @@ Box 是可以合并的长方体，数量与实际占用格数不同。展示作�
 | 参考图与体素文字 | 并排或叠加对照参考图，自由选择截图角度；读取图片像素、生成体素平面，或把字体文字栅格化为可编辑方块。 |
 | 作品与组件复用 | 保存、载入和删除个人作品，从已有选区创建组件；多实例共享作品库，各自保留工程和对话。 |
 | 材质与 Minecraft 导入 | 使用纯色、金属、发光、水、云及像素材质；导入 Java 资源包和 `.litematic`、`.schem`、`.schematic`、结构 `.nbt` 建筑。 |
+| 点阵文字与语音 | 可编辑双面中日英文本框；支持离线句末、流式临时文字及在线前置VAD，语音可填建模输入或字幕，关键词可触发建模。 |
+| 桌面小窗 | mini模式可仅显示语音/字幕或AI及发送进度，支持置顶、透明度和紧凑布局，与主窗共享会话。 |
 | 动画与模型导出 | 为分组设置关键帧、播放与截图；导出 GLB、OBJ ZIP、PLY、STL，GLB 可保留分组动画。 |
 
 ## 快速开始
@@ -62,7 +66,7 @@ Box 是可以合并的长方体，数量与实际占用格数不同。展示作�
 - **摆放与抓取**：使用金色定位球移动整体作品，选择世界固定／跟随 Avatar、保持水平和缩放；光球显示时可用手势抓放。
 - **切换与补播**：读取 Avatar 能力参数匹配协议和材质目录，使用作品库切换内容，通过周期或连续补播帮助晚加入者和漏帧恢复。
 
-可导入[独立 Avatar 插件](dist/avatar/MorphForgeAvatar-1.0.0.unitypackage)，在 Unity 的 `Tools > MorphForge Avatar > 安装与检查` 一键安装到自己的模型；需要 Modular Avatar，可选 VRCFury 压缩服装等菜单参数。安装与材质目录说明见[插件使用文档](Assets/MorphForgeAvatar/README.md)。
+可导入[独立 Avatar 插件](dist/avatar/MorphForgeAvatar-1.2.0.unitypackage)，在 Unity 的 `Tools > MorphForge Avatar > 安装与检查` 一键安装到自己的模型；需要 Modular Avatar，可选 VRCFury 压缩服装等菜单参数。安装与材质目录说明见[插件使用文档](Assets/MorphForgeAvatar/README.md)。
 
 发布需要已配置 MorphForge 显示模块的 **PC/PCVR Avatar**。在工作台识别并匹配目录后，选择 `VRChat 9000` 开启发送；多个窗口中只有一个可以占用 OSC。
 
@@ -86,7 +90,7 @@ Box 是可以合并的长方体，数量与实际占用格数不同。展示作�
 | 颜色与贴图 | 新纯色、量化 PBR 和程序材质可实时发送；新的图片贴图需要重新构建 Avatar。 |
 | Minecraft 材质 | 公开程序包含原创像素资源，也支持导入用户资源包。私人配套 Avatar 已验证原版 1.21.1 材质；原版 PNG/JAR 不随公开安装包分发。 |
 | 建筑格精度 | 自动按形状与目标空间选择精度，完整方块可按 1:1 导入；薄结构近似、越界与容量问题会进入预览报告。 |
-| 动画与碰撞 | 编辑器及 GLB 支持分组动画；当前 Avatar 发布静态几何，未实现可交互碰撞。 |
+| 动画与碰撞 | 编辑器/GLB支持完整分组动画；Avatar支持3组×4帧的平移/旋转/均匀缩放、循环/单次及暂停定位，未实现通用碰撞。 |
 
 多人同步仍可能漏帧，**本机发包完成不能确认其他玩家已经完整显示**。当前面向 Very Poor 性能等级；16,384 是配置容量，本轮最终 worker 尚未重新完成完整16K长时验收。材质、带宽预算和真实验证范围见[MF6 发布与材质说明](docs/stream-v16/RESULTS.md)。
 

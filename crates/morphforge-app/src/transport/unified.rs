@@ -12,12 +12,14 @@ const POOL_CAPACITY: usize = 2048;
 #[derive(Clone, Debug, PartialEq, Eq)]
 struct LiveBox {
     value: Box3,
+    group_id: u8,
     surface: Surface,
     pool: u8,
 }
 #[derive(Clone, Debug, PartialEq, Eq)]
 struct LiveTriangle {
     value: Triangle3,
+    group_id: u8,
     wire_id: u16,
 }
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
@@ -58,6 +60,7 @@ pub struct Plan {
 #[derive(Clone, Debug, Default)]
 pub struct Session {
     pub region_enabled: bool,
+    pub motion_groups: BTreeMap<String, u8>,
     desired_boxes: BTreeMap<GeometryKey, (Box3, Surface)>,
     desired_triangles: BTreeMap<u64, Triangle3>,
     boxes: BTreeMap<GeometryKey, LiveBox>,
@@ -110,6 +113,29 @@ impl Session {
         self.desired_triangles = triangles;
         Ok(())
     }
+    pub fn group(&self, name: &str) -> u8 {
+        self.motion_groups.get(name).copied().unwrap_or(0)
+    }
+    pub fn set_motion_groups(&mut self, groups: BTreeMap<String, u8>) -> Result<()> {
+        if groups.len() > 3
+            || groups.values().any(|g| !(1..=3).contains(g))
+            || groups.values().collect::<BTreeSet<_>>().len() != groups.len()
+        {
+            bail!("动画最多3个不同分组，编号1..3；0保留给静态")
+        };
+        self.motion_groups = groups;
+        Ok(())
+    }
+    pub fn frame_group(&self, plan: &Plan) -> u8 {
+        plan.actions
+            .iter()
+            .find_map(|a| match a {
+                Action::BoxSet { value, .. } => Some(self.group(&value.group)),
+                Action::TriangleSet { value, .. } => Some(self.group(&value.group)),
+                _ => None,
+            })
+            .unwrap_or(0)
+    }
     pub fn clear_sent(&mut self) {
         self.boxes.clear();
         self.triangles.clear();
@@ -160,17 +186,20 @@ impl Session {
                 .desired_boxes
                 .iter()
                 .filter(|(k, (b, s))| {
-                    self.boxes
-                        .get(k)
-                        .is_none_or(|old| old.surface != *s || old.value.shape != b.shape)
-                        || !self.seen(&Object::Box(**k))
+                    self.boxes.get(k).is_none_or(|old| {
+                        old.surface != *s
+                            || old.value.shape != b.shape
+                            || old.group_id != self.group(&b.group)
+                    }) || !self.seen(&Object::Box(**k))
                 })
                 .count()
             + self
                 .desired_triangles
                 .iter()
                 .filter(|(id, t)| {
-                    self.triangles.get(id).is_none_or(|old| old.value != **t)
+                    self.triangles
+                        .get(id)
+                        .is_none_or(|old| old.value != **t || old.group_id != self.group(&t.group))
                         || !self.seen(&Object::Triangle(**id))
                 })
                 .count()
@@ -280,10 +309,11 @@ impl Session {
             }
         }
         let has_boxes = self.desired_boxes.iter().any(|(k, (b, s))| {
-            self.boxes
-                .get(k)
-                .is_none_or(|old| old.surface != *s || old.value.shape != b.shape)
-                || !self.seen(&Object::Box(*k))
+            self.boxes.get(k).is_none_or(|old| {
+                old.surface != *s
+                    || old.value.shape != b.shape
+                    || old.group_id != self.group(&b.group)
+            }) || !self.seen(&Object::Box(*k))
         });
         let has_triangles = self.desired_triangles.iter().any(|(id, t)| {
             self.triangles.get(id).is_none_or(|old| old.value != *t)
@@ -302,10 +332,11 @@ impl Session {
             .desired_boxes
             .iter()
             .filter(|(k, (b, s))| {
-                self.boxes
-                    .get(k)
-                    .is_none_or(|old| old.surface != *s || old.value.shape != b.shape)
-                    || !self.seen(&Object::Box(**k))
+                self.boxes.get(k).is_none_or(|old| {
+                    old.surface != *s
+                        || old.value.shape != b.shape
+                        || old.group_id != self.group(&b.group)
+                }) || !self.seen(&Object::Box(**k))
             })
             .map(|(_, v)| v)
             .collect();
@@ -345,7 +376,8 @@ impl Session {
             let mut records = Vec::new();
             let mut actions = Vec::new();
             for (b, s) in pending.iter().copied() {
-                if b.shape != first.shape
+                if self.group(&b.group) != self.group(&first.group)
+                    || b.shape != first.shape
                     || (variant < 2 && *s != *surface)
                     || (variant == 0 && b.size != [1; 3])
                     || (variant == 2 && s.mode != surface.mode)
@@ -407,11 +439,20 @@ impl Session {
         // Variable-color contiguous cells can share coordinates. Compare the
         // number of native births with all ordinary layouts, never force it on
         // same-color walls (already one merged Box or eight shared voxels).
-        if self.region_enabled && first.shape == 0 && first.size == [1; 3] {
+        if self.region_enabled
+            && self.group(&first.group) == 0
+            && first.shape == 0
+            && first.size == [1; 3]
+        {
             let lookup: BTreeMap<_, _> = pending
                 .iter()
                 .copied()
-                .filter(|(b, s)| b.size == [1; 3] && b.shape == 0 && s.mode == surface.mode)
+                .filter(|(b, s)| {
+                    self.group(&b.group) == 0
+                        && b.size == [1; 3]
+                        && b.shape == 0
+                        && s.mode == surface.mode
+                })
                 .map(|(b, s)| (b.min, (b, s)))
                 .collect();
             for shape in 0..4 {
@@ -469,11 +510,13 @@ impl Session {
         Ok(best)
     }
     fn triangle_plan(&self) -> Result<Option<Plan>> {
-        let pending: Vec<_> = self
+        let mut pending: Vec<_> = self
             .desired_triangles
             .iter()
             .filter(|(id, t)| {
-                self.triangles.get(id).is_none_or(|old| old.value != **t)
+                self.triangles
+                    .get(id)
+                    .is_none_or(|old| old.value != **t || old.group_id != self.group(&t.group))
                     || !self.seen(&Object::Triangle(**id))
             })
             .map(|(_, t)| t)
@@ -481,6 +524,7 @@ impl Session {
         let Some(first) = pending.first().copied() else {
             return Ok(None);
         };
+        pending.retain(|t| self.group(&t.group) == self.group(&first.group));
         let occupied: BTreeSet<_> = self.triangles.values().map(|t| t.wire_id).collect();
         let counts = self.counts();
         let base = if let Some(t) = self.triangles.get(&first.id) {
@@ -638,6 +682,7 @@ impl Session {
                     self.boxes.insert(
                         k,
                         LiveBox {
+                            group_id: self.group(&value.group),
                             value: value.clone(),
                             surface: *surface,
                             pool: *pool,
@@ -660,6 +705,7 @@ impl Session {
                     self.triangles.insert(
                         value.id,
                         LiveTriangle {
+                            group_id: self.group(&value.group),
                             value: value.clone(),
                             wire_id: *wire_id,
                         },
@@ -781,6 +827,48 @@ mod tests {
         }
     }
 
+    #[test]
+    fn motion_frames_never_mix_groups_and_rebinding_republishes_only_affected_objects() {
+        let mut scene = Scene::default();
+        for x in 0..3 {
+            let mut b = Box3::new([x, 0, 0], [1; 3], 1);
+            b.group = if x == 1 {
+                "moving".into()
+            } else {
+                "still".into()
+            };
+            scene.boxes.push(b);
+        }
+        let mut s = Session {
+            region_enabled: true,
+            ..Default::default()
+        };
+        s.set_motion_groups(BTreeMap::from([("moving".into(), 1)]))
+            .unwrap();
+        s.set_target(&scene, &BTreeMap::new()).unwrap();
+        while let Some(plan) = s.next("volume").unwrap() {
+            let group = s.frame_group(&plan);
+            for action in &plan.actions {
+                if let Action::BoxSet { value, .. } = action {
+                    assert_eq!(s.group(&value.group), group);
+                }
+            }
+            let bytes = plan.frame.encode_group(0, group).unwrap();
+            assert_eq!(Frame::decode_group(&bytes).unwrap().1, group);
+            s.commit(&plan);
+        }
+        assert_eq!(s.pending_objects(), 0);
+        s.set_motion_groups(BTreeMap::from([("moving".into(), 2)]))
+            .unwrap();
+        assert_eq!(s.pending_objects(), 1);
+        let next = s.next("volume").unwrap().unwrap();
+        assert_eq!(s.frame_group(&next), 2);
+        s.commit(&next);
+        assert_eq!(s.pending_objects(), 0);
+        assert!(s
+            .set_motion_groups(BTreeMap::from([("a".into(), 1), ("b".into(), 1)]))
+            .is_err());
+    }
     #[test]
     fn colorful_region_beats_regular_frames_and_replays_exactly() {
         let scene = Scene {

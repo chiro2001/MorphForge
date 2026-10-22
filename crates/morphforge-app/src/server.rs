@@ -412,6 +412,7 @@ async fn discover_avatar(a: &App, port: Option<u16>, automatic: bool) -> anyhow:
         (crate::text_wire::CAPABILITY,"textPanels"),
         ("mf6-text-latest14/1","textPanels"),
         ("local-placement-controls/1","placementControlsSeparated"),
+        (crate::avatar_motion::CAPABILITY,"motion4"),
     ];
     let already_selected = current.as_ref().is_some_and(|c| {
         c.identity_hash() == hash
@@ -422,10 +423,12 @@ async fn discover_avatar(a: &App, port: Option<u16>, automatic: bool) -> anyhow:
     if let Some(c) = &current {
         crate::avatar_discovery::cache(&shared, c)?;
     }
+    let bundled = crate::target::AvatarCatalog::from_bytes(include_bytes!("../../../materials/mf6/catalog.json"))?;
     let target = current
         .filter(|c| c.identity_hash() == hash)
         .or(crate::avatar_discovery::lookup(&shared, hash)?)
-        .or(crate::avatar_discovery::lookup(&root, hash)?);
+        .or(crate::avatar_discovery::lookup(&root, hash)?)
+        .or_else(|| (bundled.identity_hash() == hash).then_some(bundled));
     report["catalogKnown"] = json!(target.is_some());
     let signature = report["info"]["signature"].clone();
     {
@@ -437,6 +440,9 @@ async fn discover_avatar(a: &App, port: Option<u16>, automatic: bool) -> anyhow:
             state.sent_revision = None;
             state.unified.clear_sent();
             state.text.reset();
+            state.motion=crate::avatar_motion::Session::default();
+            state.unified.motion_groups.clear();
+            state.text.motion_groups.clear();
             state.last_error = "Avatar能力/构建已改变，已停止发送；确认新目标后重新开启".into();
             report["senderStopped"] = json!(true);
         }

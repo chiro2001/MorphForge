@@ -8,6 +8,32 @@ using UnityEditor.SceneManagement;
 using MorphForge.Editor;
 using Newtonsoft.Json.Linq;
 public static class MotionCarrierProbe {
+ public static string Clock(){
+  var preview=EditorSceneManager.NewPreviewScene();var rows=new JArray();
+  try{foreach(bool loop in new[]{false,true}){
+   var root=new GameObject("Motion clock",typeof(Animator));UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(root,preview);var probe=new GameObject("Probe").transform;probe.SetParent(root.transform,false);
+   var fx=new UnityEditor.Animations.AnimatorController();fx.AddParameter(new AnimatorControllerParameter{name="Phase",type=AnimatorControllerParameterType.Float,defaultFloat=.5f});fx.AddParameter(new AnimatorControllerParameter{name="Rate",type=AnimatorControllerParameterType.Float,defaultFloat=0});fx.AddLayer("Clock");var sm=fx.layers[0].stateMachine;var state=sm.AddState("Clock");sm.defaultState=state;
+   var clip=new AnimationClip();AnimationUtility.SetEditorCurve(clip,EditorCurveBinding.FloatCurve("Probe",typeof(Transform),"m_LocalPosition.x"),AnimationCurve.Linear(0,0,1,1));var settings=AnimationUtility.GetAnimationClipSettings(clip);settings.loopTime=loop;AnimationUtility.SetAnimationClipSettings(clip,settings);state.motion=clip;state.writeDefaultValues=true;state.cycleOffsetParameterActive=true;state.cycleOffsetParameter="Phase";state.speedParameterActive=true;state.speedParameter="Rate";
+   var a=root.GetComponent<Animator>();a.runtimeAnimatorController=fx;a.Rebind();a.SetFloat("Phase",.5f);a.SetFloat("Rate",0);a.Update(0);float paused=probe.localPosition.x;a.SetFloat("Rate",1);a.Update(.2f);float moved=probe.localPosition.x;a.SetFloat("Rate",0);a.Update(.2f);float held=probe.localPosition.x;
+   rows.Add(new JObject{["loop"]=loop,["initialPhase"]=paused,["afterPlay"]=moved,["afterPause"]=held,["offsetPass"]=Mathf.Abs(paused-.5f)<.001,["advancePass"]=Mathf.Abs(moved-.7f)<.001,["pausePass"]=Mathf.Abs(held-moved)<.001});
+   UnityEngine.Object.DestroyImmediate(root);foreach(var obj in new UnityEngine.Object[]{state,sm,clip,fx})if(obj)UnityEngine.Object.DestroyImmediate(obj);
+  }}finally{EditorSceneManager.ClosePreviewScene(preview);}
+  var result=new JObject{["success"]=rows.All(r=>(bool)r["offsetPass"]&&(bool)r["advancePass"]&&(bool)r["pausePass"]),["rows"]=rows,["scope"]="Transient native Animator clock: local phase offset, speed and pause, no product asset changes."};Directory.CreateDirectory("Docs/TextAnimation");File.WriteAllText("Docs/TextAnimation/motion-clock.json",result.ToString());return result.ToString();
+ }
+ public static async System.Threading.Tasks.Task<string> Alpha(){
+  var preview=EditorSceneManager.NewPreviewScene();var root=new GameObject("Motion alpha math",typeof(Animator));UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(root,preview);var child=new GameObject("Particles",typeof(ParticleSystem));child.transform.SetParent(root.transform,false);var ps=child.GetComponent<ParticleSystem>();ps.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);var main=ps.main;main.playOnAwake=false;main.startLifetime=1;main.startSpeed=0;main.startColor=Color.white;var emission=ps.emission;emission.enabled=false;child.GetComponent<ParticleSystemRenderer>().enabled=false;
+  var fx=new UnityEditor.Animations.AnimatorController{name="Motion alpha math"};fx.AddParameter(new AnimatorControllerParameter{name="One",type=AnimatorControllerParameterType.Float,defaultFloat=1});fx.AddParameter("Group",AnimatorControllerParameterType.Float);fx.AddLayer("Math");var sm=fx.layers[0].stateMachine;var state=sm.AddState("Math");state.writeDefaultValues=true;sm.defaultState=state;
+  var animator=root.GetComponent<Animator>();animator.runtimeAnimatorController=fx;animator.cullingMode=AnimatorCullingMode.AlwaysAnimate;var rows=new JArray();var owned=new List<UnityEngine.Object>{root,state,sm,fx};
+  try {
+   foreach(bool triangle in new[]{false,true}) {
+    AnimationClip Clip(string name,float value){var c=new AnimationClip{name=name};owned.Add(c);foreach(string field in new[]{"minColor","maxColor"})AnimationUtility.SetEditorCurve(c,EditorCurveBinding.FloatCurve("Particles",typeof(ParticleSystem),"InitialModule.startColor."+field+".a"),AnimationCurve.Constant(0,1,value));return c;}
+    var basis=Clip("Basis",triangle?2f/255:1);var delta=Clip("Group coefficient",(triangle?6f:-40f)/255);
+    var tree=new UnityEditor.Animations.BlendTree{name="Alpha group",blendType=UnityEditor.Animations.BlendTreeType.Direct};owned.Add(tree);tree.AddChild(basis);tree.AddChild(delta);var children=tree.children;children[0].directBlendParameter="One";children[1].directBlendParameter="Group";tree.children=children;var so=new SerializedObject(tree);so.FindProperty("m_NormalizedBlendValues").boolValue=false;so.ApplyModifiedPropertiesWithoutUndo();state.motion=tree;animator.runtimeAnimatorController=null;animator.runtimeAnimatorController=fx;animator.Rebind();
+    for(int group=0;group<4;group++){animator.SetFloat("Group",group);animator.SetFloat("One",1);animator.Update(0);await System.Threading.Tasks.Task.Delay(50);ps.Clear();ps.Emit(1);var particles=new ParticleSystem.Particle[1];ps.GetParticles(particles);int expected=triangle?2+6*group:255-40*group;int actual=particles[0].startColor.a;rows.Add(new JObject{["triangle"]=triangle,["group"]=group,["expectedAlpha"]=expected,["actualAlpha"]=actual,["pass"]=actual==expected});}
+   }
+  }finally{foreach(var obj in owned)if(obj)UnityEngine.Object.DestroyImmediate(obj);EditorSceneManager.ClosePreviewScene(preview);}
+  var result=new JObject{["success"]=rows.All(r=>(bool)r["pass"]),["rows"]=rows,["scope"]="Transient native Animator -> ParticleSystem birth Color32; no product assets or Avatar parameters modified."};Directory.CreateDirectory("Docs/TextAnimation");File.WriteAllText("Docs/TextAnimation/motion-alpha.json",result.ToString());return result.ToString();
+ }
  public static string Run(){
   if(EditorApplication.isPlaying)throw new Exception("Edit Mode diagnostic required");
   var scene=EditorSceneManager.NewPreviewScene();var result=new JArray();

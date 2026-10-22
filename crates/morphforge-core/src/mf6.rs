@@ -6,6 +6,7 @@ use std::collections::BTreeSet;
 
 pub const CAPABILITY: &str = "mf6-unified/1";
 pub const REGION_CAPABILITY: &str = "mf6-region8/1";
+pub const MOTION_CAPABILITY: &str = "mf6-motion4/1";
 pub const BYTES: usize = 30;
 pub const POOLS: usize = 8;
 pub const ID_LIMIT: u16 = 16384;
@@ -540,6 +541,62 @@ impl Frame {
         Ok((sequence, frame))
     }
 
+    /// Four groups share otherwise-reserved geometry bits. Group zero is
+    /// exactly the original static wire encoding; Region8 stays static-only.
+    pub fn encode_group(&self, sequence: u8, group: u8) -> Result<[u8; BYTES]> {
+        if group > 3 {
+            return Err(invalid("动画组须为0..3（0为静态）"));
+        }
+        let mut bytes = self.encode(sequence)?;
+        match self {
+            Self::Boxes { .. } | Self::SharedBoxes { .. } => bytes[28] |= group << 6,
+            Self::Voxels { .. } => bytes[28] |= group << 3,
+            Self::Triangles { .. } => bytes[28] |= group << 2,
+            Self::TriangleStrip { .. } | Self::LocalTriangleStrip { .. } => bytes[27] |= group,
+            _ if group != 0 => return Err(invalid("该消息类型不携带动画组")),
+            _ => {}
+        };
+        Ok(bytes)
+    }
+    pub fn decode_group(input: &[u8; BYTES]) -> Result<(u8, u8, Self)> {
+        let mut data = *input;
+        let format = data[29] & 15;
+        let group = match format {
+            1..=4 | 11..=14 => {
+                let g = data[28] >> 6;
+                data[28] &= 63;
+                g
+            }
+            5 => {
+                let g = (data[28] >> 3) & 3;
+                data[28] &= !(3 << 3);
+                g
+            }
+            6 => {
+                let g = (data[28] >> 2) & 3;
+                data[28] &= !(3 << 2);
+                g
+            }
+            7 | 10 => {
+                let g = data[27] & 3;
+                data[27] &= !3;
+                g
+            }
+            _ => 0,
+        };
+        let (seq, frame) = Self::decode(&data)?;
+        Ok((seq, group, frame))
+    }
+    pub fn packet_group(&self, sequence: u8, group: u8) -> Result<Vec<u8>> {
+        let bytes = self.encode_group(sequence, group)?;
+        let mut values = bytes[..29]
+            .iter()
+            .enumerate()
+            .map(|(i, b)| (format!("MF6_D{i:02}"), protocol::OscValue::Int(*b as i32)))
+            .collect::<Vec<_>>();
+        values.push(("MF6_Ctl".into(), protocol::OscValue::Int(bytes[29] as i32)));
+        Ok(protocol::bundle(&values))
+    }
     pub fn packet(&self, sequence: u8) -> Result<Vec<u8>> {
         let bytes = self.encode(sequence)?;
         let mut values: Vec<_> = bytes[..29]
@@ -696,6 +753,52 @@ mod tests {
         round(Frame::Triangles {
             records: strip(2).triangles().unwrap(),
         });
+    }
+    #[test]
+    fn motion_groups_keep_static_bytes_and_roundtrip_every_geometry_layout() {
+        let mut voxel = record(0, 1);
+        voxel.geometry.extent = [0; 3];
+        let frames = vec![
+            Frame::Boxes {
+                shape: 4,
+                records: vec![record(0, 7)],
+            },
+            Frame::SharedBoxes {
+                records: vec![record(0, 1)],
+            },
+            Frame::Voxels {
+                records: vec![voxel],
+            },
+            Frame::Triangles {
+                records: strip(1).triangles().unwrap(),
+            },
+            Frame::TriangleStrip { strip: strip(2) },
+            Frame::LocalTriangleStrip {
+                origin: [120; 3],
+                strip: strip(3),
+            },
+        ];
+        for frame in frames {
+            assert_eq!(frame.encode_group(5, 0).unwrap(), frame.encode(5).unwrap());
+            for group in 0..4 {
+                let bytes = frame.encode_group(5, group).unwrap();
+                let (seq, g, decoded) = Frame::decode_group(&bytes).unwrap();
+                assert_eq!((seq, g, decoded), (5, group, frame.clone()));
+            }
+            assert!(frame.encode_group(0, 4).is_err());
+        }
+        assert!(Frame::Clear.encode_group(0, 1).is_err());
+        let mut invalid = Frame::Voxels {
+            records: vec![{
+                let mut r = record(0, 1);
+                r.geometry.extent = [0; 3];
+                r
+            }],
+        }
+        .encode_group(0, 1)
+        .unwrap();
+        invalid[28] |= 128;
+        assert!(Frame::decode_group(&invalid).is_err());
     }
     #[test]
     fn strip_winding_is_consistent() {

@@ -22,3 +22,9 @@ group标签也可以复用出生颜色Alpha，保持现有lifetime和三角ID完
 
 
 2026-10-22 MotionCarrierProbe 已实际GPU验证：新增Rotation3D按预期打包到centerLife.w及TEXCOORD3.xy，流中单位为出生局部弧度，不包含系统根旋转；(0.4,0,0.8)校准与极值中心编码两例全部通过。按逆Rx*Rz恢复根基底，与系统根XYZ轴点积均>0.999999；半格中心(1,511,511)和(511,1,1)精确读回。说明中心存储候选可继续实现，不代表完整组动画已经完成。实测在Edit Mode隔离预览场景，无Avatar代码或场景改动。
+
+
+MotionCarrierProbe.Alpha也已通过实际原生Animator→ParticleSystem出生Color32的8例：Box group0..3为255/215/175/135，三角base2加6g为2/8/14/20。负Alpha系数在最终求和后正确存储，因此下一原型采用Alpha标签、保留原lifetime。完整播放仍未声明。
+
+
+Clock诊断：循环Clip的cycleOffset参数可定位，speed=0能暂停；非循环Clip忽略cycleOffset。因此统一改用Shader phaseBase + 原生elapsed（0..1）：loop取frac(base+elapsed)，once取saturate(base+elapsed)。原生clip本身loop/once，速度=预设speed/duration；新控制版本重入elapsed从0开始，重复控制不重入、不改base。暂停也可用新版本把base设为当前播放位置且rate0。这样一次性动画定位/继续不依赖无效的cycleOffset。

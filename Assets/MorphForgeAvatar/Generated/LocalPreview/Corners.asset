@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -340790334, guid: 67cc4cb7839cd3741b63733d5adf0442, type: 3}
+  m_Name: "\u9884\u89C8\u4F4D\u7F6E"
+  m_EditorClassIdentifier: 
+  Parameters: {fileID: 0}
+  controls:
+  - name: "\u5DE6\u4FA7"
+    icon: {fileID: 0}
+    type: 102
+    parameter:
+      name: MF_PreviewCorner
+    value: 0
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: "\u53F3\u4FA7"
+    icon: {fileID: 0}
+    type: 102
+    parameter:
+      name: MF_PreviewCorner
+    value: 1
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: "\u5DE6\u4E0A"
+    icon: {fileID: 0}
+    type: 102
+    parameter:
+      name: MF_PreviewCorner
+    value: 2
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: "\u53F3\u4E0A"
+    icon: {fileID: 0}
+    type: 102
+    parameter:
+      name: MF_PreviewCorner
+    value: 3
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: "\u5DE6\u4E0B"
+    icon: {fileID: 0}
+    type: 102
+    parameter:
+      name: MF_PreviewCorner
+    value: 4
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: "\u53F3\u4E0B"
+    icon: {fileID: 0}
+    type: 102
+    parameter:
+      name: MF_PreviewCorner
+    value: 5
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []

@@ -44,7 +44,7 @@ namespace MorphForgeAvatar.Editor {
    found.FindPropertyRelative("hasExplicitDefaultValue").boolValue=true;found.FindPropertyRelative("defaultValue").floatValue=value;
    found.FindPropertyRelative("internalParameter").boolValue=false;
   }
-  Set("MF_InfoVersion",7);Set("MF_InfoFeatures",32|16|1|2|4|(((bool?)catalog["textureOptions"]?["layeredOnly"]??false)?8:0));
+  Set("MF_InfoVersion",7);Set("MF_InfoFeatures",(((JArray)catalog["capabilities"]).Any(v=>(string)v=="mf6-motion4/1")?64:0)|32|16|1|2|4|(((bool?)catalog["textureOptions"]?["layeredOnly"]??false)?8:0));
   int build=(int)(DateTime.UtcNow.Ticks%16777215);for(int i=0;i<3;i++)Set("MF_InfoBuild"+i,(build>>(8*i))&255);
   for(int i=0;i<32;i++)Set("MF_Catalog"+i.ToString("D2"),Convert.ToByte(identity.Substring(i*2,2),16));
   Set(PluginBudgetGate.Marker,1);so.ApplyModifiedPropertiesWithoutUndo();EditorUtility.SetDirty(controller);

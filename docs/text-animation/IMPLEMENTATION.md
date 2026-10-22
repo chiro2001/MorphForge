@@ -1,5 +1,7 @@
 # 本轮实施记录
 
+**当前状态：本轮已完成，主安装0.21.1，Avatar包1.2.0；以下保留各阶段实验及验证记录。**
+
 2026-10-22，基线0.16.1。持续目标已创建，不自动发GitHub Release。SteamVR HUD排除。
 
 | 阶段 | 内容 | 状态 |
@@ -8,7 +10,7 @@
 | B | 字库、文本对象、预览编辑、文字API与实时传输 | 作者侧完成；Avatar传输待E |
 | C | 语音VAD/云端/句末与混合识别、关键词、Cable测试 | 已实现，通过Windows Cable |
 | D | mini、桌面语音悬浮窗、原生窗口控制 | 核心功能通过原生GUI验收；细节继续完善 |
-| E | Avatar文本接收显示、动画与定位开关/朝向、本地头边预览 | 待实现 |
+| E | Avatar文本、分组动画、定位开关/朝向、本地头边预览原型 | 已实现并验证；VR舒适度待实机体验 |
 | F | 端到端回归、Windows隔离副本、打包与文档 | 待实现 |
 
 每阶段记录实际实现、未通过项和证据；不把设计视为完成。
@@ -75,4 +77,13 @@ Unity原型的Renderer属性保持方案实测失败：无论省略或补齐当�
 
 导出贴图文字采用二值字形的横向像素轮廓面，前后各一份正常阅读布局，不依赖自定义字库Shader；GLB使用unlit材质，OBJ/PLY/STL保留可表达的表面信息，遵守总500,000面限制。这是静态轮廓导出，原文与排版仍以MorphForge项目保存。
 
-动画与头边本人预览仍未实现，相关候选见MOTION-PROTOTYPE-NOTES.md；后续继续推进。Windows0.19包是此前C/D验收构建，尚未包含全部E1修正，不能当最终安装包。不自动发Release。
+以上为E1阶段记录。E2的动画及头边本人预览现已进入公共模块验证，见MOTION-IMPLEMENTATION.md；Windows0.21.1已完成验收和主安装更新。不自动发Release。
+
+
+### 本轮最终状态（2026-10-22）
+
+桌面0.21.1及Avatar包1.2.0已完成实现。本轮A/B/C/D/E工作以REQUIREMENTS.md为范围：工作台、点阵文字、共享语音、mini/桌面悬浮窗、原生动画、定位及本人预览原型均有实际验证。SteamVR HUD、通用物理碰撞、OSC执行ACK按范围排除；不自动发布GitHub Release或上传Avatar。
+
+最终Rust全量283项/30套通过，另有原生Avatar与真实GPU、Chromium文本动画/按钮、Windows打包内核能力识别与实际Tauri mini验收。Windows离线Cable33项及此前在线短句验证在stage-c-speech保留。C/D插入去重修复已包含在当前版本。新协议和提示词/工具升级采用显式会话升级，保留append-only保护默认开启。
+
+Unity公共包158项逐一匹配真实资源/meta、无重复GUID、无私人Avatar绑定或用户Variants。当前源场景已恢复为MF6、1个Avatar、Edit Mode、无未保存内容；接收器声明与已验证实现一致，未改变用户本体其他参数。详见MOTION-IMPLEMENTATION.md和stage-e-motion。

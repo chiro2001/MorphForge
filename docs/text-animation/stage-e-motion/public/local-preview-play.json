@@ -1,0 +1,81 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "owner default off stops camera and screen",
+      "pass": true,
+      "data": null
+    },
+    {
+      "name": "owner can enable camera and screen",
+      "pass": true,
+      "data": null
+    },
+    {
+      "name": "panel follows head without being head descendant",
+      "pass": true,
+      "data": [
+        0.000263865746,
+        0.608193934,
+        -0.000263323367
+      ]
+    },
+    {
+      "name": "six distinct edge and corner positions",
+      "pass": true,
+      "data": [
+        [
+          -0.23,
+          -0.03,
+          0.55
+        ],
+        [
+          0.23,
+          -0.03,
+          0.55
+        ],
+        [
+          -0.23,
+          0.15,
+          0.55
+        ],
+        [
+          0.23,
+          0.15,
+          0.55
+        ],
+        [
+          -0.23,
+          -0.2,
+          0.55
+        ],
+        [
+          0.23,
+          -0.2,
+          0.55
+        ]
+      ]
+    },
+    {
+      "name": "local size zoom and view controls",
+      "pass": true,
+      "data": {
+        "small": 0.16,
+        "large": 0.4,
+        "wideFov": 55.0,
+        "zoomFov": 15.0
+      }
+    },
+    {
+      "name": "512x384 native render target contains scene output",
+      "pass": true,
+      "data": 436
+    },
+    {
+      "name": "remote observer cannot enable camera or screen",
+      "pass": true,
+      "data": null
+    }
+  ],
+  "scope": "Actual merged Animator/constraints/Camera/RenderTexture in Editor, owner-vs-remote IsLocal gate. No headset comfort, mirror/photo globals or VRChat runtime claim; prototype default off."
+}

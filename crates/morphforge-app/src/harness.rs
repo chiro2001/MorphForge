@@ -25,8 +25,8 @@ mod prompts;
 mod runtime_materials;
 mod visual_context;
 pub use goal::GoalProgress;
-pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/5.3";
-pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/4.4";
+pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/5.5";
+pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/4.6";
 
 #[derive(Clone, Debug)]
 struct PendingPrompt {
@@ -2148,6 +2148,30 @@ impl Harness {
                 if args["dryRun"]!=true&&!matches!(args["action"].as_str(),Some("list"|"inspect"))&&self.transport.config().enabled&&self.transport.config().auto{
                     match self.transport.publish_with_materials(&w.project.scene,&w.project.materials,false){Ok(v)=>result["sync"]=v,Err(e)=>result["publishWarning"]=json!(e.to_string())}
                 }Ok(result)})},
+            "animation" if matches!(args["action"].as_str(), Some("publish"|"play"|"resume"|"pause"|"stop"|"seek"|"status"|"detach")) => {
+                let action = args["action"].as_str().unwrap();
+                if action == "status" { return Ok(self.transport.state()["motion"].clone()); }
+                if guard.is_none() && matches!(action,"publish"|"detach") { self.ensure_manual_edit()?; }
+                self.with_workspace_guard(guard.as_ref(), |w| {
+                    let result = if action == "detach" {
+                        self.transport.detach_motion(&w.project.scene,&w.project.materials)?
+                    } else if action == "publish" {
+                        let id = args["id"].as_str().context("需要已保存的动画id")?;
+                        let clip = w.project.creative.clips.get(id).context("动画不存在")?;
+                        let speed = args["speed"].as_f64().unwrap_or(1.);
+                        let position = args["position"].as_f64().unwrap_or(0.);
+                        if args["dryRun"] == true {
+                            let d = crate::avatar_motion::encode(&w.project.scene,clip,speed,0,0)?;
+                            return Ok(json!({"dryRun":true,"groups":d.groups,"definitionFrames":d.messages.len(),"controlFrames":d.groups.len(),"receiverConfirmed":false}));
+                        }
+                        self.transport.publish_motion(&w.project.scene,&w.project.materials,clip,id,speed,position,args["playing"].as_bool().unwrap_or(true))?
+                    } else {
+                        self.transport.motion_control(action,args["position"].as_f64())?
+                    };
+                    w.event("animation.transport",run,json!({"action":action,"id":args["id"],"state":result["motion"]}))?;
+                    Ok(result)
+                })
+            },
             "components" | "reference_workbench" | "animation" => {
                 if name == "reference_workbench" && args["action"] == "capture" {
                     return self.capture_views_tool(args,run,guard).await;

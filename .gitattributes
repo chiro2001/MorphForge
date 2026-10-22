@@ -33,3 +33,9 @@ Assets/MorphForgeAvatar/**/*.meta whitespace=-blank-at-eol,cr-at-eol
 Assets/MorphForgeAvatar.meta whitespace=-blank-at-eol,cr-at-eol
 docs/avatar-plugin/*.json whitespace=cr-at-eol
 Assets/MorphForgeAvatar/Generated/** -diff
+
+# Preserve the verbatim font license and Windows acceptance evidence.
+Assets/MorphForgeAvatar/Fonts-OFL-1.1.txt whitespace=-blank-at-eol,cr-at-eol
+docs/text-animation/stage-e-motion/*.json whitespace=cr-at-eol
+docs/text-animation/stage-e-motion/**/*.json whitespace=cr-at-eol
+docs/text-animation/stage-e-motion/rust-tests.txt whitespace=-blank-at-eof

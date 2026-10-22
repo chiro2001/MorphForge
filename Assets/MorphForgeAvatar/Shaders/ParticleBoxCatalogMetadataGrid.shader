@@ -2,6 +2,269 @@ Shader "MorphForgeAvatar/ParticleBoxCatalogMetadataGrid"
 {
     Properties
     {
+        // BEGIN GENERATED MOTION PROPERTIES
+        [HideInInspector] _MF_M1_Bank("_MF_M1_Bank",Float)=0
+        [HideInInspector] _MF_M1_Enabled("_MF_M1_Enabled",Float)=0
+        [HideInInspector] _MF_M1_Base("_MF_M1_Base",Float)=0
+        [HideInInspector] _MF_M1_Loop("_MF_M1_Loop",Float)=0
+        [HideInInspector] _MF_M1_Elapsed("_MF_M1_Elapsed",Float)=0
+        [HideInInspector] _MF_M1B0_Count("_MF_M1B0_Count",Float)=0
+        [HideInInspector] _MF_M1B0_Interp("_MF_M1B0_Interp",Float)=0
+        [HideInInspector] _MF_M1B0_PivotX("_MF_M1B0_PivotX",Float)=0
+        [HideInInspector] _MF_M1B0_PivotY("_MF_M1B0_PivotY",Float)=0
+        [HideInInspector] _MF_M1B0_PivotZ("_MF_M1B0_PivotZ",Float)=0
+        [HideInInspector] _MF_M1B0_K0T("_MF_M1B0_K0T",Float)=0
+        [HideInInspector] _MF_M1B0_K0PX("_MF_M1B0_K0PX",Float)=0
+        [HideInInspector] _MF_M1B0_K0PY("_MF_M1B0_K0PY",Float)=0
+        [HideInInspector] _MF_M1B0_K0PZ("_MF_M1B0_K0PZ",Float)=0
+        [HideInInspector] _MF_M1B0_K0QX("_MF_M1B0_K0QX",Float)=0
+        [HideInInspector] _MF_M1B0_K0QY("_MF_M1B0_K0QY",Float)=0
+        [HideInInspector] _MF_M1B0_K0QZ("_MF_M1B0_K0QZ",Float)=0
+        [HideInInspector] _MF_M1B0_K0QW("_MF_M1B0_K0QW",Float)=0
+        [HideInInspector] _MF_M1B0_K0S("_MF_M1B0_K0S",Float)=0
+        [HideInInspector] _MF_M1B0_K1T("_MF_M1B0_K1T",Float)=0
+        [HideInInspector] _MF_M1B0_K1PX("_MF_M1B0_K1PX",Float)=0
+        [HideInInspector] _MF_M1B0_K1PY("_MF_M1B0_K1PY",Float)=0
+        [HideInInspector] _MF_M1B0_K1PZ("_MF_M1B0_K1PZ",Float)=0
+        [HideInInspector] _MF_M1B0_K1QX("_MF_M1B0_K1QX",Float)=0
+        [HideInInspector] _MF_M1B0_K1QY("_MF_M1B0_K1QY",Float)=0
+        [HideInInspector] _MF_M1B0_K1QZ("_MF_M1B0_K1QZ",Float)=0
+        [HideInInspector] _MF_M1B0_K1QW("_MF_M1B0_K1QW",Float)=0
+        [HideInInspector] _MF_M1B0_K1S("_MF_M1B0_K1S",Float)=0
+        [HideInInspector] _MF_M1B0_K2T("_MF_M1B0_K2T",Float)=0
+        [HideInInspector] _MF_M1B0_K2PX("_MF_M1B0_K2PX",Float)=0
+        [HideInInspector] _MF_M1B0_K2PY("_MF_M1B0_K2PY",Float)=0
+        [HideInInspector] _MF_M1B0_K2PZ("_MF_M1B0_K2PZ",Float)=0
+        [HideInInspector] _MF_M1B0_K2QX("_MF_M1B0_K2QX",Float)=0
+        [HideInInspector] _MF_M1B0_K2QY("_MF_M1B0_K2QY",Float)=0
+        [HideInInspector] _MF_M1B0_K2QZ("_MF_M1B0_K2QZ",Float)=0
+        [HideInInspector] _MF_M1B0_K2QW("_MF_M1B0_K2QW",Float)=0
+        [HideInInspector] _MF_M1B0_K2S("_MF_M1B0_K2S",Float)=0
+        [HideInInspector] _MF_M1B0_K3T("_MF_M1B0_K3T",Float)=0
+        [HideInInspector] _MF_M1B0_K3PX("_MF_M1B0_K3PX",Float)=0
+        [HideInInspector] _MF_M1B0_K3PY("_MF_M1B0_K3PY",Float)=0
+        [HideInInspector] _MF_M1B0_K3PZ("_MF_M1B0_K3PZ",Float)=0
+        [HideInInspector] _MF_M1B0_K3QX("_MF_M1B0_K3QX",Float)=0
+        [HideInInspector] _MF_M1B0_K3QY("_MF_M1B0_K3QY",Float)=0
+        [HideInInspector] _MF_M1B0_K3QZ("_MF_M1B0_K3QZ",Float)=0
+        [HideInInspector] _MF_M1B0_K3QW("_MF_M1B0_K3QW",Float)=0
+        [HideInInspector] _MF_M1B0_K3S("_MF_M1B0_K3S",Float)=0
+        [HideInInspector] _MF_M1B1_Count("_MF_M1B1_Count",Float)=0
+        [HideInInspector] _MF_M1B1_Interp("_MF_M1B1_Interp",Float)=0
+        [HideInInspector] _MF_M1B1_PivotX("_MF_M1B1_PivotX",Float)=0
+        [HideInInspector] _MF_M1B1_PivotY("_MF_M1B1_PivotY",Float)=0
+        [HideInInspector] _MF_M1B1_PivotZ("_MF_M1B1_PivotZ",Float)=0
+        [HideInInspector] _MF_M1B1_K0T("_MF_M1B1_K0T",Float)=0
+        [HideInInspector] _MF_M1B1_K0PX("_MF_M1B1_K0PX",Float)=0
+        [HideInInspector] _MF_M1B1_K0PY("_MF_M1B1_K0PY",Float)=0
+        [HideInInspector] _MF_M1B1_K0PZ("_MF_M1B1_K0PZ",Float)=0
+        [HideInInspector] _MF_M1B1_K0QX("_MF_M1B1_K0QX",Float)=0
+        [HideInInspector] _MF_M1B1_K0QY("_MF_M1B1_K0QY",Float)=0
+        [HideInInspector] _MF_M1B1_K0QZ("_MF_M1B1_K0QZ",Float)=0
+        [HideInInspector] _MF_M1B1_K0QW("_MF_M1B1_K0QW",Float)=0
+        [HideInInspector] _MF_M1B1_K0S("_MF_M1B1_K0S",Float)=0
+        [HideInInspector] _MF_M1B1_K1T("_MF_M1B1_K1T",Float)=0
+        [HideInInspector] _MF_M1B1_K1PX("_MF_M1B1_K1PX",Float)=0
+        [HideInInspector] _MF_M1B1_K1PY("_MF_M1B1_K1PY",Float)=0
+        [HideInInspector] _MF_M1B1_K1PZ("_MF_M1B1_K1PZ",Float)=0
+        [HideInInspector] _MF_M1B1_K1QX("_MF_M1B1_K1QX",Float)=0
+        [HideInInspector] _MF_M1B1_K1QY("_MF_M1B1_K1QY",Float)=0
+        [HideInInspector] _MF_M1B1_K1QZ("_MF_M1B1_K1QZ",Float)=0
+        [HideInInspector] _MF_M1B1_K1QW("_MF_M1B1_K1QW",Float)=0
+        [HideInInspector] _MF_M1B1_K1S("_MF_M1B1_K1S",Float)=0
+        [HideInInspector] _MF_M1B1_K2T("_MF_M1B1_K2T",Float)=0
+        [HideInInspector] _MF_M1B1_K2PX("_MF_M1B1_K2PX",Float)=0
+        [HideInInspector] _MF_M1B1_K2PY("_MF_M1B1_K2PY",Float)=0
+        [HideInInspector] _MF_M1B1_K2PZ("_MF_M1B1_K2PZ",Float)=0
+        [HideInInspector] _MF_M1B1_K2QX("_MF_M1B1_K2QX",Float)=0
+        [HideInInspector] _MF_M1B1_K2QY("_MF_M1B1_K2QY",Float)=0
+        [HideInInspector] _MF_M1B1_K2QZ("_MF_M1B1_K2QZ",Float)=0
+        [HideInInspector] _MF_M1B1_K2QW("_MF_M1B1_K2QW",Float)=0
+        [HideInInspector] _MF_M1B1_K2S("_MF_M1B1_K2S",Float)=0
+        [HideInInspector] _MF_M1B1_K3T("_MF_M1B1_K3T",Float)=0
+        [HideInInspector] _MF_M1B1_K3PX("_MF_M1B1_K3PX",Float)=0
+        [HideInInspector] _MF_M1B1_K3PY("_MF_M1B1_K3PY",Float)=0
+        [HideInInspector] _MF_M1B1_K3PZ("_MF_M1B1_K3PZ",Float)=0
+        [HideInInspector] _MF_M1B1_K3QX("_MF_M1B1_K3QX",Float)=0
+        [HideInInspector] _MF_M1B1_K3QY("_MF_M1B1_K3QY",Float)=0
+        [HideInInspector] _MF_M1B1_K3QZ("_MF_M1B1_K3QZ",Float)=0
+        [HideInInspector] _MF_M1B1_K3QW("_MF_M1B1_K3QW",Float)=0
+        [HideInInspector] _MF_M1B1_K3S("_MF_M1B1_K3S",Float)=0
+        [HideInInspector] _MF_M2_Bank("_MF_M2_Bank",Float)=0
+        [HideInInspector] _MF_M2_Enabled("_MF_M2_Enabled",Float)=0
+        [HideInInspector] _MF_M2_Base("_MF_M2_Base",Float)=0
+        [HideInInspector] _MF_M2_Loop("_MF_M2_Loop",Float)=0
+        [HideInInspector] _MF_M2_Elapsed("_MF_M2_Elapsed",Float)=0
+        [HideInInspector] _MF_M2B0_Count("_MF_M2B0_Count",Float)=0
+        [HideInInspector] _MF_M2B0_Interp("_MF_M2B0_Interp",Float)=0
+        [HideInInspector] _MF_M2B0_PivotX("_MF_M2B0_PivotX",Float)=0
+        [HideInInspector] _MF_M2B0_PivotY("_MF_M2B0_PivotY",Float)=0
+        [HideInInspector] _MF_M2B0_PivotZ("_MF_M2B0_PivotZ",Float)=0
+        [HideInInspector] _MF_M2B0_K0T("_MF_M2B0_K0T",Float)=0
+        [HideInInspector] _MF_M2B0_K0PX("_MF_M2B0_K0PX",Float)=0
+        [HideInInspector] _MF_M2B0_K0PY("_MF_M2B0_K0PY",Float)=0
+        [HideInInspector] _MF_M2B0_K0PZ("_MF_M2B0_K0PZ",Float)=0
+        [HideInInspector] _MF_M2B0_K0QX("_MF_M2B0_K0QX",Float)=0
+        [HideInInspector] _MF_M2B0_K0QY("_MF_M2B0_K0QY",Float)=0
+        [HideInInspector] _MF_M2B0_K0QZ("_MF_M2B0_K0QZ",Float)=0
+        [HideInInspector] _MF_M2B0_K0QW("_MF_M2B0_K0QW",Float)=0
+        [HideInInspector] _MF_M2B0_K0S("_MF_M2B0_K0S",Float)=0
+        [HideInInspector] _MF_M2B0_K1T("_MF_M2B0_K1T",Float)=0
+        [HideInInspector] _MF_M2B0_K1PX("_MF_M2B0_K1PX",Float)=0
+        [HideInInspector] _MF_M2B0_K1PY("_MF_M2B0_K1PY",Float)=0
+        [HideInInspector] _MF_M2B0_K1PZ("_MF_M2B0_K1PZ",Float)=0
+        [HideInInspector] _MF_M2B0_K1QX("_MF_M2B0_K1QX",Float)=0
+        [HideInInspector] _MF_M2B0_K1QY("_MF_M2B0_K1QY",Float)=0
+        [HideInInspector] _MF_M2B0_K1QZ("_MF_M2B0_K1QZ",Float)=0
+        [HideInInspector] _MF_M2B0_K1QW("_MF_M2B0_K1QW",Float)=0
+        [HideInInspector] _MF_M2B0_K1S("_MF_M2B0_K1S",Float)=0
+        [HideInInspector] _MF_M2B0_K2T("_MF_M2B0_K2T",Float)=0
+        [HideInInspector] _MF_M2B0_K2PX("_MF_M2B0_K2PX",Float)=0
+        [HideInInspector] _MF_M2B0_K2PY("_MF_M2B0_K2PY",Float)=0
+        [HideInInspector] _MF_M2B0_K2PZ("_MF_M2B0_K2PZ",Float)=0
+        [HideInInspector] _MF_M2B0_K2QX("_MF_M2B0_K2QX",Float)=0
+        [HideInInspector] _MF_M2B0_K2QY("_MF_M2B0_K2QY",Float)=0
+        [HideInInspector] _MF_M2B0_K2QZ("_MF_M2B0_K2QZ",Float)=0
+        [HideInInspector] _MF_M2B0_K2QW("_MF_M2B0_K2QW",Float)=0
+        [HideInInspector] _MF_M2B0_K2S("_MF_M2B0_K2S",Float)=0
+        [HideInInspector] _MF_M2B0_K3T("_MF_M2B0_K3T",Float)=0
+        [HideInInspector] _MF_M2B0_K3PX("_MF_M2B0_K3PX",Float)=0
+        [HideInInspector] _MF_M2B0_K3PY("_MF_M2B0_K3PY",Float)=0
+        [HideInInspector] _MF_M2B0_K3PZ("_MF_M2B0_K3PZ",Float)=0
+        [HideInInspector] _MF_M2B0_K3QX("_MF_M2B0_K3QX",Float)=0
+        [HideInInspector] _MF_M2B0_K3QY("_MF_M2B0_K3QY",Float)=0
+        [HideInInspector] _MF_M2B0_K3QZ("_MF_M2B0_K3QZ",Float)=0
+        [HideInInspector] _MF_M2B0_K3QW("_MF_M2B0_K3QW",Float)=0
+        [HideInInspector] _MF_M2B0_K3S("_MF_M2B0_K3S",Float)=0
+        [HideInInspector] _MF_M2B1_Count("_MF_M2B1_Count",Float)=0
+        [HideInInspector] _MF_M2B1_Interp("_MF_M2B1_Interp",Float)=0
+        [HideInInspector] _MF_M2B1_PivotX("_MF_M2B1_PivotX",Float)=0
+        [HideInInspector] _MF_M2B1_PivotY("_MF_M2B1_PivotY",Float)=0
+        [HideInInspector] _MF_M2B1_PivotZ("_MF_M2B1_PivotZ",Float)=0
+        [HideInInspector] _MF_M2B1_K0T("_MF_M2B1_K0T",Float)=0
+        [HideInInspector] _MF_M2B1_K0PX("_MF_M2B1_K0PX",Float)=0
+        [HideInInspector] _MF_M2B1_K0PY("_MF_M2B1_K0PY",Float)=0
+        [HideInInspector] _MF_M2B1_K0PZ("_MF_M2B1_K0PZ",Float)=0
+        [HideInInspector] _MF_M2B1_K0QX("_MF_M2B1_K0QX",Float)=0
+        [HideInInspector] _MF_M2B1_K0QY("_MF_M2B1_K0QY",Float)=0
+        [HideInInspector] _MF_M2B1_K0QZ("_MF_M2B1_K0QZ",Float)=0
+        [HideInInspector] _MF_M2B1_K0QW("_MF_M2B1_K0QW",Float)=0
+        [HideInInspector] _MF_M2B1_K0S("_MF_M2B1_K0S",Float)=0
+        [HideInInspector] _MF_M2B1_K1T("_MF_M2B1_K1T",Float)=0
+        [HideInInspector] _MF_M2B1_K1PX("_MF_M2B1_K1PX",Float)=0
+        [HideInInspector] _MF_M2B1_K1PY("_MF_M2B1_K1PY",Float)=0
+        [HideInInspector] _MF_M2B1_K1PZ("_MF_M2B1_K1PZ",Float)=0
+        [HideInInspector] _MF_M2B1_K1QX("_MF_M2B1_K1QX",Float)=0
+        [HideInInspector] _MF_M2B1_K1QY("_MF_M2B1_K1QY",Float)=0
+        [HideInInspector] _MF_M2B1_K1QZ("_MF_M2B1_K1QZ",Float)=0
+        [HideInInspector] _MF_M2B1_K1QW("_MF_M2B1_K1QW",Float)=0
+        [HideInInspector] _MF_M2B1_K1S("_MF_M2B1_K1S",Float)=0
+        [HideInInspector] _MF_M2B1_K2T("_MF_M2B1_K2T",Float)=0
+        [HideInInspector] _MF_M2B1_K2PX("_MF_M2B1_K2PX",Float)=0
+        [HideInInspector] _MF_M2B1_K2PY("_MF_M2B1_K2PY",Float)=0
+        [HideInInspector] _MF_M2B1_K2PZ("_MF_M2B1_K2PZ",Float)=0
+        [HideInInspector] _MF_M2B1_K2QX("_MF_M2B1_K2QX",Float)=0
+        [HideInInspector] _MF_M2B1_K2QY("_MF_M2B1_K2QY",Float)=0
+        [HideInInspector] _MF_M2B1_K2QZ("_MF_M2B1_K2QZ",Float)=0
+        [HideInInspector] _MF_M2B1_K2QW("_MF_M2B1_K2QW",Float)=0
+        [HideInInspector] _MF_M2B1_K2S("_MF_M2B1_K2S",Float)=0
+        [HideInInspector] _MF_M2B1_K3T("_MF_M2B1_K3T",Float)=0
+        [HideInInspector] _MF_M2B1_K3PX("_MF_M2B1_K3PX",Float)=0
+        [HideInInspector] _MF_M2B1_K3PY("_MF_M2B1_K3PY",Float)=0
+        [HideInInspector] _MF_M2B1_K3PZ("_MF_M2B1_K3PZ",Float)=0
+        [HideInInspector] _MF_M2B1_K3QX("_MF_M2B1_K3QX",Float)=0
+        [HideInInspector] _MF_M2B1_K3QY("_MF_M2B1_K3QY",Float)=0
+        [HideInInspector] _MF_M2B1_K3QZ("_MF_M2B1_K3QZ",Float)=0
+        [HideInInspector] _MF_M2B1_K3QW("_MF_M2B1_K3QW",Float)=0
+        [HideInInspector] _MF_M2B1_K3S("_MF_M2B1_K3S",Float)=0
+        [HideInInspector] _MF_M3_Bank("_MF_M3_Bank",Float)=0
+        [HideInInspector] _MF_M3_Enabled("_MF_M3_Enabled",Float)=0
+        [HideInInspector] _MF_M3_Base("_MF_M3_Base",Float)=0
+        [HideInInspector] _MF_M3_Loop("_MF_M3_Loop",Float)=0
+        [HideInInspector] _MF_M3_Elapsed("_MF_M3_Elapsed",Float)=0
+        [HideInInspector] _MF_M3B0_Count("_MF_M3B0_Count",Float)=0
+        [HideInInspector] _MF_M3B0_Interp("_MF_M3B0_Interp",Float)=0
+        [HideInInspector] _MF_M3B0_PivotX("_MF_M3B0_PivotX",Float)=0
+        [HideInInspector] _MF_M3B0_PivotY("_MF_M3B0_PivotY",Float)=0
+        [HideInInspector] _MF_M3B0_PivotZ("_MF_M3B0_PivotZ",Float)=0
+        [HideInInspector] _MF_M3B0_K0T("_MF_M3B0_K0T",Float)=0
+        [HideInInspector] _MF_M3B0_K0PX("_MF_M3B0_K0PX",Float)=0
+        [HideInInspector] _MF_M3B0_K0PY("_MF_M3B0_K0PY",Float)=0
+        [HideInInspector] _MF_M3B0_K0PZ("_MF_M3B0_K0PZ",Float)=0
+        [HideInInspector] _MF_M3B0_K0QX("_MF_M3B0_K0QX",Float)=0
+        [HideInInspector] _MF_M3B0_K0QY("_MF_M3B0_K0QY",Float)=0
+        [HideInInspector] _MF_M3B0_K0QZ("_MF_M3B0_K0QZ",Float)=0
+        [HideInInspector] _MF_M3B0_K0QW("_MF_M3B0_K0QW",Float)=0
+        [HideInInspector] _MF_M3B0_K0S("_MF_M3B0_K0S",Float)=0
+        [HideInInspector] _MF_M3B0_K1T("_MF_M3B0_K1T",Float)=0
+        [HideInInspector] _MF_M3B0_K1PX("_MF_M3B0_K1PX",Float)=0
+        [HideInInspector] _MF_M3B0_K1PY("_MF_M3B0_K1PY",Float)=0
+        [HideInInspector] _MF_M3B0_K1PZ("_MF_M3B0_K1PZ",Float)=0
+        [HideInInspector] _MF_M3B0_K1QX("_MF_M3B0_K1QX",Float)=0
+        [HideInInspector] _MF_M3B0_K1QY("_MF_M3B0_K1QY",Float)=0
+        [HideInInspector] _MF_M3B0_K1QZ("_MF_M3B0_K1QZ",Float)=0
+        [HideInInspector] _MF_M3B0_K1QW("_MF_M3B0_K1QW",Float)=0
+        [HideInInspector] _MF_M3B0_K1S("_MF_M3B0_K1S",Float)=0
+        [HideInInspector] _MF_M3B0_K2T("_MF_M3B0_K2T",Float)=0
+        [HideInInspector] _MF_M3B0_K2PX("_MF_M3B0_K2PX",Float)=0
+        [HideInInspector] _MF_M3B0_K2PY("_MF_M3B0_K2PY",Float)=0
+        [HideInInspector] _MF_M3B0_K2PZ("_MF_M3B0_K2PZ",Float)=0
+        [HideInInspector] _MF_M3B0_K2QX("_MF_M3B0_K2QX",Float)=0
+        [HideInInspector] _MF_M3B0_K2QY("_MF_M3B0_K2QY",Float)=0
+        [HideInInspector] _MF_M3B0_K2QZ("_MF_M3B0_K2QZ",Float)=0
+        [HideInInspector] _MF_M3B0_K2QW("_MF_M3B0_K2QW",Float)=0
+        [HideInInspector] _MF_M3B0_K2S("_MF_M3B0_K2S",Float)=0
+        [HideInInspector] _MF_M3B0_K3T("_MF_M3B0_K3T",Float)=0
+        [HideInInspector] _MF_M3B0_K3PX("_MF_M3B0_K3PX",Float)=0
+        [HideInInspector] _MF_M3B0_K3PY("_MF_M3B0_K3PY",Float)=0
+        [HideInInspector] _MF_M3B0_K3PZ("_MF_M3B0_K3PZ",Float)=0
+        [HideInInspector] _MF_M3B0_K3QX("_MF_M3B0_K3QX",Float)=0
+        [HideInInspector] _MF_M3B0_K3QY("_MF_M3B0_K3QY",Float)=0
+        [HideInInspector] _MF_M3B0_K3QZ("_MF_M3B0_K3QZ",Float)=0
+        [HideInInspector] _MF_M3B0_K3QW("_MF_M3B0_K3QW",Float)=0
+        [HideInInspector] _MF_M3B0_K3S("_MF_M3B0_K3S",Float)=0
+        [HideInInspector] _MF_M3B1_Count("_MF_M3B1_Count",Float)=0
+        [HideInInspector] _MF_M3B1_Interp("_MF_M3B1_Interp",Float)=0
+        [HideInInspector] _MF_M3B1_PivotX("_MF_M3B1_PivotX",Float)=0
+        [HideInInspector] _MF_M3B1_PivotY("_MF_M3B1_PivotY",Float)=0
+        [HideInInspector] _MF_M3B1_PivotZ("_MF_M3B1_PivotZ",Float)=0
+        [HideInInspector] _MF_M3B1_K0T("_MF_M3B1_K0T",Float)=0
+        [HideInInspector] _MF_M3B1_K0PX("_MF_M3B1_K0PX",Float)=0
+        [HideInInspector] _MF_M3B1_K0PY("_MF_M3B1_K0PY",Float)=0
+        [HideInInspector] _MF_M3B1_K0PZ("_MF_M3B1_K0PZ",Float)=0
+        [HideInInspector] _MF_M3B1_K0QX("_MF_M3B1_K0QX",Float)=0
+        [HideInInspector] _MF_M3B1_K0QY("_MF_M3B1_K0QY",Float)=0
+        [HideInInspector] _MF_M3B1_K0QZ("_MF_M3B1_K0QZ",Float)=0
+        [HideInInspector] _MF_M3B1_K0QW("_MF_M3B1_K0QW",Float)=0
+        [HideInInspector] _MF_M3B1_K0S("_MF_M3B1_K0S",Float)=0
+        [HideInInspector] _MF_M3B1_K1T("_MF_M3B1_K1T",Float)=0
+        [HideInInspector] _MF_M3B1_K1PX("_MF_M3B1_K1PX",Float)=0
+        [HideInInspector] _MF_M3B1_K1PY("_MF_M3B1_K1PY",Float)=0
+        [HideInInspector] _MF_M3B1_K1PZ("_MF_M3B1_K1PZ",Float)=0
+        [HideInInspector] _MF_M3B1_K1QX("_MF_M3B1_K1QX",Float)=0
+        [HideInInspector] _MF_M3B1_K1QY("_MF_M3B1_K1QY",Float)=0
+        [HideInInspector] _MF_M3B1_K1QZ("_MF_M3B1_K1QZ",Float)=0
+        [HideInInspector] _MF_M3B1_K1QW("_MF_M3B1_K1QW",Float)=0
+        [HideInInspector] _MF_M3B1_K1S("_MF_M3B1_K1S",Float)=0
+        [HideInInspector] _MF_M3B1_K2T("_MF_M3B1_K2T",Float)=0
+        [HideInInspector] _MF_M3B1_K2PX("_MF_M3B1_K2PX",Float)=0
+        [HideInInspector] _MF_M3B1_K2PY("_MF_M3B1_K2PY",Float)=0
+        [HideInInspector] _MF_M3B1_K2PZ("_MF_M3B1_K2PZ",Float)=0
+        [HideInInspector] _MF_M3B1_K2QX("_MF_M3B1_K2QX",Float)=0
+        [HideInInspector] _MF_M3B1_K2QY("_MF_M3B1_K2QY",Float)=0
+        [HideInInspector] _MF_M3B1_K2QZ("_MF_M3B1_K2QZ",Float)=0
+        [HideInInspector] _MF_M3B1_K2QW("_MF_M3B1_K2QW",Float)=0
+        [HideInInspector] _MF_M3B1_K2S("_MF_M3B1_K2S",Float)=0
+        [HideInInspector] _MF_M3B1_K3T("_MF_M3B1_K3T",Float)=0
+        [HideInInspector] _MF_M3B1_K3PX("_MF_M3B1_K3PX",Float)=0
+        [HideInInspector] _MF_M3B1_K3PY("_MF_M3B1_K3PY",Float)=0
+        [HideInInspector] _MF_M3B1_K3PZ("_MF_M3B1_K3PZ",Float)=0
+        [HideInInspector] _MF_M3B1_K3QX("_MF_M3B1_K3QX",Float)=0
+        [HideInInspector] _MF_M3B1_K3QY("_MF_M3B1_K3QY",Float)=0
+        [HideInInspector] _MF_M3B1_K3QZ("_MF_M3B1_K3QZ",Float)=0
+        [HideInInspector] _MF_M3B1_K3QW("_MF_M3B1_K3QW",Float)=0
+        [HideInInspector] _MF_M3B1_K3S("_MF_M3B1_K3S",Float)=0
+        // END GENERATED MOTION PROPERTIES
         _WireEncoding("Particle metadata wire format (0=MF3,4=MF4)", Float) = 0
         _VoxelGrid("Debug voxel grid", Float) = 0
         _UseLayeredTextures("Mipmapped texture layers", Float) = 0
@@ -34,6 +297,7 @@ Shader "MorphForgeAvatar/ParticleBoxCatalogMetadataGrid"
 
         CGINCLUDE
         #include "UnityCG.cginc"
+        #include "MorphForgeMotion.cginc"
         #include "Lighting.cginc"
         #include "MorphForgeRuntimeSurface.cginc"
 
@@ -70,6 +334,7 @@ Shader "MorphForgeAvatar/ParticleBoxCatalogMetadataGrid"
             float4 uvFace : TEXCOORD0; // xy=face-local tile UV, z=axis, w=unused legacy sign
             float4 sizeData : TEXCOORD1; // xyz=SizeXYZ, w=world center.x
             float4 centerLife : TEXCOORD2; // xy=center.yz, z=inverse birth lifetime
+            float2 birthRotationYZ : TEXCOORD3;
             UNITY_VERTEX_INPUT_INSTANCE_ID
         };
 
@@ -87,7 +352,7 @@ Shader "MorphForgeAvatar/ParticleBoxCatalogMetadataGrid"
 
         bool MF6Triangle(float4 data)
         {
-            return _WireEncoding > 5.5 && data.a * 255.0 > .5 && data.a * 255.0 < 6.5;
+            return _WireEncoding > 5.5 && data.a * 255.0 > .5 && data.a * 255.0 < 24.5;
         }
 
         bool MF6Double(float4 data) { return fmod(floor(data.a*255.0+.5),2.0)<.5; }
@@ -125,14 +390,15 @@ Shader "MorphForgeAvatar/ParticleBoxCatalogMetadataGrid"
             }
             if (MF6Triangle(v.color))
             {
+                float triangleAlpha=floor(v.color.a*255+.5),group=floor((triangleAlpha-1)/6),triangleKind=fmod(triangleAlpha-1,6)+1;
                 float3 a = MF6Vertex(v.sizeData.x);
                 float3 b = MF6Vertex(v.sizeData.y);
                 float3 c = MF6Vertex(v.sizeData.z);
-                if(v.color.a*255.0>2.5)
+                if(triangleKind>2.5)
                 {
                     float3 bits=lerp(floor((v.sizeData.xyz-1.0)*8388608.0),floor(v.sizeData.xyz*4194304.0),step(2.0,v.sizeData.xyz));
                     float3 origin=float3(floor(bits.y/65536.0),fmod(bits.z,256.0),floor(bits.z/256.0));
-                    if(v.color.a*255.0<4.5)
+                    if(triangleKind<4.5)
                     {
                         a=MF6LocalVertex(fmod(bits.x,4096.0));b=MF6LocalVertex(floor(bits.x/4096.0));c=MF6LocalVertex(fmod(bits.y,4096.0));
                     }
@@ -142,6 +408,7 @@ Shader "MorphForgeAvatar/ParticleBoxCatalogMetadataGrid"
                     }
                     a=(origin+a-128.0)*_CellSize;b=(origin+b-128.0)*_CellSize;c=(origin+c-128.0)*_CellSize;
                 }
+                MFMotionPose motion=MFGetMotion(group,_CellSize);a=MFApplyPose(a,motion);b=MFApplyPose(b,motion);c=MFApplyPose(c,motion);
                 float corner = floor(v.uvFace.w + 0.5);
                 float3 vertex = corner < 0.5 ? a : (corner < 1.5 ? b : c);
                 float3 bx,by,bz,scale,cube;float axis;MF6Basis(v,bx,by,bz,scale,cube,axis);
@@ -154,13 +421,14 @@ Shader "MorphForgeAvatar/ParticleBoxCatalogMetadataGrid"
                 o.normal = normalize(cross(b-a,c-a));
                 o.data = v.color;
                 o.uvFace = v.uvFace;
+                o.uvFace.w=group;
                 o.size = v.sizeData.xyz;
                 return o;
             }
             if(_WireEncoding>5.5)
             {
                 float3 bx,by,bz,scale,corner;float axis;MF6Basis(v,bx,by,bz,scale,corner,axis);
-                float code=255.0-floor(v.color.a*255.0+.5),shape=floor(code/8.0);
+                float code=255.0-floor(v.color.a*255.0+.5),group=floor(code/40),shape=floor(fmod(code,40)/8.0);
                 v.color.a=(255.0-fmod(code,8.0))/255.0;
                 v.uvFace.z=axis;
                 float sign=axis<.5?corner.x*2.0:(axis<1.5?corner.y*2.0:corner.z*2.0);
@@ -173,6 +441,17 @@ Shader "MorphForgeAvatar/ParticleBoxCatalogMetadataGrid"
                     if(axis>.5&&axis<1.5&&v.normal.y>0)
                         v.normal=normalize(shape<1.5?float3(-v.sizeData.y/v.sizeData.x,1,0):(shape<2.5?float3(v.sizeData.y/v.sizeData.x,1,0):(shape<3.5?float3(0,1,-v.sizeData.y/v.sizeData.z):float3(0,1,v.sizeData.y/v.sizeData.z))));
                 }
+                if(group>.5){
+                    float3 rotation=float3(v.centerLife.w,v.birthRotationYZ);float sx,cx,sz,cz;sincos(rotation.x,sx,cx);sincos(rotation.z,sz,cz);
+                    float3 x=bx*cz-by*sz,y=bx*(cx*sz)+by*(cx*cz)-bz*sx,z=bx*(sx*sz)+by*(sx*cz)+bz*cx;
+                    float3 stored=floor(rotation*1048576+.5);float3 center=(float3(fmod(stored.z,512),floor(stored.z/512),stored.x)*.5-128)*_CellSize;
+                    float3 posePoint=center+corner*v.sizeData.xyz;
+                    if(shape>.5&&shape<4.5){float3 unit=corner+.5;float height=shape<1.5?unit.x:(shape<2.5?1-unit.x:(shape<3.5?unit.z:1-unit.z));posePoint.y+=unit.y*(height-1)*v.sizeData.y;}
+                    MFMotionPose motion=MFGetMotion(group,_CellSize);float3 moved=MFApplyPose(posePoint,motion);
+                    float3 world=MF6Center(v)+x*((moved.x-center.x)*scale.x)+y*((moved.y-center.y)*scale.y)+z*((moved.z-center.z)*scale.z);
+                    o.pos=mul(UNITY_MATRIX_VP,float4(world,1));o.world=world;o.local=posePoint;o.normal=MFRotateVector(v.normal,motion.rotation);o.data=v.color;o.uvFace=v.uvFace;o.uvFace.w=group;o.size=max(v.sizeData.xyz,1e-6);return o;
+                }
+                v.uvFace.w=group;
             }
             o.pos = UnityObjectToClipPos(v.vertex);
             o.world = mul(unity_ObjectToWorld, v.vertex).xyz;

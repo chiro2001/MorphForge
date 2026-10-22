@@ -60,7 +60,7 @@ export function setupCreativeUi({
   <input id="motionTime" aria-label="动画时间" type="range" min="0" max="4" step=".01" value="0">
   <details open><summary>分组与关键帧</summary><div class="creative-controls"><label>目标分组<select id="motionGroup"></select></label><label>枢轴 X,Y,Z<input id="motionPivot" value="0, 0, 0"></label><label>平移 X,Y,Z<input id="motionTranslation" value="0, 0, 0"></label><label>旋转 XYZ（度）<input id="motionRotation" value="0, 0, 0"></label><label>缩放 X,Y,Z<input id="motionScale" value="1, 1, 1"></label><label>插值<select id="motionInterpolation"><option value="linear">线性 / 球面旋转</option><option value="step">阶梯</option></select></label></div>
   <div class="row wrap"><button id="motionPivotCenter">枢轴设为分组地面中心</button><button id="motionAddKey">添加 / 替换当前关键帧</button><button id="motionDeleteTrack">删除分组轨道</button></div><div id="motionKeys" class="motion-keys"></div></details>
-  <div class="row"><button id="motionCapture">截图当前姿态</button><a id="motionExport" hidden download="animation.glb">导出动画 GLB</a></div><p id="motionStatus" class="caption">动画预览不会修改静态作品或发送OSC；当前Avatar没有动画播放器。</p>`;
+  <div class="row"><button id="motionCapture">截图当前姿态</button><a id="motionExport" hidden download="animation.glb">导出动画 GLB</a></div><details><summary>Avatar 动画</summary><div class="row wrap"><label>速度<select id="motionAvatarSpeed"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label><button id="motionAvatarCheck">检查可发布性</button><button id="motionAvatarPublish">发布到 Avatar</button><button id="motionAvatarResume">继续</button><button id="motionAvatarPause">暂停</button><button id="motionAvatarStop">停止</button><button id="motionAvatarSeek">定位到预览时间</button><button id="motionAvatarDetach">解除动画绑定</button></div><p class="caption">需支持动画的 Avatar；最多3组、每组4帧、均匀缩放。时长可用0.125、0.25、0.5、1、2、4、8、16、32、64秒。预览与Avatar播放分别控制。</p></details><p id="motionStatus" class="caption">预览不会发送OSC；保存后可检查并发布Avatar动画。</p>`;
   $("viewport").append(panel);
   const motionResize = new ResizeObserver(() => {
     renderer.previewInset = panel.hidden
@@ -624,6 +624,30 @@ export function setupCreativeUi({
     $("motionNew").click();
     toast("动画片段已删除");
   });
+  async function avatarAnimation(action, extra = {}) {
+    const id = $("motionClip").value;
+    if (action === "publish" && (!id || $("motionExport").hidden))
+      throw Error("请先保存当前动画片段");
+    const result = await api("creative/animation", {
+      ...bound(), action, id,
+      ...(action === "publish" ? {speed: Number($("motionAvatarSpeed").value), position: time(), playing: true} : {}),
+      ...extra,
+    });
+    if (result.dryRun) {
+      $("motionStatus").textContent = `可发布：${Object.keys(result.groups).length}组，定义${result.definitionFrames}帧＋控制${result.controlFrames}帧。尚未验证远端接收。`;
+    } else {
+      const motion = result.motion;
+      $("motionStatus").textContent = action === "detach" ? "已解除Avatar动画绑定，静态作品已加入发送队列。" : `Avatar目标：${["停止", "播放", "暂停"][motion.state]} · ${Number(motion.position).toFixed(2)}秒 · 待发送${motion.pending}帧（无远端ACK）`;
+      await refresh();
+    }
+  }
+  run("motionAvatarCheck", () => avatarAnimation("publish", {dryRun: true}));
+  run("motionAvatarPublish", () => avatarAnimation("publish"));
+  run("motionAvatarResume", () => avatarAnimation("resume"));
+  run("motionAvatarPause", () => avatarAnimation("pause"));
+  run("motionAvatarStop", () => avatarAnimation("stop"));
+  run("motionAvatarSeek", () => avatarAnimation("seek", {position: time()}));
+  run("motionAvatarDetach", () => avatarAnimation("detach"));
   $("motionPlay").onclick = () => {
     try {
       pose();

@@ -986,6 +986,7 @@ export class VoxelRenderer {
       this.clearAnimationPose();this.animationClip=clip;
       this.animationBases=new Map(this.meshes.map(mesh=>[mesh,mesh.instanceMatrix.array.slice()]));
       this.animationTriangleBases=new Map(this.triangleMeshes.map(mesh=>[mesh,mesh.geometry.attributes.position.array.slice()]));
+      this.animationTextBases=new Map([...this.textPanels.items.values()].map(root=>{if(root.matrixAutoUpdate)root.updateMatrix();return [root,{matrix:root.matrix.clone(),auto:root.matrixAutoUpdate}];}));
       this.selectedHelper.visible=false;this.ghost.visible=false;
     }
     this.animationTime=Math.max(0,Math.min(clip.duration,time));
@@ -1006,13 +1007,15 @@ export class VoxelRenderer {
     const v=new THREE.Vector3();
     for(const mesh of this.triangleMeshes){const base=this.animationTriangleBases.get(mesh);if(!base)continue;const a=mesh.geometry.attributes.position;
       for(let i=0;i<a.count;i++){v.fromArray(base,i*3);const m=matrices.get(mesh.userData.faces[Math.floor(i/3)].group);if(m)v.applyMatrix4(m);a.setXYZ(i,v.x,v.y,v.z);}a.needsUpdate=true;mesh.geometry.computeVertexNormals();mesh.geometry.computeBoundingSphere();}
+    for(const [root,saved] of this.animationTextBases||[]){root.matrixAutoUpdate=false;root.matrix.copy(saved.matrix);const m=matrices.get(root.userData.textPanel.group);if(m)root.matrix.premultiply(m);root.matrixWorldNeedsUpdate=true;}
     for(const u of this.uniforms)u.mfCull.value=0;
   }
   clearAnimationPose() {
     if(!this.animationClip)return;
     for(const [mesh,values] of this.animationBases||[]){mesh.instanceMatrix.array.set(values);mesh.instanceMatrix.clearUpdateRanges();mesh.instanceMatrix.needsUpdate=true;mesh.frustumCulled=mesh.userData.animationFrustum??true;delete mesh.userData.animationFrustum;}
     for(const [mesh,values] of this.animationTriangleBases||[]){mesh.geometry.attributes.position.array.set(values);mesh.geometry.attributes.position.needsUpdate=true;mesh.geometry.computeVertexNormals();mesh.geometry.computeBoundingSphere();}
-    this.animationClip=null;this.animationBases=null;this.animationTriangleBases=null;
+    for(const [root,saved] of this.animationTextBases||[]){root.matrix.copy(saved.matrix);root.matrixAutoUpdate=saved.auto;root.matrixWorldNeedsUpdate=true;}
+    this.animationClip=null;this.animationBases=null;this.animationTriangleBases=null;this.animationTextBases=null;
     for(const u of this.uniforms)u.mfCull.value=this.surfaceCulling&&!this.groupsHidden.size?1:0;
     this.updateSelection();
   }

@@ -25,8 +25,8 @@ namespace MorphForgeAvatar.Editor {
         void OnEnable() { if (Selection.activeGameObject) avatar = Selection.activeGameObject.GetComponentInParent<VRCAvatarDescriptor>(); }
         void OnGUI() {
             scroll = EditorGUILayout.BeginScrollView(scroll);
-            EditorGUILayout.LabelField("MorphForge Avatar 1.1 · MF6 / 16K", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("在 VCC Avatar 工程安装 Modular Avatar 后，选择人物并安装。上传后由 MorphForge Desktop 经 OSC 驱动。PC / Windows；几何总容量16,384个Box或三角面，另有4个128槽中日英点阵文本框。", MessageType.Info);
+            EditorGUILayout.LabelField("MorphForge Avatar 1.2 · MF6 / 16K", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("在 VCC Avatar 工程安装 Modular Avatar 后，选择人物并安装。上传后由 MorphForge Desktop 经 OSC 驱动。PC / Windows；几何总容量16,384个Box或三角面，另有4个128槽中日英点阵文本框，以及3组×4关键帧的本地动画。可选本人头边预览为实验功能，默认关闭。", MessageType.Info);
             avatar = (VRCAvatarDescriptor)EditorGUILayout.ObjectField("目标 Avatar", avatar, typeof(VRCAvatarDescriptor), true);
             EditorGUILayout.LabelField("Modular Avatar", HasMA ? "已检测" : "未安装（必需）");
             EditorGUILayout.LabelField("VRCFury", HasFury ? "已检测（可选）" : "未安装（可选）");

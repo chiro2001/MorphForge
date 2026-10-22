@@ -179,7 +179,7 @@ impl Creative {
         json!({"revision":self.revision,"bookmarks":self.bookmarks.iter().map(|(id,b)|json!({"id":id,"name":b.name,"imageId":b.comparison.as_ref().map(|c|&c.image_id)})).collect::<Vec<_>>(),"components":self.components.iter().map(|(id,c)|json!({"id":id,"name":c.name,"boxCount":c.scene.boxes.len(),"triangleCount":c.scene.triangles.len()})).collect::<Vec<_>>(),"clips":self.clips.iter().map(|(id,c)|json!({"id":id,"name":c.name,"duration":c.duration,"groups":c.tracks.iter().map(|t|&t.group).collect::<Vec<_>>()})).collect::<Vec<_>>()})
     }
     pub fn summary(&self) -> Value {
-        json!({"revision":self.revision,"bookmarks":self.bookmarks,"components":self.components.iter().map(|(id,c)|json!({"id":id,"name":c.name,"description":c.description,"boxCount":c.scene.boxes.len(),"triangleCount":c.scene.triangles.len(),"sourceRevision":c.source_revision,"anchor":c.anchor})).collect::<Vec<_>>(),"clips":self.clips,"animationTarget":"editor-and-glb; MF6 publishes static geometry only"})
+        json!({"revision":self.revision,"bookmarks":self.bookmarks,"components":self.components.iter().map(|(id,c)|json!({"id":id,"name":c.name,"description":c.description,"boxCount":c.scene.boxes.len(),"triangleCount":c.scene.triangles.len(),"sourceRevision":c.source_revision,"anchor":c.anchor})).collect::<Vec<_>>(),"clips":self.clips,"animationTarget":"editor-and-glb; explicit Avatar publish requires mf6-motion4/1 (3 tracks, 4 keys)"})
     }
 }
 

@@ -54,7 +54,7 @@ namespace MorphForge.Editor {
             var config=new List<Term>();
             for(int a=0;a<3;a++){string axis="XYZ"[a].ToString();config.AddRange(Word("_Pos"+axis,256+a*2,1f/64));config.Add(Fixed("_Pos"+axis,-512));config.AddRange(Word("_Rot"+axis,262+a*2,360f/65536));}
             config.AddRange(Word("_Width",268,1f/64));config.AddRange(Word("_Height",270,1f/64));config.AddRange(Word("_FontSize",272,1f/64));config.AddRange(new[]{Byte("_Red",274),Byte("_Green",275),Byte("_Blue",276),Byte("_Opacity",277)});
-            config.AddRange(new[]{Byte("_BackR",288),Byte("_BackG",289),Byte("_BackB",290),Byte("_BackA",291),Byte("_Font",292),Byte("_Align",293),Byte("_Vertical",294)});config.AddRange(Word("_Spacing",295,1f/64));config.AddRange(Word("_Gap",297,1f/64));
+            config.AddRange(new[]{Byte("_BackR",288),Byte("_BackG",289),Byte("_BackB",290),Byte("_BackA",291),Byte("_Font",292),Byte("_Align",293),Byte("_Vertical",294)});config.AddRange(Word("_Spacing",295,1f/64));config.AddRange(Word("_Gap",297,1f/64));config.Add(Byte("_MotionGroup",299));
             var baseline=config.Select(t=>t.property).Concat(new[]{"_Count"}).Concat(Enumerable.Range(0,Slots).Select(i=>"_G"+i.ToString("D3"))).Distinct().Select(p=>B(slot,p,0));
             var motions=new List<Motion>{Clip("Zero output baseline "+slot,baseline),Map(slot,"Config output "+slot,config)};var weights=new List<string>{"MF6_TextOne",Gate(slot,0)};
             for(int page=0;page<11;page++){var terms=new List<Term>();for(int i=0;i<12&&page*12+i<Slots;i++)terms.AddRange(Word("_G"+(page*12+i).ToString("D3"),(page*12+i)*2));motions.Add(Map(slot,"Glyph output "+slot+"/"+page,terms));weights.Add(Gate(slot,page));}
@@ -148,7 +148,7 @@ namespace MorphForge.Editor {
                 for(int slot=0;slot<Panels;slot++) {
                     var obj=new GameObject("Panel"+slot,typeof(MeshFilter),typeof(MeshRenderer));obj.transform.SetParent(root.transform,false);obj.GetComponent<MeshFilter>().sharedMesh=mesh;
                     var material=new Material(Shader.Find("MorphForgeAvatar/PixelText16")){name="Panel"+slot};material.SetTexture("_FontZH",zh);material.SetTexture("_FontJP",jp);material.SetTexture("_WidthsZH",zw);material.SetTexture("_WidthsJP",jw);
-                    foreach(string property in new[]{"_PosX","_PosY","_PosZ","_RotX","_RotY","_RotZ","_Width","_Height","_FontSize","_Spacing","_Gap","_Align","_Vertical","_Font","_Count","_Red","_Green","_Blue","_Opacity","_BackR","_BackG","_BackB","_BackA"})material.SetFloat(property,0);
+                    foreach(string property in new[]{"_PosX","_PosY","_PosZ","_RotX","_RotY","_RotZ","_Width","_Height","_FontSize","_Spacing","_Gap","_Align","_Vertical","_Font","_Count","_Red","_Green","_Blue","_Opacity","_BackR","_BackG","_BackB","_BackA","_MotionGroup"})material.SetFloat(property,0);
                     var materialPath=Root+"/Panel"+slot+".mat";var old=AssetDatabase.LoadAssetAtPath<Material>(materialPath);if(old){EditorUtility.CopySerialized(material,old);UnityEngine.Object.DestroyImmediate(material);material=old;EditorUtility.SetDirty(old);}else AssetDatabase.CreateAsset(material,materialPath);
                     obj.GetComponent<MeshRenderer>().sharedMaterial=material;obj.GetComponent<MeshRenderer>().shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;
                     var output=Output(slot);
@@ -159,7 +159,7 @@ namespace MorphForge.Editor {
                     }
                     VRCAvatarParameterDriver Buffer(AnimatorState state){var d=state.AddStateMachineBehaviour<VRCAvatarParameterDriver>();d.localOnly=false;return d;}
                     var cfg=Buffer(Command("Configure",1));for(int i=2;i<=25;i++)CopyCache(cfg,slot,i,256+i-2);UpdateCount(cfg,slot,24);DriverCopy(cfg,"MF6_Q25","MF6_Text"+slot+"_Epoch");
-                    var style=Buffer(Command("Style",3));for(int i=2;i<=12;i++)CopyCache(style,slot,i,288+i-2);DriverCopy(style,"MF6_Q14","MF6_Text"+slot+"_Epoch");
+                    var style=Buffer(Command("Style",3));for(int i=2;i<=13;i++)CopyCache(style,slot,i,288+i-2);DriverCopy(style,"MF6_Q14","MF6_Text"+slot+"_Epoch");
                     void Clear(VRCAvatarParameterDriver d){DriverSet(d,Count(slot),0);for(int page=0;page<11;page++)DriverSet(d,Gate(slot,page),0);}
                     var delete=Buffer(Command("Delete",4));Clear(delete);DriverCopy(delete,"MF6_Q02","MF6_Text"+slot+"_Epoch");
                     for(int page=0;page<11;page++) {var d=Buffer(Command("Page "+page,2,page));for(int i=0;i<12&&page*12+i<Slots;i++){CopyCache(d,slot,3+i*2,(page*12+i)*2);CopyCache(d,slot,4+i*2,(page*12+i)*2+1);}}

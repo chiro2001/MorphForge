@@ -1,0 +1,466 @@
+   Compiling morphforge-core v0.21.1 (/home/chiro/projects/vrc-projects/morphforge/crates/morphforge-core)
+   Compiling morphforge-app v0.21.1 (/home/chiro/projects/vrc-projects/morphforge/crates/morphforge-app)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 21.76s
+     Running unittests src/lib.rs (target/debug/deps/morphforge_app-db80331ed79f0ac8)
+
+running 128 tests
+test capture::shot_tests::validates_free_camera_and_rejects_duplicates_or_bad_numbers ... ok
+test capture::shot_tests::presets_mix_with_custom_shots_and_same_name_overrides_without_duplicates ... ok
+test avatar_motion::tests::definitions_are_bounded_and_replay_keeps_ticket ... ok
+test avatar_motion::tests::bad_native_clip_never_mutates_playback ... ok
+test avatar_motion::tests::detach_keeps_version_history_for_republish ... ok
+test desktop_window::tests::only_declared_window_actions_are_persisted ... ok
+test capture::tests::cancelling_capture_request_removes_pending_job ... ok
+test catalog_budget::tests::repeated_faces_rotations_and_animation_share_only_two_real_slices ... ok
+test creative::tests::animated_glb_contains_group_pivot_channels_and_valid_binary_ranges ... ok
+test creative::tests::comparison_crop_and_bookmark_validation ... ok
+test capture::inspection_capture_tests::filtered_capture_marks_receipt_and_keeps_authoritative_geometry ... ok
+test creative::tests::rejects_bad_metadata_without_mutating_scene_or_library ... ok
+test harness::context::tests::compact_keeps_a_complete_recent_batch_even_just_after_a_previous_compact ... ok
+test harness::context::tests::runtime_notes_only_extend_unsent_results_and_never_rewrite_requested_messages ... ok
+test harness::context::tests::snapshots_append_only_changed_authoritative_fields ... ok
+test creative::tests::animation_validation_and_persistence_leave_geometry_intact ... ok
+test harness::context_usage::tests::calibrated_input_adds_only_new_history_and_survives_serialization ... ok
+test harness::context_usage::tests::input_estimates_respect_image_policy_and_do_not_change_history ... ok
+test harness::context_usage::tests::invalid_optional_calibration_does_not_discard_conversation_history ... ok
+test harness::context_usage::tests::compaction_and_model_provider_changes_discard_stale_calibration ... ok
+test creative::tests::component_origin_mixed_geometry_and_roundtrip ... ok
+test harness::prompts::tests::legacy_defaults_upgrade_without_overriding_custom_fields ... ok
+test harness::tests::compact_usage_counts_toward_the_active_run_budget ... ok
+test harness::tests::completed_output_validation_rejects_duplicate_call_ids_before_dispatch ... ok
+test harness::prompts::tests::explicitly_reduced_budgets_are_not_upgraded_again_on_restart ... ok
+test harness::tests::finish_artwork_must_be_the_last_function_call_in_its_batch ... ok
+test harness::tests::reasoning_is_replayed_but_never_used_as_user_visible_run_text ... ok
+test harness::visual_context::tests::newest_view_wins_without_losing_other_views_or_reference_images ... ok
+test harness::visual_context::tests::noncapture_tool_images_and_unknown_history_remain_intact ... ok
+test inspection::tests::invalid_ranges_and_fields_are_rejected ... ok
+test inspection::tests::temporary_group_view_preserves_authored_coordinates ... ok
+test minecraft::blockstates::tests::conditions_and_cube_rotation ... ok
+test harness::palette::tests::invalid_palette_and_revision_conflicts_do_not_partially_mutate ... ok
+test harness::tests::localized_tool_schemas_keep_the_same_domain_surface ... ok
+test creative::tests::placement_preview_apply_retry_undo_and_protection ... ok
+test examples::tests::protected_content_and_existing_snapshots_survive_rejected_example_loads ... ok
+test harness::palette::tests::palette_reuses_exact_colors_preserves_geometry_and_roundtrips_history ... ok
+test examples::tests::loading_a_builtin_is_editable_undoable_and_preserves_source_credits ... ok
+test minecraft::formats::tests::arbitrary_nbt_is_not_mistaken_for_a_building ... ok
+test minecraft::formats::tests::java_sparse_structure_and_legacy_metadata_keep_building_identity ... ok
+test minecraft::formats::tests::litematic_cross_word_palette_and_negative_region_are_exact ... ok
+test minecraft::formats::tests::sponge_versions_sparse_palette_varint_and_offset_are_supported ... ok
+test minecraft::nbt::tests::big_endian_and_modified_utf8_are_exact ... ok
+test minecraft::nbt::tests::gzip_crc_is_checked_and_trailing_nbt_rejected ... ok
+test minecraft::nbt::tests::negative_lengths_truncation_and_depth_are_rejected ... ok
+test model_export::tests::box_and_slopes_have_outward_non_degenerate_faces ... ok
+test model_export::tests::export_rejects_invalid_limits_and_empty_scene ... ok
+test model_export::tests::formats_preserve_geometry_units_and_color ... ok
+test model_export::tests::png_animation_is_static_and_embedded_without_external_paths ... ok
+test model_export::tests::text_only_exports_keep_pixels_and_readable_opposite_faces ... ok
+test provider::compat::tests::images_follow_all_tool_results_and_preserve_reasoning ... ok
+test provider::compat::tests::official_chat_thinking_toggle_is_explicit_and_none_is_not_an_effort ... ok
+test provider::compat::tests::streamed_tools_usage_and_truncation_are_normalized ... ok
+test provider::config::tests::changing_endpoint_never_inherits_secret_and_status_is_public ... ok
+test provider::config::tests::saved_secret_roundtrips_without_env_fallback ... ok
+test provider::guard::tests::cancellation_does_not_clear_a_real_alert_or_ignore_reported_cache_loss ... ok
+test provider::guard::tests::cancelled_unknown_usage_is_persisted_separately_from_cache_samples ... ok
+test provider::guard::tests::corrupt_monitor_state_is_not_silently_treated_as_a_new_session ... ok
+test provider::guard::tests::established_cache_loss_stops_at_the_first_anomaly ... ok
+test provider::guard::tests::incomplete_or_failed_requests_still_trigger_missing_cache_protection ... ok
+test provider::guard::tests::uncached_small_but_realistic_tool_context_stops_after_three_requests ... ok
+test provider::guard::tests::unknown_is_not_zero_and_large_input_stops_immediately ... ok
+test provider::guard::tests::weighted_usage_and_compaction_remain_separate ... ok
+test provider::guard::tests::zero_cache_pauses_and_acknowledgement_does_not_change_prefix ... ok
+test provider::limits::tests::known_limits_survive_restart_but_next_discovery_is_not_skipped ... ok
+test provider::limits::tests::upstream_limits_clip_defaults_and_preserve_available_output_headroom ... ok
+test provider::prefix::tests::wire_diagnostic_detects_history_rewrites_and_expected_compaction ... ok
+test provider::progress::tests::only_real_upstream_reasoning_is_shown ... ok
+test provider::tests::mixed_sse_delimiters_choose_the_first_frame ... ok
+test provider::usage::tests::absent_cache_is_not_zero_percent_and_incomplete_footer_usage_is_kept ... ok
+test provider::usage::tests::supports_chat_responses_and_deepseek_usage_without_losing_cache_fields ... ok
+test provider::usage::tests::weighted_cache_rate_counts_actual_tokens_once_and_handles_unknown_usage ... ok
+test minecraft::compile::tests::automatic_grid_prefers_vrc_fit_and_reports_thin_detail_quantization ... ok
+test recipe::tests::invalid_computed_dimensions_identify_the_failed_geometry ... ok
+test minecraft::compile::tests::full_blocks_merge_and_preview_does_not_mutate_project ... ok
+test minecraft::compile::tests::explicit_shell_keeps_original_and_unknown_blocks_are_diagnosed ... ok
+test minecraft::compile::tests::thin_geometry_is_visible_and_quantization_is_reported ... ok
+test references::tests::rejects_invalid_images_and_selection_limits ... ok
+test selection::tests::colored_triangle_copy_selects_only_the_new_face ... ok
+test selection::tests::copying_selects_destination_and_handles_overwrite_and_merge ... ok
+test minecraft::compile::tests::automatic_grid_is_one_for_cubes_two_for_slabs_and_sixteen_for_carpet ... ok
+test selection::tests::moving_retains_a_selection_when_box_ids_change ... ok
+test selection::tests::repainting_keeps_the_merged_destination_selected ... ok
+test shared_library::tests::independent_instances_share_artworks_and_textures_but_not_projects ... ok
+test sources::tests::exact_patches_are_atomic_and_support_unicode_virtual_paths ... ok
+test sources::tests::files_are_versioned_bounded_and_survive_reopen ... ok
+test references::tests::builtin_entries_have_images_credits_and_fixed_dimensions ... ok
+test speech::tests::keyword_is_explicit_and_preserves_buffer ... ok
+test speech::tests::tags_are_removed_without_changing_transcript ... ok
+test store::tests::reopen_restores_snapshot_history_and_undo_stack ... ok
+test store::tests::same_revision_persist_preserves_snapshot_and_rejects_changed_scene ... ok
+test text_panels::tests::create_edit_undo_and_restart_preserve_text ... ok
+test text_panels::tests::normalized_japanese_and_unsupported_characters_are_reported ... ok
+test text_wire::tests::deletion_replays_and_old_live_generations_are_invalidated ... ok
+test text_wire::tests::latest_window_coalesces_and_never_spends_the_command_sequence ... ok
+test text_wire::tests::pages_keep_unicode_and_explicit_word_layout ... ok
+test text_wire::tests::target_coalesces_against_sent_and_replays_without_geometry_clear ... ok
+test timeline::tests::backward_pages_can_start_inside_chinese_utf8 ... ok
+test timeline::tests::durable_pagination_filters_and_full_details ... ok
+test timeline::tests::historical_capture_links_its_target_revision_instead_of_the_current_editor_revision ... ok
+test selection::tests::full_capacity_box_selection_is_resolved_without_losing_ids ... ok
+test timeline::tests::observation_filters_sessions_without_losing_raw_history ... ok
+test timeline::tests::partial_rows_do_not_advance_the_cursor ... ok
+test timeline::tests::projects_real_reasoning_and_avoids_request_pixels ... ok
+test timeline::tests::source_operation_summary_does_not_display_the_source_blob ... ok
+test transport::compact::tests::adjacent_animation_groups_never_merge ... ok
+test transport::compact::tests::runs_merge_only_identical_rendered_surfaces_and_never_modify_source ... ok
+test transport::strategy::tests::queued_clear_is_in_both_candidates_and_identical_publish_needs_no_frames ... ok
+test transport::strategy::tests::replacement_rebuilds_but_small_edits_and_equal_cost_keep_display ... ok
+test transport::unified::tests::colorful_region_beats_regular_frames_and_replays_exactly ... ok
+test transport::unified::tests::compression_replay_and_deletion_barrier_converge ... ok
+test transport::unified::tests::dropped_erasures_are_replayed_even_for_an_empty_target ... ok
+test transport::unified::tests::motion_frames_never_mix_groups_and_rebinding_republishes_only_affected_objects ... ok
+test transport::unified::tests::partial_publish_uses_sent_objects_even_when_a_new_target_skips_the_draft ... ok
+test transport::unified::tests::replay_keeps_both_erasures_when_the_same_geometry_moves_between_pools ... ok
+test transport::unified::tests::retired_ids_and_centers_never_erase_their_live_replacements ... ok
+test transport::unified::tests::whole_box_shared_surface_and_independent_colors_remain_exact ... ok
+test references::tests::imports_are_normalized_deduplicated_and_removal_keeps_queued_artifacts ... ok
+test fonts::tests::positive_facing_matches_the_renderer_view_basis ... ok
+test fonts::tests::wrapping_alignment_spacing_and_missing_glyphs_are_deterministic ... ok
+test fonts::tests::builtin_catalog_has_stable_identity_and_renders_cjk ... ok
+test recipe::tests::text_markers_preserve_order_materials_translation_and_mirror ... ok
+test fonts::tests::mask_and_boxes_are_identical_after_plane_transform ... ok
+test recipe::tests::text_marker_rejects_bad_arguments_and_expanded_budget ... ok
+test sources::tests::real_model_module_runs_without_dynamic_function_environment_panics ... ok
+test minecraft::compile::tests::stair_shapes_have_independent_dense_cell_volume ... ok
+test timeline::tests::history_is_readable_after_the_in_memory_ring_has_evicted_it ... ok
+test examples::tests::all_embedded_examples_are_complete_and_do_not_seed_or_replace_user_projects ... ok
+
+test result: ok. 128 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.99s
+
+     Running unittests src/main.rs (target/debug/deps/morphforge-caa11d49febd6182)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/acceptance_v07.rs (target/debug/deps/acceptance_v07-61645b679f01b7df)
+
+running 7 tests
+test display_preferences_are_typed_and_persisted_separately ... ok
+test corrupted_target_catalog_stays_blocking_and_never_becomes_unknown ... ok
+test invalid_capture_quality_is_rejected_before_geometry_commits ... ok
+test old_context_requires_explicit_schema_upgrade_before_any_model_request ... ok
+test target_catalog_is_explicit_and_surface_projection_does_not_mutate_art ... ok
+test automatic_finish_center_requires_a_new_capture_before_completion ... ok
+test transform_and_theme_preserve_sources_protection_and_undo ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.36s
+
+     Running tests/avatar_discovery.rs (target/debug/deps/avatar_discovery-ce2c2b6932c3b90c)
+
+running 2 tests
+test texture_build_options_participate_in_identity_and_survive_cache ... ok
+test query_identifies_full_hash_and_applies_only_known_catalog_without_udp ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.26s
+
+     Running tests/avatar_motion_transport.rs (target/debug/deps/avatar_motion_transport-06f3c4df23b69721)
+
+running 2 tests
+test public_animation_tools_validate_publish_control_and_project_isolation ... ok
+test actual_writer_sends_motion_tags_and_repair_keeps_control_ticket ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 14.32s
+
+     Running tests/catalog_history.rs (target/debug/deps/catalog_history-60a78825db3e3eca)
+
+running 2 tests
+test diagnostics_omit_credentials_and_binary_browser_data ... ok
+test historical_materials_are_immutable_and_undo_restores_the_catalog ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/context_catalog.rs (target/debug/deps/context_catalog-7c5eb824cbc1c4a8)
+
+running 1 test
+test large_catalog_is_bounded_searchable_and_paginated_for_the_model ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.37s
+
+     Running tests/examples_http.rs (target/debug/deps/examples_http-d0e5ea01c14bda97)
+
+running 1 test
+test builtin_gallery_is_offline_forkable_and_preserves_licensed_sources ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.17s
+
+     Running tests/image_tools.rs (target/debug/deps/image_tools-3f5d4308ce6e5156)
+
+running 6 tests
+test invalid_or_protected_plane_does_not_change_geometry_or_materials ... ok
+test exact_pixels_crop_resize_and_derived_attribution_are_independent_of_scene ... ok
+test median_cut_preserves_gradient_span_and_all_planes_have_expected_orientation ... ok
+test texture_palette_uses_image_representative_colors_and_overlay_preserves_holes ... ok
+test plane_preview_apply_orientation_holes_reuse_and_undo ... ok
+test harness_exposes_image_tools_and_nearest_existing_materials_no_new_palette ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.80s
+
+     Running tests/mf6_publish_http.rs (target/debug/deps/mf6_publish_http-7c73d80b8fb9e795)
+
+running 1 test
+test mf6_manual_repair_replays_sent_baseline_without_a_clear_or_remote_ack ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.56s
+
+     Running tests/mf6_runtime.rs (target/debug/deps/mf6_runtime-05156974683cbf8c)
+
+running 2 tests
+test one_instance_owns_osc_and_another_can_take_over_after_release ... ok
+test real_loopback_region_frames_and_auto_rebuild_preserve_color_and_coordinates ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.09s
+
+     Running tests/minecraft_import.rs (target/debug/deps/minecraft_import-658b4d5b2971c506)
+
+running 3 tests
+test protected_import_is_rejected_and_slopes_keep_atomic_edit_semantics ... ok
+test preview_guards_protection_idempotence_restart_corruption_and_undo ... ok
+test http_upload_preview_harness_apply_original_and_invalid_upload ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.10s
+
+     Running tests/protected_groups.rs (target/debug/deps/protected_groups-898b914728392362)
+
+running 5 tests
+test protection_revision_is_idempotent_persistent_and_does_not_replay_on_undo ... ok
+test protection_persistence_failure_rolls_back_revision_and_new_snapshots ... ok
+test future_empty_groups_are_strict_and_unprotected_groups_remain_editable ... ok
+test history_and_artwork_loads_cannot_remove_protected_geometry ... ok
+test protected_group_blocks_all_geometry_transactions_and_text_receipts ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/provider_harness.rs (target/debug/deps/provider_harness-01fe227c4ac4152b)
+
+running 48 tests
+test explicit_prefix_monitor_opt_out_warns_and_sends_without_disabling_default ... ok
+test expanded_output_stream_can_exceed_the_old_16mib_wire_limit ... ok
+test duplicate_recipe_request_id_returns_cached_result_before_validation ... ok
+test artworks_save_resolves_latest_current_capture_images ... ok
+test failed_compact_keeps_old_context_and_records_failure ... ok
+test cache_readiness_is_invalidated_only_when_prompt_or_provider_semantics_change ... ok
+test chat_stream_without_done_never_executes_partial_tools ... ok
+test finish_artwork_commits_saves_summary_and_skips_a_followup_request ... ok
+test current_context_meter_is_calibrated_persistent_and_not_cumulative_usage ... ok
+test finishing_in_the_same_batch_as_an_unseen_capture_is_rejected ... ok
+test incomplete_sse_tool_call_never_reaches_tool_executor ... ok
+test completion_reserve_uses_observed_visual_input_cost ... ok
+test a_reference_image_cannot_replace_a_real_current_revision_capture ... ok
+test manual_edits_wait_for_ai_worker_and_can_resume_after_pause ... ok
+test incomplete_stream_keeps_a_bounded_diagnostic_frame_tail ... ok
+test missing_run_seconds_uses_the_expanded_default_budget ... ok
+test defaults_use_full_output_and_honor_advertised_upstream_limits ... ok
+test interrupt_cancels_inflight_provider_request_and_continues_same_run ... ok
+test goal_continues_until_no_progress_is_bounded_and_persisted ... ok
+test interrupt_during_tool_batch_records_cancelled_result_before_continuation ... ok
+test max_output_incomplete_retries_compactly_without_dispatching_partial_tools ... ok
+test presets_apply_budgets_and_explicit_overrides_without_restricting_models ... ok
+test missing_usage_is_estimated_and_sensitive_provider_echoes_are_redacted ... ok
+test mf6_harness_repair_and_loop_replay_use_current_protocol_without_clear ... ok
+test invalid_tool_arguments_are_reported_and_the_harness_recovers ... ok
+test chat_json_and_sse_providers_keep_tool_loop_and_usage ... ok
+test provider_connection_is_frozen_during_running_and_paused_runs ... ok
+test reset_context_is_rejected_while_manual_compact_is_running ... ok
+test stop_during_tool_call_keeps_logs_and_pairs_the_call_without_late_geometry ... ok
+test streaming_reasoning_is_visible_and_is_not_fabricated_when_absent ... ok
+test reference_images_are_explicit_inputs_survive_compact_and_can_be_cleared ... ok
+test strict_budget_reserves_input_before_sending_any_paid_request ... ok
+test third_party_files_setting_is_forced_inline_and_chat_cache_usage_is_preserved ... ok
+test requests_preserve_historical_images_and_append_only_at_the_wire_boundary ... ok
+test unexpected_prefix_rewrite_is_blocked_before_network_and_survives_restart ... ok
+test failed_finish_artwork_stays_active_and_can_be_retried_after_capture ... ok
+test token_budget_uses_provider_usage_and_allows_one_input_overrun ... ok
+test steer_applies_after_tool_batch_while_queue_waits_for_turn_end ... ok
+test goal_requires_changed_geometry_captures_then_saves_and_keeps_images_local ... ok
+test chat_wire_prefix_survives_tool_state_changes_continuation_and_reference_clearing ... ok
+test usage_totals_include_incomplete_and_compact_once_and_survive_restart ... ok
+test queue_and_steer_messages_continue_after_finish_artwork ... ok
+test strict_zero_cache_pauses_same_run_without_spending_the_next_request ... ok
+test provider_retries_429_then_accepts_completed_sse ... ok
+test run_deadline_cancels_a_slow_provider_request ... ok
+test pause_resume_large_stream_preserves_prefix_and_does_not_invent_cache_loss ... ok
+test pause_freezes_active_budget_and_resume_continues_the_same_run ... ok
+test voxel_text_tool_previews_compactly_and_applies_with_durable_receipt ... ok
+
+test result: ok. 48 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.67s
+
+     Running tests/reference_http.rs (target/debug/deps/reference_http-00dd3526d85d6af2)
+
+running 1 test
+test reference_http_upload_list_image_and_remove_are_local_only ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.92s
+
+     Running tests/resources.rs (target/debug/deps/resources-e6e8322cbe68f8e9)
+
+running 10 tests
+test partial_alpha_glass_and_slime_are_blended_instead_of_disappearing_in_cutout ... ok
+test rejects_zip_path_traversal_symlinks_and_backslashes ... ok
+test normalizes_different_face_cycles_to_shared_tick_timeline ... ok
+test follows_model_parent_chain_and_keeps_six_face_order ... ok
+test bakes_interpolated_ticks ... ok
+test bakes_explicit_frame_order_and_per_frame_timing ... ok
+test imports_static_cube_and_is_idempotent ... ok
+test vanilla_full_cube_templates_preserve_grass_layers_and_face_tint ... ok
+test reports_invalid_animation_frame_but_keeps_fallback_frames ... ok
+test preserved_pack_blockstates_select_alias_model_and_orientation ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests/retired_protocols.rs (target/debug/deps/retired_protocols-e69a87d5d857b1d0)
+
+running 2 tests
+test retired_osc_profiles_and_catalogs_are_rejected_without_mutation ... ok
+test first_repair_of_revision_zero_does_not_skip_an_unpublished_scene ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running tests/speech_http.rs (target/debug/deps/speech_http-10d813a9f455e2ea)
+
+running 5 tests
+test mini_preferences_are_restricted_and_durable ... ok
+test speech_settings_hide_credentials_and_reject_remote_provider ... ok
+test explicit_speech_text_applies_only_to_bound_project_and_does_not_start_ai ... ok
+test background_voice_submission_enters_the_existing_model_runtime ... ok
+test builtin_vad_keeps_silence_off_the_cloud_and_cancel_releases_session ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.99s
+
+     Running tests/stream_workbench.rs (target/debug/deps/stream_workbench-acfb4b0ea3e49e30)
+
+running 2 tests
+test deleting_shared_artwork_is_recoverable_and_preserves_other_projects_and_assets ... ok
+test creation_preferences_are_persistent_validated_and_dynamic_context_only ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.38s
+
+     Running tests/surface_runtime.rs (target/debug/deps/surface_runtime-bf707415c258a69e)
+
+running 5 tests
+test wire_color_and_parametric_fields_and_signed_scale_are_independent ... ok
+test logical_high_ids_export_valid_fallback_and_never_enter_wire_geometry ... ok
+test builtin_identity_remap_and_texture_tint_preserve_missing_image_guard ... ok
+test pending_unified_catalog_migration_preserves_project_and_old_physical_size ... ok
+test runtime_materials_are_atomic_reusable_and_resolve_without_baked_ids ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.57s
+
+     Running tests/text_http.rs (target/debug/deps/text_http-645626c227e66403)
+
+running 4 tests
+test validation_exposes_missing_glyphs_without_geometry_and_rejects_id_reuse ... ok
+test stale_or_changed_previews_and_concurrent_edits_cannot_overwrite_drafts ... ok
+test project_protection_rejects_overwrites_and_stale_unlocks_over_http ... ok
+test preview_apply_undo_and_durable_idempotent_receipt ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.94s
+
+     Running tests/text_receipts.rs (target/debug/deps/text_receipts-796c29ffdea6369f)
+
+running 5 tests
+test receipt_survives_event_log_failure_and_replays_after_restart ... ok
+test receipt_lookup_does_not_depend_on_current_font_or_material_catalog ... ok
+test ordinary_apply_rejects_text_request_id_after_restart ... ok
+test failed_project_persistence_rolls_back_scene_and_receipt ... ok
+test receipt_survives_more_than_the_event_window_and_rejects_id_reuse ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+     Running tests/text_transport.rs (target/debug/deps/text_transport-dbf9d94e7597c543)
+
+running 1 test
+test shared_writer_publishes_replays_and_deletes_text_without_geometry ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.16s
+
+     Running tests/transport.rs (target/debug/deps/transport-61f6f5d9bf5705e8)
+
+running 1 test
+test periodic_refresh_waits_until_the_entire_previous_rebuild_was_sent ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.12s
+
+     Running tests/workspaces.rs (target/debug/deps/workspaces-c4c4efa6b5b6195d)
+
+running 4 tests
+test active_and_queued_work_cannot_cross_a_context_boundary ... ok
+test legacy_context_is_migrated_and_corrupt_context_is_never_silently_erased ... ok
+test interrupted_transition_recovers_one_consistent_project_context_and_cache_state ... ok
+test project_and_context_transitions_preserve_sources_history_and_cache_guards ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.89s
+
+     Running unittests src/lib.rs (target/debug/deps/morphforge_core-bf94c95ee384fec0)
+
+running 19 tests
+test mf6::tests::geometry_boundaries ... ok
+test mf6::tests::invalid_data_rejected_without_panics ... ok
+test mf6::tests::motion_groups_keep_static_bytes_and_roundtrip_every_geometry_layout ... ok
+test mf6::tests::reserved_bits_and_padding_rejected ... ok
+test mf6::tests::strip_winding_is_consistent ... ok
+test surfaces::tests::opaque_and_separate_volumes_are_not_culled ... ok
+test text::tests::budgets_and_complex_scripts_are_rejected ... ok
+test text::tests::all_planes_and_depth_stay_inside_origin_bbox ... ok
+test text::tests::positive_facing_has_explicit_renderer_basis ... ok
+test text::tests::rectangle_merge_is_exact_and_does_not_fill_holes ... ok
+test text_panel::tests::invalid_dimensions_do_not_enter_persistent_scene ... ok
+test text_panel::tests::english_words_and_japanese_punctuation_keep_readable_lines ... ok
+test text_panel::tests::mixed_width_wrap_and_tail_are_deterministic ... ok
+test surfaces::tests::removes_only_touching_same_medium_and_handles_partial_union ... ok
+test triangles::tests::wire_does_not_wrap_and_degenerate_faces_fail ... ok
+test triangles::tests::wedge_is_closed_non_degenerate_and_all_directions_fit ... ok
+test mf6::tests::every_layout_and_surface_roundtrips ... ok
+test mf6::tests::random_bytes_never_panic_and_canonical_frames_reencode ... ok
+test mf6::tests::regions_roundtrip_with_absolute_positions_and_all_modes ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/geometry.rs (target/debug/deps/geometry-99b210ae023e1851)
+
+running 11 tests
+test brush_is_sent_only_at_changes_and_remove_uses_old_geometry ... ok
+test failed_transaction_preserves_original ... ok
+test group_prevents_semantic_merge_and_transform_is_exact ... ok
+test legacy_import_shifts_only_xz ... ok
+test geometry_beyond_vrc_is_valid_art ... ok
+test import_rejects_non_scene_json_and_unwraps_exported_projects ... ok
+test removing_a_group_keeps_neighboring_geometry_exact ... ok
+test mf3_byte_layout_and_opcode_range ... ok
+test huge_cube_is_sparse_and_hole_has_exact_volume ... ok
+test random_operations_match_independent_dense_oracle ... ok
+test independent_16k_boxes_fit_without_quadratic_validation ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.60s
+
+     Running tests/triangles.rs (target/debug/deps/triangles-d11cc414bc31c698)
+
+running 5 tests
+test face_groups_paint_and_whole_face_erase_work ... ok
+test triangles_count_towards_shared_object_limit ... ok
+test mixed_object_ids_updates_and_delete_are_unambiguous ... ok
+test transform_mirror_keeps_face_front_and_source_when_copying ... ok
+test transaction_failure_preserves_geometry_and_import_keeps_mesh ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests morphforge_app
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests morphforge_core
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

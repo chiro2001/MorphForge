@@ -1,0 +1,23 @@
+{
+  "complete": true,
+  "success": true,
+  "checks": [
+    {
+      "name": "receiver",
+      "success": true
+    },
+    {
+      "name": "dynamics",
+      "success": true
+    },
+    {
+      "name": "visual",
+      "success": true
+    },
+    {
+      "name": "recovery",
+      "success": true
+    }
+  ],
+  "scene": "Assets/MorphForge/Validation/PublicModule12.unity"
+}

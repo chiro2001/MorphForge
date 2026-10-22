@@ -1,0 +1,59 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "zero paused phase",
+      "pass": true,
+      "data": null
+    },
+    {
+      "name": "native clock advances at quarter cycles per second",
+      "pass": true,
+      "data": [
+        0.0726875961,
+        0.198850766
+      ]
+    },
+    {
+      "name": "duplicate ticket cannot seek or restart",
+      "pass": true,
+      "data": [
+        0.198850766,
+        0.313357443,
+        0.0
+      ]
+    },
+    {
+      "name": "pause holds at requested half phase",
+      "pass": true,
+      "data": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "resume advances from preserved phase",
+      "pass": true,
+      "data": [
+        0.0714361742,
+        0.160875127
+      ]
+    },
+    {
+      "name": "stop returns to static pose",
+      "pass": true,
+      "data": null
+    },
+    {
+      "name": "incomplete alternate bank cannot commit",
+      "pass": true,
+      "data": null
+    },
+    {
+      "name": "completed alternate bank switches atomically",
+      "pass": true,
+      "data": null
+    }
+  ],
+  "scope": "Actual UDP9012 native Animator clock, ticket idempotency and missing-key bank gating. No remote network guarantee."
+}

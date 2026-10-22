@@ -1,11 +1,11 @@
-# MorphForge Avatar 插件 1.0.0
+# MorphForge Avatar 插件 1.2.0
 
-将 MorphForge Desktop 的体素和纯色三角面，通过 OSC 显示在 VRChat PC Avatar 上。容量为 16,384 个几何对象；显示使用原生 Animator、粒子和 Shader，上传后没有自定义 C# 运行逻辑。
+将 MorphForge Desktop 的体素、纯色三角面、点阵文字与分组动画，通过 OSC 显示在 VRChat PC Avatar 上。容量为 16,384 个几何对象；显示使用原生 Animator、粒子和 Shader，上传后没有自定义 C# 运行逻辑。
 
 ## 安装
 
 1. 使用 VCC 创建或打开 Avatar 工程，安装 VRChat SDK 和 Modular Avatar。
-2. 导入 `MorphForgeAvatar-1.0.0.unitypackage`。
+2. 导入 `MorphForgeAvatar-1.2.0.unitypackage`。
 3. 在场景中选择人物，在 `Tools > MorphForge Avatar > 安装与检查` 指定 Avatar，点击“一键安装”。
 4. 需要压缩服装等低频菜单参数时，先在 VCC 安装 VRCFury，再勾选参数压缩桥。已经安装的模块可移除后重新安装；移除和安装均支持 Undo。
 5. 正常构建、上传 Avatar。在 VRChat 打开 OSC，用 MorphForge Desktop 识别 Avatar 能力并发布作品。
@@ -21,7 +21,7 @@
 | MF6_D00…28、MF6_Ctl，30 个直接同步 Int | 240 bit |
 | 世界固定、保持水平、重置、左右手抓握，5 Bool | 5 bit |
 | 缩放，1 Float | 8 bit |
-| 光球可见性、材质指纹、协议声明 | 本地，0 bit |
+| 光球显示/允许本人抓握、文字缓存、动画、本人预览、能力声明 | 本地，0 bit |
 | 合计 | **253 bit** |
 
 光球只向本人显示，抓握与几何位置仍同步给其他玩家。世界固定和缩放使用原有原生约束方案。
@@ -53,3 +53,19 @@ Shader 现在为 RGB 与 Alpha 使用独立混合因子；新版 Desktop 的观�
 ## 源码和验证
 
 源码、构建脚本与验证文档位于 MorphForge 仓库；`docs/avatar-plugin/README.md` 记录测试范围。包内资产可在 Unity 正常检查和修改，不依赖原作者的商业 Avatar 工程。
+
+## 文字与动画
+
+提供4个文本框，每框最多128个UTF-16槽（含换行），16×16二值中日英字库，半宽/全宽在桌面排版，正反两面都正常阅读。Desktop可配置文本框位置、朝向、范围、字号、颜色、对齐与溢出策略；实时字幕使用14字短窗口，最终内容持久保存并补播。AI默认仍使用体素文字，明确需要字幕/标签时才使用贴图文字。
+
+字形来自 GNU Unifont / Unifont Japanese 18.0.01，按 SIL OFL 1.1 分发，资源标识为 MorphForge Pixel16。版权和许可见 Fonts-ATTRIBUTION.txt、Fonts-OFL-1.1.txt；这些许可与原创材质许可分开。
+
+Avatar本地动画最多3组，每组4关键帧，支持平移、四元数旋转、正均匀缩放、循环/单次、暂停/继续/定位；方块、斜面、三角面、文本框共用组。时长预设0.125/0.25/0.5/1/2/4/8/16/32/64秒，速度0.25/0.5/1/2，缩放1/16..8，运动包络仍须在256格范围内。Desktop动画面板保存后可先检查，再显式发布到Avatar。编辑器/GLB的完整动画能力与Avatar首版限制分开。
+
+定义、关键帧与控制共用240bit通道，之后原生Animator/Shader自行播放，不逐帧传顶点。双bank拒绝未收齐定义，重复补播不重启动画。没有网络执行ACK，其他玩家晚加入仍靠循环补播获得内容，跨端不承诺严格同相。
+
+## 可选本人预览（实验）
+
+表达菜单中的“本人预览”提供开关、六个边缘位置、面板大小、取景缩放、正面/斜视。默认关闭，不新增同步参数。相机将Avatar实际已接收的模型/文字渲染到512×384纹理，面板跟随头部且不直接挂在Head骨骼子树；远端IsLocal=false时相机和面板强制关闭。
+
+该相机还可能拍到取景范围内的人物/世界；默认全空间取景，小作品可调缩放。开启增加一份相机渲染开销。已验证Editor的原生约束、开关、画面和门控；实际VR中的舒适度、左右眼、第一人称、镜子/拍照仍需体验确认。此功能是Avatar原型，不依赖SteamVR HUD。

@@ -1,0 +1,11 @@
+{
+  "success": true,
+  "onceStartsAtHalfPhaseAndHoldsEnd": true,
+  "elapsed": [
+    1.0,
+    1.0
+  ],
+  "endPoseWidth": 64,
+  "endPoseInkPixels": 2048,
+  "scope": "Actual UDP native once clock from nonzero phase + production particle shader 90-degree end pose. No generated resources or real VRChat changed."
+}

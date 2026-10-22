@@ -1,0 +1,57 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "isolated sender remains disabled",
+      "passed": true
+    },
+    {
+      "name": "check button validates saved clip and explains frame cost",
+      "passed": true
+    },
+    {
+      "name": "dry run does not bind or send motion",
+      "passed": true
+    },
+    {
+      "name": "unsupported target reports clear error",
+      "passed": true
+    },
+    {
+      "name": "motionAvatarResume handles missing publication visibly",
+      "passed": true
+    },
+    {
+      "name": "motionAvatarPause handles missing publication visibly",
+      "passed": true
+    },
+    {
+      "name": "motionAvatarStop handles missing publication visibly",
+      "passed": true
+    },
+    {
+      "name": "motionAvatarSeek handles missing publication visibly",
+      "passed": true
+    },
+    {
+      "name": "detach button explicitly queues a static target",
+      "passed": true
+    },
+    {
+      "name": "editor playback still works",
+      "passed": true
+    },
+    {
+      "name": "editor pause still works",
+      "passed": true
+    },
+    {
+      "name": "no OSC enabled by any control",
+      "passed": true
+    },
+    {
+      "name": "no unhandled JavaScript or WebGL errors",
+      "passed": true
+    }
+  ]
+}

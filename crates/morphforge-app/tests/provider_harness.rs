@@ -276,6 +276,7 @@ fn inert_transport() -> Transport {
     Transport {
         inner: Arc::new(Mutex::new(TransportState {
             text: morphforge_app::text_wire::Session::default(),
+            motion:morphforge_app::avatar_motion::Session::default(),
             publication: None,
             discovery: json!({}),
             avatar_catalog: None,

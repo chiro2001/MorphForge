@@ -6,7 +6,7 @@ fn tree(c: &AvatarCatalog) -> Value {
     let mut content = serde_json::Map::new();
     for (name, value) in [
         ("MF_InfoVersion", 7),
-        ("MF_InfoFeatures", 7),
+        ("MF_InfoFeatures", 119),
         ("MF_InfoBuild0", 17),
         ("MF_InfoBuild1", 3),
         ("MF_InfoBuild2", 1),
@@ -26,7 +26,8 @@ async fn query_identifies_full_hash_and_applies_only_known_catalog_without_udp()
     let c =
         AvatarCatalog::from_bytes(include_bytes!("../../../materials/mf6/catalog.json")).unwrap();
     let expected = c.identity_hash();
-    avatar_discovery::cache(root.path(), &c).unwrap();
+    assert!(avatar_discovery::lookup(root.path(), &expected).unwrap().is_none());
+    app.workspace.lock().unwrap().library_root=root.path().join("isolated-shared");
     let response = tree(&c);
     let router = Router::new()
         .route(
@@ -74,6 +75,71 @@ async fn query_identifies_full_hash_and_applies_only_known_catalog_without_udp()
         .unwrap();
     assert_eq!(selected.identity_hash(), expected);
     assert!(selected.capabilities.contains(&"mf6-region8/1".into()));
+    for capability in [
+        "mf6-text-panels/1",
+        "mf6-text-latest14/1",
+        "local-placement-controls/1",
+        "mf6-motion4/1",
+    ] {
+        assert!(
+            selected.capabilities.iter().any(|v| v == capability),
+            "discovery did not enable {capability}"
+        );
+    }
+    assert_eq!(r["info"]["motion4"], true);
+    let mut reserved = tree(&c);
+    reserved["CONTENTS"]["MF_InfoFeatures"]["VALUE"][0] = json!(128);
+    assert!(
+        avatar_discovery::parse(&reserved).is_err(),
+        "unknown future bit must not be silently accepted"
+    );
+    for flags in [0, 7, 15, 55, 119, 127] {
+        let mut v = tree(&c);
+        v["CONTENTS"]["MF_InfoFeatures"]["VALUE"][0] = json!(flags);
+        assert!(
+            avatar_discovery::parse(&v).is_ok(),
+            "known feature mask {flags}"
+        );
+    }
+
+    // A real port9000 target is authorized by OSCQuery flags, not a manual capability import.
+    let mut scene = morphforge_core::Scene::default();
+    scene.revision = 1;
+    let mut b = morphforge_core::Box3::new([-4, 24, -4], [8; 3], 1);
+    b.group = "detected".into();
+    scene.boxes.push(b);
+    let clip = morphforge_app::creative::Clip {
+        name: "detected".into(),
+        duration: 1.,
+        looping: true,
+        tracks: vec![morphforge_app::creative::Track {
+            group: "detected".into(),
+            pivot: [0., 28., 0.],
+            interpolation: "linear".into(),
+            keys: vec![morphforge_app::creative::Keyframe {
+                time: 0.,
+                translation: [0.; 3],
+                rotation: [0.; 3],
+                scale: [1.; 3],
+            }],
+        }],
+    };
+    app.transport
+        .publish_motion(
+            &scene,
+            &morphforge_core::materials::builtins(),
+            &clip,
+            "detected",
+            1.,
+            0.,
+            false,
+        )
+        .unwrap();
+    assert_eq!(app.transport.state()["motion"]["groups"]["detected"], 1);
+    assert!(
+        !app.transport.config().enabled,
+        "discovery/publish does not silently start UDP"
+    );
     // Cache serialization changes whitespace/metadata but never the binary identity.
     assert_eq!(
         avatar_discovery::lookup(root.path(), &expected)
@@ -113,6 +179,16 @@ async fn query_identifies_full_hash_and_applies_only_known_catalog_without_udp()
     plain.metallic = 0.5;
     let c=AvatarCatalog::from_bytes(&serde_json::to_vec(&json!({"format":"MorphForgeMaterialCatalog/1","materials":[plain],"capabilities":["mf6-unified/1","mf5-runtime-materials/1"]})).unwrap()).unwrap();
     app.transport.set_catalog(Some(c), root.path()).unwrap();
+    assert!(
+        app.transport
+            .inner
+            .lock()
+            .unwrap()
+            .motion
+            .groups()
+            .is_empty(),
+        "switching to a non-motion target forgets animation packets and tags"
+    );
     let added: Value = client
         .post(format!("{base}/api/vrc/materials"))
         .json(&json!({}))

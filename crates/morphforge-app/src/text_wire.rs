@@ -147,6 +147,7 @@ pub fn encode(panel: &TextPanel, slot: u8) -> Result<Vec<Message>> {
 }
 #[derive(Clone, Default)]
 pub struct Session {
+    pub motion_groups:BTreeMap<String,u8>,
     target: BTreeMap<String, (u8, Vec<Message>)>,
     epoch: [u8; SLOTS],
     tombstones: BTreeSet<u8>,
@@ -174,7 +175,8 @@ impl Session {
                 .get(&p.id)
                 .map(|v| v.0)
                 .unwrap_or_else(|| available.remove(0));
-            next.insert(p.id.clone(), (slot, encode(p, slot)?));
+            let mut messages=encode(p,slot)?;for m in &mut messages{if m.0[0]==3{m.0[13]=self.motion_groups.get(&p.group).copied().unwrap_or(0);}}
+            next.insert(p.id.clone(), (slot, messages));
         }
         let mut epochs = self.epoch;
         let mut tombstones = self.tombstones.clone();

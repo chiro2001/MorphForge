@@ -1,0 +1,89 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "group 1 complete paused definition",
+      "pass": true,
+      "data": {
+        "B0_Version": 0.0,
+        "B0_Ready": 1.0,
+        "AppliedTicket": 1.0,
+        "ClockTicket": 1.0,
+        "Enabled": 1.0,
+        "Base": 0.2509804,
+        "Rate": 0.0
+      }
+    },
+    {
+      "name": "group 1 renderer definition and clock",
+      "pass": true,
+      "data": {
+        "enabled": 1.0,
+        "base": 0.2509804,
+        "count": 3.0,
+        "elapsed": 0.0
+      }
+    },
+    {
+      "name": "group 2 complete paused definition",
+      "pass": true,
+      "data": {
+        "B0_Version": 0.0,
+        "B0_Ready": 1.0,
+        "AppliedTicket": 1.0,
+        "ClockTicket": 1.0,
+        "Enabled": 1.0,
+        "Base": 0.2509804,
+        "Rate": 0.0
+      }
+    },
+    {
+      "name": "group 2 renderer definition and clock",
+      "pass": true,
+      "data": {
+        "enabled": 1.0,
+        "base": 0.2509804,
+        "count": 2.0,
+        "elapsed": 0.0
+      }
+    },
+    {
+      "name": "animated box birth tag",
+      "pass": true,
+      "data": 9
+    },
+    {
+      "name": "animated box original center persists",
+      "pass": true,
+      "data": [
+        256,
+        84,
+        256
+      ]
+    },
+    {
+      "name": "animated triangle birth tag",
+      "pass": true,
+      "data": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        14
+      ]
+    },
+    {
+      "name": "text group receives shared pose",
+      "pass": true,
+      "data": {
+        "group": 1.0,
+        "keys": 3.0
+      }
+    }
+  ],
+  "scope": "Actual UDP9012 -> merged native Avatar receiver/caches/particle birth streams. Fixed paused pose; dynamic and GPU pose tests are separate."
+}

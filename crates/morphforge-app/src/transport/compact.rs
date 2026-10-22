@@ -27,7 +27,7 @@ pub fn candidate(
     for _ in 0..3 {
         let before = items.len();
         for axis in 0..3 {
-            let mut groups = BTreeMap::<(Surface, [i32; 3], [u32; 3]), Vec<Box3>>::new();
+            let mut groups = BTreeMap::<(Surface, String, [i32; 3], [u32; 3]), Vec<Box3>>::new();
             let mut result = Vec::new();
             for (b, s) in items {
                 if b.shape != 0 || !can_merge(&b, s, axis) {
@@ -38,9 +38,9 @@ pub fn candidate(
                 let mut size = b.size;
                 min[axis] = 0;
                 size[axis] = 0;
-                groups.entry((s, min, size)).or_default().push(b);
+                groups.entry((s, b.group.clone(), min, size)).or_default().push(b);
             }
-            for ((surface, _, _), mut boxes) in groups {
+            for ((surface, _, _, _), mut boxes) in groups {
                 boxes.sort_by_key(|b| b.min[axis]);
                 let mut current: Option<Box3> = None;
                 for b in boxes {
@@ -73,6 +73,14 @@ pub fn candidate(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn adjacent_animation_groups_never_merge() {
+        let mut a=Box3::new([0,0,0],[1;3],1);a.group="door".into();
+        let mut b=Box3::new([1,0,0],[1;3],1);b.group="frame".into();
+        let scene=Scene{boxes:vec![a,b],..Default::default()};
+        let (out,_)=candidate(&scene,&BTreeMap::new(),|_,_,_|true);
+        assert_eq!(out.boxes.len(),2);
+    }
     #[test]
     fn runs_merge_only_identical_rendered_surfaces_and_never_modify_source() {
         let source = Scene {

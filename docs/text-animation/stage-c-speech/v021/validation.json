@@ -1,0 +1,330 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "expected isolated core version and OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "native Cable capture device exists",
+      "passed": true
+    },
+    {
+      "name": "explicit Cable playback device exists",
+      "passed": true
+    },
+    {
+      "name": "embedded VAD and reused local models ready",
+      "passed": true
+    },
+    {
+      "name": "fixture 0 format",
+      "passed": true
+    },
+    {
+      "name": "fixture 1 format",
+      "passed": true
+    },
+    {
+      "name": "fixture 2 format",
+      "passed": true
+    },
+    {
+      "name": "fixture 3 format",
+      "passed": true
+    },
+    {
+      "name": "fixture 4 format",
+      "passed": true
+    },
+    {
+      "name": "offline fixture 0 final result",
+      "passed": true
+    },
+    {
+      "name": "offline fixture 0 intelligible",
+      "passed": true
+    },
+    {
+      "name": "offline fixture 1 final result",
+      "passed": true
+    },
+    {
+      "name": "offline fixture 1 intelligible",
+      "passed": true
+    },
+    {
+      "name": "offline fixture 2 final result",
+      "passed": true
+    },
+    {
+      "name": "offline fixture 2 intelligible",
+      "passed": true
+    },
+    {
+      "name": "hybrid fixture 0 final result",
+      "passed": true
+    },
+    {
+      "name": "hybrid fixture 0 intelligible",
+      "passed": true
+    },
+    {
+      "name": "hybrid fixture 1 final result",
+      "passed": true
+    },
+    {
+      "name": "hybrid fixture 1 intelligible",
+      "passed": true
+    },
+    {
+      "name": "hybrid fixture 2 final result",
+      "passed": true
+    },
+    {
+      "name": "hybrid fixture 2 intelligible",
+      "passed": true
+    },
+    {
+      "name": "offline fixture 3 final result",
+      "passed": true
+    },
+    {
+      "name": "offline fixture 3 intelligible",
+      "passed": true
+    },
+    {
+      "name": "final keyword submits exactly once to local fixture",
+      "passed": true
+    },
+    {
+      "name": "offline fixture 4 final result",
+      "passed": true
+    },
+    {
+      "name": "offline fixture 4 intelligible",
+      "passed": true
+    },
+    {
+      "name": "negative keyword never submits",
+      "passed": true
+    },
+    {
+      "name": "offline fixture 0 final result",
+      "passed": true
+    },
+    {
+      "name": "offline fixture 0 intelligible",
+      "passed": true
+    },
+    {
+      "name": "voice final updates selected text object",
+      "passed": true
+    },
+    {
+      "name": "polling never repeats text mutations",
+      "passed": true
+    },
+    {
+      "name": "native Cable silence opens no cloud session",
+      "passed": true
+    },
+    {
+      "name": "no real VRChat OSC and no real LLM requests",
+      "passed": true
+    }
+  ],
+  "rows": [
+    {
+      "provider": "offline",
+      "fixture": 0,
+      "expected": "这是一条语音识别测试。",
+      "recognized": "这是一条语音识别测试。",
+      "cer": 0.0,
+      "loadingMs": 1558.1831,
+      "warmModel": false,
+      "firstPartialMs": null,
+      "finalAfterEstimatedSpeechEndMs": 1046.2758999783546,
+      "inferenceMs": [
+        39.098099999999995
+      ],
+      "receiverEstimatedLatencyMs": [
+        489.38308807907106
+      ],
+      "cloudSessions": 0,
+      "cloudAudioSeconds": 0.0
+    },
+    {
+      "provider": "offline",
+      "fixture": 1,
+      "expected": "建造一座红色屋顶的小房子。",
+      "recognized": "建造一座红色屋顶的小房子。",
+      "cer": 0.0,
+      "loadingMs": 49.5386,
+      "warmModel": true,
+      "firstPartialMs": null,
+      "finalAfterEstimatedSpeechEndMs": 1007.6615000725724,
+      "inferenceMs": [
+        43.8923
+      ],
+      "receiverEstimatedLatencyMs": [
+        494.35278807907116
+      ],
+      "cloudSessions": 0,
+      "cloudAudioSeconds": 0.0
+    },
+    {
+      "provider": "offline",
+      "fixture": 2,
+      "expected": "窗户在左边，门在右边。",
+      "recognized": "窗户在左边，门在右边。",
+      "cer": 0.0,
+      "loadingMs": 45.678000000000004,
+      "warmModel": true,
+      "firstPartialMs": null,
+      "finalAfterEstimatedSpeechEndMs": 979.0536999935284,
+      "inferenceMs": [
+        43.437999999999995
+      ],
+      "receiverEstimatedLatencyMs": [
+        493.6997880790709
+      ],
+      "cloudSessions": 0,
+      "cloudAudioSeconds": 0.0
+    },
+    {
+      "provider": "hybrid",
+      "fixture": 0,
+      "expected": "这是一条语音识别测试。",
+      "recognized": "这是一条语音识别测试。",
+      "cer": 0.0,
+      "loadingMs": 1976.6962,
+      "warmModel": false,
+      "firstPartialMs": 1533.9627000503242,
+      "finalAfterEstimatedSpeechEndMs": 1039.1028000158258,
+      "inferenceMs": [
+        41.125099999999996
+      ],
+      "receiverEstimatedLatencyMs": [
+        492.0332880790711
+      ],
+      "cloudSessions": 0,
+      "cloudAudioSeconds": 0.0
+    },
+    {
+      "provider": "hybrid",
+      "fixture": 1,
+      "expected": "建造一座红色屋顶的小房子。",
+      "recognized": "建造一座红色屋顶的小房子。",
+      "cer": 0.0,
+      "loadingMs": 45.320699999999995,
+      "warmModel": true,
+      "firstPartialMs": 1504.4499000068754,
+      "finalAfterEstimatedSpeechEndMs": 1065.82600006368,
+      "inferenceMs": [
+        46.2945
+      ],
+      "receiverEstimatedLatencyMs": [
+        496.6644880790709
+      ],
+      "cloudSessions": 0,
+      "cloudAudioSeconds": 0.0
+    },
+    {
+      "provider": "hybrid",
+      "fixture": 2,
+      "expected": "窗户在左边，门在右边。",
+      "recognized": "窗户在左边，门在右边。",
+      "cer": 0.0,
+      "loadingMs": 45.7065,
+      "warmModel": true,
+      "firstPartialMs": 1567.8498000488617,
+      "finalAfterEstimatedSpeechEndMs": 1007.6291000586934,
+      "inferenceMs": [
+        41.8189
+      ],
+      "receiverEstimatedLatencyMs": [
+        492.19828807907106
+      ],
+      "cloudSessions": 0,
+      "cloudAudioSeconds": 0.0
+    },
+    {
+      "provider": "offline",
+      "fixture": 3,
+      "expected": "开始建模，建造一座红色屋顶的小房子。",
+      "recognized": "开始建模建造一座红色屋顶的小房子。",
+      "cer": 0.0,
+      "loadingMs": 1140.9073999999998,
+      "warmModel": false,
+      "firstPartialMs": null,
+      "finalAfterEstimatedSpeechEndMs": 1059.8904000362381,
+      "inferenceMs": [
+        65.9463
+      ],
+      "receiverEstimatedLatencyMs": [
+        516.340788079071
+      ],
+      "cloudSessions": 0,
+      "cloudAudioSeconds": 0.0
+    },
+    {
+      "provider": "offline",
+      "fixture": 4,
+      "expected": "不要开始建模。",
+      "recognized": "不要开始建模。",
+      "cer": 0.0,
+      "loadingMs": 49.98650000000001,
+      "warmModel": true,
+      "firstPartialMs": null,
+      "finalAfterEstimatedSpeechEndMs": 964.5326000172645,
+      "inferenceMs": [
+        35.0902
+      ],
+      "receiverEstimatedLatencyMs": [
+        485.3871880790707
+      ],
+      "cloudSessions": 0,
+      "cloudAudioSeconds": 0.0
+    },
+    {
+      "provider": "offline",
+      "fixture": 0,
+      "expected": "这是一条语音识别测试。",
+      "recognized": "这是一条语音识别测试。",
+      "cer": 0.0,
+      "loadingMs": 45.3296,
+      "warmModel": true,
+      "firstPartialMs": null,
+      "finalAfterEstimatedSpeechEndMs": 996.5698999585584,
+      "inferenceMs": [
+        41.8397
+      ],
+      "receiverEstimatedLatencyMs": [
+        492.1520880790713
+      ],
+      "cloudSessions": 0,
+      "cloudAudioSeconds": 0.0
+    }
+  ],
+  "summary": {
+    "offline": {
+      "samples": 3,
+      "medianFinalMs": 1007.6615000725724,
+      "maxFinalMs": 1046.2758999783546,
+      "meanCER": 0.0,
+      "partialResults": 0
+    },
+    "hybrid": {
+      "samples": 3,
+      "medianFinalMs": 1039.1028000158258,
+      "maxFinalMs": 1065.82600006368,
+      "meanCER": 0.0,
+      "partialResults": 3
+    }
+  },
+  "preferredBySmallCohort": "offline",
+  "defaultProvider": "offline",
+  "llmFixtureRequests": 1,
+  "scope": "Physical Windows Cable loopback with local SAPI fixtures. Main install and default audio devices unchanged. Optional one short Tencent utterance only."
+}

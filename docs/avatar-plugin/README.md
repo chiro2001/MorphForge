@@ -1,3 +1,15 @@
+# Avatar插件1.2.0交付记录
+
+2026-10-22。新版[Unity包](../../dist/avatar/MorphForgeAvatar-1.2.0.unitypackage)为16K几何、4×128槽双面点阵文本、3×4关键帧动画和默认关闭的本人预览原型；安装说明见[包内README](../../Assets/MorphForgeAvatar/README.md)。桌面配套版本0.21.1。本轮不创建GitHub Release，也不自动上传Avatar。
+
+公共模块经独立单Avatar场景的原生UDP接收、播放/暂停/恢复、缺关键帧双bank、GPU Box/三角面/文字、单次动画末帧和本人预览验证。预算253/256bit，其中240bit数据参数均为直接同步Int。实际头显舒适度、VRChat第一人称和远端网络丢包不由Editor测试代替。
+
+包内158个资源与源码逐项匹配，5,280,706字节，544项原创公开材质；无私人Avatar ID、第三方SDK或用户Variants。字库按SIL OFL 1.1分发，包内保留版权许可。[包审计](../text-animation/stage-e-motion/package-audit.json)，[动画/预览实施记录](../text-animation/MOTION-IMPLEMENTATION.md)。Unity原生资源及meta来自Pipeline导出，旧共享资源仅在Windows工程中以保留GUID方式归档到Variants，供旧私人变体继续引用，不混入新包。
+
+以下保留1.0.0阶段记录，内容以日期区分。
+
+---
+
 # 独立 Avatar 插件与透明度对齐
 
 日期：2026-10-21。插件版本：1.0.0。此轮交付独立 `.unitypackage`、配套公开材质目录和源码修复，不创建新的 GitHub Release。

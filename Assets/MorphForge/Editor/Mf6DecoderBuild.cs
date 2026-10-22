@@ -64,8 +64,8 @@ namespace MorphForge.Editor
             });
             ByteLookup("MF6 high byte",N("MetaHi"),(d,v)=>{
                 I(d,"RegionStart",v&7);
-                I(d,"Pool2High",v&1);I(d,"Pool3",(v>>1)&7);I(d,"CountRaw",((v>>1)&3)+1);I(d,"CountShared",((v>>4)&3)+1);
-                F(d,"Alpha",255-((v>>3)&7));F(d,"VoxelAlpha",255-v);F(d,"TriZ",v&63);F(d,"TriAlpha",(v&64)!=0?2:1);
+                I(d,"BoxGroup",v>>6);I(d,"VoxelGroup",(v>>3)&3);I(d,"Pool2High",v&1);I(d,"Pool3",(v>>1)&7);I(d,"CountRaw",((v>>1)&3)+1);I(d,"CountShared",((v>>4)&3)+1);
+                F(d,"Alpha",255-((v>>3)&7));F(d,"VoxelAlpha",255-(v&7));F(d,"TriZ",v&63);F(d,"TriAlpha",(v&64)!=0?2:1);
             });
             ByteLookup("MF6 second triangle ID low",Q(14),(d,v)=>{I(d,"RawTriPool1",v&7);});
             ByteLookup("MF6 second triangle ID high",Q(15),(d,v)=>{F(d,"RawTriZ1",v&63);F(d,"RawTriAlpha1",(v&64)!=0?2:1);});
@@ -94,11 +94,11 @@ namespace MorphForge.Editor
             Reset(d,pool);for(int i=0;i<6;i++)Copy(d,Q(offset+i),P(pool,i));
             if(color>=0)for(int i=0;i<3;i++)Copy(d,Q(color+i),P(pool,6+i));
             if(alpha!=null)Copy(d,N(alpha),P(pool,9));else Set(d,P(pool,9),255);
-            if(alphaOffset!=0)Add(d,P(pool,9),alphaOffset);Commit(d,pool,erase?3:1);
+            if(alphaOffset!=0)Add(d,P(pool,9),alphaOffset);if(!erase)Copy(d,N("BoxGroup"),P(pool,16));Commit(d,pool,erase?3:1);
         }
         static void TriangleBase(VRCAvatarParameterDriver d,int pool,int idLow,string z,int carry,string alpha,int alphaOffset=0)
         {
-            Reset(d,pool);Copy(d,Q(idLow),P(pool,0));Copy(d,N(z),P(pool,2));if(carry!=0)Add(d,P(pool,2),carry);Copy(d,N(alpha),P(pool,9));if(alphaOffset!=0)Add(d,P(pool,9),alphaOffset);
+            Reset(d,pool);Copy(d,N("TriGroup"),P(pool,16));Copy(d,Q(idLow),P(pool,0));Copy(d,N(z),P(pool,2));if(carry!=0)Add(d,P(pool,2),carry);Copy(d,N(alpha),P(pool,9));if(alphaOffset!=0)Add(d,P(pool,9),alphaOffset);
         }
         static void Routers()
         {
@@ -123,19 +123,19 @@ namespace MorphForge.Editor
                 for(int format=2;format<=4;format++)for(int i=0;i<4;i++){
                     int record=i,f=format;var t=Route(sm,idle,"Shared"+f+"_"+i,f,i,"CountShared",d=>Box(d,p,record*6,24,null,-(f-2)));PoolCondition(t,i,p);
                 }
-                var voxel=Route(sm,idle,"Unit voxel",5,0,null,d=>{Reset(d,p);for(int a=0;a<3;a++){Copy(d,Q(p*3+a),P(p,a));Copy(d,Q(24+a),P(p,6+a));}Copy(d,N("VoxelAlpha"),P(p,9));Commit(d,p,1);});Eq(voxel,"Mask"+p,1);
+                var voxel=Route(sm,idle,"Unit voxel",5,0,null,d=>{Reset(d,p);for(int a=0;a<3;a++){Copy(d,Q(p*3+a),P(p,a));Copy(d,Q(24+a),P(p,6+a));}Copy(d,N("VoxelAlpha"),P(p,9));Copy(d,N("VoxelGroup"),P(p,16));Commit(d,p,1);});Eq(voxel,"Mask"+p,1);
                 for(int i=0;i<4;i++){
                     int record=i;var t=Route(sm,idle,"Remove box "+i,8,i,"CountShared",d=>Box(d,p,record*6,-1,null,0,true));PoolCondition(t,i,p);
                 }
                 for(int i=0;i<2;i++){
-                    int record=i,offset=i*14;var t=Route(sm,idle,"Independent triangle "+i,6,i,"Q28",d=>{
+                    int record=i,offset=i*14;var t=Route(sm,idle,"Independent triangle "+i,6,i,"TriCount",d=>{
                         TriangleBase(d,p,offset,record==0?"TriZ":"RawTriZ1",0,record==0?"TriAlpha":"RawTriAlpha1");
                         foreach(var pair in new[]{new[]{3,offset+2},new[]{10,offset+5},new[]{13,offset+8},new[]{6,offset+11}})for(int a=0;a<3;a++)Copy(d,Q(pair[1]+a),P(p,pair[0]+a));Commit(d,p,2);
                     });Eq(t,i==0?"TriPool0":"RawTriPool1",p);
                 }
                 foreach(int format in new[]{7,10})for(int i=0;i<(format==7?3:4);i++)for(int carry=0;carry<2;carry++){
                     int record=i,f=format,overflow=carry;var t=Route(sm,idle,"Strip"+f+"_"+i+"_"+carry,f,i,"Q26",d=>{
-                        TriangleBase(d,p,0,"TriZ",overflow,"TriAlpha",f==10?(record%2==0?2:4):0);Copy(d,N("TriX"+record),P(p,0));
+                        TriangleBase(d,p,0,"TriZ",overflow,"TriAlpha",f==10?(record%2==0?2:4):0);Copy(d,Q(27),P(p,16));Copy(d,N("TriX"+record),P(p,0));
                         if(f==7){int[] vertices=record%2==0?new[]{record,record+1,record+2}:new[]{record+1,record,record+2};int[] targets={3,10,13};for(int vertex=0;vertex<3;vertex++)for(int a=0;a<3;a++)Copy(d,Q(2+vertices[vertex]*3+a),P(p,targets[vertex]+a));for(int a=0;a<3;a++)Copy(d,Q(17+record*3+a),P(p,6+a));}
                         else{int start=5+record*3/2;for(int a=0;a<3;a++)Copy(d,Q(start+a),P(p,3+a));for(int a=0;a<2;a++)Copy(d,Q(start+3+a),P(p,10+a));Copy(d,Q(2),P(p,12));Copy(d,Q(3),P(p,13));Copy(d,Q(4),P(p,14));for(int a=0;a<3;a++)Copy(d,Q(14+record*3+a),P(p,6+a));}
                         Commit(d,p,2);
@@ -143,6 +143,13 @@ namespace MorphForge.Editor
                 }
                 var remove=Route(sm,idle,"Remove triangle",9,0,null,d=>{Reset(d,p);Copy(d,Q(p*2),P(p,0));Copy(d,Q(p*2+1),P(p,2));Set(d,P(p,9),2);Commit(d,p,4);});Eq(remove,"Mask"+p,1);
                 Route(sm,idle,"Clear",15,0,null,d=>{Reset(d,p);for(int a=0;a<3;a++)Set(d,P(p,a),128);Commit(d,p,5);});
+            }
+        }
+        static void TriangleGroups(){
+            IntParam("TriGroup");IntParam("TriCount");var sm=Layer("MF6 triangle motion header");var idle=State(sm,"Wait");sm.defaultState=idle;
+            for(int group=0;group<4;group++)for(int count=1;count<=2;count++){
+                var state=State(sm,"Group "+group+" count "+count);var driver=Driver(state);I(driver,"TriGroup",group);I(driver,"TriCount",count);
+                var t=sm.AddAnyStateTransition(state);t.duration=0;t.hasExitTime=false;t.canTransitionToSelf=false;Eq(t,"Stage",1);Eq(t,"Format",6);Eq(t,"Q28",count|(group<<2));var leave=To(state,idle);leave.AddCondition(AnimatorConditionMode.NotEqual,1,N("Stage"));
             }
         }
         static AnimationClip WaitClip(string name,float duration){var c=new AnimationClip{name=name,frameRate=60};AnimationUtility.SetEditorCurve(c,EditorCurveBinding.FloatCurve("",typeof(Transform),"m_LocalScale.x"),AnimationCurve.Constant(0,duration,1));AssetDatabase.AddObjectToAsset(c,fx);return c;}
@@ -167,7 +174,7 @@ namespace MorphForge.Editor
             foreach(string name in new[]{"Ctl","Seq","Format","Stage","MetaLo","MetaHi"})IntParam(name,name=="Ctl"?255:0);IntParam("LastRx",255);for(int i=0;i<29;i++){IntParam("D"+i.ToString("D2"));IntParam("Q"+i.ToString("D2"));}
             for(int p=0;p<8;p++){fx.AddParameter("MF6_P"+p+"_Ctl",AnimatorControllerParameterType.Int);for(int i=0;i<Mf6NativeBuild.Fields;i++)fx.AddParameter("MF6_P"+p+"_D"+i.ToString("D2"),AnimatorControllerParameterType.Float);}
             for(int p=0;p<8;p++)IntParam("NextSeq"+p);
-            Inbox();Metadata();Routers();Clock();SequenceWrap();Mf6TextBuild.ExtendInbox(fx);var root=new GameObject("MF6 shared decoder");try{
+            Inbox();Metadata();TriangleGroups();Routers();Clock();SequenceWrap();Mf6TextBuild.ExtendInbox(fx);var root=new GameObject("MF6 shared decoder");try{
                 var merge=root.AddComponent<ModularAvatarMergeAnimator>();merge.animator=fx;merge.layerType=VRCAvatarDescriptor.AnimLayerType.FX;merge.pathMode=MergeAnimatorPathMode.Relative;merge.matchAvatarWriteDefaults=false;
                 var parameters=root.AddComponent<ModularAvatarParameters>();foreach(string name in new[]{N("Ctl")}.Concat(Enumerable.Range(0,29).Select(i=>D(i))))parameters.parameters.Add(new ParameterConfig{nameOrPrefix=name,syncType=ParameterSyncType.Int,localOnly=false,saved=false,hasExplicitDefaultValue=true,defaultValue=name==N("Ctl")?255:0,internalParameter=false});
                 PrefabUtility.SaveAsPrefabAsset(root,Root+"/Decoder.prefab");

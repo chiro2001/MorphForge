@@ -1,3 +1,15 @@
+# 0.21.1 本轮开发交付（2026-10-22）
+
+已实现文字/语音/mini/工作台及Avatar分组动画，Avatar独立插件1.2.0；不创建GitHub Release。功能与限制见[本轮实施记录](text-animation/IMPLEMENTATION.md)、[动画和本人预览](text-animation/MOTION-IMPLEMENTATION.md)。新工具/提示词版本4.6/5.5，旧对话需要显式升级或新建，保护上下文前缀。
+
+主要验收：Rust283项/30套；Windows打包内核12项（含首次能力识别、静态解绑和越界改稿）；实际Tauri mini15项；离线Cable33项；文本动画浏览器9项；实际Avatar接收、播放/暂停、GPU Box/三角面/文字、单次末帧、清空恢复、本人预览原型。实际VRChat网络可靠性/头显舒适度不由Editor测试代替。
+
+[Avatar 1.2.0包](../dist/avatar/MorphForgeAvatar-1.2.0.unitypackage)及[包审计](text-animation/stage-e-motion/package-audit.json)。主程序通过正式NSIS安装，原数据备份并逐文件哈希核验。安装验证记录在本轮目录中。
+
+以下是此前版本记录。
+
+---
+
 > 2026-10-21 正式发布：gamepc主安装已升级 **0.16.0**，原数据完整备份并校验保留，测试副本继续独立运行。GitHub正式Release为`v0.16.0`。[安装与SSH复查记录](release-v16/RESULTS.md)。下文保留此前交付记录。
 
 > 2026-10-21 当前交付：开发测试副本 **0.16.0**，私人 **MorphForge MF6 16K v5**；三项服务端分析通过。自动发布成本比较、区域编码、能力/材质识别、多实例、原版MC材质、输入区类型/尺寸、进度条、作品删除、视角/树叶/抓握修复已实现。主安装0.15.3保持运行，MF2–MF5发送已停用。MC导入不再默认4格，现自动选择形状精度并检查目标空间。[最新用法、开销与实测](stream-v16/RESULTS.md)。下文为历史版本记录。

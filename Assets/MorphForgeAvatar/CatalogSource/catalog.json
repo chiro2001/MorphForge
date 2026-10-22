@@ -11,7 +11,13 @@
     "scale-reference-0.05/1",
     "texture-scale/1",
     "texture-rotation/1",
-    "mf6-wedges/1"
+    "mf6-wedges/1",
+    "mf6-region8/1",
+    "mf6-text-panels/1",
+    "mf6-text-latest14/1",
+    "local-placement-controls/1",
+    "mf6-motion4/1",
+    "local-avatar-preview-prototype/1"
   ],
   "cellSize": 0.25,
   "colorSpace": "sRGB",

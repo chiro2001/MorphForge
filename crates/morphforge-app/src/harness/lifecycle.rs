@@ -229,6 +229,7 @@ impl Harness {
         self.transport
             .configure(&json!({"enabled":false,"auto":false}), &mut w)?;
         if project.id != w.project.id {
+            self.transport.forget_motion();
             w.activate_project(project)?;
         }
         save_conversation(&w, &next.conversation)?;
