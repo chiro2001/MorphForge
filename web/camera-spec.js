@@ -71,6 +71,9 @@ export function resolveCamera(bounds, shot = {}, aspect = 1) {
       ),
       0.000001,
     ) * margin;
+  const depths=corners.map(p=>distance-dot(p,direction));
+  const nearest=Math.min(...depths),farthest=Math.max(...depths);
+  const near=Math.max(1e-8,span*1e-5,nearest>0?nearest*.25:0);
   return {
     projection: shot.projection || "perspective",
     position: shot.position || add(target, mul(direction, distance)),
@@ -83,8 +86,8 @@ export function resolveCamera(bounds, shot = {}, aspect = 1) {
       top: halfY,
       bottom: -halfY,
     },
-    near: Math.max(0.000001, Math.min(0.001, distance/1000)),
-    far: Math.max(5000, distance + span * 10),
+    near,
+    far: Math.max(near*10,span,farthest+span*.25),
     bounds,
     coordinateSpace: "voxel-grid",
   };

@@ -47,8 +47,11 @@ namespace MorphForge.Editor {
    var zero=new AnimationClip{name="Motion zero baseline "+g,frameRate=60};foreach(string p in all.Select(t=>t.prop).Distinct())for(int i=0;i<12;i++)AnimationUtility.SetEditorCurve(zero,EditorCurveBinding.FloatCurve(i<8?"Pool"+i+"/Store":"TextDisplay/Panel"+(i-8),i<8?typeof(ParticleSystemRenderer):typeof(MeshRenderer),"material."+p),AnimationCurve.Constant(0,.02f,0));AssetDatabase.AddObjectToAsset(zero,fx);
    var motions=new List<Motion>{zero};var weights=new List<string>{"MF6_MOne"};
    foreach(var t in controls){motions.Add(Clip(t.prop,t.prop,t.coefficient));weights.Add(t.param);}
-   for(int b=0;b<2;b++){var ts=bankTerms[b];var clips=ts.Select(t=>{var clip=Clip(t.prop+" factor",t.prop,t.coefficient);if(t.packed)AnimationUtility.SetEditorCurve(clip,EditorCurveBinding.FloatCurve("",typeof(Animator),t.param),AnimationCurve.Constant(0,.02f,1));return (Motion)clip;}).ToArray();motions.Add(Direct("Motion bank "+g+"/"+b,clips,ts.Select(t=>t.param).ToArray()));weights.Add("MF6_MOne");}
-   return Direct("Motion cached output "+g,motions,weights);
+   for(int b=0;b<2;b++){var ts=bankTerms[b];var clips=ts.Select(t=>(Motion)Clip(t.prop+" factor",t.prop,t.coefficient)).ToArray();motions.Add(Direct("Motion bank "+g+"/"+b,clips,ts.Select(t=>t.param).ToArray()));weights.Add(B(g,b,"Gate"));}
+   var render=Direct("Motion cached output "+g,motions,weights);
+   var gate=new BlendTree{name="Render active animation "+g,blendType=BlendTreeType.Simple1D,blendParameter=N(g,"Enabled"),useAutomaticThresholds=false};AssetDatabase.AddObjectToAsset(gate,fx);gate.AddChild(Clip("Motion inactive "+g,"_MF_M"+g+"_Enabled",0),0);gate.AddChild(render,1);
+   var storage=WordCacheBuild.Hold("MF6_MOne",Enumerable.Range(0,2).SelectMany(b=>CachedFields.Where(i=>i>=4).Select(i=>C(g,b,i))));
+   return Direct("Retain and render motion "+g,new Motion[]{storage,gate},new[]{"MF6_MOne","MF6_MOne"});
   }
   static void RateDecoder(){Param("MF6_MDecodedRate");var sm=Layer("Motion rate lookup");var idle=State(sm,"Wait");sm.defaultState=idle;for(int d=0;d<Durations.Length;d++)for(int s=0;s<Speeds.Length;s++){var state=State(sm,"Rate "+d+"/"+s);Set(Driver(state),"MF6_MDecodedRate",Speeds[s]/Durations[d]);var t=Enter(sm,state,16,0,1);Eq(t,Q(4),d);Eq(t,Q(15),s);Leave(state,idle,v:1);}}
   static void Buffers(int g){var sm=Layer("Motion receive "+g);var idle=State(sm,"Wait");sm.defaultState=idle;
@@ -79,6 +82,7 @@ namespace MorphForge.Editor {
   }
   static void ResetOnClear(){
    var sm=Layer("Motion clear session");var idle=State(sm,"Wait");sm.defaultState=idle;var reset=State(sm,"Clear all motion");var t=Any(sm,reset);Eq(t,"MF6_Stage",2);Eq(t,"MF6_Format",15);var d=Driver(reset);
+   var session=Any(sm,reset);Eq(session,"MF6_Stage",2);Eq(session,"MF6_Format",0);Eq(session,Q(28),254);Eq(session,Q(0),19);
    for(int g=1;g<=3;g++){
     foreach(string key in new[]{"Enabled","Base","Rate","Valid","Bank","LoopInt"})Set(d,N(g,key),0);
     foreach(string key in new[]{"AppliedTicket","PendingTicket","ClockTicket"})Set(d,N(g,key),255);

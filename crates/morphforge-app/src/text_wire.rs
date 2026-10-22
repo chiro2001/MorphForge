@@ -147,8 +147,14 @@ pub fn encode(panel: &TextPanel, slot: u8) -> Result<Vec<Message>> {
 }
 #[derive(Clone, Default)]
 pub struct Session {
-    pub motion_groups:BTreeMap<String,u8>,
+    pub motion_groups: BTreeMap<String, u8>,
     target: BTreeMap<String, (u8, Vec<Message>)>,
+    panels: BTreeMap<String, TextPanel>,
+    live_text: BTreeMap<String, String>,
+    live_pages: BTreeMap<u8, VecDeque<Message>>,
+    configured_fonts: BTreeMap<u8, u16>,
+    started_live: BTreeSet<u8>,
+    deferred_live: BTreeMap<u8, (String, String)>,
     epoch: [u8; SLOTS],
     tombstones: BTreeSet<u8>,
     sent: BTreeMap<u8, Vec<Message>>,
@@ -175,7 +181,12 @@ impl Session {
                 .get(&p.id)
                 .map(|v| v.0)
                 .unwrap_or_else(|| available.remove(0));
-            let mut messages=encode(p,slot)?;for m in &mut messages{if m.0[0]==3{m.0[13]=self.motion_groups.get(&p.group).copied().unwrap_or(0);}}
+            let mut messages = encode(p, slot)?;
+            for m in &mut messages {
+                if m.0[0] == 3 {
+                    m.0[13] = self.motion_groups.get(&p.group).copied().unwrap_or(0);
+                }
+            }
             next.insert(p.id.clone(), (slot, messages));
         }
         let mut epochs = self.epoch;
@@ -213,15 +224,33 @@ impl Session {
                 }
             }
         }
-        if self.target == next {
+        let next_panels = scene
+            .text_panels
+            .iter()
+            .map(|p| (p.id.clone(), p.clone()))
+            .collect::<BTreeMap<_, _>>();
+        if self.target == next && self.panels == next_panels {
             return Ok(());
         }
+        // A geometry update or another panel edit must not discard a live
+        // caption. A newly authored text for that same panel supersedes it.
+        self.live_text.retain(|id, _| {
+            next_panels
+                .get(id)
+                .zip(self.panels.get(id))
+                .is_some_and(|(a, b)| a.text == b.text)
+        });
         self.latest.clear();
         self.last_snapshot.clear();
+        self.live_pages.clear();
+        self.started_live.clear();
+        self.deferred_live.clear();
         self.epoch = epochs;
         self.tombstones = tombstones;
         self.target = next;
+        self.panels = next_panels;
         self.rebuild_queue(false);
+        self.restore_live()?;
         Ok(())
     }
     fn rebuild_queue(&mut self, force: bool) {
@@ -239,27 +268,77 @@ impl Session {
     }
     pub fn replay(&mut self) {
         self.rebuild_queue(true);
+        self.last_snapshot.clear();
+        self.latest.clear();
+        self.live_pages.clear();
+        self.started_live.clear();
+        self.deferred_live.clear();
+        // Entries were validated when queued. Retained panel configurations
+        // are revalidated by set_target before this replay can run.
+        self.restore_live().expect("validated live text replay");
     }
     pub fn reset(&mut self) {
         self.sent.clear();
+        self.configured_fonts.clear();
         self.last_snapshot.clear();
-        self.rebuild_queue(true);
+        self.replay();
     }
     pub fn latest_text(&mut self, id: &str, text: &str) -> Result<()> {
-        use unicode_normalization::UnicodeNormalization;
+        if self.live_text.get(id).is_some_and(|old| old == text) {
+            return Ok(());
+        }
+        self.queue_live(id, text)?;
+        self.live_text.insert(id.into(), text.into());
+        Ok(())
+    }
+    fn restore_live(&mut self) -> Result<()> {
+        for (id, text) in self.live_text.clone() {
+            self.queue_live(&id, &text)?;
+        }
+        Ok(())
+    }
+    fn queue_live(&mut self, id: &str, text: &str) -> Result<()> {
         let slot = self
             .target
             .get(id)
             .map(|v| v.0)
             .ok_or_else(|| anyhow::anyhow!("请先发布选定文本框，再启用实时字幕"))?;
-        let mut chars = text
-            .nfc()
-            .filter(|c| !c.is_control() || *c == '\n')
-            .map(|c| if c as u32 <= 65535 { c as u16 } else { 0x25a1 })
-            .collect::<Vec<_>>();
-        if chars.len() > 14 {
-            chars.drain(..chars.len() - 14);
+        let mut panel = self
+            .panels
+            .get(id)
+            .cloned()
+            .ok_or_else(|| anyhow::anyhow!("文本框配置不存在"))?;
+        panel.text = text.into();
+        let (chars, font_size) = characters(&panel)?;
+        let (_, base_font_size) = characters(&self.panels[id])?;
+        let configured = self
+            .configured_fonts
+            .get(&slot)
+            .copied()
+            .unwrap_or(fixed(base_font_size, 64.)?);
+        if self.started_live.contains(&slot) {
+            self.deferred_live.insert(slot, (id.into(), text.into()));
+            return Ok(());
         }
+        if chars.len() > 14 || fixed(font_size, 64.)? != configured {
+            let mut messages = encode(&panel, slot)?;
+            for m in &mut messages {
+                if m.0[0] == 1 {
+                    m.0[25] = self.epoch[slot as usize];
+                }
+                if m.0[0] == 3 {
+                    m.0[14] = self.epoch[slot as usize];
+                    m.0[13] = self.motion_groups.get(&panel.group).copied().unwrap_or(0);
+                }
+            }
+            self.latest.remove(&slot);
+            self.last_snapshot.remove(&slot);
+            // Replace unsent partials for this slot only, keeping other
+            // captions and the shared geometry sender intact.
+            self.live_pages.insert(slot, messages.into());
+            return Ok(());
+        }
+        self.live_pages.remove(&slot);
         let mut data = [0; 29];
         for (i, c) in chars.iter().enumerate() {
             data[i * 2..i * 2 + 2].copy_from_slice(&c.to_le_bytes());
@@ -278,11 +357,13 @@ impl Session {
         Ok(())
     }
     pub fn next_latest(&self) -> Option<Snapshot> {
-        if self.pending.is_empty() {
-            self.latest.values().next().cloned()
-        } else {
-            None
-        }
+        self.latest
+            .values()
+            .find(|snapshot| {
+                !self.pending.iter().any(|m| m.0[1] == snapshot.slot)
+                    && !self.live_pages.contains_key(&snapshot.slot)
+            })
+            .cloned()
     }
     pub fn commit_latest(&mut self, m: &Snapshot) {
         if self.latest.get(&m.slot) == Some(m) {
@@ -292,18 +373,45 @@ impl Session {
     }
     pub fn pending_commands(&self) -> usize {
         self.pending.len()
+            + self.live_pages.values().map(VecDeque::len).sum::<usize>()
+            + self.deferred_live.len()
+    }
+    pub fn pending_saved(&self) -> usize {
+        self.pending.len()
     }
     pub fn pending_live(&self) -> usize {
         self.latest.len()
     }
     pub fn pending(&self) -> usize {
-        self.pending.len() + self.latest.len()
+        self.pending_commands() + self.latest.len()
     }
     pub fn next(&self) -> Option<Message> {
-        self.pending.front().cloned()
+        self.pending
+            .front()
+            .cloned()
+            .or_else(|| self.live_pages.values().find_map(|q| q.front().cloned()))
     }
     pub fn commit(&mut self, message: &Message) {
         if self.pending.front() != Some(message) {
+            let slot = message.0[1];
+            if let Some(queue) = self.live_pages.get_mut(&slot) {
+                if queue.front() == Some(message) {
+                    queue.pop_front();
+                    self.started_live.insert(slot);
+                    if message.0[0] == 1 {
+                        self.configured_fonts
+                            .insert(slot, u16::from_le_bytes([message.0[18], message.0[19]]));
+                    }
+                }
+                if queue.is_empty() {
+                    self.live_pages.remove(&slot);
+                    self.started_live.remove(&slot);
+                    if let Some((id, text)) = self.deferred_live.remove(&slot) {
+                        self.queue_live(&id, &text)
+                            .expect("validated deferred caption");
+                    }
+                }
+            }
             return;
         }
         self.pending.pop_front();
@@ -311,6 +419,8 @@ impl Session {
         if message.0[0] == 4 {
             self.sent.remove(&slot);
         } else if message.0[0] == 1 {
+            self.configured_fonts
+                .insert(slot, u16::from_le_bytes([message.0[18], message.0[19]]));
             if let Some((_, messages)) = self.target.values().find(|(s, _)| *s == slot) {
                 self.sent.insert(slot, messages.clone());
             }
@@ -323,6 +433,103 @@ impl Session {
 #[cfg(test)]
 mod tests {
     use super::*;
+    fn drain(session: &mut Session) -> Vec<Message> {
+        let mut frames = vec![];
+        while let Some(m) = session.next() {
+            session.commit(&m);
+            frames.push(m);
+        }
+        frames
+    }
+    #[test]
+    fn replay_restores_live_content_after_saved_panel_configuration() {
+        let mut s = Session::default();
+        let mut scene = Scene::default();
+        scene.text_panels.push(TextPanel {
+            text: "old".into(),
+            ..TextPanel::caption()
+        });
+        s.set_target(&scene).unwrap();
+        drain(&mut s);
+        s.latest_text("text", "最新字幕").unwrap();
+        let first = s.next_latest().unwrap();
+        s.commit_latest(&first);
+        s.replay();
+        assert!(s.next_latest().is_none());
+        drain(&mut s);
+        assert_eq!(s.next_latest(), Some(first));
+    }
+    #[test]
+    fn streaming_partials_finish_each_started_page_set_and_coalesce_the_next_one() {
+        let mut s = Session::default();
+        let mut scene = Scene::default();
+        scene.text_panels.push(TextPanel::caption());
+        s.set_target(&scene).unwrap();
+        drain(&mut s);
+        s.latest_text("text", "第一段字幕内容较长，至少会超过十四个字符。")
+            .unwrap();
+        let first = s.next().unwrap();
+        s.commit(&first);
+        s.latest_text("text", "第二段字幕内容较长，至少会超过十四个字符。")
+            .unwrap();
+        s.latest_text("text", "最新一段字幕内容较长，至少会超过十四个字符。")
+            .unwrap();
+        let frames = drain(&mut s);
+        assert_eq!(
+            frames.iter().filter(|m| m.0[0] == 1).count(),
+            2,
+            "finish the active version, then the newest pending version"
+        );
+        assert_eq!(s.pending(), 0);
+        s.replay();
+        let replay = drain(&mut s);
+        assert!(replay.last().unwrap().0[24] > 14);
+    }
+    #[test]
+    fn long_live_captions_keep_full_visible_lines_and_survive_other_panel_edits() {
+        let mut s = Session::default();
+        let mut scene = Scene::default();
+        scene.text_panels.push(TextPanel {
+            text: "等待".into(),
+            ..TextPanel::caption()
+        });
+        scene.text_panels.push(TextPanel {
+            id: "label".into(),
+            text: "标签".into(),
+            ..Default::default()
+        });
+        s.set_target(&scene).unwrap();
+        drain(&mut s);
+        let live = "第一行字幕\n第二行字幕\n第三行字幕\n最新第四行字幕";
+        s.latest_text("text", live).unwrap();
+        let frames = drain(&mut s);
+        let count = frames.last().unwrap().0[24] as usize;
+        let encoded = frames
+            .iter()
+            .filter(|m| m.0[0] == 2)
+            .flat_map(|m| {
+                m.0[3..27]
+                    .chunks_exact(2)
+                    .map(|b| u16::from_le_bytes([b[0], b[1]]))
+                    .collect::<Vec<_>>()
+            })
+            .take(count)
+            .collect::<Vec<_>>();
+        let displayed = String::from_utf16(&encoded).unwrap();
+        assert_eq!(displayed, "第二行字幕\n第三行字幕\n最新第四行字幕");
+        assert_eq!(
+            u16::from_le_bytes([frames.last().unwrap().0[18], frames.last().unwrap().0[19]]),
+            8 * 64
+        );
+        s.latest_text("text", live).unwrap();
+        assert_eq!(s.pending(), 0);
+        scene.text_panels[1].text = "新标签".into();
+        s.set_target(&scene).unwrap();
+        drain(&mut s);
+        s.replay();
+        let replay = drain(&mut s);
+        assert_eq!(replay.last().unwrap().0[24] as usize, count);
+    }
     #[test]
     fn deletion_replays_and_old_live_generations_are_invalidated() {
         let mut s = Session::default();

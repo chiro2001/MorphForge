@@ -1,0 +1,398 @@
+{
+  "success": true,
+  "wraps": 2,
+  "distinctWidths": 27,
+  "minWidth": 36,
+  "maxWidth": 102,
+  "pause": true,
+  "resume": true,
+  "stop": true,
+  "samples": [
+    {
+      "seconds": 0.0087485,
+      "elapsed": 0.0482997,
+      "width": 102,
+      "ink": 1632
+    },
+    {
+      "seconds": 0.14722659999999999,
+      "elapsed": 0.08438868,
+      "width": 100,
+      "ink": 1600
+    },
+    {
+      "seconds": 0.2796784,
+      "elapsed": 0.118406124,
+      "width": 94,
+      "ink": 1504
+    },
+    {
+      "seconds": 0.4243279,
+      "elapsed": 0.15276216,
+      "width": 82,
+      "ink": 1312
+    },
+    {
+      "seconds": 0.56234929999999994,
+      "elapsed": 0.18767117,
+      "width": 66,
+      "ink": 1056
+    },
+    {
+      "seconds": 0.6942168,
+      "elapsed": 0.2216023,
+      "width": 50,
+      "ink": 800
+    },
+    {
+      "seconds": 0.8281772,
+      "elapsed": 0.254919559,
+      "width": 36,
+      "ink": 576
+    },
+    {
+      "seconds": 0.961553,
+      "elapsed": 0.2881668,
+      "width": 54,
+      "ink": 864
+    },
+    {
+      "seconds": 1.0972891,
+      "elapsed": 0.322228819,
+      "width": 72,
+      "ink": 1152
+    },
+    {
+      "seconds": 1.2381883999999999,
+      "elapsed": 0.357449085,
+      "width": 86,
+      "ink": 1376
+    },
+    {
+      "seconds": 1.3791209,
+      "elapsed": 0.391736716,
+      "width": 96,
+      "ink": 1536
+    },
+    {
+      "seconds": 1.5063901,
+      "elapsed": 0.424040049,
+      "width": 100,
+      "ink": 1600
+    },
+    {
+      "seconds": 1.6296770999999999,
+      "elapsed": 0.455241442,
+      "width": 102,
+      "ink": 1632
+    },
+    {
+      "seconds": 1.7679622,
+      "elapsed": 0.489669263,
+      "width": 98,
+      "ink": 1568
+    },
+    {
+      "seconds": 1.907355,
+      "elapsed": 0.5231147,
+      "width": 100,
+      "ink": 1600
+    },
+    {
+      "seconds": 2.0355607,
+      "elapsed": 0.5572005,
+      "width": 102,
+      "ink": 1632
+    },
+    {
+      "seconds": 2.1737929,
+      "elapsed": 0.5907966,
+      "width": 98,
+      "ink": 1568
+    },
+    {
+      "seconds": 2.2998469,
+      "elapsed": 0.6228545,
+      "width": 92,
+      "ink": 1472
+    },
+    {
+      "seconds": 2.425381,
+      "elapsed": 0.65219444,
+      "width": 82,
+      "ink": 1312
+    },
+    {
+      "seconds": 2.5595627,
+      "elapsed": 0.6881776,
+      "width": 66,
+      "ink": 1056
+    },
+    {
+      "seconds": 2.6932248,
+      "elapsed": 0.72127223,
+      "width": 50,
+      "ink": 800
+    },
+    {
+      "seconds": 2.8377732,
+      "elapsed": 0.7566651,
+      "width": 36,
+      "ink": 576
+    },
+    {
+      "seconds": 2.9682086,
+      "elapsed": 0.789794147,
+      "width": 56,
+      "ink": 896
+    },
+    {
+      "seconds": 3.1020261,
+      "elapsed": 0.822779357,
+      "width": 72,
+      "ink": 1152
+    },
+    {
+      "seconds": 3.2340147999999997,
+      "elapsed": 0.8564776,
+      "width": 86,
+      "ink": 1376
+    },
+    {
+      "seconds": 3.3706209,
+      "elapsed": 0.889565766,
+      "width": 96,
+      "ink": 1536
+    },
+    {
+      "seconds": 3.5082685,
+      "elapsed": 0.9242208,
+      "width": 100,
+      "ink": 1600
+    },
+    {
+      "seconds": 3.6389308,
+      "elapsed": 0.957964361,
+      "width": 102,
+      "ink": 1632
+    },
+    {
+      "seconds": 3.7755121999999997,
+      "elapsed": 0.9914564,
+      "width": 98,
+      "ink": 1568
+    },
+    {
+      "seconds": 3.9043229,
+      "elapsed": 0.0240879059,
+      "width": 100,
+      "ink": 1600
+    },
+    {
+      "seconds": 4.0399777,
+      "elapsed": 0.0575741529,
+      "width": 102,
+      "ink": 1632
+    },
+    {
+      "seconds": 4.175292,
+      "elapsed": 0.09171951,
+      "width": 98,
+      "ink": 1568
+    },
+    {
+      "seconds": 4.3138293,
+      "elapsed": 0.12595284,
+      "width": 90,
+      "ink": 1440
+    },
+    {
+      "seconds": 4.4390177,
+      "elapsed": 0.156472445,
+      "width": 80,
+      "ink": 1280
+    },
+    {
+      "seconds": 4.5786734,
+      "elapsed": 0.191577315,
+      "width": 66,
+      "ink": 1056
+    },
+    {
+      "seconds": 4.7129426,
+      "elapsed": 0.225443721,
+      "width": 48,
+      "ink": 768
+    },
+    {
+      "seconds": 4.8490072999999994,
+      "elapsed": 0.260012627,
+      "width": 38,
+      "ink": 608
+    },
+    {
+      "seconds": 4.9835468999999994,
+      "elapsed": 0.293444753,
+      "width": 58,
+      "ink": 928
+    },
+    {
+      "seconds": 5.1192635,
+      "elapsed": 0.3268367,
+      "width": 74,
+      "ink": 1184
+    },
+    {
+      "seconds": 5.2553963999999995,
+      "elapsed": 0.361816168,
+      "width": 88,
+      "ink": 1408
+    },
+    {
+      "seconds": 5.3922254999999994,
+      "elapsed": 0.395885825,
+      "width": 96,
+      "ink": 1536
+    },
+    {
+      "seconds": 5.5295606999999993,
+      "elapsed": 0.430169,
+      "width": 102,
+      "ink": 1632
+    },
+    {
+      "seconds": 5.6649068,
+      "elapsed": 0.463796854,
+      "width": 102,
+      "ink": 1632
+    },
+    {
+      "seconds": 5.7966142,
+      "elapsed": 0.496528029,
+      "width": 98,
+      "ink": 1568
+    },
+    {
+      "seconds": 5.9319016,
+      "elapsed": 0.530747533,
+      "width": 102,
+      "ink": 1632
+    },
+    {
+      "seconds": 6.0577764,
+      "elapsed": 0.562755,
+      "width": 102,
+      "ink": 1632
+    },
+    {
+      "seconds": 6.1931436,
+      "elapsed": 0.5955671,
+      "width": 98,
+      "ink": 1568
+    },
+    {
+      "seconds": 6.3189926,
+      "elapsed": 0.627380252,
+      "width": 90,
+      "ink": 1440
+    },
+    {
+      "seconds": 6.4636894,
+      "elapsed": 0.6622925,
+      "width": 78,
+      "ink": 1248
+    },
+    {
+      "seconds": 6.5977955999999995,
+      "elapsed": 0.6975852,
+      "width": 62,
+      "ink": 992
+    },
+    {
+      "seconds": 6.7326169,
+      "elapsed": 0.7309202,
+      "width": 44,
+      "ink": 704
+    },
+    {
+      "seconds": 6.8668426999999994,
+      "elapsed": 0.764879465,
+      "width": 42,
+      "ink": 672
+    },
+    {
+      "seconds": 7.0040213,
+      "elapsed": 0.798237443,
+      "width": 60,
+      "ink": 960
+    },
+    {
+      "seconds": 7.1449235,
+      "elapsed": 0.833091,
+      "width": 76,
+      "ink": 1216
+    },
+    {
+      "seconds": 7.2831646,
+      "elapsed": 0.868047953,
+      "width": 90,
+      "ink": 1440
+    },
+    {
+      "seconds": 7.4229156,
+      "elapsed": 0.9029808,
+      "width": 98,
+      "ink": 1568
+    },
+    {
+      "seconds": 7.5503202,
+      "elapsed": 0.934623,
+      "width": 102,
+      "ink": 1632
+    },
+    {
+      "seconds": 7.6861044,
+      "elapsed": 0.969764233,
+      "width": 102,
+      "ink": 1632
+    },
+    {
+      "seconds": 7.8222336,
+      "elapsed": 0.00339341164,
+      "width": 98,
+      "ink": 1568
+    },
+    {
+      "seconds": 7.9575967,
+      "elapsed": 0.0375669,
+      "width": 102,
+      "ink": 1632
+    },
+    {
+      "seconds": 8.0881093,
+      "elapsed": 0.07003808,
+      "width": 102,
+      "ink": 1632
+    },
+    {
+      "seconds": 8.2191025,
+      "elapsed": 0.102641106,
+      "width": 96,
+      "ink": 1536
+    },
+    {
+      "seconds": 8.3575734999999991,
+      "elapsed": 0.136911631,
+      "width": 88,
+      "ink": 1408
+    },
+    {
+      "seconds": 8.4970118,
+      "elapsed": 0.172379017,
+      "width": 74,
+      "ink": 1184
+    }
+  ],
+  "actualPacedWriter": true,
+  "scope": "Rust production OSC packets -> native merged Animator -> freely advancing clock -> production particle shader GPU, sampled over two full cycles. No manual phase or material writes. Editor only."
+}

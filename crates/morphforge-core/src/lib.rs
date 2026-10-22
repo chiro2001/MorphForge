@@ -10,4 +10,5 @@ pub mod mf6;
 pub mod triangles;
 pub use triangles::Triangle3;
 
+pub mod drawing;
 pub mod text_panel;

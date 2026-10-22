@@ -1,0 +1,445 @@
+{
+  "success": true,
+  "scene": "Assets/MorphForge/Validation/Optimization20261023/Baseline.unity",
+  "layers": [
+    "Modular Avatar: MMD Dummy",
+    "Modular Avatar: MMD Dummy",
+    "Modular Avatar: MMD Control",
+    "ModularAvatar: Merge Blend Tree",
+    "FasialSet1",
+    "FasialSet0",
+    "Fasial",
+    "GestureNumLocal",
+    "CopyFaceSetNum",
+    "LipSyncBlocker",
+    "Tail",
+    "Ear",
+    "Wing",
+    "KneeSox",
+    "Shoes",
+    "Tops",
+    "Beret",
+    "EyeLight",
+    "ColliderJump",
+    "TailCollider",
+    "AFK",
+    "Toe",
+    "ToeR",
+    "ToeL",
+    "ToeBoth",
+    "WavingWandParamDriverLocal",
+    "WavingWandParamDriver",
+    "WandState",
+    "Reload",
+    "AFK_Wand",
+    "WandLight",
+    "WandLight2",
+    "Reticle",
+    "Reticle",
+    "FireToggle",
+    "Fire",
+    "BlackRailGun",
+    "Shield",
+    "Shield",
+    "Motion rate lookup",
+    "Motion receive 1",
+    "Motion complete banks 1",
+    "Motion validate control 1",
+    "Motion apply control 1",
+    "Motion output 1",
+    "Motion local clock 1",
+    "Motion receive 2",
+    "Motion complete banks 2",
+    "Motion validate control 2",
+    "Motion apply control 2",
+    "Motion output 2",
+    "Motion local clock 2",
+    "Motion receive 3",
+    "Motion complete banks 3",
+    "Motion validate control 3",
+    "Motion apply control 3",
+    "Motion output 3",
+    "Motion local clock 3",
+    "Motion clear session",
+    "MF6 local inbox",
+    "MF6 native lifecycle",
+    "MF6 immutable data and phase output",
+    "MF6 local inbox",
+    "MF6 native lifecycle",
+    "MF6 immutable data and phase output",
+    "MF6 local inbox",
+    "MF6 native lifecycle",
+    "MF6 immutable data and phase output",
+    "MF6 local inbox",
+    "MF6 native lifecycle",
+    "MF6 immutable data and phase output",
+    "MF6 local inbox",
+    "MF6 native lifecycle",
+    "MF6 immutable data and phase output",
+    "MF6 local inbox",
+    "MF6 native lifecycle",
+    "MF6 immutable data and phase output",
+    "MF6 local inbox",
+    "MF6 native lifecycle",
+    "MF6 immutable data and phase output",
+    "MF6 local inbox",
+    "MF6 native lifecycle",
+    "MF6 immutable data and phase output",
+    "MF6 240bit atomic local snapshot",
+    "MF6 low byte",
+    "MF6 high byte",
+    "MF6 second triangle ID low",
+    "MF6 second triangle ID high",
+    "MF6 triangle motion header",
+    "MF6 route to native pool 0",
+    "MF6 route to native pool 1",
+    "MF6 route to native pool 2",
+    "MF6 route to native pool 3",
+    "MF6 route to native pool 4",
+    "MF6 route to native pool 5",
+    "MF6 route to native pool 6",
+    "MF6 route to native pool 7",
+    "MF6 decode route release clock",
+    "MF6 local sequence wrap 0",
+    "MF6 local sequence wrap 1",
+    "MF6 local sequence wrap 2",
+    "MF6 local sequence wrap 3",
+    "MF6 local sequence wrap 4",
+    "MF6 local sequence wrap 5",
+    "MF6 local sequence wrap 6",
+    "MF6 local sequence wrap 7",
+    "Text output 0",
+    "Text buffer 0",
+    "Text output 1",
+    "Text buffer 1",
+    "Text output 2",
+    "Text buffer 2",
+    "Text output 3",
+    "Text buffer 3",
+    "Owner preview gate",
+    "Preview corner",
+    "MF_PreviewSize",
+    "MF_PreviewZoom",
+    "Preview view",
+    "MA Responsive: Costume_KneeSox",
+    "MA Responsive: Body_2",
+    "MA Responsive: Body_2",
+    "MA Responsive: Body_2",
+    "MA Responsive: Body_2",
+    "MA Responsive: Body_2",
+    "MA Responsive: Body_2",
+    "MA Responsive: Body_2",
+    "MA Responsive: Costume_KneeSox",
+    "DelayDisable",
+    "Placement: world / avatar / hands",
+    "Placement: owner contact and fist detection",
+    "Placement: content scale",
+    "Placement: handle visibility",
+    "Placement: world horizontal content",
+    "Placement: local hand / two synced bits",
+    "MF5 scale presets"
+  ],
+  "rows": [
+    {
+      "phase": "baseline",
+      "samples": 127,
+      "animatorMeanMs": 6.9115582677165355,
+      "animatorP95Ms": 7.8967,
+      "particleCounts": [
+        {
+          "pool": "Pool0",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool1",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool2",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool3",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool4",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool5",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool6",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool7",
+          "alive": 8,
+          "capacity": 2056
+        }
+      ],
+      "cameraActive": false,
+      "visibleTextRenderers": 0
+    },
+    {
+      "phase": "motion layers off",
+      "samples": 130,
+      "animatorMeanMs": 6.4266653846153847,
+      "animatorP95Ms": 7.5008,
+      "particleCounts": [
+        {
+          "pool": "Pool0",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool1",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool2",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool3",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool4",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool5",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool6",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool7",
+          "alive": 8,
+          "capacity": 2056
+        }
+      ],
+      "cameraActive": false,
+      "visibleTextRenderers": 0
+    },
+    {
+      "phase": "text layers off",
+      "samples": 131,
+      "animatorMeanMs": 6.5566755725190839,
+      "animatorP95Ms": 7.3533,
+      "particleCounts": [
+        {
+          "pool": "Pool0",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool1",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool2",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool3",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool4",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool5",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool6",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool7",
+          "alive": 8,
+          "capacity": 2056
+        }
+      ],
+      "cameraActive": false,
+      "visibleTextRenderers": 0
+    },
+    {
+      "phase": "text and motion off",
+      "samples": 135,
+      "animatorMeanMs": 6.087042962962963,
+      "animatorP95Ms": 6.8547,
+      "particleCounts": [
+        {
+          "pool": "Pool0",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool1",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool2",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool3",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool4",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool5",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool6",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool7",
+          "alive": 8,
+          "capacity": 2056
+        }
+      ],
+      "cameraActive": false,
+      "visibleTextRenderers": 0
+    },
+    {
+      "phase": "text renderers off",
+      "samples": 127,
+      "animatorMeanMs": 6.8458779527559059,
+      "animatorP95Ms": 7.9983,
+      "particleCounts": [
+        {
+          "pool": "Pool0",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool1",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool2",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool3",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool4",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool5",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool6",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool7",
+          "alive": 8,
+          "capacity": 2056
+        }
+      ],
+      "cameraActive": false,
+      "visibleTextRenderers": 0
+    },
+    {
+      "phase": "baseline repeat",
+      "samples": 126,
+      "animatorMeanMs": 6.9318111111111111,
+      "animatorP95Ms": 7.981,
+      "particleCounts": [
+        {
+          "pool": "Pool0",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool1",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool2",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool3",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool4",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool5",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool6",
+          "alive": 8,
+          "capacity": 2056
+        },
+        {
+          "pool": "Pool7",
+          "alive": 8,
+          "capacity": 2056
+        }
+      ],
+      "cameraActive": false,
+      "visibleTextRenderers": 0
+    }
+  ],
+  "scope": "Paired whole-Avatar Editor Animator samples in a fresh empty owned scene. No VRChat FPS claim; no user display or source assets modified."
+}

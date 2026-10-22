@@ -1,0 +1,31 @@
+{
+  "maxLines": 3,
+  "scope": "Main application supported text-panel transaction; user text omitted; no OSC, microphone or model started",
+  "success": true,
+  "afterRevision": 51,
+  "beforeRevision": 50,
+  "visibleLines": 3,
+  "overflow": "tail",
+  "position": [
+    0.0,
+    76.0,
+    7.4
+  ],
+  "checks": {
+    "positionPreserved": true,
+    "geometryPreserved": true,
+    "caption": true,
+    "sizePreserved": true,
+    "maxThree": true,
+    "fixedFont": true,
+    "textPreserved": true,
+    "rotationPreserved": true,
+    "newRevision": true
+  },
+  "fontSize": 8.0,
+  "lineGap": 2.0,
+  "size": [
+    116.0,
+    42.0
+  ]
+}

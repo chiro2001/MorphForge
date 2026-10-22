@@ -933,7 +933,26 @@ impl Workspace {
             .filter(|group| {
                 protected_boxes(before, group) != protected_boxes(after, group)
                     || protected_triangles(before, group) != protected_triangles(after, group)
-                    || before.text_panels.iter().filter(|p|&p.group==*group).collect::<Vec<_>>() != after.text_panels.iter().filter(|p|&p.group==*group).collect::<Vec<_>>()
+                    || before
+                        .text_panels
+                        .iter()
+                        .filter(|p| &p.group == *group)
+                        .collect::<Vec<_>>()
+                        != after
+                            .text_panels
+                            .iter()
+                            .filter(|p| &p.group == *group)
+                            .collect::<Vec<_>>()
+                    || before
+                        .drawings
+                        .iter()
+                        .filter(|p| &p.group == *group)
+                        .collect::<Vec<_>>()
+                        != after
+                            .drawings
+                            .iter()
+                            .filter(|p| &p.group == *group)
+                            .collect::<Vec<_>>()
             })
             .cloned()
             .collect();
@@ -1038,6 +1057,32 @@ mod tests {
             .is_file());
     }
 
+    #[test]
+    fn legacy_text_defaults_do_not_change_immutable_snapshot_bytes_on_reopen() {
+        let dir = tempfile::tempdir().unwrap();
+        let mut w = Workspace::open(dir.path().into()).unwrap();
+        w.apply(
+            &[Operation::TextPanel {
+                value: morphforge_core::text_panel::TextPanel {
+                    text: "旧版文字".into(),
+                    ..Default::default()
+                },
+            }],
+            Some(0),
+            None,
+            None,
+        )
+        .unwrap();
+        let path = w.snapshot_path(1);
+        let before = fs::read(&path).unwrap();
+        let value: Value = serde_json::from_slice(&before).unwrap();
+        assert!(value["textPanels"][0].get("kind").is_none());
+        assert!(value["textPanels"][0].get("maxLines").is_none());
+        drop(w);
+        let w = Workspace::open(dir.path().into()).unwrap();
+        assert_eq!(w.project.scene.text_panels[0].kind, "text");
+        assert_eq!(fs::read(path).unwrap(), before);
+    }
     #[test]
     fn same_revision_persist_preserves_snapshot_and_rejects_changed_scene() {
         let dir = tempfile::tempdir().unwrap();

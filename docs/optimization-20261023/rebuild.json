@@ -1,0 +1,12 @@
+{
+  "success": true,
+  "motion": {
+    "success": true,
+    "layers": 20,
+    "states": 472,
+    "parameters": 462,
+    "syncedBits": 0
+  },
+  "prefabHash": "83ec4095218ad9b539218823ea80f786",
+  "charactersUnchanged": true
+}

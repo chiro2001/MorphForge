@@ -25,8 +25,8 @@ mod prompts;
 mod runtime_materials;
 mod visual_context;
 pub use goal::GoalProgress;
-pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/5.6";
-pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/4.7";
+pub const SYSTEM_PROMPT_VERSION: &str = "morphforge-system/5.7";
+pub const TOOL_SCHEMA_VERSION: &str = "morphforge-tools/4.8";
 
 #[derive(Clone, Debug)]
 struct PendingPrompt {
@@ -367,8 +367,10 @@ impl Harness {
         })
     }
     pub fn ensure_manual_edit(&self) -> Result<()> {
-        let state=self.inner.lock().unwrap();
-        if (is_active_phase(&state.phase) && state.phase != "paused") || state.worker_epoch.is_some() {
+        let state = self.inner.lock().unwrap();
+        if (is_active_phase(&state.phase) && state.phase != "paused")
+            || state.worker_epoch.is_some()
+        {
             bail!("RUN_CONFLICT：AI正在修改，请暂停并等待当前执行结束后再手工编辑")
         }
         Ok(())
@@ -503,7 +505,12 @@ impl Harness {
         let run_id;
         {
             let mut state = self.inner.lock().unwrap();
-            if value["projectId"].as_str().is_some_and(|id|id!=self.workspace.lock().unwrap().project.id) {bail!("WORKSPACE_CONFLICT：消息目标项目已切换");}
+            if value["projectId"]
+                .as_str()
+                .is_some_and(|id| id != self.workspace.lock().unwrap().project.id)
+            {
+                bail!("WORKSPACE_CONFLICT：消息目标项目已切换");
+            }
             if let Some(receipt) = state.message_acks.get(&request_id) {
                 let same_run = match (&receipt.requested_run_id, &supplied_run_id) {
                     (Some(old), Some(new)) => old == new,
@@ -1594,8 +1601,20 @@ impl Harness {
                                 || (name == "voxel_text" && arguments["mode"] == "apply")
                                 || (name == "components" && arguments["action"] == "place")
                                 || (name == "draw_primitives" && arguments["action"] == "apply")
+                                || (name == "text_panels"
+                                    && matches!(
+                                        arguments["action"].as_str(),
+                                        Some("create" | "update" | "append" | "remove")
+                                    ))
                             {
-                                arguments["requestId"] = json!(call_id);
+                                // Providers may reuse call_0 across independent
+                                // responses. Idempotency belongs to this model
+                                // request, not a project-global provider call ID.
+                                arguments["requestId"] = json!(format!(
+                                    "tool:{}:{}",
+                                    request_id,
+                                    crate::store::hash(call_id.as_bytes())
+                                ));
                             }
                             tokio::select! {
                                 biased;
@@ -1960,13 +1979,14 @@ impl Harness {
             "recipeSources":crate::sources::list(&workspace).unwrap_or(Value::Null),
             "creative":workspace.project.creative.brief(),
             "drawingPrimitives":crate::drawing::catalog(),
+            "textControls":{"tool":"text_panels","presets":[{"id":"text","overflow":"clip"},{"id":"caption","fontSize":8,"lineGap":2,"maxLines":3,"overflow":"tail","background":[0,0,0,0]}],"positionAnchor":"bottom center","captionInput":"select the created panel as speech target and enable autoCaption; creation alone does not start recognition"},
             "sdkVersion":recipe::SDK_VERSION,
             "meshSdk":"mf.triangle(a,b,c,{color:'#RRGGBB',doubleSided:false,group}); mf.mesh(vertices,faces,{color,colors:[per-face RGB8 or hex],group,doubleSided}); faces are triples of vertex indices. mf.triangleStrip(vertices,{colors}); mf.slope(min,size,{style:styleId,direction:'+x'|'-x'|'+z'|'-z',group}); // textured voxel slope, one object. mf.wedge(min,size,{direction:'+x'|'-x'|'+z'|'-z',color}); integer coordinates, per-face RGB8, no UV. Same translate/mirror/group frame as mf.box. mesh_tools can inspect/edit stable face IDs. Region erase removes whole faces by AABB; it does not clip triangles. MF6 required for triangle OSC; art-only editing is independent of VRChat.",
             "sdk":"mf.box(min,[w,h,d],{style:'wood',tint:0,motion:0}); mf.erase(min,size); mf.paint(min,size,{style}) recolors existing voxels only and never creates them; use mf.box to add voxels. mf.clear(); mf.removeGroup(name); mf.replaceGroup(name,()=>{}); mf.ellipsoid(center,radii,options); mf.sphere(center,radius,options); mf.capsule(a,b,radius,options); mf.cylinder(base,height,radius,options) Y-axis; mf.tube(points,radius,options); mf.extrude(points2d,origin,depth,{plane:\"xy\",style}); mf.voxelize({min,max},(x,y,z)=>boolean_or_style,options) samples cell centers, max2M cells; mf.group(name,()=>{}); mf.repeat(n,(i)=>{}); mf.mirror('x',()=>{}); mf.translate([x,y,z],()=>{}); mf.line(a,b,{thickness:1,style}); mf.stairs(origin,n,{width:3,depth:1,rise:1,style}); mf.wall(origin,w,h,{thickness:1,style}); mf.roof(origin,w,d,h,{style}); Math.random()/mf.random() deterministic by seed. All coordinates integer signed grid. Y is height. VRC target requires X/Z[-128,128),Y[0,256). Styles are catalog IDs/UID names. mode apply preserves current geometry; replace starts from empty."
         })
     }
     pub async fn tool(&self, name: &str, args: &Value, run: Option<&str>) -> Result<Value> {
-        let result=self.tool_inner(name,args,run,None).await?;
+        let result = self.tool_inner(name, args, run, None).await?;
         Ok(self.with_resource_receipt(result))
     }
 
@@ -1977,16 +1997,16 @@ impl Harness {
         run: Option<&str>,
         guard: RunGuard,
     ) -> Result<Value> {
-        let result=self.tool_inner(name,args,run,Some(guard)).await?;
+        let result = self.tool_inner(name, args, run, Some(guard)).await?;
         Ok(self.with_resource_receipt(result))
     }
 
-    fn with_resource_receipt(&self,mut result:Value)->Value {
+    fn with_resource_receipt(&self, mut result: Value) -> Value {
         if result.is_object() {
-            let workspace=self.workspace.lock().unwrap();
-            let capacity=self.transport.config().capacity;
-            let stats=workspace.project.scene.stats(&workspace.project.limits);
-            result["resources"]=json!({"revision":workspace.project.scene.revision,"boxCount":stats.box_count,"triangleCount":workspace.project.scene.triangles.len(),"voxelCount":stats.voxel_count,"voxelCountMeaning":"occupied Box-cell volume; triangle surfaces are counted separately","target":crate::scene_tools::target_report(&workspace.project.scene,capacity)});
+            let workspace = self.workspace.lock().unwrap();
+            let capacity = self.transport.config().capacity;
+            let stats = workspace.project.scene.stats(&workspace.project.limits);
+            result["resources"] = json!({"revision":workspace.project.scene.revision,"boxCount":stats.box_count,"triangleCount":workspace.project.scene.triangles.len(),"voxelCount":stats.voxel_count,"voxelCountMeaning":"occupied Box-cell volume; triangle surfaces are counted separately","target":crate::scene_tools::target_report(&workspace.project.scene,capacity)});
         }
         result
     }
@@ -2249,13 +2269,15 @@ impl Harness {
                     region.validate(&workspace.project.limits)?;
                     scene.boxes.retain(|box3| box3.intersects(&region));
                     scene.triangles.retain(|t| t.intersects(&region));
+                    scene.drawings.retain(|p|p.intersects(&region));
                 }
-                if let Some(group) = args["group"].as_str() {scene.boxes.retain(|box3|box3.group==group);scene.triangles.retain(|t|t.group==group);}
+                if let Some(group) = args["group"].as_str() {scene.boxes.retain(|box3|box3.group==group);scene.triangles.retain(|t|t.group==group);scene.drawings.retain(|p|p.group==group);scene.text_panels.retain(|p|p.group==group);}
                 if let Some(slice)=args.get("slice") {
                     let axis=match slice["axis"].as_str(){Some("x")=>0,Some("y")=>1,Some("z")=>2,_=>bail!("slice轴需要x/y/z")};
                     let index=i32::try_from(slice["index"].as_i64().context("slice需要index")?).context("slice坐标越界")?;
                     scene.boxes.retain_mut(|box3|{if index>=box3.min[axis]&&index<box3.end()[axis]{box3.min[axis]=index;box3.size[axis]=1;true}else{false}});
                     scene.triangles.retain(|t|{let b=t.bounds();b.min[axis]<=index&&b.max[axis]>=index});
+                    scene.drawings.retain(|p|{let b=p.bounds();b.min[axis]<=index&&b.max[axis]>=index});
                 }
                 let offset=args["offset"].as_u64().unwrap_or(0).min(usize::MAX as u64) as usize;
                 let limit=args["limit"].as_u64().unwrap_or(20).clamp(1,128) as usize;
@@ -2266,6 +2288,8 @@ impl Harness {
                     "sample":scene.boxes.iter().skip(offset).take(limit).collect::<Vec<_>>(),
                     "triangles":scene.triangles.iter().skip(offset).take(limit).collect::<Vec<_>>(),
                     "trianglesNextOffset":if offset.saturating_add(limit)<scene.triangles.len(){Some(offset+limit)}else{None},
+                    "drawings":scene.drawings.iter().skip(offset).take(limit).collect::<Vec<_>>(),
+                    "textPanels":scene.text_panels,
                     "offset":offset,"limit":limit,"nextOffset":if offset.saturating_add(limit)<scene.boxes.len(){Some(offset+limit)}else{None},
                     "statsScope":if args.get("slice").is_some(){"one_voxel_slice"}else{"intersecting_boxes"},
                 }))
@@ -2373,7 +2397,7 @@ impl Harness {
                 && goal::geometry_hash(&workspace) == signature
                 && result["revision"].as_u64() == Some(workspace.project.scene.revision)
         };
-        if matches && args.get("animation").is_none() && result["inspectionOnly"]!=true {
+        if matches && args.get("animation").is_none() && result["inspectionOnly"] != true {
             self.record_goal_capture(&project_id, signature, &result)?;
         }
         Ok(result)
@@ -2504,7 +2528,15 @@ impl Harness {
                 run,
                 json!({"references":state.conversation.reference_images}),
             )?;
-            let result = finish_artwork_in_workspace(&mut workspace, args, title, summary, run, state.settings.enforce_target_limits, self.transport.config().capacity)?;
+            let result = finish_artwork_in_workspace(
+                &mut workspace,
+                args,
+                title,
+                summary,
+                run,
+                state.settings.enforce_target_limits,
+                self.transport.config().capacity,
+            )?;
             if state.settings.goal_mode {
                 if let Some(goal) = state.conversation.goal.as_mut() {
                     goal.status = "achieved".into();
@@ -2539,7 +2571,15 @@ impl Harness {
                 run,
                 json!({"references":state.conversation.reference_images}),
             )?;
-            let result = finish_artwork_in_workspace(&mut workspace, args, title, summary, run, state.settings.enforce_target_limits, self.transport.config().capacity)?;
+            let result = finish_artwork_in_workspace(
+                &mut workspace,
+                args,
+                title,
+                summary,
+                run,
+                state.settings.enforce_target_limits,
+                self.transport.config().capacity,
+            )?;
             if state.settings.goal_mode {
                 if let Some(goal) = state.conversation.goal.as_mut() {
                     goal.status = "achieved".into();
@@ -3371,8 +3411,10 @@ fn finish_artwork_in_workspace(
     capacity: usize,
 ) -> Result<Value> {
     if enforce_target {
-        let target=crate::scene_tools::target_report(&workspace.project.scene,capacity);
-        if target["fits"]!=true {bail!("TARGET_LIMIT：作品尚不满足VRChat空间/容量约束：{}；修正后重新截图再交付，或由用户在设置中明确选择不限制目标。",target);}
+        let target = crate::scene_tools::target_report(&workspace.project.scene, capacity);
+        if target["fits"] != true {
+            bail!("TARGET_LIMIT：作品尚不满足VRChat空间/容量约束：{}；修正后重新截图再交付，或由用户在设置中明确选择不限制目标。",target);
+        }
     }
     let revision = workspace.project.scene.revision;
     if latest_capture_images(workspace).is_none_or(|images| images.is_empty()) {
@@ -3700,18 +3742,18 @@ pub fn tools_for_language(language: &str) -> Value {
             vec!["title", "summary"]
         ),
     ]);
-    schemas.as_array_mut().unwrap().push(tool("text_panels",if en {"Textured text panels, only when explicitly requested for labels/subtitles. Default authored text remains voxel_text. list/inspect are read-only. create/update/append/remove need baseRevision. panel fields: text,font(pixel16-zh/jp),position(bottom center),rotation(XYZ degrees),size([width,height] cells),fontSize(fullwidth glyph height in cells, default8),letterSpacing,lineGap,align(left/center/right),verticalAlign(top/middle/bottom),overflow(clip/tail/shrink),color(RGB8),background(RGBA8),opacity. Front and back are readable. dryRun previews; capacity and unsupported glyphs are reported."}else{"贴图文本框，仅用于明确要求的字幕/贴图文字；默认艺术文字仍用voxel_text。list/inspect只读；create/update/append/remove需baseRevision。panel字段：text,font(pixel16-zh/jp),position(底部中心),rotation(XYZ角度),size([宽,高]格),fontSize(全宽字高占格数，默认8),letterSpacing,lineGap,align(left/center/right),verticalAlign(top/middle/bottom),overflow(clip/tail/shrink),color(RGB8),background(RGBA8),opacity。正反面均正常可读。dryRun预览，返回排版与缺字。"},json!({"action":{"type":"string","enum":["list","inspect","create","update","append","remove"]},"id":{"type":"string"},"baseRevision":{"type":"integer","minimum":0},"text":{"type":"string"},"panel":{"type":"object"},"dryRun":{"type":"boolean"}}),vec!["action"]));
+    schemas.as_array_mut().unwrap().push(tool("text_panels",if en {"Textured text panels, only when explicitly requested for labels/subtitles. Default authored text remains voxel_text. list/inspect are read-only. create/update/append/remove need baseRevision. Use preset=caption for live subtitles: fixed fontSize8, lineGap2, maxLines3, tail overflow, transparent background; no shrink. Manual and model creation share the preset. Position is adjustable; a panel is not a speech-recognition engine. panel fields: kind(text/caption),maxLines(0=height limit for text; caption defaults3),text,font(pixel16-zh/jp),position(bottom center),rotation(XYZ degrees),size([width,height] cells),fontSize(fullwidth glyph height in cells, default8),letterSpacing,lineGap,align(left/center/right),verticalAlign(top/middle/bottom),overflow(clip/tail/shrink),color(RGB8),background(RGBA8),opacity. Front and back are readable. dryRun previews; capacity and unsupported glyphs are reported."}else{"贴图文本框，仅用于明确要求的字幕/贴图文字；默认艺术文字仍用voxel_text。list/inspect只读；create/update/append/remove需baseRevision。实时字幕创建须用preset=caption：固定字高8、行距2、最多3行、保留末尾、透明背景；不可shrink。手动和模型共用预设，位置朝向尺寸可调整；字幕框本身不是识别引擎。panel字段：kind(text/caption),maxLines(普通框0为按高度；字幕默认3),text,font(pixel16-zh/jp),position(底部中心),rotation(XYZ角度),size([宽,高]格),fontSize(全宽字高占格数，默认8),letterSpacing,lineGap,align(left/center/right),verticalAlign(top/middle/bottom),overflow(clip/tail/shrink),color(RGB8),background(RGBA8),opacity。正反面均正常可读。dryRun预览，返回排版与缺字。"},json!({"action":{"type":"string","enum":["list","inspect","create","update","append","remove"]},"id":{"type":"string"},"baseRevision":{"type":"integer","minimum":0},"text":{"type":"string"},"preset":{"type":"string","enum":["text","caption"]},"panel":{"type":"object"},"dryRun":{"type":"boolean"}}),vec!["action"]));
     schemas.as_array_mut().unwrap().push(tool(
         "draw_primitives",
         if en {
-            "Quick demonstration geometry: points, thick 3D segments, polylines, arrows, circles, XYZ axes and wire boxes. catalog is read-only; preview returns the actual integer mesh and capacity report without mutation. apply requires baseRevision and is undoable. size is point diameter, width is line diameter, both in scene cells (prefer >=2). Vertices are rounded to the existing integer mesh grid; rounding/collapsed faces are disclosed. Not screen-pixel widths. append preserves existing work; replace_group requires explicit group and replaces only that group. Shapes become ordinary editable RGB8 triangles, support existing exports/group animation and MF6 publication; no new Avatar protocol."
+            "Quick demonstration geometry: points, thick 3D segments, polylines, arrows, circles, XYZ axes and wire boxes. catalog is read-only; preview returns the actual integer mesh and capacity report without mutation. apply requires baseRevision and is undoable. size is point diameter, width is line diameter, both in scene cells (prefer >=2). Vertices are rounded to the existing integer mesh grid; rounding/collapsed faces are disclosed. Not screen-pixel widths. append preserves existing work; replace_group requires explicit group and replaces only that group. Native is the default: points/segments retain endpoints and diameter and each uses one MF6 drawing command; requires mf6-drawing/1. Arrowheads may include triangles. representation=mesh explicitly chooses legacy triangle compatibility. Both modes support group edits, animation and exports."
         } else {
-            "快速演示几何：点/点集、可控粗细3D线段、折线、箭头、圆环、XYZ坐标轴、线框盒。catalog只读；preview返回实际整数网格及容量，不修改作品；apply需baseRevision，可撤销。size为点直径，width为线直径，单位逻辑格，建议至少2格。顶点对齐整数网格，回执报告取整误差与退化面；不是固定屏幕像素宽度。append保留原作品；replace_group须显式group，仅替换该组。输出普通RGB8三角面，支持保存/导出/分组动画和既有MF6发布，不新增同步协议。"
+            "快速演示几何：点/点集、可控粗细3D线段、折线、箭头、圆环、XYZ坐标轴、线框盒。catalog只读；preview返回实际整数网格及容量，不修改作品；apply需baseRevision，可撤销。size为点直径，width为线直径，单位逻辑格，建议至少2格。顶点对齐整数网格，回执报告取整误差与退化面；不是固定屏幕像素宽度。append保留原作品；replace_group须显式group，仅替换该组。默认native：点线保留端点、直径，每个点或线段一条原生命令，需mf6-drawing/1能力；箭头尖端可包含三角面。representation=mesh为旧头像兼容模式。支持保存、导出、分组变换和动画。"
         },
         json!({
             "action":{"type":"string","enum":["catalog","preview","apply"]},
             "projectId":{"type":"string"},"baseRevision":{"type":"integer","minimum":0},"requestId":{"type":"string","maxLength":128},
-            "mode":{"type":"string","enum":["append","replace_group"]},"group":{"type":"string","minLength":1,"maxLength":128},
+            "representation":{"type":"string","enum":["native","mesh"]},"mode":{"type":"string","enum":["append","replace_group"]},"group":{"type":"string","minLength":1,"maxLength":128},
             "primitives":{"type":"array","minItems":1,"maxItems":64,"items":{"type":"object","properties":{
                 "kind":{"type":"string","enum":["point","points","segment","polyline","arrow","circle","axes","wire_box"]},
                 "position":{"type":"array","items":{"type":"number"},"minItems":3,"maxItems":3},

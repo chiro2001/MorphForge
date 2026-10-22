@@ -29,11 +29,23 @@ fn overflow() -> String {
 fn gap() -> f64 {
     2.
 }
+fn is_text_kind(value: &String) -> bool {
+    value == "text"
+}
+fn no_line_limit(value: &usize) -> bool {
+    *value == 0
+}
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(default, rename_all = "camelCase", deny_unknown_fields)]
 pub struct TextPanel {
     pub id: String,
     pub name: String,
+    /// Semantic preset shared by manual authoring and model tools.
+    #[serde(skip_serializing_if = "is_text_kind")]
+    pub kind: String,
+    /// Zero preserves the legacy height-derived limit for ordinary text.
+    #[serde(skip_serializing_if = "no_line_limit")]
+    pub max_lines: usize,
     pub text: String,
     pub group: String,
     #[serde(default = "font")]
@@ -64,6 +76,8 @@ impl Default for TextPanel {
         Self {
             id: "text".into(),
             name: "文本框".into(),
+            kind: "text".into(),
+            max_lines: 0,
             text: String::new(),
             group: "text".into(),
             font: font(),
@@ -83,7 +97,27 @@ impl Default for TextPanel {
     }
 }
 impl TextPanel {
+    pub fn caption() -> Self {
+        Self {
+            name: "实时字幕".into(),
+            kind: "caption".into(),
+            max_lines: 3,
+            overflow: "tail".into(),
+            vertical_align: "bottom".into(),
+            ..Self::default()
+        }
+    }
     pub fn validate(&self) -> Result<()> {
+        if !matches!(self.kind.as_str(), "text" | "caption") || self.max_lines > 128 {
+            return Err(GeometryError(
+                "文本类型须为text/caption，最大行数须为0..128".into(),
+            ));
+        }
+        if self.kind == "caption" && (self.max_lines == 0 || self.overflow == "shrink") {
+            return Err(GeometryError(
+                "实时字幕需设置最大行数并使用保留末尾或裁切，保持固定字号".into(),
+            ));
+        }
         if self.id.is_empty()
             || self.id.len() > 64
             || !self
@@ -304,9 +338,12 @@ pub fn layout(panel: &TextPanel, widths: &[u8]) -> Result<Layout> {
             .max(0.015625);
             continue;
         }
-        let capacity = ((panel.size[1] + panel.line_gap) / line_height)
+        let mut capacity = ((panel.size[1] + panel.line_gap) / line_height)
             .floor()
             .max(0.) as usize;
+        if panel.max_lines > 0 {
+            capacity = capacity.min(panel.max_lines);
+        }
         let visible = lines.len().min(capacity);
         let start = if panel.overflow == "tail" {
             lines.len().saturating_sub(visible)
@@ -354,6 +391,38 @@ pub fn layout(panel: &TextPanel, widths: &[u8]) -> Result<Layout> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn captions_keep_latest_three_lines_at_the_requested_font_size() {
+        let p = TextPanel {
+            text: "第一行\n第二行\n第三行\n第四行\n第五行".into(),
+            ..TextPanel::caption()
+        };
+        let layout = layout(&p, &vec![16; 65536]).unwrap();
+        assert_eq!(layout.font_size, 8.);
+        assert_eq!(layout.visible_lines, 3);
+        let displayed = layout
+            .glyphs
+            .iter()
+            .map(|g| char::from_u32(g.glyph as u32).unwrap())
+            .collect::<String>();
+        assert_eq!(displayed, "第三行第四行第五行");
+        let taller = TextPanel {
+            size: [128., 128.],
+            max_lines: 2,
+            ..p.clone()
+        };
+        assert_eq!(
+            super::layout(&taller, &vec![16; 65536])
+                .unwrap()
+                .visible_lines,
+            2
+        );
+        let shrink = TextPanel {
+            overflow: "shrink".into(),
+            ..p
+        };
+        assert!(shrink.validate().is_err());
+    }
     #[test]
     fn mixed_width_wrap_and_tail_are_deterministic() {
         let mut widths = vec![16; 65536];

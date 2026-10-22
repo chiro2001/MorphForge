@@ -1,0 +1,13 @@
+{
+  "success": true,
+  "projectId": "510333ea-3981-4cb4-bfd8-fd78637b7c5a",
+  "taskPhase": "idle",
+  "scope": "Main installed application after migration; credentials boolean only; no secret or transcript",
+  "credentialsConfigured": true,
+  "microphoneActive": false,
+  "revision": 51,
+  "provider": "offline",
+  "pending": 0,
+  "version": "0.23.0",
+  "oscEnabled": false
+}

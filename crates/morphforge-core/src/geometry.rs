@@ -134,8 +134,10 @@ pub struct Scene {
     pub boxes: Vec<Box3>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub triangles: Vec<crate::Triangle3>,
-    #[serde(default,skip_serializing_if="Vec::is_empty",rename="textPanels")]
+    #[serde(default, skip_serializing_if = "Vec::is_empty", rename = "textPanels")]
     pub text_panels: Vec<crate::text_panel::TextPanel>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub drawings: Vec<crate::drawing::Drawing>,
 }
 fn format_default() -> String {
     "MorphForgeScene/1".into()
@@ -149,15 +151,32 @@ impl Default for Scene {
             revision: 0,
             boxes: vec![],
             triangles: vec![],
-            text_panels:vec![],
+            text_panels: vec![],
+            drawings: vec![],
         }
     }
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "op", rename_all = "snake_case")]
 pub enum Operation {
-    TextPanel { #[serde(flatten)] value:crate::text_panel::TextPanel },
-    RemoveTextPanels { ids:Vec<String> },
+    Drawing {
+        #[serde(flatten)]
+        value: crate::drawing::Drawing,
+    },
+    RemoveDrawings {
+        ids: Vec<u64>,
+    },
+    PaintDrawings {
+        ids: Vec<u64>,
+        color: [u8; 3],
+    },
+    TextPanel {
+        #[serde(flatten)]
+        value: crate::text_panel::TextPanel,
+    },
+    RemoveTextPanels {
+        ids: Vec<String>,
+    },
     Triangle {
         #[serde(flatten)]
         value: crate::Triangle3,
@@ -210,8 +229,9 @@ pub enum Operation {
 pub struct Stats {
     pub box_count: usize,
     pub triangle_count: usize,
+    pub drawing_count: usize,
     pub object_count: usize,
-    pub text_panel_count:usize,
+    pub text_panel_count: usize,
     pub voxel_count: u64,
     pub bounds: Option<Bounds>,
     pub style_ids: Vec<u32>,
@@ -413,11 +433,31 @@ impl Scene {
             }
         }
         for panel in &self.text_panels {
-            *groups.entry(panel.group.clone()).or_insert(0)+=1;
-            let b=panel.bounds();if let Some(ref mut value)=bounds{for a in 0..3{value.min[a]=value.min[a].min(b.min[a]);value.max[a]=value.max[a].max(b.max[a]);}}else{bounds=Some(b);}
+            *groups.entry(panel.group.clone()).or_insert(0) += 1;
+            let b = panel.bounds();
+            if let Some(ref mut value) = bounds {
+                for a in 0..3 {
+                    value.min[a] = value.min[a].min(b.min[a]);
+                    value.max[a] = value.max[a].max(b.max[a]);
+                }
+            } else {
+                bounds = Some(b);
+            }
+        }
+        for drawing in &self.drawings {
+            *groups.entry(drawing.group.clone()).or_insert(0) += 1;
+            let b = drawing.bounds();
+            if let Some(ref mut value) = bounds {
+                for a in 0..3 {
+                    value.min[a] = value.min[a].min(b.min[a]);
+                    value.max[a] = value.max[a].max(b.max[a]);
+                }
+            } else {
+                bounds = Some(b);
+            }
         }
         let mut warnings = vec![];
-        if self.boxes.len() + self.triangles.len() > limits.target_boxes {
+        if self.boxes.len() + self.triangles.len() + self.drawings.len() > limits.target_boxes {
             warnings.push(format!(
                 "超过{}对象设计目标，仍可编辑；请检查目标能力与成本",
                 limits.target_boxes
@@ -426,8 +466,9 @@ impl Scene {
         Stats {
             box_count: self.boxes.len(),
             triangle_count: self.triangles.len(),
-            object_count: self.boxes.len() + self.triangles.len(),
-            text_panel_count:self.text_panels.len(),
+            drawing_count: self.drawings.len(),
+            object_count: self.boxes.len() + self.triangles.len() + self.drawings.len(),
+            text_panel_count: self.text_panels.len(),
             voxel_count: self.boxes.iter().map(Box3::volume).sum(),
             bounds,
             style_ids: styles.into_iter().collect(),
@@ -440,7 +481,13 @@ impl Scene {
         if !(8..=65536).contains(&self.size) {
             return Err(GeometryError("场景网格边长须为8..65536".into()));
         }
-        if self.boxes.len().saturating_add(self.triangles.len()) > limits.max_boxes {
+        if self
+            .boxes
+            .len()
+            .saturating_add(self.triangles.len())
+            .saturating_add(self.drawings.len())
+            > limits.max_boxes
+        {
             return Err(GeometryError("超过配置的Box资源保护值".into()));
         }
         if !self.cell_size.is_finite() || self.cell_size <= 0.0 || self.cell_size > 1000.0 {
@@ -461,8 +508,19 @@ impl Scene {
         for triangle in &self.triangles {
             triangle.validate(limits)?;
         }
-        if self.text_panels.len()>256{return Err(GeometryError("文本框数量超过256".into()))}
-        let mut text_ids=BTreeSet::new();for panel in &self.text_panels{panel.validate()?;if !text_ids.insert(&panel.id){return Err(GeometryError("文本框id重复".into()))}}
+        for drawing in &self.drawings {
+            drawing.validate(limits)?;
+        }
+        if self.text_panels.len() > 256 {
+            return Err(GeometryError("文本框数量超过256".into()));
+        }
+        let mut text_ids = BTreeSet::new();
+        for panel in &self.text_panels {
+            panel.validate()?;
+            if !text_ids.insert(&panel.id) {
+                return Err(GeometryError("文本框id重复".into()));
+            }
+        }
         Ok(())
     }
     pub fn apply(&self, operations: &[Operation], limits: &Limits) -> Result<Self> {
@@ -481,7 +539,12 @@ impl Scene {
             index.add(&b);
             all.insert(b.id, b);
         }
-        let mut text_panels=self.text_panels.iter().cloned().map(|p|(p.id.clone(),p)).collect::<BTreeMap<_,_>>();
+        let mut text_panels = self
+            .text_panels
+            .iter()
+            .cloned()
+            .map(|p| (p.id.clone(), p))
+            .collect::<BTreeMap<_, _>>();
         let mut triangles = BTreeMap::new();
         for item in &self.triangles {
             let mut t = item.clone();
@@ -493,6 +556,24 @@ impl Scene {
                     .ok_or_else(|| GeometryError("对象ID溢出".into()))?,
             );
             triangles.insert(t.id, t);
+        }
+        let mut drawings = BTreeMap::new();
+        for item in &self.drawings {
+            let mut value = item.clone();
+            if value.id == 0
+                || all.contains_key(&value.id)
+                || triangles.contains_key(&value.id)
+                || drawings.contains_key(&value.id)
+            {
+                value.id = next_id;
+            }
+            next_id = next_id.max(
+                value
+                    .id
+                    .checked_add(1)
+                    .ok_or_else(|| GeometryError("对象ID溢出".into()))?,
+            );
+            drawings.insert(value.id, value);
         }
         fn insert(b: Box3, all: &mut BTreeMap<u64, Box3>, index: &mut Index, next: &mut u64) {
             let mut b = b;
@@ -514,8 +595,42 @@ impl Scene {
         }
         for op in operations {
             match op {
-                Operation::TextPanel{value}=>{value.validate()?;text_panels.insert(value.id.clone(),value.clone());if text_panels.len()>256{return Err(GeometryError("文本框数量超过256".into()))}}
-                Operation::RemoveTextPanels{ids}=>{for id in ids{text_panels.remove(id);}}
+                Operation::Drawing { value } => {
+                    value.validate(limits)?;
+                    let mut value = value.clone();
+                    if value.id != 0 && !drawings.contains_key(&value.id) {
+                        return Err(GeometryError("更新的点线ID不存在；新增时id应为0".into()));
+                    }
+                    if value.id == 0 {
+                        value.id = next_id;
+                        next_id += 1;
+                    }
+                    drawings.insert(value.id, value);
+                }
+                Operation::RemoveDrawings { ids } => {
+                    for id in ids {
+                        drawings.remove(id);
+                    }
+                }
+                Operation::PaintDrawings { ids, color } => {
+                    for id in ids {
+                        if let Some(value) = drawings.get_mut(id) {
+                            value.color = *color;
+                        }
+                    }
+                }
+                Operation::TextPanel { value } => {
+                    value.validate()?;
+                    text_panels.insert(value.id.clone(), value.clone());
+                    if text_panels.len() > 256 {
+                        return Err(GeometryError("文本框数量超过256".into()));
+                    }
+                }
+                Operation::RemoveTextPanels { ids } => {
+                    for id in ids {
+                        text_panels.remove(id);
+                    }
+                }
                 Operation::Triangle { value } => {
                     value.validate(limits)?;
                     let mut value = value.clone();
@@ -555,13 +670,15 @@ impl Scene {
                         }
                     }
                     triangles.retain(|_, t| t.group != *name);
-                    text_panels.retain(|_,p|p.group!=*name);
+                    text_panels.retain(|_, p| p.group != *name);
+                    drawings.retain(|_, p| p.group != *name);
                 }
                 Operation::Clear => {
                     all.clear();
                     index = Index::default();
                     triangles.clear();
                     text_panels.clear();
+                    drawings.clear();
                 }
                 Operation::Box { value } => {
                     value.validate(limits)?;
@@ -575,6 +692,7 @@ impl Scene {
                     b.validate(limits)?;
                     erase(&b, &mut all, &mut index, &mut next_id);
                     triangles.retain(|_, t| !t.intersects(&b));
+                    drawings.retain(|_, p| !p.intersects(&b));
                 }
                 Operation::Paint {
                     min,
@@ -623,6 +741,9 @@ impl Scene {
                         if let Some(t) = triangles.get_mut(id) {
                             t.group = name.clone();
                         }
+                        if let Some(p) = drawings.get_mut(id) {
+                            p.group = name.clone();
+                        }
                     }
                 }
                 Operation::Transform {
@@ -632,6 +753,35 @@ impl Scene {
                     mirror,
                     copy,
                 } => {
+                    for id in ids {
+                        if let Some(mut p) = drawings.get(id).cloned() {
+                            if *copy {
+                                p.id = next_id;
+                                next_id += 1;
+                            }
+                            for point in [&mut p.start, &mut p.end] {
+                                for _ in 0..turns.rem_euclid(4) {
+                                    *point = [-point[2], point[1], point[0]];
+                                }
+                                if let Some(axis) = mirror {
+                                    let a = match axis.as_str() {
+                                        "x" => 0,
+                                        "y" => 1,
+                                        "z" => 2,
+                                        _ => return Err(GeometryError("镜像轴须为x/y/z".into())),
+                                    };
+                                    point[a] = -point[a];
+                                }
+                                for a in 0..3 {
+                                    point[a] = point[a]
+                                        .checked_add(offset[a])
+                                        .ok_or_else(|| GeometryError("变换溢出".into()))?;
+                                }
+                            }
+                            p.validate(limits)?;
+                            drawings.insert(p.id, p);
+                        }
+                    }
                     for id in ids {
                         if let Some(mut t) = triangles.get(id).cloned() {
                             if *copy {
@@ -723,7 +873,12 @@ impl Scene {
                     }
                 }
             }
-            if all.len().saturating_add(triangles.len()) > limits.max_boxes {
+            if all
+                .len()
+                .saturating_add(triangles.len())
+                .saturating_add(drawings.len())
+                > limits.max_boxes
+            {
                 return Err(GeometryError("超过配置的Box资源保护值，事务已回滚".into()));
             }
         }
@@ -733,14 +888,17 @@ impl Scene {
         }
         Ok(Self {
             revision: self.revision + 1,
-            format: if triangles.is_empty() && boxes.iter().all(|b| b.shape == 0) {
+            format: if !drawings.is_empty() {
+                "MorphForgeScene/3".into()
+            } else if triangles.is_empty() && boxes.iter().all(|b| b.shape == 0) {
                 self.format.clone()
             } else {
                 "MorphForgeScene/2".into()
             },
             boxes,
             triangles: triangles.into_values().collect(),
-            text_panels:text_panels.into_values().collect(),
+            text_panels: text_panels.into_values().collect(),
+            drawings: drawings.into_values().collect(),
             ..self.clone()
         })
     }
@@ -760,6 +918,7 @@ impl Scene {
             if ![
                 "MorphForgeScene/1",
                 "MorphForgeScene/2",
+                "MorphForgeScene/3",
                 "MorphForgeEditor/1",
             ]
             .contains(&format)
@@ -792,6 +951,9 @@ impl Scene {
         }
         for (i, t) in scene.triangles.iter_mut().enumerate() {
             t.id = scene.boxes.len() as u64 + i as u64 + 1;
+        }
+        for (i, p) in scene.drawings.iter_mut().enumerate() {
+            p.id = scene.boxes.len() as u64 + scene.triangles.len() as u64 + i as u64 + 1;
         }
         scene.boxes = merge(scene.boxes);
         Ok(scene)

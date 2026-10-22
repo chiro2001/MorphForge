@@ -142,6 +142,23 @@ fn main() {
     d[6] = 64;
     d[28] = 254;
     controls.insert("bank1".into(), json!(text_wire::Message(d).packet(seq)));
+    let mut restarted = avatar_motion::Session::default();
+    restarted
+        .publish(&scene, &clip, "restart", 1., 0., true)
+        .unwrap();
+    let mut restart = vec![];
+    while let Some(plan) = restarted.next() {
+        restart.push(json!({"op":plan.message.0[0],"packet":plan.message.packet(seq)}));
+        seq = (seq + 1) % 16;
+        restarted.commit(&plan);
+    }
+    restarted.replay();
+    let mut restart_replay = vec![];
+    while let Some(plan) = restarted.next() {
+        restart_replay.push(json!({"op":plan.message.0[0],"packet":plan.message.packet(seq)}));
+        seq = (seq + 1) % 16;
+        restarted.commit(&plan);
+    }
     let path = std::env::args().nth(1).expect("output");
-    std::fs::write(path,serde_json::to_vec_pretty(&json!({"packets":packets,"controls":controls,"bank1":bank_packets,"scene":scene,"clip":clip,"nextSeq":seq})).unwrap()).unwrap();
+    std::fs::write(path,serde_json::to_vec_pretty(&json!({"packets":packets,"controls":controls,"bank1":bank_packets,"restart":restart,"restartReplay":restart_replay,"scene":scene,"clip":clip,"nextSeq":seq})).unwrap()).unwrap();
 }

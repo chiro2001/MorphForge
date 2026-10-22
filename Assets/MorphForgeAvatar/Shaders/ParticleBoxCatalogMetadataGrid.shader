@@ -355,6 +355,7 @@ Shader "MorphForgeAvatar/ParticleBoxCatalogMetadataGrid"
             return _WireEncoding > 5.5 && data.a * 255.0 > .5 && data.a * 255.0 < 24.5;
         }
 
+        bool MF6Drawing(float4 data) { float a=floor(data.a*255+.5);return _WireEncoding>5.5 && a>=25 && a<=45 && fmod(a-25,6)<2.5; }
         bool MF6Double(float4 data) { return fmod(floor(data.a*255.0+.5),2.0)<.5; }
         float3 MF6Center(appdata v) { return float3(v.sizeData.w,v.centerLife.xy); }
         float3 MF6LocalVertex(float bits) { return float3(fmod(bits,16.0),fmod(floor(bits/16.0),16.0),fmod(floor(bits/256.0),16.0)); }
@@ -387,6 +388,33 @@ Shader "MorphForgeAvatar/ParticleBoxCatalogMetadataGrid"
             if(_WireEncoding>5.5 && v.color.a*255.0<.5)
             {
                 o.pos=float4(0,0,0,1);o.world=0;o.local=0;o.normal=float3(0,1,0);o.data=v.color;o.uvFace=0;o.size=1;return o;
+            }
+            if(MF6Drawing(v.color))
+            {
+                float alpha=floor(v.color.a*255+.5),group=floor((alpha-25)/6),kind=fmod(alpha-25,6);
+                float3 a=MF6Vertex(v.sizeData.x),b=MF6Vertex(v.sizeData.y),packed=MF6Vertex(v.sizeData.z)/_CellSize+128;
+                float diameter=floor(packed.x+.5)+256*floor(packed.y+.5);diameter=diameter/64*_CellSize;
+                MFMotionPose motion=MFGetMotion(group,_CellSize);a=MFApplyPose(a,motion);b=MFApplyPose(b,motion);
+                float3 bx,by,bz,scale,corner;float axis;MF6Basis(v,bx,by,bz,scale,corner,axis);
+                float id=floor((rcp(v.centerLife.z)-524288)/8+.5);float3 slot=float3((fmod(id,256)-128)*_CellSize,-128,(floor(id/256)-128)*_CellSize);
+                float3 worldA=MF6Center(v)+bx*((a.x-slot.x)*scale.x)+by*((a.y-slot.y)*scale.y)+bz*((a.z-slot.z)*scale.z);
+                float3 worldB=MF6Center(v)+bx*((b.x-slot.x)*scale.x)+by*((b.y-slot.y)*scale.y)+bz*((b.z-slot.z)*scale.z);
+                float radius=diameter*.5*motion.scale*(scale.x+scale.y+scale.z)/3;
+                float3 world,normal;float length=distance(worldA,worldB);float2 markerCoord=0;
+                if(kind>1.5){float3 offset=MFRotateVector(corner*diameter*motion.scale,motion.rotation);world=worldA+bx*offset.x*scale.x+by*offset.y*scale.y+bz*offset.z*scale.z;float3 n=MFRotateVector(float3(dot(v.normal,bx),dot(v.normal,by),dot(v.normal,bz)),motion.rotation);normal=normalize(bx*n.x+by*n.y+bz*n.z);}
+                else {
+                    // One carrier face becomes a camera-facing capsule. Other
+                    // faces collapse before rasterization; one object per line.
+                    if(axis<1.5 || corner.z<0){o.pos=float4(0,0,0,1);o.world=0;o.local=0;o.normal=float3(0,1,0);o.data=0;o.uvFace=0;o.size=1;return o;}
+                    float3 center=(worldA+worldB)*.5;float3 viewBack=normalize(float3(UNITY_MATRIX_I_V._m02,UNITY_MATRIX_I_V._m12,UNITY_MATRIX_I_V._m22));float3 eye=normalize(lerp(_WorldSpaceCameraPos-center,viewBack,unity_OrthoParams.w));
+                    float3 cameraRight=normalize(float3(UNITY_MATRIX_I_V._m00,UNITY_MATRIX_I_V._m10,UNITY_MATRIX_I_V._m20));
+                    float3 projected=worldB-worldA-eye*dot(worldB-worldA,eye);float screenLength=sqrt(dot(projected,projected));
+                    float3 direction=screenLength>1e-7?projected/screenLength:cameraRight;
+                    float3 side=cross(direction,eye);side=dot(side,side)>1e-8?normalize(side):normalize(float3(UNITY_MATRIX_I_V._m01,UNITY_MATRIX_I_V._m11,UNITY_MATRIX_I_V._m21));
+                    markerCoord=float2((v.uvFace.x*2-1)*(screenLength*.5+radius),(v.uvFace.y*2-1)*radius);
+                    world=lerp(worldA,worldB,v.uvFace.x)+direction*((v.uvFace.x*2-1)*radius)+side*markerCoord.y;normal=eye;length=screenLength;
+                }
+                o.pos=mul(UNITY_MATRIX_VP,float4(world,1));o.world=world;o.local=float3(markerCoord,0);o.normal=normal;o.data=v.color;o.uvFace=float4(0,0,0,group);o.size=float3(length*.5,radius,kind);return o;
             }
             if (MF6Triangle(v.color))
             {
@@ -515,7 +543,7 @@ Shader "MorphForgeAvatar/ParticleBoxCatalogMetadataGrid"
 
         float EarlyFlags(v2f i)
         {
-            if(MF6Triangle(i.data))return 0;
+            if(MF6Triangle(i.data)||MF6Drawing(i.data))return 0;
             float mode=MF5Mode(i.data,_WireEncoding);
             if(mode>.5&&mode<1.5)return 0;
             float bits=MF5Bits(i.data);
@@ -527,8 +555,9 @@ Shader "MorphForgeAvatar/ParticleBoxCatalogMetadataGrid"
 
         fixed4 SampleCatalog(v2f i, out float3 baseColor, out float opacity, out float flags)
         {
-            if(MF6Triangle(i.data))
+            if(MF6Triangle(i.data)||MF6Drawing(i.data))
             {
+                if(MF6Drawing(i.data)&&i.size.z<1.5){float2 p=float2(max(abs(i.local.x)-i.size.x,0),i.local.y);clip(i.size.y*i.size.y-dot(p,p));}
                 baseColor = GammaToLinearSpace(i.data.rgb);
                 opacity = 1.0;
                 flags = 0.0;
@@ -709,7 +738,7 @@ Shader "MorphForgeAvatar/ParticleBoxCatalogMetadataGrid"
         fixed4 frag(v2f i, fixed facing : VFACE) : SV_Target
             {
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
-                if(MF6Triangle(i.data))discard;
+                if(MF6Triangle(i.data)||MF6Drawing(i.data))discard;
                 float3 color;float opacity;float flags=EarlyFlags(i);
                 // Cutout cubes need their far sides visible through leaf holes.
                 if(facing<0 && fmod(floor(flags/4.0),2.0)<0.5)discard;
@@ -741,7 +770,7 @@ Shader "MorphForgeAvatar/ParticleBoxCatalogMetadataGrid"
             fixed4 fragTriangle(v2f i, fixed facing : VFACE) : SV_Target
             {
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
-                if(!MF6Triangle(i.data)||(facing<0&&!MF6Double(i.data)))discard;
+                if((!MF6Triangle(i.data)&&!MF6Drawing(i.data))||(facing<0&&!MF6Drawing(i.data)&&!MF6Double(i.data)))discard;
                 float3 color;float opacity;float flags;
                 return SampleCatalog(i,color,opacity,flags);
             }

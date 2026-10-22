@@ -1,0 +1,12 @@
+{
+  "success": true,
+  "sameInitialVersionAndTicket": true,
+  "newSessionClockAdvances": true,
+  "elapsed": [
+    0.0736351758,
+    0.2166066
+  ],
+  "geometryUnchanged": true,
+  "replayPhaseError": 3.119575E-05,
+  "scope": "Cold Desktop Session default version0/ticket1 against already-used native Avatar version0/ticket1. Motion-only reset preserves stored geometry; routine replay preserves automatic clock."
+}

@@ -1,0 +1,23 @@
+{
+  "success": true,
+  "changedControllers": [
+    "Assets/MorphForge/MF6/Pool7/FX.controller",
+    "Assets/MorphForge/MF6/Pool4/FX.controller",
+    "Assets/MorphForge/MF6/Pool0/FX.controller",
+    "Assets/MorphForge/MF6/Pool6/FX.controller",
+    "Assets/MorphForge/MF6/Pool2/FX.controller",
+    "Assets/MorphForge/MF6/Pool5/FX.controller",
+    "Assets/MorphForge/MF6/Pool1/FX.controller",
+    "Assets/MorphForge/MF6/Pool3/FX.controller",
+    "Assets/MorphForgeAvatar/Generated/ResourcesV12/MorphForge/MF6/Pool4/FX.controller",
+    "Assets/MorphForgeAvatar/Generated/ResourcesV12/MorphForge/MF6/Pool1/FX.controller",
+    "Assets/MorphForgeAvatar/Generated/ResourcesV12/MorphForge/MF6/Pool7/FX.controller",
+    "Assets/MorphForgeAvatar/Generated/ResourcesV12/MorphForge/MF6/Pool5/FX.controller",
+    "Assets/MorphForgeAvatar/Generated/ResourcesV12/MorphForge/MF6/Pool0/FX.controller",
+    "Assets/MorphForgeAvatar/Generated/ResourcesV12/MorphForge/MF6/Pool2/FX.controller",
+    "Assets/MorphForgeAvatar/Generated/ResourcesV12/MorphForge/MF6/Pool6/FX.controller",
+    "Assets/MorphForgeAvatar/Generated/ResourcesV12/MorphForge/MF6/Pool3/FX.controller"
+  ],
+  "additionalParameters": 0,
+  "storagePreserved": true
+}

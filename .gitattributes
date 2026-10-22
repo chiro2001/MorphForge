@@ -39,3 +39,7 @@ Assets/MorphForgeAvatar/Fonts-OFL-1.1.txt whitespace=-blank-at-eol,cr-at-eol
 docs/text-animation/stage-e-motion/*.json whitespace=cr-at-eol
 docs/text-animation/stage-e-motion/**/*.json whitespace=cr-at-eol
 docs/text-animation/stage-e-motion/rust-tests.txt whitespace=-blank-at-eof
+
+# Preserve verbatim Windows optimization evidence.
+docs/optimization-20261023/**/*.json whitespace=cr-at-eol
+docs/optimization-20261023/windows-build.txt whitespace=-blank-at-eof,cr-at-eol

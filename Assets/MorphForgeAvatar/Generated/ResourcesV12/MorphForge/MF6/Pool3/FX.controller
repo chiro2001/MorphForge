@@ -3166,6 +3166,37 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 0
+--- !u!1101 &-8458808973688977956
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 4
+    m_ConditionEvent: MF6_P3_Emit
+    m_EventTreshold: 0.5
+  - m_ConditionMode: 4
+    m_ConditionEvent: MF6_P3_EraseEnable
+    m_EventTreshold: 0.5
+  - m_ConditionMode: 1
+    m_ConditionEvent: MF6_P3_Busy
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: -3215492362403384415}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0
+  m_ExitTime: 0.75
+  m_HasExitTime: 0
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 0
 --- !u!114 &-8435602881212023621
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -50541,6 +50572,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 4
     m_ConditionEvent: MF6_P3_EraseEnable
     m_EventTreshold: 0.5
+  - m_ConditionMode: 2
+    m_ConditionEvent: MF6_P3_Busy
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6692924351224369372}
   m_Solo: 0
@@ -59261,12 +59295,16 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: 1496997753656667659}
     m_Position: {x: 305, y: 195, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -3215492362403384415}
+    m_Position: {x: 340, y: 260, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: -6209925151671537097}
   - {fileID: -218481521119508392}
   - {fileID: 3283180142912087594}
   - {fileID: -4264124145107487227}
+  - {fileID: -8458808973688977956}
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
@@ -88482,6 +88520,32 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 9217274419766795642}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
+--- !u!1102 &-3215492362403384415
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Prepare payload
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 8591748521974920143}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -221643,13 +221707,13 @@ AnimatorState:
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
+  m_WriteDefaultValues: 0
   m_Mirror: 0
   m_SpeedParameterActive: 0
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 8591748521974920143}
+  m_Motion: {fileID: -6896107970374970768}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

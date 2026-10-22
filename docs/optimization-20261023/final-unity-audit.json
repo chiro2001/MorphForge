@@ -1,0 +1,14 @@
+{
+  "success": true,
+  "characterPrefabsUnchanged": true,
+  "characterPrefabs": 13,
+  "drawingRoutes": 16,
+  "optimizedIdlePools": 16,
+  "totalSyncedBits": 254,
+  "directGeometryInts": 30,
+  "geometryBits": 240,
+  "mergedFxParameters": 1926,
+  "sourcePrefabUnchanged": true,
+  "sceneDirtyAfter": false,
+  "scope": "Read-only original dependency verification and SDK preprocess of a transient preview-scene clone. No product assets regenerated, saved or uploaded."
+}

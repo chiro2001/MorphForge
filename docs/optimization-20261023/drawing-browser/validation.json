@@ -1,0 +1,70 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "isolated workspace, OSC off",
+      "passed": true
+    },
+    {
+      "name": "preview initially requires an explicit action",
+      "passed": true
+    },
+    {
+      "name": "point preview uses actual canvas and reports triangles",
+      "passed": true
+    },
+    {
+      "name": "preview preserves authoritative revision",
+      "passed": true
+    },
+    {
+      "name": "changing point size invalidates old preview",
+      "passed": true
+    },
+    {
+      "name": "point size changes saved geometric extent",
+      "passed": true
+    },
+    {
+      "name": "line controls expose width and endpoints",
+      "passed": true
+    },
+    {
+      "name": "adding a segment preserves the point",
+      "passed": true
+    },
+    {
+      "name": "combination preview reports all six primitives",
+      "passed": true
+    },
+    {
+      "name": "replacement mode invalidates old preview",
+      "passed": true
+    },
+    {
+      "name": "combination becomes one editable group with separate colors",
+      "passed": true
+    },
+    {
+      "name": "main camera frames the newly loaded combination",
+      "passed": true
+    },
+    {
+      "name": "degenerate lines show an actionable error",
+      "passed": true
+    },
+    {
+      "name": "closing disposes the extra preview canvas",
+      "passed": true
+    },
+    {
+      "name": "all operations keep OSC and paid model requests inactive",
+      "passed": true
+    },
+    {
+      "name": "no unhandled JavaScript or WebGL errors",
+      "passed": true
+    }
+  ],
+  "scope": "Actual Chromium/WebDriver and Rust geometry API; isolated data, no microphone/model/VRChat OSC."
+}

@@ -63,8 +63,8 @@ def main():
         browser.wait('return !drawApply.disabled', 30)
         browser.click('drawApply')
         browser.wait('return !drawingDialog.open', 30)
-        first = api('scene')['scene']['triangles']
-        check('point size changes saved geometric extent', max(v[0] for t in first for v in t['vertices']) - min(v[0] for t in first for v in t['vertices']) >= 10)
+        first = api('scene')['scene']['drawings']
+        check('point size changes saved geometric extent', len(first)==1 and first[0]['diameter64']==14*64)
         browser.click('drawingOpen')
         browser.js('drawKind.value="segment";drawKind.dispatchEvent(new Event("input",{bubbles:true}));drawWidth.value="6";drawWidth.dispatchEvent(new Event("input",{bubbles:true}));')
         check('line controls expose width and endpoints', browser.js('return !drawWidth.closest("[data-draw-field]").hidden && !drawStart.closest("[data-draw-field]").hidden && drawSize.closest("[data-draw-field]").hidden'))
@@ -72,7 +72,7 @@ def main():
         browser.wait('return !drawApply.disabled', 30)
         browser.click('drawApply')
         browser.wait('return !drawingDialog.open', 30)
-        check('adding a segment preserves the point', len(api('scene')['scene']['triangles']) > len(first))
+        check('adding a segment preserves the point', len(api('scene')['scene']['drawings']) > len(first))
         browser.click('drawingOpen')
         browser.click('drawExample')
         browser.wait('return !drawApply.disabled && drawMetrics.textContent.includes("组合演示")', 30)
@@ -85,7 +85,7 @@ def main():
         browser.click('drawApply')
         browser.wait('return !drawingDialog.open', 30)
         scene = api('scene')['scene']
-        check('combination becomes one editable group with separate colors', {t['group'] for t in scene['triangles']} == {'demo'} and len({tuple(t['color']) for t in scene['triangles']}) >= 5)
+        check('combination becomes one editable group with separate colors', {t['group'] for t in scene.get('triangles',[])+scene.get('drawings',[])} == {'demo'} and len({tuple(t['color']) for t in scene.get('triangles',[])+scene.get('drawings',[])}) >= 5)
         check('main camera frames the newly loaded combination', browser.js('''return (async()=>{const {Vector3}=await import('three');const r=window.__morphforge.renderer,b=r.bounds();return [0,1,2,3,4,5,6,7].every(i=>{const p=new Vector3(i&1?b.max.x:b.min.x,i&2?b.max.y:b.min.y,i&4?b.max.z:b.min.z).project(r.camera);return Math.abs(p.x)<=1.03&&Math.abs(p.y)<=1.03&&p.z>=-1&&p.z<=1;});})()'''))
         browser.screenshot(args.out / 'drawing-scene.png')
         browser.click('drawingOpen')

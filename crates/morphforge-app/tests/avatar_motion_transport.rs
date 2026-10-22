@@ -196,6 +196,74 @@ fn wire_bytes(packet: &[u8]) -> Option<[u8; 30]> {
     (mask == (1 << 30) - 1).then_some(out)
 }
 #[tokio::test]
+async fn short_once_starts_only_after_all_bound_geometry_is_sent() {
+    use std::{net::UdpSocket, time::Duration};
+    let dir = tempfile::tempdir().unwrap();
+    let app = App::open(dir.path().into(), None).unwrap();
+    let receiver = UdpSocket::bind("127.0.0.1:0").unwrap();
+    receiver.set_nonblocking(true).unwrap();
+    let mut catalog =
+        AvatarCatalog::from_bytes(include_bytes!("../../../materials/mf6/catalog.json")).unwrap();
+    catalog.capabilities.push(avatar_motion::CAPABILITY.into());
+    {
+        let mut s = app.transport.inner.lock().unwrap();
+        s.avatar_catalog = Some(catalog);
+        s.config.port = receiver.local_addr().unwrap().port();
+        s.config.interval = 0.05;
+    }
+    let mut scene = Scene::default();
+    scene.revision = 1;
+    for x in 0..24 {
+        let mut b = Box3::new([-60 + x * 5, 26, -2], [1, 4, 2], 1);
+        b.group = "rotor".into();
+        scene.boxes.push(b);
+    }
+    let mut once = clip();
+    once.duration = 0.125;
+    once.looping = false;
+    once.tracks[0].keys.truncate(2);
+    once.tracks[0].keys[1].time = 0.125;
+    app.transport
+        .publish_motion(
+            &scene,
+            &morphforge_core::materials::builtins(),
+            &once,
+            "once",
+            1.,
+            0.,
+            true,
+        )
+        .unwrap();
+    app.transport.inner.lock().unwrap().config.enabled = true;
+    let mut objects = 0;
+    let mut started = false;
+    let mut bytes = [0; 8192];
+    tokio::time::timeout(Duration::from_secs(8), async {
+        while !started {
+            while let Ok(n) = receiver.recv(&mut bytes) {
+                if let Some(p) = wire_bytes(&bytes[..n]) {
+                    if p[28] == 254 && p[0] == 18 {
+                        assert_eq!(objects, 24, "first play must follow all geometry");
+                        assert_eq!(p[5], 1);
+                        assert_eq!(p[6], 0, "single-shot phase must still be zero");
+                        started = true;
+                        break;
+                    }
+                    if let Ok((_, group, frame)) = morphforge_core::mf6::Frame::decode_group(&p) {
+                        if group == 1 {
+                            objects += frame.objects();
+                        }
+                    }
+                }
+            }
+            tokio::time::sleep(Duration::from_millis(5)).await;
+        }
+    })
+    .await
+    .unwrap();
+    app.transport.inner.lock().unwrap().stop = true;
+}
+#[tokio::test]
 async fn actual_writer_sends_motion_tags_and_repair_keeps_control_ticket() {
     use std::{
         net::UdpSocket,

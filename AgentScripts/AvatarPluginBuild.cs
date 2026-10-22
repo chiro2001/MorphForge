@@ -65,7 +65,7 @@ public static class AvatarPluginBuild {
    t=remote.AddTransition(shown);t.hasExitTime=false;t.duration=0;t.AddCondition(AnimatorConditionMode.If,0,"IsLocal");
    placement.AddLayer(new AnimatorControllerLayer{name="MorphForge owner helper",stateMachine=machine,defaultWeight=1});EditorUtility.SetDirty(placement);
    var catalog=JObject.Parse(File.ReadAllText(Root+"/CatalogSource/catalog.json"));var capabilities=(JArray)catalog["capabilities"];
-   foreach(var capability in new[]{"mf6-region8/1","mf6-text-panels/1","mf6-text-latest14/1","local-placement-controls/1","mf6-motion4/1","local-avatar-preview-prototype/1"})if(!capabilities.Any(c=>(string)c==capability))capabilities.Add(capability);
+   foreach(var capability in new[]{"mf6-drawing/1","mf6-motion-session/1","mf6-region8/1","mf6-text-panels/1","mf6-text-latest14/1","local-placement-controls/1","mf6-motion4/1","local-avatar-preview-prototype/1"})if(!capabilities.Any(c=>(string)c==capability))capabilities.Add(capability);
    if(!module.GetComponentsInChildren<ModularAvatarMergeAnimator>(true).Any(m=>m.animator&&AssetDatabase.GetAssetPath(m.animator).EndsWith("/Motion.controller"))||!module.transform.Find("LocalPreview"))throw new Exception("Missing native motion or preview assets; refusing capability advertisement");
    File.WriteAllText(Root+"/CatalogSource/catalog.json",catalog.ToString());var identity=CatalogIdentity.Apply(module,catalog);
    var marker=module.AddComponent<MorphForgeAvatarModule>();marker.catalogIdentity=identity;
@@ -93,7 +93,7 @@ public static class AvatarPluginBuild {
   var files=AssetDatabase.FindAssets("",new[]{Root}).Select(AssetDatabase.GUIDToAssetPath).Where(p=>!AssetDatabase.IsValidFolder(p)&&!p.StartsWith(Root+"/Variants/",StringComparison.Ordinal)&&(!p.StartsWith(Root+"/Generated/",StringComparison.Ordinal)||active.Contains(p))).ToArray();
   var dependencies=AssetDatabase.GetDependencies(files,true).Where(p=>p.StartsWith("Assets/")&&!p.StartsWith(Root+"/")).ToArray();
   if(dependencies.Length!=0)throw new Exception("Unsafe export dependencies: "+string.Join("\n",dependencies));
-  Directory.CreateDirectory("E:/tmp/morphforge/avatar-plugin/dist");string path="E:/tmp/morphforge/avatar-plugin/dist/MorphForgeAvatar-1.2.1.unitypackage";
+  Directory.CreateDirectory("E:/tmp/morphforge/avatar-plugin/dist");string path="E:/tmp/morphforge/avatar-plugin/dist/MorphForgeAvatar-1.3.0.unitypackage";
   AssetDatabase.ExportPackage(files,path,ExportPackageOptions.Default);
   CatalogVariant.ExportBuiltin("E:/tmp/morphforge/avatar-plugin/dist/MorphForge-public-catalog.zip");
   return new JObject{["success"]=true,["path"]=path,["bytes"]=new FileInfo(path).Length,["files"]=files.Length}.ToString();

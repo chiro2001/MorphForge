@@ -6,6 +6,78 @@ use std::{
     time::{Duration, Instant},
 };
 #[tokio::test]
+async fn continuous_long_captions_leave_bandwidth_for_geometry_and_version_completion() {
+    let dir = tempfile::tempdir().unwrap();
+    let app = App::open(dir.path().into(), None).unwrap();
+    let receiver = UdpSocket::bind("127.0.0.1:0").unwrap();
+    receiver.set_nonblocking(true).unwrap();
+    let mut scene = morphforge_core::Scene::default();
+    scene.revision = 1;
+    for x in 0..32 {
+        scene.boxes.push(morphforge_core::Box3::new(
+            [(x % 8) * 4, 0, (x / 8) * 4],
+            [1; 3],
+            1,
+        ));
+    }
+    scene.text_panels.push(TextPanel::caption());
+    let catalog = AvatarCatalog {
+        format: "MorphForgeMaterialCatalog/1".into(),
+        version: String::new(),
+        materials: vec![],
+        capabilities: vec![
+            "mf6-unified/1".into(),
+            "mf5-runtime-materials/1".into(),
+            "mf6-text-panels/1".into(),
+            "mf6-text-latest14/1".into(),
+        ],
+        texture_options: None,
+    };
+    {
+        let mut s = app.transport.inner.lock().unwrap();
+        s.avatar_catalog = Some(catalog);
+        s.config.port = receiver.local_addr().unwrap().port();
+        s.config.interval = 0.05;
+        s.config.enabled = true;
+    }
+    app.transport
+        .publish_with_materials(&scene, &morphforge_core::materials::builtins(), false)
+        .unwrap();
+    let transport = app.transport.clone();
+    let updates = tokio::spawn(async move {
+        for i in 0..120 {
+            transport
+                .latest_text(
+                    "text",
+                    &format!("正在持续更新第{i}条实时字幕，必须保留多行并允许模型一起发布。"),
+                )
+                .unwrap();
+            tokio::time::sleep(Duration::from_millis(20)).await;
+        }
+    });
+    tokio::time::timeout(Duration::from_secs(2), async {
+        while app.transport.state()["sentRevision"] != 1 {
+            tokio::time::sleep(Duration::from_millis(10)).await;
+        }
+    })
+    .await
+    .unwrap();
+    assert!(
+        !updates.is_finished(),
+        "geometry version must finish while captions are still streaming"
+    );
+    assert_eq!(app.transport.state()["sentObjects"]["boxes"], 32);
+    updates.await.unwrap();
+    tokio::time::timeout(Duration::from_secs(3), async {
+        while app.transport.state()["pending"] != 0 {
+            tokio::time::sleep(Duration::from_millis(10)).await;
+        }
+    })
+    .await
+    .unwrap();
+    app.transport.inner.lock().unwrap().stop = true;
+}
+#[tokio::test]
 async fn shared_writer_publishes_replays_and_deletes_text_without_geometry() {
     let dir = tempfile::tempdir().unwrap();
     let app = App::open(dir.path().into(), None).unwrap();

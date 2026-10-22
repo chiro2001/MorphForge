@@ -1,0 +1,38 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "native 0.23.0, isolated project and OSC off",
+      "passed": true
+    },
+    {
+      "name": "manual caption uses fixed three-line defaults",
+      "passed": true
+    },
+    {
+      "name": "automatic caption keeps size and only latest three lines",
+      "passed": true
+    },
+    {
+      "name": "two captions preserve native points, lines and triangle geometry",
+      "passed": true
+    },
+    {
+      "name": "live-caption endpoint requires enabled OSC",
+      "passed": true
+    },
+    {
+      "name": "latest caption update stays isolated from microphone/model/OSC",
+      "passed": true
+    },
+    {
+      "name": "WebView2 concurrent text preview keeps only current mesh",
+      "passed": true
+    },
+    {
+      "name": "no unhandled WebView2 JavaScript exception",
+      "passed": true
+    }
+  ],
+  "scope": "Actual isolated packaged Windows WebView2, manual caption click, automatic-tool API defaults, mixed drawings/captions and overlapping asynchronous previews. No microphone/model/OSC."
+}

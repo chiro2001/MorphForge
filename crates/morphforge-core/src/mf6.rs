@@ -7,6 +7,7 @@ use std::collections::BTreeSet;
 pub const CAPABILITY: &str = "mf6-unified/1";
 pub const REGION_CAPABILITY: &str = "mf6-region8/1";
 pub const MOTION_CAPABILITY: &str = "mf6-motion4/1";
+pub const DRAWING_CAPABILITY: &str = "mf6-drawing/1";
 pub const BYTES: usize = 30;
 pub const POOLS: usize = 8;
 pub const ID_LIMIT: u16 = 16384;
@@ -61,6 +62,16 @@ pub struct TriangleRecord {
     pub vertices: [[u8; 3]; 3],
     pub color: [u8; 3],
     pub double_sided: bool,
+}
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DrawingRecord {
+    pub id: u16,
+    pub start: [u8; 3],
+    pub end: [u8; 3],
+    pub diameter64: u16,
+    /// 0=circular point, 1=segment, 2=cube point.
+    pub kind: u8,
+    pub color: [u8; 3],
 }
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Strip {
@@ -204,6 +215,7 @@ impl Region {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "format", rename_all = "snake_case")]
 pub enum Frame {
+    Drawing { record: DrawingRecord },
     Idle,
     Region { region: Region },
     Boxes { shape: u8, records: Vec<BoxRecord> },
@@ -224,6 +236,24 @@ impl Frame {
         let mut out = [0; BYTES];
         let data = &mut out[..29];
         let format = match self {
+            Self::Drawing { record } => {
+                if record.id >= ID_LIMIT
+                    || record.kind > 2
+                    || record.diameter64 == 0
+                    || (record.kind == 1) == (record.start == record.end)
+                {
+                    return Err(invalid("点线ID、种类、直径或端点无效"));
+                }
+                data[0] = 32;
+                data[1..4].copy_from_slice(&record.start);
+                data[4..7].copy_from_slice(&record.end);
+                put_u16(&mut data[7..9], record.diameter64);
+                data[9..12].copy_from_slice(&record.color);
+                data[12] = record.kind;
+                put_u16(&mut data[14..16], record.id);
+                data[28] = 254;
+                0
+            }
             Self::Idle => 0,
             Self::Region { region } => {
                 region.records()?;
@@ -381,6 +411,16 @@ impl Frame {
         let format = input[29] & 15;
         let d = &input[..29];
         let frame = match format {
+            0 if d[28] == 254 && d[0] == 32 => Self::Drawing {
+                record: DrawingRecord {
+                    id: get_u16(&d[14..16]),
+                    start: d[1..4].try_into().unwrap(),
+                    end: d[4..7].try_into().unwrap(),
+                    diameter64: get_u16(&d[7..9]),
+                    kind: d[12],
+                    color: d[9..12].try_into().unwrap(),
+                },
+            },
             0 if d[28] & 0xf8 == 0xa8 => Self::Region {
                 region: Region {
                     origin: d[..3].try_into().unwrap(),
@@ -549,6 +589,7 @@ impl Frame {
         }
         let mut bytes = self.encode(sequence)?;
         match self {
+            Self::Drawing { .. } => bytes[16] = group,
             Self::Boxes { .. } | Self::SharedBoxes { .. } => bytes[28] |= group << 6,
             Self::Voxels { .. } => bytes[28] |= group << 3,
             Self::Triangles { .. } => bytes[28] |= group << 2,
@@ -562,6 +603,14 @@ impl Frame {
         let mut data = *input;
         let format = data[29] & 15;
         let group = match format {
+            0 if data[28] == 254 && data[0] == 32 => {
+                let g = data[16];
+                data[16] = 0;
+                if g > 3 {
+                    return Err(invalid("点线动画组越界"));
+                }
+                g
+            }
             1..=4 | 11..=14 => {
                 let g = data[28] >> 6;
                 data[28] &= 63;
@@ -609,6 +658,7 @@ impl Frame {
     }
     pub fn objects(&self) -> usize {
         match self {
+            Self::Drawing { .. } => 1,
             Self::Idle | Self::Clear => 0,
             Self::Region { region } => region.surfaces.len(),
             Self::Boxes { records, .. }
@@ -627,6 +677,31 @@ impl Frame {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn native_drawing_is_one_canonical_frame_with_motion_and_fixed_diameter() {
+        for kind in 0..3 {
+            let start = [120, 32, 128];
+            let frame = Frame::Drawing {
+                record: DrawingRecord {
+                    id: 16383,
+                    start,
+                    end: if kind == 1 { [150, 64, 132] } else { start },
+                    diameter64: 96,
+                    kind,
+                    color: [12, 180, 240],
+                },
+            };
+            for group in 0..4 {
+                let bytes = frame.encode_group(7, group).unwrap();
+                let (seq, g, decoded) = Frame::decode_group(&bytes).unwrap();
+                assert_eq!(seq, 7);
+                assert_eq!(g, group);
+                assert_eq!(decoded, frame);
+                assert_eq!(decoded.objects(), 1);
+                assert_eq!(bytes[28], 254);
+            }
+        }
+    }
     fn record(pool: u8, mode: u8) -> BoxRecord {
         BoxRecord {
             pool,

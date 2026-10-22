@@ -443,7 +443,7 @@ Shader "MorphForgeAvatar/PixelText16" {
         float _G096,_G097,_G098,_G099,_G100,_G101,_G102,_G103,_G104,_G105,_G106,_G107,_G108,_G109,_G110,_G111;
         float _G112,_G113,_G114,_G115,_G116,_G117,_G118,_G119,_G120,_G121,_G122,_G123,_G124,_G125,_G126,_G127;
         struct appdata {float4 vertex:POSITION;float2 uv:TEXCOORD0;float2 index:TEXCOORD1;UNITY_VERTEX_INPUT_INSTANCE_ID};
-        struct v2f {float4 pos:SV_POSITION;float2 uv:TEXCOORD0;float3 glyph:TEXCOORD1;float2 panel:TEXCOORD2;UNITY_VERTEX_OUTPUT_STEREO};
+        struct v2f {float4 pos:SV_POSITION;float2 uv:TEXCOORD0;nointerpolation float3 glyph:TEXCOORD1;float2 panel:TEXCOORD2;UNITY_VERTEX_OUTPUT_STEREO};
         float width(float code) {float2 uv=(float2(fmod(code,256),floor(code/256))+.5)/256;return floor(lerp(tex2Dlod(_WidthsZH,float4(uv,0,0)).r,tex2Dlod(_WidthsJP,float4(uv,0,0)).r,step(.5,_Font))*255+.5);}
         float3 rotateXYZ(float3 p) {
             float3 s,c;sincos(float3(_RotX,_RotY,_RotZ)*0.01745329252,s,c);
@@ -454,8 +454,9 @@ Shader "MorphForgeAvatar/PixelText16" {
         }
         v2f vert(appdata v) {
             v2f o;UNITY_SETUP_INSTANCE_ID(v);UNITY_INITIALIZE_OUTPUT(v2f,o);UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
-            float glyphs[128]={_G000,_G001,_G002,_G003,_G004,_G005,_G006,_G007,_G008,_G009,_G010,_G011,_G012,_G013,_G014,_G015,_G016,_G017,_G018,_G019,_G020,_G021,_G022,_G023,_G024,_G025,_G026,_G027,_G028,_G029,_G030,_G031,_G032,_G033,_G034,_G035,_G036,_G037,_G038,_G039,_G040,_G041,_G042,_G043,_G044,_G045,_G046,_G047,_G048,_G049,_G050,_G051,_G052,_G053,_G054,_G055,_G056,_G057,_G058,_G059,_G060,_G061,_G062,_G063,_G064,_G065,_G066,_G067,_G068,_G069,_G070,_G071,_G072,_G073,_G074,_G075,_G076,_G077,_G078,_G079,_G080,_G081,_G082,_G083,_G084,_G085,_G086,_G087,_G088,_G089,_G090,_G091,_G092,_G093,_G094,_G095,_G096,_G097,_G098,_G099,_G100,_G101,_G102,_G103,_G104,_G105,_G106,_G107,_G108,_G109,_G110,_G111,_G112,_G113,_G114,_G115,_G116,_G117,_G118,_G119,_G120,_G121,_G122,_G123,_G124,_G125,_G126,_G127};
             int index=(int)v.index.x;int count=clamp((int)floor(_Count+.5),0,128);
+            if(count==0 || (index<128 && index>=count)) {o.pos=float4(0,0,0,1);o.uv=0;o.panel=0;o.glyph=0;return o;}
+            float glyphs[128]={_G000,_G001,_G002,_G003,_G004,_G005,_G006,_G007,_G008,_G009,_G010,_G011,_G012,_G013,_G014,_G015,_G016,_G017,_G018,_G019,_G020,_G021,_G022,_G023,_G024,_G025,_G026,_G027,_G028,_G029,_G030,_G031,_G032,_G033,_G034,_G035,_G036,_G037,_G038,_G039,_G040,_G041,_G042,_G043,_G044,_G045,_G046,_G047,_G048,_G049,_G050,_G051,_G052,_G053,_G054,_G055,_G056,_G057,_G058,_G059,_G060,_G061,_G062,_G063,_G064,_G065,_G066,_G067,_G068,_G069,_G070,_G071,_G072,_G073,_G074,_G075,_G076,_G077,_G078,_G079,_G080,_G081,_G082,_G083,_G084,_G085,_G086,_G087,_G088,_G089,_G090,_G091,_G092,_G093,_G094,_G095,_G096,_G097,_G098,_G099,_G100,_G101,_G102,_G103,_G104,_G105,_G106,_G107,_G108,_G109,_G110,_G111,_G112,_G113,_G114,_G115,_G116,_G117,_G118,_G119,_G120,_G121,_G122,_G123,_G124,_G125,_G126,_G127};
             float x=0,row=0,lineWidth=0,totalRows=1;
             float code=0,pixels=16;
             // All vertices compute the same bounded line layout. Newlines are
@@ -491,8 +492,9 @@ Shader "MorphForgeAvatar/PixelText16" {
             #endif
             return float4(bg,_BackA*_Opacity/65025);}
 
-            float col=min(i.glyph.y-1,floor(i.uv.x*i.glyph.y));float row=min(15,floor((1-i.uv.y)*16));
-            float address=i.glyph.x*32+row*2+floor(col/8);float2 uv=(float2(fmod(address,2048),floor(address/2048))+.5)/float2(2048,1024);
+            float code=floor(i.glyph.x+.5),pixels=floor(i.glyph.y+.5);
+            float col=clamp(floor(i.uv.x*pixels),0,pixels-1);float row=clamp(floor((1-i.uv.y)*16),0,15);
+            float address=code*32+row*2+floor(col/8);float2 uv=(float2(fmod(address,2048),floor(address/2048))+.5)/float2(2048,1024);
             float packed=floor(lerp(tex2D(_FontZH,uv).r,tex2D(_FontJP,uv).r,step(.5,_Font))*255+.5);
             float bit=fmod(floor(packed/exp2(7-fmod(col,8))),2);clip(bit-.5);
             float3 color=float3(_Red,_Green,_Blue)/255;

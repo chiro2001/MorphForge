@@ -314,7 +314,20 @@ pub fn project_wire(
     materials: &[Material],
     profile: Option<&AvatarCatalog>,
 ) -> Result<Projection> {
-    if !scene.text_panels.is_empty() && !profile.is_some_and(|c|c.capabilities.iter().any(|v|v=="mf6-text-panels/1")) {bail!("AVATAR_TEXT_UNSUPPORTED：当前Avatar未声明贴图文本框能力，请更新插件后识别；没有静默丢弃文字。");}
+    if !scene.text_panels.is_empty()
+        && !profile.is_some_and(|c| c.capabilities.iter().any(|v| v == "mf6-text-panels/1"))
+    {
+        bail!("AVATAR_TEXT_UNSUPPORTED：当前Avatar未声明贴图文本框能力，请更新插件后识别；没有静默丢弃文字。");
+    }
+    if !scene.drawings.is_empty()
+        && !profile.is_some_and(|c| {
+            c.capabilities
+                .iter()
+                .any(|v| v == morphforge_core::mf6::DRAWING_CAPABILITY)
+        })
+    {
+        bail!("AVATAR_DRAWING_UNSUPPORTED：当前Avatar未声明原生点线能力，请更新头像并重新识别，或选择三角面兼容模式");
+    }
     if !profile.is_some_and(AvatarCatalog::runtime_materials) {
         return Ok(Projection {
             scene: legacy_project(scene, materials, profile)?,
@@ -362,7 +375,6 @@ pub fn project(
     materials: &[Material],
     profile: Option<&AvatarCatalog>,
 ) -> Result<Scene> {
-
     Ok(project_wire(scene, materials, profile)?.scene)
 }
 

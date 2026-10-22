@@ -41,7 +41,9 @@ pub struct Connection {
     pub scale: f32,
     pub level: bool,
 }
-fn default_allow_grab()->bool{true}
+fn default_allow_grab() -> bool {
+    true
+}
 fn default_auto_detect() -> bool {
     true
 }
@@ -76,7 +78,7 @@ impl Default for Connection {
 pub struct State {
     pub unified: unified::Session,
     pub text: crate::text_wire::Session,
-    pub motion:crate::avatar_motion::Session,
+    pub motion: crate::avatar_motion::Session,
     pub publication: Option<strategy::Decision>,
     pub discovery: Value,
     pub config: Connection,
@@ -173,7 +175,7 @@ impl Transport {
             inner: Arc::new(Mutex::new(State {
                 unified: unified::Session::default(),
                 text: crate::text_wire::Session::default(),
-                motion:crate::avatar_motion::Session::default(),
+                motion: crate::avatar_motion::Session::default(),
                 publication: None,
                 discovery: json!({"status":"not_queried","executionAck":false}),
                 config,
@@ -211,9 +213,16 @@ impl Transport {
         let command_batches = s
             .queued_frame_estimate
             .map(|(start, n)| n.saturating_sub(s.sent_frame_count.saturating_sub(start) as usize))
-            .unwrap_or_else(|| s.unified.pending_objects().div_ceil(3) + s.resets as usize + s.text.pending_commands()+s.motion.pending());
-        let pending =
-            command_batches + usize::from(!s.controls.is_empty()) + s.reset_pulse as usize + s.text.pending_live();
+            .unwrap_or_else(|| {
+                s.unified.pending_objects().div_ceil(3)
+                    + s.resets as usize
+                    + s.text.pending_commands()
+                    + s.motion.pending()
+            });
+        let pending = command_batches
+            + usize::from(!s.controls.is_empty())
+            + s.reset_pulse as usize
+            + s.text.pending_live();
         let progress = if let Some((start, total)) = s.queued_frame_estimate {
             let sent = (s.sent_frame_count.saturating_sub(start) as usize).min(total);
             json!({"totalFrames":total,"sentFrames":sent,"remainingFrames":total-sent,
@@ -222,7 +231,7 @@ impl Transport {
         } else {
             json!({"totalFrames":null,"kind":"local_udp_sent","receiverConfirmed":false})
         };
-        json!({"motion":s.motion.state(),"text":{"pendingCommands":s.text.pending_commands(),"pendingSnapshots":s.text.pending_live(),"panelCapacity":crate::text_wire::SLOTS},"progress":progress,"enabled":s.config.enabled,"sending":s.connected,"port":s.config.port,"interval":s.config.interval,"profile":s.config.profile,"auto":s.config.auto,"capacity":s.config.capacity,"refreshSeconds":s.config.refresh_seconds,"loopReplay":s.config.loop_replay,"sendOrder":s.config.send_order,"replayCycles":s.replay_cycles,"pending":pending,"etaSeconds":pending as f64*s.config.interval,"desiredRevision":s.desired_revision,"sentRevision":s.sent_revision,"sentCommands":s.sent_count,"error":s.last_error,"ack":false,"baselineKind":"local_udp_sent","publication":s.publication,"publishStrategy":s.config.publish_strategy,"autoDetect":s.config.auto_detect,"discovery":s.discovery,"catalogIdentity":s.avatar_catalog.as_ref().map(|c|c.identity_hash()),"remoteAcknowledged":false,"sentObjects":json!({"boxes":s.unified.sent_counts().0,"triangles":s.unified.sent_counts().1}),"repairing":s.unified.repairing(),"syncedBits":240,"repairDeletions":s.unified.repair_history_counts(),"pendingObjects":s.unified.pending_objects(),"estimateKind":"adaptive-layout estimate; no receiver acknowledgement","placement":{"world":s.config.world,"visible":s.config.visible,"allowGrab":s.config.allow_grab,"scale":s.config.scale,"level":s.config.level}})
+        json!({"motion":s.motion.state(),"text":{"pendingCommands":s.text.pending_commands(),"pendingSnapshots":s.text.pending_live(),"panelCapacity":crate::text_wire::SLOTS},"progress":progress,"enabled":s.config.enabled,"sending":s.connected,"port":s.config.port,"interval":s.config.interval,"profile":s.config.profile,"auto":s.config.auto,"capacity":s.config.capacity,"refreshSeconds":s.config.refresh_seconds,"loopReplay":s.config.loop_replay,"sendOrder":s.config.send_order,"replayCycles":s.replay_cycles,"pending":pending,"etaSeconds":pending as f64*s.config.interval,"desiredRevision":s.desired_revision,"sentRevision":s.sent_revision,"sentCommands":s.sent_count,"error":s.last_error,"ack":false,"baselineKind":"local_udp_sent","publication":s.publication,"publishStrategy":s.config.publish_strategy,"autoDetect":s.config.auto_detect,"discovery":s.discovery,"catalogIdentity":s.avatar_catalog.as_ref().map(|c|c.identity_hash()),"remoteAcknowledged":false,"sentObjects":json!({"boxes":s.unified.sent_counts().0,"triangles":s.unified.sent_counts().1,"drawings":s.unified.sent_drawing_count()}),"repairing":s.unified.repairing(),"syncedBits":240,"repairDeletions":s.unified.repair_history_counts(),"pendingObjects":s.unified.pending_objects(),"estimateKind":"adaptive-layout estimate; no receiver acknowledgement","placement":{"world":s.config.world,"visible":s.config.visible,"allowGrab":s.config.allow_grab,"scale":s.config.scale,"level":s.config.level}})
     }
     pub fn configure(&self, v: &Value, workspace: &mut Workspace) -> Result<Value> {
         let mut s = self.inner.lock().unwrap();
@@ -256,7 +265,12 @@ impl Transport {
             bail!("MF6_CAPACITY：头像总容量为16384对象");
         }
         if config.enabled {
-            if config.port==9000&&!workspace.project.scene.text_panels.is_empty()&&s.discovery["info"]["textPanels"]!=true{bail!("AVATAR_TEXT_NOT_CONFIRMED：请上传文字插件并重新识别当前Avatar")}
+            if config.port == 9000
+                && !workspace.project.scene.text_panels.is_empty()
+                && s.discovery["info"]["textPanels"] != true
+            {
+                bail!("AVATAR_TEXT_NOT_CONFIRMED：请上传文字插件并重新识别当前Avatar")
+            }
             let declared = s.discovery["info"]["catalogHash"].as_str();
             if let Some(hash) = declared {
                 if !s
@@ -332,7 +346,8 @@ impl Transport {
             s.controls
                 .insert("MF_Scale".into(), Control::Float(c.scale));
             s.controls.insert("MF_Level".into(), Control::Bool(c.level));
-            s.controls.insert("MF_AllowGrab".into(),Control::Bool(c.allow_grab));
+            s.controls
+                .insert("MF_AllowGrab".into(), Control::Bool(c.allow_grab));
             validate_scene(
                 &workspace.project.scene,
                 s.config.capacity,
@@ -416,42 +431,116 @@ impl Transport {
                 std::fs::remove_file(p)?;
             }
         }
-        if !catalog.as_ref().is_some_and(|c|c.capabilities.iter().any(|v|v==crate::text_wire::CAPABILITY)){s.text=crate::text_wire::Session::default();}
-        if !catalog.as_ref().is_some_and(|c|c.capabilities.iter().any(|v|v==crate::avatar_motion::CAPABILITY)) {
-            s.motion=crate::avatar_motion::Session::default();
-            s.unified.motion_groups.clear();s.text.motion_groups.clear();
-            s.queued_frame_estimate=None;
+        if !catalog.as_ref().is_some_and(|c| {
+            c.capabilities
+                .iter()
+                .any(|v| v == crate::text_wire::CAPABILITY)
+        }) {
+            s.text = crate::text_wire::Session::default();
+        }
+        if !catalog.as_ref().is_some_and(|c| {
+            c.capabilities
+                .iter()
+                .any(|v| v == crate::avatar_motion::CAPABILITY)
+        }) {
+            s.motion = crate::avatar_motion::Session::default();
+            s.unified.motion_groups.clear();
+            s.text.motion_groups.clear();
+            s.queued_frame_estimate = None;
         }
         s.avatar_catalog = catalog;
         s.avatar_catalog_error.clear();
         Ok(())
     }
-    pub fn publish_motion(&self,scene:&Scene,materials:&[morphforge_core::materials::Material],clip:&crate::creative::Clip,id:&str,speed:f64,position:f64,playing:bool)->Result<Value>{
-        let(mut motion,catalog,port,confirmed)={let s=self.inner.lock().unwrap();(s.motion.clone(),s.avatar_catalog.clone(),s.config.port,s.discovery["info"]["motion4"]==true)};
-        if !catalog.as_ref().is_some_and(|c|c.capabilities.iter().any(|v|v==crate::avatar_motion::CAPABILITY))||port==9000&&!confirmed{bail!("AVATAR_MOTION_UNSUPPORTED：请更新并识别支持本地动画的Avatar")}
-        motion.publish(scene,clip,id,speed,position,playing)?;
-        let projection=crate::target::project_wire(scene,materials,catalog.as_ref())?;
-        self.publish_projection_motion(&projection.scene,projection.surfaces,false,true,Some(motion))
+    pub fn publish_motion(
+        &self,
+        scene: &Scene,
+        materials: &[morphforge_core::materials::Material],
+        clip: &crate::creative::Clip,
+        id: &str,
+        speed: f64,
+        position: f64,
+        playing: bool,
+    ) -> Result<Value> {
+        let (mut motion, catalog, port, confirmed) = {
+            let s = self.inner.lock().unwrap();
+            (
+                s.motion.clone(),
+                s.avatar_catalog.clone(),
+                s.config.port,
+                s.discovery["info"]["motion4"] == true,
+            )
+        };
+        if !catalog.as_ref().is_some_and(|c| {
+            c.capabilities
+                .iter()
+                .any(|v| v == crate::avatar_motion::CAPABILITY)
+        }) || port == 9000 && !confirmed
+        {
+            bail!("AVATAR_MOTION_UNSUPPORTED：请更新并识别支持本地动画的Avatar")
+        }
+        if port == 9000 && self.inner.lock().unwrap().discovery["info"]["motionSession"] != true {
+            bail!("AVATAR_MOTION_SESSION_UNSUPPORTED：请更新到支持动画会话恢复的头像并重新识别")
+        }
+        motion.publish(scene, clip, id, speed, position, playing)?;
+        let projection = crate::target::project_wire(scene, materials, catalog.as_ref())?;
+        self.publish_projection_motion(
+            &projection.scene,
+            projection.surfaces,
+            false,
+            true,
+            Some(motion),
+        )
     }
-    pub fn detach_motion(&self,scene:&Scene,materials:&[morphforge_core::materials::Material])->Result<Value> {
-        let (mut motion,catalog)={let s=self.inner.lock().unwrap();(s.motion.clone(),s.avatar_catalog.clone())};
+    pub fn detach_motion(
+        &self,
+        scene: &Scene,
+        materials: &[morphforge_core::materials::Material],
+    ) -> Result<Value> {
+        let (mut motion, catalog) = {
+            let s = self.inner.lock().unwrap();
+            (s.motion.clone(), s.avatar_catalog.clone())
+        };
         motion.detach();
-        let projected=crate::target::project_wire(scene,materials,catalog.as_ref())?;
-        self.publish_projection_motion(&projected.scene,projected.surfaces,false,true,Some(motion))
+        let projected = crate::target::project_wire(scene, materials, catalog.as_ref())?;
+        self.publish_projection_motion(
+            &projected.scene,
+            projected.surfaces,
+            false,
+            true,
+            Some(motion),
+        )
     }
     pub fn forget_motion(&self) {
-        let mut s=self.inner.lock().unwrap();
-        s.motion=crate::avatar_motion::Session::default();
-        s.unified.motion_groups.clear();s.text.motion_groups.clear();
-        s.queued_frame_estimate=None;
+        let mut s = self.inner.lock().unwrap();
+        s.motion = crate::avatar_motion::Session::default();
+        s.unified.motion_groups.clear();
+        s.text.motion_groups.clear();
+        s.queued_frame_estimate = None;
     }
-    pub fn motion_control(&self,action:&str,position:Option<f64>)->Result<Value>{let mut s=self.inner.lock().unwrap();s.motion.control(action,position)?;s.queued_frame_estimate=None;drop(s);Ok(self.state())}
-    pub fn latest_text(&self,id:&str,text:&str)->Result<()> {
-        let mut s=self.inner.lock().unwrap();
-        if !s.config.enabled{bail!("OSC尚未开启")}
-        if !s.avatar_catalog.as_ref().is_some_and(|c|c.capabilities.iter().any(|v|v=="mf6-text-latest14/1")){bail!("当前Avatar不支持实时短文字窗口")}
-        if s.config.port==9000&&s.discovery["info"]["textPanels"]!=true{bail!("请重新识别带文字接收器的Avatar")}
-        s.text.latest_text(id,text)
+    pub fn motion_control(&self, action: &str, position: Option<f64>) -> Result<Value> {
+        let mut s = self.inner.lock().unwrap();
+        s.motion.control(action, position)?;
+        s.queued_frame_estimate = None;
+        drop(s);
+        Ok(self.state())
+    }
+    pub fn latest_text(&self, id: &str, text: &str) -> Result<()> {
+        let mut s = self.inner.lock().unwrap();
+        if !s.config.enabled {
+            bail!("OSC尚未开启")
+        }
+        if !s
+            .avatar_catalog
+            .as_ref()
+            .is_some_and(|c| c.capabilities.iter().any(|v| v == "mf6-text-latest14/1"))
+        {
+            bail!("当前Avatar不支持实时短文字窗口")
+        }
+        if s.config.port == 9000 && s.discovery["info"]["textPanels"] != true {
+            bail!("请重新识别带文字接收器的Avatar")
+        }
+        s.text.latest_text(id, text)
     }
     pub fn publish_with_materials(
         &self,
@@ -493,14 +582,29 @@ impl Transport {
         resync: bool,
         allow_auto: bool,
     ) -> Result<Value> {
-        self.publish_projection_motion(scene,surfaces,resync,allow_auto,None)
+        self.publish_projection_motion(scene, surfaces, resync, allow_auto, None)
     }
-    fn publish_projection_motion(&self,scene:&Scene,surfaces:BTreeMap<protocol::GeometryKey,morphforge_core::material_wire::Surface>,resync:bool,allow_auto:bool,motion:Option<crate::avatar_motion::Session>)->Result<Value>{
+    fn publish_projection_motion(
+        &self,
+        scene: &Scene,
+        surfaces: BTreeMap<protocol::GeometryKey, morphforge_core::material_wire::Surface>,
+        resync: bool,
+        allow_auto: bool,
+        motion: Option<crate::avatar_motion::Session>,
+    ) -> Result<Value> {
         let signature = source_signature(scene, &surfaces)?;
         let mut s = self.inner.lock().unwrap();
         validate_scene(scene, s.config.capacity, &s.config.profile)?;
-        motion.as_ref().unwrap_or(&s.motion).validate_target(scene)?;
-        if s.config.port==9000&&!scene.text_panels.is_empty()&&s.discovery["info"]["textPanels"]!=true{bail!("AVATAR_TEXT_NOT_CONFIRMED：当前Avatar未确认文字接收能力")}
+        motion
+            .as_ref()
+            .unwrap_or(&s.motion)
+            .validate_target(scene)?;
+        if s.config.port == 9000
+            && !scene.text_panels.is_empty()
+            && s.discovery["info"]["textPanels"] != true
+        {
+            bail!("AVATAR_TEXT_NOT_CONFIRMED：当前Avatar未确认文字接收能力")
+        }
 
         let regions = s.avatar_catalog.as_ref().is_some_and(|c| {
             c.capabilities
@@ -509,7 +613,9 @@ impl Transport {
         });
         let mut original = s.unified.clone();
         original.region_enabled = regions;
-        if let Some(m)=&motion{original.set_motion_groups(m.groups())?;}
+        if let Some(m) = &motion {
+            original.set_motion_groups(m.groups())?;
+        }
         original.set_target(scene, &surfaces)?;
         let policy = if resync {
             "rebuild"
@@ -562,7 +668,9 @@ impl Transport {
         if compact_scene.boxes.len() < scene.boxes.len() {
             let mut merged = s.unified.clone();
             merged.region_enabled = regions;
-            if let Some(m) = &motion { merged.set_motion_groups(m.groups())?; }
+            if let Some(m) = &motion {
+                merged.set_motion_groups(m.groups())?;
+            }
             merged.set_target(&compact_scene, &compact_surfaces)?;
             let mut alternative = strategy::compare(
                 &merged,
@@ -590,11 +698,13 @@ impl Transport {
         if !allow_auto && decision.incremental_frames.is_none() {
             bail!("保留显示补播无法重新平衡当前池，请使用清空重建");
         }
-        let mut text=s.text.clone();
-        text.motion_groups=selected.motion_groups.clone();
+        let mut text = s.text.clone();
+        text.motion_groups = selected.motion_groups.clone();
         text.set_target(scene)?;
-        s.text=text;
-        if let Some(m)=motion{s.motion=m;}
+        s.text = text;
+        if let Some(m) = motion {
+            s.motion = m;
+        }
         s.unified = selected;
         s.source_signature = signature;
         if allow_auto && decision.selected == "rebuild" {
@@ -606,7 +716,12 @@ impl Transport {
         } else {
             decision.incremental_frames
         };
-        s.queued_frame_estimate = frames.map(|n| (s.sent_frame_count, n + s.text.pending_commands()+s.motion.pending()));
+        s.queued_frame_estimate = frames.map(|n| {
+            (
+                s.sent_frame_count,
+                n + s.text.pending_commands() + s.motion.pending(),
+            )
+        });
         s.publication = Some(decision);
         let scene = &selected_scene;
         let surfaces = selected_surfaces;
@@ -629,7 +744,12 @@ impl Transport {
         s.motion.replay();
         s.queued_frame_estimate = strategy::frames(s.unified.clone(), &s.config.send_order)
             .ok()
-            .map(|n| (s.sent_frame_count, n + s.resets as usize + s.text.pending_commands()+s.motion.pending()));
+            .map(|n| {
+                (
+                    s.sent_frame_count,
+                    n + s.resets as usize + s.text.pending_commands() + s.motion.pending(),
+                )
+            });
         s.sent_revision = None;
         s.last_refresh = Instant::now();
         drop(s);
@@ -690,11 +810,12 @@ impl Transport {
         }
         let mut channel: Option<(fs::File, UdpSocket, u64)> = None;
         let mut next = Instant::now();
-        let mut last_snapshot=Instant::now()-Duration::from_secs(10);
+        let mut last_snapshot = Instant::now() - Duration::from_secs(10);
+        let mut text_burst = 0u8;
         loop {
-            let (enabled, generation, stop) = {
+            let (enabled, generation, stop, channel_port) = {
                 let s = self.inner.lock().unwrap();
-                (s.config.enabled, s.generation, s.stop)
+                (s.config.enabled, s.generation, s.stop, s.config.port)
             };
             if stop {
                 break;
@@ -723,7 +844,11 @@ impl Transport {
                         .write(true)
                         .create(true)
                         .truncate(false)
-                        .open(directory.join("stage1-osc.lock"))?;
+                        .open(directory.join(if channel_port == 9000 {
+                            "stage1-osc.lock".into()
+                        } else {
+                            format!("osc-{channel_port}.lock")
+                        }))?;
                     file.try_lock_exclusive()
                         .context("另一进程正在占用OSC通道")?;
                     Ok((file, UdpSocket::bind("127.0.0.1:0")?, generation))
@@ -769,7 +894,8 @@ impl Transport {
                 let should_refresh = s.sent_revision == Some(s.desired_revision)
                     && !s.unified.repairing()
                     && (s.unified.has_replay_work() || s.text.active() || s.motion.replay_needed())
-                    && s.text.pending()==0 && s.motion.pending()==0
+                    && s.text.pending() == 0
+                    && s.motion.pending() == 0
                     && (s.config.loop_replay
                         || (s.config.refresh_seconds > 0
                             && s.last_refresh.elapsed().as_secs() >= s.config.refresh_seconds));
@@ -780,34 +906,70 @@ impl Transport {
                     s.queued_frame_estimate =
                         strategy::frames(s.unified.clone(), &s.config.send_order)
                             .ok()
-                            .map(|n| (s.sent_frame_count, n + s.text.pending_commands()+s.motion.pending()));
+                            .map(|n| {
+                                (
+                                    s.sent_frame_count,
+                                    n + s.text.pending_commands() + s.motion.pending(),
+                                )
+                            });
                     s.sent_revision = None;
                     s.last_refresh = Instant::now();
                 }
-                if let Some(message)=s.text.next() {
-                    Some(Job::Text(message))
-                } else if let Some(snapshot)=s.text.next_latest().filter(|_|last_snapshot.elapsed().as_secs_f64()>=s.config.interval*2.) {Some(Job::Snapshot(snapshot))
-                } else if let Some(plan)=s.motion.next(){Some(Job::Motion(plan))
-                } else {match s.unified.next(&s.config.send_order) {
-                    Ok(Some(plan)) => Some(Job::Frame(plan)),
-                    Ok(None) => {
-                        if s.unified.repairing() {
-                            s.replay_cycles += 1;
-                            s.unified.finish_replay();
+                let geometry_turn = if text_burst >= 2 && s.unified.pending_objects() > 0 {
+                    match s.unified.next(&s.config.send_order) {
+                        Ok(plan) => plan,
+                        Err(e) => {
+                            s.config.enabled = false;
+                            s.last_error = e.to_string();
+                            continue;
                         }
-                        if s.sent_revision != Some(s.desired_revision) {
-                            s.last_refresh = Instant::now();
-                        }
-                        s.sent_revision = Some(s.desired_revision);
-                        None
                     }
-                    Err(e) => {
-                        s.config.enabled = false;
-                        s.last_error = e.to_string();
-                        continue;
+                } else {
+                    None
+                };
+                let motion_turn = if text_burst >= 2 {
+                    s.motion.next_for_sender(s.unified.pending_objects() == 0)
+                } else {
+                    None
+                };
+                if let Some(plan) = motion_turn {
+                    Some(Job::Motion(plan))
+                } else if let Some(plan) = geometry_turn {
+                    Some(Job::Frame(plan))
+                } else if let Some(snapshot) = s
+                    .text
+                    .next_latest()
+                    .filter(|_| last_snapshot.elapsed().as_secs_f64() >= s.config.interval * 2.)
+                {
+                    Some(Job::Snapshot(snapshot))
+                } else if let Some(message) = s.text.next() {
+                    Some(Job::Text(message))
+                } else if let Some(plan) =
+                    s.motion.next_for_sender(s.unified.pending_objects() == 0)
+                {
+                    Some(Job::Motion(plan))
+                } else {
+                    match s.unified.next(&s.config.send_order) {
+                        Ok(Some(plan)) => Some(Job::Frame(plan)),
+                        Ok(None) => {
+                            if s.unified.repairing() {
+                                s.replay_cycles += 1;
+                                s.unified.finish_replay();
+                            }
+                            if s.sent_revision != Some(s.desired_revision) {
+                                s.last_refresh = Instant::now();
+                            }
+                            s.sent_revision = Some(s.desired_revision);
+                            None
+                        }
+                        Err(e) => {
+                            s.config.enabled = false;
+                            s.last_error = e.to_string();
+                            continue;
+                        }
                     }
                 }
-            }};
+            };
             let Some(job) = job else {
                 drop(s);
                 std::thread::sleep(Duration::from_millis(10));
@@ -817,8 +979,8 @@ impl Transport {
             let port = s.config.port;
             let interval = s.config.interval;
             let encoded = match &job {
-                Job::Frame(p) => p.frame.packet_group(seq,s.unified.frame_group(p)),
-                Job::Motion(p)=>Ok(p.message.packet(seq)),
+                Job::Frame(p) => p.frame.packet_group(seq, s.unified.frame_group(p)),
+                Job::Motion(p) => Ok(p.message.packet(seq)),
                 Job::Text(m) => Ok(m.packet(seq)),
                 Job::Snapshot(m) => Ok(m.packet()),
                 Job::Controls(values) => Ok(protocol::bundle(
@@ -861,6 +1023,11 @@ impl Transport {
                 continue;
             }
             s.sent_count += 1;
+            text_burst = if matches!(&job, Job::Text(_) | Job::Snapshot(_)) {
+                text_burst.saturating_add(1)
+            } else {
+                0
+            };
             let event = match &job {
                 Job::Frame(p) => {
                     s.sent_frame_count += 1;
@@ -876,10 +1043,21 @@ impl Transport {
                     }
                     json!({"seq":seq,"port":port,"protocol":"mf6","objects":p.frame.objects(),"frame":p.frame})
                 }
-                Job::Motion(p)=>{s.motion.commit(p);s.sent_frame_count+=1;s.seq=(seq+1)%16;json!({"seq":seq,"port":port,"animation":true,"op":p.message.0[0],"group":p.message.0[1]})}
-                Job::Snapshot(m)=>{s.text.commit_latest(m);last_snapshot=Instant::now();json!({"port":port,"textSnapshot":true,"slot":m.slot,"characters":m.data[28]-128})}
+                Job::Motion(p) => {
+                    s.motion.commit(p);
+                    s.sent_frame_count += 1;
+                    s.seq = (seq + 1) % 16;
+                    json!({"seq":seq,"port":port,"animation":true,"op":p.message.0[0],"group":p.message.0[1]})
+                }
+                Job::Snapshot(m) => {
+                    s.text.commit_latest(m);
+                    last_snapshot = Instant::now();
+                    json!({"port":port,"textSnapshot":true,"slot":m.slot,"characters":m.data[28]-128})
+                }
                 Job::Text(m) => {
-                    s.text.commit(m);s.sent_frame_count+=1;s.seq=(seq+1)%16;
+                    s.text.commit(m);
+                    s.sent_frame_count += 1;
+                    s.seq = (seq + 1) % 16;
                     json!({"seq":seq,"port":port,"text":true,"op":m.0[0],"slot":m.0[1]})
                 }
                 Job::Controls(values) => {
@@ -895,6 +1073,18 @@ impl Transport {
                     json!({"port":port,"resetPulse":true})
                 }
             };
+            // Transient captions have their own queue and do not hold an
+            // already-sent authored version open indefinitely during speech.
+            if s.resets == 0
+                && s.unified.pending_objects() == 0
+                && s.text.pending_saved() == 0
+                && s.motion.pending() == 0
+            {
+                if s.sent_revision != Some(s.desired_revision) {
+                    s.last_refresh = Instant::now();
+                }
+                s.sent_revision = Some(s.desired_revision);
+            }
             drop(s);
             if let Ok(mut w) = workspace.lock() {
                 let _ = w.event("osc.sent", None, event);
@@ -919,11 +1109,14 @@ fn scale_valid(value: f32, _profile: &str) -> bool {
         .contains(&value)
 }
 fn validate_scene(scene: &Scene, capacity: usize, _profile: &str) -> Result<()> {
-    if scene.boxes.len() + scene.triangles.len() > capacity {
+    if scene.boxes.len() + scene.triangles.len() + scene.drawings.len() > capacity {
         bail!("MF6容量超限：{capacity}对象")
     }
     for t in &scene.triangles {
         t.wire_vertices()?;
+    }
+    for p in &scene.drawings {
+        p.wire()?;
     }
     for b in &scene.boxes {
         protocol::validate_geometry(b)?;

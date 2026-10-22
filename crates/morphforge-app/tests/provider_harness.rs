@@ -276,7 +276,7 @@ fn inert_transport() -> Transport {
     Transport {
         inner: Arc::new(Mutex::new(TransportState {
             text: morphforge_app::text_wire::Session::default(),
-            motion:morphforge_app::avatar_motion::Session::default(),
+            motion: morphforge_app::avatar_motion::Session::default(),
             publication: None,
             discovery: json!({}),
             avatar_catalog: None,
@@ -332,6 +332,41 @@ async fn terminal_run(harness: &Harness) -> Run {
     })
     .await
     .expect("harness run should reach a terminal state")
+}
+
+#[tokio::test]
+async fn repeated_provider_call_ids_in_different_responses_do_not_skip_new_edits() {
+    let fake = FakeResponses::start(vec![
+        completed(vec![function_call(
+            "call_0",
+            "text_panels",
+            json!({"action":"create","id":"first","baseRevision":0,"panel":{"text":"甲"}}),
+        )]),
+        completed(vec![function_call(
+            "call_0",
+            "text_panels",
+            json!({"action":"create","id":"second","baseRevision":1,"panel":{"text":"乙"}}),
+        )]),
+        completed(vec![]),
+    ])
+    .await;
+    let dir = TempDir::new().unwrap();
+    let w = workspace(&dir);
+    let h = harness(w.clone(), &fake.base);
+    h.start("创建两个独立的贴图文本框").unwrap();
+    assert_eq!(terminal_run(&h).await.status, "completed");
+    let w = w.lock().unwrap();
+    assert_eq!(w.project.scene.revision, 2);
+    assert_eq!(w.project.scene.text_panels.len(), 2);
+    let ids = w
+        .events
+        .iter()
+        .filter(|e| e.kind == "geometry.applied")
+        .map(|e| e.data["requestId"].as_str().unwrap().to_owned())
+        .collect::<Vec<_>>();
+    assert_eq!(ids.len(), 2);
+    assert_ne!(ids[0], ids[1]);
+    assert!(ids.iter().all(|id| id.len() <= 128));
 }
 
 #[tokio::test]
@@ -2462,28 +2497,67 @@ async fn mf6_harness_repair_and_loop_replay_use_current_protocol_without_clear()
 #[tokio::test]
 async fn explicit_prefix_monitor_opt_out_warns_and_sends_without_disabling_default() {
     use morphforge_app::provider::ProviderRequestTrace;
-    let fake=FakeResponses::start(vec![completed(vec![]),completed(vec![])]).await;
-    let dir=TempDir::new().unwrap();let w=workspace(&dir);
-    let provider=Provider::new_for_loopback_test(dir.path(),&fake.base).unwrap();let cancel=Cancellation::new();
-    let first=json!({"model":"test","instructions":"stable","input":[{"role":"user","content":"one"}],"max_output_tokens":1024,"stream":true});
-    provider.response(first.clone(),w.clone(),"r",&cancel).await.unwrap();
-    let mut changed=first;changed["instructions"]=json!("changed");
-    assert!(provider.response(changed.clone(),w.clone(),"r",&cancel).await.is_err());
-    assert_eq!(fake.request_count(),1);
-    provider.response_with_trace(changed,w.clone(),"r",&cancel,ProviderRequestTrace{strict_append_only:Some(false),..Default::default()}).await.unwrap();
-    assert_eq!(fake.request_count(),2);
-    assert!(w.lock().unwrap().events.iter().any(|e|e.kind=="cache.guard.warning"));
+    let fake = FakeResponses::start(vec![completed(vec![]), completed(vec![])]).await;
+    let dir = TempDir::new().unwrap();
+    let w = workspace(&dir);
+    let provider = Provider::new_for_loopback_test(dir.path(), &fake.base).unwrap();
+    let cancel = Cancellation::new();
+    let first = json!({"model":"test","instructions":"stable","input":[{"role":"user","content":"one"}],"max_output_tokens":1024,"stream":true});
+    provider
+        .response(first.clone(), w.clone(), "r", &cancel)
+        .await
+        .unwrap();
+    let mut changed = first;
+    changed["instructions"] = json!("changed");
+    assert!(provider
+        .response(changed.clone(), w.clone(), "r", &cancel)
+        .await
+        .is_err());
+    assert_eq!(fake.request_count(), 1);
+    provider
+        .response_with_trace(
+            changed,
+            w.clone(),
+            "r",
+            &cancel,
+            ProviderRequestTrace {
+                strict_append_only: Some(false),
+                ..Default::default()
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(fake.request_count(), 2);
+    assert!(w
+        .lock()
+        .unwrap()
+        .events
+        .iter()
+        .any(|e| e.kind == "cache.guard.warning"));
     assert!(ProviderSettings::default().strict_append_only);
 }
 
 #[tokio::test]
 async fn manual_edits_wait_for_ai_worker_and_can_resume_after_pause() {
-    let fake=FakeResponses::start(vec![]).await;let dir=TempDir::new().unwrap();let h=harness(workspace(&dir),&fake.base);
+    let fake = FakeResponses::start(vec![]).await;
+    let dir = TempDir::new().unwrap();
+    let h = harness(workspace(&dir), &fake.base);
     assert!(h.ensure_manual_edit().is_ok());
-    {let mut state=h.inner.lock().unwrap();state.phase="running".into();state.worker_epoch=Some(1);}
-    assert!(h.ensure_manual_edit().is_err());assert_eq!(h.state()["manualEditLocked"],true);
-    {let mut state=h.inner.lock().unwrap();state.phase="paused".into();}
+    {
+        let mut state = h.inner.lock().unwrap();
+        state.phase = "running".into();
+        state.worker_epoch = Some(1);
+    }
     assert!(h.ensure_manual_edit().is_err());
-    {h.inner.lock().unwrap().worker_epoch=None;}
-    assert!(h.ensure_manual_edit().is_ok());assert_eq!(h.state()["manualEditLocked"],false);
+    assert_eq!(h.state()["manualEditLocked"], true);
+    {
+        let mut state = h.inner.lock().unwrap();
+        state.phase = "paused".into();
+    }
+    assert!(h.ensure_manual_edit().is_err());
+    {
+        h.inner.lock().unwrap().worker_epoch = None;
+    }
+    assert!(h.ensure_manual_edit().is_ok());
+    assert_eq!(h.state()["manualEditLocked"], false);
 }

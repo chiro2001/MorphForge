@@ -161,6 +161,20 @@ namespace MorphForge.Editor
             var skip=To(release,done);skip.AddCondition(AnimatorConditionMode.Greater,2,prefix+"Op");skip.AddCondition(AnimatorConditionMode.NotEqual,5,prefix+"Op");To(fire,done);To(done,idle);
             var enter=sm.AddAnyStateTransition(latch);enter.duration=0;enter.hasExitTime=false;enter.canTransitionToSelf=false;enter.AddCondition(AnimatorConditionMode.If,0,prefix+"Ready");enter.AddCondition(AnimatorConditionMode.IfNot,0,prefix+"Busy");
         }
+        public static int OptimizeIdle(AnimatorController controller)
+        {
+            var layer=controller.layers.FirstOrDefault(l=>l.name=="MF6 immutable data and phase output");if(layer==null)return 0;
+            var sm=layer.stateMachine;if(sm.states.Any(s=>s.state.name=="Prepare payload"))return 0;
+            var wait=sm.states.Single(s=>s.state.name=="Wait").state;var output=wait.motion as BlendTree;
+            if(!output||output.children.Length!=2)throw new Exception("Unexpected native worker output; preserved");
+            string busy=controller.parameters.Single(p=>p.name.StartsWith("MF6_P")&&p.name.EndsWith("_Busy")).name;
+            var incoming=sm.anyStateTransitions.Single(t=>t.destinationState==wait);var conditions=incoming.conditions;
+            var prepare=sm.AddState("Prepare payload");prepare.motion=output;prepare.writeDefaultValues=true;
+            wait.motion=output.children[1].motion;wait.writeDefaultValues=false;
+            incoming.AddCondition(AnimatorConditionMode.IfNot,0,busy);
+            var enter=sm.AddAnyStateTransition(prepare);enter.duration=0;enter.hasExitTime=false;enter.canTransitionToSelf=false;enter.conditions=conditions;enter.AddCondition(AnimatorConditionMode.If,0,busy);
+            EditorUtility.SetDirty(controller);return 1;
+        }
         public static string BuildWorker(int pool,string materialSource=null)
         {
             if(EditorApplication.isPlaying||EditorApplication.isCompiling||pool<0||pool>7)throw new Exception("Idle Edit Mode and pool0..7 required");
@@ -202,7 +216,7 @@ namespace MorphForge.Editor
                 module.GetComponent<ModularAvatarMergeAnimator>().animator=fx;module.GetComponent<ModularAvatarParameters>().parameters.Clear();
                 PrefabUtility.SaveAsPrefabAsset(module,path+"/Display.prefab");
             }finally{PrefabUtility.UnloadPrefabContents(module);}
-            EditorUtility.SetDirty(fx);AssetDatabase.SaveAssets();return Newtonsoft.Json.JsonConvert.SerializeObject(new{success=true,pool,layers=fx.layers.Length,parameters=fx.parameters.Length,clips=clipId,prefab=path+"/Display.prefab",syncedBits=0});
+            OptimizeIdle(fx);EditorUtility.SetDirty(fx);AssetDatabase.SaveAssets();return Newtonsoft.Json.JsonConvert.SerializeObject(new{success=true,pool,layers=fx.layers.Length,parameters=fx.parameters.Length,clips=clipId,prefab=path+"/Display.prefab",syncedBits=0});
         }
     }
 }

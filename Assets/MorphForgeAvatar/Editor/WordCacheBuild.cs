@@ -43,6 +43,20 @@ namespace MorphForgeAvatar.Editor {
         public static void Begin(AnimatorController controller) {
             owner = controller; motions = new Dictionary<string, Motion>(); AddInputs(controller);
         }
+        // Retain packed AAP storage independently of material output. Empty
+        // panels and inactive animation banks can stop writing renderer curves.
+        public static Motion Hold(string one, IEnumerable<string> parameters) {
+            var tree=new BlendTree{name="Retained word storage",blendType=BlendTreeType.Direct};
+            AssetDatabase.AddObjectToAsset(tree,owner);
+            var names=parameters.Distinct().ToArray();
+            foreach(string name in names) {
+                var clip=new AnimationClip{name="Retain "+name,frameRate=60};
+                AnimationUtility.SetEditorCurve(clip,EditorCurveBinding.FloatCurve("",typeof(Animator),name),AnimationCurve.Constant(0,.02f,1));
+                AssetDatabase.AddObjectToAsset(clip,owner);tree.AddChild(clip);
+            }
+            var children=tree.children;for(int i=0;i<children.Length;i++)children[i].directBlendParameter=names[i];tree.children=children;
+            var serialized=new SerializedObject(tree);serialized.FindProperty("m_NormalizedBlendValues").boolValue=false;serialized.ApplyModifiedPropertiesWithoutUndo();return tree;
+        }
         public static Motion Receive(string one, IEnumerable<Input> input) {
             if (!owner) throw new InvalidOperationException("Begin a cache controller build first.");
             var words = input.ToArray(); string key = one + ":" + string.Join(";", words.Select(w => w.target + "@" + w.firstByte));

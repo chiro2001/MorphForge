@@ -1,0 +1,29 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "OSC remains disabled",
+      "passed": true
+    },
+    {
+      "name": "overlapping text previews retain exactly the newest mesh",
+      "passed": true
+    },
+    {
+      "name": "capsule CPU picking agrees at both far endpoints and center",
+      "passed": true
+    },
+    {
+      "name": "private 176-box scene renders with a stable stationary view",
+      "passed": true
+    },
+    {
+      "name": "preview uses tighter depth range",
+      "passed": true
+    },
+    {
+      "name": "no JavaScript or WebGL errors",
+      "passed": true
+    }
+  ]
+}

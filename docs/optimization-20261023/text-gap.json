@@ -1,0 +1,24 @@
+{
+  "success": true,
+  "captures": [
+    {
+      "zoom": 1.0,
+      "frames": 45,
+      "inkPixels": 270735,
+      "blankSamples": 21970500,
+      "unexpectedOpaquePixels": 0,
+      "sameViewChangedFrames": 0,
+      "pass": true
+    },
+    {
+      "zoom": 2.5,
+      "frames": 45,
+      "inkPixels": 60360,
+      "blankSamples": 23175705,
+      "unexpectedOpaquePixels": 0,
+      "sameViewChangedFrames": 0,
+      "pass": true
+    }
+  ],
+  "scope": "Production UDP text config and pages, mixed Chinese/English with 8-cell letter spacing. No material writes or phase injection. 90 GPU frames, near/far and subpixel camera changes after sender stops."
+}

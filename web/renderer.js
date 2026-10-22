@@ -1,8 +1,9 @@
-import { sampleTrack, poseBounds } from "/motion.js";
+import { sampleTrack, poseBounds, motionEnvelope } from "/motion.js";
 import { textureOrientationShader } from "/texture-orientation.js";
 import { proceduralShader } from "/procedural-shader.js";
 import { captureSampling, viewPixelRatio } from "/render-settings.js";
 import { fitBounds, resolveCamera } from "/camera-spec.js";
+import { capsuleRayDistance } from "/drawing-math.js";
 import { TextPanelRenderer } from "/text-panels.js";
 import { SceneNavigation } from "/navigation.js";
 import { LinearCompositor } from "/linear-compositor.js";
@@ -97,6 +98,7 @@ export class VoxelRenderer {
     this.boxes = [];
     this.triangles = [];
     this.triangleMeshes = [];
+    this.drawings=[];this.drawingMeshes=[];
     this.groupsHidden = new Set();
     this.cellSize = 0.25;
     this.scale = 1;
@@ -167,8 +169,20 @@ export class VoxelRenderer {
     this.renderer.setAnimationLoop(this.animationLoop);
   }
   render() {
+    this.updateDepthRange();
     this.compositor.material.toneMapped = this.mode !== "vrc";
     this.compositor.render(this.scene, this.camera);
+  }
+  updateDepthRange() {
+    // Refit depth precision to the current artwork rather than retaining a
+    // 0.001..5000 range after tiny Avatar-scale zooms. Cache bounds while static.
+    const key=[this.renderRevision,this.scale,this.cellSize,[...this.groupsHidden].sort().join(','),this.textPanels?.generation||0,!!this.animationClip].join('|');
+    if(key!==this.depthBoundsKey){this.depthBoundsKey=key;if(this.animationClip&&this.animationEnvelope){const unit=this.cellSize*this.scale;this.depthBounds=new THREE.Box3();this.depthBounds.expandByPoint(toThree(this.animationEnvelope.min.map(v=>v*unit)));this.depthBounds.expandByPoint(toThree(this.animationEnvelope.max.map(v=>v*unit)));}else this.depthBounds=this.bounds();}
+    const box=this.depthBounds;if(!box||box.isEmpty())return;
+    const center=box.getCenter(new THREE.Vector3()),radius=box.getSize(new THREE.Vector3()).length()*.5;
+    const distance=this.camera.position.distanceTo(center),unit=this.cellSize*this.scale;
+    const near=Math.max(1e-8,unit*.001,(distance-radius)*.25),far=Math.max(near*10,distance+radius*1.25+unit*4);
+    if(Math.abs(this.camera.near-near)>near*.001||Math.abs(this.camera.far-far)>far*.001){this.camera.near=near;this.camera.far=far;this.camera.updateProjectionMatrix();}
   }
   setViewOptions({quality = this.quality, voxelGrid = this.voxelGrid, surfaceCulling = this.surfaceCulling, showTargetBounds = this.targetBounds.visible} = {}) {
     this.quality = quality;
@@ -781,6 +795,7 @@ export class VoxelRenderer {
     this.textPreviewBoxes = [];
   }
   loadTriangles(scene) {
+    this.loadDrawings(scene);
     this.triangles = scene.triangles || [];
     const signature=JSON.stringify([this.triangles,[...this.groupsHidden].sort(),this.mode,this.cellSize]);
     if(signature===this.triangleSignature)return;
@@ -811,8 +826,37 @@ export class VoxelRenderer {
     }
     this.updateSelection();
   }
+  loadDrawings(scene) {
+    const drawings=scene.drawings||[],signature=JSON.stringify([drawings,[...this.groupsHidden].sort(),this.cellSize,this.mode]);
+    if(signature===this.drawingSignature)return;this.drawingSignature=signature;this.drawings=drawings;
+    for(const mesh of this.drawingMeshes){this.content.remove(mesh);mesh.geometry.dispose();mesh.material.dispose();}this.drawingMeshes=[];
+    const unit=this.cellSize;
+    for(const kind of ['point','cube_point','segment']){
+      const items=drawings.filter(p=>p.kind===kind&&!this.groupsHidden.has(p.group));if(!items.length)continue;
+      const geometry=kind==='segment'?new THREE.CapsuleGeometry(.5,1,4,8):kind==='point'?new THREE.SphereGeometry(.5,12,8):new THREE.BoxGeometry(1,1,1);
+      const params={color:0xffffff,vertexColors:true,toneMapped:this.mode!=='vrc'};
+      const material=this.mode==='vrc'?new THREE.MeshBasicMaterial(params):new THREE.MeshStandardMaterial({...params,roughness:.85,metalness:0});
+      const lengths=new Float32Array(items.length);if(kind==='segment'){geometry.setAttribute('mfDrawingLength',new THREE.InstancedBufferAttribute(lengths,1));material.onBeforeCompile=shader=>{shader.vertexShader='attribute float mfDrawingLength;\n'+shader.vertexShader;shader.vertexShader=shader.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\ntransformed.y += sign(position.y)*.5*(mfDrawingLength-1.);');};material.customProgramCacheKey=()=> 'mf-native-capsule-v1';}
+      const mesh=new THREE.InstancedMesh(geometry,material,items.length);mesh.userData.drawings=items;mesh.name='Native '+kind;
+      if(kind==='segment')mesh.raycast=(raycaster,hits)=>{
+        const instance=new THREE.Matrix4(),world=new THREE.Matrix4(),inverse=new THREE.Matrix4();
+        for(let i=0;i<items.length;i++){
+          mesh.getMatrixAt(i,instance);world.multiplyMatrices(mesh.matrixWorld,instance);inverse.copy(world).invert();
+          const ray=raycaster.ray.clone().applyMatrix4(inverse),t=capsuleRayDistance(ray.origin.toArray(),ray.direction.toArray(),lengths[i]);if(t===null)continue;
+          const point=ray.at(t,new THREE.Vector3()).applyMatrix4(world),distance=point.distanceTo(raycaster.ray.origin);
+          if(distance>=raycaster.near&&distance<=raycaster.far)hits.push({distance,point,object:mesh,instanceId:i});
+        }
+      };
+      mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+      const matrix=new THREE.Matrix4(),q=new THREE.Quaternion(),up=new THREE.Vector3(0,1,0);
+      items.forEach((p,i)=>{const a=toThree(p.start.map(v=>v*unit)),b=toThree(p.end.map(v=>v*unit)),diameter=p.diameter64/64*unit;const position=a.clone().add(b).multiplyScalar(.5),scale=new THREE.Vector3(diameter,diameter,diameter);q.identity();if(kind==='segment'){const d=b.clone().sub(a);lengths[i]=d.length()/diameter;q.setFromUnitVectors(up,d.normalize());}matrix.compose(position,q,scale);mesh.setMatrixAt(i,matrix);mesh.setColorAt(i,new THREE.Color().setRGB(...p.color.map(v=>v/255),THREE.SRGBColorSpace));});
+      mesh.instanceMatrix.needsUpdate=true;mesh.instanceColor.needsUpdate=true;const bounds=new THREE.Box3();for(const p of items){const r=p.diameter64/128;bounds.expandByPoint(toThree(p.start.map((v,a)=>(Math.min(v,p.end[a])-r)*unit)));bounds.expandByPoint(toThree(p.start.map((v,a)=>(Math.max(v,p.end[a])+r)*unit)));}mesh.boundingSphere=bounds.getBoundingSphere(new THREE.Sphere());this.content.add(mesh);this.drawingMeshes.push(mesh);
+    }
+    this.depthBoundsKey=null;
+  }
+  drawingBounds(){return this.drawings.map(p=>{const r=p.diameter64/128;const min=p.start.map((v,a)=>Math.min(v,p.end[a])-r),max=p.start.map((v,a)=>Math.max(v,p.end[a])+r);return{id:p.id,group:p.group,min,size:max.map((v,a)=>v-min[a])};});}
   cameraObjects() {
-    const geometry=this.animationClip?poseBounds(this.boxes,this.triangles,this.animationClip,this.animationTime):this.boxes.concat(this.triangles.map(t=>{
+    const geometry=this.animationClip?poseBounds(this.boxes.concat(this.drawingBounds()),this.triangles,this.animationClip,this.animationTime):this.boxes.concat(this.drawingBounds(),this.triangles.map(t=>{
       const min=[0,1,2].map(a=>Math.min(...t.vertices.map(v=>v[a]))),max=[0,1,2].map(a=>Math.max(...t.vertices.map(v=>v[a])));
       return {id:t.id,group:t.group,min,size:max.map((v,a)=>v-min[a])};
     }));
@@ -835,6 +879,7 @@ export class VoxelRenderer {
       box.union(new THREE.Box3().setFromCenterAndSize(center, extent));
     }
     for(const t of this.triangles){if(this.groupsHidden.has(t.group))continue;for(const p of t.vertices)box.expandByPoint(toThree(p.map(v=>v*this.cellSize*this.scale)));}
+    for(const p of this.drawingBounds()){if(this.groupsHidden.has(p.group))continue;box.expandByPoint(toThree(p.min.map(v=>v*this.cellSize*this.scale)));box.expandByPoint(toThree(p.min.map((v,a)=>(v+p.size[a])*this.cellSize*this.scale)));}
     for(const root of this.textPanels.items.values()){root.updateWorldMatrix(true,true);box.union(new THREE.Box3().setFromObject(root));}
     return box;
   }
@@ -926,6 +971,10 @@ export class VoxelRenderer {
       best={t:slopeHit.distance/(this.cellSize*this.scale),box:slopeHit.object.userData.boxes[slopeHit.instanceId],normal:fromThree(n)};
     }
     const triangleHit=raycaster.intersectObjects(this.triangleMeshes,false)[0];
+    const drawingHit=raycaster.intersectObjects(this.drawingMeshes,false)[0];
+    if(drawingHit&&(!best||drawingHit.distance<best.t*this.cellSize*this.scale)&&(!triangleHit||drawingHit.distance<triangleHit.distance)){
+      const drawing=drawingHit.object.userData.drawings[drawingHit.instanceId],point=fromThree(drawingHit.point).map(v=>v/(this.cellSize*this.scale));return {pos:point.map(Math.floor),box:null,drawing,normal:[0,1,0]};
+    }
     if(triangleHit&&(!best||triangleHit.distance<best.t*this.cellSize*this.scale)){
       const triangle=triangleHit.object.userData.faces[triangleHit.faceIndex],point=fromThree(triangleHit.point).map(v=>v/(this.cellSize*this.scale)),normal=fromThree(triangleHit.face.normal);
       return {pos:point.map((v,a)=>Math.floor(v+normal[a]*(erase?-1e-4:1e-4))),box:null,triangle,normal};
@@ -974,6 +1023,7 @@ export class VoxelRenderer {
       );
     }
     for(const t of this.triangles){if(!this.selection.has(t.id))continue;for(const p of t.vertices)box.expandByPoint(toThree(p.map(v=>v*this.cellSize*this.scale)));}
+    for(const p of this.drawingBounds()){if(!this.selection.has(p.id))continue;box.expandByPoint(toThree(p.min.map(v=>v*this.cellSize*this.scale)));box.expandByPoint(toThree(p.min.map((v,a)=>(v+p.size[a])*this.cellSize*this.scale)));}
     this.selectedHelper.box.copy(box);
     this.selectedHelper.visible = !box.isEmpty();
   }
@@ -982,9 +1032,10 @@ export class VoxelRenderer {
     return {projection:this.camera.isOrthographicCamera?"orthographic":"perspective",position:fromThree(this.camera.position).map(v=>v/unit),target:fromThree(this.controls.target).map(v=>v/unit),up:fromThree(this.camera.up),fov:this.camera.fov||42,...(this.camera.isOrthographicCamera?{orthoHeight:(this.camera.top-this.camera.bottom)/(unit*this.camera.zoom)}:{}),fit:{bounds:{min:[-1,-1,-1],max:[1,1,1]}}};
   }
   setAnimationPose(clip,time) {
-    if(this.animationClip!==clip){
-      this.clearAnimationPose();this.animationClip=clip;
-      this.animationBases=new Map(this.meshes.map(mesh=>[mesh,mesh.instanceMatrix.array.slice()]));
+    const signature=JSON.stringify(clip);
+    if(this.animationClip!==clip||this.animationEnvelopeSignature!==signature){
+      this.clearAnimationPose();this.animationEnvelope=motionEnvelope(this.cameraObjects(),clip);this.animationEnvelopeSignature=signature;this.depthBoundsKey=null;this.animationClip=clip;
+      this.animationBases=new Map([...this.meshes,...this.drawingMeshes].map(mesh=>[mesh,mesh.instanceMatrix.array.slice()]));
       this.animationTriangleBases=new Map(this.triangleMeshes.map(mesh=>[mesh,mesh.geometry.attributes.position.array.slice()]));
       this.animationTextBases=new Map([...this.textPanels.items.values()].map(root=>{if(root.matrixAutoUpdate)root.updateMatrix();return [root,{matrix:root.matrix.clone(),auto:root.matrixAutoUpdate}];}));
       this.selectedHelper.visible=false;this.ghost.visible=false;
@@ -996,10 +1047,10 @@ export class VoxelRenderer {
       const m=new THREE.Matrix4().compose(position,new THREE.Quaternion(-q[0],-q[1],q[2],q[3]),new THREE.Vector3(...p.scale));m.multiply(new THREE.Matrix4().makeTranslation(-pivot.x,-pivot.y,-pivot.z));matrices.set(track.group,m);
     }
     const base=new THREE.Matrix4();
-    for(const mesh of this.meshes){
+    for(const mesh of [...this.meshes,...this.drawingMeshes]){
       const values=this.animationBases.get(mesh);if(!values)continue;
       mesh.userData.animationFrustum??=mesh.frustumCulled;mesh.frustumCulled=false;
-      for(let i=0;i<mesh.count;i++){base.fromArray(values,i*16);const m=matrices.get(mesh.userData.boxes[i].group);if(m)base.premultiply(m);mesh.setMatrixAt(i,base);}
+      for(let i=0;i<mesh.count;i++){base.fromArray(values,i*16);const m=matrices.get((mesh.userData.boxes||mesh.userData.drawings)[i].group);if(m)base.premultiply(m);mesh.setMatrixAt(i,base);}
       // A pose rewrites every instance, including those outside a sparse edit range.
       mesh.instanceMatrix.clearUpdateRanges();
       mesh.instanceMatrix.needsUpdate=true;
@@ -1015,7 +1066,7 @@ export class VoxelRenderer {
     for(const [mesh,values] of this.animationBases||[]){mesh.instanceMatrix.array.set(values);mesh.instanceMatrix.clearUpdateRanges();mesh.instanceMatrix.needsUpdate=true;mesh.frustumCulled=mesh.userData.animationFrustum??true;delete mesh.userData.animationFrustum;}
     for(const [mesh,values] of this.animationTriangleBases||[]){mesh.geometry.attributes.position.array.set(values);mesh.geometry.attributes.position.needsUpdate=true;mesh.geometry.computeVertexNormals();mesh.geometry.computeBoundingSphere();}
     for(const [root,saved] of this.animationTextBases||[]){root.matrix.copy(saved.matrix);root.matrixAutoUpdate=saved.auto;root.matrixWorldNeedsUpdate=true;}
-    this.animationClip=null;this.animationBases=null;this.animationTriangleBases=null;this.animationTextBases=null;
+    this.animationClip=null;this.animationEnvelope=null;this.depthBoundsKey=null;this.animationBases=null;this.animationTriangleBases=null;this.animationTextBases=null;
     for(const u of this.uniforms)u.mfCull.value=this.surfaceCulling&&!this.groupsHidden.size?1:0;
     this.updateSelection();
   }

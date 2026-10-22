@@ -13,6 +13,10 @@
 
 ## 本轮已授权范围
 
+- 2026-10-23本轮优化已交付：Desktop0.23.0主安装、公共Avatar1.3.0，同一私人Avatar v11/file9三项服务端分析通过。主项目异常字幕通过事务50→51，腾讯凭据已配置（未开启云识别），实机待用户复验。证据与复验步骤见`docs/optimization-20261023/RESULTS.md`。未推送或建Release。
+
+- 2026-10-23：用户明确要求开始本轮全部验收问题优化并创建持续目标，直到完成。包括头像空载性能、文字空白闪烁、原生点线、Avatar连续动画、字幕/文本预设与位置、多行字幕、混合显示、提交判重与补播、编辑器几何闪烁、语音建模触发、腾讯云凭据迁移。允许更新现有在线头像验证服务端接受；此前等待“开始修复”的限制已解除。执行清单见 `docs/optimization-20261023/PLAN.md`；不输出凭据，不自动启动VRChat，不创建Release。
+
 - 2026-10-22：用户报告 MF6 Avatar 在线服务端检查失败。已在同一私有 Avatar ID 上进行单项对照，确认内部参数规模触发问题；完整修复版已上传为 Avatar v10 / file v8，generic/standard/security 均200且success=true。FX内部参数2794→1926，网络254/256bit及240bit几何直同步不变；4×128槽文字、3组动画、预览与16K几何保留。公共Avatar包1.2.1，Desktop仍0.22.0。源场景恢复干净，原人物Prefab依赖未变，未启动VRChat或推送远端；证据见`docs/mf6-security-20261022/RESULTS.md`。
 
 - 2026-10-22：用户明确要求“构建并上传当前 Unity 头像”。已通过公共VRChat SDK更新当前MF6场景绑定的既有私有Avatar，线上版本5→6，ID、名称和可见性保持一致，pendingUpload=false。同步预算254/256bit，几何240bit保持直接同步。上传入口`AgentScripts/AvatarUpload20261022.cs`，验证见`docs/avatar-upload-20261022/RESULTS.md`；Unity已恢复干净源场景，原Prefab依赖哈希未变，SDK临时状态另存Windows验证快照。未启动真实VRChat客户端，未创建GitHub Release。

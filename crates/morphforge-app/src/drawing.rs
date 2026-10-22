@@ -96,6 +96,8 @@ impl Default for Primitive {
 
 struct Mesh {
     faces: Vec<Triangle3>,
+    drawings: Vec<morphforge_core::drawing::Drawing>,
+    native: bool,
     collapsed: usize,
     max_error: f64,
     limit: usize,
@@ -132,6 +134,19 @@ impl Mesh {
         Ok(())
     }
     fn point(&mut self, center: V, size: f64, p: &Primitive) -> Result<()> {
+        if self.native {
+            return self.native_drawing(
+                center,
+                center,
+                size,
+                if p.shape == "cube" {
+                    "cube_point"
+                } else {
+                    "point"
+                },
+                p,
+            );
+        }
         if p.shape == "cube" {
             let v = (0..8)
                 .map(|i| {
@@ -207,6 +222,9 @@ impl Mesh {
         Ok(())
     }
     fn tube(&mut self, a: V, b: V, width: f64, p: &Primitive) -> Result<()> {
+        if self.native {
+            return self.native_drawing(a, b, width, "segment", p);
+        }
         let (d, u, v) = frame(a, b)?;
         ensure!(
             sub(a.map(f64::round), b.map(f64::round)) != [0.; 3],
@@ -224,6 +242,35 @@ impl Mesh {
             self.triangle([a, add(a, s), add(a, r)], mul(d, -1.), p)?;
             self.triangle([b, add(b, r), add(b, s)], d, p)?;
         }
+        Ok(())
+    }
+    fn native_drawing(
+        &mut self,
+        a: V,
+        b: V,
+        diameter: f64,
+        kind: &str,
+        p: &Primitive,
+    ) -> Result<()> {
+        ensure!(
+            self.faces.len() + self.drawings.len() < self.limit,
+            "点线超过本次对象预算"
+        );
+        for v in a.iter().chain(b.iter()) {
+            ensure!(v.is_finite() && v.abs() <= 1_000_000., "点线坐标越界");
+            self.max_error = self.max_error.max((v - v.round()).abs());
+        }
+        let value = morphforge_core::drawing::Drawing {
+            id: 0,
+            kind: kind.into(),
+            start: a.map(|v| v.round() as i32),
+            end: b.map(|v| v.round() as i32),
+            diameter64: (diameter * 64.).round() as u32,
+            color: p.color,
+            group: p.group.clone(),
+        };
+        value.validate(&Limits::default())?;
+        self.drawings.push(value);
         Ok(())
     }
     fn segment(&mut self, a: V, b: V, p: &Primitive) -> Result<()> {
@@ -300,7 +347,7 @@ impl Mesh {
         if closed {
             self.stroke(*points.last().unwrap(), points[0], p, phase)?;
         }
-        if !p.dashed {
+        if !p.dashed && !self.native {
             for point in if closed {
                 points
             } else {
@@ -312,7 +359,7 @@ impl Mesh {
         Ok(())
     }
     fn primitive(&mut self, p: &Primitive) -> Result<()> {
-        let start = self.faces.len();
+        let start = self.faces.len() + self.drawings.len();
         ensure!(
             !p.group.is_empty() && p.group.len() <= 128,
             "分组名称需要1..128字节"
@@ -337,8 +384,14 @@ impl Mesh {
             ("gapLength", p.gap_length),
         ] {
             ensure!(
-                value.is_finite() && (1.0..=4096.).contains(&value),
-                "{name}需要1..4096格；当前Avatar使用整数网格"
+                value.is_finite()
+                    && ((if self.native && matches!(name, "size" | "width") {
+                        1. / 64.
+                    } else {
+                        1.
+                    })..=4096.)
+                        .contains(&value),
+                "{name}超出图元大小范围；原生点线直径最小1/64格"
             );
         }
         ensure!(
@@ -380,7 +433,7 @@ impl Mesh {
                     "yz" => ([0., 1., 0.], [0., 0., 1.]),
                     _ => bail!("圆环平面需要xy/xz/yz"),
                 };
-                if p.dashed {
+                if p.dashed || self.native {
                     let points = (0..p.segments)
                         .map(|i| {
                             let t = TAU * i as f64 / p.segments as f64;
@@ -446,7 +499,7 @@ impl Mesh {
             _ => bail!("图元kind需要point/points/segment/polyline/arrow/circle/axes/wire_box"),
         }
         ensure!(
-            self.faces.len() > start,
+            self.faces.len() + self.drawings.len() > start,
             "图元小于整数网格精度，请增大大小/粗细或拉开端点"
         );
         Ok(())
@@ -455,10 +508,10 @@ impl Mesh {
 
 pub fn catalog() -> Value {
     json!({"kinds":["point","points","segment","polyline","arrow","circle","axes","wire_box"],
-        "units":"逻辑格；生成顶点取整后预览、保存、导出和MF6使用同一几何",
+        "units":"逻辑格；点线端点为整数，直径精度1/64格",
         "color":"RGB8，不透明逐面颜色","maxPrimitives":64,"maxPoints":256,
         "supportsDashed":["segment","polyline","arrow","circle","axes","wire_box"],
-        "note":"size为点直径、width为线直径；建议至少2格。生成普通三角面，计入几何容量，不增加同步参数。"})
+        "representations":["native","mesh"],"defaultRepresentation":"native","note":"size为点直径、width为线直径；默认保存原生点线，每个点/线段一个传输对象；mesh为旧头像三角面兼容模式。均计入几何容量，不增加同步参数。"})
 }
 
 pub fn execute(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Value> {
@@ -503,7 +556,7 @@ pub fn execute(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Val
         );
     }
     let fingerprint = crate::store::hash(&serde_json::to_vec(
-        &json!({"projectId":w.project.id,"baseRevision":base,"mode":mode,"group":common,"primitives":primitives}),
+        &json!({"projectId":w.project.id,"baseRevision":base,"mode":mode,"group":common,"representation":args["representation"],"primitives":primitives}),
     )?);
     let request = args["requestId"].as_str();
     if let Some(id) = request {
@@ -530,6 +583,8 @@ pub fn execute(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Val
     );
     let mut mesh = Mesh {
         faces: vec![],
+        drawings: vec![],
+        native: args["representation"] != "mesh",
         collapsed: 0,
         max_error: 0.,
         limit: w.project.limits.max_ops.saturating_sub(1).min(32768),
@@ -549,18 +604,25 @@ pub fn execute(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Val
             .cloned()
             .map(|value| Operation::Triangle { value }),
     );
+    operations.extend(
+        mesh.drawings
+            .iter()
+            .cloned()
+            .map(|value| Operation::Drawing { value }),
+    );
     let preview = w.project.scene.apply(&operations, &w.project.limits)?;
     w.ensure_protected_groups_unchanged(&w.project.scene, &preview)?;
     let target = crate::scene_tools::target_report(&preview, w.project.limits.target_boxes);
     let mut generated = Scene::default();
     generated.triangles = mesh.faces.clone();
-    let report = json!({"primitiveCount":primitives.len(),"triangleCount":mesh.faces.len(),
+    generated.drawings = mesh.drawings.clone();
+    let report = json!({"primitiveCount":primitives.len(),"triangleCount":mesh.faces.len(),"drawingCount":mesh.drawings.len(),"representation":if mesh.native{"native"}else{"mesh"},
         "bounds":generated.stats(&w.project.limits).bounds,"skippedCollapsedFaces":mesh.collapsed,
         "maximumCoordinateRounding":mesh.max_error,"units":"逻辑格，顶点对齐整数网格",
-        "note":"真实几何粗细随相机距离缩放；不是固定屏幕像素线宽。保存为普通三角面，可用分组选择/复制/删除/动画。"});
+        "note":"点线保留端点与直径，每个点或线段按一个原生对象传输；粗细随距离缩放。箭头尖端保留多边形。可按分组移动/复制/删除/动画。"});
     if action == "preview" {
         return Ok(
-            json!({"ok":true,"dryRun":true,"revision":base,"projectId":w.project.id,"report":report,"target":target,"triangles":mesh.faces,"primitives":primitives}),
+            json!({"ok":true,"dryRun":true,"revision":base,"projectId":w.project.id,"report":report,"target":target,"triangles":mesh.faces,"drawings":mesh.drawings,"primitives":primitives}),
         );
     }
     // Namespaced transaction keys prevent accidental replay of unrelated editors.
@@ -585,6 +647,8 @@ mod tests {
     fn mesh(p: Value) -> Mesh {
         let mut m = Mesh {
             faces: vec![],
+            drawings: vec![],
+            native: false,
             collapsed: 0,
             max_error: 0.,
             limit: 32768,

@@ -378,7 +378,10 @@ impl Speech {
             }
             return Ok(());
         }
-        context.harness.ensure_manual_edit().context("字幕已保留在语音草稿；请暂停AI后点击应用，避免修改正在建模的场景")?;
+        context
+            .harness
+            .ensure_manual_edit()
+            .context("字幕已保留在语音草稿；请暂停AI后点击应用，避免修改正在建模的场景")?;
         let mut w = context.workspace.lock().unwrap();
         if w.project.id != target.project_id {
             bail!("WORKSPACE_CONFLICT：录音目标项目已切换");
@@ -409,18 +412,34 @@ impl Speech {
         }
         Ok(())
     }
-    fn partial(&self, id: &str, text: String, target:&Target, context:&SpeechContext) {
-        self.update(id, |v| {v["partial"] = json!(text);});
-        self.latest_caption(id,&text,target,context);
+    fn partial(&self, id: &str, text: String, target: &Target, context: &SpeechContext) {
+        self.update(id, |v| {
+            v["partial"] = json!(text);
+        });
+        self.latest_caption(id, &text, target, context);
     }
-    fn latest_caption(&self,id:&str,text:&str,target:&Target,context:&SpeechContext) {
-        if self.state.lock().unwrap()["sessionId"]!=id{return}
-        if context.workspace.lock().unwrap().project.id!=target.project_id{self.update(id,|v|v["error"]=json!("WORKSPACE_CONFLICT：录音目标项目已切换，文字仅保留在草稿"));return}
-        if target.kind!="text_panel"||!self.settings.lock().unwrap().auto_caption{return}
-        let config=context.transport.config();if !config.enabled||!config.auto{return}
+    fn latest_caption(&self, id: &str, text: &str, target: &Target, context: &SpeechContext) {
+        if self.state.lock().unwrap()["sessionId"] != id {
+            return;
+        }
+        if context.workspace.lock().unwrap().project.id != target.project_id {
+            self.update(id, |v| {
+                v["error"] = json!("WORKSPACE_CONFLICT：录音目标项目已切换，文字仅保留在草稿")
+            });
+            return;
+        }
+        if target.kind != "text_panel" || !self.settings.lock().unwrap().auto_caption {
+            return;
+        }
+        let config = context.transport.config();
+        if !config.enabled || !config.auto {
+            return;
+        }
         // The short live window is transient. It never changes Scene revision
         // or opens a second sender; final text still goes through transactions.
-        if let Err(e)=context.transport.latest_text(&target.panel_id,text){self.update(id,|v|v["error"]=json!(e.to_string()));}
+        if let Err(e) = context.transport.latest_text(&target.panel_id, text) {
+            self.update(id, |v| v["error"] = json!(e.to_string()));
+        }
     }
     fn publish(
         &self,
@@ -442,7 +461,7 @@ impl Speech {
         let mut key = String::new();
         let mut draft = String::new();
         self.update(id,|v|{let seq=v["sequence"].as_u64().unwrap_or(0)+1;v["sequence"]=json!(seq);let version=v["draftVersion"].as_u64().unwrap_or(0)+1;v["draftVersion"]=json!(version);v["partial"]=json!("");v["finalText"]=json!(text);draft=format!("{}{}{}",v["draft"].as_str().unwrap_or(""),if v["draft"].as_str().unwrap_or("").is_empty(){""}else{"\n"},text);if draft.len()<=32000{v["draft"]=json!(draft);}else{v["error"]=json!("识别草稿超过32k字节，请先发送或清空");stop.store(1,Ordering::SeqCst);}key=format!("speech-{id}-{seq}");let records=v["sentences"].as_array_mut().unwrap();records.push(json!({"sequence":seq,"text":text,"inferenceMs":inference_ms,"finalLatencyMs":latency_ms}));if records.len()>32{records.remove(0);}});
-        self.latest_caption(id,&draft,target,context);
+        self.latest_caption(id, &draft, target, context);
         let result = if target.kind == "text_panel" && settings.auto_caption {
             self.deliver(context, target, &draft, false, &key)
         } else if target.kind == "modeling" && settings.keyword_enabled {
@@ -587,8 +606,8 @@ impl Speech {
                     });
                     let partial_service = self.clone();
                     let partial_id = id.to_string();
-                    let partial_target=target.clone();
-                    let partial_context=context.clone();
+                    let partial_target = target.clone();
+                    let partial_context = context.clone();
                     let final_service = self.clone();
                     let final_id = id.to_string();
                     let final_target = target.clone();
@@ -605,7 +624,14 @@ impl Speech {
                             config,
                             rx,
                             task_stop.clone(),
-                            Arc::new(move |text| partial_service.partial(&partial_id, text, &partial_target, &partial_context)),
+                            Arc::new(move |text| {
+                                partial_service.partial(
+                                    &partial_id,
+                                    text,
+                                    &partial_target,
+                                    &partial_context,
+                                )
+                            }),
                             Arc::new(move |text| {
                                 final_service.publish(
                                     &final_id,
@@ -741,7 +767,33 @@ pub fn keyword_prompt(text: &str, keyword: &str) -> Option<String> {
         let before = text.rsplit_once(last).map(|p| p.0).unwrap_or("");
         return Some(trim(before));
     }
+    // ASR commonly returns "需求。开始建模。" as one final sentence.
+    // Require a sentence boundary so negations and mentions remain inert.
+    if let Some(before) = line.strip_suffix(keyword) {
+        if before
+            .chars()
+            .last()
+            .is_some_and(|c| c.is_whitespace() || "，。！、,:;：；.!".contains(c))
+        {
+            let prefix = text.rsplit_once(last).map(|p| p.0.trim()).unwrap_or("");
+            let prompt = trim(before);
+            if !prompt.is_empty() {
+                return Some(if prefix.is_empty() {
+                    prompt
+                } else {
+                    format!("{prefix}\n{prompt}")
+                });
+            }
+        }
+    }
     if let Some(rest) = line.strip_prefix(keyword) {
+        if !rest
+            .chars()
+            .next()
+            .is_some_and(|c| c.is_whitespace() || "，。！？、,:;：；.!?".contains(c))
+        {
+            return None;
+        }
         let rest = trim(rest);
         if rest.is_empty()
             || ["吗", "了吗", "是什么", "这个词", "功能"]
@@ -772,11 +824,21 @@ mod tests {
             keyword_prompt("开始建模，一个红色房子。", "开始建模"),
             Some("一个红色房子".into())
         );
+        assert_eq!(
+            keyword_prompt("画一个板子。开始建模。", "开始建模"),
+            Some("画一个板子".into())
+        );
+        assert_eq!(
+            keyword_prompt("画一间房子，开始建模", "开始建模"),
+            Some("画一间房子".into())
+        );
         for text in [
             "不要开始建模",
             "我说的开始建模这个词",
             "开始建模了吗",
             "开始建模是什么",
+            "开始建模的触发可能不对",
+            "开始建模会不会出错",
         ] {
             assert_eq!(keyword_prompt(text, "开始建模"), None);
         }

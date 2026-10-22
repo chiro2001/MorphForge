@@ -38,3 +38,13 @@ test("top camera has a valid up vector and explicit camera is preserved", () => 
 });
 test("missing group is an error instead of silently framing the whole scene", () =>
   assert.throws(() => fitBounds([], { group: "missing" })));
+test("small and large artwork keep useful depth precision without clipping their bounds",()=>{
+  for(const scale of [.0001,.005,1,100]){
+    const b={min:[-78,0,-22].map(v=>v*scale),max:[78,152,22].map(v=>v*scale)};
+    const c=resolveCamera(b,{yaw:0,pitch:0});
+    assert.ok(c.near>0&&c.far>c.near);
+    assert.ok(c.far/c.near<1000);
+    assert.ok(c.near<c.position[2]-b.max[2]);
+    assert.ok(c.far>c.position[2]-b.min[2]);
+  }
+});

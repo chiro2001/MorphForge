@@ -11,6 +11,7 @@ use std::{
     time::Instant,
 };
 pub const CAPABILITY: &str = "mf6-motion4/1";
+pub const SESSION_CAPABILITY: &str = "mf6-motion-session/1";
 pub const DURATIONS: [f64; 10] = [0.125, 0.25, 0.5, 1., 2., 4., 8., 16., 32., 64.];
 pub const SPEEDS: [f64; 4] = [0.25, 0.5, 1., 2.];
 fn word(d: &mut [u8], i: usize, v: u16) {
@@ -163,6 +164,18 @@ fn group_points(scene: &Scene, group: &str) -> Vec<[f64; 3]> {
     for p in scene.text_panels.iter().filter(|p| p.group == group) {
         out.extend(p.corners());
     }
+    for p in scene.drawings.iter().filter(|p| p.group == group) {
+        let b = p.bounds();
+        for i in 0..8 {
+            out.push(std::array::from_fn(|a| {
+                if i & (1 << a) == 0 {
+                    b.min[a] as f64
+                } else {
+                    b.max[a] as f64
+                }
+            }));
+        }
+    }
     if out.is_empty() {
         return out;
     }
@@ -298,6 +311,7 @@ fn validate_sweep(track: &creative::Track, points: &[[f64; 3]]) -> Result<()> {
 }
 #[derive(Clone)]
 enum Item {
+    Reset,
     Definition(Message),
     Control(u8),
 }
@@ -317,6 +331,9 @@ pub struct Session {
     started: Instant,
     clip_id: String,
     detached: bool,
+    resets_pending: u8,
+    clock_started: bool,
+    control_sent: bool,
 }
 impl Default for Session {
     fn default() -> Self {
@@ -330,6 +347,9 @@ impl Default for Session {
             started: Instant::now(),
             clip_id: String::new(),
             detached: false,
+            resets_pending: 0,
+            clock_started: false,
+            control_sent: false,
         }
     }
 }
@@ -341,7 +361,7 @@ impl Session {
     pub fn position(&self) -> f64 {
         let Some(d) = &self.definition else { return 0. };
         let value = self.position
-            + if self.state == 1 {
+            + if self.state == 1 && self.clock_started {
                 self.started.elapsed().as_secs_f64() * d.speed
             } else {
                 0.
@@ -364,6 +384,7 @@ impl Session {
         if !position.is_finite() || position < 0. || position > clip.duration {
             bail!("MOTION_POSITION：定位越界")
         };
+        let new_session = self.definition.is_none() || self.detached;
         let bank = self.definition.as_ref().map(|d| 1 - d.bank).unwrap_or(0);
         let generation = self
             .definition
@@ -374,9 +395,14 @@ impl Session {
         let groups = definition.groups.clone();
         self.definition = Some(definition);
         self.detached = false;
+        if new_session {
+            self.resets_pending = 2;
+        }
         self.clip_id = id.into();
         self.position = position;
         self.started = Instant::now();
+        self.clock_started = false;
+        self.control_sent = false;
         self.state = if playing { 1 } else { 2 };
         self.ticket = (self.ticket + 1) % 16;
         self.replay();
@@ -397,6 +423,9 @@ impl Session {
         Ok(())
     }
     pub fn detach(&mut self) {
+        self.resets_pending = 0;
+        self.clock_started = false;
+        self.control_sent = false;
         // Keep bank/generation/ticket history so republishing cannot be mistaken
         // for an old idempotent definition already cached by the Avatar.
         if !self.detached {
@@ -427,9 +456,11 @@ impl Session {
         };
         self.position = desired;
         self.started = Instant::now();
+        self.clock_started = false;
         self.state = state;
         self.ticket = (self.ticket + 1) % 16;
-        self.queue.retain(|(_, i)| matches!(i, Item::Definition(_)));
+        self.queue
+            .retain(|(_, i)| matches!(i, Item::Definition(_) | Item::Reset));
         for group in self.groups().values().copied().collect::<Vec<_>>() {
             self.push(Item::Control(group));
         }
@@ -458,6 +489,9 @@ impl Session {
         if let Some(d) = &self.definition {
             let messages = d.messages.clone();
             let groups = d.groups.values().copied().collect::<Vec<_>>();
+            for _ in 0..self.resets_pending {
+                self.push(Item::Reset);
+            }
             for m in messages {
                 self.push(Item::Definition(m));
             }
@@ -469,6 +503,7 @@ impl Session {
     pub fn next(&self) -> Option<Plan> {
         let (token, item) = self.queue.front()?;
         let message = match item {
+            Item::Reset => msg(19, 0, 0),
             Item::Definition(m) => m.clone(),
             Item::Control(group) => {
                 let d = self.definition.as_ref()?;
@@ -487,12 +522,33 @@ impl Session {
             token: *token,
         })
     }
+    pub fn next_for_sender(&self, geometry_ready: bool) -> Option<Plan> {
+        let plan = self.next()?;
+        if plan.message.0[0] == 18 && !self.control_sent && !geometry_ready {
+            None
+        } else {
+            Some(plan)
+        }
+    }
     pub fn commit(&mut self, p: &Plan) {
         if self
             .queue
             .front()
             .is_some_and(|(token, _)| *token == p.token)
         {
+            if matches!(self.queue.front(), Some((_, Item::Control(_))))
+                && self.state == 1
+                && !self.clock_started
+            {
+                self.started = Instant::now();
+                self.clock_started = true;
+            }
+            if matches!(self.queue.front(), Some((_, Item::Control(_)))) {
+                self.control_sent = true;
+            }
+            if matches!(self.queue.front(), Some((_, Item::Reset))) {
+                self.resets_pending = self.resets_pending.saturating_sub(1);
+            }
             self.queue.pop_front();
         }
     }
@@ -506,7 +562,7 @@ impl Session {
         self.definition.is_some()
     }
     pub fn state(&self) -> Value {
-        json!({"attached":self.active(),"clipId":self.clip_id,"state":self.state,"position":self.position(),"duration":self.definition.as_ref().filter(|_|!self.detached).map(|d|d.clip.duration),"speed":self.definition.as_ref().filter(|_|!self.detached).map(|d|d.speed),"groups":self.groups(),"pending":self.pending(),"capacity":{"groups":3,"keysPerGroup":4},"receiverConfirmed":false})
+        json!({"attached":self.active(),"clipId":self.clip_id,"state":self.state,"starting":self.state==1&&!self.clock_started,"position":self.position(),"duration":self.definition.as_ref().filter(|_|!self.detached).map(|d|d.clip.duration),"speed":self.definition.as_ref().filter(|_|!self.detached).map(|d|d.speed),"groups":self.groups(),"pending":self.pending(),"capacity":{"groups":3,"keysPerGroup":4},"receiverConfirmed":false})
     }
 }
 #[cfg(test)]
@@ -538,6 +594,24 @@ mod tests {
         (scene, clip)
     }
     #[test]
+    fn once_playback_does_not_expire_while_its_definition_is_still_queued() {
+        let (scene, mut clip) = fixture();
+        clip.looping = false;
+        let mut s = Session::default();
+        s.publish(&scene, &clip, "once", 1., 0., true).unwrap();
+        s.started -= std::time::Duration::from_secs(20);
+        assert_eq!(s.position(), 0.);
+        while let Some(p) = s.next() {
+            if p.message.0[0] == 18 {
+                assert_eq!(p.message.0[6], 0);
+            }
+            s.commit(&p);
+        }
+        assert!(s.clock_started);
+        s.started -= std::time::Duration::from_secs(20);
+        assert_eq!(s.position(), 4.);
+    }
+    #[test]
     fn definitions_are_bounded_and_replay_keeps_ticket() {
         let (s, c) = fixture();
         let mut m = Session::default();
@@ -547,10 +621,15 @@ mod tests {
             packets.push(p.message.0);
             m.commit(&p)
         }
-        assert_eq!(packets.len(), 5);
+        assert_eq!(packets.len(), 7);
+        assert!(packets[..2].iter().all(|m| m[0] == 19));
         let ticket = packets.last().unwrap()[4];
         m.replay();
         while let Some(p) = m.next() {
+            assert_ne!(
+                p.message.0[0], 19,
+                "routine replay must preserve the running receiver clock"
+            );
             if p.message.0[0] == 18 {
                 assert_eq!(p.message.0[4], ticket);
             }
@@ -585,6 +664,11 @@ mod tests {
         session
             .publish(&scene, &clip, "second", 1., 0., false)
             .unwrap();
+        for _ in 0..2 {
+            let reset = session.next().unwrap();
+            assert_eq!(reset.message.0[0], 19);
+            session.commit(&reset);
+        }
         let header = session.next().unwrap();
         assert_eq!(header.message.0[2], 1);
         assert_eq!(header.message.0[3], 1);

@@ -22,6 +22,7 @@ pub fn after_edit(
         let mut targets = before.clone();
         targets.boxes.retain(|b| ids.contains(&b.id));
         targets.triangles.retain(|t| ids.contains(&t.id));
+        targets.drawings.retain(|p| ids.contains(&p.id));
         let targets = targets.apply(
             &[Operation::Transform {
                 ids: ids.into_iter().collect(),
@@ -117,6 +118,21 @@ pub fn after_edit(
         }
         if faces.contains(&(t.vertices, t.color, t.group.as_str(), t.double_sided)) {
             selected.insert(t.id);
+        }
+    }
+    for p in &after.drawings {
+        if copy && before.drawings.iter().any(|old| old.id == p.id) {
+            continue;
+        }
+        if targets.drawings.iter().any(|target| {
+            target.kind == p.kind
+                && target.start == p.start
+                && target.end == p.end
+                && target.diameter64 == p.diameter64
+                && target.color == p.color
+                && target.group == p.group
+        }) {
+            selected.insert(p.id);
         }
     }
     Ok(Some(selected.into_iter().collect()))

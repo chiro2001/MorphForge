@@ -1,0 +1,14 @@
+{
+  "success": true,
+  "assets": [
+    {
+      "path": "Assets/MorphForge/MF6/Avatar.prefab",
+      "capability": "mf6-drawing/1"
+    },
+    {
+      "path": "Assets/MorphForgeAvatar/Generated/MorphForge.prefab",
+      "capability": "mf6-drawing/1"
+    }
+  ],
+  "additionalSyncedBits": 0
+}

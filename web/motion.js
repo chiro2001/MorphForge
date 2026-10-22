@@ -104,6 +104,18 @@ export function poseBounds(boxes, triangles, clip, time) {
     .concat(triangles.map((t) => bounds(t.id, t.group, t.vertices)));
 }
 
+// A conservative envelope for all interpolated poses, cached once per clip.
+// Translation/scale stay between keys; rotation preserves the pivot radius.
+export function motionEnvelope(objects,clip){
+  if(!objects.length)return null;const groups=new Map();
+  for(const b of objects){let g=groups.get(b.group);if(!g){g={min:[Infinity,Infinity,Infinity],max:[-Infinity,-Infinity,-Infinity]};groups.set(b.group,g);}for(let a=0;a<3;a++){g.min[a]=Math.min(g.min[a],b.min[a]);g.max[a]=Math.max(g.max[a],b.min[a]+b.size[a]);}}
+  const min=[Infinity,Infinity,Infinity],max=[-Infinity,-Infinity,-Infinity];
+  for(const [group,b]of groups){const track=clip.tracks.find(t=>t.group===group);let lo=b.min,hi=b.max;
+    if(track){let radius=0;for(let i=0;i<8;i++)radius=Math.max(radius,Math.hypot(...b.min.map((v,a)=>(i&(1<<a)?b.max[a]:v)-track.pivot[a])));radius*=Math.max(...track.keys.flatMap(k=>k.scale.map(Math.abs)));lo=track.pivot.map((v,a)=>v+Math.min(...track.keys.map(k=>k.translation[a]))-radius);hi=track.pivot.map((v,a)=>v+Math.max(...track.keys.map(k=>k.translation[a]))+radius);}
+    for(let a=0;a<3;a++){min[a]=Math.min(min[a],lo[a]);max[a]=Math.max(max[a],hi[a]);}
+  }return{min,max};
+}
+
 // Keep authored full turns at exact keys; expose the actual interpolated pose
 // when inserting a new key between them (XYZ decomposition, matching the viewer).
 export function keyframeAt(track, time) {

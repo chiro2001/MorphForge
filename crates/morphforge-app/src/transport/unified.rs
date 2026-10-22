@@ -22,13 +22,27 @@ struct LiveTriangle {
     group_id: u8,
     wire_id: u16,
 }
+#[derive(Clone, Debug, PartialEq, Eq)]
+struct LiveDrawing {
+    value: morphforge_core::drawing::Drawing,
+    group_id: u8,
+    wire_id: u16,
+}
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
 enum Object {
     Box(GeometryKey),
     Triangle(u64),
+    Drawing(u64),
 }
 #[derive(Clone, Debug)]
 pub enum Action {
+    DrawingSet {
+        value: morphforge_core::drawing::Drawing,
+        wire_id: u16,
+    },
+    DrawingRemove {
+        id: u64,
+    },
     BoxSet {
         value: Box3,
         surface: Surface,
@@ -63,6 +77,8 @@ pub struct Session {
     pub motion_groups: BTreeMap<String, u8>,
     desired_boxes: BTreeMap<GeometryKey, (Box3, Surface)>,
     desired_triangles: BTreeMap<u64, Triangle3>,
+    desired_drawings: BTreeMap<u64, morphforge_core::drawing::Drawing>,
+    drawings: BTreeMap<u64, LiveDrawing>,
     boxes: BTreeMap<GeometryKey, LiveBox>,
     triangles: BTreeMap<u64, LiveTriangle>,
     replay: Option<BTreeSet<Object>>,
@@ -80,7 +96,7 @@ impl Session {
         scene: &Scene,
         surfaces: &BTreeMap<GeometryKey, Surface>,
     ) -> Result<()> {
-        if scene.boxes.len() + scene.triangles.len() > 16384 {
+        if scene.boxes.len() + scene.triangles.len() + scene.drawings.len() > 16384 {
             bail!("MF6_CAPACITY：几何总容量为16384对象");
         }
         let mut boxes = BTreeMap::new();
@@ -106,11 +122,26 @@ impl Session {
                 bail!("MF6_ID：重复的三角面逻辑ID");
             }
         }
-        if self.desired_boxes != boxes || self.desired_triangles != triangles {
+        let mut drawings = BTreeMap::new();
+        for (i, p) in scene.drawings.iter().enumerate() {
+            p.wire()?;
+            let mut p = p.clone();
+            if p.id == 0 {
+                p.id = u64::MAX - i as u64;
+            }
+            if drawings.insert(p.id, p).is_some() {
+                bail!("MF6_ID：重复点线ID");
+            }
+        }
+        if self.desired_boxes != boxes
+            || self.desired_triangles != triangles
+            || self.desired_drawings != drawings
+        {
             self.replay = None;
         }
         self.desired_boxes = boxes;
         self.desired_triangles = triangles;
+        self.desired_drawings = drawings;
         Ok(())
     }
     pub fn group(&self, name: &str) -> u8 {
@@ -132,6 +163,7 @@ impl Session {
             .find_map(|a| match a {
                 Action::BoxSet { value, .. } => Some(self.group(&value.group)),
                 Action::TriangleSet { value, .. } => Some(self.group(&value.group)),
+                Action::DrawingSet { value, .. } => Some(self.group(&value.group)),
                 _ => None,
             })
             .unwrap_or(0)
@@ -139,6 +171,7 @@ impl Session {
     pub fn clear_sent(&mut self) {
         self.boxes.clear();
         self.triangles.clear();
+        self.drawings.clear();
         self.replay = None;
         self.box_tombstones.clear();
         self.triangle_tombstones.clear();
@@ -162,7 +195,9 @@ impl Session {
         self.replay = None;
     }
     pub fn target_empty(&self) -> bool {
-        self.desired_boxes.is_empty() && self.desired_triangles.is_empty()
+        self.desired_boxes.is_empty()
+            && self.desired_triangles.is_empty()
+            && self.desired_drawings.is_empty()
     }
     fn seen(&self, key: &Object) -> bool {
         self.replay.as_ref().is_none_or(|seen| seen.contains(key))
@@ -182,6 +217,21 @@ impl Session {
             0
         };
         deletes
+            + self
+                .desired_drawings
+                .iter()
+                .filter(|(id, p)| {
+                    self.drawings
+                        .get(id)
+                        .is_none_or(|old| old.value != **p || old.group_id != self.group(&p.group))
+                        || !self.seen(&Object::Drawing(**id))
+                })
+                .count()
+            + self
+                .drawings
+                .keys()
+                .filter(|id| !self.desired_drawings.contains_key(id))
+                .count()
             + self
                 .desired_boxes
                 .iter()
@@ -219,6 +269,9 @@ impl Session {
         for b in self.boxes.values() {
             counts[b.pool as usize] += 1;
         }
+        for p in self.drawings.values() {
+            counts[p.wire_id as usize % 8] += 1;
+        }
         for t in self.triangles.values() {
             counts[t.wire_id as usize % 8] += 1;
         }
@@ -253,6 +306,15 @@ impl Session {
             if !self.desired_triangles.contains_key(id) && used.insert((t.wire_id % 8) as u8) {
                 ids.push(t.wire_id);
                 actions.push(Action::TriangleRemove { id: *id });
+                if ids.len() == 8 {
+                    break;
+                }
+            }
+        }
+        for (id, p) in &self.drawings {
+            if !self.desired_drawings.contains_key(id) && used.insert((p.wire_id % 8) as u8) {
+                ids.push(p.wire_id);
+                actions.push(Action::DrawingRemove { id: *id });
                 if ids.len() == 8 {
                     break;
                 }
@@ -316,16 +378,78 @@ impl Session {
             }) || !self.seen(&Object::Box(*k))
         });
         let has_triangles = self.desired_triangles.iter().any(|(id, t)| {
-            self.triangles.get(id).is_none_or(|old| old.value != *t)
+            self.triangles
+                .get(id)
+                .is_none_or(|old| old.value != *t || old.group_id != self.group(&t.group))
                 || !self.seen(&Object::Triangle(*id))
         });
         if has_triangles && (!has_boxes || self.turn % 3 == 2) {
             return self.triangle_plan();
         }
+        if self.desired_drawings.iter().any(|(id, p)| {
+            self.drawings
+                .get(id)
+                .is_none_or(|old| old.value != *p || old.group_id != self.group(&p.group))
+                || !self.seen(&Object::Drawing(*id))
+        }) && (!has_boxes || self.turn % 3 == 1)
+        {
+            return self.drawing_plan();
+        }
         if has_boxes {
             return self.box_plan(order);
         }
         Ok(None)
+    }
+    fn drawing_plan(&self) -> Result<Option<Plan>> {
+        let Some(p) = self
+            .desired_drawings
+            .iter()
+            .find(|(id, p)| {
+                self.drawings
+                    .get(id)
+                    .is_none_or(|old| old.value != **p || old.group_id != self.group(&p.group))
+                    || !self.seen(&Object::Drawing(**id))
+            })
+            .map(|(_, p)| p)
+        else {
+            return Ok(None);
+        };
+        let occupied = self
+            .triangles
+            .values()
+            .map(|t| t.wire_id)
+            .chain(self.drawings.values().map(|p| p.wire_id))
+            .collect::<BTreeSet<_>>();
+        let counts = self.counts();
+        let id = if let Some(old) = self.drawings.get(&p.id) {
+            old.wire_id
+        } else {
+            (0..mf6::ID_LIMIT)
+                .filter(|id| !occupied.contains(id) && counts[*id as usize % 8] < POOL_CAPACITY)
+                .min_by_key(|id| (counts[*id as usize % 8], *id))
+                .ok_or_else(|| anyhow::anyhow!("MF6_POOL_CAPACITY：没有空闲点线槽位"))?
+        };
+        let (start, end, diameter64) = p.wire()?;
+        let record = mf6::DrawingRecord {
+            id,
+            start,
+            end,
+            diameter64,
+            color: p.color,
+            kind: match p.kind.as_str() {
+                "point" => 0,
+                "segment" => 1,
+                "cube_point" => 2,
+                _ => bail!("无效点线类型"),
+            },
+        };
+        Ok(Some(Plan {
+            frame: Frame::Drawing { record },
+            actions: vec![Action::DrawingSet {
+                value: p.clone(),
+                wire_id: id,
+            }],
+        }))
     }
     fn box_plan(&self, order: &str) -> Result<Option<Plan>> {
         let mut pending: Vec<_> = self
@@ -525,7 +649,12 @@ impl Session {
             return Ok(None);
         };
         pending.retain(|t| self.group(&t.group) == self.group(&first.group));
-        let occupied: BTreeSet<_> = self.triangles.values().map(|t| t.wire_id).collect();
+        let occupied: BTreeSet<_> = self
+            .triangles
+            .values()
+            .map(|t| t.wire_id)
+            .chain(self.drawings.values().map(|p| p.wire_id))
+            .collect();
         let counts = self.counts();
         let base = if let Some(t) = self.triangles.get(&first.id) {
             t.wire_id
@@ -663,6 +792,25 @@ impl Session {
     pub fn commit(&mut self, plan: &Plan) {
         for action in &plan.actions {
             match action {
+                Action::DrawingSet { value, wire_id } => {
+                    self.triangle_tombstones.remove(wire_id);
+                    self.drawings.insert(
+                        value.id,
+                        LiveDrawing {
+                            value: value.clone(),
+                            wire_id: *wire_id,
+                            group_id: self.group(&value.group),
+                        },
+                    );
+                    if let Some(seen) = &mut self.replay {
+                        seen.insert(Object::Drawing(value.id));
+                    }
+                }
+                Action::DrawingRemove { id } => {
+                    if let Some(old) = self.drawings.remove(id) {
+                        self.triangle_tombstones.insert(old.wire_id);
+                    }
+                }
                 Action::BoxSet {
                     value,
                     surface,
@@ -735,11 +883,92 @@ impl Session {
     pub fn sent_counts(&self) -> (usize, usize) {
         (self.boxes.len(), self.triangles.len())
     }
+    pub fn sent_drawing_count(&self) -> usize {
+        self.drawings.len()
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn point_and_segment_publish_once_rebind_replay_and_delete_in_shared_pools() {
+        let mut scene = Scene::default();
+        scene.drawings = vec![
+            morphforge_core::drawing::Drawing {
+                id: 1,
+                kind: "point".into(),
+                start: [0, 24, 0],
+                end: [0, 24, 0],
+                diameter64: 384,
+                color: [255, 80, 40],
+                group: "plot".into(),
+            },
+            morphforge_core::drawing::Drawing {
+                id: 2,
+                kind: "segment".into(),
+                start: [-24, 24, 0],
+                end: [24, 24, 0],
+                diameter64: 128,
+                color: [80, 180, 255],
+                group: "plot".into(),
+            },
+        ];
+        let mut s = Session::default();
+        s.set_target(&scene, &BTreeMap::new()).unwrap();
+        let mut frames = 0;
+        while let Some(plan) = s.next("volume").unwrap() {
+            assert!(matches!(plan.frame, Frame::Drawing { .. }));
+            s.commit(&plan);
+            frames += 1;
+        }
+        assert_eq!(frames, 2);
+        assert_eq!(s.sent_drawing_count(), 2);
+        s.set_motion_groups(BTreeMap::from([("plot".into(), 1)]))
+            .unwrap();
+        assert_eq!(s.pending_objects(), 2);
+        while let Some(plan) = s.next("volume").unwrap() {
+            assert_eq!(s.frame_group(&plan), 1);
+            s.commit(&plan);
+        }
+        s.start_replay();
+        let mut replay = 0;
+        while let Some(plan) = s.next("volume").unwrap() {
+            s.commit(&plan);
+            replay += 1;
+        }
+        assert_eq!(replay, 2);
+        s.finish_replay();
+        scene.drawings.clear();
+        s.set_target(&scene, &BTreeMap::new()).unwrap();
+        while let Some(plan) = s.next("volume").unwrap() {
+            assert!(matches!(plan.frame, Frame::RemoveTriangles { .. }));
+            s.commit(&plan);
+        }
+        assert_eq!(s.sent_drawing_count(), 0);
+    }
+    #[test]
+    fn rebinding_an_already_sent_triangle_schedules_a_new_birth() {
+        let mut scene = Scene::default();
+        let mut t = Triangle3::new([[0, 24, 0], [8, 24, 0], [0, 32, 0]], [255, 0, 0]);
+        t.id = 1;
+        t.group = "moving".into();
+        scene.triangles.push(t);
+        let mut s = Session::default();
+        s.set_target(&scene, &BTreeMap::new()).unwrap();
+        while let Some(plan) = s.next("volume").unwrap() {
+            s.commit(&plan);
+        }
+        s.set_motion_groups(BTreeMap::from([("moving".into(), 1)]))
+            .unwrap();
+        let plan = s
+            .next("volume")
+            .unwrap()
+            .expect("binding must republish the triangle");
+        assert_eq!(s.frame_group(&plan), 1);
+        s.commit(&plan);
+        assert_eq!(s.pending_objects(), 0);
+    }
     use morphforge_core::{Limits, Operation};
     fn scene() -> Scene {
         let mut ops = Vec::new();

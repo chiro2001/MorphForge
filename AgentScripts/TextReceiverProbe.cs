@@ -70,13 +70,15 @@ public static class TextReceiverProbe {
     }
     public static async Task<string> Run() {
         if(!EditorApplication.isPlaying)throw new Exception("Play Mode required");
-        var gm=UnityEngine.Object.FindObjectsOfType<GestureManager>().Single(g=>g.gameObject.scene.path==Mf6AvatarBuild.ScenePath);
+        var gm=UnityEngine.Object.FindObjectsOfType<GestureManager>().Single(g=>g.gameObject.scene.path==Mf6AvatarBuild.ScenePath||g.gameObject.scene.path=="Assets/MorphForge/Validation/Optimization20261023/Baseline.unity");
         var deadline=DateTime.UtcNow.AddSeconds(15);while(gm.Module==null&&DateTime.UtcNow<deadline)await Task.Delay(100);
         var m=gm.Module as ModuleVrc3;if(m==null)throw new Exception("GestureManager not ready");
         var receiver=gm.GetComponent<MorphForgePlayReceiver>();if(!receiver.Running||receiver.ReceivePort!=9012)throw new Exception("Expected isolated OSC port9012");
         var data=JObject.Parse(File.ReadAllText("E:/tmp/morphforge/text-fixtures.json"));var checks=new JArray();
         void Check(string name,bool pass,JToken detail=null){checks.Add(new JObject{["name"]=name,["pass"]=pass,["detail"]=detail});}
         Renderer Panel(int slot)=>m.Avatar.GetComponentsInChildren<Renderer>(true).Single(r=>r.name=="Panel"+slot&&r.transform.parent.name=="TextDisplay");
+        string GeometrySignature()=>string.Join("|",m.Avatar.GetComponentsInChildren<ParticleSystem>(true).Where(p=>p.name=="Store").SelectMany(ps=>{var values=new ParticleSystem.Particle[ps.main.maxParticles];int n=ps.GetParticles(values);return values.Take(n).Where(p=>p.startColor.a>0).Select(p=>ps.transform.parent.name+":"+p.position.ToString("R")+":"+p.startSize3D.ToString("R")+":"+p.rotation3D.ToString("R")+":"+p.startColor);}).OrderBy(v=>v));
+        var originalGeometry=GeometrySignature();
         using(var udp=new UdpClient()) {
             foreach(var frame in data["frames"]){var bytes=frame["packet"].Select(v=>(byte)(int)v).ToArray();udp.Send(bytes,bytes.Length,"127.0.0.1",9012);await Task.Delay(350);}
             await Task.Delay(300);
@@ -94,7 +96,7 @@ public static class TextReceiverProbe {
             Check("latest14 snapshot decodes without normal sequence",snapshot.Select((v,i)=>Mathf.Abs(v-Value(Panel(0),"_G"+i.ToString("D3")))<.6f).All(v=>v),new JArray(snapshot.Select((v,i)=>Value(Panel(0),"_G"+i.ToString("D3")))));
             Check("snapshot visible count",Mathf.Abs(Value(Panel(0),"_Count")-snapshot.Length)<.6f,new JValue(Value(Panel(0),"_Count")));
             var live=m.Avatar.GetComponentsInChildren<ParticleSystem>(true).Where(p=>p.name=="Store").Sum(ps=>{var particles=new ParticleSystem.Particle[ps.main.maxParticles];var n=ps.GetParticles(particles);return particles.Take(n).Count(p=>p.startColor.a>0);});
-            Check("extension and snapshot never route to voxel pools",live==0,new JValue(live));
+            Check("extension and snapshot preserve existing geometry",GeometrySignature()==originalGeometry,new JValue(live));
             var delete=data["deletePacket"].Select(v=>(byte)(int)v).ToArray();udp.Send(delete,delete.Length,"127.0.0.1",9012);await Task.Delay(350);
             Check("delete hides text and advances generation",Value(Panel(0),"_Count")<.5f&&m.GetParam("MF6_Text0_Epoch").IntValue()==1,new JObject{["visibleCount"]=Value(Panel(0),"_Count"),["cachedCount"]=m.GetParam("MF6_Text0_Count").FloatValue(),["epoch"]=m.GetParam("MF6_Text0_Epoch").IntValue()});
             udp.Send(bytesSnap,bytesSnap.Length,"127.0.0.1",9012);await Task.Delay(350);Check("late old subtitle cannot resurrect deleted panel",Value(Panel(0),"_Count")<.5f);

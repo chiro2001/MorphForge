@@ -152,6 +152,22 @@ namespace MorphForge.Editor
                 var t=sm.AddAnyStateTransition(state);t.duration=0;t.hasExitTime=false;t.canTransitionToSelf=false;Eq(t,"Stage",1);Eq(t,"Format",6);Eq(t,"Q28",count|(group<<2));var leave=To(state,idle);leave.AddCondition(AnimatorConditionMode.NotEqual,1,N("Stage"));
             }
         }
+        public static void ExtendDrawings(AnimatorController controller) {
+            if(EditorApplication.isPlaying)throw new Exception("Edit Mode required");fx=controller;empty=AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(fx)).OfType<AnimationClip>().FirstOrDefault(c=>c.name=="MF6 empty");
+            foreach(var layer in fx.layers.Where(l=>l.name.StartsWith("MF6 route to native pool "))) {
+                var sm=layer.stateMachine;int pool=int.Parse(layer.name.Substring(layer.name.LastIndexOf(' ')+1));
+                if(sm.states.Any(s=>s.state.name=="Native point or segment"))continue;
+                var state=State(sm,"Native point or segment");var d=Driver(state);Reset(d,pool);
+                Copy(d,Q(14),P(pool,0));Copy(d,N("RawTriZ1"),P(pool,2));
+                for(int a=0;a<3;a++){Copy(d,Q(1+a),P(pool,3+a));Copy(d,Q(4+a),P(pool,10+a));Copy(d,Q(9+a),P(pool,6+a));}
+                Copy(d,Q(7),P(pool,13));Copy(d,Q(8),P(pool,14));Copy(d,Q(12),P(pool,15));
+                Copy(d,Q(12),P(pool,9));Add(d,P(pool,9),25);Copy(d,Q(16),P(pool,16));Commit(d,pool,2);
+                var enter=sm.AddAnyStateTransition(state);enter.duration=0;enter.hasExitTime=false;enter.canTransitionToSelf=false;
+                Eq(enter,"Stage",2);Eq(enter,"Format",0);Eq(enter,"Q28",254);Eq(enter,"Q00",32);Eq(enter,"RawTriPool1",pool);
+                var leave=To(state,sm.defaultState);leave.AddCondition(AnimatorConditionMode.NotEqual,2,N("Stage"));
+            }
+            EditorUtility.SetDirty(fx);
+        }
         static AnimationClip WaitClip(string name,float duration){var c=new AnimationClip{name=name,frameRate=60};AnimationUtility.SetEditorCurve(c,EditorCurveBinding.FloatCurve("",typeof(Transform),"m_LocalScale.x"),AnimationCurve.Constant(0,duration,1));AssetDatabase.AddObjectToAsset(c,fx);return c;}
         static void Clock()
         {
@@ -174,7 +190,7 @@ namespace MorphForge.Editor
             foreach(string name in new[]{"Ctl","Seq","Format","Stage","MetaLo","MetaHi"})IntParam(name,name=="Ctl"?255:0);IntParam("LastRx",255);for(int i=0;i<29;i++){IntParam("D"+i.ToString("D2"));IntParam("Q"+i.ToString("D2"));}
             for(int p=0;p<8;p++){fx.AddParameter("MF6_P"+p+"_Ctl",AnimatorControllerParameterType.Int);for(int i=0;i<Mf6NativeBuild.Fields;i++)fx.AddParameter("MF6_P"+p+"_D"+i.ToString("D2"),AnimatorControllerParameterType.Float);}
             for(int p=0;p<8;p++)IntParam("NextSeq"+p);
-            Inbox();Metadata();TriangleGroups();Routers();Clock();SequenceWrap();Mf6TextBuild.ExtendInbox(fx);var root=new GameObject("MF6 shared decoder");try{
+            Inbox();Metadata();TriangleGroups();Routers();Clock();SequenceWrap();Mf6TextBuild.ExtendInbox(fx);ExtendDrawings(fx);var root=new GameObject("MF6 shared decoder");try{
                 var merge=root.AddComponent<ModularAvatarMergeAnimator>();merge.animator=fx;merge.layerType=VRCAvatarDescriptor.AnimLayerType.FX;merge.pathMode=MergeAnimatorPathMode.Relative;merge.matchAvatarWriteDefaults=false;
                 var parameters=root.AddComponent<ModularAvatarParameters>();foreach(string name in new[]{N("Ctl")}.Concat(Enumerable.Range(0,29).Select(i=>D(i))))parameters.parameters.Add(new ParameterConfig{nameOrPrefix=name,syncType=ParameterSyncType.Int,localOnly=false,saved=false,hasExplicitDefaultValue=true,defaultValue=name==N("Ctl")?255:0,internalParameter=false});
                 PrefabUtility.SaveAsPrefabAsset(root,Root+"/Decoder.prefab");

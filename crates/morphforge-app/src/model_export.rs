@@ -124,7 +124,24 @@ fn build(scene: &Scene, materials: &[Material], root: &Path, cell_size: f64) -> 
     if !cell_size.is_finite() || !(0.000001..=1000.).contains(&cell_size) {
         bail!("每格米数须为0.000001至1000")
     }
-    if scene.boxes.len().saturating_mul(12) + scene.triangles.len() > 500_000 {
+    if scene
+        .boxes
+        .len()
+        .saturating_mul(12)
+        .saturating_add(scene.triangles.len())
+        .saturating_add(
+            scene
+                .drawings
+                .iter()
+                .map(|p| match p.kind.as_str() {
+                    "cube_point" => 12,
+                    "segment" => 96,
+                    _ => 100,
+                })
+                .sum::<usize>(),
+        )
+        > 500_000
+    {
         bail!("导出最多500,000三角面；请拆分大型作品")
     }
     let styles: HashMap<_, _> = materials.iter().map(|m| (m.id, m)).collect();
@@ -301,6 +318,45 @@ fn build(scene: &Scene, materials: &[Material], root: &Path, cell_size: f64) -> 
                 group: t.group.clone(),
             });
         }
+    }
+    for drawing in &scene.drawings {
+        let material = *triangle_materials.entry(false).or_insert_with(|| {
+            let id = mesh.materials.len();
+            mesh.materials.push(Surface {
+                name: "原生点线".into(),
+                color: [1.; 3],
+                metallic: 0.,
+                roughness: 0.85,
+                opacity: 1.,
+                emission: 0.,
+                mode: "opaque".into(),
+                double: false,
+                image: None,
+                clamp: false,
+                unlit: false,
+            });
+            id
+        });
+        for vertices in drawing.mesh() {
+            let positions = [0, 2, 1].map(|i| {
+                std::array::from_fn(|a| {
+                    (vertices[i][a] * cell_size * if a == 2 { -1. } else { 1. }) as f32
+                })
+            });
+            if let Some(n) = normal(&positions) {
+                mesh.faces.push(Face {
+                    positions,
+                    normal: n,
+                    uv: [[0.; 2]; 3],
+                    tint: drawing.color.map(|x| linear(x as f32 / 255.)),
+                    material,
+                    group: drawing.group.clone(),
+                });
+            }
+        }
+    }
+    if mesh.faces.len() > 500_000 {
+        bail!("导出最多500,000三角面");
     }
     append_text_panels(&mut mesh, scene)?;
     if mesh.faces.is_empty() {

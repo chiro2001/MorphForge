@@ -26,7 +26,7 @@ namespace MorphForge.Editor
             string id=AvatarId,materialSource=null;
             if(!string.IsNullOrEmpty(sourceRoot)){CatalogMaterialBuild.BuildAt(sourceRoot,"Assets/MorphForge/Diagnostics/MF6Catalog");materialSource="Assets/MorphForge/Diagnostics/MF6Catalog/ParticleBoxCatalog.mat";}
             var catalog=JObject.Parse(File.ReadAllText(string.IsNullOrEmpty(sourceRoot)?"Docs/MF5/avatar-catalog.json":Path.Combine(sourceRoot,"catalog.json")));
-            catalog["capabilities"]=new JArray("mf6-text-panels/1","mf6-text-latest14/1","mf6-unified/1","mf6-region8/1","mf6-triangles/1","mf6-local-strip/1","mf6-shared-boxes/1","mf6-voxels8/1","mf5-runtime-materials/1","transparent-face-mask/1","virtual-light/1","scale-reference-0.05/1","texture-scale/1","texture-rotation/1","mf6-wedges/1");catalog["targetProtocol"]="mf6";catalog["targetAvatarId"]=id;
+            catalog["capabilities"]=new JArray("mf6-drawing/1","mf6-text-panels/1","mf6-text-latest14/1","mf6-unified/1","mf6-region8/1","mf6-triangles/1","mf6-local-strip/1","mf6-shared-boxes/1","mf6-voxels8/1","mf5-runtime-materials/1","transparent-face-mask/1","virtual-light/1","scale-reference-0.05/1","texture-scale/1","texture-rotation/1","mf6-wedges/1");catalog["targetProtocol"]="mf6";catalog["targetAvatarId"]=id;
             for(int i=0;i<8;i++)Mf6NativeBuild.BuildWorker(i,materialSource);
             var decoder=JObject.Parse(Mf6DecoderBuild.Build());
             var contents=PrefabUtility.LoadPrefabContents(Mf5AvatarBuild.AvatarPath);

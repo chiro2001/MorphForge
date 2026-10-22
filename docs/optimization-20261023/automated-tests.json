@@ -1,0 +1,8 @@
+{
+  "success": true,
+  "rustPassed": 305,
+  "rustSuites": 31,
+  "rustFailed": 0,
+  "javascriptPassed": 62,
+  "scope": "cargo test --workspace; node --test web/*.test.mjs"
+}

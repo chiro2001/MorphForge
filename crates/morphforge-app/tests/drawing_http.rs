@@ -50,7 +50,7 @@ fn request(base: u64) -> Value {
 }
 
 #[tokio::test]
-async fn preview_apply_retry_restart_and_undo_share_the_actual_mesh() {
+async fn preview_apply_retry_restart_and_undo_preserve_native_point_and_segment() {
     let root = tempfile::tempdir().unwrap();
     let server = Server::new(root.path()).await;
     let mut preview = request(0);
@@ -58,7 +58,8 @@ async fn preview_apply_retry_restart_and_undo_share_the_actual_mesh() {
     let (status, p) = server.post("/api/draw-primitives", preview).await;
     assert_eq!(status, StatusCode::OK);
     assert_eq!(p["dryRun"], true);
-    assert!(p["triangles"].as_array().unwrap().len() > 20);
+    assert!(p["triangles"].as_array().unwrap().is_empty());
+    assert_eq!(p["drawings"].as_array().unwrap().len(), 2);
     assert_eq!(
         server.app.workspace.lock().unwrap().project.scene.revision,
         0
@@ -72,17 +73,17 @@ async fn preview_apply_retry_restart_and_undo_share_the_actual_mesh() {
         .unwrap()
         .project
         .scene
-        .triangles
+        .drawings
         .clone();
-    assert_eq!(before.len(), p["triangles"].as_array().unwrap().len());
-    for (saved, raw) in before.iter().zip(p["triangles"].as_array().unwrap()) {
-        assert_eq!(json!(saved.vertices), raw["vertices"]);
+    assert_eq!(before.len(), p["drawings"].as_array().unwrap().len());
+    for (saved, raw) in before.iter().zip(p["drawings"].as_array().unwrap()) {
+        assert_eq!(json!(saved.start), raw["start"]);
     }
     let (_, retry) = server.post("/api/draw-primitives", request(0)).await;
     assert_eq!(retry["replayed"], true);
     assert_eq!(retry["revision"], result["revision"]);
     assert_eq!(
-        server.app.workspace.lock().unwrap().project.scene.triangles,
+        server.app.workspace.lock().unwrap().project.scene.drawings,
         before
     );
     let mut reopened = Workspace::open(root.path().into()).unwrap();
@@ -90,7 +91,7 @@ async fn preview_apply_retry_restart_and_undo_share_the_actual_mesh() {
         drawing::execute(&mut reopened, &request(0), None).unwrap()["replayed"],
         true
     );
-    assert_eq!(reopened.project.scene.triangles, before);
+    assert_eq!(reopened.project.scene.drawings, before);
     let mut changed = request(0);
     changed["primitives"][0]["size"] = json!(16);
     assert_eq!(
@@ -105,7 +106,7 @@ async fn preview_apply_retry_restart_and_undo_share_the_actual_mesh() {
         .unwrap()
         .project
         .scene
-        .triangles
+        .drawings
         .is_empty());
 }
 

@@ -1,0 +1,126 @@
+{
+  "status": "success",
+  "phase": "complete",
+  "operation": "a07b3146b39a4b8c8b4b83e4b68ddc81",
+  "avatarId": "avtr_9ebb3bdb-6991-42cd-8c3e-b9a35f176e90",
+  "avatarName": "MorphForge MF6 16K",
+  "releaseStatus": "private",
+  "versionBefore": 10,
+  "startedUtc": "2026-10-22T19:42:13.591829Z",
+  "sourceInspection": {
+    "success": true,
+    "scene": "Assets/MorphForge/MF6/MorphForge_MF6.unity",
+    "sceneDirty": false,
+    "avatarName": "MorphForge_MF6_Avatar",
+    "avatarId": "avtr_9ebb3bdb-6991-42cd-8c3e-b9a35f176e90",
+    "prefabDependencyHash": "3e915224e3bbebf4bef0b81746ec472b",
+    "sceneDependencyHash": "c2cfd61bbcf69adaca5601a3b3ee754c",
+    "stores": 8,
+    "physicalParticles": 16448,
+    "missingScripts": 0,
+    "receiverFlags": 255,
+    "textRenderers": 4,
+    "motionControllers": 1,
+    "previewCameras": 1,
+    "previewTargets": [
+      {
+        "name": "Camera",
+        "width": 512,
+        "height": 384
+      }
+    ],
+    "shaderErrors": [],
+    "controllers": [
+      {
+        "object": "NemesisWandPrefab",
+        "path": "Assets/Nemesis/Nemesis_Lod/Animation/WandController.controller"
+      },
+      {
+        "object": "Reticle",
+        "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Reticle/Reticle.controller"
+      },
+      {
+        "object": "Reticle",
+        "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Reticle/Reticle.controller"
+      },
+      {
+        "object": "火炎放射_Black",
+        "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Fire/Menu/DarkFIRE.controller"
+      },
+      {
+        "object": "LusterRailGun",
+        "path": "Assets/Nemesis/Nemesis_Lod/Gimic/RailGun/LRG_FX.controller"
+      },
+      {
+        "object": "WarpurgisLaser_36",
+        "path": "Assets/Nemesis/Nemesis_Lod/Gimic/LaserBit/WL36_Contoroller.controller"
+      },
+      {
+        "object": "Shield",
+        "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Shield/Shield_FX.controller"
+      },
+      {
+        "object": "MorphForgePlacement",
+        "path": "Assets/MorphForge/MF6/Placement.controller"
+      },
+      {
+        "object": "ProtocolCenter",
+        "path": "Assets/MorphForgeAvatar/Generated/Motion/Motion.controller"
+      },
+      {
+        "object": "Pool0",
+        "path": "Assets/MorphForge/MF6/Pool0/FX.controller"
+      },
+      {
+        "object": "Pool1",
+        "path": "Assets/MorphForge/MF6/Pool1/FX.controller"
+      },
+      {
+        "object": "Pool2",
+        "path": "Assets/MorphForge/MF6/Pool2/FX.controller"
+      },
+      {
+        "object": "Pool3",
+        "path": "Assets/MorphForge/MF6/Pool3/FX.controller"
+      },
+      {
+        "object": "Pool4",
+        "path": "Assets/MorphForge/MF6/Pool4/FX.controller"
+      },
+      {
+        "object": "Pool5",
+        "path": "Assets/MorphForge/MF6/Pool5/FX.controller"
+      },
+      {
+        "object": "Pool6",
+        "path": "Assets/MorphForge/MF6/Pool6/FX.controller"
+      },
+      {
+        "object": "Pool7",
+        "path": "Assets/MorphForge/MF6/Pool7/FX.controller"
+      },
+      {
+        "object": "MF6Decoder",
+        "path": "Assets/MorphForge/MF6/Decoder.controller"
+      },
+      {
+        "object": "TextDisplay",
+        "path": "Assets/MorphForgeAvatar/Generated/Text/Text.controller"
+      },
+      {
+        "object": "LocalPreview",
+        "path": "Assets/MorphForgeAvatar/Generated/LocalPreview/Preview.controller"
+      }
+    ],
+    "sdkAvatarVersion": "3.10.5",
+    "timeUtc": "2026-10-22T19:42:12.5645578Z"
+  },
+  "message": "File upload finished",
+  "progress": 1.0,
+  "updatedUtc": "2026-10-22T19:44:22.1913878Z",
+  "versionAfter": 11,
+  "pendingUpload": false,
+  "sceneDirtyAfter": true,
+  "sceneAvatarIdAfter": "avtr_9ebb3bdb-6991-42cd-8c3e-b9a35f176e90",
+  "completedUtc": "2026-10-22T19:44:25.0570895Z"
+}

@@ -35,8 +35,8 @@ pub struct App {
     pub harness: Harness,
     pub browser: Arc<Mutex<Option<u32>>>,
     pub fonts: Arc<FontCatalog>,
-    pub desktop:Arc<crate::desktop_window::Windows>,
-    pub speech:Arc<crate::speech::Speech>,
+    pub desktop: Arc<crate::desktop_window::Windows>,
+    pub speech: Arc<crate::speech::Speech>,
     workspace_gate: Arc<tokio::sync::RwLock<()>>,
     text_jobs: Arc<tokio::sync::Semaphore>,
     reference_jobs: Arc<tokio::sync::Semaphore>,
@@ -104,8 +104,8 @@ impl App {
         let transport = Transport::new(workspace.clone());
         let capture = CaptureBroker::new();
         let provider = Provider::new(&root, env.as_deref())?;
-        let desktop=Arc::new(crate::desktop_window::Windows::new(root.clone())?);
-        let speech=crate::speech::Speech::new(root.clone())?;
+        let desktop = Arc::new(crate::desktop_window::Windows::new(root.clone())?);
+        let speech = crate::speech::Speech::new(root.clone())?;
         let fonts = fonts::shared_default()?;
         let harness = Harness::new_with_fonts(
             workspace.clone(),
@@ -143,22 +143,28 @@ impl App {
             .route("/api/diagnostics", get(diagnostics))
             .route("/api/metrics", get(metrics))
             .route("/api/state", get(state))
-            .route("/api/speech",get(speech_state))
-            .route("/api/speech/config",post(speech_config))
-            .route("/api/speech/models/download",post(speech_download))
-            .route("/api/speech/devices",get(speech_devices))
-            .route("/api/speech/start",post(speech_start))
-            .route("/api/speech/audio",post(speech_audio))
-            .route("/api/speech/control",post(speech_control))
-            .route("/api/speech/apply",post(speech_apply))
-            .route("/api/desktop/window",get(desktop_window_state).post(desktop_window_action))
+            .route("/api/speech", get(speech_state))
+            .route("/api/speech/config", post(speech_config))
+            .route("/api/speech/models/download", post(speech_download))
+            .route("/api/speech/devices", get(speech_devices))
+            .route("/api/speech/start", post(speech_start))
+            .route("/api/speech/audio", post(speech_audio))
+            .route("/api/speech/control", post(speech_control))
+            .route("/api/speech/apply", post(speech_apply))
+            .route(
+                "/api/desktop/window",
+                get(desktop_window_state).post(desktop_window_action),
+            )
             .route(
                 "/api/view-settings",
                 get(view_settings).post(view_settings_save),
             )
             .route("/api/scene", get(scene))
-            .route("/api/text-panels", get(text_panels_list).post(text_panels_action))
-            .route("/api/text-panels/latest",post(text_panels_latest))
+            .route(
+                "/api/text-panels",
+                get(text_panels_list).post(text_panels_action),
+            )
+            .route("/api/text-panels/latest", post(text_panels_latest))
             .route("/pixel-fonts/{font}/{kind}", get(pixel_font_asset))
             .route("/api/creative", get(creative_list))
             .route("/api/creative/{domain}", post(creative_action))
@@ -169,7 +175,10 @@ impl App {
             .route("/api/workspaces", get(workspaces).post(workspace_action))
             .route("/api/edit", post(edit))
             .route("/api/mesh", post(mesh_edit))
-            .route("/api/draw-primitives", get(drawing_catalog).post(drawing_action))
+            .route(
+                "/api/draw-primitives",
+                get(drawing_catalog).post(drawing_action),
+            )
             .route(
                 "/api/minecraft",
                 get(minecraft_sources).post(minecraft_action),
@@ -221,8 +230,15 @@ impl App {
     }
 }
 async fn workspace_gate(State(a): State<App>, request: Request, next: Next) -> Response {
-    if request.method()==axum::http::Method::POST && matches!(request.uri().path(),"/api/edit"|"/api/mesh"|"/api/import"|"/api/undo"|"/api/text/apply") {
-        if let Err(error)=a.harness.ensure_manual_edit(){return ApiError(error).into_response();}
+    if request.method() == axum::http::Method::POST
+        && matches!(
+            request.uri().path(),
+            "/api/edit" | "/api/mesh" | "/api/import" | "/api/undo" | "/api/text/apply"
+        )
+    {
+        if let Err(error) = a.harness.ensure_manual_edit() {
+            return ApiError(error).into_response();
+        }
     }
     if request.method() == axum::http::Method::POST
         && ["/api/workspaces", "/api/harness/control"].contains(&request.uri().path())
@@ -339,7 +355,7 @@ async fn state(State(a): State<App>) -> ApiResult {
         "apiVersion": "mf-http/2"
     });
     value["connection"] = a.transport.state();
-    value["speechStatus"]=a.speech.brief_status();
+    value["speechStatus"] = a.speech.brief_status();
     value["harness"] = a.harness.state();
     value["capture"] = json!({"browserPid":*a.browser.lock().unwrap()});
     Ok(Json(value))
@@ -355,27 +371,82 @@ async fn scene(State(a): State<App>, Query(q): Query<Revision>) -> ApiResult {
         json!({"scene":crate::target::decorate_preview(&scene,&materials,transport.avatar_catalog.as_ref()),"materials":crate::target::preview_materials(&materials,transport.avatar_catalog.as_ref()),"surfaces":surfaces,"textLayouts":crate::text_panels::layouts(&scene)?}),
     ))
 }
-fn speech_context(a:&App)->crate::speech::SpeechContext{crate::speech::SpeechContext{workspace:a.workspace.clone(),harness:a.harness.clone(),transport:a.transport.clone()}}
-async fn speech_state(State(a):State<App>)->ApiResult{Ok(Json(a.speech.status()))}
-async fn speech_download(State(a):State<App>,Json(v):Json<Value>)->ApiResult{Ok(Json(a.speech.download_models(&v)?))}
-async fn speech_config(State(a):State<App>,Json(v):Json<Value>)->ApiResult{Ok(Json(a.speech.configure(&v)?))}
-async fn speech_devices()->ApiResult{Ok(Json(crate::speech::native::devices()?))}
-async fn speech_start(State(a):State<App>,Json(v):Json<Value>)->ApiResult{Ok(Json(a.speech.start(speech_context(&a),&v)?))}
-async fn speech_audio(State(a):State<App>,Json(v):Json<Value>)->ApiResult{Ok(Json(a.speech.audio(&v)?))}
-async fn speech_control(State(a):State<App>,Json(v):Json<Value>)->ApiResult{Ok(Json(a.speech.control(&v)?))}
-async fn speech_apply(State(a):State<App>,Json(v):Json<Value>)->ApiResult{Ok(Json(a.speech.apply(&speech_context(&a),&v)?))}
-async fn desktop_window_state(State(a):State<App>)->ApiResult {Ok(Json(a.desktop.status()))}
-async fn desktop_window_action(State(a):State<App>,Json(v):Json<Value>)->ApiResult {Ok(Json(a.desktop.command(&v)?))}
-async fn text_panels_list(State(a):State<App>)->ApiResult {Ok(Json(crate::text_panels::apply(&mut a.workspace.lock().unwrap(),&json!({"action":"list"}),None)?))}
-async fn text_panels_latest(State(a):State<App>,Json(v):Json<Value>)->ApiResult {
-    let id=v["id"].as_str().context("需要文本框id")?;let text=v["text"].as_str().context("需要text")?;
-    if text.len()>32000{return Err(anyhow::anyhow!("实时文字过长").into())}
-    {let w=a.workspace.lock().unwrap();if v["projectId"].as_str()!=Some(w.project.id.as_str()){return Err(anyhow::anyhow!("WORKSPACE_CONFLICT").into())}}
-    a.transport.latest_text(id,text)?;Ok(Json(json!({"ok":true,"latestWindow":14,"persisted":false,"receiverConfirmed":false})))
+fn speech_context(a: &App) -> crate::speech::SpeechContext {
+    crate::speech::SpeechContext {
+        workspace: a.workspace.clone(),
+        harness: a.harness.clone(),
+        transport: a.transport.clone(),
+    }
 }
-async fn text_panels_action(State(a):State<App>,Json(v):Json<Value>)->ApiResult {Ok(Json(a.harness.tool("text_panels",&v,None).await?))}
-async fn pixel_font_asset(AxPath((font,kind)):AxPath<(String,String)>)->Response {
-    match crate::text_panels::asset(&font,&kind){Some(bytes)=>([("content-type","application/octet-stream"),("cache-control","public, max-age=86400")],bytes).into_response(),None=>StatusCode::NOT_FOUND.into_response()}
+async fn speech_state(State(a): State<App>) -> ApiResult {
+    Ok(Json(a.speech.status()))
+}
+async fn speech_download(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    Ok(Json(a.speech.download_models(&v)?))
+}
+async fn speech_config(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    Ok(Json(a.speech.configure(&v)?))
+}
+async fn speech_devices() -> ApiResult {
+    Ok(Json(crate::speech::native::devices()?))
+}
+async fn speech_start(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    Ok(Json(a.speech.start(speech_context(&a), &v)?))
+}
+async fn speech_audio(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    Ok(Json(a.speech.audio(&v)?))
+}
+async fn speech_control(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    Ok(Json(a.speech.control(&v)?))
+}
+async fn speech_apply(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    Ok(Json(a.speech.apply(&speech_context(&a), &v)?))
+}
+async fn desktop_window_state(State(a): State<App>) -> ApiResult {
+    Ok(Json(a.desktop.status()))
+}
+async fn desktop_window_action(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    Ok(Json(a.desktop.command(&v)?))
+}
+async fn text_panels_list(State(a): State<App>) -> ApiResult {
+    Ok(Json(crate::text_panels::apply(
+        &mut a.workspace.lock().unwrap(),
+        &json!({"action":"list"}),
+        None,
+    )?))
+}
+async fn text_panels_latest(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    let id = v["id"].as_str().context("需要文本框id")?;
+    let text = v["text"].as_str().context("需要text")?;
+    if text.len() > 32000 {
+        return Err(anyhow::anyhow!("实时文字过长").into());
+    }
+    {
+        let w = a.workspace.lock().unwrap();
+        if v["projectId"].as_str() != Some(w.project.id.as_str()) {
+            return Err(anyhow::anyhow!("WORKSPACE_CONFLICT").into());
+        }
+    }
+    a.transport.latest_text(id, text)?;
+    Ok(Json(
+        json!({"ok":true,"latestWindow":128,"layoutApplied":true,"persisted":false,"receiverConfirmed":false}),
+    ))
+}
+async fn text_panels_action(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
+    Ok(Json(a.harness.tool("text_panels", &v, None).await?))
+}
+async fn pixel_font_asset(AxPath((font, kind)): AxPath<(String, String)>) -> Response {
+    match crate::text_panels::asset(&font, &kind) {
+        Some(bytes) => (
+            [
+                ("content-type", "application/octet-stream"),
+                ("cache-control", "public, max-age=86400"),
+            ],
+            bytes,
+        )
+            .into_response(),
+        None => StatusCode::NOT_FOUND.into_response(),
+    }
 }
 async fn avatar_discover(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     let port = v
@@ -410,10 +481,12 @@ async fn discover_avatar(a: &App, port: Option<u16>, automatic: bool) -> anyhow:
         (morphforge_core::mf6::REGION_CAPABILITY, "region8"),
         (crate::target::SURFACE_CAPABILITY, "surfaceMasks"),
         ("virtual-light/1", "virtualLight"),
-        (crate::text_wire::CAPABILITY,"textPanels"),
-        ("mf6-text-latest14/1","textPanels"),
-        ("local-placement-controls/1","placementControlsSeparated"),
-        (crate::avatar_motion::CAPABILITY,"motion4"),
+        (crate::text_wire::CAPABILITY, "textPanels"),
+        ("mf6-text-latest14/1", "textPanels"),
+        ("local-placement-controls/1", "placementControlsSeparated"),
+        (crate::avatar_motion::CAPABILITY, "motion4"),
+        (crate::avatar_motion::SESSION_CAPABILITY, "motionSession"),
+        (morphforge_core::mf6::DRAWING_CAPABILITY, "drawing"),
     ];
     let already_selected = current.as_ref().is_some_and(|c| {
         c.identity_hash() == hash
@@ -424,7 +497,9 @@ async fn discover_avatar(a: &App, port: Option<u16>, automatic: bool) -> anyhow:
     if let Some(c) = &current {
         crate::avatar_discovery::cache(&shared, c)?;
     }
-    let bundled = crate::target::AvatarCatalog::from_bytes(include_bytes!("../../../materials/mf6/catalog.json"))?;
+    let bundled = crate::target::AvatarCatalog::from_bytes(include_bytes!(
+        "../../../materials/mf6/catalog.json"
+    ))?;
     let target = current
         .filter(|c| c.identity_hash() == hash)
         .or(crate::avatar_discovery::lookup(&shared, hash)?)
@@ -441,7 +516,7 @@ async fn discover_avatar(a: &App, port: Option<u16>, automatic: bool) -> anyhow:
             state.sent_revision = None;
             state.unified.clear_sent();
             state.text.reset();
-            state.motion=crate::avatar_motion::Session::default();
+            state.motion = crate::avatar_motion::Session::default();
             state.unified.motion_groups.clear();
             state.text.motion_groups.clear();
             state.last_error = "Avatar能力/构建已改变，已停止发送；确认新目标后重新开启".into();
@@ -853,7 +928,9 @@ async fn mesh_edit(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     }
     Ok(Json(result))
 }
-async fn drawing_catalog() -> ApiResult { Ok(Json(crate::drawing::catalog())) }
+async fn drawing_catalog() -> ApiResult {
+    Ok(Json(crate::drawing::catalog()))
+}
 async fn drawing_action(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     Ok(Json(a.harness.tool("draw_primitives", &v, None).await?))
 }

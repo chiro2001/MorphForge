@@ -970,7 +970,7 @@ function drawGroups() {
     label.textContent = name;
     label.onclick = () => {
       selected = new Set(
-        sceneData.scene.boxes.concat(sceneData.scene.triangles||[])
+        sceneData.scene.boxes.concat(sceneData.scene.triangles||[],sceneData.scene.drawings||[])
           .filter((box) => box.group === name)
           .map((box) => box.id),
       );
@@ -1120,10 +1120,15 @@ renderer.renderer.domElement.addEventListener("pointerup", (event) => {
         }
       }
       for(const face of sceneData.scene.triangles||[]){const point=renderer.projectPoint([0,1,2].map(a=>face.vertices.reduce((sum,p)=>sum+p[a],0)/3*cell));if(point.x>=Math.min(start[0],event.clientX)&&point.x<=Math.max(start[0],event.clientX)&&point.y>=Math.min(start[1],event.clientY)&&point.y<=Math.max(start[1],event.clientY))selected.add(face.id);}
+      for(const drawing of sceneData.scene.drawings||[]){
+        if(renderer.groupsHidden.has(drawing.group))continue;
+        const point=renderer.projectPoint(drawing.start.map((v,a)=>(v+drawing.end[a])*.5*cell));
+        if(point.x>=Math.min(start[0],event.clientX)&&point.x<=Math.max(start[0],event.clientX)&&point.y>=Math.min(start[1],event.clientY)&&point.y<=Math.max(start[1],event.clientY))selected.add(drawing.id);
+      }
     } else {
       const hit = renderer.pick(event, { erase: true });
-      if (hit?.box || hit?.triangle) {
-        const id=(hit.box||hit.triangle).id;
+      if (hit?.box || hit?.triangle || hit?.drawing) {
+        const id=(hit.box||hit.triangle||hit.drawing).id;
         if (event.shiftKey && selected.has(id))
           selected.delete(id);
         else selected.add(id);
@@ -1139,7 +1144,8 @@ renderer.renderer.domElement.addEventListener("pointerup", (event) => {
     erase: tool === "erase" || event.shiftKey,
     layer: Number($("layer").value),
   });
-  if(hit?.triangle&&(tool==="erase"||event.shiftKey))edit({op:"remove_triangles",ids:[hit.triangle.id]});
+  if(hit?.drawing&&(tool==="erase"||event.shiftKey))edit({op:"remove_drawings",ids:[hit.drawing.id]});
+  else if(hit?.triangle&&(tool==="erase"||event.shiftKey))edit({op:"remove_triangles",ids:[hit.triangle.id]});
   else if (hit) edit(operation(hit.pos, event.shiftKey));
 });
 
@@ -1191,6 +1197,8 @@ $("paintSelection").onclick = () => {
     }));
   const triangleIds=(sceneData.scene.triangles||[]).filter(t=>selected.has(t.id)).map(t=>t.id);
   if(triangleIds.length){const material=sceneData.materials.find(m=>m.id===selectedStyle);operations.push({op:"paint_triangles",ids:triangleIds,color:(material?.color||[.75,.75,.75]).map(v=>Math.round(Math.max(0,Math.min(1,v))*255))});}
+  const drawingIds=(sceneData.scene.drawings||[]).filter(p=>selected.has(p.id)).map(p=>p.id);
+  if(drawingIds.length){const material=sceneData.materials.find(m=>m.id===selectedStyle);operations.push({op:"paint_drawings",ids:drawingIds,color:(material?.color||[.75,.75,.75]).map(v=>Math.round(Math.max(0,Math.min(1,v))*255))});}
   edit({ operations });
 };
 

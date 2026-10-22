@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "new text panel persists defaults and mixed CJK layout",
+      "passed": true
+    },
+    {
+      "name": "text input applies to persisted scene",
+      "passed": true
+    },
+    {
+      "name": "text edits participate in scene undo",
+      "passed": true
+    },
+    {
+      "name": "directional text move controls work",
+      "passed": true
+    },
+    {
+      "name": "front and back show the same reading order and glyphs",
+      "passed": true
+    },
+    {
+      "name": "actual glyph ink is visible",
+      "passed": true
+    },
+    {
+      "name": "no JavaScript or font shader errors",
+      "passed": true
+    }
+  ]
+}

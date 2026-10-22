@@ -46,7 +46,7 @@ namespace MorphForge.Editor {
             var terms=input.ToArray();var motions=terms.Select(term=>(Motion)Clip(name+" "+term.property+" "+term.field,new[]{B(slot,term.property,term.field<0?term.constant:term.multiplier)})).ToArray();
             // Keep packed AAP values sampled after the receive state exits.
             // Rendering and local storage share the same coefficient clip.
-            for(int i=0;i<terms.Length;i++)if(terms[i].packed)AnimationUtility.SetEditorCurve((AnimationClip)motions[i],EditorCurveBinding.FloatCurve("",typeof(Animator),Cache(slot,terms[i].field)),AnimationCurve.Constant(0,.02f,1));
+            // Storage is held separately, allowing empty render output to sleep.
             var result=Direct(name,motions);var children=result.children;
             // Verified unnormalized Direct weights can exceed one. Each cached
             // byte multiplies a constant coefficient, replacing a two-leaf 1D
@@ -63,9 +63,17 @@ namespace MorphForge.Editor {
             var motions=new List<Motion>{Clip("Zero output baseline "+slot,baseline),Map(slot,"Config words "+slot,config.Where(t=>t.packed||t.field<0)),Map(slot,"Config bytes "+slot,config.Where(t=>!t.packed&&t.field>=0))};var weights=new List<string>{"MF6_TextOne","MF6_TextOne",Gate(slot,0)};
             // Words must remain active even while a panel is empty or before
             // its final configuration arrives. Count and opacity hide output.
-            for(int page=0;page<11;page++){var terms=new List<Term>();for(int i=0;i<12&&page*12+i<Slots;i++)terms.AddRange(Word("_G"+(page*12+i).ToString("D3"),(page*12+i)*2));motions.Add(Map(slot,"Glyph output "+slot+"/"+page,terms));weights.Add("MF6_TextOne");}
+            for(int page=0;page<11;page++){var terms=new List<Term>();for(int i=0;i<12&&page*12+i<Slots;i++)terms.AddRange(Word("_G"+(page*12+i).ToString("D3"),(page*12+i)*2));motions.Add(Map(slot,"Glyph output "+slot+"/"+page,terms));weights.Add(Gate(slot,page));}
             var count=Clip("Count coefficient "+slot,new[]{B(slot,"_Count",1)});motions.Add(count);weights.Add(Count(slot));
-            var result=Direct("Cached output "+slot,motions);var children=result.children;for(int i=0;i<children.Length;i++)children[i].directBlendParameter=weights[i];result.children=children;return result;
+            var result=Direct("Cached output "+slot,motions);var children=result.children;for(int i=0;i<children.Length;i++)children[i].directBlendParameter=weights[i];result.children=children;
+            var hidden=Clip("Empty text panel "+slot,new[]{B(slot,"_Count",0)});
+            AnimationUtility.SetEditorCurve(hidden,EditorCurveBinding.FloatCurve("Panel"+slot,typeof(MeshRenderer),"m_Enabled"),AnimationCurve.Constant(0,.02f,0));
+            var visible=Clip("Visible text panel "+slot,new Binding[0]);
+            AnimationUtility.SetEditorCurve(visible,EditorCurveBinding.FloatCurve("Panel"+slot,typeof(MeshRenderer),"m_Enabled"),AnimationCurve.Constant(0,.02f,1));
+            var shown=Direct("Visible panel output "+slot,new Motion[]{visible,result});
+            var gate=new BlendTree{name="Text render when populated "+slot,blendType=BlendTreeType.Simple1D,blendParameter=Count(slot),useAutomaticThresholds=false};AssetDatabase.AddObjectToAsset(gate,fx);gate.AddChild(hidden,0);gate.AddChild(shown,1);
+            var storage=WordCacheBuild.Hold("MF6_TextOne",CachedFields.Where(field=>field<274&&field%2==0||field==295||field==297).Select(field=>Cache(slot,field)));
+            return Direct("Retain and render panel "+slot,new Motion[]{storage,gate});
         }
         static void CopyCache(VRCAvatarParameterDriver driver,int slot,int source,int target)=>DriverCopy(driver,T(source),Cache(slot,target));
         static void UpdateCount(VRCAvatarParameterDriver driver,int slot,int field,bool snapshot=false){
@@ -127,7 +135,7 @@ namespace MorphForge.Editor {
                 int start=p.Count;foreach(var v in new[]{new Vector2(0,0),new Vector2(1,0),new Vector2(1,1),new Vector2(0,1)}){p.Add(new Vector3(v.x,v.y,0));uv.Add(v);index.Add(new Vector2(i,0));}
                 triangles.AddRange(new[]{start,start+2,start+1,start,start+3,start+2});
             }
-            var mesh=new Mesh{name="TextMesh"};mesh.SetVertices(p);mesh.SetUVs(0,uv);mesh.SetUVs(1,index);mesh.SetTriangles(triangles,0);mesh.bounds=new Bounds(Vector3.zero,Vector3.one*160);
+            var mesh=new Mesh{name="TextMesh"};mesh.SetVertices(p);mesh.SetUVs(0,uv);mesh.SetUVs(1,index);mesh.SetTriangles(triangles,0);mesh.bounds=new Bounds(Vector3.zero,Vector3.one*80);
             string path=Root+"/TextMesh.asset";var existing=AssetDatabase.LoadAssetAtPath<Mesh>(path);if(existing){EditorUtility.CopySerialized(mesh,existing);UnityEngine.Object.DestroyImmediate(mesh);return existing;}AssetDatabase.CreateAsset(mesh,path);return mesh;
         }
         public static void BuildAssets() {

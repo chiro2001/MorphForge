@@ -7,6 +7,7 @@ import {
   poseBounds,
   quaternionXYZ,
   slerp,
+  motionEnvelope,
 } from "./motion.js";
 const key = (
   time,
@@ -20,6 +21,11 @@ const track = {
   interpolation: "linear",
   keys: [key(0), key(2, [4, 0, 0], [0, 90, 0], [2, 2, 2])],
 };
+test("cached motion envelope contains intermediate rotations and nonuniform scales",()=>{
+  const boxes=[{id:1,group:'door',min:[-3,0,-1],size:[8,12,3]},{id:2,group:'static',min:[-20,0,0],size:[1,1,1]}];
+  const clip={duration:2,tracks:[track]};const envelope=motionEnvelope(boxes,clip);
+  for(let time=0;time<=2;time+=.017){for(const b of poseBounds(boxes,[],clip,time)){for(let a=0;a<3;a++){assert.ok(b.min[a]>=envelope.min[a]-1e-8);assert.ok(b.min[a]+b.size[a]<=envelope.max[a]+1e-8);}}}
+});
 test("linear translation/scale and clamped endpoints agree with keyframe semantics", () => {
   assert.deepEqual(sampleTrack(track, 1).translation, [2, 0, 0]);
   assert.deepEqual(sampleTrack(track, -1).scale, [1, 1, 1]);
