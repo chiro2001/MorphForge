@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 const html=`<div class="row"><select id="panelSelect" aria-label="文本框"></select><button id="panelCreate">新建</button><button id="panelCreateCaption">字幕</button><button id="panelDelete">删除</button></div>
 <label class="check"><input id="panelLive" type="checkbox">实时更新（按文本框排版；先发布，应用时保存全文）</label>
-<div class="double"><label>类型<select id="panelKind"><option value="text">普通文本框</option><option value="caption">实时字幕</option></select></label><label>最大行数<input id="panelMaxLines" type="number" min="0" max="128" value="0" title="普通文本0为按框高；字幕默认3行" /></label></div>
+<div class="double"><label>类型<select id="panelKind"><option value="text">普通文本框</option><option value="caption">实时字幕</option></select></label><label>最大行数<input id="panelMaxLines" type="number" min="0" max="128" value="0" title="普通文本0为按框高；字幕默认4行" /></label></div>
 <label>文字<textarea id="panelText" rows="4" placeholder="文字在框内排版，正反两面可读"></textarea></label>
 <div class="double"><label>名称<input id="panelName" /></label><label>字体<select id="panelFont"><option value="pixel16-zh">点阵16 · 中文</option><option value="pixel16-jp">点阵16 · 日文</option></select></label></div>
 <div class="triple"><label>字高／格<input id="panelFontSize" type="number" min="0.015625" step="0.25" value="8" /></label><label>框宽／格<input id="panelWidth" type="number" min="0.25" step="1" value="128" /></label><label>框高／格<input id="panelHeight" type="number" min="0.25" step="1" value="32" /></label></div>
@@ -31,8 +31,8 @@ export function setupTextPanelUi({$,api,getScene,getState,renderer,refresh,error
  const mode=on=>{editor.hidden=!on;voxel.hidden=on;$('panelTextMode').classList.toggle('selected',on);$('voxelTextMode').classList.toggle('selected',!on);if(on)sync(getScene());};
  $('panelTextMode').onclick=()=>mode(true);$('voxelTextMode').onclick=()=>mode(false);
  $('panelCreate').onclick=async()=>{try{const r=await api('text-panels',{action:'create',baseRevision:getState().revision,panel:{text:'你好，世界！\nHello / こんにちは'}});selected=r.panel.id;await refresh(true);sync(getScene());}catch(e){error(e);}};
- $('panelCreateCaption').onclick=async()=>{try{const r=await api('text-panels',{action:'create',baseRevision:getState().revision,preset:'caption',panel:{text:''}});selected=r.panel.id;await refresh(true);sync(getScene());toast('已新建保留末尾的字幕框；发布后可在语音小窗中选择它');}catch(e){error(e);}};
- $('panelKind').onchange=()=>{if($('panelKind').value==='caption'){$('panelMaxLines').value=3;$('panelOverflow').value='tail';$('panelVertical').value='bottom';}else{$('panelMaxLines').value=0;}preview();};
+ $('panelCreateCaption').onclick=async()=>{try{const r=await api('text-panels',{action:'create',baseRevision:getState().revision,preset:'caption',panel:{text:''}});selected=r.panel.id;await refresh(true);sync(getScene());toast('已新建四行字幕框，翻译时原文与译文各保留两行；发布后可在语音小窗中选择它');}catch(e){error(e);}};
+ $('panelKind').onchange=()=>{if($('panelKind').value==='caption'){$('panelMaxLines').value=4;$('panelHeight').value=Math.max(40,Number($('panelHeight').value));$('panelOverflow').value='tail';$('panelVertical').value='bottom';}else{$('panelMaxLines').value=0;}preview();};
  $('panelSelect').onchange=()=>{selected=$('panelSelect').value;fill(rows.find(x=>x.id===selected));};
  $('panelDelete').onclick=async()=>{if(!selected)return;try{await api('text-panels',{action:'remove',id:selected,baseRevision:getState().revision});selected='';await refresh(true);}catch(e){error(e);}};
  $('panelText').addEventListener('input',()=>{clearTimeout(liveTimer);if(!$('panelLive').checked)return;const id=selected,projectId=getState().project.id,text=$('panelText').value;liveTimer=setTimeout(()=>api('text-panels/latest',{id,projectId,text}).catch(e=>{$('panelLayoutInfo').textContent=e.message;}),250);});

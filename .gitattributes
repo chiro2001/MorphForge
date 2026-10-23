@@ -47,3 +47,7 @@ docs/optimization-20261023/windows-build.txt whitespace=-blank-at-eof,cr-at-eol
 # Preserve verbatim Windows subtitle-translation evidence.
 docs/subtitle-translation/**/*.json whitespace=cr-at-eol
 docs/subtitle-translation/windows-build.txt whitespace=-blank-at-eof,cr-at-eol
+
+# Preserve verbatim Windows bilingual-caption evidence.
+docs/bilingual-captions/**/*.json whitespace=cr-at-eol
+docs/bilingual-captions/windows-build.txt whitespace=-blank-at-eof,cr-at-eol

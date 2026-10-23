@@ -1,0 +1,71 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "isolated workspace and OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "preview shader matches current frozen source",
+      "passed": true
+    },
+    {
+      "name": "default caption reserves four rows at fixed font size",
+      "passed": true
+    },
+    {
+      "name": "mini offers Chinese Japanese and English",
+      "passed": true
+    },
+    {
+      "name": "target ja persists source and translated subtitle",
+      "passed": true
+    },
+    {
+      "name": "source remains editable for ja",
+      "passed": true
+    },
+    {
+      "name": "target zh persists source and translated subtitle",
+      "passed": true
+    },
+    {
+      "name": "source remains editable for zh",
+      "passed": true
+    },
+    {
+      "name": "target en persists source and translated subtitle",
+      "passed": true
+    },
+    {
+      "name": "source remains editable for en",
+      "passed": true
+    },
+    {
+      "name": "four rows retain latest source and translation without shrinking",
+      "passed": true
+    },
+    {
+      "name": "API failure preserves original without exposing secrets",
+      "passed": true
+    },
+    {
+      "name": "disabled translation sends original without API request",
+      "passed": true
+    },
+    {
+      "name": "main settings persist a dedicated translation model",
+      "passed": true
+    },
+    {
+      "name": "translation never starts modeling or microphone",
+      "passed": true
+    },
+    {
+      "name": "no browser JavaScript error",
+      "passed": true
+    }
+  ],
+  "apiRequests": 5,
+  "scope": "Real Chromium controls -> packaged core -> local fake Responses API -> persisted subtitle. No paid requests, microphone or OSC."
+}

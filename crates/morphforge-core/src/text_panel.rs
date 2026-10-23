@@ -101,7 +101,8 @@ impl TextPanel {
         Self {
             name: "实时字幕".into(),
             kind: "caption".into(),
-            max_lines: 3,
+            max_lines: 4,
+            size: [128., 40.],
             overflow: "tail".into(),
             vertical_align: "bottom".into(),
             ..Self::default()
@@ -344,12 +345,44 @@ pub fn layout(panel: &TextPanel, widths: &[u8]) -> Result<Layout> {
         if panel.max_lines > 0 {
             capacity = capacity.min(panel.max_lines);
         }
-        let visible = lines.len().min(capacity);
-        let start = if panel.overflow == "tail" {
+        let mut visible = lines.len().min(capacity);
+        let mut start = if panel.overflow == "tail" {
             lines.len().saturating_sub(visible)
         } else {
             0
         };
+        // Caption retention must match the receiver's 128 slots in the preview too.
+        // Four full halfwidth lines also consume three explicit newline slots.
+        let mut slot_trimmed = false;
+        if panel.kind == "caption" && visible > 0 {
+            let slots = lines[start..start + visible]
+                .iter()
+                .map(Vec::len)
+                .sum::<usize>()
+                + visible
+                - 1;
+            let mut excess = slots.saturating_sub(128);
+            slot_trimmed = excess > 0;
+            while excess > 0 {
+                if visible > 1 && excess > lines[start].len() {
+                    excess -= lines[start].len() + 1;
+                    start += 1;
+                    visible -= 1;
+                } else {
+                    let remove = excess.min(lines[start].len());
+                    lines[start].drain(..remove);
+                    excess -= remove;
+                    let origin = lines[start].first().map(|g| g.2).unwrap_or(0.);
+                    for glyph in &mut lines[start] {
+                        glyph.2 -= origin;
+                    }
+                    line_widths[start] = lines[start]
+                        .last()
+                        .map(|g| g.2 + g.1 as f64 * scale)
+                        .unwrap_or(0.);
+                }
+            }
+        }
         let visible_height = visible as f64 * line_height - panel.line_gap;
         let top = match panel.vertical_align.as_str() {
             "bottom" => visible_height,
@@ -379,7 +412,7 @@ pub fn layout(panel: &TextPanel, widths: &[u8]) -> Result<Layout> {
             glyphs,
             line_count: lines.len(),
             visible_lines: visible,
-            clipped: lines.len() > visible || max_width > panel.size[0],
+            clipped: slot_trimmed || lines.len() > visible || max_width > panel.size[0],
             missing,
             font_size,
             width: panel.size[0],
@@ -392,20 +425,20 @@ pub fn layout(panel: &TextPanel, widths: &[u8]) -> Result<Layout> {
 mod tests {
     use super::*;
     #[test]
-    fn captions_keep_latest_three_lines_at_the_requested_font_size() {
+    fn captions_keep_latest_four_lines_at_the_requested_font_size() {
         let p = TextPanel {
             text: "第一行\n第二行\n第三行\n第四行\n第五行".into(),
             ..TextPanel::caption()
         };
         let layout = layout(&p, &vec![16; 65536]).unwrap();
         assert_eq!(layout.font_size, 8.);
-        assert_eq!(layout.visible_lines, 3);
+        assert_eq!(layout.visible_lines, 4);
         let displayed = layout
             .glyphs
             .iter()
             .map(|g| char::from_u32(g.glyph as u32).unwrap())
             .collect::<String>();
-        assert_eq!(displayed, "第三行第四行第五行");
+        assert_eq!(displayed, "第二行第三行第四行第五行");
         let taller = TextPanel {
             size: [128., 128.],
             max_lines: 2,
@@ -479,5 +512,24 @@ mod tests {
             ..Default::default()
         };
         assert!(p.validate().is_err());
+    }
+}
+
+#[cfg(test)]
+mod caption_budget_tests {
+    use super::*;
+    #[test]
+    fn four_ascii_lines_share_128_slots_with_newlines_without_shrinking() {
+        let p = TextPanel {
+            text: "A".repeat(128),
+            ..TextPanel::caption()
+        };
+        let l = layout(&p, &vec![8; 65536]).unwrap();
+        assert_eq!(l.font_size, 8.);
+        assert_eq!(l.visible_lines, 4);
+        assert_eq!(l.glyphs.len() + l.visible_lines - 1, 128);
+        assert!(l.clipped);
+        assert_eq!(l.glyphs.iter().filter(|g| g.line == 0).count(), 29);
+        assert_eq!(l.glyphs.iter().filter(|g| g.line == 3).count(), 32);
     }
 }

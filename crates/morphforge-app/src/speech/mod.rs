@@ -454,6 +454,19 @@ impl Speech {
                 &w.project.materials,
                 false,
             )?;
+            // Supersede the pending source/previous-translation overlay as well.
+            // Replays must retain the accepted final bilingual display.
+            let live_window = context
+                .transport
+                .inner
+                .lock()
+                .unwrap()
+                .avatar_catalog
+                .as_ref()
+                .is_some_and(|c| c.capabilities.iter().any(|v| v == "mf6-text-latest14/1"));
+            if live_window {
+                context.transport.latest_text(&target.panel_id, text)?;
+            }
         }
         Ok(())
     }

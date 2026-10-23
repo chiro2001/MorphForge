@@ -134,7 +134,8 @@ pub fn apply(w: &mut Workspace, args: &Value, run: Option<&str>) -> Result<Value
                 if action != "create" && kind != panel.kind {
                     panel.kind = kind.into();
                     if kind == "caption" {
-                        panel.max_lines = 3;
+                        panel.max_lines = 4;
+                        panel.size[1] = panel.size[1].max(40.);
                         panel.overflow = "tail".into();
                         panel.vertical_align = "bottom".into();
                     }
@@ -200,7 +201,7 @@ mod tests {
         let model=apply(&mut w,&json!({"action":"create","id":"model","baseRevision":revision,"panel":{"name":"直播实时字幕","position":[12,40,6]}}),None).unwrap();
         for value in [&manual, &model] {
             assert_eq!(value["panel"]["kind"], "caption");
-            assert_eq!(value["panel"]["maxLines"], 3);
+            assert_eq!(value["panel"]["maxLines"], 4);
             assert_eq!(value["panel"]["fontSize"], 8.);
             assert_eq!(value["panel"]["overflow"], "tail");
         }
@@ -237,5 +238,103 @@ mod tests {
         assert_eq!(l["glyphs"][0]["glyph"], json!('が' as u32));
         assert_eq!(l["missing"], json!(["🦊"]));
         assert!(asset("pixel16-zh", "bitmap").unwrap().len() == 2097152);
+    }
+}
+
+/// Reserve independent line/slot budgets so a long translation cannot evict the source.
+pub fn bilingual_caption(panel: &TextPanel, source: &str, translated: &str) -> Result<String> {
+    let rows = caption_rows(panel);
+    if rows < 2 {
+        bail!("双语字幕至少需要两行高度，请增高字幕框；字号保持不变")
+    }
+    fn tail(panel: &TextPanel, text: &str, rows: usize, slots: usize) -> Result<String> {
+        let mut part = panel.clone();
+        part.kind = "caption".into();
+        part.max_lines = rows;
+        part.overflow = "tail".into();
+        part.text = text.into();
+        let (mut tokens, _) = crate::text_wire::characters(&part)?;
+        if tokens.len() > slots {
+            tokens.drain(..tokens.len() - slots);
+        }
+        while tokens.first() == Some(&10) {
+            tokens.remove(0);
+        }
+        Ok(String::from_utf16_lossy(&tokens))
+    }
+    let original = tail(panel, source, rows.div_ceil(2), 63)?;
+    let translation = tail(panel, translated, rows / 2, 64)?;
+    Ok(if original.is_empty() {
+        translation
+    } else if translation.is_empty() {
+        original
+    } else {
+        format!("{original}\n{translation}")
+    })
+}
+pub fn caption_rows(panel: &TextPanel) -> usize {
+    (((panel.size[1] + panel.line_gap) / (panel.font_size + panel.line_gap))
+        .floor()
+        .max(0.) as usize)
+        .min(if panel.max_lines > 0 {
+            panel.max_lines
+        } else {
+            128
+        })
+}
+
+#[cfg(test)]
+mod bilingual_tests {
+    use super::*;
+    #[test]
+    fn bilingual_windows_keep_both_languages_at_fixed_size_and_fit_wire() {
+        for width in [32., 128., 256.] {
+            let panel = TextPanel {
+                size: [width, 40.],
+                ..TextPanel::caption()
+            };
+            let text = bilingual_caption(
+                &panel,
+                &"Original ABC ".repeat(150),
+                &"日本語の翻訳です。".repeat(150),
+            )
+            .unwrap();
+            let composed = TextPanel { text, ..panel };
+            let l = text_panel::layout(&composed, widths(&composed.font)).unwrap();
+            assert_eq!(l.font_size, 8.);
+            assert!((2..=4).contains(&l.visible_lines));
+            if width <= 128. {
+                assert_eq!(l.visible_lines, 4);
+            }
+            assert!(l.glyphs.iter().any(|g| g.line < 2 && g.glyph < 128));
+            assert!(l.glyphs.iter().any(|g| g.line >= 2 && g.glyph > 128));
+            assert!(crate::text_wire::characters(&composed).unwrap().0.len() <= 128);
+        }
+    }
+    #[test]
+    fn custom_three_line_panels_still_keep_source_and_translation() {
+        let panel = TextPanel {
+            max_lines: 3,
+            size: [80., 32.],
+            ..TextPanel::caption()
+        };
+        let text = bilingual_caption(&panel, "原文一行\n原文二行\n原文三行", "翻訳一行\n翻訳二行")
+            .unwrap();
+        assert!(text.contains("原文二行"));
+        assert!(text.contains("原文三行"));
+        assert!(text.contains("翻訳二行"));
+        assert!(!text.contains("原文一行"));
+        assert!(bilingual_caption(
+            &TextPanel {
+                size: [128., 8.],
+                max_lines: 1,
+                ..panel
+            },
+            "原文",
+            "translation"
+        )
+        .unwrap_err()
+        .to_string()
+        .contains("两行"));
     }
 }

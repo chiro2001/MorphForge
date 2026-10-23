@@ -1,0 +1,75 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "isolated native desktop 0.25.0 and OSC off",
+      "passed": true
+    },
+    {
+      "name": "native default caption reserves four fixed-size rows",
+      "passed": true
+    },
+    {
+      "name": "embedded speech-ui.js matches frozen source",
+      "passed": true
+    },
+    {
+      "name": "embedded mini.html matches frozen source",
+      "passed": true
+    },
+    {
+      "name": "embedded text-panels.js matches frozen source",
+      "passed": true
+    },
+    {
+      "name": "native mini exposes Chinese Japanese English",
+      "passed": true
+    },
+    {
+      "name": "native ja preserves source and translation",
+      "passed": true
+    },
+    {
+      "name": "native source remains editable for ja",
+      "passed": true
+    },
+    {
+      "name": "native zh preserves source and translation",
+      "passed": true
+    },
+    {
+      "name": "native source remains editable for zh",
+      "passed": true
+    },
+    {
+      "name": "native en preserves source and translation",
+      "passed": true
+    },
+    {
+      "name": "native source remains editable for en",
+      "passed": true
+    },
+    {
+      "name": "native four-row retention keeps both source and translation at size8",
+      "passed": true
+    },
+    {
+      "name": "native failure falls back and shows error without secret",
+      "passed": true
+    },
+    {
+      "name": "disabled native translation avoids model call",
+      "passed": true
+    },
+    {
+      "name": "no microphone modeling or OSC task started",
+      "passed": true
+    },
+    {
+      "name": "no unhandled native JavaScript exception",
+      "passed": true
+    }
+  ],
+  "apiRequests": 5,
+  "scope": "Actual isolated Tauri/WebView2 mini, mouse input, packaged Rust provider and subtitle scene transactions with local fake LLM. No microphone, paid API or OSC."
+}

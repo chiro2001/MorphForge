@@ -1,0 +1,32 @@
+{
+  "fontSize": 8.0,
+  "position": [
+    0.0,
+    76.0,
+    7.4
+  ],
+  "lineGap": 2.0,
+  "projectId": "313009d2-c906-4124-bea7-56a4d9da3048",
+  "maxLines": 4,
+  "afterRevision": 35,
+  "checks": {
+    "maxFour": true,
+    "textPreserved": true,
+    "fontFixed": true,
+    "newRevision": true,
+    "geometryPreserved": true,
+    "rotationPreserved": true,
+    "heightSupportsFour": true,
+    "sizePreserved": true,
+    "caption": true,
+    "positionPreserved": true
+  },
+  "size": [
+    116.0,
+    42.0
+  ],
+  "scope": "Authorized four-row bilingual subtitle preset applied through supported transaction; all original text, placement and model geometry preserved; no model/OSC/microphone call",
+  "overflow": "tail",
+  "success": true,
+  "beforeRevision": 34
+}

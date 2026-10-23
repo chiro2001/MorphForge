@@ -1,0 +1,22 @@
+{
+  "defaultSize": [
+    128.0,
+    40.0
+  ],
+  "previewVisibleLines": 4,
+  "defaultMaxLines": 4,
+  "scope": "Installed main 0.25.0; latest selected user project preserved; four-row caption checked by dry run only; no microphone/model/OSC call",
+  "projectId": "313009d2-c906-4124-bea7-56a4d9da3048",
+  "translationEnabled": true,
+  "taskPhase": "idle",
+  "tencentCredentialsConfigured": true,
+  "projectScenePreserved": true,
+  "dryRunPreservedRevision": true,
+  "microphoneActive": false,
+  "defaultFontSize": 8.0,
+  "version": "0.25.0",
+  "revision": 34,
+  "providerConnectionPreserved": true,
+  "success": true,
+  "oscEnabled": false
+}

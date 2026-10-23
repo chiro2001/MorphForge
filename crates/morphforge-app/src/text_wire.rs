@@ -500,7 +500,7 @@ mod tests {
         });
         s.set_target(&scene).unwrap();
         drain(&mut s);
-        let live = "第一行字幕\n第二行字幕\n第三行字幕\n最新第四行字幕";
+        let live = "过期第零行\n第一行字幕\n第二行字幕\n第三行字幕\n最新第四行字幕";
         s.latest_text("text", live).unwrap();
         let frames = drain(&mut s);
         let count = frames.last().unwrap().0[24] as usize;
@@ -516,7 +516,7 @@ mod tests {
             .take(count)
             .collect::<Vec<_>>();
         let displayed = String::from_utf16(&encoded).unwrap();
-        assert_eq!(displayed, "第二行字幕\n第三行字幕\n最新第四行字幕");
+        assert_eq!(displayed, "第一行字幕\n第二行字幕\n第三行字幕\n最新第四行字幕");
         assert_eq!(
             u16::from_le_bytes([frames.last().unwrap().0[18], frames.last().unwrap().0[19]]),
             8 * 64

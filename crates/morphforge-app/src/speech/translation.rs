@@ -37,6 +37,7 @@ pub(super) struct Queue {
     running: bool,
     cancel: Option<Cancellation>,
     cache: VecDeque<(String, String)>,
+    last_translation: BTreeMap<String, String>,
 }
 impl Speech {
     pub(super) fn invalidate_translation(&self) {
@@ -45,6 +46,7 @@ impl Speech {
         queue.pending.clear();
         queue.latest.clear();
         queue.seen.clear();
+        queue.last_translation.clear();
         if let Some(cancel) = queue.cancel.take() {
             cancel.stop();
         }
@@ -107,24 +109,27 @@ impl Speech {
             .rev()
             .collect::<String>();
         let provider_identity = context.harness.provider.connection().identity();
-        let panel_text = {
+        let panel = {
             let w = context.workspace.lock().unwrap();
             w.project
                 .scene
                 .text_panels
                 .iter()
                 .find(|p| p.id == target.panel_id)
+                .cloned()
                 .context("目标文本框已删除")?
-                .text
-                .clone()
         };
+        if crate::text_panels::caption_rows(&panel) < 2 {
+            anyhow::bail!("双语字幕至少需要两行高度，请增高字幕框；字号保持不变")
+        }
+        let panel_text = panel.text.clone();
         let cache_key = crate::store::hash(&serde_json::to_vec(&json!([
             provider_identity,
             model,
             settings.translation_language,
             input
         ]))?);
-        let launch = {
+        let (launch, previous_translation) = {
             let mut queue = self.translation.lock().unwrap();
             {
                 let current = self.settings.lock().unwrap();
@@ -164,14 +169,45 @@ impl Speech {
                 context: context.clone(),
                 cache_key,
                 provider_identity,
-                panel_text,
+                panel_text: panel_text.clone(),
             };
             queue.pending.insert(lane, job);
             self.state.lock().unwrap()["translation"] = json!({"phase":"pending","panelId":target.panel_id,"language":settings.translation_language,"model":model,"error":null});
             let launch = !queue.running;
             queue.running = true;
-            launch
+            (
+                launch,
+                queue
+                    .last_translation
+                    .get(&format!("{}:{}", target.project_id, target.panel_id))
+                    .cloned(),
+            )
         };
+        // Keep source speech live while the next translation is pending.
+        // The previous accepted translation remains in its own reserved lines.
+        {
+            let config = context.transport.config();
+            if config.enabled && config.auto {
+                let display = if let Some(previous) = previous_translation {
+                    crate::text_panels::bilingual_caption(&panel, text, &previous)
+                        .unwrap_or_else(|_| text.to_string())
+                } else {
+                    text.to_string()
+                };
+                let w = context.workspace.lock().unwrap();
+                if w.project.id == target.project_id
+                    && w.project
+                        .scene
+                        .text_panels
+                        .iter()
+                        .any(|p| p.id == target.panel_id && p.text == panel_text)
+                {
+                    if let Err(error) = context.transport.latest_text(&target.panel_id, &display) {
+                        self.state.lock().unwrap()["error"] = json!(error.to_string());
+                    }
+                }
+            }
+        }
         self.translation_notify.notify_one();
         if launch {
             let service = self.clone();
@@ -297,13 +333,40 @@ impl Speech {
                 self.state.lock().unwrap()["translation"] = json!({"phase":"error","error":"目标项目已切换，译文未应用","panelId":job.target.panel_id});
                 continue;
             }
-            let (text, usage, error) = match result {
+            let (translated, usage, mut error) = match result {
                 Ok((text, usage)) => (text, usage, None),
                 Err(error) => (
                     job.source.clone(),
                     Value::Null,
                     Some(job.context.harness.provider.redact(&error.to_string())),
                 ),
+            };
+            let current_panel = job
+                .context
+                .workspace
+                .lock()
+                .unwrap()
+                .project
+                .scene
+                .text_panels
+                .iter()
+                .find(|p| p.id == job.target.panel_id)
+                .cloned();
+            let text = if error.is_none() {
+                match current_panel
+                    .as_ref()
+                    .context("目标文本框已删除")
+                    .and_then(|p| {
+                        crate::text_panels::bilingual_caption(p, &job.source, &translated)
+                    }) {
+                    Ok(display) => display,
+                    Err(e) => {
+                        error = Some(e.to_string());
+                        job.source.clone()
+                    }
+                }
+            } else {
+                job.source.clone()
             };
             let delivery = if job.persist {
                 let suffix = if error.is_some() {
@@ -352,8 +415,13 @@ impl Speech {
                     .err()
                     .map(|e| job.context.harness.provider.redact(&e.to_string()))
             });
+            if error.is_none() {
+                queue
+                    .last_translation
+                    .insert(job.lane.clone(), translated.clone());
+            }
             let mut state = self.state.lock().unwrap();
-            state["translation"] = json!({"phase":if error.is_some(){"error"}else{"ready"},"panelId":job.target.panel_id,"language":job.language,"model":job.model,"text":text,"error":error,"cacheHit":cache_hit,"latencyMs":start.elapsed().as_millis(),"usage":usage});
+            state["translation"] = json!({"phase":if error.is_some(){"error"}else{"ready"},"panelId":job.target.panel_id,"language":job.language,"model":job.model,"text":translated,"source":job.source,"displayText":text,"bilingual":error.is_none(),"error":error,"cacheHit":cache_hit,"latencyMs":start.elapsed().as_millis(),"usage":usage});
         }
     }
     /// Shared path for manually typed live captions; no recording is started.
@@ -419,6 +487,7 @@ mod tests {
             catalog
                 .capabilities
                 .push(crate::text_wire::CAPABILITY.into());
+            catalog.capabilities.push("mf6-text-latest14/1".into());
             s.avatar_catalog = Some(catalog);
             s.config.enabled = true;
             s.config.auto = true;
@@ -455,6 +524,8 @@ mod tests {
         async fn ready(app: &App) {
             tokio::time::timeout(Duration::from_secs(5), async {
                 while app.speech.status()["state"]["translation"]["phase"] != "ready" {
+                    let status = app.speech.status();
+                    assert_ne!(status["state"]["translation"]["phase"], "error", "{status}");
                     tokio::time::sleep(Duration::from_millis(10)).await;
                 }
             })
@@ -464,6 +535,39 @@ mod tests {
         ready(&app).await;
         app.speech
             .partial("recognition-fixture", "世界".into(), &target, &context);
+        // The pending display must already contain fresh source and the previous
+        // accepted translation, without waiting for or billing another response.
+        fn queued_text(app: &App) -> String {
+            let mut replay = app.transport.inner.lock().unwrap().text.clone();
+            replay.replay();
+            let mut glyphs = [0u16; 128];
+            let mut count = 0;
+            while let Some(message) = replay.next() {
+                match message.0[0] {
+                    3 => glyphs.fill(0),
+                    2 => {
+                        let page = message.0[2] as usize;
+                        for (i, bytes) in message.0[3..27].chunks_exact(2).enumerate() {
+                            if page * 12 + i < 128 {
+                                glyphs[page * 12 + i] = u16::from_le_bytes([bytes[0], bytes[1]]);
+                            }
+                        }
+                    }
+                    1 => count = message.0[24] as usize,
+                    _ => {}
+                }
+                replay.commit(&message);
+            }
+            if let Some(snapshot) = replay.next_latest() {
+                count = (snapshot.data[28] - 128) as usize;
+                for (i, bytes) in snapshot.data[..28].chunks_exact(2).enumerate() {
+                    glyphs[i] = u16::from_le_bytes([bytes[0], bytes[1]]);
+                }
+            }
+            String::from_utf16_lossy(&glyphs[..count])
+        }
+        assert_eq!(queued_text(&app), "こんにちは\n世界\n訳：こんにちは");
+        assert_eq!(requests.lock().unwrap().len(), 1);
         app.speech.publish(
             "recognition-fixture",
             "世界".into(),
@@ -482,8 +586,9 @@ mod tests {
         assert_eq!(app.speech.status()["state"]["draft"], "こんにちは\n世界");
         assert_eq!(
             app.workspace.lock().unwrap().project.scene.text_panels[0].text,
-            "訳：こんにちは\n世界"
+            "こんにちは\n世界\n訳：こんにちは\n世界"
         );
+        assert_eq!(queued_text(&app), "こんにちは\n世界\n訳：こんにちは\n世界");
         assert_eq!(requests.lock().unwrap().len(), 2);
         assert!(app.harness.state()["run"].is_null());
         app.transport.inner.lock().unwrap().stop = true;

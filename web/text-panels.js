@@ -4,7 +4,7 @@ function bytes(font){if(!fontBytes.has(font))fontBytes.set(font,fetch(`/pixel-fo
 const vertex=`attribute vec2 glyphData;varying vec2 vGlyphUV;varying vec2 vGlyphData;varying vec2 vPanel;
 void main(){vec3 p=position;vec3 origin=(modelMatrix*vec4(0.,0.,0.,1.)).xyz;vec3 front=(modelMatrix*vec4(0.,0.,-1.,0.)).xyz;float side=dot(cameraPosition-origin,front)>=0.?1.:-1.;p.x*=side;vGlyphUV=uv;vGlyphData=glyphData;vPanel=position.xy;gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}`;
 const fragment=`uniform sampler2D fontAtlas;uniform vec3 inkColor;uniform float opacity;uniform vec2 panelSize;varying vec2 vGlyphUV;varying vec2 vGlyphData;varying vec2 vPanel;
-void main(){if(abs(vPanel.x)>panelSize.x*.5||vPanel.y<0.||vPanel.y>panelSize.y)discard;float col=min(vGlyphData.y-1.,floor(vGlyphUV.x*vGlyphData.y));float row=min(15.,floor((1.-vGlyphUV.y)*16.));float address=vGlyphData.x*32.+row*2.+floor(col/8.);vec2 pixel=vec2(mod(address,2048.),floor(address/2048.));float packed=floor(texture2D(fontAtlas,(pixel+.5)/vec2(2048.,1024.)).r*255.+.5);float bit=mod(floor(packed/exp2(7.-mod(col,8.))),2.);if(bit<.5)discard;gl_FragColor=vec4(inkColor,opacity);
+void main(){if(abs(vPanel.x)>panelSize.x*.5||vPanel.y<0.||vPanel.y>panelSize.y)discard;float code=floor(vGlyphData.x+.5),pixels=floor(vGlyphData.y+.5);float col=clamp(floor(vGlyphUV.x*pixels),0.,pixels-1.);float row=clamp(floor((1.-vGlyphUV.y)*16.),0.,15.);float address=code*32.+row*2.+floor(col/8.);vec2 pixel=vec2(mod(address,2048.),floor(address/2048.));float packed=floor(texture2D(fontAtlas,(pixel+.5)/vec2(2048.,1024.)).r*255.+.5);float bit=mod(floor(packed/exp2(7.-mod(col,8.))),2.);if(bit<.5)discard;gl_FragColor=vec4(inkColor,opacity);
 #include <colorspace_fragment>
 }`;
 export class TextPanelRenderer {

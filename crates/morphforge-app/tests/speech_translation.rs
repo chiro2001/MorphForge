@@ -129,7 +129,7 @@ async fn responses_and_chat_translate_three_languages_without_touching_modeling_
             f.enable(lang).await;
             f.apply(&format!("字幕{i}"), &format!("apply{i}")).await;
             f.ready("ready").await;
-            assert_eq!(f.text(), format!("translated: 字幕{i}"));
+            assert_eq!(f.text(), format!("字幕{i}\ntranslated: 字幕{i}"));
             let state = f.app.speech.status();
             assert_eq!(state["state"]["draft"], format!("字幕{i}"));
             assert_eq!(state["state"]["translation"]["language"], *lang);
@@ -173,7 +173,7 @@ async fn superseded_results_never_publish_and_requests_have_one_worker() {
     tokio::time::sleep(Duration::from_millis(450)).await;
     assert_eq!(f.text(), "initial");
     f.ready("ready").await;
-    assert_eq!(f.text(), "translated: latest");
+    assert_eq!(f.text(), "latest\ntranslated: latest");
     assert_eq!(f.requests.lock().unwrap().len(), 2);
     assert_eq!(f.maximum.load(Ordering::SeqCst), 1);
     assert_eq!(f.active.load(Ordering::SeqCst), 0);
@@ -200,7 +200,7 @@ async fn partial_burst_is_coalesced_and_final_reuses_translation() {
     );
     f.apply("partial 11", "final").await;
     f.ready("ready").await;
-    assert_eq!(f.text(), "translated: partial 11");
+    assert_eq!(f.text(), "partial 11\ntranslated: partial 11");
     assert_eq!(f.requests.lock().unwrap().len(), 1);
     assert_eq!(
         f.app.speech.status()["state"]["translation"]["cacheHit"],
@@ -224,7 +224,7 @@ async fn changing_language_or_disabling_cancels_old_translation() {
     f.enable("zh").await;
     f.apply("Chinese caption", "new").await;
     f.ready("ready").await;
-    assert_eq!(f.text(), "translated: Chinese caption");
+    assert_eq!(f.text(), "Chinese caption\ntranslated: Chinese caption");
     assert_eq!(
         f.app.speech.status()["state"]["translation"]["language"],
         "zh"

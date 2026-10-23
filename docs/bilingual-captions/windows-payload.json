@@ -1,0 +1,8 @@
+{
+  "version": "morphforge 0.25.0",
+  "installer": "D:\\Projects\\VRChatProjects2\\MorphForge\\desktop\\target\\x86_64-pc-windows-msvc\\release\\bundle\\nsis\\MorphForge Desktop_0.25.0_x64-setup.exe",
+  "package": "E:\\tmp\\morphforge\\bilingual-v025-nsis-payload-final",
+  "coreHash": "9DAAE6B6949CCF4B0790A8FFDA34821180806F25D8D56AB85C062200802F31CB",
+  "installerHash": "8791AFC79110161E48B4F98E0AF9324F9C7B1525FD410E701168CAA0E258909C",
+  "shellHash": "5F6B2CCA28221AEDCE88A87BEDD73B3EAE0761D2A84DC8B585688A2DCC5C742A"
+}
