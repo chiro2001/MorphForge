@@ -1,0 +1,8 @@
+{
+  "success": true,
+  "uniformComparisons": 492,
+  "gpuCentroidComparisons": 24,
+  "maxPixelError": 1.07371962,
+  "sourceAssetsUnchanged": true,
+  "realVrchatVisualConfirmed": false
+}

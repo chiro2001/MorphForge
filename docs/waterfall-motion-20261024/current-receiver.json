@@ -1,0 +1,96 @@
+{
+  "sentRevision": 16,
+  "receiver": [
+    {
+      "group": 1,
+      "Bank": [
+        0.0
+      ],
+      "Enabled": [
+        1.0
+      ],
+      "Rate": [
+        0.5
+      ],
+      "Valid": [
+        1
+      ],
+      "AppliedTicket": [
+        1
+      ],
+      "B0_Version": [
+        0
+      ],
+      "B0_Ready": [
+        1
+      ],
+      "B1_Version": [
+        255
+      ]
+    },
+    {
+      "group": 2,
+      "Bank": [
+        0.0
+      ],
+      "Enabled": [
+        1.0
+      ],
+      "Rate": [
+        0.5
+      ],
+      "Valid": [
+        1
+      ],
+      "AppliedTicket": [
+        1
+      ],
+      "B0_Version": [
+        0
+      ],
+      "B0_Ready": [
+        1
+      ],
+      "B1_Version": [
+        255
+      ]
+    },
+    {
+      "group": 3,
+      "Bank": [
+        0.0
+      ],
+      "Enabled": [
+        1.0
+      ],
+      "Rate": [
+        0.5
+      ],
+      "Valid": [
+        1
+      ],
+      "AppliedTicket": [
+        1
+      ],
+      "B0_Version": [
+        0
+      ],
+      "B0_Ready": [
+        1
+      ],
+      "B1_Version": [
+        255
+      ]
+    }
+  ],
+  "clipId": "flow-loop",
+  "groups": {
+    "fall-b": 2,
+    "fall-main": 1,
+    "stream": 3
+  },
+  "localSendComplete": true,
+  "revision": 16,
+  "visualConfirmed": false,
+  "note": "Receiver control values only; visual direction is awaiting user inspection. No source geometry or keyframes modified."
+}
