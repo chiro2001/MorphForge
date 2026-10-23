@@ -1043,11 +1043,36 @@ async fn publish(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
         return Err(anyhow::anyhow!("补播不可与清空重建同时使用").into());
     }
     let mut w = a.workspace.lock().unwrap();
+    if v["projectId"].as_str().is_some_and(|id| id != w.project.id) {
+        return Err(anyhow::anyhow!("WORKSPACE_CONFLICT：发布目标工程已切换").into());
+    }
+    if v["baseRevision"].as_u64().is_some_and(|rev| rev != w.project.scene.revision) {
+        return Err(anyhow::anyhow!("REVISION_CONFLICT：模型已改变，请刷新后发布").into());
+    }
     let rev = v["revision"].as_u64().unwrap_or(w.project.scene.revision);
-    let _ = w.commit(Some(rev), v["title"].as_str().unwrap_or("手动发布"), None)?;
     let scene = w.scene_at(rev)?;
     let materials = w.materials_at(rev)?;
-    let result = if v["repair"].as_bool().unwrap_or(false) {
+    let result = if let Some(animation) = v.get("animation").filter(|v| !v.is_null()) {
+        if v["repair"] == true || v["resync"] == true {
+            return Err(anyhow::anyhow!("所选动画请使用发布当前版本；补播和重建沿用已绑定动画").into());
+        }
+        if v["baseCreativeRevision"].as_u64() != Some(w.project.creative.revision) {
+            return Err(anyhow::anyhow!("REVISION_CONFLICT：动画已改变，请刷新后发布").into());
+        }
+        #[derive(serde::Deserialize)]
+        #[serde(deny_unknown_fields)]
+        struct Animation {
+            id: String,
+            speed: f64,
+            position: f64,
+        }
+        let animation: Animation = serde_json::from_value(animation.clone())?;
+        let clip = w.project.creative.clips.get(&animation.id)
+            .ok_or_else(|| anyhow::anyhow!("所选动画不存在，请重新选择"))?;
+        a.transport.publish_motion(
+            &scene, &materials, clip, &animation.id, animation.speed, animation.position, true,
+        )?
+    } else if v["repair"].as_bool().unwrap_or(false) {
         a.transport.publish_for_repair(&scene, &materials)?
     } else {
         a.transport.publish_with_materials(
@@ -1056,6 +1081,7 @@ async fn publish(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
             v["resync"].as_bool().unwrap_or(false),
         )?
     };
+    let _ = w.commit(Some(rev), v["title"].as_str().unwrap_or("手动发布"), None)?;
     w.event(
         "revision.published",
         None,

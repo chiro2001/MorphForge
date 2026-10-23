@@ -1470,16 +1470,26 @@ $("vrcPort").onclick = () => {
   configure(state.connection.enabled);
 };
 $("publish").onclick = async () => {
+  if ($("publish").disabled) return;
+  $("publish").disabled = true;
   try {
-    const queued=await api("publish", {});
+    const selection = creativeUi?.publication() || {};
+    const queued=await api("publish", {
+      projectId: state.project.id, baseRevision: state.revision, ...selection,
+    });
+    if (selection.animation) creativeUi.publishedMotion(queued.motion);
     await refresh();
     toast(
-      queued.enabled
+      selection.animation
+        ? queued.enabled ? "模型与所选动画已进入发送队列；定义与绑定发完后开始播放" : "模型与所选动画已准备；开启发送后播放"
+        : queued.enabled
         ? queued.pending>0?"版本已进入发送队列":"当前版本与本机已发记录一致；需要补漏可使用保留显示补播"
         : "版本已准备；开启发送后执行",
     );
   } catch (cause) {
     error(cause);
+  } finally {
+    $("publish").disabled = false;
   }
 };
 $("repairPublish").onclick=async()=>{try{await api("publish",{repair:true});await refresh();toast("已排入补播，保留现有显示；没有远端ACK。若有残留请清空并重建。");}catch(cause){error(cause);}};

@@ -63,4 +63,15 @@ comparison支持`split|overlay`；crop为归一化x,y,w,h，必须位于图片�
 
 `GET /api/creative/animation/{id}/export`返回带所选片段的GLB，按分组挂枢轴父节点，使用标准TRS动画通道。位置使用工程格长换算米，反射Z并转换旋转四元数，与工作台一致。循环意图写入extras；播放器决定播放/循环。贴图首帧、程序材质基础色、独立壳体等边界与原GLB导出相同。此接口不写场景、历史或上下文。
 
-当前动画属于编辑器、截图和GLB，**现有MF6 Avatar只发布静态几何**。[后续原生运动条件](AVATAR-MOTION.md)。
+编辑器、截图和GLB支持分组动画；当前MF6 Avatar支持3组×4帧的原生运动，主界面发布可同时携带所选片段。历史原型说明见[原生运动条件](AVATAR-MOTION.md)。
+
+
+## 主界面模型与动画发布（Desktop 0.26.0）
+
+`POST /api/publish` 可以一次发布模型和选中的已保存动画：
+
+```json
+{"projectId":"当前工程ID","baseRevision":4,"baseCreativeRevision":1,"animation":{"id":"windmill-loop","speed":1,"position":0}}
+```
+
+`animation`存在时校验片段、头像能力、速度、时间、运动范围与版本，再排入共享几何/文字/动画发送器，以播放状态启动。失败不会退回静态发布，也不新增提交记录。发送未开启时只排队。响应结构沿用connection状态，`motion.starting`表示等待定义和几何绑定完成。`animation`不可与`repair`或`resync`混用；补播与重建沿用已绑定动画。省略`animation`保持原有模型发布行为。

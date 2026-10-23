@@ -1,0 +1,12 @@
+{
+  "success": true,
+  "rust": {
+    "passed": 317,
+    "failed": 0
+  },
+  "frontend": {
+    "passed": 62,
+    "failed": 0
+  },
+  "scope": "Full Rust workspace and frontend Node tests; no Unity or VRChat mutation."
+}

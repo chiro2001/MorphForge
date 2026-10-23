@@ -620,11 +620,13 @@
           >
           <label>发布策略<select id="publishStrategy"><option value="auto">自动：选择预计耗时最短</option><option value="incremental">保持显示，优先增量</option><option value="rebuild">清空重建</option></select></label>
           <div id="publicationPlan" class="status"></div>
+          <label>随版本发布的动画<select id="publishAnimationClip"><option value="">不选择新动画</option></select></label>
           <div class="double">
-            <button id="publish" title="自动比较增量与清空重建的实际发包数；自动重建会暂时清空显示。补漏请使用保留显示补播。">发布当前版本</button>
+            <button id="publish" title="同时发布模型与所选的已保存动画。定义与绑定发完后播放。自动重建会暂时清空显示。">发布当前版本</button>
             <button id="repairPublish">保留显示补播</button>
             <button id="resync">清空并重建</button>
           </div>
+          <p id="publishAnimationHint" class="caption">未选择新动画；发布模型并保留已绑定的动画。</p>
           <label
             >周期刷新（秒，0关闭；MF6补播）<input
               id="refreshSeconds"
