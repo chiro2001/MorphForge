@@ -1,0 +1,44 @@
+{
+  "success": true,
+  "version": "0.26.0",
+  "projectId": "d7a0a552-9904-4e00-85d5-2f0d8fc84347",
+  "revision": 16,
+  "creativeRevision": 1,
+  "checks": [
+    {
+      "name": "installed main core reports 0.26.0",
+      "passed": true
+    },
+    {
+      "name": "current project and latest revisions preserved",
+      "passed": true
+    },
+    {
+      "name": "scene geometry materials and text unchanged",
+      "passed": true
+    },
+    {
+      "name": "existing model API connection preserved",
+      "passed": true
+    },
+    {
+      "name": "microphone and OSC stay disabled on restart",
+      "passed": true
+    },
+    {
+      "name": "installed main UI exposes combined publication",
+      "passed": true
+    },
+    {
+      "name": "previously selected saved clip is available",
+      "passed": true
+    },
+    {
+      "name": "previous animation selection restored in both controls",
+      "passed": true
+    }
+  ],
+  "selectedClip": "flow-loop",
+  "senderEnabled": false,
+  "scope": "Installed main read-only data/connection checks and UI selection restoration. No publication, OSC, microphone or model requests."
+}

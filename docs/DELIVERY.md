@@ -1,3 +1,7 @@
+# 0.26.0 主程序交付（2026-10-24）
+
+主界面“发布当前版本”现在同时发布模型和所选的已保存动画；VRC发布页与动画面板的选择同步。版本、能力或动画数据无效会明确报错，未保存的修改先提示保存。正式NSIS主安装、原数据保留及Windows原生按钮检查已完成。[本轮结果与验收](model-motion-publish/RESULTS.md)。未更新Unity头像、未创建Release。
+
 # 0.21.1 本轮开发交付（2026-10-22）
 
 已实现文字/语音/mini/工作台及Avatar分组动画，Avatar独立插件1.2.0；不创建GitHub Release。功能与限制见[本轮实施记录](text-animation/IMPLEMENTATION.md)、[动画和本人预览](text-animation/MOTION-IMPLEMENTATION.md)。新工具/提示词版本4.6/5.5，旧对话需要显式升级或新建，保护上下文前缀。
