@@ -1,3 +1,4 @@
+import {t as uiText, bindText} from "./i18n.js";
 // Small safe presentation subset: all model content is text, never HTML.
 function inline(node, text) {
   for (const part of text.split(/(\*\*[^*\n]+\*\*|`[^`\n]+`)/g)) {
@@ -8,10 +9,10 @@ function inline(node, text) {
         : null;
     if (tag) {
       const c = document.createElement(tag);
-      c.textContent = part.slice(
+      bindText(c, () => (part.slice(
         tag === "strong" ? 2 : 1,
         tag === "strong" ? -2 : -1,
-      );
+      )));
       node.append(c);
     } else node.append(document.createTextNode(part));
   }
@@ -35,8 +36,8 @@ export function readableText(node, text) {
         const d = document.createElement("details"),
           s = document.createElement("summary"),
           p = document.createElement("pre");
-        s.textContent = "代码";
-        p.textContent = code.join("\n");
+        bindText(s, () => (uiText("代码")));
+        bindText(p, () => (code.join("\n")));
         d.append(s, p);
         node.append(d);
         code = null;
@@ -63,7 +64,7 @@ export function readableText(node, text) {
   flush();
   if (code) {
     const p = document.createElement("pre");
-    p.textContent = code.join("\n");
+    bindText(p, () => (code.join("\n")));
     node.append(p);
   }
 }

@@ -1,31 +1,32 @@
+import {t as uiText, bindText} from "./i18n.js";
 export function setupDesktopMenus({ getCellSize, getName, onError, onLayout }) {
   const $ = (id) => document.getElementById(id),
     bar = $("desktopMenu"),
     roots = [...bar.querySelectorAll(".app-menu")];
   const close = () =>
     bar.querySelectorAll("details[open]").forEach((n) => (n.open = false));
-  const hints = {
-    glb: "推荐用于Blender、Unity等：保留纯色、金属度、粗糙度、透明/裁切、发光和六面图片贴图。单位米，右手坐标，Y向上。",
-    obj: "ZIP内含OBJ、MTL及贴图，解压后一起导入。保留纯色和六面图片；PBR/透明效果取决于导入软件。单位米，Y向上。",
-    ply: "二进制PLY，保留顶点RGB与透明度；图片材质使用平均色，不保留贴图、PBR或动画。单位米，Y向上。",
-    stl: "二进制STL，坐标按毫米写出，无颜色、材质或贴图；不自动保证可打印性。独立壳体和开放面会原样导出。",
-  };
+  const hints = () => ({
+    glb: uiText("推荐用于Blender、Unity等：保留纯色、金属度、粗糙度、透明/裁切、发光和六面图片贴图。单位米，右手坐标，Y向上。"),
+    obj: uiText("ZIP内含OBJ、MTL及贴图，解压后一起导入。保留纯色和六面图片；PBR/透明效果取决于导入软件。单位米，Y向上。"),
+    ply: uiText("二进制PLY，保留顶点RGB与透明度；图片材质使用平均色，不保留贴图、PBR或动画。单位米，Y向上。"),
+    stl: uiText("二进制STL，坐标按毫米写出，无颜色、材质或贴图；不自动保证可打印性。独立壳体和开放面会原样导出。"),
+  });
   const openExport = (format = "glb") => {
     $("modelExportFormat").value = format;
     $("modelExportCellSize").value = getCellSize();
-    $("modelExportHint").textContent = hints[format];
-    $("modelExportStatus").textContent = "";
+    bindText($("modelExportHint"), () => (hints()[format]));
+    bindText($("modelExportStatus"), () => (""));
     $("modelExportDialog").showModal();
   };
   const syncAvailability = () => {
     for (const item of bar.querySelectorAll("[data-command]")) {
       const target = $(item.dataset.command);
       item.disabled = !target || target.disabled;
-      item.title = !target
-        ? "该功能当前不可用"
+      bindText(item, () => (!target
+        ? uiText("该功能当前不可用")
         : target.disabled
-          ? target.title || "当前状态下不可用"
-          : "";
+          ? target.title || uiText("当前状态下不可用")
+          : ""), "title");
     }
   };
   for (const root of roots) {
@@ -122,24 +123,24 @@ export function setupDesktopMenus({ getCellSize, getName, onError, onLayout }) {
   };
   $("modelExportClose").onclick = () => $("modelExportDialog").close();
   $("modelExportFormat").onchange = () =>
-    ($("modelExportHint").textContent = hints[$("modelExportFormat").value]);
+    (bindText($("modelExportHint"), () => (hints()[$("modelExportFormat").value])));
   $("modelExportApply").onclick = async () => {
     const button = $("modelExportApply");
     button.disabled = true;
     button.setAttribute("aria-busy", "true");
-    $("modelExportStatus").textContent = "正在导出…";
+    bindText($("modelExportStatus"), () => (uiText("正在导出…")));
     try {
       const format = $("modelExportFormat").value,
         cellSize = Number($("modelExportCellSize").value);
       if (!Number.isFinite(cellSize) || cellSize < 0.000001 || cellSize > 1000)
-        throw new Error("每格米数须为0.000001至1000");
+        throw new Error(uiText("每格米数须为0.000001至1000"));
       const r = await fetch(
         "/api/export/model?" +
           new URLSearchParams({ format, cellSize: String(cellSize) }),
       );
       if (!r.ok) {
         const v = await r.json();
-        throw new Error(v.error || "导出失败");
+        throw new Error(v.error || uiText("导出失败"));
       }
       const url = URL.createObjectURL(await r.blob()),
         a = document.createElement("a");
@@ -150,9 +151,9 @@ export function setupDesktopMenus({ getCellSize, getName, onError, onLayout }) {
         (format === "obj" ? "obj.zip" : format);
       a.click();
       setTimeout(() => URL.revokeObjectURL(url), 30000);
-      $("modelExportStatus").textContent = "导出完成，已交给下载管理器。";
+      bindText($("modelExportStatus"), () => (uiText("导出完成，已交给下载管理器。")));
     } catch (e) {
-      $("modelExportStatus").textContent = e.message;
+      bindText($("modelExportStatus"), () => (e.message));
       onError(e);
     } finally {
       button.disabled = false;

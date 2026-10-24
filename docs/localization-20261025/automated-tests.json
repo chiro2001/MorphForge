@@ -1,0 +1,7 @@
+{
+  "success": true,
+  "rustTests": 320,
+  "frontendTests": 67,
+  "uiMessages": 1254,
+  "scope": "Full Rust workspace tests; frontend unit tests include locale negotiation, catalog completeness, placeholder safety and protected user content."
+}

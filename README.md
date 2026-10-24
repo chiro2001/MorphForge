@@ -6,7 +6,7 @@ MorphForge 是独立的桌面创作工作台：手工编辑、AI Harness、作�
 
 **[下载 Windows v0.16.1](https://github.com/chiro2001/MorphForge/releases/tag/v0.16.1)** · [使用指南](docs/USER-GUIDE.md) · [版本与验证记录](docs/DELIVERY.md)
 
-当前开发版本为 Desktop **0.26.1** / Avatar **1.3.2**，支持默认发布唯一动画、双语字幕和原生点线；本轮减少动画与空载输出开销，并调整本人预览菜单和正面取景。[性能与预览验证](docs/performance-preview-20261024/RESULTS.md)。本轮不创建 GitHub Release，上方下载仍指向已有公开发行版。
+当前开发版本为 Desktop **0.27.0** / Avatar **1.4.0**。桌面界面支持简体中文、日文、英文，可跟随系统或即时切换；Unity 安装插件支持三种界面语言，并按选择安装 Avatar 菜单。[多语言验证](docs/localization-20261025/RESULTS.md)。本轮不创建 GitHub Release，上方下载仍指向已有公开发行版。
 
 ## 作品展示
 
@@ -68,7 +68,9 @@ Box 是可以合并的长方体，数量与实际占用格数不同。展示作�
 - **摆放与抓取**：使用金色定位球移动整体作品，选择世界固定／跟随 Avatar、保持水平和缩放；光球显示时可用手势抓放。
 - **切换与补播**：读取 Avatar 能力参数匹配协议和材质目录，使用作品库切换内容，通过周期或连续补播帮助晚加入者和漏帧恢复。
 
-可导入[独立 Avatar 插件](dist/avatar/MorphForgeAvatar-1.3.2.unitypackage)，在 Unity 的 `Tools > MorphForge Avatar > 安装与检查` 一键安装到自己的模型；需要 Modular Avatar，可选 VRCFury 压缩服装等菜单参数。安装与材质目录说明见[插件使用文档](Assets/MorphForgeAvatar/README.md)。
+可导入[独立 Avatar 插件](dist/avatar/MorphForgeAvatar-1.4.0.unitypackage)，在 Unity 的 `Tools > MorphForge Avatar > Setup - 安装 - 設定` 选择语言并安装到自己的模型；需要 Modular Avatar，可选 VRCFury 压缩服装等菜单参数。安装与材质目录说明见[插件使用文档](Assets/MorphForgeAvatar/README.md)。
+
+桌面在“设置 > 界面与语言”选择“跟随系统”、简体中文、日本語或 English，即时切换并保存。主窗口与语音小窗同步；作品名称、字幕内容和模型提示词语言保持独立。
 
 发布需要已配置 MorphForge 显示模块的 **PC/PCVR Avatar**。在工作台识别并匹配目录后，选择 `VRChat 9000` 开启发送；多个窗口中只有一个可以占用 OSC。
 

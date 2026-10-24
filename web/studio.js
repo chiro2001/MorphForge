@@ -1,3 +1,4 @@
+import {t as uiText, bindText, onLanguageChange, diagnosticMessage} from "./i18n.js";
 import {setupComposerSpeech,setupSpeechSettings} from "/speech-ui.js";
 import {setupTextPanelUi} from "/text-panel-ui.js";
 import {setupDrawingUi} from "/drawing-ui.js";
@@ -138,8 +139,8 @@ async function api(path, body) {
     value = {
       ok: false,
       error: response.ok
-        ? "本机服务返回了无法识别的响应"
-        : `本机服务暂时不可用（${response.status}）`,
+        ? uiText("本机服务返回了无法识别的响应")
+        : uiText("本机服务暂时不可用（{0}）", response.status),
     };
   }
   if (!response.ok) {
@@ -148,7 +149,7 @@ async function api(path, body) {
         ? value.error
         : value.error
           ? JSON.stringify(value.error)
-          : `请求失败（${response.status}）`;
+          : uiText("请求失败（{0}）", response.status);
     const error = new Error(detail);
     error.status = response.status;
     error.payload = value;
@@ -170,12 +171,12 @@ function fmt(number) {
 }
 
 function time(seconds) {
-  if (!seconds) return "0秒";
-  if (seconds < 60) return Math.ceil(seconds) + "秒";
+  if (!seconds) return uiText("0秒");
+  if (seconds < 60) return Math.ceil(seconds) + uiText("秒");
   if (seconds < 3600)
-    return Math.floor(seconds / 60) + "分" + Math.ceil(seconds % 60) + "秒";
+    return Math.floor(seconds / 60) + uiText("分") + Math.ceil(seconds % 60) + uiText("秒");
   return (
-    Math.floor(seconds / 3600) + "时" + Math.ceil((seconds % 3600) / 60) + "分"
+    Math.floor(seconds / 3600) + uiText("时") + Math.ceil((seconds % 3600) / 60) + uiText("分")
   );
 }
 
@@ -314,13 +315,12 @@ function renderChat() {
     }`;
     element.dataset.run = entry.runId || "";
     element.dataset.epoch = String(entry.epoch ?? 0);
-    element.querySelector("small").textContent =
-      entry.role === "user" ? entry.label || "你" : "MorphForge";
+    bindText(element.querySelector("small"), () => (entry.role === "user" ? entry.label || uiText("你") : "MorphForge"));
     const body = element.querySelector("span:not(.entry-note)");
     if (body.textContent !== (entry.text || ""))
-      body.textContent = entry.text || "";
+      bindText(body, () => (entry.text || ""));
     const note = element.querySelector(".entry-note");
-    note.textContent = entry.note || "";
+    bindText(note, () => (entry.note || ""));
     note.hidden = !entry.note;
   }
   const valid = new Set(chatEntries.map((entry) => entry.id));
@@ -334,10 +334,10 @@ function addUserChat(entry) {
     role: "user",
     label:
       entry.mode === "queue"
-        ? "你 · 排队"
+        ? uiText("你 · 排队")
         : entry.mode === "interrupt"
-          ? "你 · 打断后"
-          : "你",
+          ? uiText("你 · 打断后")
+          : uiText("你"),
     ...entry,
   });
 }
@@ -353,7 +353,7 @@ function markAssistantInterrupted(runId, epoch) {
       runId,
       epoch,
       interrupted: true,
-      note: "当前请求尚未产生可见文本，已在生成前被取消。",
+      note: uiText("当前请求尚未产生可见文本，已在生成前被取消。"),
     };
     chatEntries.push(entry);
     saveChat();
@@ -362,8 +362,8 @@ function markAssistantInterrupted(runId, epoch) {
   }
   entry.interrupted = true;
   entry.note = entry.text
-    ? "该段输出在安全边界前被取消。"
-    : "当前请求尚未产生可见文本。";
+    ? uiText("该段输出在安全边界前被取消。")
+    : uiText("当前请求尚未产生可见文本。");
   saveChat();
   renderChat();
 }
@@ -374,7 +374,7 @@ function addCompletedSummary(summary) {
   if (exact) {
     if (!exact.final) {
       exact.final = true;
-      exact.note = exact.note || "完成总结";
+      exact.note = exact.note || uiText("完成总结");
       saveChat();
       renderChat();
     }
@@ -387,7 +387,7 @@ function addCompletedSummary(summary) {
       ...existing,
       text: summary.message,
       final: true,
-      note: "完成总结",
+      note: uiText("完成总结"),
     });
     return false;
   }
@@ -399,14 +399,14 @@ function addCompletedSummary(summary) {
     epoch: summary.epoch,
     final: true,
     interrupted: false,
-    note: "完成总结",
+    note: uiText("完成总结"),
   });
 }
 
 function renderPending() {
   pendingMessages = dedupeMessages(pendingMessages);
-  $("pendingCount").textContent = String(pendingMessages.length);
-  $("composerOptionSummary").textContent=pendingMessages.length?` · 队列${pendingMessages.length}`:"";
+  bindText($("pendingCount"), () => (String(pendingMessages.length)));
+  bindText($("composerOptionSummary"), () => (pendingMessages.length?uiText(" · 队列{0}", pendingMessages.length):""));
   $("pendingCount").classList.toggle(
     "pending",
     pendingMessages.some((message) =>
@@ -418,7 +418,7 @@ function renderPending() {
   if (!pendingMessages.length) {
     const empty = document.createElement("div");
     empty.className = "pending-empty";
-    empty.textContent = "没有待处理消息";
+    bindText(empty, () => (uiText("没有待处理消息")));
     list.append(empty);
     return;
   }
@@ -428,29 +428,27 @@ function renderPending() {
     row.dataset.requestId = message.requestId;
     const prompt = document.createElement("span");
     prompt.className = "pending-prompt";
-    prompt.textContent = message.prompt || "暂停并取消当前请求";
-    prompt.title = message.prompt || "";
+    bindText(prompt, () => (message.prompt || uiText("暂停并取消当前请求")));
+    bindText(prompt, () => (message.prompt || ""), "title");
     const detail = document.createElement("span");
     detail.className = "pending-detail";
     const mode = document.createElement("span");
     mode.className = "caption";
-    mode.textContent =
-      { start: "开始", steer: "插话", interrupt: "打断", queue: "排队" }[
+    bindText(mode, () => ({ start: uiText("开始"), steer: uiText("插话"), interrupt: uiText("打断"), queue: uiText("排队") }[
         message.mode
-      ] || message.mode;
+      ] || message.mode));
     const status = document.createElement("span");
     status.className = `message-state ${message.status}`;
-    status.textContent =
-      statusLabel(message.status) +
+    bindText(status, () => (statusLabel(message.status) +
       (message.status === "accepted" && message.queuePosition
         ? ` · #${message.queuePosition}`
-        : "");
+        : "")));
     detail.append(mode, status);
     row.append(prompt, detail);
     if (message.error) {
       const failure = document.createElement("span");
       failure.className = "pending-detail caption";
-      failure.textContent = message.error;
+      bindText(failure, () => (message.error));
       row.append(failure);
     }
     list.append(row);
@@ -516,7 +514,7 @@ function applyHarnessEvents(events) {
         runId: pending.runId,
         epoch: pending.epoch,
         mode: pending.mode,
-        note: next === "applied" ? "已应用到当前运行" : "已接收，等待安全点",
+        note: next === "applied" ? uiText("已应用到当前运行") : uiText("已接收，等待安全点"),
       });
     }
   }
@@ -566,24 +564,24 @@ function syncHarness(h) {
 function updateHarnessControls(snapshot) {
   const mode = $("messageMode").value;
   const action = primaryAction(snapshot, mode);
-  $("sendMessage").textContent = action.label;
+  bindText($("sendMessage"), () => (action.label));
   $("sendMessage").disabled =
     messageInFlight ||
     referencePicker.busy ||
     (snapshot.stopping && !snapshot.active);
-  $("messageModeHint").textContent = messageModeHint(snapshot, mode);
+  bindText($("messageModeHint"), () => (messageModeHint(snapshot, mode)));
   $("pauseAI").disabled = !snapshot.active || snapshot.paused;
   $("resumeAI").disabled = !snapshot.active || !snapshot.paused;
   $("stopAI").disabled = !snapshot.active;
   const run = snapshot.run;
-  const status = [`状态：${phaseLabel(snapshot)}`];
-  if (snapshot.queue.length) status.push(`排队 ${snapshot.queue.length}`);
+  const status = [uiText("状态：{0}", phaseLabel(snapshot))];
+  if (snapshot.queue.length) status.push(uiText("排队 {0}", snapshot.queue.length));
   if (run) {
-    status.push(`${run.steps || 0} 步 · ${fmt(run.tokens)} Token`);
+    status.push(uiText("{0} 步 · {1} Token", run.steps || 0, fmt(run.tokens)));
     if (run.error) status.push(friendlyError({ message: run.error }));
   }
-  $("runStatus").textContent = status.join("\n");
-  $("viewportRunStatus").textContent=status.join(" · ");
+  bindText($("runStatus"), () => (status.join("\n")));
+  bindText($("viewportRunStatus"), () => (status.join(" · ")));
 }
 
 async function refresh(force = false) {
@@ -650,7 +648,7 @@ async function refresh(force = false) {
     if(creativeUi)await creativeUi.sync(next);
     window.__morphforge.ready = true;
   } catch (cause) {
-    $("saveState").textContent = "后端暂时不可用";
+    bindText($("saveState"), () => (uiText("后端暂时不可用")));
     if (!state) error(cause);
   } finally {
     polling = false;
@@ -668,35 +666,34 @@ function updateState() {
   setValue("modelingExtentPreset",extentPreset);
   $("modelingExtentCustom").hidden=extentPreset!=="custom";
   if(extent)["X","Y","Z"].forEach((axis,i)=>setValue("modelingExtent"+axis,extent[i]));
-  $("activeSessionTitle").textContent = harness.context.title || "对话";
+  bindText($("activeSessionTitle"), () => (harness.context.title || uiText("对话")));
   $("schemaUpgradeNotice").hidden=!harness.context.schemaUpgradeRequired;
   $("schemaUpgradeContext").hidden=!harness.context.schemaUpgradeRequired;
-  $("saveState").textContent = "已保存 · v" + s.revision;
-  $("boxCount").textContent =
-    fmt(s.stats.boxCount) + " Box · " + fmt(s.stats.triangleCount||0) + " 面 · "+fmt(s.stats.textPanelCount||0)+" 文本框 / 目标 " + fmt(s.stats.targetBoxes);
+  bindText($("saveState"), () => (uiText("已保存 · v") + s.revision));
+  bindText($("boxCount"), () => (fmt(s.stats.boxCount) + " Box · " + fmt(s.stats.triangleCount||0) + uiText(" 面 · ")+fmt(s.stats.textPanelCount||0)+uiText(" 文本框 / 目标 ") + fmt(s.stats.targetBoxes)));
   const usedIds=new Set((sceneData?.scene.boxes||[]).map(b=>b.styleId));
   const usedStyles=(sceneData?.materials||[]).filter(m=>usedIds.has(m.id));
-  $("usedMaterialCount").textContent=String(usedStyles.length);
+  bindText($("usedMaterialCount"), () => (String(usedStyles.length)));
   const materialSignature=JSON.stringify(usedStyles.map(m=>[m.id,m.color,m.name]));
   if($("usedMaterialList").dataset.signature!==materialSignature){
     $("usedMaterialList").dataset.signature=materialSignature;$("usedMaterialList").replaceChildren();
     for(const m of usedStyles){const n=document.createElement("span"),swatch=document.createElement("i");n.className="used-material";swatch.style.background=`rgb(${(m.color||[.5,.5,.5]).map(v=>Math.round(v*255)).join(",")})`;n.append(swatch,document.createTextNode(m.name||String(m.id)));$("usedMaterialList").append(n);}
   }
-  $("voxelCount").textContent = fmt(s.stats.voxelCount) + " 格";
-  $("bounds").textContent = s.stats.bounds
-    ? "范围 " +
+  bindText($("voxelCount"), () => (fmt(s.stats.voxelCount) + uiText(" 格")));
+  bindText($("bounds"), () => (s.stats.bounds
+    ? uiText("范围 ") +
       s.stats.bounds.min.join(",") +
       " → " +
       s.stats.bounds.max.join(",")
-    : "范围为空";
+    : uiText("范围为空")));
   $("emptyHint").hidden = s.stats.boxCount > 0 || s.stats.triangleCount > 0 || s.stats.textPanelCount>0;
   const target=s.targetCompatibility;
-  $("vrcBoundsStatus").textContent=target ? `${target.fits?"坐标/容量可发布":"目标预检未通过"} · ${target.outOfBoundsCount} 个越界对象\n作品尺寸 ${target.extent.join(" × ")} 格${target.outOfBoundsGroups.length?"\n越界分组："+target.outOfBoundsGroups.join("、"):""}` : "";
+  bindText($("vrcBoundsStatus"), () => (target ? uiText("{0} · {1} 个越界对象\n作品尺寸 {2} 格{3}", target.fits?uiText("坐标/容量可发布"):uiText("目标预检未通过"), target.outOfBoundsCount, target.extent.join(" × "), target.outOfBoundsGroups.length?uiText("\n越界分组：")+target.outOfBoundsGroups.join("、"):"") : ""));
   const catalog=s.materialCompatibility;
-  $("materialCompatibility").textContent=catalog ? (catalog.status==="unknown"?"未声明目标目录，未核实上传的Avatar。":catalog.matched?`目录匹配${catalog.runtimeMaterials?" / 支持实时材质":""} · ${catalog.usedStyles} 种已用材质 · ${catalog.fingerprint.slice(0,12)}\n用户导入的目录，非远端确认。`:`目录不匹配：缺少 [${catalog.missingIds.join(",")}]，定义不同 [${catalog.differentIds.join(",")}]\n${catalog.note||"请更新Avatar目录后再发布。"}`) : "";
+  bindText($("materialCompatibility"), () => (catalog ? (catalog.status==="unknown"?uiText("未声明目标目录，未核实上传的Avatar。"):catalog.matched?uiText("目录匹配{0} · {1} 种已用材质 · {2}\n用户导入的目录，非远端确认。", catalog.runtimeMaterials?uiText(" / 支持实时材质"):"", catalog.usedStyles, catalog.fingerprint.slice(0,12)):uiText("目录不匹配：缺少 [{0}]，定义不同 [{1}]\n{2}", catalog.missingIds.join(","), catalog.differentIds.join(","), diagnosticMessage(catalog.note)||uiText("请更新Avatar目录后再发布。"))) : ""));
   setChecked("autoCenterOnFinish",s.project.autoCenterOnFinish);
   if(pendingTransform) $("transformApply").disabled=pendingTransform.baseRevision!==s.revision;
-  $("renderDiagnostics").textContent=`实际 WebGL 抗锯齿样本：${renderer.renderer.getContext().getParameter(renderer.renderer.getContext().SAMPLES)} · 内部透明面 ${renderer.surfaceStats?.hiddenFaces||0} 个\n${renderer.textureWarnings.join("\n")}`;
+  bindText($("renderDiagnostics"), () => (uiText("实际 WebGL 抗锯齿样本：{0} · 内部透明面 {1} 个\n{2}", renderer.renderer.getContext().getParameter(renderer.renderer.getContext().SAMPLES), renderer.surfaceStats?.hiddenFaces||0, renderer.textureWarnings.join("\n"))));
   $("voiceRecordingBadge").hidden=!s.speechStatus?.active;
   $("voiceRecordingBadge").disabled=s.speechStatus?.phase==="finishing";
   $("undo").disabled = !s.canUndo;
@@ -709,7 +706,7 @@ function updateState() {
   const intervalValue=String(connection.interval),intervalSelect=$("interval");
   for(const option of [...intervalSelect.options])if(option.dataset.custom&&option.value!==intervalValue)option.remove();
   if(![...intervalSelect.options].some(option=>option.value===intervalValue)){
-    const option=new Option(`${connection.interval}秒（自定义）`,intervalValue);option.dataset.custom="true";intervalSelect.add(option);
+    const option=new Option(uiText("{0}秒（自定义）", connection.interval),intervalValue);option.dataset.custom="true";intervalSelect.add(option);
   }
   setValue("interval", connection.interval);
   setValue("targetCapacity", connection.capacity);
@@ -721,42 +718,36 @@ function updateState() {
   setValue("publishStrategy",connection.publishStrategy||"auto");
   }
   const discovered=connection.discovery||{},info=discovered.info;
-  $("discoveryStatus").textContent=info?`已读取Avatar协议 v${info.version} · ${info.region8?"连续区域编码可用":"基础编码"}\n材质指纹 ${info.catalogHash.slice(0,16)} · ${discovered.catalogKnown?"本机有匹配目录":"本机缺少此目录，请导入构建包"}${discovered.lastError?"\n"+discovered.lastError:""}\n${connection.catalogIdentity===info.catalogHash?"当前目录与Avatar一致。":"当前目录与Avatar不同，发送前需匹配。"}能力查询不确认执行或其他玩家接收。`:(discovered.lastError||"等待识别；Unity测试可手动选择配套目录。");
+  bindText($("discoveryStatus"), () => (info?uiText("已读取Avatar协议 v{0} · {1}\n材质指纹 {2} · {3}{4}\n{5}能力查询不确认执行或其他玩家接收。", info.version, info.region8?uiText("连续区域编码可用"):uiText("基础编码"), info.catalogHash.slice(0,16), discovered.catalogKnown?uiText("本机有匹配目录"):uiText("本机缺少此目录，请导入构建包"), discovered.lastError?"\n"+discovered.lastError:"", connection.catalogIdentity===info.catalogHash?uiText("当前目录与Avatar一致。"):uiText("当前目录与Avatar不同，发送前需匹配。")):(discovered.lastError||uiText("等待识别；Unity测试可手动选择配套目录。"))));
   const plan=connection.publication;
-  $("publicationPlan").textContent=plan?`${plan.layout==="run_boxes"?`同材质段合并，减少${plan.compactedBoxes}个显示对象 · `:""}方案：${plan.selected==="rebuild"?"清空重建":"增量"} · ${plan.reason}\n增量 ${plan.incrementalFrames??"不可行"} 帧 / ${plan.incrementalSeconds==null?"—":time(plan.incrementalSeconds)}；重建 ${plan.rebuildFrames??"不可行"} 帧 / ${plan.rebuildSeconds==null?"—":time(plan.rebuildSeconds)}（含Clear）`:"发布时比较真实编码计划；时间为本机节拍估算，不代表远端收到。";
+  bindText($("publicationPlan"), () => (plan?uiText("{0}方案：{1} · {2}\n增量 {3} 帧 / {4}；重建 {5} 帧 / {6}（含Clear）", plan.layout==="run_boxes"?uiText("同材质段合并，减少{0}个显示对象 · ", plan.compactedBoxes):"", plan.selected==="rebuild"?uiText("清空重建"):uiText("增量"), diagnosticMessage(plan.reason), plan.incrementalFrames??uiText("不可行"), plan.incrementalSeconds==null?"—":time(plan.incrementalSeconds), plan.rebuildFrames??uiText("不可行"), plan.rebuildSeconds==null?"—":time(plan.rebuildSeconds)):uiText("发布时比较真实编码计划；时间为本机节拍估算，不代表远端收到。")));
   $("loopReplay").disabled=connection.profile!=="mf6";
   $("sendOrder").disabled=connection.profile!=="mf6";
-  $("replayStatus").textContent=`已完成补播 ${connection.replayCycles||0} 轮 · ${connection.repairing?"正在补播":connection.loopReplay?(connection.enabled?"连续补播已启用":"循环已设置，发送关闭"):"按需发送"}。${connection.repairDeletions?.some(n=>n)?`含 ${connection.repairDeletions.reduce((a,b)=>a+b,0)} 条历史删除。`:""}更新先删除旧几何，再按所选顺序绘制；没有远端ACK。`;
+  bindText($("replayStatus"), () => (uiText("已完成补播 {0} 轮 · {1}。{2}更新先删除旧几何，再按所选顺序绘制；没有远端ACK。", connection.replayCycles||0, connection.repairing?uiText("正在补播"):connection.loopReplay?(connection.enabled?uiText("连续补播已启用"):uiText("循环已设置，发送关闭")):uiText("按需发送"), connection.repairDeletions?.some(n=>n)?uiText("含 {0} 条历史删除。", connection.repairDeletions.reduce((a,b)=>a+b,0)):"")));
   $("repairPublish").disabled=connection.profile!=="mf6";
   $("connect").disabled=connectionPending>0;
-  $("connect").textContent = connection.enabled ? "停止发送" : "开启发送";
+  bindText($("connect"), () => (connection.enabled ? uiText("停止发送") : uiText("开启发送")));
   $("connect").classList.toggle("selected", connection.enabled);
-  $("connectionBadge").textContent = connection.enabled
-    ? "OSC " + connection.port + " · " + connection.pending + "项"
-    : "独立创作";
+  bindText($("connectionBadge"), () => (connection.enabled
+    ? "OSC " + connection.port + " · " + connection.pending + uiText("项")
+    : uiText("独立创作")));
   $("connectionBadge").classList.toggle("live", connection.enabled);
   const progress=connection.progress;
   const progressBar=$("syncProgress");
   if(progress?.totalFrames!=null){
     progressBar.value=progress.percent;
-    $("syncProgressLabel").textContent=`${connection.repairing?"补播":"发布"} ${progress.percent.toFixed(1)}% · ${fmt(progress.sentFrames)} / ${fmt(progress.totalFrames)} 帧${connection.enabled?"":" · 发送关闭"}`;
+    bindText($("syncProgressLabel"), () => (uiText("{0} {1}% · {2} / {3} 帧{4}", connection.repairing?uiText("补播"):uiText("发布"), progress.percent.toFixed(1), fmt(progress.sentFrames), fmt(progress.totalFrames), connection.enabled?"":uiText(" · 发送关闭"))));
   }else{
     if(connection.enabled&&connection.pending)progressBar.removeAttribute("value");else progressBar.value=0;
-    $("syncProgressLabel").textContent=connection.pending?`待发 ${fmt(connection.pending)} 批${connection.enabled?"":" · 发送关闭"}`:"尚未发布";
+    bindText($("syncProgressLabel"), () => (connection.pending?uiText("待发 {0} 批{1}", fmt(connection.pending), connection.enabled?"":uiText(" · 发送关闭")):uiText("尚未发布")));
   }
   $("viewportSyncProgress").value=progressBar.value;
-  $("viewportSyncLabel").textContent=$("syncProgressLabel").textContent;
-  $("viewportETA").textContent=connection.enabled&&connection.pending?`预计剩余 ${time(connection.etaSeconds)} · 本机发送`:"";
-  $("syncStatus").textContent =
-    connection.error ||
+  bindText($("viewportSyncLabel"), () => ($("syncProgressLabel").textContent));
+  bindText($("viewportETA"), () => (connection.enabled&&connection.pending?uiText("预计剩余 {0} · 本机发送", time(connection.etaSeconds)):""));
+  bindText($("syncStatus"), () => (connection.error ||
     (!connection.enabled
-      ? "发送已关闭；可继续独立创作。"
-      : `本机发包中 · 无远端ACK
-${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${" · 本体仅本地"}
-当前目标 v${connection.desiredRevision} / 最近完整发包 v${connection.sentRevision ?? "—"}
-本机已发记录 ${fmt(connection.sentObjects?.boxes??0)} Box / ${fmt(connection.sentObjects?.triangles??0)} 面；VRC接收情况未知
-待发 ${fmt(connection.pending)} 批 · 预计 ${time(connection.etaSeconds)}
-累计 ${fmt(connection.sentCommands)} 批`);
+      ? uiText("发送已关闭；可继续独立创作。")
+      : uiText("本机发包中 · 无远端ACK\n{0} · 几何 {1}bit{2}\n当前目标 v{3} / 最近完整发包 v{4}\n本机已发记录 {5} Box / {6} 面；VRC接收情况未知\n待发 {7} 批 · 预计 {8}\n累计 {9} 批", connection.profile.toUpperCase(), connection.syncedBits, uiText(" · 本体仅本地"), connection.desiredRevision, connection.sentRevision ?? "—", fmt(connection.sentObjects?.boxes??0), fmt(connection.sentObjects?.triangles??0), fmt(connection.pending), time(connection.etaSeconds), fmt(connection.sentCommands)))));
   setChecked("world", connection.placement.world);
   setChecked("visible", connection.placement.visible);
   setChecked("allowGrab",connection.placement.allowGrab!==false);
@@ -769,7 +760,7 @@ ${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${" · 
   $("scalePercent").min="1";
   $("scale").max="3";
   $("scalePercent").max="1000";
-  $("scaleHint").textContent=`新100%＝旧5% · 当前格长 ${(0.25*connection.placement.scale*1000).toFixed(3)} 毫米。${"1%～1000%，对数刻度，便于微缩。"}`;
+  bindText($("scaleHint"), () => (uiText("新100%＝旧5% · 当前格长 {0} 毫米。{1}", (0.25*connection.placement.scale*1000).toFixed(3), uiText("1%～1000%，对数刻度，便于微缩。"))));
   for (const id of [
     "preset",
     "contextWindowTokens",
@@ -781,39 +772,37 @@ ${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${" · 
     if (harness.settings[id] !== undefined) setValue(id, harness.settings[id]);
   }
   setValue("settingsPreset", harness.settings.preset || "standard");
-  $("activeModel").textContent =
-    `${harness.settings.model} · ${harness.provider.apiType === "chat" ? "Chat" : "Responses"}`;
+  bindText($("activeModel"), () => (`${harness.settings.model} · ${harness.provider.apiType === "chat" ? "Chat" : "Responses"}`));
   const usage = usageDisplay(harness.usage);
-  $("usageTokens").textContent = usage.tokens;
-  $("usageTokens").title = usage.tokenTitle;
-  $("usagePrefix").textContent = usage.prefix;
-  $("usagePrefix").title = usage.prefixTitle;
-  $("usageRun").textContent = usage.run;
+  bindText($("usageTokens"), () => (usage.tokens));
+  bindText($("usageTokens"), () => (usage.tokenTitle), "title");
+  bindText($("usagePrefix"), () => (usage.prefix));
+  bindText($("usagePrefix"), () => (usage.prefixTitle), "title");
+  bindText($("usageRun"), () => (usage.run));
   $("usageRun").hidden = !usage.run;
   const contextUsage=contextUsageDisplay(harness.context.usage);
-  $("usageContext").textContent=contextUsage.text;
-  $("usageContext").title=contextUsage.title;
+  bindText($("usageContext"), () => (contextUsage.text));
+  bindText($("usageContext"), () => (contextUsage.title), "title");
   $("usageContext").dataset.level=contextUsage.level;
   setChecked("sendImages", harness.settings.sendImages ?? true);
   setChecked("goalMode", harness.settings.goalMode ?? false);
-  $("presetHint").textContent =
-    ({
-      sketch: "轮廓与大形优先",
-      standard: "结构、材质与有限细节",
-      detailed: "分阶段细化与多轮复核",
-    }[harness.settings.preset] || "创作预设") +
-    ` · 当前最多${harness.settings.maxSteps}步 / ${Math.round(harness.settings.maxRunSeconds / 60)}分钟，可在预算范围内调整。`;
+  bindText($("presetHint"), () => (({
+      sketch: uiText("轮廓与大形优先"),
+      standard: uiText("结构、材质与有限细节"),
+      detailed: uiText("分阶段细化与多轮复核"),
+    }[harness.settings.preset] || uiText("创作预设")) +
+    uiText(" · 当前最多{0}步 / {1}分钟，可在预算范围内调整。", harness.settings.maxSteps, Math.round(harness.settings.maxRunSeconds / 60))));
   const goal = harness.context.goal;
   const goalLabels = {
-    active: "进行中",
-    achieved: "已保存完成",
-    blocked: "等待调整",
-    budget_exhausted: "预算已用尽",
-    stopped: "已停止",
+    active: uiText("进行中"),
+    achieved: uiText("已保存完成"),
+    blocked: uiText("等待调整"),
+    budget_exhausted: uiText("预算已用尽"),
+    stopped: uiText("已停止"),
   };
-  $("goalStatus").textContent = goal
-    ? `${goalLabels[goal.status] || goal.status} · 复核 ${goal.reviewedGeometryHashes.length}/${goal.minReviewRounds} · 自动续作 ${goal.continuations}\n${goal.objective}\n${goal.assessment || ""}`
-    : "尚无创作目标";
+  bindText($("goalStatus"), () => (goal
+    ? uiText("{0} · 复核 {1}/{2} · 自动续作 {3}\n{4}\n{5}", goalLabels[goal.status] || goal.status, goal.reviewedGeometryHashes.length, goal.minReviewRounds, goal.continuations, goal.objective, goal.assessment || "")
+    : uiText("尚无创作目标")));
   $("goalStatus").hidden = !goal;
   $("saveProvider").disabled =
     normalizeHarness(harness).active || providerSaveBusy;
@@ -844,11 +833,10 @@ ${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${" · 
   document.body.classList.toggle("ai-editing",!!harness.manualEditLocked);
   $("manualEditToggle").disabled=!!harness.manualEditLocked;
   const monitor = harness.cacheMonitor || {};
-  $("cacheMonitorStatus").textContent =
-    `前缀 ${monitor.prefix?.appendOnly === false ? "发生重置/变化" : monitor.prefix?.appendOnly === true ? "保持追加" : "待观察"} · 最近缓存 ${typeof monitor.recentHitRate === "number" ? (monitor.recentHitRate * 100).toFixed(1) + "%" : "未报告"} · ${monitor.alert || (monitor.mode ? (monitor.cacheRequired ? "严格监测" : "观察模式") : "等待首次请求；保护按配置启用")}${monitor.unreportedInterruptions ? ` · ${monitor.unreportedInterruptions} 次中断未回报缓存，费用未知，未计入命中率` : ""}`;
+  bindText($("cacheMonitorStatus"), () => (uiText("前缀 {0} · 最近缓存 {1} · {2}{3}", monitor.prefix?.appendOnly === false ? uiText("发生重置/变化") : monitor.prefix?.appendOnly === true ? uiText("保持追加") : uiText("待观察"), typeof monitor.recentHitRate === "number" ? (monitor.recentHitRate * 100).toFixed(1) + "%" : uiText("未报告"), monitor.alert || (monitor.mode ? (monitor.cacheRequired ? uiText("严格监测") : uiText("观察模式")) : uiText("等待首次请求；保护按配置启用")), monitor.unreportedInterruptions ? uiText(" · {0} 次中断未回报缓存，费用未知，未计入命中率", monitor.unreportedInterruptions) : "")));
   $("cacheMonitorStatus").classList.toggle("kind-error", !!monitor.alert);
-  $("cacheLiveStatus").textContent = monitor.alert ? "缓存告警 · 查看设置" : monitor.prefix?.appendOnly===false ? "前缀发生变化" : "";
-  $("cacheLiveStatus").title=$("cacheMonitorStatus").textContent;
+  bindText($("cacheLiveStatus"), () => (monitor.alert ? uiText("缓存告警 · 查看设置") : monitor.prefix?.appendOnly===false ? uiText("前缀发生变化") : ""));
+  bindText($("cacheLiveStatus"), () => ($("cacheMonitorStatus").textContent), "title");
   $("cacheLiveStatus").classList.toggle("kind-error", !!monitor.alert);
   $("cacheShowConfig").hidden = !monitor.alert;
   setValue("maxSteps", harness.settings.maxSteps);
@@ -857,29 +845,26 @@ ${connection.profile.toUpperCase()} · 几何 ${connection.syncedBits}bit${" · 
   setValue("maxOutputTokens", harness.settings.maxOutputTokens);
   if (harness.modelLimits) {
     const limits = harness.modelLimits;
-    $("modelLimitsInfo").textContent =
-      `有效上下文 ${fmt(limits.effectiveContextWindow)} · 输出上限 ${fmt(limits.effectiveOutputCeiling)} Token（${limits.source === "upstream_models" ? "已读取上游 /models" : "按当前配置；尚未获取上游限制"}，单次输出按剩余窗口裁剪）`;
+    bindText($("modelLimitsInfo"), () => (uiText("有效上下文 {0} · 输出上限 {1} Token（{2}，单次输出按剩余窗口裁剪）", fmt(limits.effectiveContextWindow), fmt(limits.effectiveOutputCeiling), limits.source === "upstream_models" ? uiText("已读取上游 /models") : uiText("按当前配置；尚未获取上游限制"))));
   }
   setValue("compactTokens", harness.settings.compactTokens);
   setValue("language", harness.settings.language || "zh-CN");
   setChecked("autoCompact", harness.settings.autoCompact);
   setValue("pinnedNotes", s.project.pinnedNotes);
-  $("providerState").textContent = harness.provider.configured
-    ? "连接已配置"
-    : "需要配置Key";
+  bindText($("providerState"), () => (harness.provider.configured
+    ? uiText("连接已配置")
+    : uiText("需要配置Key")));
   $("providerState").classList.toggle("live", harness.provider.configured);
-  $("contextStats").textContent =
-    `${contextUsage.text}\n` +
-    `${harness.context.messages} 条消息 · compact ${harness.context.compactCount} 次`;
-  $("contextSummary").textContent = harness.context.summary || "暂无";
+  bindText($("contextStats"), () => (`${contextUsage.text}\n` +
+    uiText("{0} 条消息 · compact {1} 次", harness.context.messages, harness.context.compactCount)));
+  bindText($("contextSummary"), () => (harness.context.summary || uiText("暂无")));
   syncHarness(harness);
-  $("renderInfo").textContent =
-    `v${loadedRevision < 0 ? s.revision : loadedRevision} · ` +
-    `${renderer.renderer.info.render.calls} 绘制调用 · 底部中心 / +Z前`;
+  bindText($("renderInfo"), () => (`v${loadedRevision < 0 ? s.revision : loadedRevision} · ` +
+    uiText("{0} 绘制调用 · 底部中心 / +Z前", renderer.renderer.info.render.calls)));
 }
 
 function edit(value) {
-  if(state?.harness?.manualEditLocked){toast("AI正在修改，暂停后再手工编辑");return Promise.resolve();}
+  if(state?.harness?.manualEditLocked){toast(uiText("AI正在修改，暂停后再手工编辑"));return Promise.resolve();}
   edits = edits.then(async () => {
     try {
       const result = await api("edit", {
@@ -921,11 +906,10 @@ function drawPalette() {
     button.style.background = `rgb(${material.color
       .map((value) => Math.round(value * 255))
       .join(",")})`;
-    button.title =
-      material.name +
+    bindText(button, () => (material.name +
       " · " +
       material.family +
-      (material.pack ? " · Avatar需预打包" : "");
+      (material.pack ? uiText(" · Avatar需预打包") : "")), "title");
     if (material.textures?.length)
       button.style.backgroundImage = `url("${material.textures[0]}")`;
     button.onclick = () => {
@@ -938,8 +922,8 @@ function drawPalette() {
   const selectedMaterial = sceneData.materials.find(
     (material) => material.id === selectedStyle,
   );
-  $("styleName").textContent = selectedMaterial?.name || "未知材质";
-  $("textStyleName").textContent = selectedMaterial?.name || "未知材质";
+  bindText($("styleName"), () => (selectedMaterial?.name || uiText("未知材质")));
+  bindText($("textStyleName"), () => (selectedMaterial?.name || uiText("未知材质")));
 }
 
 function drawGroups() {
@@ -956,8 +940,8 @@ function drawGroups() {
     check.type = "checkbox";
     check.checked = !renderer.groupsHidden.has(name);
     check.className = "group-visibility";
-    check.title = `显示“${name}”的本地预览`;
-    check.setAttribute("aria-label", `显示分组 ${name}`);
+    bindText(check, () => (uiText("显示“{0}”的本地预览", name)), "title");
+    check.setAttribute("aria-label", uiText("显示分组 {0}", name));
     check.onchange = async () => {
       if (check.checked) renderer.groupsHidden.delete(name);
       else renderer.groupsHidden.add(name);
@@ -967,7 +951,7 @@ function drawGroups() {
       });
     };
     const label = document.createElement("span");
-    label.textContent = name;
+    bindText(label, () => (name));
     label.onclick = () => {
       selected = new Set(
         sceneData.scene.boxes.concat(sceneData.scene.triangles||[],sceneData.scene.drawings||[])
@@ -979,7 +963,7 @@ function drawGroups() {
       selectionInfo();
     };
     const number = document.createElement("small");
-    number.textContent = count;
+    bindText(number, () => (count));
     const protection = document.createElement("button");
     const protectedGroup = isGroupProtected(
       state?.project?.protectedGroups,
@@ -989,10 +973,10 @@ function drawGroups() {
     protection.dataset.group = name;
     protection.type = "button";
     protection.setAttribute("aria-pressed", String(protectedGroup));
-    protection.title = protectedGroup
-      ? `“${name}”已受保护；点击解除后再编辑`
-      : `保护“${name}”，阻止绘制、擦除和变换`;
-    protection.textContent = protectedGroup ? "已保护" : "保护";
+    bindText(protection, () => (protectedGroup
+      ? uiText("“{0}”已受保护；点击解除后再编辑", name)
+      : uiText("保护“{0}”，阻止绘制、擦除和变换", name)), "title");
+    bindText(protection, () => (protectedGroup ? uiText("已保护") : uiText("保护")));
     protection.disabled = groupSettingsBusy;
     protection.onclick = () =>
       saveGroupProtection(name, !protectedGroup, protection);
@@ -1005,7 +989,7 @@ async function saveGroupProtection(name, protect, button) {
   if (groupSettingsBusy) return;
   groupSettingsBusy = true;
   button.disabled = true;
-  button.textContent = "保存中";
+  bindText(button, () => (uiText("保存中")));
   try {
     const groups = setProtectedGroup(
       state.project.protectedGroups,
@@ -1018,7 +1002,7 @@ async function saveGroupProtection(name, protect, button) {
     );
     const saved = normalizeProtectedGroups(savedState.project?.protectedGroups);
     if (saved.includes(name) !== protect) {
-      throw new Error("分组保护未保存，当前服务端可能尚未启用该设置");
+      throw new Error(uiText("分组保护未保存，当前服务端可能尚未启用该设置"));
     }
     state.project.protectedGroups = saved;
     if (Number.isSafeInteger(Number(savedState.revision))) {
@@ -1029,8 +1013,8 @@ async function saveGroupProtection(name, protect, button) {
     await refresh(true);
     toast(
       protect
-        ? `已保护分组“${name}”；绘制、擦除和变换会被拒绝`
-        : `已解除分组“${name}”的保护，现在可以编辑`,
+        ? uiText("已保护分组“{0}”；绘制、擦除和变换会被拒绝", name)
+        : uiText("已解除分组“{0}”的保护，现在可以编辑", name),
     );
   } catch (cause) {
     error(cause);
@@ -1042,9 +1026,9 @@ async function saveGroupProtection(name, protect, button) {
 }
 
 function selectionInfo() {
-  $("selectionInfo").textContent = selected.size
-    ? `已选 ${selected.size} 个对象 · 移动/复制读取精确位置XYZ作为偏移`
-    : "选择工具点击，Shift多选；拖动框选";
+  bindText($("selectionInfo"), () => (selected.size
+    ? uiText("已选 {0} 个对象 · 移动/复制读取精确位置XYZ作为偏移", selected.size)
+    : uiText("选择工具点击，Shift多选；拖动框选")));
 }
 
 function setTool(next) {
@@ -1080,8 +1064,7 @@ renderer.renderer.domElement.addEventListener("pointermove", (event) => {
       renderer.hover(hit, brush(), tool === "erase" || lastPointer.shiftKey);
     }
     if (hit) {
-      $("cursorPosition").textContent =
-        `X ${hit.pos[0]} · Y ${hit.pos[1]} · Z ${hit.pos[2]}`;
+      bindText($("cursorPosition"), () => (`X ${hit.pos[0]} · Y ${hit.pos[1]} · Z ${hit.pos[2]}`));
     }
   });
 });
@@ -1173,7 +1156,7 @@ for (const [id, copy, turns, mirror] of [
   ["mirrorSelection", false, 0, "x"],
 ]) {
   $(id).onclick = () => {
-    if (!selected.size) return toast("请先选择内容");
+    if (!selected.size) return toast(uiText("请先选择内容"));
     edit({
       op: "transform",
       ids: [...selected],
@@ -1185,7 +1168,7 @@ for (const [id, copy, turns, mirror] of [
   };
 }
 $("paintSelection").onclick = () => {
-  if (!selected.size) return toast("请先选择内容");
+  if (!selected.size) return toast(uiText("请先选择内容"));
   const operations = sceneData.scene.boxes
     .filter((box) => selected.has(box.id))
     .map((box) => ({
@@ -1234,7 +1217,7 @@ window.addEventListener("keydown", (event) => {
 
 async function showWorkspaces(kind) {
   try {
-    $("workspaceError").textContent = "";
+    bindText($("workspaceError"), () => (""));
     if (kind) $("workspaceKind").value = kind;
     await renderWorkspaces();
     if (!$("workspaceDialog").open) $("workspaceDialog").showModal();
@@ -1254,12 +1237,12 @@ async function renderWorkspaces() {
       row.dataset.workspaceId = item.id;
       const label = document.createElement("span");
       label.className = "grow";
-      label.textContent = item.name || item.title || "未命名";
+      bindText(label, () => (item.name || item.title || uiText("未命名")));
       const detail = document.createElement("span");
       detail.className = "caption";
-      detail.textContent = action === "open_project" ? `${fmt(item.boxCount)} Box · v${item.revision}` : `${fmt(item.messages)} 条上下文 · ${new Date(item.createdAt).toLocaleString()}`;
+      bindText(detail, () => (action === "open_project" ? `${fmt(item.boxCount)} Box · v${item.revision}` : uiText("{0} 条上下文 · {1}", fmt(item.messages), new Date(item.createdAt).toLocaleString())));
       const open = document.createElement("button");
-      open.textContent = item.id === active ? "当前" : "打开";
+      bindText(open, () => (item.id === active ? uiText("当前") : uiText("打开")));
       open.disabled = item.id === active || workspaceBusy;
       open.onclick = () => changeWorkspace({ action, id: item.id });
       row.append(label, detail, open);
@@ -1271,14 +1254,14 @@ async function changeWorkspace(request) {
   if (workspaceBusy) return;
   workspaceBusy = true;
   $("workspaceCreate").disabled = true;
-  $("workspaceError").textContent = "";
+  bindText($("workspaceError"), () => (""));
   try {
     await edits;
     await api("workspaces", { ...request, baseProjectId: state.project.id, baseSessionId: state.harness.context.id });
     // Reinitialize per-context drafts, selection, history and polling together.
     location.reload();
   } catch (cause) {
-    $("workspaceError").textContent = cause.message;
+    bindText($("workspaceError"), () => (cause.message));
     error(cause);
   } finally {
     workspaceBusy = false;
@@ -1313,16 +1296,16 @@ async function previewTransform(){
     const args={action:$("transformAction").value,offset:["shiftX","shiftY","shiftZ"].map(id=>Number($(id).value)),baseRevision:state.revision,dryRun:true};
     const result=await api("harness/tool",{name:"transform_scene",arguments:args});
     pendingTransform={...args,dryRun:false};
-    $("transformReport").textContent=`偏移 ${result.offset.join(", ")} 格\n原范围 ${JSON.stringify(result.before.bounds)}\n新范围 ${JSON.stringify(result.after.bounds)}\n${result.after.fits?"坐标和容量可发布":"目标预检仍未通过，请检查尺寸/容量"}`;
+    bindText($("transformReport"), () => (uiText("偏移 {0} 格\n原范围 {1}\n新范围 {2}\n{3}", result.offset.join(", "), JSON.stringify(result.before.bounds), JSON.stringify(result.after.bounds), result.after.fits?uiText("坐标和容量可发布"):uiText("目标预检仍未通过，请检查尺寸/容量"))));
     $("transformApply").disabled=false;
-  }catch(cause){$("transformReport").textContent=cause.message;error(cause);}
+  }catch(cause){bindText($("transformReport"), () => (cause.message));error(cause);}
 }
 $("transformPreview").onclick=previewTransform;
 for(const id of ["transformAction","shiftX","shiftY","shiftZ"]) $(id).oninput=()=>{pendingTransform=null;$("transformApply").disabled=true;};
-$("transformApply").onclick=async()=>{if(!pendingTransform)return;try{await api("harness/tool",{name:"transform_scene",arguments:pendingTransform});pendingTransform=null;$("transformDialog").close();await refresh(true);renderer.view();toast("整体定位已保存，可撤销");}catch(cause){error(cause);}};
-$("schemaUpgradeContext").onclick=async()=>{try{await api("harness/control",{action:"upgrade_context"});await refresh();toast("已升级工具说明；首次请求重新预热，实际缓存仍持续监测");}catch(cause){error(cause);}};
+$("transformApply").onclick=async()=>{if(!pendingTransform)return;try{await api("harness/tool",{name:"transform_scene",arguments:pendingTransform});pendingTransform=null;$("transformDialog").close();await refresh(true);renderer.view();toast(uiText("整体定位已保存，可撤销"));}catch(cause){error(cause);}};
+$("schemaUpgradeContext").onclick=async()=>{try{await api("harness/control",{action:"upgrade_context"});await refresh();toast(uiText("已升级工具说明；首次请求重新预热，实际缓存仍持续监测"));}catch(cause){error(cause);}};
 $("autoCenterOnFinish").onchange=async()=>{try{await api("project",{autoCenterOnFinish:$("autoCenterOnFinish").checked});await refresh();}catch(cause){error(cause);}};
-function runtimeFields(){const kind=$("runtimeKind").value,proc=["water","cloud","wood","stone"].includes(kind);$("runtimeSurfaceFields").hidden=kind==="color";$("runtimeNoiseFields").hidden=!proc;$("runtimeMetal").disabled=proc;$("runtimeWireHint").textContent=kind==="color"?"RGB24精确颜色；MF6直接发送，无需重新上传头像。":kind==="pbr"?"VRC使用RGB565；金属度/粗糙度/透明度/发光各4档。艺术原值保持。":"VRC颜色RGB444；噪声比例和种子各8档，其他表面参数4档。";}
+function runtimeFields(){const kind=$("runtimeKind").value,proc=["water","cloud","wood","stone"].includes(kind);$("runtimeSurfaceFields").hidden=kind==="color";$("runtimeNoiseFields").hidden=!proc;$("runtimeMetal").disabled=proc;bindText($("runtimeWireHint"), () => (kind==="color"?uiText("RGB24精确颜色；MF6直接发送，无需重新上传头像。"):kind==="pbr"?uiText("VRC使用RGB565；金属度/粗糙度/透明度/发光各4档。艺术原值保持。"):uiText("VRC颜色RGB444；噪声比例和种子各8档，其他表面参数4档。")));}
 $("runtimeKind").onchange=()=>{const kind=$("runtimeKind").value;$("runtimeMetal").value=kind==="water"?.2:kind==="pbr"?.8:0;$("runtimeRough").value=kind==="water"?.12:kind==="cloud"?1:kind==="pbr"?.25:.9;$("runtimeOpacity").value=kind==="water"?.65:kind==="cloud"?.5:1;runtimeFields();};
 let imagePlanePreview=null;
 let imagePlaneProjectId="";
@@ -1334,19 +1317,19 @@ $("imageToolsOpen").onclick=async()=>{try{await imageToolsCatalog(referencePicke
 $("imageToolsClose").onclick=()=>$("imageToolsDialog").close();
 $("imageToolId").onchange=updateImageToolSource;
 for(const id of ["Width","Height","Aspect","Filter","Colors","Plane","Thickness","Center","X","Y","Z","Alpha","Canvas"])$("imageTool"+id).oninput=invalidateImagePlane;
-$("imageToolInspect").onclick=async()=>{try{const args=imageToolArgs("inspect");args.points=[[0,0]];args.grid=[8,8];const value=await api("harness/tool",{name:"image_tools",arguments:args});$("imageToolReport").textContent=JSON.stringify(value,null,2);}catch(cause){error(cause);}};
-$("imageToolResize").onclick=async()=>{try{const value=await api("harness/tool",{name:"image_tools",arguments:imageToolArgs("resize")});await imageToolsCatalog(value.id);$("imageToolReport").textContent=JSON.stringify({id:value.id,width:value.width,height:value.height,parentImageId:value.parentImageId},null,2);toast("缩放副本已加入图库，原图保留");}catch(cause){error(cause);}};
-$("imageToolPreview").onclick=async()=>{try{const args=imageToolArgs("voxel_plane");const value=await api("harness/tool",{name:"image_tools",arguments:args});imagePlanePreview={...args,dryRun:false};imagePlaneProjectId=state.project.id;$("imageToolPreviewImage").src=value.previewUrl;$("imageToolPreviewImage").hidden=false;$("imageToolReport").textContent=JSON.stringify({size:value.size,generatedBoxes:value.generatedBoxes,paletteColors:value.paletteColors,materialsAdded:value.materialsAdded,target:value.target,canvasMode:value.canvasMode,canvasReplacesRegion:value.canvasReplacesRegion},null,2);$("imageToolApply").disabled=false;}catch(cause){invalidateImagePlane();error(cause);}};
-$("imageToolApply").onclick=async()=>{if(!imagePlanePreview)return;if(imagePlaneProjectId!==state.project.id){invalidateImagePlane();return toast("工程已切换，请重新预览图片平面");}$("imageToolApply").disabled=true;try{const result=await api("harness/tool",{name:"image_tools",arguments:imagePlanePreview});invalidateImagePlane();await refresh(true);renderer.view("front");toast(`图片平面已应用 · v${result.revision}，可撤销`);$("imageToolsDialog").close();}catch(cause){invalidateImagePlane();error(cause);}};
-$("runtimeMaterialOpen").onclick=()=>{runtimeFields();$("runtimeReceipt").textContent="";$("runtimeMaterialDialog").showModal();};
+$("imageToolInspect").onclick=async()=>{try{const args=imageToolArgs("inspect");args.points=[[0,0]];args.grid=[8,8];const value=await api("harness/tool",{name:"image_tools",arguments:args});bindText($("imageToolReport"), () => (JSON.stringify(value,null,2)));}catch(cause){error(cause);}};
+$("imageToolResize").onclick=async()=>{try{const value=await api("harness/tool",{name:"image_tools",arguments:imageToolArgs("resize")});await imageToolsCatalog(value.id);bindText($("imageToolReport"), () => (JSON.stringify({id:value.id,width:value.width,height:value.height,parentImageId:value.parentImageId},null,2)));toast(uiText("缩放副本已加入图库，原图保留"));}catch(cause){error(cause);}};
+$("imageToolPreview").onclick=async()=>{try{const args=imageToolArgs("voxel_plane");const value=await api("harness/tool",{name:"image_tools",arguments:args});imagePlanePreview={...args,dryRun:false};imagePlaneProjectId=state.project.id;$("imageToolPreviewImage").src=value.previewUrl;$("imageToolPreviewImage").hidden=false;bindText($("imageToolReport"), () => (JSON.stringify({size:value.size,generatedBoxes:value.generatedBoxes,paletteColors:value.paletteColors,materialsAdded:value.materialsAdded,target:value.target,canvasMode:value.canvasMode,canvasReplacesRegion:value.canvasReplacesRegion},null,2)));$("imageToolApply").disabled=false;}catch(cause){invalidateImagePlane();error(cause);}};
+$("imageToolApply").onclick=async()=>{if(!imagePlanePreview)return;if(imagePlaneProjectId!==state.project.id){invalidateImagePlane();return toast(uiText("工程已切换，请重新预览图片平面"));}$("imageToolApply").disabled=true;try{const result=await api("harness/tool",{name:"image_tools",arguments:imagePlanePreview});invalidateImagePlane();await refresh(true);renderer.view("front");toast(uiText("图片平面已应用 · v{0}，可撤销", result.revision));$("imageToolsDialog").close();}catch(cause){invalidateImagePlane();error(cause);}};
+$("runtimeMaterialOpen").onclick=()=>{runtimeFields();bindText($("runtimeReceipt"), () => (""));$("runtimeMaterialDialog").showModal();};
 $("runtimeMaterialClose").onclick=()=>$("runtimeMaterialDialog").close();
-$("runtimeMaterialApply").onclick=async()=>{const button=$("runtimeMaterialApply");button.disabled=true;try{const kind=$("runtimeKind").value,entry={name:$("runtimeName").value,color:$("runtimeColor").value,kind};if(kind!=="color")Object.assign(entry,{metallic:Number($("runtimeMetal").value),roughness:Number($("runtimeRough").value),opacity:Number($("runtimeOpacity").value),emission:Number($("runtimeEmission").value)});if(["water","cloud","wood","stone"].includes(kind))Object.assign(entry,{noiseScale:Number($("runtimeNoiseScale").value),seed:Number($("runtimeSeed").value)});const r=await api("harness/tool",{name:"define_materials",arguments:{baseRevision:state.revision,materials:[entry]}});selectedStyle=r.materials[0].id;$("runtimeReceipt").textContent=JSON.stringify(r.materials[0].vrcEffective,null,2);await refresh(true);toast("材质已添加并选用；MF6实时发送");}catch(cause){error(cause);}finally{button.disabled=false;}};
+$("runtimeMaterialApply").onclick=async()=>{const button=$("runtimeMaterialApply");button.disabled=true;try{const kind=$("runtimeKind").value,entry={name:$("runtimeName").value,color:$("runtimeColor").value,kind};if(kind!=="color")Object.assign(entry,{metallic:Number($("runtimeMetal").value),roughness:Number($("runtimeRough").value),opacity:Number($("runtimeOpacity").value),emission:Number($("runtimeEmission").value)});if(["water","cloud","wood","stone"].includes(kind))Object.assign(entry,{noiseScale:Number($("runtimeNoiseScale").value),seed:Number($("runtimeSeed").value)});const r=await api("harness/tool",{name:"define_materials",arguments:{baseRevision:state.revision,materials:[entry]}});selectedStyle=r.materials[0].id;bindText($("runtimeReceipt"), () => (JSON.stringify(r.materials[0].vrcEffective,null,2)));await refresh(true);toast(uiText("材质已添加并选用；MF6实时发送"));}catch(cause){error(cause);}finally{button.disabled=false;}};
 $("pixelThemeOpen").onclick=()=>$("pixelThemeDialog").showModal();
 $("pixelThemeClose").onclick=()=>$("pixelThemeDialog").close();
-$("applyPixelTheme").onclick=async()=>{try{const result=await api("harness/tool",{name:"builtin_materials",arguments:{action:"apply",id:$("pixelThemeChoice").value,baseRevision:state.revision,replaceBaseMaterials:$("pixelThemeReplace").checked}});await refresh(true);$("pixelThemeDialog").close();toast(`像素主题已加入 · 新增${result.materialsAdded}种材质`);}catch(cause){error(cause);}};
+$("applyPixelTheme").onclick=async()=>{try{const result=await api("harness/tool",{name:"builtin_materials",arguments:{action:"apply",id:$("pixelThemeChoice").value,baseRevision:state.revision,replaceBaseMaterials:$("pixelThemeReplace").checked}});await refresh(true);$("pixelThemeDialog").close();toast(uiText("像素主题已加入 · 新增{0}种材质", result.materialsAdded));}catch(cause){error(cause);}};
 $("avatarCatalogImport").onclick=()=>$("avatarCatalogFile").click();
-$("avatarCatalogFile").onchange=async(event)=>{try{const file=event.target.files[0];if(!file)return;const form=new FormData();form.append("file",file);const r=await fetch("/api/vrc/profile/import",{method:"POST",body:form});const value=await r.json();if(!r.ok)throw new Error(value.error);await refresh();toast(value.matched?"目标目录与已用材质匹配":"已记录目标目录，存在材质差异");}catch(cause){error(cause);}event.target.value="";};
-$("avatarCatalogMf6").onclick=async()=>{try{await api("vrc/profile",{action:"bundled_mf6"});await api("connect",{profile:"mf6",enabled:false,scale:Math.min(.5,Math.max(.0005,state.connection.placement.scale))});await refresh(true);toast("已载入基础目录；实际Avatar可自动识别或导入上传清单，发送保持关闭");}catch(cause){error(cause);}};
+$("avatarCatalogFile").onchange=async(event)=>{try{const file=event.target.files[0];if(!file)return;const form=new FormData();form.append("file",file);const r=await fetch("/api/vrc/profile/import",{method:"POST",body:form});const value=await r.json();if(!r.ok)throw new Error(value.error);await refresh();toast(value.matched?uiText("目标目录与已用材质匹配"):uiText("已记录目标目录，存在材质差异"));}catch(cause){error(cause);}event.target.value="";};
+$("avatarCatalogMf6").onclick=async()=>{try{await api("vrc/profile",{action:"bundled_mf6"});await api("connect",{profile:"mf6",enabled:false,scale:Math.min(.5,Math.max(.0005,state.connection.placement.scale))});await refresh(true);toast(uiText("已载入基础目录；实际Avatar可自动识别或导入上传清单，发送保持关闭"));}catch(cause){error(cause);}};
 $("avatarCatalogClear").onclick=async()=>{try{await api("vrc/profile",{action:"clear"});await refresh();}catch(cause){error(cause);}};
 
 $("exportProject").onclick = async () => {
@@ -1380,10 +1363,10 @@ $("projectFile").onchange = async (event) => {
 };
 $("packReportClose").onclick = () => $("packReportDialog").close();
 function catalogOptions(){return `usedOnly=${$("catalogScope").value==="used"}&cellPixels=${$("catalogPixels").value}`;}
-$("catalogBudget").onclick=async()=>{const button=$("catalogBudget");button.disabled=true;try{const v=await api("vrc/catalog/budget?"+catalogOptions());$("catalogBudgetStatus").textContent=`${v.styles}种材质 · ${v.uniqueSlices}个去重纹理层 · ${v.layerBanks}组数组\nGPU纹理预计 ${(v.bytes.totalGpuEstimate/1048576).toFixed(2)}MiB（图集 ${(v.bytes.atlas/1048576).toFixed(2)}MiB + 含mipmap数组 ${(v.bytes.layerMipmaps/1048576).toFixed(2)}MiB）\n${v.fits?"预算通过":"预算超限，请减少材质或降低分辨率"} · 不增加同步bit/动画器层/粒子系统\n${v.note}`;}catch(cause){error(cause);}finally{button.disabled=false;}};
+$("catalogBudget").onclick=async()=>{const button=$("catalogBudget");button.disabled=true;try{const v=await api("vrc/catalog/budget?"+catalogOptions());bindText($("catalogBudgetStatus"), () => (uiText("{0}种材质 · {1}个去重纹理层 · {2}组数组\nGPU纹理预计 {3}MiB（图集 {4}MiB + 含mipmap数组 {5}MiB）\n{6} · 不增加同步bit/动画器层/粒子系统\n{7}", v.styles, v.uniqueSlices, v.layerBanks, (v.bytes.totalGpuEstimate/1048576).toFixed(2), (v.bytes.atlas/1048576).toFixed(2), (v.bytes.layerMipmaps/1048576).toFixed(2), v.fits?uiText("预算通过"):uiText("预算超限，请减少材质或降低分辨率"), v.note)));}catch(cause){error(cause);}finally{button.disabled=false;}};
 $("catalogExport").onclick=()=>{const link=document.createElement("a");link.href="/api/vrc/catalog?"+catalogOptions();link.download="morphforge-materials.zip";link.click();};
-$("avatarMaterials").onclick=async()=>{const button=$("avatarMaterials");button.disabled=true;try{const r=await api("vrc/materials",{});await refresh(true);toast(`已加入${r.materialsAdded}种头像材质，现有几何保持不变，可在左侧搜索使用`);}catch(cause){error(cause);}finally{button.disabled=false;}};
-$("discoverAvatar").onclick=async()=>{const button=$("discoverAvatar");button.disabled=true;try{const text=$("oscQueryPort").value.trim();await api("vrc/discover",{port:text?Number(text):null});await refresh(true);toast("已识别Avatar能力；查询不会开启发送");}catch(cause){error(cause);}finally{button.disabled=false;}};
+$("avatarMaterials").onclick=async()=>{const button=$("avatarMaterials");button.disabled=true;try{const r=await api("vrc/materials",{});await refresh(true);toast(uiText("已加入{0}种头像材质，现有几何保持不变，可在左侧搜索使用", r.materialsAdded));}catch(cause){error(cause);}finally{button.disabled=false;}};
+$("discoverAvatar").onclick=async()=>{const button=$("discoverAvatar");button.disabled=true;try{const text=$("oscQueryPort").value.trim();await api("vrc/discover",{port:text?Number(text):null});await refresh(true);toast(uiText("已识别Avatar能力；查询不会开启发送"));}catch(cause){error(cause);}finally{button.disabled=false;}};
 $("packImport").onclick = () => $("packFile").click();
 $("packFile").onchange = async (event) => {
   try {
@@ -1397,8 +1380,8 @@ $("packFile").onchange = async (event) => {
     });
     const value = await response.json();
     if (!response.ok) throw new Error(value.error);
-    toast(`已导入 ${value.materialsAdded} 种材质；Avatar使用需预打包`);
-    $("packReportContent").textContent = JSON.stringify(value, null, 2);
+    toast(uiText("已导入 {0} 种材质；Avatar使用需预打包", value.materialsAdded));
+    bindText($("packReportContent"), () => (JSON.stringify(value, null, 2)));
     $("packReportDialog").showModal();
     await refresh(true);
   } catch (cause) {
@@ -1429,7 +1412,7 @@ async function configure(enabled) {
   const patch=connection(enabled),projectId=state?.project.id;
   connectionPending++;connectionGeneration++;$("connect").disabled=true;
   const operation=connectionQueue.then(async()=>{
-    if(state?.project.id!==projectId)throw new Error("工程已切换，旧的发送设置未提交；请在当前工程重新设置。");
+    if(state?.project.id!==projectId)throw new Error(uiText("工程已切换，旧的发送设置未提交；请在当前工程重新设置。"));
     const accepted=await api("connect",patch);
     acceptedConnection=accepted;
     if(state)state.connection=accepted;
@@ -1481,10 +1464,10 @@ $("publish").onclick = async () => {
     await refresh();
     toast(
       selection.animation
-        ? queued.enabled ? "模型与所选动画已进入发送队列；定义与绑定发完后开始播放" : "模型与所选动画已准备；开启发送后播放"
+        ? queued.enabled ? uiText("模型与所选动画已进入发送队列；定义与绑定发完后开始播放") : uiText("模型与所选动画已准备；开启发送后播放")
         : queued.enabled
-        ? queued.pending>0?"版本已进入发送队列":"当前版本与本机已发记录一致；需要补漏可使用保留显示补播"
-        : "版本已准备；开启发送后执行",
+        ? queued.pending>0?uiText("版本已进入发送队列"):uiText("当前版本与本机已发记录一致；需要补漏可使用保留显示补播")
+        : uiText("版本已准备；开启发送后执行"),
     );
   } catch (cause) {
     error(cause);
@@ -1492,7 +1475,7 @@ $("publish").onclick = async () => {
     $("publish").disabled = false;
   }
 };
-$("repairPublish").onclick=async()=>{try{await api("publish",{repair:true});await refresh();toast("已排入补播，保留现有显示；没有远端ACK。若有残留请清空并重建。");}catch(cause){error(cause);}};
+$("repairPublish").onclick=async()=>{try{await api("publish",{repair:true});await refresh();toast(uiText("已排入补播，保留现有显示；没有远端ACK。若有残留请清空并重建。"));}catch(cause){error(cause);}};
 $("resync").onclick = async () => {
   try {
     await api("publish", { resync: true });
@@ -1601,9 +1584,9 @@ function updateProviderImagePolicy() {
     $("providerApi").value,
   );
   $("providerImageSetting").hidden = !supported;
-  $("providerImageHint").textContent = supported
-    ? "DeepSeek官方Responses可选择Files引用；默认内嵌图片也可使用。"
-    : "此接口自动内嵌图片，不调用专用上传通道。";
+  bindText($("providerImageHint"), () => (supported
+    ? uiText("DeepSeek官方Responses可选择Files引用；默认内嵌图片也可使用。")
+    : uiText("此接口自动内嵌图片，不调用专用上传通道。")));
   if (!supported) $("providerImages").value = "inline";
 }
 
@@ -1672,7 +1655,7 @@ $("saveProvider").onclick = async () => {
     $("providerKey").value = "";
     $("providerClearKey").checked = false;
     providerDraftDirty = false;
-    toast("API连接已保存");
+    toast(uiText("API连接已保存"));
   } catch (cause) {
     error(cause);
   } finally {
@@ -1738,7 +1721,7 @@ async function sendFromComposer() {
   const intent = snapshot.active ? mode : "start";
   if (!prompt) {
     $("prompt").focus();
-    return toast("请输入要发送的内容");
+    return toast(uiText("请输入要发送的内容"));
   }
   await postHarnessMessage({ prompt, mode, intent, clearPrompt: true });
 }
@@ -1757,7 +1740,7 @@ async function postHarnessMessage({
   const snapshot = normalizeHarness(state?.harness);
   const submittedPrompt = prompt ?? "";
   if (!submittedPrompt && !(mode === "interrupt" && snapshot.active)) {
-    return toast("空消息只能用于立即打断");
+    return toast(uiText("空消息只能用于立即打断"));
   }
   const payload = {
     prompt: submittedPrompt,
@@ -1798,7 +1781,7 @@ async function postHarnessMessage({
     const merged = mergeAck(pending, ack);
     updatePending(payload.requestId, merged);
     if (merged.status !== "accepted") {
-      toast(merged.error || "消息未被接受，输入仍保留");
+      toast(merged.error || uiText("消息未被接受，输入仍保留"));
       return;
     }
     retryPayload = null;
@@ -1816,16 +1799,16 @@ async function postHarnessMessage({
         runId: merged.runId,
         epoch: merged.epoch,
         mode,
-        note: "已接收，等待安全点",
+        note: uiText("已接收，等待安全点"),
       });
     } else if (intent === "interrupt") {
       addUserChat({
         id: `message:${payload.requestId}`,
-        text: "暂停并取消当前请求",
+        text: uiText("暂停并取消当前请求"),
         runId: merged.runId,
         epoch: merged.epoch,
         mode,
-        note: "已接收，等待取消当前请求",
+        note: uiText("已接收，等待取消当前请求"),
       });
     }
     if (clearPrompt && $("prompt").value === submittedPrompt) {
@@ -1884,10 +1867,10 @@ for (const [id, action] of [
 ]) {
   $(id).onclick = async () => {
     try {
-      if (action === "compact") toast("正在整理上下文…");
+      if (action === "compact") toast(uiText("正在整理上下文…"));
       await api("harness/control", { action });
       await refresh();
-      if (action === "compact") toast("上下文已整理");
+      if (action === "compact") toast(uiText("上下文已整理"));
     } catch (cause) {
       error(cause);
     }
@@ -1900,7 +1883,7 @@ $("saveNotes").onclick = async () => {
       baseRevision: state.revision,
     });
     await refresh();
-    toast("固定要求已保存");
+    toast(uiText("固定要求已保存"));
   } catch (cause) {
     error(cause);
   }
@@ -1910,7 +1893,7 @@ async function runRecipe(dryRun) {
   const button = $(dryRun ? "dryRecipe" : "runRecipe");
   if (button.disabled) return;
   button.disabled = true;
-  toast(dryRun ? "正在估算绘图代码…" : "正在执行绘图代码…");
+  toast(dryRun ? uiText("正在估算绘图代码…") : uiText("正在执行绘图代码…"));
   try {
     const value = await api("harness/tool", {
       name: "run_recipe",
@@ -1925,12 +1908,12 @@ async function runRecipe(dryRun) {
     });
     if (dryRun) {
       toast(
-        `预计 ${value.stats.boxCount} Box / ${fmt(value.stats.voxelCount)} 格`,
+        uiText("预计 {0} Box / {1} 格", value.stats.boxCount, fmt(value.stats.voxelCount)),
       );
     } else {
       await refresh();
       renderer.view();
-      toast("绘图代码已应用，可撤销");
+      toast(uiText("绘图代码已应用，可撤销"));
     }
   } catch (cause) {
     error(cause);
@@ -1945,14 +1928,14 @@ async function capture() {
     arguments: { revision: state.revision, views: ["hero", "front", "top"], mode: $("renderMode").value, quality: viewSettings.captureQuality, voxelGrid: viewSettings.captureGrid, surfaceCulling: viewSettings.surfaceCulling },
   });
   window.__morphforge.lastCapture = result;
-  $("captureRevision").textContent = "v" + result.revision;
+  bindText($("captureRevision"), () => ("v" + result.revision));
   $("captureImages").replaceChildren();
   for (const image of result.images) {
     const wrap = document.createElement("div");
     const img = document.createElement("img");
     const caption = document.createElement("p");
     img.src = image.url;
-    caption.textContent = image.view;
+    bindText(caption, () => (image.view));
     wrap.append(img, caption);
     $("captureImages").append(wrap);
   }
@@ -1960,7 +1943,7 @@ async function capture() {
 }
 $("capture").onclick = async () => {
   try {
-    toast("正在生成独立三视图…");
+    toast(uiText("正在生成独立三视图…"));
     await capture();
     $("captureDialog").showModal();
   } catch (cause) {
@@ -1972,7 +1955,7 @@ $("saveArtwork").onclick = async () => {
   const button = $("saveArtwork");
   if (button.disabled) return;
   button.disabled = true;
-  toast("正在保存作品和三视图…");
+  toast(uiText("正在保存作品和三视图…"));
   try {
     const images = await capture();
     await api("artworks", {
@@ -1982,7 +1965,7 @@ $("saveArtwork").onclick = async () => {
       thumbnail: images.images[0]?.artifact,
       views: images.images.map((image) => image.artifact),
     });
-    toast("作品和三视图已保存");
+    toast(uiText("作品和三视图已保存"));
   } catch (cause) {
     error(cause);
   } finally { button.disabled = false; }
@@ -2012,29 +1995,28 @@ async function library() {
     const name = document.createElement("h3");
     const info = document.createElement("p");
     const load = document.createElement("button");
-    name.textContent = artwork.title;
-    info.textContent = `${artwork.origin === "builtin" ? "内置示例" : "我的作品"} · ${fmt(artwork.boxCount)} Box · ${fmt(artwork.triangleCount||0)} 面 · ${fmt(artwork.voxelCount)} 格`;
-    load.textContent =
-      artwork.origin === "builtin" ? "载入可编辑副本" : "载入并继续";
+    bindText(name, () => (artwork.title));
+    bindText(info, () => (uiText("{0} · {1} Box · {2} 面 · {3} 格", artwork.origin === "builtin" ? uiText("内置示例") : uiText("我的作品"), fmt(artwork.boxCount), fmt(artwork.triangleCount||0), fmt(artwork.voxelCount))));
+    bindText(load, () => (artwork.origin === "builtin" ? uiText("载入可编辑副本") : uiText("载入并继续")));
     body.append(name, info);
     if (artwork.description) {
       const description = document.createElement("p");
-      description.textContent = artwork.description;
+      bindText(description, () => (artwork.description));
       body.append(description);
     }
     if (artwork.sourceCredits?.length) {
       const credits = document.createElement("p");
       credits.className = "caption";
-      credits.textContent = artwork.sourceCredits
+      bindText(credits, () => (artwork.sourceCredits
         .map((credit) => `${credit.author} · ${credit.license}`)
-        .join("；");
+        .join("；")));
       body.append(credits);
     }
     if (artwork.views?.length) {
       const preview = document.createElement("button");
-      preview.textContent = "多视图";
+      bindText(preview, () => (uiText("多视图")));
       preview.onclick = () => {
-        $("captureRevision").textContent = artwork.title;
+        bindText($("captureRevision"), () => (artwork.title));
         $("captureImages").replaceChildren();
         for (const view of artwork.views) {
           const image = document.createElement("img");
@@ -2062,14 +2044,14 @@ async function library() {
     body.append(load);
     if (artwork.origin !== "builtin") {
       const remove = document.createElement("button");
-      remove.textContent = "删除"; remove.className = "danger";
+      bindText(remove, () => (uiText("删除"))); remove.className = "danger";
       remove.onclick = async () => {
         remove.disabled=true;
         try {
           const response=await fetch("/api/artworks/"+encodeURIComponent(artwork.id),{method:"DELETE"});
           const result=await response.json();
-          if(!response.ok)throw Error(result.error||"删除作品失败");
-          await library();toast("作品已从共享库删除；当前工程保留，原文件存入回收归档。");
+          if(!response.ok)throw Error(result.error||uiText("删除作品失败"));
+          await library();toast(uiText("作品已从共享库删除；当前工程保留，原文件存入回收归档。"));
         } catch(cause) { error(cause); remove.disabled=false; }
       };
       body.append(remove);
@@ -2106,7 +2088,7 @@ $("cacheAcknowledge").onclick = async () => {
   try {
     await api("harness/control", { action: "ack_cache_warning" });
     await refresh();
-    toast("已确认告警；恢复运行后将继续监测");
+    toast(uiText("已确认告警；恢复运行后将继续监测"));
   } catch (cause) {
     error(cause);
   }
@@ -2137,13 +2119,13 @@ $("historyOpen").onclick = async () => {
       const row = document.createElement("div");
       row.className = "history-row";
       const label = document.createElement("span");
-      label.textContent = "v" + revision;
+      bindText(label, () => ("v" + revision));
       const commit = history.commits.find((item) => item.revision === revision);
       const title = document.createElement("span");
       title.className = "grow";
-      title.textContent = commit?.title || "草稿";
+      bindText(title, () => (commit?.title || uiText("草稿")));
       const restore = document.createElement("button");
-      restore.textContent = "从此版本继续";
+      bindText(restore, () => (uiText("从此版本继续")));
       restore.onclick = async () => {
         try {
           await api("undo", { revision });
@@ -2194,7 +2176,7 @@ async function loadFonts(force = false) {
     for (const font of fontCatalog) {
       const option = document.createElement("option");
       option.value = font.id;
-      option.textContent = font.name;
+      bindText(option, () => (font.name));
       select.append(option);
     }
     const preferred =
@@ -2206,14 +2188,14 @@ async function loadFonts(force = false) {
     select.disabled = !fontsLoaded;
     if (!fontsLoaded) {
       const option = document.createElement("option");
-      option.textContent = "字体服务没有可用字体";
+      bindText(option, () => (uiText("字体服务没有可用字体")));
       select.append(option);
     }
     syncTextButtons();
     return fontsLoaded;
   } catch (cause) {
     fontsLoaded = false;
-    $("textMetrics").textContent = "字体服务尚未就绪：" + friendlyError(cause);
+    bindText($("textMetrics"), () => (uiText("字体服务尚未就绪：") + friendlyError(cause)));
     $("textMetrics").className = "status error";
     syncTextButtons();
     return false;
@@ -2222,8 +2204,8 @@ async function loadFonts(force = false) {
 
 $("textFontRefresh").onclick = async () => {
   $("textFontRefresh").disabled=true;
-  toast("正在刷新字体…");
-  try { if(await loadFonts(true)) toast(`字体列表已刷新 · ${fontCatalog.length}种`); }
+  toast(uiText("正在刷新字体…"));
+  try { if(await loadFonts(true)) toast(uiText("字体列表已刷新 · {0}种", fontCatalog.length)); }
   finally { $("textFontRefresh").disabled=false; }
 };
 
@@ -2275,7 +2257,7 @@ function clearTextPreview() {
   currentPreviewServerFingerprint = "";
   currentPreviewRequestId = "";
   currentPreviewRequest = null;
-  $("textMetrics").textContent = "预览已清除。草稿没有变化。";
+  bindText($("textMetrics"), () => (uiText("预览已清除。草稿没有变化。")));
   $("textMetrics").className = "status";
   syncTextButtons();
 }
@@ -2320,13 +2302,13 @@ async function requestTextPreview(manual) {
   const request = collectTextRequest();
   if (!request.text.trim()) {
     clearTextPreview();
-    return toast("请输入文字");
+    return toast(uiText("请输入文字"));
   }
   const fingerprint = textRequestFingerprint(request);
   const sequence = ++previewSequence;
   const previewRequestId = newRequestId();
   $("textPreview").disabled = true;
-  $("textMetrics").textContent = "预览计算中…";
+  bindText($("textMetrics"), () => (uiText("预览计算中…")));
   $("textMetrics").className = "status";
   try {
     const value = await api("text/preview", {
@@ -2339,7 +2321,7 @@ async function requestTextPreview(manual) {
       (value.requestId || value.preview?.requestId) &&
       (value.requestId || value.preview?.requestId) !== previewRequestId
     ) {
-      throw new Error("文字预览状态校验失败，请重新预览。");
+      throw new Error(uiText("文字预览状态校验失败，请重新预览。"));
     }
     if (value.ok === false || value.error) {
       const failure = new Error(formatPreviewError(value));
@@ -2350,7 +2332,7 @@ async function requestTextPreview(manual) {
     const serverFingerprint =
       value.requestFingerprint || preview?.requestFingerprint || "";
     if (!/^[0-9a-f]{64}$/i.test(serverFingerprint)) {
-      throw new Error("文字预览结果无法校验，请重新预览。");
+      throw new Error(uiText("文字预览结果无法校验，请重新预览。"));
     }
     const boxes = previewBoxes(preview);
     const metrics = previewMetrics(preview);
@@ -2371,21 +2353,21 @@ async function requestTextPreview(manual) {
       ? metrics.dimensions.join(" × ")
       : "—";
     const lines = [
-      `尺寸 ${dimensionText} 格`,
-      `${fmt(metrics.boxCount)} Box · ${fmt(metrics.voxelCount)} 体素`,
-      `目标容量 ${fmt(state?.stats?.targetBoxes)} Box`,
+      uiText("尺寸 {0} 格", dimensionText),
+      uiText("{0} Box · {1} 体素", fmt(metrics.boxCount), fmt(metrics.voxelCount)),
+      uiText("目标容量 {0} Box", fmt(state?.stats?.targetBoxes)),
     ];
     if (metrics.missing.length)
-      lines.push("缺字：" + metrics.missing.join(" "));
-    if (metrics.overCapacity) lines.push("超出目标材料容量");
+      lines.push(uiText("缺字：") + metrics.missing.join(" "));
+    if (metrics.overCapacity) lines.push(uiText("超出目标材料容量"));
     if (metrics.warnings.length) lines.push(...metrics.warnings);
-    if (!boxes.length) lines.push("预览没有返回 Box");
-    $("textMetrics").textContent = lines.join("\n");
+    if (!boxes.length) lines.push(uiText("预览没有返回 Box"));
+    bindText($("textMetrics"), () => (lines.join("\n")));
     $("textMetrics").className =
       metrics.missing.length || metrics.overCapacity
         ? "status error"
         : "status ok";
-    if (manual) toast("预览已更新，草稿未修改");
+    if (manual) toast(uiText("预览已更新，草稿未修改"));
   } catch (cause) {
     if (sequence !== previewSequence) return;
     currentTextPreview = null;
@@ -2394,9 +2376,9 @@ async function requestTextPreview(manual) {
     currentPreviewRequestId = "";
     currentPreviewRequest = null;
     renderer.clearTextPreview();
-    $("textMetrics").textContent = formatPreviewError(cause);
+    bindText($("textMetrics"), () => (formatPreviewError(cause)));
     $("textMetrics").className = "status error";
-    if (manual && !formatPreviewError(cause).includes("缺字")) error(cause);
+    if (manual && !formatPreviewError(cause).includes(uiText("缺字"))) error(cause);
   } finally {
     syncTextButtons();
   }
@@ -2414,7 +2396,7 @@ $("textApply").onclick = async () => {
       currentPreviewServerFingerprint,
     )
   ) {
-    return toast("请先预览当前参数；缺字或超容量时不能应用");
+    return toast(uiText("请先预览当前参数；缺字或超容量时不能应用"));
   }
   textApplyBusy = true;
   syncTextButtons();
@@ -2433,14 +2415,13 @@ $("textApply").onclick = async () => {
     renderer.view();
     toast(
       applied.warning
-        ? `文字已应用 · v${applied.revision} · ${applied.warning}`
-        : `文字已应用 · v${applied.revision}`,
+        ? uiText("文字已应用 · v{0} · {1}", applied.revision, applied.warning)
+        : uiText("文字已应用 · v{0}", applied.revision),
     );
   } catch (cause) {
     error(cause);
     if (cause.status === 409) {
-      $("textMetrics").textContent =
-        "草稿版本已变化。预览未修改草稿，请重新预览后再应用。";
+      bindText($("textMetrics"), () => (uiText("草稿版本已变化。预览未修改草稿，请重新预览后再应用。")));
       $("textMetrics").className = "status error";
     }
   } finally {
@@ -2522,7 +2503,7 @@ if (captureMode) {
   let lastActivityPoll=0;setInterval(()=>{const active=["running","compacting","interrupting"].includes(state?.harness?.interaction?.phase);if(document.hidden||Date.now()-lastActivityPoll<(active?250:1500))return;lastActivityPoll=Date.now();activityView.load().catch(error);},250);
 }
 
-$("manualEditToggle").onclick=()=>{manualEditing=!manualEditing;$("manualEditToggle").textContent=`手工编辑：${manualEditing?"开启":"关闭"}`;$("manualEditToggle").setAttribute("aria-pressed",String(manualEditing));renderer.ghost.visible=false;};
+$("manualEditToggle").onclick=()=>{manualEditing=!manualEditing;bindText($("manualEditToggle"), () => (uiText("手工编辑：{0}", manualEditing?uiText("开启"):uiText("关闭"))));$("manualEditToggle").setAttribute("aria-pressed",String(manualEditing));renderer.ghost.visible=false;};
 const pendingFold=$("pendingMessages").closest("details");
 $("composerQueueSlot").append($("pendingMessages").parentElement);pendingFold.remove();
 $("composerOptions").prepend($("preset").closest("details"));
@@ -2536,3 +2517,5 @@ if(!captureMode){setupComposerSpeech({$,api,getState:()=>state,getPanelId:()=>te
 setupSpeechSettings({$,api,fail:error});}
 
 $("voiceRecordingBadge").onclick=()=>api("speech/control",{action:"stop"}).catch(error);
+
+onLanguageChange(() => { if(state) { updateState(); renderPending(); activityView?.render(false); timelineView?.render?.(); } });

@@ -1,3 +1,4 @@
+import {t as uiText, bindText} from "./i18n.js";
 // Explicitly labelled reference composites; never modify generated geometry.
 const images = new Map();
 export async function referenceImage(id) {
@@ -82,8 +83,8 @@ export async function comparisonCanvas(
   ctx.font = "13px sans-serif";
   ctx.fillText(
     c.mode === "split"
-      ? "参考图（左） / 作品（右）"
-      : "参考图叠加 · 仅用于对照",
+      ? uiText("参考图（左） / 作品（右）")
+      : uiText("参考图叠加 · 仅用于对照"),
     10,
     18,
   );

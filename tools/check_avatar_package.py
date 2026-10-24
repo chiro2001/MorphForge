@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--package', type=Path, default=ROOT/'dist/avatar/MorphForgeAvatar-1.3.2.unitypackage')
+    parser.add_argument('--package', type=Path, default=ROOT/'dist/avatar/MorphForgeAvatar-1.4.0.unitypackage')
     parser.add_argument('--output', type=Path, default=ROOT/'docs/avatar-plugin/package-audit.json')
     args = parser.parse_args()
     prefix = 'Assets/MorphForgeAvatar/'

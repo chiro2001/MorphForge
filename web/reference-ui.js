@@ -1,3 +1,4 @@
+import {t as uiText, bindText} from "./i18n.js";
 export function selectedReferences(library, input, useLibrary, useInput) {
   return [
     ...new Map(
@@ -38,7 +39,7 @@ export class ReferencePicker {
       this.$(id).onchange = () => {
         if (this.selected().length > 6) {
           this.$(id).checked = false;
-          this.error(new Error("最多选择6张参考图片"));
+          this.error(new Error(uiText("最多选择6张参考图片")));
         }
         this.persist();
         this.render();
@@ -89,11 +90,11 @@ export class ReferencePicker {
     const enabled = new Set(selected.map((item) => item.id));
     this.$("referenceUseLibrary").disabled = !this.library.length;
     this.$("referenceUseInput").disabled = !this.input.length;
-    this.$("referenceSummary").textContent = this.busy
-      ? `正在处理图片…（${selected.length}/6）`
+    bindText(this.$("referenceSummary"), () => (this.busy
+      ? uiText("正在处理图片…（{0}/6）", selected.length)
       : selected.length
-        ? `已选 ${selected.length}/6 张 · 下次输入生效`
-        : "不使用参考图片";
+        ? uiText("已选 {0}/6 张 · 下次输入生效", selected.length)
+        : uiText("不使用参考图片")));
     const container = this.$("referenceSelected");
     container.replaceChildren();
     for (const item of selectedReferences(
@@ -110,11 +111,11 @@ export class ReferencePicker {
       img.alt = item.title;
       img.loading = "lazy";
       const title = document.createElement("span");
-      title.textContent = item.title;
-      title.title = `${item.author || ""} · ${item.license || ""}`;
+      bindText(title, () => (item.title));
+      bindText(title, () => (`${item.author || ""} · ${item.license || ""}`), "title");
       const remove = document.createElement("button");
-      remove.textContent = "×";
-      remove.setAttribute("aria-label", "取消参考 " + item.title);
+      bindText(remove, () => ("×"));
+      remove.setAttribute("aria-label", uiText("取消参考 ") + item.title);
       remove.onclick = () => {
         this.library = this.library.filter((i) => i.id !== item.id);
         this.input = this.input.filter((i) => i.id !== item.id);
@@ -133,7 +134,7 @@ export class ReferencePicker {
       this.items = value.images || [];
       const select = this.$("referenceCategory");
       const category = select.value;
-      select.replaceChildren(new Option("全部类别", ""));
+      select.replaceChildren(new Option(uiText("全部类别"), ""));
       for (const c of new Set(this.items.map((item) => item.category)))
         select.add(new Option(c, c));
       if ([...select.options].some((item) => item.value === category))
@@ -148,11 +149,11 @@ export class ReferencePicker {
           a.href = link;
           a.target = "_blank";
           a.rel = "noreferrer";
-          a.textContent = source.title;
+          bindText(a, () => (source.title));
           row.append(a);
-        } else row.textContent = source.title;
+        } else bindText(row, () => (source.title));
         const note = document.createElement("span");
-        note.textContent = " · " + source.note;
+        bindText(note, () => (" · " + source.note));
         row.append(note);
         sources.append(row);
       }
@@ -174,8 +175,7 @@ export class ReferencePicker {
           .toLowerCase()
           .includes(query),
     );
-    this.$("referenceCatalogCount").textContent =
-      `${items.length} 张 · 显示前96张，可搜索筛选`;
+    bindText(this.$("referenceCatalogCount"), () => (uiText("{0} 张 · 显示前96张，可搜索筛选", items.length)));
     for (const item of items.slice(0, 96)) {
       const card = document.createElement("article");
       card.className = "reference-card";
@@ -201,7 +201,7 @@ export class ReferencePicker {
           ).length > 6
         ) {
           check.checked = false;
-          return this.error(new Error("最多选择6张参考图片"));
+          return this.error(new Error(uiText("最多选择6张参考图片")));
         }
         this.library = next;
         this.$("referenceUseLibrary").checked = true;
@@ -211,14 +211,14 @@ export class ReferencePicker {
       label.append(check, document.createTextNode(item.title));
       const credit = document.createElement("p");
       credit.className = "caption";
-      credit.textContent = `${item.author} · ${item.license}`;
+      bindText(credit, () => (`${item.author} · ${item.license}`));
       const note = document.createElement("p");
       note.className = "caption";
-      note.textContent = item.notes;
+      bindText(note, () => (item.notes));
       card.append(img, label, credit, note);
       for (const [url, text] of [
-        [item.sourceUrl, "来源"],
-        [item.licenseUrl, "许可"],
+        [item.sourceUrl, uiText("来源")],
+        [item.licenseUrl, uiText("许可")],
       ]) {
         const href = sourceLink(url);
         if (href) {
@@ -226,14 +226,14 @@ export class ReferencePicker {
           a.href = href;
           a.target = "_blank";
           a.rel = "noreferrer";
-          a.textContent = text;
+          bindText(a, () => (text));
           card.append(a, document.createTextNode(" "));
         }
       }
       if (item.origin === "local") {
         const remove = document.createElement("button");
-        remove.textContent = "移出图库";
-        remove.title = "移出图库；已关联运行的历史图片仍保留";
+        bindText(remove, () => (uiText("移出图库")));
+        bindText(remove, () => (uiText("移出图库；已关联运行的历史图片仍保留")), "title");
         remove.onclick = async () => {
           try {
             await this.api("references/remove", { id: item.id });
@@ -268,9 +268,9 @@ export class ReferencePicker {
             true,
           ).length >= 6
         )
-          throw new Error("最多选择6张参考图片；已添加的图片保留");
+          throw new Error(uiText("最多选择6张参考图片；已添加的图片保留"));
         if (file.size > 8 * 1024 * 1024)
-          throw new Error(`${file.name} 超过8MiB，请先缩小`);
+          throw new Error(uiText("{0} 超过8MiB，请先缩小", file.name));
         const form = new FormData();
         form.append("file", file);
         const response = await fetch("/api/references/upload", {
@@ -278,7 +278,7 @@ export class ReferencePicker {
           body: form,
         });
         const result = await response.json();
-        if (!response.ok) throw new Error(result.error || "图片上传失败");
+        if (!response.ok) throw new Error(result.error || uiText("图片上传失败"));
         if (this.scope !== originalScope) break;
         this.input = [
           ...this.input.filter((item) => item.id !== result.id),

@@ -93,7 +93,7 @@ public static class AvatarPluginBuild {
   var files=AssetDatabase.FindAssets("",new[]{Root}).Select(AssetDatabase.GUIDToAssetPath).Where(p=>!AssetDatabase.IsValidFolder(p)&&!p.StartsWith(Root+"/Variants/",StringComparison.Ordinal)&&(!p.StartsWith(Root+"/Generated/",StringComparison.Ordinal)||active.Contains(p))).ToArray();
   var dependencies=AssetDatabase.GetDependencies(files,true).Where(p=>p.StartsWith("Assets/")&&!p.StartsWith(Root+"/")).ToArray();
   if(dependencies.Length!=0)throw new Exception("Unsafe export dependencies: "+string.Join("\n",dependencies));
-  Directory.CreateDirectory("E:/tmp/morphforge/avatar-plugin/dist");string path="E:/tmp/morphforge/avatar-plugin/dist/MorphForgeAvatar-1.3.2.unitypackage";
+  Directory.CreateDirectory("E:/tmp/morphforge/avatar-plugin/dist");string path="E:/tmp/morphforge/avatar-plugin/dist/MorphForgeAvatar-1.4.0.unitypackage";
   AssetDatabase.ExportPackage(files,path,ExportPackageOptions.Default);
   CatalogVariant.ExportBuiltin("E:/tmp/morphforge/avatar-plugin/dist/MorphForge-public-catalog.zip");
   return new JObject{["success"]=true,["path"]=path,["bytes"]=new FileInfo(path).Length,["files"]=files.Length}.ToString();

@@ -1,3 +1,4 @@
+import {t as uiText, bindText} from "./i18n.js";
 const TERMINAL_PHASES = new Set([
   "idle",
   "completed",
@@ -44,42 +45,42 @@ export function normalizeHarness(h = {}) {
 }
 
 export function primaryAction(snapshot, mode) {
-  if (!snapshot.active) return { label: "开始创作", mode: "start" };
-  if (mode === "interrupt") return { label: "打断并继续", mode };
-  if (mode === "queue") return { label: "排队下一轮", mode };
-  return { label: "插话 · 下一安全点", mode: "steer" };
+  if (!snapshot.active) return { label: uiText("开始创作"), mode: "start" };
+  if (mode === "interrupt") return { label: uiText("打断并继续"), mode };
+  if (mode === "queue") return { label: uiText("排队下一轮"), mode };
+  return { label: uiText("插话 · 下一安全点"), mode: "steer" };
 }
 
 export function messageModeHint(snapshot, mode) {
-  if (!snapshot.active) return "空闲时发送会开始一轮。";
+  if (!snapshot.active) return uiText("空闲时发送会开始一轮。");
   if (snapshot.paused)
-    return "当前已暂停。点击继续后，消息会按所选方式进入下一安全点或下一轮。";
+    return uiText("当前已暂停。点击继续后，消息会按所选方式进入下一安全点或下一轮。");
   if (mode === "interrupt")
-    return "取消当前模型请求或未提交工具，并在同一运行中接续这段文本。";
+    return uiText("取消当前模型请求或未提交工具，并在同一运行中接续这段文本。");
   if (mode === "queue")
-    return "保留当前运行；这段文本会在本轮结束后作为下一轮执行。";
-  return "保留当前模型输出，在下一个完整工具结果后插入这段文本。";
+    return uiText("保留当前运行；这段文本会在本轮结束后作为下一轮执行。");
+  return uiText("保留当前模型输出，在下一个完整工具结果后插入这段文本。");
 }
 
 export function phaseLabel(snapshot) {
   const labels = {
-    idle: "待命",
-    running: "运行中",
-    waiting_tool: "等待工具",
-    tool: "执行工具",
-    interrupting: "正在打断",
-    cancelling: "正在打断",
-    paused: "已暂停",
-    compacting: "整理上下文",
-    completed: "已完成",
-    blocked: "等待调整",
-    failed: "运行中断",
-    stopped: "已停止",
-    cancelled: "已取消",
+    idle: uiText("待命"),
+    running: uiText("运行中"),
+    waiting_tool: uiText("等待工具"),
+    tool: uiText("执行工具"),
+    interrupting: uiText("正在打断"),
+    cancelling: uiText("正在打断"),
+    paused: uiText("已暂停"),
+    compacting: uiText("整理上下文"),
+    completed: uiText("已完成"),
+    blocked: uiText("等待调整"),
+    failed: uiText("运行中断"),
+    stopped: uiText("已停止"),
+    cancelled: uiText("已取消"),
   };
   const base = labels[snapshot.phase] || snapshot.status || snapshot.phase;
   return snapshot.paused && snapshot.phase !== "paused"
-    ? `${base} · 已暂停`
+    ? uiText("{0} · 已暂停", base)
     : base;
 }
 
@@ -131,13 +132,13 @@ export function findExactAssistantMessage(entries, summary) {
 export function statusLabel(status) {
   return (
     {
-      idle: "待命",
-      sending: "发送中",
-      accepted: "已接收",
-      applied: "已应用",
-      cancelled: "已取消",
-      rejected: "已拒绝",
-      failed: "失败",
+      idle: uiText("待命"),
+      sending: uiText("发送中"),
+      accepted: uiText("已接收"),
+      applied: uiText("已应用"),
+      cancelled: uiText("已取消"),
+      rejected: uiText("已拒绝"),
+      failed: uiText("失败"),
     }[status] || status
   );
 }
@@ -154,7 +155,7 @@ export function mergeAck(pending, ack) {
     phase: ack?.phase ?? pending.phase,
     queuePosition: ack?.queuePosition ?? pending.queuePosition,
     status: accepted ? "accepted" : "rejected",
-    error: accepted ? "" : ack?.error || "服务端未接受消息",
+    error: accepted ? "" : ack?.error || uiText("服务端未接受消息"),
     acknowledgedAt: new Date().toISOString(),
   };
 }
@@ -167,36 +168,36 @@ export function conflictFromError(error) {
 }
 
 export function friendlyError(error) {
-  const message = String(error?.message || error || "操作未完成");
+  const message = String(error?.message || error || uiText("操作未完成"));
   const status = Number(error?.status || 0);
   if (/REQUEST_ID_CONFLICT/.test(message)) {
-    return "这次操作已经提交过。请先刷新，确认结果后再继续。";
+    return uiText("这次操作已经提交过。请先刷新，确认结果后再继续。");
   }
   if (/PROTECTED_GROUP_CONFLICT/.test(message)) {
-    return "目标分组已锁定，不能绘制、擦除或变换。请先在左侧解除保护。";
+    return uiText("目标分组已锁定，不能绘制、擦除或变换。请先在左侧解除保护。");
   }
   if (conflictFromError(error)) {
-    return "运行状态已经变化，请确认当前运行后重新发送。";
+    return uiText("运行状态已经变化，请确认当前运行后重新发送。");
   }
   if (/PREVIEW_CONFLICT/.test(message)) {
-    return "文字参数或工程版本已变化，请重新预览后再应用。";
+    return uiText("文字参数或工程版本已变化，请重新预览后再应用。");
   }
   if (/REVISION_CONFLICT/.test(message) || status === 409) {
-    return "工程已被其他修改更新，请刷新后重新尝试。";
+    return uiText("工程已被其他修改更新，请刷新后重新尝试。");
   }
   if (/RUN_CANCELLED/.test(message)) {
-    return "当前请求已打断，已完成的修改仍会保留。";
+    return uiText("当前请求已打断，已完成的修改仍会保留。");
   }
   if (/API Key|DeepSeek|provider\.env/i.test(message)) {
-    return "尚未配置 AI 服务密钥，请按用户指南完成配置。";
+    return uiText("尚未配置 AI 服务密钥，请按用户指南完成配置。");
   }
   if (/Failed to fetch|NetworkError|Load failed/i.test(message)) {
-    return "无法连接本机服务，请确认 MorphForge 仍在运行。";
+    return uiText("无法连接本机服务，请确认 MorphForge 仍在运行。");
   }
   if (
     /requestId|requestFingerprint|previewRequestId|epoch|runId/i.test(message)
   ) {
-    return "操作状态校验未通过，请刷新后重试。";
+    return uiText("操作状态校验未通过，请刷新后重试。");
   }
   return message;
 }

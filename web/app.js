@@ -1,3 +1,4 @@
+import {t as uiText, bindText} from "./i18n.js";
 import * as THREE from 'three';
 import { OrbitControls } from '/vendor/OrbitControls.js';
 
@@ -19,8 +20,8 @@ const ring=new THREE.Mesh(new THREE.TorusGeometry(.065,.0015,6,48),new THREE.Mes
 scene.add(new THREE.AmbientLight(0xffffff,1.5));const light=new THREE.DirectionalLight(0xffe6bc,2);light.position.set(3,6,5);scene.add(light);
 const axes=new THREE.AxesHelper(.25);scene.add(axes);
 
-function toast(message){$('toast').textContent=message;$('toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('visible'),3800);}
-async function api(path,body){const response=await fetch('/api/'+path,body===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const result=await response.json();if(!response.ok)throw new Error(result.error||'请求失败');return result;}
+function toast(message){bindText($('toast'), () => (message));$('toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('visible'),3800);}
+async function api(path,body){const response=await fetch('/api/'+path,body===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const result=await response.json();if(!response.ok)throw new Error(result.error||uiText("请求失败"));return result;}
 function effectiveScale(){return state?.connection.profile==='stage2'?1:(state?.placement.scale||1);}
 function material(style,tint,w,h,axis){
   const key=[style,tint,w,h,axis].join('/');if(materials.has(key))return materials.get(key);
@@ -48,17 +49,17 @@ function rebuild(){
 }
 function applyState(value){
   state=value;const c=state.connection,p=state.placement;
-  $('voxelCount').replaceChildren(document.createTextNode(state.voxelCount.toLocaleString()),Object.assign(document.createElement('small'),{textContent:' 格'}));
+  $('voxelCount').replaceChildren(document.createTextNode(state.voxelCount.toLocaleString()),Object.assign(document.createElement('small'),{textContent:uiText(" 格")}));
   $('boxCount').replaceChildren(document.createTextNode(String(state.boxCount)),Object.assign(document.createElement('small'),{textContent:' / '+state.capacity}));
   $('undo').disabled=!state.canUndo;$('redo').disabled=!state.canRedo;
   $('gridSize').value=String(state.document.size);$('layer').max=state.document.size-1;if(Number($('layer').value)>=state.document.size)$('layer').value=state.document.size-1;
   $('target').value=String(c.port);$('profile').value=c.profile;$('interval').value=String(c.interval);$('auto').checked=c.auto;
   if(document.activeElement!==$('scale'))$('scale').value=p.scale;$('scaleValue').value=Number($('scale').value).toFixed(2)+'×';$('world').checked=p.world;$('visible').checked=p.visible;
   $('placementControls').classList.toggle('legacy-disabled',c.profile==='stage2');$('legacyNote').hidden=c.profile!=='stage2';
-  $('connect').textContent=c.enabled?'停止发送':'开启实时显示';$('connect').classList.toggle('connected',c.enabled);
-  $('connectionBadge').textContent=c.enabled?(c.port===9000?'发送至 VRChat':'发送至 Unity'):'本地预览';$('connectionBadge').classList.toggle('live',c.sending);
+  bindText($('connect'), () => (c.enabled?uiText("停止发送"):uiText("开启实时显示")));$('connect').classList.toggle('connected',c.enabled);
+  bindText($('connectionBadge'), () => (c.enabled?(c.port===9000?uiText("发送至 VRChat"):uiText("发送至 Unity")):uiText("本地预览")));$('connectionBadge').classList.toggle('live',c.sending);
   $('sendDot').className=c.error?'error':c.sending?'live':'';
-  $('sendStatus').textContent=c.error||(!c.enabled?'尚未开启发送':!c.sending?'正在获取发送通道…':state.version!==c.desiredVersion?'草稿未提交，点击发送':c.pending?`待发送 ${c.pending} 项`:`当前草稿已发送 · v${c.sentVersion}`);
+  bindText($('sendStatus'), () => (c.error||(!c.enabled?uiText("尚未开启发送"):!c.sending?uiText("正在获取发送通道…"):state.version!==c.desiredVersion?uiText("草稿未提交，点击发送"):c.pending?uiText("待发送 {0} 项", c.pending):uiText("当前草稿已发送 · v{0}", c.sentVersion))));
   const key=[state.instance,state.version,effectiveScale(),c.profile,p.visible].join('/');if(key!==lastModelKey){lastModelKey=key;rebuild();}
   window.__morphforge.state=state;
 }
@@ -81,7 +82,7 @@ function cursor(event){
 renderer.domElement.addEventListener('pointermove',e=>{
   hover=cursor(e);ghost.visible=!!hover;if(!hover)return;
   const s=size();ghost.scale.set(...s.map(v=>v*.25));ghost.position.set(...hover.pos.map((v,i)=>(v+s[i]/2)*.25));ghost.material.color.set(hover.erase?'#e18f88':'#e9bf67');ghostEdges.material.color.copy(ghost.material.color);
-  $('cursorPosition').textContent=`X ${hover.pos[0]} · Y ${hover.pos[1]} · Z ${hover.pos[2]}`;
+  bindText($('cursorPosition'), () => (`X ${hover.pos[0]} · Y ${hover.pos[1]} · Z ${hover.pos[2]}`));
 });
 renderer.domElement.addEventListener('pointerleave',()=>{ghost.visible=false;hover=null;});
 renderer.domElement.addEventListener('pointerdown',e=>{if(e.button===0)mouseDown=[e.clientX,e.clientY];});
@@ -100,8 +101,8 @@ $('exportButton').onclick=()=>{if(!state)return;const blob=new Blob([JSON.string
 function config(enabled=state?.connection.enabled){return {enabled,port:Number($('target').value),profile:$('profile').value,interval:Number($('interval').value),auto:$('auto').checked};}
 async function configure(enabled){try{applyState(await api('connect',config(enabled)));}catch(e){toast(e.message);}}
 $('connect').onclick=()=>configure(!state.connection.enabled);for(const id of ['target','profile','interval','auto'])$(id).onchange=()=>configure(state.connection.enabled);
-$('publish').onclick=async()=>{try{applyState(await api('publish',{}));if(!state.connection.enabled)toast('草稿已准备；开启实时显示后发送');}catch(e){toast(e.message);}};
-$('resync').onclick=async()=>{try{applyState(await api('publish',{resync:true}));if(!state.connection.enabled)toast('开启实时显示后，将重建当前模型');}catch(e){toast(e.message);}};
+$('publish').onclick=async()=>{try{applyState(await api('publish',{}));if(!state.connection.enabled)toast(uiText("草稿已准备；开启实时显示后发送"));}catch(e){toast(e.message);}};
+$('resync').onclick=async()=>{try{applyState(await api('publish',{resync:true}));if(!state.connection.enabled)toast(uiText("开启实时显示后，将重建当前模型"));}catch(e){toast(e.message);}};
 async function placement(value){try{applyState(await api('placement',value));}catch(e){toast(e.message);}}
 $('world').onchange=()=>placement({world:$('world').checked});$('visible').onchange=()=>placement({visible:$('visible').checked});
 $('scale').oninput=()=>{$('scaleValue').value=Number($('scale').value).toFixed(2)+'×';content.scale.setScalar(Number($('scale').value));};$('scale').onchange=()=>placement({scale:Number($('scale').value)});
@@ -117,5 +118,5 @@ function resize(){const rect=viewport.getBoundingClientRect();renderer.setSize(r
 new ResizeObserver(resize).observe(viewport);resize();
 renderer.setAnimationLoop(()=>{controls.update();renderer.render(scene,camera);});
 window.__morphforge={state:null,ready:false,projectPoint(p){const v=new THREE.Vector3(...p).multiplyScalar(effectiveScale()).project(camera);const r=renderer.domElement.getBoundingClientRect();return {x:r.left+(v.x+1)*r.width/2,y:r.top+(1-v.y)*r.height/2};},renderer};
-async function poll(){if(polling)return;polling=true;try{applyState(await api('state'));window.__morphforge.ready=true;}catch(e){$('sendStatus').textContent='本机服务暂不可用';}finally{polling=false;}}
+async function poll(){if(polling)return;polling=true;try{applyState(await api('state'));window.__morphforge.ready=true;}catch(e){bindText($('sendStatus'), () => (uiText("本机服务暂不可用")));}finally{polling=false;}}
 await poll();fit();setInterval(poll,500);

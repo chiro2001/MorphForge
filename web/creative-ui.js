@@ -1,3 +1,4 @@
+import {t as uiText, bindText} from "./i18n.js";
 import { keyframeAt } from "/motion.js";
 import { VoxelRenderer } from "/renderer.js";
 import { referenceImage, drawReference } from "/comparison.js";
@@ -7,10 +8,10 @@ function vector(text, n = 3) {
     .filter(Boolean)
     .map(Number);
   if (value.length !== n || !value.every(Number.isFinite))
-    throw Error(`请输入${n}个有限数字，以逗号分隔`);
+    throw Error(uiText("请输入{0}个有限数字，以逗号分隔", n));
   return value;
 }
-function options(node, items, empty = "请选择") {
+function options(node, items, empty = uiText("请选择")) {
   const value = node.value;
   node.replaceChildren(
     new Option(empty, ""),
@@ -33,21 +34,21 @@ export function setupCreativeUi({
     "beforeend",
     `
   <dialog id="comparisonDialog" class="creative-dialog" aria-labelledby="comparisonTitle">
-    <div class="row"><h2 id="comparisonTitle">参考图对照工作台</h2><span class="grow"></span><button id="comparisonClose">关闭</button></div>
-    <div class="row wrap"><label>参考图<select id="comparisonImage"></select></label><label>布局<select id="comparisonMode"><option value="split">并排</option><option value="overlay">叠加</option></select></label><label>书签<select id="comparisonBookmark"></select></label><button id="comparisonFromMain">采用主窗口视角</button><button id="comparisonFront">正交正面</button><button id="comparisonSide">正交侧面</button></div>
-    <div class="comparison-stage"><canvas id="comparisonReference" aria-label="原始参考图"></canvas><div id="comparisonViewport"><canvas id="comparisonOverlay" aria-hidden="true"></canvas></div></div>
-    <div class="creative-controls"><label>叠加透明度<input id="comparisonOpacity" type="range" min="0" max="1" step=".01" value=".5"></label><label>参考缩放<input id="comparisonZoom" type="number" min=".1" max="10" step=".1" value="1"></label><label>参考偏移 X,Y<input id="comparisonOffset" value="0, 0"></label><label>裁剪 x,y,w,h<input id="comparisonCrop" value="0, 0, 1, 1"></label><label>书签名称<input id="comparisonName" value="正面对照"></label></div>
-    <div class="row wrap"><button id="comparisonSave">保存当前相机与对照</button><button id="comparisonNew">另存新书签</button><button id="comparisonRemove">删除书签</button><button id="comparisonCapture">生成对照截图</button><a id="comparisonDownload" hidden download="reference-comparison.png">保存截图</a></div>
-    <p id="comparisonStatus" class="caption">参考图仅用于对照，不会绘制到作品。右键旋转、中键平移、滚轮缩放作品视角；可上传图片后重新打开此窗口。</p><img id="comparisonResult" hidden alt="参考图与作品对照截图">
+    <div class="row"><h2 id="comparisonTitle"><span data-i18n="参考图对照工作台">参考图对照工作台</span></h2><span class="grow"></span><button id="comparisonClose"><span data-i18n="关闭">关闭</span></button></div>
+    <div class="row wrap"><label><span data-i18n="参考图">参考图</span><select id="comparisonImage"></select></label><label><span data-i18n="布局">布局</span><select id="comparisonMode"><option value="split" data-i18n="并排">并排</option><option value="overlay" data-i18n="叠加">叠加</option></select></label><label><span data-i18n="书签">书签</span><select id="comparisonBookmark"></select></label><button id="comparisonFromMain"><span data-i18n="采用主窗口视角">采用主窗口视角</span></button><button id="comparisonFront"><span data-i18n="正交正面">正交正面</span></button><button id="comparisonSide"><span data-i18n="正交侧面">正交侧面</span></button></div>
+    <div class="comparison-stage"><canvas id="comparisonReference" aria-label="原始参考图" data-i18n-aria-label="原始参考图"></canvas><div id="comparisonViewport"><canvas id="comparisonOverlay" aria-hidden="true"></canvas></div></div>
+    <div class="creative-controls"><label><span data-i18n="叠加透明度">叠加透明度</span><input id="comparisonOpacity" type="range" min="0" max="1" step=".01" value=".5"></label><label><span data-i18n="参考缩放">参考缩放</span><input id="comparisonZoom" type="number" min=".1" max="10" step=".1" value="1"></label><label><span data-i18n="参考偏移 X,Y">参考偏移 X,Y</span><input id="comparisonOffset" value="0, 0"></label><label><span data-i18n="裁剪 x,y,w,h">裁剪 x,y,w,h</span><input id="comparisonCrop" value="0, 0, 1, 1"></label><label><span data-i18n="书签名称">书签名称</span><input id="comparisonName" value="正面对照"></label></div>
+    <div class="row wrap"><button id="comparisonSave"><span data-i18n="保存当前相机与对照">保存当前相机与对照</span></button><button id="comparisonNew"><span data-i18n="另存新书签">另存新书签</span></button><button id="comparisonRemove"><span data-i18n="删除书签">删除书签</span></button><button id="comparisonCapture"><span data-i18n="生成对照截图">生成对照截图</span></button><a id="comparisonDownload" hidden download="reference-comparison.png"><span data-i18n="保存截图">保存截图</span></a></div>
+    <p id="comparisonStatus" class="caption"><span data-i18n="参考图仅用于对照，不会绘制到作品。右键旋转、中键平移、滚轮缩放作品视角；可上传图片后重新打开此窗口。">参考图仅用于对照，不会绘制到作品。右键旋转、中键平移、滚轮缩放作品视角；可上传图片后重新打开此窗口。</span></p><img id="comparisonResult" hidden alt="参考图与作品对照截图">
   </dialog>
   <dialog id="componentDialog" class="creative-dialog" aria-labelledby="componentTitle">
-    <div class="row"><h2 id="componentTitle">可复用组件</h2><span class="grow"></span><button id="componentClose">关闭</button></div>
-    <p class="caption">项目内共享给所有对话。选择已有方块/三角面或输入分组名称保存；默认原点为选区地面中心，放置后可继续逐块编辑。</p>
-    <div class="creative-controls"><label>已有组件<select id="componentSelect"></select></label><label>组件名称<input id="componentName" placeholder="例如：拱形窗"></label><label>源分组（逗号分隔；留空用选区）<input id="componentGroups"></label><label>说明<input id="componentDescription" placeholder="用途与适合的位置"></label></div>
-    <div class="row"><button id="componentSave">保存为新组件</button><button id="componentReplace">更新选中组件</button><button id="componentRemove">删除组件</button></div>
+    <div class="row"><h2 id="componentTitle"><span data-i18n="可复用组件">可复用组件</span></h2><span class="grow"></span><button id="componentClose"><span data-i18n="关闭">关闭</span></button></div>
+    <p class="caption"><span data-i18n="项目内共享给所有对话。选择已有方块/三角面或输入分组名称保存；默认原点为选区地面中心，放置后可继续逐块编辑。">项目内共享给所有对话。选择已有方块/三角面或输入分组名称保存；默认原点为选区地面中心，放置后可继续逐块编辑。</span></p>
+    <div class="creative-controls"><label><span data-i18n="已有组件">已有组件</span><select id="componentSelect"></select></label><label><span data-i18n="组件名称">组件名称</span><input id="componentName" placeholder="例如：拱形窗" data-i18n-placeholder="例如：拱形窗"></label><label><span data-i18n="源分组（逗号分隔；留空用选区）">源分组（逗号分隔；留空用选区）</span><input id="componentGroups"></label><label><span data-i18n="说明">说明</span><input id="componentDescription" placeholder="用途与适合的位置" data-i18n-placeholder="用途与适合的位置"></label></div>
+    <div class="row"><button id="componentSave"><span data-i18n="保存为新组件">保存为新组件</span></button><button id="componentReplace"><span data-i18n="更新选中组件">更新选中组件</span></button><button id="componentRemove"><span data-i18n="删除组件">删除组件</span></button></div>
     <div id="componentViewport" class="creative-preview"></div>
-    <div class="creative-controls"><label>放置原点 X,Y,Z<input id="componentOffset" value="0, 0, 0"></label><label>整数缩放<input id="componentScale" type="number" min="1" max="64" value="1"></label><label>旋转<select id="componentTurns"><option value="0">0°</option><option value="1">90°</option><option value="2">180°</option><option value="3">270°</option></select></label><label>镜像<select id="componentMirror"><option value="">无</option><option>x</option><option>y</option><option>z</option></select></label><label>目标分组<input id="componentGroup" value="component"></label><label>方块材质ID（可留空）<input id="componentStyle" type="number" min="0"></label><label>重复数量<input id="componentCount" type="number" min="1" max="128" value="1"></label><label>重复步进 X,Y,Z<input id="componentStep" value="8, 0, 0"></label></div>
-    <div class="row"><button id="componentDryRun">试算放置</button><button id="componentPlace">放置组件（可撤销）</button></div><pre id="componentStatus" class="status"></pre>
+    <div class="creative-controls"><label><span data-i18n="放置原点 X,Y,Z">放置原点 X,Y,Z</span><input id="componentOffset" value="0, 0, 0"></label><label><span data-i18n="整数缩放">整数缩放</span><input id="componentScale" type="number" min="1" max="64" value="1"></label><label><span data-i18n="旋转">旋转</span><select id="componentTurns"><option value="0">0°</option><option value="1">90°</option><option value="2">180°</option><option value="3">270°</option></select></label><label><span data-i18n="镜像">镜像</span><select id="componentMirror"><option value="" data-i18n="无">无</option><option>x</option><option>y</option><option>z</option></select></label><label><span data-i18n="目标分组">目标分组</span><input id="componentGroup" value="component"></label><label><span data-i18n="方块材质ID（可留空）">方块材质ID（可留空）</span><input id="componentStyle" type="number" min="0"></label><label><span data-i18n="重复数量">重复数量</span><input id="componentCount" type="number" min="1" max="128" value="1"></label><label><span data-i18n="重复步进 X,Y,Z">重复步进 X,Y,Z</span><input id="componentStep" value="8, 0, 0"></label></div>
+    <div class="row"><button id="componentDryRun"><span data-i18n="试算放置">试算放置</span></button><button id="componentPlace"><span data-i18n="放置组件（可撤销）">放置组件（可撤销）</span></button></div><pre id="componentStatus" class="status"></pre>
   </dialog>
   `,
   );
@@ -55,12 +56,12 @@ export function setupCreativeUi({
   panel.id = "motionPanel";
   panel.className = "motion-panel";
   panel.hidden = true;
-  panel.innerHTML = `<div class="row"><strong>分组动画</strong><span class="grow"></span><button id="motionStatic">返回静态编辑</button><button id="motionClose">关闭面板</button></div><div class="row wrap"><select id="motionClip" aria-label="动画片段"></select><input id="motionName" aria-label="动画名称" value="新动画"><button id="motionNew">新片段</button><button id="motionSave">保存</button><button id="motionRemove">删除</button></div>
-  <div class="row wrap"><button id="motionPlay">播放预览</button><button id="motionPause">暂停预览</button><button id="motionStart">回到开头</button><label>时长<input id="motionDuration" type="number" value="4" min=".05" max="3600" step=".1"></label><label><input id="motionLoop" type="checkbox" checked>循环</label><output id="motionTimeLabel">0.00 s</output></div>
-  <input id="motionTime" aria-label="动画时间" type="range" min="0" max="4" step=".01" value="0">
-  <details open><summary>分组与关键帧</summary><div class="creative-controls"><label>目标分组<select id="motionGroup"></select></label><label>枢轴 X,Y,Z<input id="motionPivot" value="0, 0, 0"></label><label>平移 X,Y,Z<input id="motionTranslation" value="0, 0, 0"></label><label>旋转 XYZ（度）<input id="motionRotation" value="0, 0, 0"></label><label>缩放 X,Y,Z<input id="motionScale" value="1, 1, 1"></label><label>插值<select id="motionInterpolation"><option value="linear">线性 / 球面旋转</option><option value="step">阶梯</option></select></label></div>
-  <div class="row wrap"><button id="motionPivotCenter">枢轴设为分组地面中心</button><button id="motionAddKey">添加 / 替换当前关键帧</button><button id="motionDeleteTrack">删除分组轨道</button></div><div id="motionKeys" class="motion-keys"></div></details>
-  <div class="row"><button id="motionCapture">截图当前姿态</button><a id="motionExport" hidden download="animation.glb">导出动画 GLB</a></div><details open><summary>头像动画（独立于本地预览）</summary><div class="row wrap"><label>速度<select id="motionAvatarSpeed"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label><button id="motionAvatarCheck">检查可发布性</button><button id="motionAvatarPublish">发布到 Avatar</button><button id="motionAvatarResume">继续</button><button id="motionAvatarPause">暂停</button><button id="motionAvatarStop">停止</button><button id="motionAvatarSeek">定位到预览时间</button><button id="motionAvatarDetach">解除动画绑定</button></div><p class="caption">需支持动画的 Avatar；最多3组、每组4帧、均匀缩放。时长可用0.125、0.25、0.5、1、2、4、8、16、32、64秒。预览与Avatar播放分别控制。</p></details><p id="motionStatus" class="caption">预览不会发送OSC；保存并选择片段后，主界面发布当前版本会同时发布动画。</p>`;
+  panel.innerHTML = `<div class="row"><strong><span data-i18n="分组动画">分组动画</span></strong><span class="grow"></span><button id="motionStatic"><span data-i18n="返回静态编辑">返回静态编辑</span></button><button id="motionClose"><span data-i18n="关闭面板">关闭面板</span></button></div><div class="row wrap"><select id="motionClip" aria-label="动画片段" data-i18n-aria-label="动画片段"></select><input id="motionName" aria-label="动画名称" value="新动画" data-i18n-aria-label="动画名称"><button id="motionNew"><span data-i18n="新片段">新片段</span></button><button id="motionSave"><span data-i18n="保存">保存</span></button><button id="motionRemove"><span data-i18n="删除">删除</span></button></div>
+  <div class="row wrap"><button id="motionPlay"><span data-i18n="播放预览">播放预览</span></button><button id="motionPause"><span data-i18n="暂停预览">暂停预览</span></button><button id="motionStart"><span data-i18n="回到开头">回到开头</span></button><label><span data-i18n="时长">时长</span><input id="motionDuration" type="number" value="4" min=".05" max="3600" step=".1"></label><label><input id="motionLoop" type="checkbox" checked><span data-i18n="循环">循环</span></label><output id="motionTimeLabel">0.00 s</output></div>
+  <input id="motionTime" aria-label="动画时间" type="range" min="0" max="4" step=".01" value="0" data-i18n-aria-label="动画时间">
+  <details open><summary><span data-i18n="分组与关键帧">分组与关键帧</span></summary><div class="creative-controls"><label><span data-i18n="目标分组">目标分组</span><select id="motionGroup"></select></label><label><span data-i18n="枢轴 X,Y,Z">枢轴 X,Y,Z</span><input id="motionPivot" value="0, 0, 0"></label><label><span data-i18n="平移 X,Y,Z">平移 X,Y,Z</span><input id="motionTranslation" value="0, 0, 0"></label><label><span data-i18n="旋转 XYZ（度）">旋转 XYZ（度）</span><input id="motionRotation" value="0, 0, 0"></label><label><span data-i18n="缩放 X,Y,Z">缩放 X,Y,Z</span><input id="motionScale" value="1, 1, 1"></label><label><span data-i18n="插值">插值</span><select id="motionInterpolation"><option value="linear" data-i18n="线性 / 球面旋转">线性 / 球面旋转</option><option value="step" data-i18n="阶梯">阶梯</option></select></label></div>
+  <div class="row wrap"><button id="motionPivotCenter"><span data-i18n="枢轴设为分组地面中心">枢轴设为分组地面中心</span></button><button id="motionAddKey"><span data-i18n="添加 / 替换当前关键帧">添加 / 替换当前关键帧</span></button><button id="motionDeleteTrack"><span data-i18n="删除分组轨道">删除分组轨道</span></button></div><div id="motionKeys" class="motion-keys"></div></details>
+  <div class="row"><button id="motionCapture"><span data-i18n="截图当前姿态">截图当前姿态</span></button><a id="motionExport" hidden download="animation.glb"><span data-i18n="导出动画 GLB">导出动画 GLB</span></a></div><details open><summary><span data-i18n="头像动画（独立于本地预览）">头像动画（独立于本地预览）</span></summary><div class="row wrap"><label><span data-i18n="速度">速度</span><select id="motionAvatarSpeed"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label><button id="motionAvatarCheck"><span data-i18n="检查可发布性">检查可发布性</span></button><button id="motionAvatarPublish"><span data-i18n="发布到 Avatar">发布到 Avatar</span></button><button id="motionAvatarResume"><span data-i18n="继续">继续</span></button><button id="motionAvatarPause"><span data-i18n="暂停">暂停</span></button><button id="motionAvatarStop"><span data-i18n="停止">停止</span></button><button id="motionAvatarSeek"><span data-i18n="定位到预览时间">定位到预览时间</span></button><button id="motionAvatarDetach"><span data-i18n="解除动画绑定">解除动画绑定</span></button></div><p class="caption"><span data-i18n="需支持动画的 Avatar；最多3组、每组4帧、均匀缩放。时长可用0.125、0.25、0.5、1、2、4、8、16、32、64秒。预览与Avatar播放分别控制。">需支持动画的 Avatar；最多3组、每组4帧、均匀缩放。时长可用0.125、0.25、0.5、1、2、4、8、16、32、64秒。预览与Avatar播放分别控制。</span></p></details><p id="motionStatus" class="caption"><span data-i18n="预览不会发送OSC；保存并选择片段后，主界面发布当前版本会同时发布动画。">预览不会发送OSC；保存并选择片段后，主界面发布当前版本会同时发布动画。</span></p>`;
   $("viewport").append(panel);
   const motionResize = new ResizeObserver(() => {
     renderer.previewInset = panel.hidden
@@ -76,7 +77,7 @@ export function setupCreativeUi({
     compareRenderer = null,
     componentRenderer = null,
     comparisonSeq = 0,
-    clip = { name: "新动画", duration: 4, looping: true, tracks: [] },
+    clip = { name: uiText("新动画"), duration: 4, looping: true, tracks: [] },
     playing = false,
     selectionExplicit = false,
     clipDirty = false,
@@ -105,25 +106,25 @@ export function setupCreativeUi({
     options(
       $("comparisonBookmark"),
       Object.entries(next.bookmarks).map(([id, b]) => [id, b.name]),
-      "未保存的视角",
+      uiText("未保存的视角"),
     );
     options(
       $("componentSelect"),
       next.components.map((c) => [
         c.id,
-        `${c.name} · ${c.boxCount}盒/${c.triangleCount}面`,
+        uiText("{0} · {1}盒/{2}面", c.name, c.boxCount, c.triangleCount),
       ]),
-      "选择组件",
+      uiText("选择组件"),
     );
     options(
       $("motionClip"),
       Object.entries(next.clips).map(([id, c]) => [id, c.name]),
-      "未保存的片段",
+      uiText("未保存的片段"),
     );
     if ($("publishAnimationClip")) options(
       $("publishAnimationClip"),
       Object.entries(next.clips).map(([id, c]) => [id, c.name]),
-      "不选择新动画",
+      uiText("不选择新动画"),
     );
     const ids = Object.keys(next.clips);
     if (!$("motionClip").value && ids.length === 1 && !selectionExplicit && !clipDirty && !clip.tracks.length) {
@@ -271,20 +272,20 @@ export function setupCreativeUi({
       },
     });
     $("comparisonBookmark").value = id;
-    toast("相机与参考对照已保存，Harness可按书签ID复用");
+    toast(uiText("相机与参考对照已保存，Harness可按书签ID复用"));
   }
   run("comparisonSave", () => saveBookmark());
   run("comparisonNew", () => saveBookmark(true));
   run("comparisonRemove", async () => {
-    if (!$("comparisonBookmark").value) throw Error("请先选择书签");
+    if (!$("comparisonBookmark").value) throw Error(uiText("请先选择书签"));
     await mutate("references", {
       action: "remove",
       id: $("comparisonBookmark").value,
     });
-    toast("书签已删除");
+    toast(uiText("书签已删除"));
   });
   run("comparisonCapture", async () => {
-    toast("正在生成参考图对照截图…");
+    toast(uiText("正在生成参考图对照截图…"));
     const r = await api("harness/tool", {
       name: "capture_views",
       arguments: {
@@ -298,9 +299,8 @@ export function setupCreativeUi({
     $("comparisonResult").hidden = false;
     $("comparisonDownload").href = r.images[0].url;
     $("comparisonDownload").hidden = false;
-    $("comparisonStatus").textContent =
-      `已保存对照截图 · v${r.revision} · 参考图不属于生成几何`;
-    toast("对照截图已生成");
+    bindText($("comparisonStatus"), () => (uiText("已保存对照截图 · v{0} · 参考图不属于生成几何", r.revision)));
+    toast(uiText("对照截图已生成"));
   });
   const resize = new ResizeObserver(() => {
     if ($("comparisonDialog").open) drawComparison().catch(error);
@@ -314,8 +314,7 @@ export function setupCreativeUi({
           { ...getScene().scene, boxes: [], triangles: [] },
           getScene().materials,
         );
-      $("componentStatus").textContent =
-        "请选择组件，或从选区/分组保存新组件。";
+      bindText($("componentStatus"), () => (uiText("请选择组件，或从选区/分组保存新组件。")));
       return;
     }
     const r = await api("creative/components", {
@@ -325,8 +324,7 @@ export function setupCreativeUi({
     });
     $("componentName").value = r.component.name;
     $("componentDescription").value = r.component.description;
-    $("componentStatus").textContent =
-      `局部坐标 · 原点为保存时的地面中心 · 源版本 ${r.component.sourceRevision}`;
+    bindText($("componentStatus"), () => (uiText("局部坐标 · 原点为保存时的地面中心 · 源版本 {0}", r.component.sourceRevision)));
     componentRenderer ??= new VoxelRenderer($("componentViewport"));
     await componentRenderer.load(r.component.scene, getScene().materials);
     componentRenderer.view();
@@ -350,7 +348,7 @@ export function setupCreativeUi({
     const id = replace
       ? $("componentSelect").value
       : "part-" + crypto.randomUUID();
-    if (!id) throw Error("请先选择组件");
+    if (!id) throw Error(uiText("请先选择组件"));
     const groups = $("componentGroups")
       .value.split(/[,，]/)
       .map((v) => v.trim())
@@ -358,7 +356,7 @@ export function setupCreativeUi({
     await mutate("components", {
       action: "save",
       id,
-      name: $("componentName").value || "新组件",
+      name: $("componentName").value || uiText("新组件"),
       description: $("componentDescription").value,
       ids: groups.length ? [] : [...getSelected()],
       groups,
@@ -366,25 +364,25 @@ export function setupCreativeUi({
     });
     $("componentSelect").value = id;
     await inspectComponent();
-    toast("组件已保存，可在当前对话重复使用");
+    toast(uiText("组件已保存，可在当前对话重复使用"));
   }
   run("componentSave", () => saveComponent(false));
   run("componentReplace", () => saveComponent(true));
   run("componentRemove", async () => {
-    if (!$("componentSelect").value) throw Error("请先选择组件");
+    if (!$("componentSelect").value) throw Error(uiText("请先选择组件"));
     await mutate("components", {
       action: "remove",
       id: $("componentSelect").value,
     });
     await inspectComponent();
-    toast("组件已删除，已放置几何保留");
+    toast(uiText("组件已删除，已放置几何保留"));
   });
   async function placeComponent(dryRun) {
     const id = $("componentSelect").value;
-    if (!id) throw Error("请先选择组件");
+    if (!id) throw Error(uiText("请先选择组件"));
     const count = Number($("componentCount").value);
     if (!Number.isInteger(count) || count < 1 || count > 128)
-      throw Error("重复数量1..128");
+      throw Error(uiText("重复数量1..128"));
     const offset = vector($("componentOffset").value),
       step = vector($("componentStep").value),
       scale = Number($("componentScale").value),
@@ -410,11 +408,11 @@ export function setupCreativeUi({
       requestId: crypto.randomUUID(),
       dryRun,
     });
-    $("componentStatus").textContent = JSON.stringify(r, null, 2);
+    bindText($("componentStatus"), () => (JSON.stringify(r, null, 2)));
     if (!dryRun) {
       await refresh(true);
-      toast("组件已放置，可撤销");
-    } else toast("试算完成，草稿未修改");
+      toast(uiText("组件已放置，可撤销"));
+    } else toast(uiText("试算完成，草稿未修改"));
   }
   run("componentDryRun", () => placeComponent(true));
   run("componentPlace", () => placeComponent(false));
@@ -431,18 +429,18 @@ export function setupCreativeUi({
     const hint = $("publishAnimationHint");
     if (!hint) return;
     const id = $("motionClip").value, selected = data.clips[id];
-    hint.textContent = selected
-      ? `同时发布动画：${selected.name}${$("motionExport").hidden ? "（有未保存修改，请先保存）" : ""}`
-      : clip.tracks.length ? "动画尚未保存，请先在分组动画中保存并选择片段。" : "未选择新动画；发布模型并保留已绑定的动画。";
+    bindText(hint, () => (selected
+      ? uiText("同时发布动画：{0}{1}", selected.name, $("motionExport").hidden ? uiText("（有未保存修改，请先保存）") : "")
+      : clip.tracks.length ? uiText("动画尚未保存，请先在分组动画中保存并选择片段。") : uiText("未选择新动画；发布模型并保留已绑定的动画。")));
   }
   function publication() {
     const id = $("motionClip").value;
     if (!id) {
-      if (clip.tracks.length) throw Error("动画尚未保存，请先保存并选择要发布的片段");
+      if (clip.tracks.length) throw Error(uiText("动画尚未保存，请先保存并选择要发布的片段"));
       return { animation: null };
     }
     if (!data.clips[id] || $("motionExport").hidden)
-      throw Error("所选动画有未保存修改，请先保存后发布");
+      throw Error(uiText("所选动画有未保存修改，请先保存后发布"));
     return {
       baseCreativeRevision: data.revision,
       animation: {
@@ -452,20 +450,20 @@ export function setupCreativeUi({
     };
   }
   function publishedMotion(motion) {
-    $("motionStatus").textContent = `Avatar目标：${motion.starting ? "正在发布定义与绑定" : ["停止", "播放", "暂停"][motion.state]} · ${Number(motion.position).toFixed(2)}秒 · 待发送${motion.pending}帧（无远端ACK）`;
+    bindText($("motionStatus"), () => (uiText("Avatar目标：{0} · {1}秒 · 待发送{2}帧（无远端ACK）", motion.starting ? uiText("正在发布定义与绑定") : [uiText("停止"), uiText("播放"), uiText("暂停")][motion.state], Number(motion.position).toFixed(2), motion.pending)));
   }
   $("motionName").oninput = dirty;
   function pose() {
     for (const track of clip.tracks)
       if (!(track.group in (getState().stats.groups || {})))
-        throw Error("动画目标分组已删除：" + track.group);
-    if (!clip.tracks.length) throw Error("先添加至少一条分组关键帧");
+        throw Error(uiText("动画目标分组已删除：") + track.group);
+    if (!clip.tracks.length) throw Error(uiText("先添加至少一条分组关键帧"));
     renderer.setAnimationPose(clip, time());
-    $("motionTimeLabel").textContent = time().toFixed(2) + " s";
+    bindText($("motionTimeLabel"), () => (time().toFixed(2) + " s"));
   }
   function stop() {
     playing = false;
-    $("motionPlay").textContent = "播放";
+    bindText($("motionPlay"), () => (uiText("播放")));
   }
   function keys() {
     const track = clip.tracks.find((t) => t.group === $("motionGroup").value);
@@ -474,7 +472,7 @@ export function setupCreativeUi({
       const row = document.createElement("div");
       row.className = "row";
       const view = document.createElement("button");
-      view.textContent = `${key.time.toFixed(2)}s · 移 ${key.translation.join(",")} · 转 ${key.rotation.join(",")}`;
+      bindText(view, () => (uiText("{0}s · 移 {1} · 转 {2}", key.time.toFixed(2), key.translation.join(","), key.rotation.join(","))));
       view.onclick = () => {
         stop();
         $("motionTime").value = key.time;
@@ -484,7 +482,7 @@ export function setupCreativeUi({
         pose();
       };
       const remove = document.createElement("button");
-      remove.textContent = "删除";
+      bindText(remove, () => (uiText("删除")));
       remove.onclick = () => {
         stop();
         dirty();
@@ -513,7 +511,7 @@ export function setupCreativeUi({
       ["motionScale", "scale"],
     ])
       $(id).value = key[field].map((v) => Number(v.toFixed(6))).join(", ");
-    $("motionTimeLabel").textContent = time().toFixed(2) + " s";
+    bindText($("motionTimeLabel"), () => (time().toFixed(2) + " s"));
   }
   function updateClipFields() {
     $("motionName").value = clip.name;
@@ -530,7 +528,7 @@ export function setupCreativeUi({
     renderer.clearAnimationPose();
     const found = data.clips[$("motionClip").value];
     clipDirty = false;
-    clip = found ? structuredClone(found) : { name: "新动画", duration: 4, looping: true, tracks: [] };
+    clip = found ? structuredClone(found) : { name: uiText("新动画"), duration: 4, looping: true, tracks: [] };
     updateClipFields();
     $("motionExport").hidden = !found;
     if (found)
@@ -565,15 +563,14 @@ export function setupCreativeUi({
   $("motionStatic").onclick = () => {
     stop();
     renderer.clearAnimationPose();
-    $("motionStatus").textContent =
-      "已返回静态作品，可以继续编辑；动画轨道保留。";
+    bindText($("motionStatus"), () => (uiText("已返回静态作品，可以继续编辑；动画轨道保留。")));
   };
   $("motionNew").onclick = () => {
     selectionExplicit = true;
     clipDirty = false;
     stop();
     renderer.clearAnimationPose();
-    clip = { name: "新动画", duration: 4, looping: true, tracks: [] };
+    clip = { name: uiText("新动画"), duration: 4, looping: true, tracks: [] };
     $("motionClip").value = "";
     $("motionExport").hidden = true;
     updateClipFields();
@@ -590,7 +587,7 @@ export function setupCreativeUi({
   $("motionDuration").onchange = () => {
     const duration = Number($("motionDuration").value);
     if (!Number.isFinite(duration) || duration < 0.05 || duration > 3600)
-      return error(Error("时长0.05..3600秒"));
+      return error(Error(uiText("时长0.05..3600秒")));
     dirty();
     clip.duration = duration;
     $("motionTime").max = duration;
@@ -607,7 +604,7 @@ export function setupCreativeUi({
       points = boxes
         .flatMap((b) => [b.min, b.min.map((v, a) => v + b.size[a])])
         .concat(triangles.flatMap((t) => t.vertices));
-    if (!points.length) throw Error("请选择有几何的分组");
+    if (!points.length) throw Error(uiText("请选择有几何的分组"));
     const min = [0, 1, 2].map((a) => Math.min(...points.map((p) => p[a]))),
       max = [0, 1, 2].map((a) => Math.max(...points.map((p) => p[a])));
     $("motionPivot").value = [
@@ -619,7 +616,7 @@ export function setupCreativeUi({
   run("motionAddKey", async () => {
     stop();
     const group = $("motionGroup").value;
-    if (!group) throw Error("请选择目标分组");
+    if (!group) throw Error(uiText("请选择目标分组"));
     const pivot = vector($("motionPivot").value),
       interpolation = $("motionInterpolation").value;
     const key = {
@@ -629,10 +626,10 @@ export function setupCreativeUi({
       scale: vector($("motionScale").value),
     };
     if (key.scale.some((v) => v < 0.001 || v > 1000))
-      throw Error("缩放0.001..1000");
+      throw Error(uiText("缩放0.001..1000"));
     let track = clip.tracks.find((t) => t.group === group);
     if (!track) {
-      if (clip.tracks.length >= 64) throw Error("最多64条轨道");
+      if (clip.tracks.length >= 64) throw Error(uiText("最多64条轨道"));
       track = { group, pivot, interpolation, keys: [] };
       clip.tracks.push(track);
     }
@@ -640,7 +637,7 @@ export function setupCreativeUi({
       track.keys.length >= 256 &&
       !track.keys.some((k) => Math.abs(k.time - key.time) < 0.0001)
     )
-      throw Error("每轨道最多256帧");
+      throw Error(uiText("每轨道最多256帧"));
     track.pivot = pivot;
     track.interpolation = interpolation;
     track.keys = track.keys.filter((k) => Math.abs(k.time - key.time) > 0.0001);
@@ -649,8 +646,7 @@ export function setupCreativeUi({
     dirty();
     keys();
     pose();
-    $("motionStatus").textContent =
-      `已设置 ${group} @ ${key.time.toFixed(2)}s；点击保存以持久化。`;
+    bindText($("motionStatus"), () => (uiText("已设置 {0} @ {1}s；点击保存以持久化。", group, key.time.toFixed(2))));
   });
   run("motionDeleteTrack", async () => {
     stop();
@@ -671,28 +667,28 @@ export function setupCreativeUi({
     $("motionExport").hidden = false;
     clipDirty = false;
     updatePublicationHint();
-    toast("动画已保存，可导出GLB；静态作品保持原状");
+    toast(uiText("动画已保存，可导出GLB；静态作品保持原状"));
   });
   run("motionRemove", async () => {
-    if (!$("motionClip").value) throw Error("请选择已保存片段");
+    if (!$("motionClip").value) throw Error(uiText("请选择已保存片段"));
     await mutate("animation", { action: "remove", id: $("motionClip").value });
     $("motionNew").click();
-    toast("动画片段已删除");
+    toast(uiText("动画片段已删除"));
   });
   async function avatarAnimation(action, extra = {}) {
     const id = $("motionClip").value;
     if (action === "publish" && (!id || $("motionExport").hidden))
-      throw Error("请先保存当前动画片段");
+      throw Error(uiText("请先保存当前动画片段"));
     const result = await api("creative/animation", {
       ...bound(), action, id,
       ...(action === "publish" ? {speed: Number($("motionAvatarSpeed").value), position: !clip.looping&&time()>=clip.duration?0:time(), playing: true} : {}),
       ...extra,
     });
     if (result.dryRun) {
-      $("motionStatus").textContent = `可发布：${Object.keys(result.groups).length}组，定义${result.definitionFrames}帧＋控制${result.controlFrames}帧。尚未验证远端接收。`;
+      bindText($("motionStatus"), () => (uiText("可发布：{0}组，定义{1}帧＋控制{2}帧。尚未验证远端接收。", Object.keys(result.groups).length, result.definitionFrames, result.controlFrames)));
     } else {
       const motion = result.motion;
-      if (action === "detach") $("motionStatus").textContent = "已解除Avatar动画绑定，静态作品已加入发送队列。";
+      if (action === "detach") bindText($("motionStatus"), () => (uiText("已解除Avatar动画绑定，静态作品已加入发送队列。")));
       else publishedMotion(motion);
       await refresh();
     }
@@ -710,7 +706,7 @@ export function setupCreativeUi({
       playing = true;
       playOffset = time();
       playStart = performance.now() / 1000;
-      $("motionPlay").textContent = "播放中";
+      bindText($("motionPlay"), () => (uiText("播放中")));
     } catch (e) {
       error(e);
     }
@@ -741,12 +737,12 @@ export function setupCreativeUi({
     }
     $("motionTime").value = t;
     renderer.setAnimationPose(clip, t);
-    $("motionTimeLabel").textContent = t.toFixed(2) + " s";
+    bindText($("motionTimeLabel"), () => (t.toFixed(2) + " s"));
   };
   run("motionCapture", async () => {
     const id = $("motionClip").value;
     if (!id || $("motionExport").hidden)
-      throw Error("请先保存当前动画片段，再截图");
+      throw Error(uiText("请先保存当前动画片段，再截图"));
     const r = await api("harness/tool", {
       name: "capture_views",
       arguments: {
@@ -760,9 +756,9 @@ export function setupCreativeUi({
     const link = document.createElement("a");
     link.href = r.images[0].url;
     link.target = "_blank";
-    link.textContent = `查看 ${time().toFixed(2)}s 姿态截图`;
+    bindText(link, () => (uiText("查看 {0}s 姿态截图", time().toFixed(2))));
     $("motionStatus").append(link);
-    toast("动画姿态截图已保存到过程记录");
+    toast(uiText("动画姿态截图已保存到过程记录"));
   });
   async function sync(state) {
     if (!state || !getScene()) return;
@@ -774,7 +770,7 @@ export function setupCreativeUi({
       creativeRevision = -1;
       stop();
       renderer.clearAnimationPose();
-      clip = { name: "新动画", duration: 4, looping: true, tracks: [] };
+      clip = { name: uiText("新动画"), duration: 4, looping: true, tracks: [] };
       $("comparisonDialog").close();
       $("componentDialog").close();
       $("motionPanel").hidden = true;

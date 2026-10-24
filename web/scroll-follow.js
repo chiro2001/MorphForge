@@ -1,3 +1,4 @@
+import {t as uiText, bindText} from "./i18n.js";
 // Follow only while the reader is at the end. Never scroll an ancestor/page.
 export class ScrollFollow {
   constructor(container, button, onChange = () => {}) {
@@ -63,9 +64,9 @@ export class ScrollFollow {
   update() {
     if (this.button) {
       this.button.hidden = this.following;
-      this.button.textContent = this.pending
-        ? `返回最新 · ${this.pending} 条更新`
-        : "返回最新";
+      bindText(this.button, () => (this.pending
+        ? uiText("返回最新 · {0} 条更新", this.pending)
+        : uiText("返回最新")));
     }
     this.onChange(this.following);
   }

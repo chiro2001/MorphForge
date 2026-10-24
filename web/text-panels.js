@@ -1,6 +1,7 @@
+import {t as uiText, bindText} from "./i18n.js";
 import * as THREE from 'three';
 const fontBytes=new Map();
-function bytes(font){if(!fontBytes.has(font))fontBytes.set(font,fetch(`/pixel-fonts/${font}/bitmap`).then(r=>{if(!r.ok)throw Error('点阵字库读取失败');return r.arrayBuffer();}).then(b=>new Uint8Array(b)).catch(e=>{fontBytes.delete(font);throw e;}));return fontBytes.get(font);}
+function bytes(font){if(!fontBytes.has(font))fontBytes.set(font,fetch(`/pixel-fonts/${font}/bitmap`).then(r=>{if(!r.ok)throw Error(uiText("点阵字库读取失败"));return r.arrayBuffer();}).then(b=>new Uint8Array(b)).catch(e=>{fontBytes.delete(font);throw e;}));return fontBytes.get(font);}
 const vertex=`attribute vec2 glyphData;varying vec2 vGlyphUV;varying vec2 vGlyphData;varying vec2 vPanel;
 void main(){vec3 p=position;vec3 origin=(modelMatrix*vec4(0.,0.,0.,1.)).xyz;vec3 front=(modelMatrix*vec4(0.,0.,-1.,0.)).xyz;float side=dot(cameraPosition-origin,front)>=0.?1.:-1.;p.x*=side;vGlyphUV=uv;vGlyphData=glyphData;vPanel=position.xy;gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}`;
 const fragment=`uniform sampler2D fontAtlas;uniform vec3 inkColor;uniform float opacity;uniform vec2 panelSize;varying vec2 vGlyphUV;varying vec2 vGlyphData;varying vec2 vPanel;

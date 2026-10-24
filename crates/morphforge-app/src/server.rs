@@ -143,6 +143,7 @@ impl App {
             .route("/api/diagnostics", get(diagnostics))
             .route("/api/metrics", get(metrics))
             .route("/api/state", get(state))
+            .route("/api/ui-settings", get(ui_settings).post(ui_settings_save))
             .route("/api/speech", get(speech_state))
             .route("/api/speech/config", post(speech_config))
             .route("/api/speech/models/download", post(speech_download))
@@ -306,6 +307,16 @@ async fn view_settings(State(a): State<App>) -> ApiResult {
     Ok(Json(crate::view_settings::load(
         &a.workspace.lock().unwrap().root,
     )?))
+}
+async fn ui_settings(State(a): State<App>) -> ApiResult {
+    let settings = crate::ui_settings::load(&a.workspace.lock().unwrap().root)?;
+    Ok(Json(json!({"language":settings["language"],"systemLanguages":crate::ui_settings::system_languages()})))
+}
+async fn ui_settings_save(State(a): State<App>, Json(value): Json<Value>) -> ApiResult {
+    let w = a.workspace.lock().unwrap();
+    let settings = crate::ui_settings::patch(&crate::ui_settings::load(&w.root)?, &value)?;
+    crate::store::write_json(&w.root.join("ui-settings.json"), &settings)?;
+    Ok(Json(json!({"language":settings["language"],"systemLanguages":crate::ui_settings::system_languages()})))
 }
 async fn view_settings_save(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     let mut w = a.workspace.lock().unwrap();

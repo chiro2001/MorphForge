@@ -1,0 +1,102 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "explicit isolated project and OSC off",
+      "passed": true
+    },
+    {
+      "name": "en applies immediately without navigation",
+      "passed": true
+    },
+    {
+      "name": "en dynamic publishing label",
+      "passed": true
+    },
+    {
+      "name": "en user data and unsaved input preserved",
+      "passed": true
+    },
+    {
+      "name": "en saved in core preferences",
+      "passed": true
+    },
+    {
+      "name": "en marked interface labels all translated",
+      "passed": true
+    },
+    {
+      "name": "en mini synchronizes without reload",
+      "passed": true
+    },
+    {
+      "name": "ja applies immediately without navigation",
+      "passed": true
+    },
+    {
+      "name": "ja dynamic publishing label",
+      "passed": true
+    },
+    {
+      "name": "ja user data and unsaved input preserved",
+      "passed": true
+    },
+    {
+      "name": "ja saved in core preferences",
+      "passed": true
+    },
+    {
+      "name": "ja marked interface labels all translated",
+      "passed": true
+    },
+    {
+      "name": "ja mini synchronizes without reload",
+      "passed": true
+    },
+    {
+      "name": "zh-CN applies immediately without navigation",
+      "passed": true
+    },
+    {
+      "name": "zh-CN dynamic publishing label",
+      "passed": true
+    },
+    {
+      "name": "zh-CN user data and unsaved input preserved",
+      "passed": true
+    },
+    {
+      "name": "zh-CN saved in core preferences",
+      "passed": true
+    },
+    {
+      "name": "zh-CN marked interface labels all translated",
+      "passed": true
+    },
+    {
+      "name": "zh-CN mini synchronizes without reload",
+      "passed": true
+    },
+    {
+      "name": "saved manual preference survives reload",
+      "passed": true
+    },
+    {
+      "name": "auto follows operating-system language",
+      "passed": true
+    },
+    {
+      "name": "language switching leaves scene, speech translation and prompt language unchanged",
+      "passed": true
+    },
+    {
+      "name": "no microphone, model calls or OSC started",
+      "passed": true
+    },
+    {
+      "name": "no JavaScript or WebGL errors",
+      "passed": true
+    }
+  ],
+  "scope": "Real Chromium and isolated packaged HTTP workbench. No paid calls, microphone or OSC."
+}

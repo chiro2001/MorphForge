@@ -1,13 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
-const code = await readFile(
-  new URL("./camera-spec.js", import.meta.url),
-  "utf8",
-);
-const { resolveCamera, fitBounds } = await import(
-  "data:text/javascript;base64," + Buffer.from(code).toString("base64")
-);
+import { resolveCamera, fitBounds } from "./camera-spec.js";
 test("front orthographic framing uses the selected asymmetric group", () => {
   const boxes = [
     { min: [-3, 0, 5], size: [6, 12, 2], group: "face" },

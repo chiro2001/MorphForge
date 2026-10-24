@@ -13,6 +13,8 @@
 
 ## 本轮已授权范围
 
+- 2026-10-25 用户要求 Desktop 与 Unity 安装插件支持简体中文、日文、英文。Desktop 界面默认跟随系统，可即时切换并保存在独立 ui-settings.json，与提示词、识别及字幕翻译语言独立；主窗口/Mini 同步。Unity 所选语言用于插件界面与 Avatar 菜单，已有模块可直接更新菜单；每个安装实例使用独立菜单资产，不修改公共模板或其他 Avatar。Desktop 0.27.0 / Avatar 插件 1.4.0；320 项 Rust、67 项前端、24 项 Chromium、19 项 Windows 原生、3 项原生重启和 30 项 Unity/SDK 验证通过。主安装已升级启动，14 项安装与 8 项主程序检查通过，14,025 个数据文件安装前后摘要一致；备份在 E:\tmp\morphforge\main-backup-v0270-localization-final。见 docs/localization-20261025/RESULTS.md。本轮未上传头像、不推送或创建 Release。
+
 - 2026-10-24用户要求将本人预览放入MorphForge子菜单、修正正面取景，并自主进行性能消融；允许参考VRCX/头像选择API切换当前头像及读取实机帧率。Avatar1.3.2已更新同一私人头像v13/file11，三项服务端分析通过；SDK152层、1926参数、254bit。本人预览位于MorphForge子菜单、默认+Z正视；普通空闲状态使用稀疏Clip，完整Direct输出保留WD On，材质绑定3132→1656。交互式Editor空载6.54→5.46ms、三组动画11.28→9.04ms；492值/24位置和106次连续GPU对比通过，文字15项、点线、动画、本人预览及公共安装验证通过。通过OSC/avatar/change实机换装并恢复原作品/flow-loop；未重启串流。实际FPS对照仍待确认可读的性能显示；SteamVR新客户端握手失败，用户尚未授权重启VRChat。见docs/performance-preview-20261024/RESULTS.md。Desktop保持0.26.1，未推送/建Release。
 
 - 2026-10-24Desktop0.26.1已升级主安装：用户要求唯一动画默认直接选择；载入/重启自动选中并随主发布，模型revision16/API保留，发送关闭。相关Rust9/前端62/Chromium16/Windows原生16/安装14/主程序8项通过。头像缓存消除120个WD Off直接接收状态及234个双层写入字，参数与同步预算不增加；同一私人Avatar上传v12/file10，三项分析通过，接收能力9，公共包1.3.1。SDK后492值/24位置及三轮102次GPU比较通过，实机视觉待用户重载v9头像复验。见`docs/default-motion/RESULTS.md`、`docs/motion-cache-20261024/RESULTS.md`。未推送/建Release。

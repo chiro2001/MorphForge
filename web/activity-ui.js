@@ -1,9 +1,10 @@
+import {t as uiText, bindText} from "./i18n.js";
 import { projectActivity } from "/activity-model.js";
 import { StreamText } from "/stream-text.js";
 import { ScrollFollow } from "/scroll-follow.js";
 const el = (tag, text, cls) => {
   const n = document.createElement(tag);
-  if (text !== undefined) n.textContent = text;
+  if (text !== undefined) bindText(n, () => (text));
   if (cls) n.className = cls;
   return n;
 };
@@ -123,7 +124,7 @@ export class ActivityView {
       this.container.append(
         el(
           "p",
-          "这里按创作顺序展示思考、正文、操作和截图。可以载入更早过程，或开始新的创作。",
+          uiText("这里按创作顺序展示思考、正文、操作和截图。可以载入更早过程，或开始新的创作。"),
           "caption activity-empty",
         ),
       );
@@ -155,7 +156,7 @@ export class ActivityView {
       images,
     };
     n.streamText = new StreamText(body);
-    n.thoughtStream = new StreamText(thoughtText,{label:"展开思考"});
+    n.thoughtStream = new StreamText(thoughtText,{label:()=>uiText("展开思考")});
     n.imageKeys = new Set();
     n.toolNodes = new Map();
     thought.addEventListener("toggle", async () => {
@@ -176,22 +177,21 @@ export class ActivityView {
   updateCard(n, c) {
     const p = n.parts;
     n.responseSeq = c.responseSeq;
-    p.title.textContent =
-      c.type === "user"
-        ? "你"
+    bindText(p.title, () => (c.type === "user"
+        ? uiText("你")
         : c.type === "result"
           ? c.status
           : c.type === "notice"
-            ? "运行提示"
+            ? uiText("运行提示")
             : c.type === "operation"
-              ? "手动操作"
-              : "MorphForge";
+              ? uiText("手动操作")
+              : "MorphForge"));
     const time = c.time
       ? new Date(c.time).toLocaleTimeString("zh-CN", { hour12: false })
       : "";
-    p.meta.textContent = `${time}${c.type === "step" ? ` · ${c.status} · v${c.revision}` : ""}`;
+    bindText(p.meta, () => (`${time}${c.type === "step" ? ` · ${c.status} · v${c.revision}` : ""}`));
     p.thought.hidden = !c.thought;
-    p.summary.textContent = `思考${c.status === "进行中" ? "中" : ""} · ${c.thought.length.toLocaleString()} 字符（上游返回）`;
+    bindText(p.summary, () => (uiText("思考{0} · {1} 字符（上游返回）", c.status === uiText("进行中") ? uiText("中") : "", c.thought.length.toLocaleString())));
     if (
       n.thoughtStream.text !== c.thought &&
       n.loadedThought !== c.responseSeq
@@ -216,7 +216,7 @@ export class ActivityView {
           if (!row.open || row.loaded === row.seq) return;
           try {
             const d = await this.api("timeline/" + row.seq);
-            row.parts.detail.textContent = JSON.stringify(d.body, null, 2);
+            bindText(row.parts.detail, () => (JSON.stringify(d.body, null, 2)));
             row.loaded = row.seq;
           } catch (e) {
             this.onError(e);
@@ -224,15 +224,15 @@ export class ActivityView {
         });
       }
       row.seq = t.seq;
-      row.parts.summary.textContent = `${t.status === "完成" ? "✓" : t.status === "失败" ? "!" : "◌"} ${t.title} · ${t.status}${t.seconds ? ` · ${t.seconds.toFixed(1)}秒` : ""}`;
-      row.classList.toggle("failed", t.status === "失败");
-      if (t.error && !row.open) row.title = t.error;
+      bindText(row.parts.summary, () => (`${t.status === uiText("完成") ? "✓" : t.status === uiText("失败") ? "!" : "◌"} ${t.title} · ${t.status}${t.seconds ? uiText(" · {0}秒", t.seconds.toFixed(1)) : ""}`));
+      row.classList.toggle("failed", t.status === uiText("失败"));
+      if (t.error && !row.open) bindText(row, () => (t.error), "title");
       let errorNode = row.querySelector(".tool-error");
       if (t.error && !errorNode) {
         errorNode = el("p", undefined, "tool-error");
         row.append(errorNode);
       }
-      if (errorNode) errorNode.textContent = t.error;
+      if (errorNode) bindText(errorNode, () => (t.error));
     }
     for (const image of c.images) {
       if (
@@ -247,7 +247,7 @@ export class ActivityView {
         img = el("img"),
         caption = el(
           "span",
-          `${image.view || "截图"} · ${["reinspection", "reference"].includes(image.role) ? "参考/历史" : `v${image.revision ?? c.revision}`}`,
+          `${image.view || uiText("截图")} · ${["reinspection", "reference"].includes(image.role) ? uiText("参考/历史") : `v${image.revision ?? c.revision}`}`,
           "caption",
         );
       img.src = image.url;
@@ -260,7 +260,7 @@ export class ActivityView {
           full = document.getElementById("activityImage");
         full.src = image.url;
         full.alt = img.alt;
-        document.getElementById("activityImageTitle").textContent = img.alt;
+        bindText(document.getElementById("activityImageTitle"), () => (img.alt));
         dialog.showModal();
       };
     }

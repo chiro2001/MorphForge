@@ -1,0 +1,228 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "zh-CN UI text translated",
+      "passed": true
+    },
+    {
+      "name": "zh-CN preview label translated",
+      "passed": true
+    },
+    {
+      "name": "zh-CN all menu assets isolated",
+      "passed": true
+    },
+    {
+      "name": "zh-CN target submenu remapped",
+      "passed": true
+    },
+    {
+      "name": "zh-CN menu capacity",
+      "passed": true
+    },
+    {
+      "name": "ja UI text translated",
+      "passed": true
+    },
+    {
+      "name": "ja preview label translated",
+      "passed": true
+    },
+    {
+      "name": "ja all menu assets isolated",
+      "passed": true
+    },
+    {
+      "name": "ja target submenu remapped",
+      "passed": true
+    },
+    {
+      "name": "ja menu capacity",
+      "passed": true
+    },
+    {
+      "name": "en UI text translated",
+      "passed": true
+    },
+    {
+      "name": "en preview label translated",
+      "passed": true
+    },
+    {
+      "name": "all built-in English menu labels translated",
+      "passed": true
+    },
+    {
+      "name": "en all menu assets isolated",
+      "passed": true
+    },
+    {
+      "name": "en target submenu remapped",
+      "passed": true
+    },
+    {
+      "name": "en menu capacity",
+      "passed": true
+    },
+    {
+      "name": "avatars do not share localized menu assets",
+      "passed": true
+    },
+    {
+      "name": "switching preserves custom controls",
+      "passed": true
+    },
+    {
+      "name": "switching leaves other avatar language unchanged",
+      "passed": true
+    },
+    {
+      "name": "menu language persists after scene reload",
+      "passed": true
+    },
+    {
+      "name": "ja actual SDK preprocessing",
+      "passed": true
+    },
+    {
+      "name": "ja merged SDK menu label",
+      "passed": true
+    },
+    {
+      "name": "ja protocol budget unchanged",
+      "passed": true
+    },
+    {
+      "name": "zh-CN actual SDK preprocessing",
+      "passed": true
+    },
+    {
+      "name": "zh-CN merged SDK menu label",
+      "passed": true
+    },
+    {
+      "name": "zh-CN protocol budget unchanged",
+      "passed": true
+    },
+    {
+      "name": "en actual SDK preprocessing",
+      "passed": true
+    },
+    {
+      "name": "en merged SDK menu label",
+      "passed": true
+    },
+    {
+      "name": "en protocol budget unchanged",
+      "passed": true
+    },
+    {
+      "name": "shared source prefab unchanged",
+      "passed": true
+    }
+  ],
+  "reports": [
+    {
+      "language": "zh-CN",
+      "labels": [
+        "MorphForge",
+        "固定在世界",
+        "显示定位球",
+        "缩放比例",
+        "移到面前",
+        "定位设置",
+        "连续缩放（上大下小）",
+        "1%",
+        "10%",
+        "100%（标准）",
+        "1000%",
+        "左手跟随（菜单）",
+        "右手跟随（菜单）",
+        "保持水平",
+        "允许本人抓握",
+        "本人预览",
+        "显示预览",
+        "位置",
+        "面板大小",
+        "取景缩放",
+        "斜视取景",
+        "左侧",
+        "右侧",
+        "左上",
+        "右上",
+        "左下",
+        "右下"
+      ],
+      "menus": 7
+    },
+    {
+      "language": "ja",
+      "labels": [
+        "MorphForge",
+        "ワールドに固定",
+        "アンカーを表示",
+        "拡大縮小",
+        "目の前に移動",
+        "配置設定",
+        "連続拡大縮小",
+        "1%",
+        "10%",
+        "100%（標準）",
+        "1000%",
+        "左手に追従",
+        "右手に追従",
+        "水平を維持",
+        "本人のつかみ操作を許可",
+        "本人プレビュー",
+        "プレビューを表示",
+        "位置",
+        "パネルサイズ",
+        "表示ズーム",
+        "斜め視点",
+        "左側",
+        "右側",
+        "左上",
+        "右上",
+        "左下",
+        "右下"
+      ],
+      "menus": 7
+    },
+    {
+      "language": "en",
+      "labels": [
+        "MorphForge",
+        "Fix in world",
+        "Show anchor",
+        "Scale",
+        "Move in front",
+        "Placement settings",
+        "Continuous scale",
+        "1%",
+        "10%",
+        "100% (standard)",
+        "1000%",
+        "Follow left hand",
+        "Follow right hand",
+        "Keep level",
+        "Allow owner grabbing",
+        "Owner preview",
+        "Show preview",
+        "Position",
+        "Panel size",
+        "View zoom",
+        "Oblique view",
+        "Left",
+        "Right",
+        "Top left",
+        "Top right",
+        "Bottom left",
+        "Bottom right"
+      ],
+      "menus": 7
+    }
+  ],
+  "sourceClean": true,
+  "scope": "Three synthetic avatars, persisted Unity menu assets and actual SDK preprocessing. No private avatar changes or upload."
+}

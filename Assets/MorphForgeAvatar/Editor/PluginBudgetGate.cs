@@ -22,7 +22,7 @@ namespace MorphForgeAvatar.Editor {
         public bool OnPreprocessAvatar(GameObject avatar) {
             if (!IsPlugin(avatar)) return true;
             var parameters = avatar.GetComponent<VRCAvatarDescriptor>().expressionParameters;
-            if (!parameters) throw new InvalidOperationException("MorphForge：合并后缺少 Expression Parameters。");
+            if (!parameters) throw new InvalidOperationException(PluginLocalization.Text("MorphForge：合并后缺少 Expression Parameters。"));
             var sync = parameters.parameters.Where(p => p.networkSynced && !string.IsNullOrEmpty(p.name)).ToArray();
             var invalid = Geometry.Where(name => sync.Count(p => p.name == name &&
                 p.valueType == VRCExpressionParameters.ValueType.Int) != 1).ToArray();
@@ -33,14 +33,14 @@ namespace MorphForgeAvatar.Editor {
                 success, totalBits = cost, remainingBits = 256 - cost,
                 geometryBits = 240, invalidDirectParameters = invalid,
                 parameters = parameters.parameters.Select(p => new { p.name, type = p.valueType.ToString(), p.networkSynced }).ToArray(),
-                note = "检查在 VRCFury 压缩之后执行；不会关闭其他参数的同步。"
+                note = PluginLocalization.Text("检查在 VRCFury 压缩之后执行；不会关闭其他参数的同步。")
             };
             Directory.CreateDirectory("Logs/MorphForge");
             File.WriteAllText("Logs/MorphForge/avatar-budget.json", JsonConvert.SerializeObject(report, Formatting.Indented));
             if (!success) throw new InvalidOperationException(
-                "MorphForge：构建预算检查失败（" + cost + "/256 bit）。" +
-                (invalid.Length > 0 ? "OSC 数据必须为直接同步 Int，不能加入压缩菜单：" + string.Join(", ", invalid) + "。" : "") +
-                "请减少其他同步参数，或安装 VRCFury 压缩低频菜单参数。详见 Logs/MorphForge/avatar-budget.json。");
+                PluginLocalization.Text("MorphForge：构建预算检查失败（") + cost + "/256 bit）。" +
+                (invalid.Length > 0 ? PluginLocalization.Text("OSC 数据必须为直接同步 Int，不能加入压缩菜单：") + string.Join(", ", invalid) + "。" : "") +
+                PluginLocalization.Text("请减少其他同步参数，或安装 VRCFury 压缩低频菜单参数。详见 Logs/MorphForge/avatar-budget.json。"));
             return true;
         }
     }

@@ -10,31 +10,31 @@ using UnityEngine;
 namespace MorphForgeAvatar.Editor {
     public static class CatalogVariant {
         public static string Build(string source) {
-            if (EditorApplication.isPlaying || EditorApplication.isCompiling) throw new InvalidOperationException("需要空闲 Edit Mode。");
+            if (EditorApplication.isPlaying || EditorApplication.isCompiling) throw new InvalidOperationException(PluginLocalization.Text("需要空闲 Edit Mode。"));
             var jsonPath = Path.Combine(source, "catalog.json");
             var catalog = JObject.Parse(File.ReadAllText(jsonPath));
-            if ((string)catalog["format"] != "MorphForgeMaterialCatalog/1") throw new InvalidOperationException("材质目录格式不支持。");
+            if ((string)catalog["format"] != "MorphForgeMaterialCatalog/1") throw new InvalidOperationException(PluginLocalization.Text("材质目录格式不支持。"));
             // Receiver abilities come from the shipped template, not an older
             // Desktop material export that predates text/motion support.
             var templateCatalog = JObject.Parse(File.ReadAllText(AvatarSetupWindow.Root + "/CatalogSource/catalog.json"));
             catalog["capabilities"] = templateCatalog["capabilities"].DeepClone();
             EnsureFolder(AvatarSetupWindow.Root + "/Variants");
             var root = AssetDatabase.GenerateUniqueAssetPath(AvatarSetupWindow.Root + "/Variants/Catalog");
-            if (string.IsNullOrEmpty(root)) throw new InvalidOperationException("无法创建独立材质目录。");
+            if (string.IsNullOrEmpty(root)) throw new InvalidOperationException(PluginLocalization.Text("无法创建独立材质目录。"));
             try {
                 EnsureFolder(root); EnsureFolder(root + "/Source/artifacts");
                 File.WriteAllText(root + "/Source/catalog.json", catalog.ToString());
                 foreach (var name in ((JArray)catalog["materials"]).OfType<JObject>().SelectMany(m => (m["textures"] as JArray) ?? new JArray()).Select(t => (string)t).Distinct()) {
                     const string prefix = "/artifacts/";
-                    if (!name.StartsWith(prefix, StringComparison.Ordinal)) throw new InvalidOperationException("纹理必须来自目录 artifacts。");
+                    if (!name.StartsWith(prefix, StringComparison.Ordinal)) throw new InvalidOperationException(PluginLocalization.Text("纹理必须来自目录 artifacts。"));
                     var filename = name.Substring(prefix.Length);
-                    if (filename != Path.GetFileName(filename) || !filename.EndsWith(".png", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("非法纹理文件名。");
+                    if (filename != Path.GetFileName(filename) || !filename.EndsWith(".png", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException(PluginLocalization.Text("非法纹理文件名。"));
                     File.Copy(Path.Combine(source, "artifacts", filename), root + "/Source/artifacts/" + filename, false);
                 }
                 AssetDatabase.Refresh();
                 CatalogMaterialBuild.BuildAt(root + "/Source", root + "/Material");
                 var template = AssetDatabase.LoadAssetAtPath<GameObject>(AvatarSetupWindow.PrefabPath);
-                if (!template) throw new InvalidOperationException("基础 Prefab 缺失。");
+                if (!template) throw new InvalidOperationException(PluginLocalization.Text("基础 Prefab 缺失。"));
                 var clone = (GameObject)PrefabUtility.InstantiatePrefab(template);
                 try {
                     PrefabUtility.UnpackPrefabInstance(clone, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
@@ -48,7 +48,7 @@ namespace MorphForgeAvatar.Editor {
                     var so = new SerializedObject(decoder); var controllerProperty = so.FindProperty("animator");
                     var oldPath = AssetDatabase.GetAssetPath(controllerProperty.objectReferenceValue);
                     var controllerPath = root + "/Decoder.controller";
-                    if (!AssetDatabase.CopyAsset(oldPath, controllerPath)) throw new InvalidOperationException("复制 Decoder 失败。");
+                    if (!AssetDatabase.CopyAsset(oldPath, controllerPath)) throw new InvalidOperationException(PluginLocalization.Text("复制 Decoder 失败。"));
                     controllerProperty.objectReferenceValue = AssetDatabase.LoadAssetAtPath<AnimatorController>(controllerPath); so.ApplyModifiedPropertiesWithoutUndo();
                     var identity = CatalogIdentity.Apply(clone, catalog);
                     var marker = clone.GetComponent<MorphForgeAvatarModule>(); marker.catalogIdentity = identity;

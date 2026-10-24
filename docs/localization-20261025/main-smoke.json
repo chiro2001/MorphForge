@@ -1,0 +1,44 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "actual main runtime is 0.27.0",
+      "passed": true
+    },
+    {
+      "name": "existing project and material data loaded",
+      "passed": true
+    },
+    {
+      "name": "existing API configuration remains available",
+      "passed": true
+    },
+    {
+      "name": "UI offers auto Chinese Japanese English",
+      "passed": true
+    },
+    {
+      "name": "main language matches saved preference or system",
+      "passed": true
+    },
+    {
+      "name": "only saved animation remains selected",
+      "passed": true
+    },
+    {
+      "name": "no recording or model task started",
+      "passed": true
+    },
+    {
+      "name": "sender remains off after restart",
+      "passed": true
+    }
+  ],
+  "version": "0.27.0",
+  "projectId": "d7a0a552-9904-4e00-85d5-2f0d8fc84347",
+  "revision": 16,
+  "creativeRevision": 1,
+  "language": "zh-CN",
+  "preference": "auto",
+  "scope": "Read-only checks of the upgraded main installation. No project, prompt or language changes."
+}

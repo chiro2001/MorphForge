@@ -7,7 +7,9 @@ namespace MorphForgeAvatar {
     [AddComponentMenu("MorphForge/Avatar Module")]
     [DisallowMultipleComponent]
     public sealed class MorphForgeAvatarModule : MonoBehaviour, IEditorOnly {
-        [HideInInspector] public string version = "1.3.2";
+        [HideInInspector] public string version = "1.4.0";
+        [HideInInspector] public string menuLanguage = "zh-CN";
+        [HideInInspector] public string menuInstanceId;
         [HideInInspector] public string catalogIdentity;
         [HideInInspector] public bool vrcFuryBridge;
     }

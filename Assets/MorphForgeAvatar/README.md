@@ -1,4 +1,4 @@
-# MorphForge Avatar 插件 1.3.2
+# MorphForge Avatar 插件 1.4.0
 
 将 MorphForge Desktop 的体素、纯色三角面、原生点线、点阵文字与分组动画，通过 OSC 显示在 VRChat PC Avatar 上。容量为 16,384 个几何对象；显示使用原生 Animator、粒子和 Shader，上传后没有自定义 C# 运行逻辑。
 
@@ -11,10 +11,16 @@
 ## 安装
 
 1. 使用 VCC 创建或打开 Avatar 工程，安装 VRChat SDK 和 Modular Avatar。
-2. 导入 `MorphForgeAvatar-1.3.2.unitypackage`。
-3. 在场景中选择人物，在 `Tools > MorphForge Avatar > 安装与检查` 指定 Avatar，点击“一键安装”。
+2. 导入 `MorphForgeAvatar-1.4.0.unitypackage`。
+3. 在场景中选择人物，在 `Tools > MorphForge Avatar > Setup - 安装 - 設定` 指定 Avatar，选择简体中文、日本語或 English，点击安装。
 4. 需要压缩服装等低频菜单参数时，先在 VCC 安装 VRCFury，再勾选参数压缩桥。已经安装的模块可移除后重新安装；移除和安装均支持 Undo。
 5. 正常构建、上传 Avatar。在 VRChat 打开 OSC，用 MorphForge Desktop 识别 Avatar 能力并发布作品。
+
+## 界面与菜单语言
+
+插件窗口支持简体中文、日文、英文，首次按 Unity 所在系统的语言选择，之后保存手动选择。选择语言会即时切换插件界面；所选场景 Avatar 已安装 MorphForge 时，也会更新其菜单。之后选择的 Avatar 可使用“将当前语言应用到所选 Avatar 菜单”按钮更新，无需卸载模块。
+
+每次安装使用独立的菜单副本，保存在 `Variants/LocalizedMenus`。切换不会修改公共模板、其他 Avatar 的菜单、材质或 OSC 参数；自定义菜单名称保留。菜单语言会随 Unity 场景保存。VRChat 中的菜单要在重新上传 Avatar 后才会改变，插件不会自动上传。
 
 已经存在 MF6 模块时先移除旧模块，避免重复接收命令。安装不会改写人物的原始控制器、菜单或参数资产，Modular Avatar 在构建阶段合并资源。SDK、MA 和可选的 VRCFury 需由 VCC 管理，不包含在本包中。
 

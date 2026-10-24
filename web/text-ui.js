@@ -1,3 +1,4 @@
+import {t as uiText, bindText} from "./i18n.js";
 export function buildTextRequest(values) {
   const text = String(values.text ?? "");
   const request = {
@@ -87,7 +88,7 @@ export function previewErrorDetails(error) {
     (typeof structured === "string" ? structured : structured?.message) ||
     payload.message ||
     error?.message ||
-    "文字预览失败";
+    uiText("文字预览失败");
   return {
     code,
     message,
@@ -133,9 +134,9 @@ export function formatPreviewError(error) {
   const details = previewErrorDetails(error);
   if (details.missingGlyphError) {
     const missing = details.missingGlyphs.length
-      ? "缺字：" + details.missingGlyphs.join(" ")
-      : details.message.replace(/^FONT_MISSING_GLYPHS\s*:?\s*/, "缺字：");
-    return `${missing}\n请换用支持这些字符的字体后再应用。`;
+      ? uiText("缺字：") + details.missingGlyphs.join(" ")
+      : details.message.replace(/^FONT_MISSING_GLYPHS\s*:?\s*/, uiText("缺字："));
+    return uiText("{0}\n请换用支持这些字符的字体后再应用。", missing);
   }
   return details.message;
 }
@@ -143,20 +144,20 @@ export function formatPreviewError(error) {
 export function normalizeApplyResult(value, expectedRequestId = "") {
   if (!value || value.ok !== true) {
     const failure = new Error(
-      typeof value?.error === "string" ? value.error : "文字应用失败",
+      typeof value?.error === "string" ? value.error : uiText("文字应用失败"),
     );
     failure.payload = value;
     throw failure;
   }
   if (expectedRequestId && value.requestId !== expectedRequestId) {
-    throw new Error("文字提交状态校验失败，请刷新后重新预览。");
+    throw new Error(uiText("文字提交状态校验失败，请刷新后重新预览。"));
   }
   const revision = Number(value.revision ?? value.scene?.revision);
   if (!Number.isSafeInteger(revision) || revision < 0) {
-    throw new Error("文字已提交，但没有收到有效的工程版本，请刷新确认。");
+    throw new Error(uiText("文字已提交，但没有收到有效的工程版本，请刷新确认。"));
   }
   if (value.scene && Number(value.scene.revision) !== revision) {
-    throw new Error("文字提交后的工程版本不一致，请刷新确认。");
+    throw new Error(uiText("文字提交后的工程版本不一致，请刷新确认。"));
   }
   return {
     revision,

@@ -1,3 +1,4 @@
+import {t as uiText, bindText} from "./i18n.js";
 // All input/output positions are signed voxel-grid coordinates (+Z front, +Y up).
 const add = (a, b) => a.map((v, i) => v + b[i]);
 const sub = (a, b) => a.map((v, i) => v - b[i]);
@@ -10,13 +11,13 @@ const cross = (a, b) => [
 ];
 const norm = (a) => {
   const length = Math.hypot(...a);
-  if (length < 1e-9) throw Error("相机方向不能为零");
+  if (length < 1e-9) throw Error(uiText("相机方向不能为零"));
   return mul(a, 1 / length);
 };
 export function fitBounds(boxes, fit = {}) {
   if (fit.bounds) return fit.bounds;
   const chosen = fit.group ? boxes.filter((b) => b.group === fit.group) : boxes;
-  if (!chosen.length) throw Error("取景区域或分组为空");
+  if (!chosen.length) throw Error(uiText("取景区域或分组为空"));
   return {
     min: [0, 1, 2].map((i) => Math.min(...chosen.map((b) => b.min[i]))),
     max: [0, 1, 2].map((i) =>

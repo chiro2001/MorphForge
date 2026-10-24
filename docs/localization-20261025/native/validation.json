@@ -1,0 +1,84 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "actual Windows 0.27.0 core and OSC off",
+      "passed": true
+    },
+    {
+      "name": "packaged studio.html matches final source",
+      "passed": true
+    },
+    {
+      "name": "packaged studio.js matches final source",
+      "passed": true
+    },
+    {
+      "name": "packaged bootstrap.js matches final source",
+      "passed": true
+    },
+    {
+      "name": "packaged i18n.js matches final source",
+      "passed": true
+    },
+    {
+      "name": "packaged locales/messages.js matches final source",
+      "passed": true
+    },
+    {
+      "name": "ja native interface switches immediately",
+      "passed": true
+    },
+    {
+      "name": "ja retains unsaved user input",
+      "passed": true
+    },
+    {
+      "name": "ja native mini language synchronized",
+      "passed": true
+    },
+    {
+      "name": "en native interface switches immediately",
+      "passed": true
+    },
+    {
+      "name": "en retains unsaved user input",
+      "passed": true
+    },
+    {
+      "name": "en native mini language synchronized",
+      "passed": true
+    },
+    {
+      "name": "zh-CN native interface switches immediately",
+      "passed": true
+    },
+    {
+      "name": "zh-CN retains unsaved user input",
+      "passed": true
+    },
+    {
+      "name": "zh-CN native mini language synchronized",
+      "passed": true
+    },
+    {
+      "name": "manual preference persisted to isolated data",
+      "passed": true
+    },
+    {
+      "name": "switching leaves geometry and version unchanged",
+      "passed": true
+    },
+    {
+      "name": "no JavaScript runtime errors",
+      "passed": true
+    },
+    {
+      "name": "native verification starts no model, microphone or sender",
+      "passed": true
+    }
+  ],
+  "base": "http://127.0.0.1:55391",
+  "version": "0.27.0",
+  "scope": "Actual Windows WebView2 and NSIS payload with isolated data. No microphone, paid calls or OSC."
+}

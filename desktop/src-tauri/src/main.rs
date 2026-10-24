@@ -1,6 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod mini;
+mod localization;
 
 use std::fs::{self, OpenOptions};
 use std::io::Write;
@@ -127,6 +128,7 @@ fn startup_window<R: tauri::Runtime>(
     std::env::set_var("WEBVIEW2_USER_DATA_FOLDER", &profile);
     let window=WebviewWindowBuilder::new(app, "main", WebviewUrl::App("index.html".into()))
         .title("MorphForge")
+        .initialization_script(format!("window.__MF_DESKTOP_LANGUAGE__={};", json!(localization::language())))
         // WebView2 can share one browser process across apps using the same
         // profile. Keep it private to this native process so closing one Job
         // tree cannot terminate another instance's browser.
@@ -433,8 +435,8 @@ async fn startup_failure<R: tauri::Runtime>(
     state.append(&format!("[desktop] startup failure: {title}: {message}"));
     let payload = json!({
         "phase": "error",
-        "title": title,
-        "message": message,
+        "title": localization::message(title),
+        "message": localization::message(message),
         "logPath": state.log_path.display().to_string(),
     });
     let script = format!(
@@ -480,6 +482,8 @@ fn append_log(path: &Path, line: &str) {
 }
 
 fn show_native_error(title: &str, message: &str) {
+    let title = localization::message(title);
+    let message = localization::message(message);
     #[cfg(windows)]
     {
         use windows_sys::Win32::UI::WindowsAndMessaging::{MessageBoxW, MB_ICONERROR, MB_OK};

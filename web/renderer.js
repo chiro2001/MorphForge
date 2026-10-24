@@ -1,3 +1,4 @@
+import {t as uiText, bindText} from "./i18n.js";
 import { sampleTrack, poseBounds, motionEnvelope } from "/motion.js";
 import { textureOrientationShader } from "/texture-orientation.js";
 import { proceduralShader } from "/procedural-shader.js";
@@ -262,7 +263,7 @@ export class VoxelRenderer {
           new Promise((resolve, reject) => {
             const im = new Image();
             im.onload = () => resolve(im);
-            im.onerror = () => reject(new Error("无法加载材质 " + url));
+            im.onerror = () => reject(new Error(uiText("无法加载材质 ") + url));
             im.src = url;
           }),
       ),
@@ -344,7 +345,7 @@ export class VoxelRenderer {
       texture.minFilter = THREE.NearestFilter;
       texture.generateMipmaps = false;
       texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
-      this.textureWarnings.push(`${style.name}: 动画图集超出独立纹理层预算，保留最近邻回退；截图仍可超采样。`);
+      this.textureWarnings.push(uiText("{0}: 动画图集超出独立纹理层预算，保留最近邻回退；截图仍可超采样。", style.name));
     }
     texture.colorSpace = THREE.SRGBColorSpace;
     texture.magFilter = THREE.NearestFilter;

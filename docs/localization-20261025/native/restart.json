@@ -1,0 +1,20 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "actual Windows 0.27.0 core and OSC off",
+      "passed": true
+    },
+    {
+      "name": "manual language survives native application restart",
+      "passed": true
+    },
+    {
+      "name": "native verification starts no model, microphone or sender",
+      "passed": true
+    }
+  ],
+  "base": "http://127.0.0.1:57902",
+  "version": "0.27.0",
+  "scope": "Actual Windows WebView2 and NSIS payload with isolated data. No microphone, paid calls or OSC."
+}

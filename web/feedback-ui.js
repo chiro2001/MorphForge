@@ -1,3 +1,4 @@
+import {diagnosticMessage, bindText} from "./i18n.js";
 // Feedback must live in the active top-layer dialog, or outside hidden pages.
 export function createFeedback(node, documentRoot = document) {
   let timer;
@@ -20,7 +21,7 @@ export function createFeedback(node, documentRoot = document) {
     const parent = host();
     if (parent !== documentRoot.body) parent.prepend(node);
     else parent.append(node);
-    node.textContent = String(text);
+    bindText(node, () => diagnosticMessage(text));
     node.dataset.kind = kind;
     node.setAttribute("role", kind === "error" ? "alert" : "status");
     node.classList.add("visible");

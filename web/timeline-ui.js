@@ -1,9 +1,10 @@
+import {t as uiText, bindText} from "./i18n.js";
 // The timeline is a read-only view. It never modifies model history or the draft.
 import { VoxelRenderer } from "/renderer.js";
 import { ScrollFollow } from "/scroll-follow.js";
 const el = (tag, text, className) => {
   const node = document.createElement(tag);
-  if (text !== undefined) node.textContent = text;
+  if (text !== undefined) bindText(node, () => (text));
   if (className) node.className = className;
   return node;
 };
@@ -115,8 +116,7 @@ export class TimelineView {
       ))
         container.append(node);
       document.getElementById("timelineOlder").disabled = this.before === 0;
-      document.getElementById("timelineStatus").textContent =
-        `已载入 ${this.rows.size} 条 · 思考仅展示上游实际返回内容`;
+      bindText(document.getElementById("timelineStatus"), () => (uiText("已载入 {0} 条 · 思考仅展示上游实际返回内容", this.rows.size)));
       this.follow.restore(scrollBefore, { older, added: result.events.length });
     } finally {
       this.busy = false;
@@ -131,20 +131,20 @@ export class TimelineView {
       el("b", row.title),
       el(
         "span",
-        `#${row.seq} · ${row.revisionSource === "capture" ? "截图" : row.revisionSource === "result" ? "结果" : "记录时"} v${row.revision}`,
+        `#${row.seq} · ${row.revisionSource === "capture" ? uiText("截图") : row.revisionSource === "result" ? uiText("结果") : uiText("记录时")} v${row.revision}`,
         "caption",
       ),
     );
     if (row.runId) {
       const runButton = el("button", row.runId.slice(0, 8));
-      runButton.title = "只查看此运行";
+      bindText(runButton, () => (uiText("只查看此运行")), "title");
       runButton.onclick = () => {
         document.getElementById("eventRunFilter").value = row.runId;
         this.reload().catch(this.onError);
       };
       head.append(runButton);
     }
-    const view = el("button", "查看此版本");
+    const view = el("button", uiText("查看此版本"));
     view.onclick = () => this.viewRevision(row.revision).catch(this.onError);
     head.append(view);
     card.append(head);
@@ -155,8 +155,8 @@ export class TimelineView {
         el(
           "summary",
           body.reasoningProvided
-            ? "思考过程 · 上游实际返回（流式内容见此前卡片）"
-            : "本响应未附带思考内容",
+            ? uiText("思考过程 · 上游实际返回（流式内容见此前卡片）")
+            : uiText("本响应未附带思考内容"),
         ),
       );
       if (body.reasoning) thought.append(el("pre", body.reasoning));
@@ -166,7 +166,7 @@ export class TimelineView {
         card.append(
           el(
             "div",
-            `耗时 ${Number(body.seconds || 0).toFixed(2)}s · 用量 ${JSON.stringify(body.usage)}`,
+            uiText("耗时 {0}s · 用量 {1}", Number(body.seconds || 0).toFixed(2), JSON.stringify(body.usage)),
             "caption",
           ),
         );
@@ -180,8 +180,8 @@ export class TimelineView {
         el(
           "summary",
           row.kind === "provider.reasoning_delta"
-            ? "上游思考片段（流式）"
-            : "上游文本片段（流式）",
+            ? uiText("上游思考片段（流式）")
+            : uiText("上游文本片段（流式）"),
         ),
         el("pre", body.text || ""),
       );
@@ -199,7 +199,7 @@ export class TimelineView {
         typeof name === "string" &&
         /^[a-f0-9]{64}\.(js|json|txt|md)$/.test(name),
     )) {
-      const link = el("a", "下载源码/快照");
+      const link = el("a", uiText("下载源码/快照"));
       link.href = "/artifacts/" + name;
       link.download = name;
       card.append(link);
@@ -211,14 +211,14 @@ export class TimelineView {
       link.rel = "noopener";
       const img = el("img");
       img.src = image.url;
-      img.alt = `${image.view || "截图"} · ${image.role === "reinspection" ? "历史/参考重读" : "v" + (image.revision ?? row.revision)}`;
+      img.alt = `${image.view || uiText("截图")} · ${image.role === "reinspection" ? uiText("历史/参考重读") : "v" + (image.revision ?? row.revision)}`;
       img.loading = "lazy";
       link.append(img);
       card.append(link);
     }
     const full = el("details");
-    const summary = el("summary", "展开完整记录");
-    const detail = el("pre", "展开后按需读取原始事件中的可展示内容");
+    const summary = el("summary", uiText("展开完整记录"));
+    const detail = el("pre", uiText("展开后按需读取原始事件中的可展示内容"));
     full.append(summary, detail);
     let loaded = false;
     full.ontoggle = async () => {
@@ -233,14 +233,13 @@ export class TimelineView {
               ? JSON.parse(body.arguments)
               : null;
         } catch {}
-        detail.textContent =
-          typeof args?.code === "string"
-            ? `工具：${body.name}\n\n${args.code}`
+        bindText(detail, () => (typeof args?.code === "string"
+            ? uiText("工具：{0}\n\n{1}", body.name, args.code)
             : typeof args?.content === "string"
-              ? `源码：${args.path || ""}\n\n${args.content}`
+              ? uiText("源码：{0}\n\n{1}", args.path || "", args.content)
               : body.reasoning
-                ? `思考（上游返回）：\n${body.reasoning}\n\n输出：\n${body.text || ""}\n\n其他：\n${JSON.stringify({ ...body, reasoning: undefined, text: undefined }, null, 2)}`
-                : JSON.stringify(body, null, 2);
+                ? uiText("思考（上游返回）：\n{0}\n\n输出：\n{1}\n\n其他：\n{2}", body.reasoning, body.text || "", JSON.stringify({ ...body, reasoning: undefined, text: undefined }, null, 2))
+                : JSON.stringify(body, null, 2)));
         loaded = true;
       } catch (error) {
         this.onError(error);
@@ -252,8 +251,7 @@ export class TimelineView {
   async viewRevision(revision) {
     const data = await this.api("scene?revision=" + revision);
     const dialog = document.getElementById("timelinePreview");
-    document.getElementById("timelinePreviewTitle").textContent =
-      `历史版本 v${revision} · 只读预览`;
+    bindText(document.getElementById("timelinePreviewTitle"), () => (uiText("历史版本 v{0} · 只读预览", revision)));
     dialog.showModal();
     if (!this.preview)
       this.preview = new VoxelRenderer(

@@ -1,3 +1,4 @@
+import {t as uiText, bindText} from "./i18n.js";
 export function normalizeProtectedGroups(value) {
   if (!Array.isArray(value)) return [];
   const unique = new Set();
@@ -10,7 +11,7 @@ export function normalizeProtectedGroups(value) {
 
 export function setProtectedGroup(groups, name, protect) {
   const target = String(name ?? "");
-  if (!target) throw new Error("分组名称不能为空");
+  if (!target) throw new Error(uiText("分组名称不能为空"));
   const next = new Set(normalizeProtectedGroups(groups));
   if (protect) next.add(target);
   else next.delete(target);
@@ -20,7 +21,7 @@ export function setProtectedGroup(groups, name, protect) {
 export function protectionSavePayload(groups, baseRevision) {
   const revision = Number(baseRevision);
   if (!Number.isSafeInteger(revision) || revision < 0) {
-    throw new Error("工程版本无效，无法保存分组保护");
+    throw new Error(uiText("工程版本无效，无法保存分组保护"));
   }
   return {
     protectedGroups: normalizeProtectedGroups(groups),
