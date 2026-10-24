@@ -1,0 +1,102 @@
+{
+  "success": true,
+  "initialCount": true,
+  "replacementCount": true,
+  "replayCount": true,
+  "removedOnlyPoint": true,
+  "diameterAndThickness": true,
+  "endOnVisible": true,
+  "captures": [
+    {
+      "phase": "thin",
+      "point": {
+        "ink": 448,
+        "width": 24,
+        "height": 24
+      },
+      "line": {
+        "ink": 1076,
+        "width": 136,
+        "height": 8
+      },
+      "cube": {
+        "ink": 1024,
+        "width": 32,
+        "height": 32
+      }
+    },
+    {
+      "phase": "thick",
+      "point": {
+        "ink": 1804,
+        "width": 48,
+        "height": 48
+      },
+      "line": {
+        "ink": 3520,
+        "width": 152,
+        "height": 24
+      },
+      "cube": {
+        "ink": 1024,
+        "width": 32,
+        "height": 32
+      }
+    },
+    {
+      "phase": "replay",
+      "point": {
+        "ink": 1804,
+        "width": 48,
+        "height": 48
+      },
+      "line": {
+        "ink": 3520,
+        "width": 152,
+        "height": 24
+      },
+      "cube": {
+        "ink": 1024,
+        "width": 32,
+        "height": 32
+      }
+    },
+    {
+      "phase": "end-on",
+      "point": {
+        "ink": 1356,
+        "width": 48,
+        "height": 48
+      },
+      "line": {
+        "ink": 448,
+        "width": 24,
+        "height": 24
+      },
+      "cube": {
+        "ink": 1024,
+        "width": 32,
+        "height": 32
+      }
+    },
+    {
+      "phase": "delete",
+      "point": {
+        "ink": 0,
+        "width": 0,
+        "height": 0
+      },
+      "line": {
+        "ink": 3520,
+        "width": 152,
+        "height": 24
+      },
+      "cube": {
+        "ink": 1024,
+        "width": 32,
+        "height": 32
+      }
+    }
+  ],
+  "scope": "Production Rust shared planner -> one OSC command per point/segment -> native Animator particle storage -> production GPU shader. No scripted Emit, SetParticles or phase/material injection."
+}

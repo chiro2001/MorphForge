@@ -13,6 +13,8 @@
 
 ## 本轮已授权范围
 
+- 2026-10-24用户要求将本人预览放入MorphForge子菜单、修正正面取景，并自主进行性能消融；允许参考VRCX/头像选择API切换当前头像及读取实机帧率。Avatar1.3.2已更新同一私人头像v13/file11，三项服务端分析通过；SDK152层、1926参数、254bit。本人预览位于MorphForge子菜单、默认+Z正视；普通空闲状态使用稀疏Clip，完整Direct输出保留WD On，材质绑定3132→1656。交互式Editor空载6.54→5.46ms、三组动画11.28→9.04ms；492值/24位置和106次连续GPU对比通过，文字15项、点线、动画、本人预览及公共安装验证通过。通过OSC/avatar/change实机换装并恢复原作品/flow-loop；未重启串流。实际FPS对照仍待确认可读的性能显示；SteamVR新客户端握手失败，用户尚未授权重启VRChat。见docs/performance-preview-20261024/RESULTS.md。Desktop保持0.26.1，未推送/建Release。
+
 - 2026-10-24Desktop0.26.1已升级主安装：用户要求唯一动画默认直接选择；载入/重启自动选中并随主发布，模型revision16/API保留，发送关闭。相关Rust9/前端62/Chromium16/Windows原生16/安装14/主程序8项通过。头像缓存消除120个WD Off直接接收状态及234个双层写入字，参数与同步预算不增加；同一私人Avatar上传v12/file10，三项分析通过，接收能力9，公共包1.3.1。SDK后492值/24位置及三轮102次GPU比较通过，实机视觉待用户重载v9头像复验。见`docs/default-motion/RESULTS.md`、`docs/motion-cache-20261024/RESULTS.md`。未推送/建Release。
 
 - 2026-10-24Desktop0.26.0已交付主安装：主界面发布模型与所选动画，两个片段选择框同步，未保存/不支持/版本冲突明确失败。317项Rust、62项前端、Chromium13项、Windows原生13项、安装14项及主程序8项通过。等待用户建模及发送完成后正常升级，当前新项目revision16与API连接保留，恢复flow-loop选择；发送默认关闭。结果`docs/model-motion-publish/RESULTS.md`，未改Unity或推送/发Release。

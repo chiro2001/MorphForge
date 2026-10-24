@@ -70,7 +70,9 @@ public static class TextReceiverProbe {
     }
     public static async Task<string> Run() {
         if(!EditorApplication.isPlaying)throw new Exception("Play Mode required");
-        var gm=UnityEngine.Object.FindObjectsOfType<GestureManager>().Single(g=>g.gameObject.scene.path==Mf6AvatarBuild.ScenePath||g.gameObject.scene.path=="Assets/MorphForge/Validation/Optimization20261023/Baseline.unity");
+        string active=UnityEngine.SceneManagement.SceneManager.GetActiveScene().path;
+        if(active!=Mf6AvatarBuild.ScenePath&&active!="Assets/MorphForge/Validation/Optimization20261023/Baseline.unity"&&active!="Assets/MorphForge/Validation/WaterfallSdk20261024/Baseline.unity")throw new Exception("Owned native text scene required");
+        var gm=UnityEngine.Object.FindObjectsOfType<GestureManager>().Single(g=>g.gameObject.scene.path==active);
         var deadline=DateTime.UtcNow.AddSeconds(15);while(gm.Module==null&&DateTime.UtcNow<deadline)await Task.Delay(100);
         var m=gm.Module as ModuleVrc3;if(m==null)throw new Exception("GestureManager not ready");
         var receiver=gm.GetComponent<MorphForgePlayReceiver>();if(!receiver.Running||receiver.ReceivePort!=9012)throw new Exception("Expected isolated OSC port9012");

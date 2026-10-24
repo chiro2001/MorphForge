@@ -1,0 +1,13 @@
+{
+  "success": true,
+  "rows": [
+    {
+      "phase": "baseline",
+      "samples": 111,
+      "animatorMeanMs": 11.279867567567567,
+      "animatorMedianMs": 11.1944,
+      "animatorP95Ms": 12.6916,
+      "cameraEnabled": false
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "success": true,
+  "packageBytes": 6102366,
+  "sha256": "cbd786606b5682281515c31a70b0d2cc74cadefada281826d263a22c25ea1a72",
+  "packageEntries": 160,
+  "sourceMatches": 160,
+  "allPathsUnderPlugin": true,
+  "includesUserVariants": false,
+  "includesThirdPartyPackages": false,
+  "privateAvatarBinding": false,
+  "publicMaterialCount": 544,
+  "verifiedOriginalPngs": 54
+}

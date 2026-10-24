@@ -1,0 +1,15 @@
+{
+  "success": true,
+  "previewPaths": [
+    "root/MorphForge/本人预览"
+  ],
+  "oversizedMenus": [],
+  "outputLayers": 19,
+  "incorrectOutputStates": [],
+  "completeCacheStates": 123,
+  "frontCamera": true,
+  "cameraDefaultOff": true,
+  "fxLayers": 152,
+  "fxParameters": 1926,
+  "syncedBits": 254
+}

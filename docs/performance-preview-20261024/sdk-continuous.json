@@ -1,0 +1,1814 @@
+{
+  "success": true,
+  "wraps": [
+    3,
+    3,
+    3
+  ],
+  "backwardsSteps": 0,
+  "samples": [
+    {
+      "seconds": 0.013429799999999999,
+      "phases": [
+        0.3476215,
+        0.355673581,
+        0.349645883
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.3476215,
+          "pixels": 476,
+          "pixelError": 0.9433905,
+          "x": 38.0,
+          "y": 103.5,
+          "expectedX": 38.3999977,
+          "expectedY": 104.354393,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.349645883,
+          "pixels": 374,
+          "pixelError": 0.5194759,
+          "x": 148.0,
+          "y": 118.5,
+          "expectedX": 148.1143,
+          "expectedY": 119.006744,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 0.1280681,
+      "phases": [
+        0.408188462,
+        0.4162405,
+        0.4102128
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.408188462,
+          "pixels": 476,
+          "pixelError": 0.6669457,
+          "x": 38.0,
+          "y": 100.5,
+          "expectedX": 38.3999977,
+          "expectedY": 101.033684,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.4102128,
+          "pixels": 374,
+          "pixelError": 0.510757148,
+          "x": 148.0,
+          "y": 122.5,
+          "expectedX": 148.1143,
+          "expectedY": 122.9978,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 0.2438622,
+      "phases": [
+        0.4659959,
+        0.474047929,
+        0.468020231
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.4659959,
+          "pixels": 476,
+          "pixelError": 0.5410368,
+          "x": 38.0,
+          "y": 97.5,
+          "expectedX": 38.3999977,
+          "expectedY": 97.86431,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.468020231,
+          "pixels": 390,
+          "pixelError": 0.79038775,
+          "x": 147.979492,
+          "y": 126.028206,
+          "expectedX": 148.114288,
+          "expectedY": 126.807014,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 0.3559063,
+      "phases": [
+        0.522753239,
+        0.53080523,
+        0.5247776
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.522753239,
+          "pixels": 476,
+          "pixelError": 0.4730404,
+          "x": 38.0,
+          "y": 94.5,
+          "expectedX": 38.3999977,
+          "expectedY": 94.7525253,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.5247776,
+          "pixels": 390,
+          "pixelError": 0.5908086,
+          "x": 147.979492,
+          "y": 129.9718,
+          "expectedX": 148.114288,
+          "expectedY": 130.547028,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 0.46867339999999996,
+      "phases": [
+        0.5779728,
+        0.5860249,
+        0.5799972
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.5779728,
+          "pixels": 476,
+          "pixelError": 0.458943725,
+          "x": 38.0,
+          "y": 91.5,
+          "expectedX": 38.3999977,
+          "expectedY": 91.72501,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.5799972,
+          "pixels": 390,
+          "pixelError": 0.2528543,
+          "x": 147.979492,
+          "y": 133.9718,
+          "expectedX": 148.114288,
+          "expectedY": 134.18573,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 0.5840581,
+      "phases": [
+        0.63653,
+        0.644582033,
+        0.638554335
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.63653,
+          "pixels": 493,
+          "pixelError": 0.6517053,
+          "x": 38.0,
+          "y": 88.0,
+          "expectedX": 38.3999977,
+          "expectedY": 88.51451,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.638554335,
+          "pixels": 374,
+          "pixelError": 0.556210458,
+          "x": 148.0,
+          "y": 137.5,
+          "expectedX": 148.114288,
+          "expectedY": 138.044342,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 0.7016401999999999,
+      "phases": [
+        0.6956952,
+        0.7037473,
+        0.6977196
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.6956952,
+          "pixels": 476,
+          "pixelError": 0.8671051,
+          "x": 38.0,
+          "y": 84.5,
+          "expectedX": 38.3999977,
+          "expectedY": 85.26933,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.6977196,
+          "pixels": 374,
+          "pixelError": 0.454529256,
+          "x": 148.0,
+          "y": 141.5,
+          "expectedX": 148.114288,
+          "expectedY": 141.939926,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 0.820898,
+      "phases": [
+        0.75321424,
+        0.7612663,
+        0.755238652
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.75321424,
+          "pixels": 476,
+          "pixelError": 0.7320817,
+          "x": 38.0,
+          "y": 81.5,
+          "expectedX": 38.3999977,
+          "expectedY": 82.1131439,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.755238652,
+          "pixels": 390,
+          "pixelError": 0.7091569,
+          "x": 147.979492,
+          "y": 145.0282,
+          "expectedX": 148.114288,
+          "expectedY": 145.724426,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 0.9430411,
+      "phases": [
+        0.815377,
+        0.823429048,
+        0.8174014
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.815377,
+          "pixels": 476,
+          "pixelError": 0.4481524,
+          "x": 38.0,
+          "y": 78.5,
+          "expectedX": 38.3999977,
+          "expectedY": 78.702095,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.8174014,
+          "pixels": 390,
+          "pixelError": 0.797728539,
+          "x": 147.979492,
+          "y": 149.0282,
+          "expectedX": 148.1143,
+          "expectedY": 149.814453,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 1.0696468,
+      "phases": [
+        0.877389669,
+        0.8854417,
+        0.8794141
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.877389669,
+          "pixels": 476,
+          "pixelError": 0.8938489,
+          "x": 38.0,
+          "y": 74.5,
+          "expectedX": 38.3999977,
+          "expectedY": 75.2993546,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.8794141,
+          "pixels": 374,
+          "pixelError": 0.410828948,
+          "x": 148.0,
+          "y": 153.5,
+          "expectedX": 148.1143,
+          "expectedY": 153.8946,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 1.1861338,
+      "phases": [
+        0.93421334,
+        0.9422654,
+        0.9362377
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.93421334,
+          "pixels": 476,
+          "pixelError": 0.7900406,
+          "x": 38.0,
+          "y": 71.5,
+          "expectedX": 38.3999977,
+          "expectedY": 72.1813,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.9362377,
+          "pixels": 389,
+          "pixelError": 0.6521277,
+          "x": 147.958862,
+          "y": 157.0,
+          "expectedX": 148.1143,
+          "expectedY": 157.633331,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 1.3596344,
+      "phases": [
+        0.0005235672,
+        0.008575559,
+        0.00254797935
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.0005235672,
+          "pixels": 476,
+          "pixelError": 0.984732866,
+          "x": 38.0,
+          "y": 122.5,
+          "expectedX": 38.3999977,
+          "expectedY": 123.399834,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.00254797935,
+          "pixels": 390,
+          "pixelError": 0.237783134,
+          "x": 147.979492,
+          "y": 95.9717941,
+          "expectedX": 148.114288,
+          "expectedY": 96.16768,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 1.4781313,
+      "phases": [
+        0.0648149252,
+        0.07286692,
+        0.06683922
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.0648149252,
+          "pixels": 476,
+          "pixelError": 0.5462344,
+          "x": 38.0,
+          "y": 119.5,
+          "expectedX": 38.3999977,
+          "expectedY": 119.871986,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.06683922,
+          "pixels": 390,
+          "pixelError": 0.4467764,
+          "x": 147.979492,
+          "y": 99.9717941,
+          "expectedX": 148.114288,
+          "expectedY": 100.397751,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 1.6067026,
+      "phases": [
+        0.147420421,
+        0.155472517,
+        0.149444818
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.147420421,
+          "pixels": 476,
+          "pixelError": 0.9297039,
+          "x": 38.0,
+          "y": 114.5,
+          "expectedX": 38.3999977,
+          "expectedY": 115.339256,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.149444818,
+          "pixels": 390,
+          "pixelError": 0.8158318,
+          "x": 147.979492,
+          "y": 105.028206,
+          "expectedX": 148.114288,
+          "expectedY": 105.832825,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 1.7259004999999998,
+      "phases": [
+        0.207325,
+        0.215377092,
+        0.209349513
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.207325,
+          "pixels": 476,
+          "pixelError": 0.681809664,
+          "x": 38.0,
+          "y": 111.5,
+          "expectedX": 38.3999977,
+          "expectedY": 112.052147,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.209349513,
+          "pixels": 390,
+          "pixelError": 0.7581454,
+          "x": 147.979492,
+          "y": 109.028206,
+          "expectedX": 148.1143,
+          "expectedY": 109.774269,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 1.8336028999999998,
+      "phases": [
+        0.26190865,
+        0.269960761,
+        0.263933152
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.26190865,
+          "pixels": 476,
+          "pixelError": 0.685763657,
+          "x": 38.0,
+          "y": 108.5,
+          "expectedX": 38.3999977,
+          "expectedY": 109.057022,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.263933152,
+          "pixels": 390,
+          "pixelError": 0.41627115,
+          "x": 147.979492,
+          "y": 112.971794,
+          "expectedX": 148.1143,
+          "expectedY": 113.365631,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 1.9434904,
+      "phases": [
+        0.31868732,
+        0.32673943,
+        0.320711821
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.31868732,
+          "pixels": 476,
+          "pixelError": 0.595688164,
+          "x": 38.0,
+          "y": 105.5,
+          "expectedX": 38.3999977,
+          "expectedY": 105.941414,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.320711821,
+          "pixels": 374,
+          "pixelError": 0.612175763,
+          "x": 148.0,
+          "y": 116.5,
+          "expectedX": 148.1143,
+          "expectedY": 117.10141,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 2.0640969,
+      "phases": [
+        0.376240373,
+        0.384292483,
+        0.378264874
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.376240373,
+          "pixels": 476,
+          "pixelError": 0.491315156,
+          "x": 38.0,
+          "y": 102.5,
+          "expectedX": 38.3999977,
+          "expectedY": 102.785294,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.378264874,
+          "pixels": 374,
+          "pixelError": 0.4088947,
+          "x": 148.0,
+          "y": 120.5,
+          "expectedX": 148.1143,
+          "expectedY": 120.892593,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 2.1765828,
+      "phases": [
+        0.433320045,
+        0.441372156,
+        0.435344547
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.433320045,
+          "pixels": 476,
+          "pixelError": 0.4292744,
+          "x": 38.0,
+          "y": 99.5,
+          "expectedX": 38.3999977,
+          "expectedY": 99.6558151,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.435344547,
+          "pixels": 389,
+          "pixelError": 0.6720735,
+          "x": 147.958862,
+          "y": 124.0,
+          "expectedX": 148.114288,
+          "expectedY": 124.653854,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 2.2858152,
+      "phases": [
+        0.4891603,
+        0.4972124,
+        0.4911848
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.4891603,
+          "pixels": 476,
+          "pixelError": 0.410961181,
+          "x": 38.0,
+          "y": 96.5,
+          "expectedX": 38.3999977,
+          "expectedY": 96.59429,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.4911848,
+          "pixels": 390,
+          "pixelError": 0.3859601,
+          "x": 147.979492,
+          "y": 127.971794,
+          "expectedX": 148.114288,
+          "expectedY": 128.33345,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 2.4092987,
+      "phases": [
+        0.5512003,
+        0.5592524,
+        0.5532248
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.5512003,
+          "pixels": 476,
+          "pixelError": 0.8000098,
+          "x": 38.0,
+          "y": 92.5,
+          "expectedX": 38.3999977,
+          "expectedY": 93.19283,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.5532248,
+          "pixels": 390,
+          "pixelError": 0.469518453,
+          "x": 147.979492,
+          "y": 131.9718,
+          "expectedX": 148.114288,
+          "expectedY": 132.421555,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 2.5166440999999997,
+      "phases": [
+        0.603771567,
+        0.6118237,
+        0.6057961
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.603771567,
+          "pixels": 476,
+          "pixelError": 0.9038719,
+          "x": 38.0,
+          "y": 89.5,
+          "expectedX": 38.3999977,
+          "expectedY": 90.31055,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.6057961,
+          "pixels": 374,
+          "pixelError": 0.402316868,
+          "x": 148.0,
+          "y": 135.5,
+          "expectedX": 148.114288,
+          "expectedY": 135.885742,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 2.6243019999999997,
+      "phases": [
+        0.658661842,
+        0.666713953,
+        0.6606864
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.658661842,
+          "pixels": 476,
+          "pixelError": 0.8954049,
+          "x": 38.0,
+          "y": 86.5,
+          "expectedX": 38.3999977,
+          "expectedY": 87.3010941,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.6606864,
+          "pixels": 390,
+          "pixelError": 0.547773838,
+          "x": 147.979492,
+          "y": 138.9718,
+          "expectedX": 148.114288,
+          "expectedY": 139.502731,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 2.7352062999999998,
+      "phases": [
+        0.7128333,
+        0.7208854,
+        0.7148578
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.7128333,
+          "pixels": 476,
+          "pixelError": 0.9203894,
+          "x": 38.0,
+          "y": 83.5,
+          "expectedX": 38.3999977,
+          "expectedY": 84.3289261,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.7148578,
+          "pixels": 374,
+          "pixelError": 0.5789435,
+          "x": 148.0,
+          "y": 142.5,
+          "expectedX": 148.114288,
+          "expectedY": 143.067551,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 2.8497501,
+      "phases": [
+        0.768746138,
+        0.776798248,
+        0.770770669
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.768746138,
+          "pixels": 476,
+          "pixelError": 0.859573245,
+          "x": 38.0,
+          "y": 80.5,
+          "expectedX": 38.3999977,
+          "expectedY": 81.26083,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.770770669,
+          "pixels": 390,
+          "pixelError": 0.7306959,
+          "x": 147.979492,
+          "y": 146.0282,
+          "expectedX": 148.114288,
+          "expectedY": 146.746353,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 2.9646496,
+      "phases": [
+        0.82604,
+        0.83409214,
+        0.828064561
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.82604,
+          "pixels": 476,
+          "pixelError": 0.735318,
+          "x": 38.0,
+          "y": 77.5,
+          "expectedX": 38.3999977,
+          "expectedY": 78.1170044,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.828064561,
+          "pixels": 390,
+          "pixelError": 0.5606836,
+          "x": 147.979492,
+          "y": 149.9718,
+          "expectedX": 148.1143,
+          "expectedY": 150.516037,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 3.078211,
+      "phases": [
+        0.883749,
+        0.8918011,
+        0.88577354
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.883749,
+          "pixels": 476,
+          "pixelError": 0.6023782,
+          "x": 38.0,
+          "y": 74.5,
+          "expectedX": 38.3999977,
+          "expectedY": 74.9504,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.88577354,
+          "pixels": 390,
+          "pixelError": 0.366883069,
+          "x": 147.979492,
+          "y": 153.9718,
+          "expectedX": 148.1143,
+          "expectedY": 154.313019,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 3.2038396,
+      "phases": [
+        0.946961164,
+        0.9550133,
+        0.9489857
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.946961164,
+          "pixels": 493,
+          "pixelError": 0.626193643,
+          "x": 38.0,
+          "y": 71.0,
+          "expectedX": 38.3999977,
+          "expectedY": 71.48179,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.9489857,
+          "pixels": 390,
+          "pixelError": 0.51813525,
+          "x": 147.979492,
+          "y": 157.9718,
+          "expectedX": 148.1143,
+          "expectedY": 158.472092,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 3.3154174,
+      "phases": [
+        0.00312745571,
+        0.0111794472,
+        0.005151987
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.00312745571,
+          "pixels": 476,
+          "pixelError": 0.856151342,
+          "x": 38.0,
+          "y": 122.5,
+          "expectedX": 38.3999977,
+          "expectedY": 123.256966,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.005151987,
+          "pixels": 390,
+          "pixelError": 0.391169369,
+          "x": 147.979492,
+          "y": 95.9717941,
+          "expectedX": 148.114288,
+          "expectedY": 96.3390045,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 3.4414171,
+      "phases": [
+        0.0666197538,
+        0.07467198,
+        0.0686442852
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.0666197538,
+          "pixels": 476,
+          "pixelError": 0.484277219,
+          "x": 38.0,
+          "y": 119.5,
+          "expectedX": 38.3999977,
+          "expectedY": 119.772995,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.0686442852,
+          "pixels": 390,
+          "pixelError": 0.5611465,
+          "x": 147.979492,
+          "y": 99.9717941,
+          "expectedX": 148.114288,
+          "expectedY": 100.51651,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 3.5671776,
+      "phases": [
+        0.128762022,
+        0.136814117,
+        0.130786538
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.128762022,
+          "pixels": 476,
+          "pixelError": 0.951253831,
+          "x": 38.0,
+          "y": 115.5,
+          "expectedX": 38.3999977,
+          "expectedY": 116.363068,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.130786538,
+          "pixels": 389,
+          "pixelError": 0.6248337,
+          "x": 147.958862,
+          "y": 104.0,
+          "expectedX": 148.114288,
+          "expectedY": 104.605194,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 3.6917039,
+      "phases": [
+        0.192408577,
+        0.200460672,
+        0.194432855
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.192408577,
+          "pixels": 476,
+          "pixelError": 0.545326054,
+          "x": 38.0,
+          "y": 112.5,
+          "expectedX": 38.3999977,
+          "expectedY": 112.870651,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.194432855,
+          "pixels": 390,
+          "pixelError": 0.7764114,
+          "x": 147.979492,
+          "y": 108.028206,
+          "expectedX": 148.1143,
+          "expectedY": 108.792824,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 3.8157178,
+      "phases": [
+        0.253584623,
+        0.261636734,
+        0.255609125
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.253584623,
+          "pixels": 493,
+          "pixelError": 0.6511092,
+          "x": 38.0,
+          "y": 109.0,
+          "expectedX": 38.3999977,
+          "expectedY": 109.513756,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.255609125,
+          "pixels": 390,
+          "pixelError": 0.8011577,
+          "x": 147.979492,
+          "y": 112.028206,
+          "expectedX": 148.1143,
+          "expectedY": 112.81794,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 3.9285763,
+      "phases": [
+        0.307672262,
+        0.315724373,
+        0.309696764
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.307672262,
+          "pixels": 493,
+          "pixelError": 0.676734746,
+          "x": 38.0,
+          "y": 106.0,
+          "expectedX": 38.3999977,
+          "expectedY": 106.545868,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.309696764,
+          "pixels": 390,
+          "pixelError": 0.426738143,
+          "x": 147.979492,
+          "y": 115.971794,
+          "expectedX": 148.1143,
+          "expectedY": 116.376678,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 4.0374582,
+      "phases": [
+        0.36451292,
+        0.372565031,
+        0.366537422
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.36451292,
+          "pixels": 493,
+          "pixelError": 0.5860304,
+          "x": 38.0,
+          "y": 103.0,
+          "expectedX": 38.3999977,
+          "expectedY": 103.428291,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.366537422,
+          "pixels": 374,
+          "pixelError": 0.630271137,
+          "x": 148.0,
+          "y": 119.5,
+          "expectedX": 148.1143,
+          "expectedY": 120.11982,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 4.1465628,
+      "phases": [
+        0.4185984,
+        0.426650524,
+        0.420622915
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.4185984,
+          "pixels": 493,
+          "pixelError": 0.6118132,
+          "x": 38.0,
+          "y": 100.0,
+          "expectedX": 38.3999977,
+          "expectedY": 100.462944,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.420622915,
+          "pixels": 390,
+          "pixelError": 0.669288754,
+          "x": 147.979492,
+          "y": 123.028206,
+          "expectedX": 148.1143,
+          "expectedY": 123.683777,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 4.2758633,
+      "phases": [
+        0.4814527,
+        0.4895048,
+        0.4834772
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.4814527,
+          "pixels": 476,
+          "pixelError": 0.653574169,
+          "x": 38.0,
+          "y": 96.5,
+          "expectedX": 38.3999977,
+          "expectedY": 97.01688,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.4834772,
+          "pixels": 390,
+          "pixelError": 0.8086693,
+          "x": 147.979492,
+          "y": 127.028206,
+          "expectedX": 148.114288,
+          "expectedY": 127.825562,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 4.4021348,
+      "phases": [
+        0.5465543,
+        0.554606438,
+        0.548578858
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.5465543,
+          "pixels": 493,
+          "pixelError": 0.6002534,
+          "x": 38.0,
+          "y": 93.0,
+          "expectedX": 38.3999977,
+          "expectedY": 93.4475555,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.548578858,
+          "pixels": 374,
+          "pixelError": 0.625939667,
+          "x": 148.0,
+          "y": 131.5,
+          "expectedX": 148.114288,
+          "expectedY": 132.115417,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 4.5110228999999995,
+      "phases": [
+        0.6013534,
+        0.6094055,
+        0.603377938
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.6013534,
+          "pixels": 493,
+          "pixelError": 0.59695,
+          "x": 38.0,
+          "y": 90.0,
+          "expectedX": 38.3999977,
+          "expectedY": 90.4431152,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.603377938,
+          "pixels": 390,
+          "pixelError": 0.711104453,
+          "x": 147.979492,
+          "y": 135.0282,
+          "expectedX": 148.114288,
+          "expectedY": 135.72641,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 4.6266492999999995,
+      "phases": [
+        0.6559539,
+        0.664006,
+        0.6579784
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.6559539,
+          "pixels": 493,
+          "pixelError": 0.6017567,
+          "x": 38.0,
+          "y": 87.0,
+          "expectedX": 38.3999977,
+          "expectedY": 87.44957,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.6579784,
+          "pixels": 390,
+          "pixelError": 0.377387762,
+          "x": 147.979492,
+          "y": 138.9718,
+          "expectedX": 148.114288,
+          "expectedY": 139.3243,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 4.7413375,
+      "phases": [
+        0.7136481,
+        0.7217002,
+        0.7156726
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.7136481,
+          "pixels": 476,
+          "pixelError": 0.8803452,
+          "x": 38.0,
+          "y": 83.5,
+          "expectedX": 38.3999977,
+          "expectedY": 84.2842255,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.7156726,
+          "pixels": 374,
+          "pixelError": 0.6315814,
+          "x": 148.0,
+          "y": 142.5,
+          "expectedX": 148.114288,
+          "expectedY": 143.121155,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 4.85259,
+      "phases": [
+        0.7711222,
+        0.7791743,
+        0.773146749
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.7711222,
+          "pixels": 476,
+          "pixelError": 0.7466467,
+          "x": 38.0,
+          "y": 80.5,
+          "expectedX": 38.3999977,
+          "expectedY": 81.13046,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.773146749,
+          "pixels": 374,
+          "pixelError": 0.418598682,
+          "x": 148.0,
+          "y": 146.5,
+          "expectedX": 148.114288,
+          "expectedY": 146.9027,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 4.9879222,
+      "phases": [
+        0.834807158,
+        0.842859268,
+        0.8368317
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.834807158,
+          "pixels": 476,
+          "pixelError": 0.422459215,
+          "x": 38.0,
+          "y": 77.5,
+          "expectedX": 38.3999977,
+          "expectedY": 77.63592,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.8368317,
+          "pixels": 374,
+          "pixelError": 0.60378325,
+          "x": 148.0,
+          "y": 150.5,
+          "expectedX": 148.1143,
+          "expectedY": 151.092865,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 5.0999482,
+      "phases": [
+        0.894610643,
+        0.902663,
+        0.8966354
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.894610643,
+          "pixels": 476,
+          "pixelError": 0.943369746,
+          "x": 38.0,
+          "y": 73.5,
+          "expectedX": 38.3999977,
+          "expectedY": 74.35437,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.8966354,
+          "pixels": 374,
+          "pixelError": 0.539917469,
+          "x": 148.0,
+          "y": 154.5,
+          "expectedX": 148.1143,
+          "expectedY": 155.027679,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 5.2096922999999995,
+      "phases": [
+        0.9494159,
+        0.9574683,
+        0.9514407
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.9494159,
+          "pixels": 476,
+          "pixelError": 0.9367831,
+          "x": 38.0,
+          "y": 70.5,
+          "expectedX": 38.3999977,
+          "expectedY": 71.34709,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.9514407,
+          "pixels": 389,
+          "pixelError": 0.6524241,
+          "x": 147.958862,
+          "y": 158.0,
+          "expectedX": 148.1143,
+          "expectedY": 158.633636,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 5.338820699999999,
+      "phases": [
+        0.012472868,
+        0.0205252171,
+        0.0144976377
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.012472868,
+          "pixels": 476,
+          "pixelError": 0.468614,
+          "x": 38.0,
+          "y": 122.5,
+          "expectedX": 38.3999977,
+          "expectedY": 122.744133,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.0144976377,
+          "pixels": 374,
+          "pixelError": 0.468077838,
+          "x": 148.0,
+          "y": 96.5,
+          "expectedX": 148.114288,
+          "expectedY": 96.95391,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 5.4685844999999995,
+      "phases": [
+        0.07812834,
+        0.08618069,
+        0.08015311
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.07812834,
+          "pixels": 476,
+          "pixelError": 0.755959332,
+          "x": 38.0,
+          "y": 118.5,
+          "expectedX": 38.3999977,
+          "expectedY": 119.141464,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.08015311,
+          "pixels": 390,
+          "pixelError": 0.330670416,
+          "x": 147.979492,
+          "y": 100.971794,
+          "expectedX": 148.114288,
+          "expectedY": 101.273743,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 5.5797835,
+      "phases": [
+        0.13403894,
+        0.142091274,
+        0.1360637
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.13403894,
+          "pixels": 476,
+          "pixelError": 0.6992405,
+          "x": 38.0,
+          "y": 115.5,
+          "expectedX": 38.3999977,
+          "expectedY": 116.073532,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.1360637,
+          "pixels": 374,
+          "pixelError": 0.466620475,
+          "x": 148.0,
+          "y": 104.5,
+          "expectedX": 148.114288,
+          "expectedY": 104.952408,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 5.691609199999999,
+      "phases": [
+        0.1907952,
+        0.198847532,
+        0.192819953
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.1907952,
+          "pixels": 476,
+          "pixelError": 0.6089548,
+          "x": 38.0,
+          "y": 112.5,
+          "expectedX": 38.3999977,
+          "expectedY": 112.95916,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.192819953,
+          "pixels": 390,
+          "pixelError": 0.6721661,
+          "x": 147.979492,
+          "y": 108.028206,
+          "expectedX": 148.1143,
+          "expectedY": 108.686714,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 5.8041604,
+      "phases": [
+        0.246244922,
+        0.254297256,
+        0.248269677
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.246244922,
+          "pixels": 476,
+          "pixelError": 0.5774663,
+          "x": 38.0,
+          "y": 109.5,
+          "expectedX": 38.3999977,
+          "expectedY": 109.9165,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.248269677,
+          "pixels": 390,
+          "pixelError": 0.387459934,
+          "x": 147.979492,
+          "y": 111.971794,
+          "expectedX": 148.1143,
+          "expectedY": 112.335045,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 5.9200367,
+      "phases": [
+        0.300216436,
+        0.3082688,
+        0.302241176
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.300216436,
+          "pixels": 476,
+          "pixelError": 0.605802834,
+          "x": 38.0,
+          "y": 106.5,
+          "expectedX": 38.3999977,
+          "expectedY": 106.954971,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.302241176,
+          "pixels": 374,
+          "pixelError": 0.402686954,
+          "x": 148.0,
+          "y": 115.5,
+          "expectedX": 148.1143,
+          "expectedY": 115.886124,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 6.0302164,
+      "phases": [
+        0.3597188,
+        0.367771149,
+        0.36174354
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.3597188,
+          "pixels": 476,
+          "pixelError": 0.443309844,
+          "x": 38.0,
+          "y": 103.5,
+          "expectedX": 38.3999977,
+          "expectedY": 103.691116,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.36174354,
+          "pixels": 390,
+          "pixelError": 0.7873384,
+          "x": 147.979492,
+          "y": 119.028206,
+          "expectedX": 148.1143,
+          "expectedY": 119.803917,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "seconds": 6.1638584,
+      "phases": [
+        0.4226501,
+        0.430702448,
+        0.424674839
+      ],
+      "gpu": [
+        {
+          "view": "front",
+          "group": 1,
+          "phase": 0.4226501,
+          "pixels": 476,
+          "pixelError": 0.8419049,
+          "x": 38.0,
+          "y": 99.5,
+          "expectedX": 38.3999977,
+          "expectedY": 100.240814,
+          "pass": true
+        },
+        {
+          "view": "top",
+          "group": 3,
+          "phase": 0.424674839,
+          "pixels": 374,
+          "pixelError": 0.465041429,
+          "x": 148.0,
+          "y": 123.5,
+          "expectedX": 148.1143,
+          "expectedY": 123.950775,
+          "pass": true
+        }
+      ]
+    }
+  ],
+  "scope": "SDK-processed Avatar, production resume packets, freely advancing native clocks through at least two complete sawtooth cycles. GPU Y-/Z+ translation checked against current phase; no manual phase/material/cache writes."
+}

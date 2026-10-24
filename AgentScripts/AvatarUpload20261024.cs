@@ -164,9 +164,9 @@ public static class AvatarUpload20261024 {
         var allowed=new[]{"MF5 Gesture Manager","MF5 Camera","nadena.dev.ndmf__Activator","MorphForge_MF6_Avatar"};
         if(scene.GetRootGameObjects().Any(g=>!allowed.Contains(g.name)))throw new Exception("Unexpected scene objects are preserved");
         if(AssetDatabase.GetAssetDependencyHash(Mf6AvatarBuild.AvatarPath).ToString()!=(string)initial["prefabDependencyHash"])throw new Exception("Source prefab changed during upload; preserve it for review");
-        bool dirty=scene.isDirty;const string snapshot="Assets/MorphForge/Validation/Upload20261024-AfterSdk.unity";
+        bool dirty=scene.isDirty;string snapshot="Assets/MorphForge/Validation/Upload20261024-v"+(string)State()["versionAfter"]+"-AfterSdk.unity";
         if(dirty){
-            if(AssetDatabase.LoadMainAssetAtPath(snapshot))throw new Exception("Post-SDK snapshot already exists; preserve current state");
+            if(AssetDatabase.LoadMainAssetAtPath(snapshot))snapshot="Assets/MorphForge/Validation/Upload20261024-"+DateTime.UtcNow.ToString("HHmmssfff")+"-AfterSdk.unity";
             if(!AssetDatabase.IsValidFolder("Assets/MorphForge/Validation"))AssetDatabase.CreateFolder("Assets/MorphForge","Validation");
             if(!EditorSceneManager.SaveScene(scene,snapshot,true))throw new Exception("Could not preserve the post-SDK scene copy");
             // The source was clean when this task started. Preserve the SDK's

@@ -164,15 +164,27 @@ namespace MorphForge.Editor
         public static int OptimizeIdle(AnimatorController controller)
         {
             var layer=controller.layers.FirstOrDefault(l=>l.name=="MF6 immutable data and phase output");if(layer==null)return 0;
-            var sm=layer.stateMachine;if(sm.states.Any(s=>s.state.name=="Prepare payload"))return 0;
-            var wait=sm.states.Single(s=>s.state.name=="Wait").state;var output=wait.motion as BlendTree;
-            if(!output||output.children.Length!=2)throw new Exception("Unexpected native worker output; preserved");
-            string busy=controller.parameters.Single(p=>p.name.StartsWith("MF6_P")&&p.name.EndsWith("_Busy")).name;
-            var incoming=sm.anyStateTransitions.Single(t=>t.destinationState==wait);var conditions=incoming.conditions;
-            var prepare=sm.AddState("Prepare payload");prepare.motion=output;prepare.writeDefaultValues=true;
-            wait.motion=output.children[1].motion;wait.writeDefaultValues=false;
-            incoming.AddCondition(AnimatorConditionMode.IfNot,0,busy);
-            var enter=sm.AddAnyStateTransition(prepare);enter.duration=0;enter.hasExitTime=false;enter.canTransitionToSelf=false;enter.conditions=conditions;enter.AddCondition(AnimatorConditionMode.If,0,busy);
+            var sm=layer.stateMachine;var wait=sm.states.Single(s=>s.state.name=="Wait").state;bool changed=false;
+            if(!sm.states.Any(s=>s.state.name=="Prepare payload")){
+                var output=wait.motion as BlendTree;if(!output||output.children.Length!=2)throw new Exception("Unexpected native worker output; preserved");
+                string busy=controller.parameters.Single(p=>p.name.StartsWith("MF6_P")&&p.name.EndsWith("_Busy")).name;
+                var incoming=sm.anyStateTransitions.Single(t=>t.destinationState==wait);var conditions=incoming.conditions;
+                var prepare=sm.AddState("Prepare payload");prepare.motion=output;prepare.writeDefaultValues=true;
+                wait.motion=output.children[1].motion;wait.writeDefaultValues=false;
+                incoming.AddCondition(AnimatorConditionMode.IfNot,0,busy);
+                var enter=sm.AddAnyStateTransition(prepare);enter.duration=0;enter.hasExitTime=false;enter.canTransitionToSelf=false;enter.conditions=conditions;enter.AddCondition(AnimatorConditionMode.If,0,busy);changed=true;
+            }
+            // The additive phase baseline must remain complete in Prepare /
+            // Emit. Only idle can hold the last payload and drive switches.
+            var idle=wait.motion as AnimationClip;if(!idle)throw new Exception("Unexpected idle worker motion; preserved");
+            var all=AnimationUtility.GetCurveBindings(idle);var switches=all.Where(b=>b.propertyName=="m_IsActive"||b.propertyName=="TriggerModule.enabled").ToArray();
+            if(switches.Length==0)throw new Exception("Native idle switches missing");
+            if(all.Length!=switches.Length){
+                var sparse=new AnimationClip{name="Idle switches only",frameRate=60};
+                foreach(var binding in switches)AnimationUtility.SetEditorCurve(sparse,binding,AnimationUtility.GetEditorCurve(idle,binding));
+                AssetDatabase.AddObjectToAsset(sparse,controller);wait.motion=sparse;wait.writeDefaultValues=false;changed=true;
+            }
+            if(!changed)return 0;
             EditorUtility.SetDirty(controller);return 1;
         }
         public static string BuildWorker(int pool,string materialSource=null)

@@ -66,14 +66,9 @@ namespace MorphForge.Editor {
             for(int page=0;page<11;page++){var terms=new List<Term>();for(int i=0;i<12&&page*12+i<Slots;i++)terms.AddRange(Word("_G"+(page*12+i).ToString("D3"),(page*12+i)*2));motions.Add(Map(slot,"Glyph output "+slot+"/"+page,terms));weights.Add(Gate(slot,page));}
             var count=Clip("Count coefficient "+slot,new[]{B(slot,"_Count",1)});motions.Add(count);weights.Add(Count(slot));
             var result=Direct("Cached output "+slot,motions);var children=result.children;for(int i=0;i<children.Length;i++)children[i].directBlendParameter=weights[i];result.children=children;
-            var hidden=Clip("Empty text panel "+slot,new[]{B(slot,"_Count",0)});
-            AnimationUtility.SetEditorCurve(hidden,EditorCurveBinding.FloatCurve("Panel"+slot,typeof(MeshRenderer),"m_Enabled"),AnimationCurve.Constant(0,.02f,0));
             var visible=Clip("Visible text panel "+slot,new Binding[0]);
             AnimationUtility.SetEditorCurve(visible,EditorCurveBinding.FloatCurve("Panel"+slot,typeof(MeshRenderer),"m_Enabled"),AnimationCurve.Constant(0,.02f,1));
-            var shown=Direct("Visible panel output "+slot,new Motion[]{visible,result});
-            var gate=new BlendTree{name="Text render when populated "+slot,blendType=BlendTreeType.Simple1D,blendParameter=Count(slot),useAutomaticThresholds=false};AssetDatabase.AddObjectToAsset(gate,fx);gate.AddChild(hidden,0);gate.AddChild(shown,1);
-            var storage=WordCacheBuild.Hold("MF6_TextOne",CachedFields.Where(field=>field<274&&field%2==0||field==295||field==297).Select(field=>Cache(slot,field)));
-            return Direct("Retain and render panel "+slot,new Motion[]{storage,gate});
+            return Direct("Visible panel output "+slot,new Motion[]{visible,result});
         }
         static void CopyCache(VRCAvatarParameterDriver driver,int slot,int source,int target)=>DriverCopy(driver,T(source),Cache(slot,target));
         static void UpdateCount(VRCAvatarParameterDriver driver,int slot,int field,bool snapshot=false){
@@ -166,8 +161,17 @@ namespace MorphForge.Editor {
                     foreach(string property in new[]{"_PosX","_PosY","_PosZ","_RotX","_RotY","_RotZ","_Width","_Height","_FontSize","_Spacing","_Gap","_Align","_Vertical","_Font","_Count","_Red","_Green","_Blue","_Opacity","_BackR","_BackG","_BackB","_BackA","_MotionGroup"})material.SetFloat(property,0);
                     var materialPath=Root+"/Panel"+slot+".mat";var old=AssetDatabase.LoadAssetAtPath<Material>(materialPath);if(old){EditorUtility.CopySerialized(material,old);UnityEngine.Object.DestroyImmediate(material);material=old;EditorUtility.SetDirty(old);}else AssetDatabase.CreateAsset(material,materialPath);
                     obj.GetComponent<MeshRenderer>().sharedMaterial=material;obj.GetComponent<MeshRenderer>().shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;
-                    var output=Output(slot);
-                    var outputSm=new AnimatorStateMachine{name="Text output "+slot};AssetDatabase.AddObjectToAsset(outputSm,fx);fx.AddLayer(new AnimatorControllerLayer{name=outputSm.name,stateMachine=outputSm,defaultWeight=1});outputSm.defaultState=State(outputSm,"Cached output",output);
+                    // Keep the exact same retained-word owner, independently
+                    // of renderer output. An empty panel need not restore all
+                    // 128 glyph/material defaults on every frame.
+                    var storage=WordCacheBuild.Hold("MF6_TextOne",CachedFields.Where(field=>field<274&&field%2==0||field==295||field==297).Select(field=>Cache(slot,field)));
+                    var storageSm=new AnimatorStateMachine{name="Text storage "+slot};AssetDatabase.AddObjectToAsset(storageSm,fx);fx.AddLayer(new AnimatorControllerLayer{name=storageSm.name,stateMachine=storageSm,defaultWeight=1});storageSm.defaultState=State(storageSm,"Retained words",storage);
+                    var output=Output(slot);var hidden=Clip("Empty text panel "+slot,new[]{B(slot,"_Count",0)});
+                    AnimationUtility.SetEditorCurve(hidden,EditorCurveBinding.FloatCurve("Panel"+slot,typeof(MeshRenderer),"m_Enabled"),AnimationCurve.Constant(0,.02f,0));
+                    var outputSm=new AnimatorStateMachine{name="Text output "+slot};AssetDatabase.AddObjectToAsset(outputSm,fx);fx.AddLayer(new AnimatorControllerLayer{name=outputSm.name,stateMachine=outputSm,defaultWeight=1});
+                    var sleeping=State(outputSm,"Empty",hidden);sleeping.writeDefaultValues=false;var rendering=State(outputSm,"Cached output",output);outputSm.defaultState=sleeping;
+                    var awake=outputSm.AddAnyStateTransition(rendering);awake.hasExitTime=false;awake.duration=0;awake.canTransitionToSelf=false;awake.AddCondition(AnimatorConditionMode.Greater,.5f,Count(slot));
+                    var sleep=outputSm.AddAnyStateTransition(sleeping);sleep.hasExitTime=false;sleep.duration=0;sleep.canTransitionToSelf=false;sleep.AddCondition(AnimatorConditionMode.Less,.5f,Count(slot));
                     var sm=new AnimatorStateMachine{name="Text buffer "+slot};AssetDatabase.AddObjectToAsset(sm,fx);fx.AddLayer(new AnimatorControllerLayer{name=sm.name,stateMachine=sm,defaultWeight=1});var idle=State(sm,"Wait for page",empty);idle.writeDefaultValues=false;sm.defaultState=idle;
                     AnimatorState Command(string name,int op,int page=-1,Motion decoded=null) {
                         var state=State(sm,name,decoded?decoded:empty);state.writeDefaultValues=false;var t=Enter(sm,state);Condition(t,"MF6_TextSnapshot",0);Condition(t,"MF6_Q28",254);Condition(t,"MF6_Q00",op);Condition(t,"MF6_Q01",slot);if(page>=0)Condition(t,"MF6_Q02",page);Leave(state,idle);return state;

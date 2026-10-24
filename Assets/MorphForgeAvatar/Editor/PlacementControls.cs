@@ -10,6 +10,10 @@ namespace MorphForgeAvatar.Editor {
     /// <summary>Build-time migration. Runtime uses only native Animator/constraints.</summary>
     public static class PlacementControls {
         public const string AllowGrab = "MF_AllowGrab";
+        static bool HasControl(VRCExpressionsMenu menu,string parameter,System.Collections.Generic.HashSet<VRCExpressionsMenu> seen){
+            if(!menu||!seen.Add(menu))return false;
+            return menu.controls.Any(c=>c.parameter?.name==parameter||c.subMenu&&HasControl(c.subMenu,parameter,seen));
+        }
         public static void Apply(GameObject module) {
             var merge = module.GetComponent<ModularAvatarMergeAnimator>();
             var fx = merge ? merge.animator as AnimatorController : null;
@@ -41,7 +45,7 @@ namespace MorphForgeAvatar.Editor {
             dock.localRotation=Quaternion.Euler(0,180,0);
             var installer=module.GetComponent<ModularAvatarMenuInstaller>();
             foreach(var submenu in installer.menuToAppend.controls.Where(c=>c.subMenu).Select(c=>c.subMenu)) {
-                if(!submenu.controls.Any(c=>c.parameter?.name==AllowGrab)) {
+                if(!HasControl(submenu,AllowGrab,new System.Collections.Generic.HashSet<VRCExpressionsMenu>())) {
                     if(submenu.controls.Count>=8)throw new InvalidOperationException("Placement menu needs a submenu before adding grab toggle");
                     submenu.controls.Add(new VRCExpressionsMenu.Control {name="允许本人抓握",type=VRCExpressionsMenu.Control.ControlType.Toggle,parameter=new VRCExpressionsMenu.Control.Parameter {name=AllowGrab},value=1});
                     EditorUtility.SetDirty(submenu);

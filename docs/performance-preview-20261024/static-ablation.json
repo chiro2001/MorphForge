@@ -1,0 +1,48 @@
+{
+  "success": true,
+  "scope": "Offline Unity Animators.Update diagnostics after removing components before SDK preprocessing. Not VRChat FPS. These variants are separate builds and their costs are not additive.",
+  "variants": [
+    {
+      "variant": "static-no-module",
+      "success": true,
+      "rows": [
+        {
+          "phase": "baseline",
+          "samples": 49,
+          "animatorMeanMs": 0.9316183673469388,
+          "animatorMedianMs": 0.8579,
+          "animatorP95Ms": 1.2365,
+          "cameraEnabled": false
+        }
+      ]
+    },
+    {
+      "variant": "static-no-motion",
+      "success": true,
+      "rows": [
+        {
+          "phase": "baseline",
+          "samples": 203,
+          "animatorMeanMs": 3.0010118226600984,
+          "animatorMedianMs": 2.9095,
+          "animatorP95Ms": 3.8048,
+          "cameraEnabled": false
+        }
+      ]
+    },
+    {
+      "variant": "static-no-text",
+      "success": true,
+      "rows": [
+        {
+          "phase": "baseline",
+          "samples": 157,
+          "animatorMeanMs": 5.281429299363057,
+          "animatorMedianMs": 5.215,
+          "animatorP95Ms": 6.1254,
+          "cameraEnabled": false
+        }
+      ]
+    }
+  ]
+}

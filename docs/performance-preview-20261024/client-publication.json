@@ -1,0 +1,41 @@
+{
+  "utc": "2026-10-24T10:23:11.332626+00:00",
+  "projectId": "d7a0a552-9904-4e00-85d5-2f0d8fc84347",
+  "revision": 16,
+  "creativeRevision": 1,
+  "sceneUnchanged": true,
+  "pending": 0,
+  "sentRevision": 16,
+  "motion": {
+    "attached": true,
+    "capacity": {
+      "groups": 3,
+      "keysPerGroup": 4
+    },
+    "clipId": "flow-loop",
+    "duration": 2.0,
+    "groups": {
+      "fall-b": 2,
+      "fall-main": 1,
+      "stream": 3
+    },
+    "pending": 0,
+    "position": 1.631633,
+    "receiverConfirmed": false,
+    "speed": 1.0,
+    "starting": false,
+    "state": 1
+  },
+  "enabled": true,
+  "placement": {
+    "allowGrab": true,
+    "level": false,
+    "scale": 0.004999999888241291,
+    "visible": false,
+    "world": true
+  },
+  "infoVersion": 9,
+  "previewEnabled": false,
+  "remoteAcknowledged": false,
+  "restartPerformed": false
+}

@@ -37,9 +37,9 @@ public static class WaterfallMotion20261024 {
   EditorSceneManager.OpenScene(Scene,OpenSceneMode.Single);return Save("prepare",report);
  }
  public static async Task<string> Run(){
-  string activeScene=SceneManager.GetActiveScene().path;bool sdk=activeScene=="Assets/MorphForge/Validation/WaterfallSdk20261024/Baseline.unity";
+  string activeScene=SceneManager.GetActiveScene().path;bool previous=activeScene=="Assets/MorphForge/Validation/Performance20261024/previous-motion.unity"||activeScene=="Assets/MorphForge/Validation/Performance20261024/previous-full.unity";bool sdk=activeScene=="Assets/MorphForge/Validation/WaterfallSdk20261024/Baseline.unity"||previous;
   if(!EditorApplication.isPlaying||(activeScene!=Scene&&!sdk))throw new Exception("Owned Play Mode required");
-  string reportPrefix=sdk?"sdk-":"";
+  string reportPrefix=previous?"previous-":sdk?"sdk-":"";
   var gm=UnityEngine.Object.FindObjectsOfType<GestureManager>().Single(g=>g.gameObject.scene.path==activeScene);
   for(int i=0;i<150&&!(gm.Module is ModuleVrc3);i++)await Task.Delay(100);
   var module=gm.Module as ModuleVrc3;if(module==null)throw new Exception("GestureManager not ready");
@@ -54,14 +54,18 @@ public static class WaterfallMotion20261024 {
    foreach(var stage in fixture["stages"]){
     var clock=System.Diagnostics.Stopwatch.StartNew();foreach(var packet in stage["packets"]){int delay=(int)((double)packet["time"]*1000-clock.Elapsed.TotalMilliseconds);if(delay>0)await Task.Delay(delay);var bytes=packet["packet"].Select(v=>(byte)(int)v).ToArray();udp.Send(bytes,bytes.Length,"127.0.0.1",9012);}await Task.Delay(500);
     var errors=new JArray();var expected=(JObject)stage["expectedUniforms"];foreach(var p in expected.Properties()){
-     float actual=Value(renderers[0],p.Name),wanted=(float)p.Value;if(Mathf.Abs(actual-wanted)>.025f)errors.Add(new JObject{["property"]=p.Name,["expected"]=wanted,["actual"]=actual});
+     // Transactional bank identity remains in the receiver; the renderer now
+     // consumes a compact B0 view of whichever complete bank was selected.
+     if(!previous&&p.Name.EndsWith("_Bank")){float selected=module.GetParam(p.Name.Replace("_MF_","MF6_")).FloatValue();if(Mathf.Abs(selected-(float)p.Value)>.01f)errors.Add(new JObject{["property"]=p.Name+" receiver selection",["expected"]=p.Value,["actual"]=selected});}
+     string property=previous?p.Name:System.Text.RegularExpressions.Regex.Replace(p.Name,@"B[01]_","B0_");
+     float actual=Value(renderers[0],property),wanted=!previous&&p.Name.EndsWith("_Bank")?0:(float)p.Value;if(Mathf.Abs(actual-wanted)>.025f)errors.Add(new JObject{["property"]=property,["sourceProperty"]=p.Name,["expected"]=wanted,["actual"]=actual});
     }
     var gpu=new JArray();foreach(string view in new[]{"front","top"}){
      var center=root.TransformPoint(new Vector3(0,(45-128)*cell,8*cell));camera.transform.position=center+(view=="front"?-root.forward:root.up)*100*cell*root.lossyScale.y;camera.transform.LookAt(center,view=="front"?root.up:root.forward);camera.Render();var old=RenderTexture.active;RenderTexture.active=rt;image.ReadPixels(new Rect(0,0,384,384),0,0);image.Apply();RenderTexture.active=old;var pixels=image.GetPixels32();
      var colors=new JArray();for(int g=0;g<3;g++){var ids=Enumerable.Range(0,pixels.Length).Where(i=>{var c=pixels[i];float[] a={c.r,c.g,c.b};return a[g]>25&&a[g]>a[(g+1)%3]*1.4f&&a[g]>a[(g+2)%3]*1.4f;}).ToArray();var expectedCenter=ExpectedCenter(expected,g+1,index%2);var projected=camera.WorldToScreenPoint(root.TransformPoint((expectedCenter-new Vector3(0,128,0))*cell));float x=ids.Length==0?-1:(float)ids.Average(i=>i%384),y=ids.Length==0?-1:(float)ids.Average(i=>i/384);float error=Vector2.Distance(new Vector2(x,y),new Vector2(projected.x,projected.y));colors.Add(new JObject{["group"]=g+1,["pixels"]=ids.Length,["x"]=x,["y"]=y,["expectedX"]=projected.x,["expectedY"]=projected.y,["pixelError"]=error,["pass"]=ids.Length>50&&error<3});}
      File.WriteAllBytes(Reports+"/"+reportPrefix+"stage"+index+"-"+view+".png",image.EncodeToPNG());gpu.Add(new JObject{["view"]=view,["colors"]=colors});
     }
-    var caches=new JObject();for(int g=1;g<=3;g++){var bank=module.GetParam("MF6_M"+g+"_Bank").FloatValue();var prefix="MF6_M"+g+"_B"+Mathf.RoundToInt(bank)+"_";var values=new JObject();foreach(int i in new[]{16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50})values["C"+i.ToString("D2")]=module.GetParam(prefix+"C"+i.ToString("D2")).FloatValue();caches["group"+g]=values;}
+    var caches=new JObject();for(int g=1;g<=3;g++){var bank=module.GetParam("MF6_M"+g+"_Bank").FloatValue();var prefix="MF6_M"+g+"_B"+Mathf.RoundToInt(bank)+"_";var values=new JObject{["selectedBank"]=bank,["gate0"]=module.GetParam("MF6_M"+g+"_B0_Gate").FloatValue(),["gate1"]=module.GetParam("MF6_M"+g+"_B1_Gate").FloatValue()};foreach(int i in new[]{16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50})values["C"+i.ToString("D2")]=module.GetParam(prefix+"C"+i.ToString("D2")).FloatValue();caches["group"+g]=values;}
     rows.Add(new JObject{["name"]=stage["name"],["uniformMismatches"]=errors,["gpu"]=gpu,["cacheWords"]=caches});index++;
     Save(reportPrefix+"transition-progress",new JObject{["stages"]=rows});
    }

@@ -32,7 +32,7 @@ namespace MorphForge.Editor {
   static AnimatorStateTransition Any(AnimatorStateMachine sm,AnimatorState s){var t=sm.AddAnyStateTransition(s);t.duration=0;t.hasExitTime=false;t.canTransitionToSelf=false;return t;}
   static void Leave(AnimatorState s,AnimatorState idle,string n="MF6_Stage",int v=2){var t=s.AddTransition(idle);t.duration=0;t.hasExitTime=false;Ne(t,n,v);}
   static AnimatorStateTransition Enter(AnimatorStateMachine sm,AnimatorState s,int op,int group,int stage=2){var t=Any(sm,s);Eq(t,"MF6_Stage",stage);Eq(t,"MF6_Format",0);Eq(t,Q(28),254);Eq(t,Q(0),op);if(group>0)Eq(t,Q(1),group);return t;}
-  static AnimationClip Clip(string name,string prop,float value){var c=new AnimationClip{name=name,frameRate=60};foreach(int i in Enumerable.Range(0,12)){string path=i<8?"Pool"+i+"/Store":"TextDisplay/Panel"+(i-8);AnimationUtility.SetEditorCurve(c,EditorCurveBinding.FloatCurve(path,i<8?typeof(ParticleSystemRenderer):typeof(MeshRenderer),"material."+prop),AnimationCurve.Constant(0,.02f,value));}AssetDatabase.AddObjectToAsset(c,fx);return c;}
+  static AnimationClip Clip(string name,string prop,float value,int first=0,int count=12){var c=new AnimationClip{name=name,frameRate=60};foreach(int i in Enumerable.Range(first,count)){string path=i<8?"Pool"+i+"/Store":"TextDisplay/Panel"+(i-8);AnimationUtility.SetEditorCurve(c,EditorCurveBinding.FloatCurve(path,i<8?typeof(ParticleSystemRenderer):typeof(MeshRenderer),"material."+prop),AnimationCurve.Constant(0,.02f,value));}AssetDatabase.AddObjectToAsset(c,fx);return c;}
   static BlendTree Direct(string name,IList<Motion> motions,IList<string> weights){var tree=new BlendTree{name=name,blendType=BlendTreeType.Direct};AssetDatabase.AddObjectToAsset(tree,fx);foreach(var m in motions)tree.AddChild(m);var children=tree.children;for(int i=0;i<children.Length;i++)children[i].directBlendParameter=weights[i];tree.children=children;var so=new SerializedObject(tree);so.FindProperty("m_NormalizedBlendValues").boolValue=false;so.ApplyModifiedPropertiesWithoutUndo();return tree;}
   static Motion HoldWords(IEnumerable<string> names){
    var keys=names.Distinct().ToArray();var clips=new List<Motion>();
@@ -50,23 +50,43 @@ namespace MorphForge.Editor {
    receivePages[key]=motion;return motion;
   }
   struct Term{public string prop,param;public float coefficient;public bool packed;}
-  static IEnumerable<Term> Word(int g,int bank,string prop,int field,float unit,float offset=0){yield return new Term{prop=U(g,bank,prop),param=C(g,bank,field),coefficient=unit,packed=true};if(offset!=0)yield return new Term{prop=U(g,bank,prop),param="MF6_MOne",coefficient=offset};}
-  static Motion Output(int g){
+  // Keep both transactional receive banks, but expose only the selected bank
+  // to the shader's B0 view. Duplicated renderer bindings cost CPU even while
+  // the output tree is inactive. Gate weights select the retained source bank.
+  static IEnumerable<Term> Word(int g,int bank,string prop,int field,float unit,float offset=0){yield return new Term{prop=U(g,0,prop),param=C(g,bank,field),coefficient=unit,packed=true};if(offset!=0)yield return new Term{prop=U(g,0,prop),param="MF6_MOne",coefficient=offset};}
+  static AnimationClip Factors(string name,IEnumerable<Term> terms,int first,int count){
+   var c=new AnimationClip{name=name,frameRate=60};
+   foreach(var property in terms.GroupBy(t=>t.prop))foreach(int i in Enumerable.Range(first,count))AnimationUtility.SetEditorCurve(c,EditorCurveBinding.FloatCurve(i<8?"Pool"+i+"/Store":"TextDisplay/Panel"+(i-8),i<8?typeof(ParticleSystemRenderer):typeof(MeshRenderer),"material."+property.Key),AnimationCurve.Constant(0,.02f,property.Sum(t=>t.coefficient)));
+   AssetDatabase.AddObjectToAsset(c,fx);return c;
+  }
+  static Motion Output(int g,int first,int count){
    var all=new List<Term>();var bankTerms=new List<Term>[2];
    for(int b=0;b<2;b++){
-    var ts=new List<Term>{new Term{prop=U(g,b,"Count"),param=C(g,b,2),coefficient=1},new Term{prop=U(g,b,"Interp"),param=C(g,b,3),coefficient=1}};
+    var ts=new List<Term>{new Term{prop=U(g,0,"Count"),param=C(g,b,2),coefficient=1},new Term{prop=U(g,0,"Interp"),param=C(g,b,3),coefficient=1}};
     for(int a=0;a<3;a++)ts.AddRange(Word(g,b,"Pivot"+"XYZ"[a],4+a*2,1f/64,-512));
     for(int k=0;k<4;k++){int start=16+k*18;ts.AddRange(Word(g,b,"K"+k+"T",start,1f/65535));for(int a=0;a<3;a++)ts.AddRange(Word(g,b,"K"+k+"P"+"XYZ"[a],start+2+a*2,1f/64,-512));for(int a=0;a<4;a++)ts.AddRange(Word(g,b,"K"+k+"Q"+"XYZW"[a],start+8+a*2,1f/32767,-32768f/32767));ts.AddRange(Word(g,b,"K"+k+"S",start+16,1f/4096));}
     bankTerms[b]=ts;all.AddRange(ts);
    }
-   var controls=new[]{"Bank","Enabled","Base","Loop"}.Select(s=>new Term{prop="_MF_M"+g+"_"+s,param=N(g,s),coefficient=1}).ToArray();all.AddRange(controls);
-   var zero=new AnimationClip{name="Motion zero baseline "+g,frameRate=60};foreach(string p in all.Select(t=>t.prop).Distinct())for(int i=0;i<12;i++)AnimationUtility.SetEditorCurve(zero,EditorCurveBinding.FloatCurve(i<8?"Pool"+i+"/Store":"TextDisplay/Panel"+(i-8),i<8?typeof(ParticleSystemRenderer):typeof(MeshRenderer),"material."+p),AnimationCurve.Constant(0,.02f,0));AssetDatabase.AddObjectToAsset(zero,fx);
+   var controls=new[]{"Bank","Enabled","Base","Loop"}.Select(s=>new Term{prop="_MF_M"+g+"_"+s,param=s=="Bank"?"MF6_MOne":N(g,s),coefficient=s=="Bank"?0:1}).ToArray();all.AddRange(controls);
+   var zero=new AnimationClip{name="Motion zero baseline "+g+"/"+first,frameRate=60};foreach(string p in all.Select(t=>t.prop).Distinct())foreach(int i in Enumerable.Range(first,count))AnimationUtility.SetEditorCurve(zero,EditorCurveBinding.FloatCurve(i<8?"Pool"+i+"/Store":"TextDisplay/Panel"+(i-8),i<8?typeof(ParticleSystemRenderer):typeof(MeshRenderer),"material."+p),AnimationCurve.Constant(0,.02f,0));AssetDatabase.AddObjectToAsset(zero,fx);
    var motions=new List<Motion>{zero};var weights=new List<string>{"MF6_MOne"};
-   foreach(var t in controls){motions.Add(Clip(t.prop,t.prop,t.coefficient));weights.Add(t.param);}
-   for(int b=0;b<2;b++){var ts=bankTerms[b];var clips=ts.Select(t=>(Motion)Clip(t.prop+" factor",t.prop,t.coefficient)).ToArray();motions.Add(Direct("Motion bank "+g+"/"+b,clips,ts.Select(t=>t.param).ToArray()));weights.Add(B(g,b,"Gate"));}
+   foreach(var t in controls){motions.Add(Clip(t.prop,t.prop,t.coefficient,first,count));weights.Add(t.param);}
+   for(int b=0;b<2;b++){var terms=bankTerms[b].GroupBy(t=>t.param).ToArray();var clips=terms.Select(t=>(Motion)Factors("Motion factors "+g+"/"+b+"/"+first+"/"+t.Key,t,first,count)).ToArray();motions.Add(Direct("Motion bank "+g+"/"+b,clips,terms.Select(t=>t.Key).ToArray()));weights.Add(B(g,b,"Gate"));}
    var render=Direct("Motion cached output "+g,motions,weights);
-   var gate=new BlendTree{name="Render active animation "+g,blendType=BlendTreeType.Simple1D,blendParameter=N(g,"Enabled"),useAutomaticThresholds=false};AssetDatabase.AddObjectToAsset(gate,fx);gate.AddChild(Clip("Motion inactive "+g,"_MF_M"+g+"_Enabled",0),0);gate.AddChild(render,1);
-   return gate;
+   return render;
+  }
+  static void OutputLayer(int g,int first,int count,string name,int textSlot=-1){
+   var output=Layer(name);var sleeping=State(output,"Inactive",Clip("Motion inactive "+g+"/"+first,"_MF_M"+g+"_Enabled",0,first,count));
+   var rendering=State(output,"Cached",Output(g,first,count),true);output.defaultState=sleeping;
+   var awake=Any(output,rendering);awake.AddCondition(AnimatorConditionMode.Greater,.5f,N(g,"Enabled"));
+   var sleep=Any(output,sleeping);sleep.AddCondition(AnimatorConditionMode.Less,.5f,N(g,"Enabled"));
+   if(textSlot>=0){
+    string populated="MF6_Text"+textSlot+"_Count",group="MF6_Text"+textSlot+"_B299";Param(populated);Param(group);
+    awake.AddCondition(AnimatorConditionMode.Greater,.5f,populated);awake.AddCondition(AnimatorConditionMode.Greater,g-.5f,group);awake.AddCondition(AnimatorConditionMode.Less,g+.5f,group);
+    sleep=Any(output,sleeping);sleep.AddCondition(AnimatorConditionMode.Less,.5f,populated);
+    sleep=Any(output,sleeping);sleep.AddCondition(AnimatorConditionMode.Less,g-.5f,group);
+    sleep=Any(output,sleeping);sleep.AddCondition(AnimatorConditionMode.Greater,g+.5f,group);
+   }
   }
   static void RateDecoder(){Param("MF6_MDecodedRate");var sm=Layer("Motion rate lookup");var idle=State(sm,"Wait");sm.defaultState=idle;for(int d=0;d<Durations.Length;d++)for(int s=0;s<Speeds.Length;s++){var state=State(sm,"Rate "+d+"/"+s);Set(Driver(state),"MF6_MDecodedRate",Speeds[s]/Durations[d]);var t=Enter(sm,state,16,0,1);Eq(t,Q(4),d);Eq(t,Q(15),s);Leave(state,idle,v:1);}}
   static void Buffers(int g){var sm=Layer("Motion receive "+g);var idle=State(sm,"Wait",HoldWords(Words(g)),true);sm.defaultState=idle;
@@ -112,7 +132,13 @@ namespace MorphForge.Editor {
    RateDecoder();for(int g=1;g<=3;g++){
     foreach(string s in new[]{"Bank","Enabled","Base","Loop","Rate","SelectedRate"})Param(N(g,s));foreach(string s in new[]{"Valid","LoopInt","SelectedLoop"})Param(N(g,s),true);foreach(string s in new[]{"AppliedTicket","PendingTicket","ClockTicket"})Param(N(g,s),true,255);
     for(int b=0;b<2;b++){Param(B(g,b,"Version"),true,255);foreach(string s in new[]{"Ready","Count","Loop","Key0","Key1","Key2","Key3"})Param(B(g,b,s),true);Param(B(g,b,"Gate"));Param(B(g,b,"Rate"));foreach(int i in CachedFields)Param(C(g,b,i));}
-    Buffers(g);Controls(g);var output=Layer("Motion output "+g);output.defaultState=State(output,"Cached",Output(g),true);Clocks(g);
+    Buffers(g);Controls(g);
+    // A WD-on state restores its entire property footprint even when a 1D
+    // tree selects the tiny disabled clip. Sleep in an ordinary WD-off clip;
+    // the complete direct output retains WD on whenever it is active.
+    OutputLayer(g,0,8,"Motion output "+g);
+    for(int slot=0;slot<4;slot++)OutputLayer(g,8+slot,1,"Motion text output "+g+"/"+slot,slot);
+    Clocks(g);
    }
    ResetOnClear();fx.parameters=parameters.Values.ToArray();WordCacheBuild.AddInputs(fx);EditorUtility.SetDirty(fx);AssetDatabase.SaveAssets();return Newtonsoft.Json.JsonConvert.SerializeObject(new{success=true,layers=fx.layers.Length,states=fx.layers.Sum(l=>l.stateMachine.states.Length),parameters=fx.parameters.Length,syncedBits=0});
   }

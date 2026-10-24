@@ -1,0 +1,21 @@
+{
+  "scene": "Assets/MorphForge/MF6/MorphForge_MF6.unity",
+  "sceneDirty": true,
+  "avatarId": "avtr_9ebb3bdb-6991-42cd-8c3e-b9a35f176e90",
+  "prefabId": "avtr_9ebb3bdb-6991-42cd-8c3e-b9a35f176e90",
+  "prefabDependencyHash": "b6273e43e26957e7932c69bc27cf8096",
+  "sceneDependencyHash": "4658a139c8acb3fc28b8c1c8651061c4",
+  "rootNames": [
+    "MF5 Gesture Manager",
+    "MF5 Camera",
+    "nadena.dev.ndmf__Activator",
+    "MorphForge_MF6_Avatar"
+  ],
+  "overrideCount": 647,
+  "pipelineOverrides": [],
+  "dirtyAvatarComponents": [
+    "VRC.Core.PipelineManager:MorphForge_MF6_Avatar",
+    "UnityEngine.Transform:Upper_Twist_L",
+    "UnityEngine.Transform:Upper_Twist_R"
+  ]
+}

@@ -1,4 +1,4 @@
-# MorphForge Avatar 插件 1.3.1
+# MorphForge Avatar 插件 1.3.2
 
 将 MorphForge Desktop 的体素、纯色三角面、原生点线、点阵文字与分组动画，通过 OSC 显示在 VRChat PC Avatar 上。容量为 16,384 个几何对象；显示使用原生 Animator、粒子和 Shader，上传后没有自定义 C# 运行逻辑。
 
@@ -6,10 +6,12 @@
 
 1.3.1 修正动画关键帧接收缓存的完整写入方式，能力版本为9；需要 MorphForge Desktop 0.26.1 或更新版本。上传后请在 VRChat 切换头像并重新识别，确认显示能力版本9。桌面在只有一个已保存动画时默认发布该片段，无需先打开动画窗口。
 
+1.3.2 减少动画材质绑定与空闲文字、几何输出；空白或未加入动画组的文本框停止输出整套动画关键帧。本人预览位于 `MorphForge > 本人预览`，默认从模型正面取景；手部跟随、保持水平及抓握开关归入 `定位设置`。能力版本仍为9，网络同步预算不增加。
+
 ## 安装
 
 1. 使用 VCC 创建或打开 Avatar 工程，安装 VRChat SDK 和 Modular Avatar。
-2. 导入 `MorphForgeAvatar-1.3.1.unitypackage`。
+2. 导入 `MorphForgeAvatar-1.3.2.unitypackage`。
 3. 在场景中选择人物，在 `Tools > MorphForge Avatar > 安装与检查` 指定 Avatar，点击“一键安装”。
 4. 需要压缩服装等低频菜单参数时，先在 VCC 安装 VRCFury，再勾选参数压缩桥。已经安装的模块可移除后重新安装；移除和安装均支持 Undo。
 5. 正常构建、上传 Avatar。在 VRChat 打开 OSC，用 MorphForge Desktop 识别 Avatar 能力并发布作品。

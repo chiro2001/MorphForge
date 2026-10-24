@@ -1,0 +1,157 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "retained pages panel 0",
+      "pass": true,
+      "detail": [
+        64.9999847,
+        66.0000153,
+        67.00004,
+        32.00001,
+        49.0000458,
+        49.99997,
+        51.0000038,
+        32.00001,
+        20013.002,
+        25991.0156,
+        10.0000067,
+        26085.0,
+        26412.0039,
+        35486.01,
+        32.00001,
+        84.0,
+        101.000053,
+        114.999947,
+        116.000076,
+        32.00001,
+        52.00003,
+        52.99997,
+        54.0000076,
+        10.0000067,
+        31532.0156,
+        20108.0078,
+        39028.9844,
+        23383.0,
+        24417.9961,
+        20445.002,
+        25344.9961
+      ]
+    },
+    {
+      "name": "published character count panel 0",
+      "pass": true,
+      "detail": 31.0
+    },
+    {
+      "name": "retained pages panel 1",
+      "pass": true,
+      "detail": [
+        26085.0,
+        26412.0039,
+        35486.0,
+        32.0000038,
+        12370.999,
+        12434.999,
+        12395.001,
+        12385.0049,
+        12398.999,
+        9.999999,
+        87.0,
+        111.000008,
+        114.000031,
+        108.000015,
+        100.000023,
+        33.0000038
+      ]
+    },
+    {
+      "name": "published character count panel 1",
+      "pass": true,
+      "detail": 16.0
+    },
+    {
+      "name": "idle retains text without continuous OSC",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "latest14 snapshot decodes without normal sequence",
+      "pass": true,
+      "detail": [
+        23454.0,
+        26102.0,
+        23383.0,
+        24149.0,
+        32.0,
+        65.0,
+        66.0,
+        67.0,
+        32.0,
+        26085.0,
+        26412.0,
+        35486.0
+      ]
+    },
+    {
+      "name": "snapshot visible count",
+      "pass": true,
+      "detail": 12.0
+    },
+    {
+      "name": "extension and snapshot preserve existing geometry",
+      "pass": true,
+      "detail": 3
+    },
+    {
+      "name": "delete hides text and advances generation",
+      "pass": true,
+      "detail": {
+        "visibleCount": 0.0,
+        "cachedCount": 0.0,
+        "epoch": 1
+      }
+    },
+    {
+      "name": "late old subtitle cannot resurrect deleted panel",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "current-generation subtitle still displays",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "zero opacity and black channels overwrite prior nonzero values",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "zero low-byte words replace previous glyph bytes",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "same-control snapshot updates again",
+      "pass": true,
+      "detail": {
+        "count": 12.0,
+        "glyph1": 26102.0,
+        "inputCount": 140,
+        "latchedCount": 140
+      }
+    },
+    {
+      "name": "bounded text controller metadata",
+      "pass": true,
+      "detail": {
+        "controllerAssetBytes": 28863010,
+        "runtimeAssetsBytesEstimate": 26065556,
+        "clips": 2469,
+        "layers": 12
+      }
+    }
+  ],
+  "scope": "Actual UDP9012 -> GestureManager merged native Animator -> retained Renderer MaterialPropertyBlock. No VRChat remote delivery claim."
+}

@@ -4913,8 +4913,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 217670703303398453}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -140}
+  m_LocalRotation: {x: 0, y: 1, z: -0, w: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 140}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -51255,7 +51255,7 @@ MonoBehaviour:
     UpdatedAtVersion: 1.18.7
     MinimumVersion: 1.18.0
   menuToAppend: {fileID: 11400000, guid: e6241ad0264d0294e8c0dc81106954ab, type: 2}
-  installTargetMenu: {fileID: 0}
+  installTargetMenu: {fileID: 11400000, guid: b02ea4d03aa34cc48beb54c1e4b35d0c, type: 2}
 --- !u!1 &3388266915147460190
 GameObject:
   m_ObjectHideFlags: 0
@@ -116829,7 +116829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fab0a32fd69846a48a5a2464cc2af2f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 1.3.1
+  version: 1.3.2
   catalogIdentity: 17fca98f3f7fba056af0448af0be57d1bbb11fe09dbd2020a7f111378e369047
   vrcFuryBridge: 0
 --- !u!1 &8902580936688865059
