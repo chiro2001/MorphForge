@@ -1052,11 +1052,23 @@ async fn publish(State(a): State<App>, Json(v): Json<Value>) -> ApiResult {
     let rev = v["revision"].as_u64().unwrap_or(w.project.scene.revision);
     let scene = w.scene_at(rev)?;
     let materials = w.materials_at(rev)?;
-    let result = if let Some(animation) = v.get("animation").filter(|v| !v.is_null()) {
+    // A normal publication defaults to the only saved clip. Explicit null opts
+    // out; repair/rebuild retain their existing playback semantics.
+    let automatic = v.get("animation").is_none()
+        && v["repair"] != true && v["resync"] != true
+        && w.project.creative.clips.len() == 1;
+    let animation = if automatic {
+        let id = w.project.creative.clips.keys().next().unwrap();
+        json!({"id":id,"speed":1.,"position":0.})
+    } else {
+        v["animation"].clone()
+    };
+    let result = if !animation.is_null() {
         if v["repair"] == true || v["resync"] == true {
             return Err(anyhow::anyhow!("所选动画请使用发布当前版本；补播和重建沿用已绑定动画").into());
         }
-        if v["baseCreativeRevision"].as_u64() != Some(w.project.creative.revision) {
+        if (!automatic || v.get("baseCreativeRevision").is_some())
+            && v["baseCreativeRevision"].as_u64() != Some(w.project.creative.revision) {
             return Err(anyhow::anyhow!("REVISION_CONFLICT：动画已改变，请刷新后发布").into());
         }
         #[derive(serde::Deserialize)]

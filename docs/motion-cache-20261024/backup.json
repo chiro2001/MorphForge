@@ -1,0 +1,79 @@
+{
+  "success": true,
+  "assets": [
+    {
+      "source": "Assets/MorphForgeAvatar/Generated/Motion",
+      "copy": "Assets/MorphForge/Validation/MotionCacheFix20261024/Before/Item0",
+      "hash": "e6e228f1e29cae33cede1d33a6774331"
+    },
+    {
+      "source": "Assets/MorphForge/MF6/Decoder.controller",
+      "copy": "Assets/MorphForge/Validation/MotionCacheFix20261024/Before/Item1.controller",
+      "hash": "a1876b76458d55208bd38fc078ac08eb"
+    },
+    {
+      "source": "Assets/MorphForge/MF6/Avatar.prefab",
+      "copy": "Assets/MorphForge/Validation/MotionCacheFix20261024/Before/Item2.prefab",
+      "hash": "3e915224e3bbebf4bef0b81746ec472b"
+    },
+    {
+      "source": "Assets/MorphForgeAvatar/Generated/MorphForge.prefab",
+      "copy": "Assets/MorphForge/Validation/MotionCacheFix20261024/Before/Item3.prefab",
+      "hash": "69396fe10f58eb7b98a0fb0cce3cfe3f"
+    }
+  ],
+  "characters": [
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Assets/Asset/BlackFire.prefab",
+      "hash": "67b85fdab9c7b92d77575416c5e9881c"
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/RotationParticle/RotationEffect.prefab",
+      "hash": "48a92f45cee42e95bb1c0648a7aed1f1"
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/LaserBit/WarpurgisLaser_36.prefab",
+      "hash": "60bcfb80c774485e1fff85b0748030ec"
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Lance/LanceMain.prefab",
+      "hash": "c42e7c78795ccae8c8b4c3340334fe64"
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Shield/Shield.prefab",
+      "hash": "8f7918cee4eb02a0bb4fc258ea8d0029"
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Assets/Asset/WorldAnchor.prefab",
+      "hash": "5c46cfbf4f11f4339e42e224af7b2632"
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/RailGun/LusterRailGun.prefab",
+      "hash": "758fed71d233d89d02d99d275cc316fc"
+    },
+    {
+      "path": "Assets/Nemesis/AFK_Effects.prefab",
+      "hash": "f3854178009dd0e9f789db91dd1c15b3"
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Lod_FBX&Material&Texture/Nemesis_Lod.prefab",
+      "hash": "c2dda7845347c754ebbc9e470b3b6a15"
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Dummy/火炎放射_Black.prefab",
+      "hash": "65f7aff79c39c18d8a17aff682adb5bb"
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Lance/LanceElect.prefab",
+      "hash": "fd1287fe79e874a886cea24750488f1f"
+    },
+    {
+      "path": "Assets/Nemesis/NemesisWandPrefab.prefab",
+      "hash": "767adee7ee865ee8c45ba945563677eb"
+    },
+    {
+      "path": "Assets/Nemesis/Nemesis_Lod/Gimic/Reticle/Reticle.prefab",
+      "hash": "2333c71cbb705a21285a7e94aac64080"
+    }
+  ]
+}

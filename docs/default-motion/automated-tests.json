@@ -1,0 +1,9 @@
+{
+  "success": true,
+  "rustPassed": 9,
+  "frontendPassed": 62,
+  "browserPassed": 16,
+  "nativePassed": 16,
+  "installationPassed": 14,
+  "mainPassed": 8
+}

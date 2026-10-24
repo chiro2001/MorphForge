@@ -482,6 +482,9 @@ impl Transport {
         if port == 9000 && self.inner.lock().unwrap().discovery["info"]["motionSession"] != true {
             bail!("AVATAR_MOTION_SESSION_UNSUPPORTED：请更新到支持动画会话恢复的头像并重新识别")
         }
+        if port == 9000 && self.inner.lock().unwrap().discovery["info"]["motionCache"] != true {
+            bail!("AVATAR_MOTION_RECEIVER_UPDATE_REQUIRED：当前头像还未包含动画缓存修正；请切换到更新后的头像并识别能力版本9，再发布动画")
+        }
         motion.publish(scene, clip, id, speed, position, playing)?;
         let projection = crate::target::project_wire(scene, materials, catalog.as_ref())?;
         self.publish_projection_motion(

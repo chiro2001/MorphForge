@@ -148,7 +148,7 @@ async fn manual_publish_includes_selected_motion_and_rejects_invalid_selections_
     // be rebound when the user first selects an animation in the main UI.
     let static_response = client
         .post(format!("{base}/api/publish"))
-        .json(&json!({}))
+        .json(&json!({"animation":null}))
         .send()
         .await
         .unwrap();
@@ -218,13 +218,48 @@ async fn manual_publish_includes_selected_motion_and_rejects_invalid_selections_
     // A later geometry-only publication preserves the attached animation.
     let response = client
         .post(format!("{base}/api/publish"))
-        .json(&json!({}))
+        .json(&json!({"animation":null}))
         .send()
         .await
         .unwrap();
     let result: Value = response.json().await.unwrap();
     assert_eq!(result["motion"]["clipId"], "spin");
     assert_eq!(result["motion"]["state"], 1);
+    app.transport.motion_control("stop", None).unwrap();
+    let response = client
+        .post(format!("{base}/api/publish"))
+        .json(&json!({"projectId":project_id,"baseRevision":revision}))
+        .send()
+        .await
+        .unwrap();
+    assert!(response.status().is_success());
+    let result: Value = response.json().await.unwrap();
+    assert_eq!(
+        result["motion"]["clipId"], "spin",
+        "the only saved clip is the default"
+    );
+    assert_eq!(
+        result["motion"]["state"], 1,
+        "default publication starts playback"
+    );
+    {
+        let mut w = app.workspace.lock().unwrap();
+        let clip = w.project.creative.clips["spin"].clone();
+        w.project.creative.clips.insert("other".into(), clip);
+    }
+    app.transport.motion_control("stop", None).unwrap();
+    let response = client
+        .post(format!("{base}/api/publish"))
+        .json(&json!({}))
+        .send()
+        .await
+        .unwrap();
+    assert!(response.status().is_success());
+    let result: Value = response.json().await.unwrap();
+    assert_eq!(
+        result["motion"]["state"], 0,
+        "multiple saved clips require a selection"
+    );
     app.transport.inner.lock().unwrap().stop = true;
     task.abort();
 }

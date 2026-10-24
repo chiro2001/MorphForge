@@ -1,0 +1,43 @@
+{
+  "success": true,
+  "version": "0.26.1",
+  "projectId": "d7a0a552-9904-4e00-85d5-2f0d8fc84347",
+  "revision": 16,
+  "creativeRevision": 1,
+  "checks": [
+    {
+      "name": "installed main reports 0.26.1",
+      "passed": true
+    },
+    {
+      "name": "project and revisions preserved",
+      "passed": true
+    },
+    {
+      "name": "full geometry materials and text preserved",
+      "passed": true
+    },
+    {
+      "name": "API configuration preserved",
+      "passed": true
+    },
+    {
+      "name": "no automatic OSC or microphone activity",
+      "passed": true
+    },
+    {
+      "name": "actual installed combined publish UI initialized",
+      "passed": true
+    },
+    {
+      "name": "only saved clip selected automatically in both controls",
+      "passed": true
+    },
+    {
+      "name": "animation window remains closed and publication is ready",
+      "passed": true
+    }
+  ],
+  "defaultClipId": "flow-loop",
+  "scope": "Read-only checks of installed main and automatic sole-clip selection. No UI selection, publish, OSC or model request performed."
+}

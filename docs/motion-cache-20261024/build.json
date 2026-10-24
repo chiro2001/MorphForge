@@ -1,0 +1,17 @@
+{
+  "success": true,
+  "receiveStates": 123,
+  "receiveStatesWriteDefaultsOn": 123,
+  "parameters": 462,
+  "cachedWordClips": 234,
+  "charactersUnchanged": true,
+  "motionBuild": {
+    "success": true,
+    "layers": 20,
+    "states": 472,
+    "parameters": 462,
+    "syncedBits": 0
+  },
+  "sourceHash": "b4fd51a103944ff6041d4f75ff0bd091",
+  "receiverCapabilityVersion": 9
+}

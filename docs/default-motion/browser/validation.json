@@ -1,0 +1,70 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "isolated 0.26.1 project with OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "packaged publish UI matches the final source files",
+      "passed": true
+    },
+    {
+      "name": "single saved clip is selected without opening animation panel",
+      "passed": true
+    },
+    {
+      "name": "default main publication starts the only animation",
+      "passed": true
+    },
+    {
+      "name": "reopening keeps single animation ready without manual selection",
+      "passed": true
+    },
+    {
+      "name": "animation panel selection is mirrored beside main publish",
+      "passed": true
+    },
+    {
+      "name": "main button queues selected motion for playback with geometry",
+      "passed": true
+    },
+    {
+      "name": "model and motion use one publish request",
+      "passed": true
+    },
+    {
+      "name": "publishing leaves OSC disabled",
+      "passed": true
+    },
+    {
+      "name": "main selector updates the animation editor",
+      "passed": true
+    },
+    {
+      "name": "changing selection publishes that clip and its speed",
+      "passed": true
+    },
+    {
+      "name": "unsaved edits are explained before any publication",
+      "passed": true
+    },
+    {
+      "name": "unsaved edits preserve the active animation and commit history",
+      "passed": true
+    },
+    {
+      "name": "unsupported target rejects the combined request without a static fallback",
+      "passed": true
+    },
+    {
+      "name": "explicit static choice still publishes geometry",
+      "passed": true
+    },
+    {
+      "name": "no unhandled browser errors or OSC sends",
+      "passed": true
+    }
+  ],
+  "scope": "Actual main publish buttons in isolated Chromium/WebView2; OSC disabled, no VRChat, microphone or model API calls."
+}

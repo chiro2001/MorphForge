@@ -1,0 +1,5131 @@
+{
+  "success": true,
+  "sourceHash": "b4fd51a103944ff6041d4f75ff0bd091",
+  "source": {
+    "path": "Assets/MorphForgeAvatar/Generated/Motion/Motion.controller",
+    "parameters": 462,
+    "cacheParameters": 255,
+    "receiveStates": 123,
+    "receiveStatesWriteDefaultsOn": 123,
+    "layers": 20,
+    "clocks": [
+      {
+        "state": "Clock 0/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 0/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 1/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 1/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 2/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 2/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 3/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 3/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 4/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 4/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 5/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 5/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 6/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 6/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 7/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 7/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 8/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 8/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 9/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 9/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 10/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 10/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 11/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 11/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 12/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 12/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 13/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 13/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 14/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 14/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 15/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 15/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 0/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 0/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 1/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 1/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 2/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 2/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 3/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 3/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 4/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 4/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 5/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 5/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 6/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 6/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 7/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 7/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 8/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 8/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 9/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 9/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 10/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 10/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 11/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 11/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 12/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 12/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 13/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 13/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 14/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 14/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 15/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 15/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 0/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 0/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 1/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 1/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 2/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 2/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 3/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 3/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 4/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 4/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 5/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 5/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 6/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 6/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 7/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 7/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 8/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 8/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 9/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 9/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 10/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 10/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 11/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 11/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 12/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 12/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 13/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 13/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 14/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 14/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 15/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 15/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      }
+    ],
+    "trees": [
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 78
+      },
+      {
+        "name": "Latch MF6_M1_B0_C04",
+        "normalized": true,
+        "children": 12
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 75
+      },
+      {
+        "name": "Latch MF6_M1_B0_C16",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      },
+      {
+        "name": "Latch MF6_M1_B0_C34",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      },
+      {
+        "name": "Latch MF6_M1_B0_C52",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      },
+      {
+        "name": "Latch MF6_M1_B0_C70",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      },
+      {
+        "name": "Latch MF6_M1_B1_C04",
+        "normalized": true,
+        "children": 12
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 75
+      },
+      {
+        "name": "Latch MF6_M1_B1_C16",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      },
+      {
+        "name": "Latch MF6_M1_B1_C34",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      },
+      {
+        "name": "Latch MF6_M1_B1_C52",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      },
+      {
+        "name": "Latch MF6_M1_B1_C70",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      },
+      {
+        "name": "Motion bank 1/0",
+        "normalized": false,
+        "children": 72
+      },
+      {
+        "name": "Motion bank 1/1",
+        "normalized": false,
+        "children": 72
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 78
+      },
+      {
+        "name": "Latch MF6_M2_B0_C04",
+        "normalized": true,
+        "children": 12
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 75
+      },
+      {
+        "name": "Latch MF6_M2_B0_C16",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      },
+      {
+        "name": "Latch MF6_M2_B0_C34",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      }
+    ]
+  },
+  "built": {
+    "path": "Packages/nadena.dev.ndmf/__Generated/MorphForge_MF6_Avatar/_assets/assets 1.asset",
+    "parameters": 1926,
+    "cacheParameters": 255,
+    "receiveStates": 123,
+    "receiveStatesWriteDefaultsOn": 123,
+    "layers": 136,
+    "clocks": [
+      {
+        "state": "Clock 0/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 0/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 1/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 1/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 2/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 2/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 3/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 3/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 4/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 4/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 5/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 5/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 6/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 6/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 7/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 7/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 8/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 8/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 9/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 9/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 10/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 10/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 11/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 11/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 12/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 12/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 13/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 13/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 14/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 14/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 15/0",
+        "clip": "Motion elapsed 1/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 15/1",
+        "clip": "Motion elapsed 1/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M1_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M1_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 0/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 0/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 1/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 1/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 2/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 2/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 3/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 3/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 4/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 4/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 5/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 5/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 6/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 6/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 7/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 7/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 8/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 8/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 9/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 9/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 10/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 10/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 11/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 11/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 12/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 12/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 13/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 13/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 14/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 14/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 15/0",
+        "clip": "Motion elapsed 2/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 15/1",
+        "clip": "Motion elapsed 2/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M2_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M2_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 0/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 0/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 1/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 1/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 2/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 2/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 3/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 3/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 4/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 4/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 5/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 5/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 6/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 6/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 7/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 7/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 8/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 8/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 9/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 9/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 10/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 10/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 11/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 11/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 12/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 12/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 13/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 13/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 14/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 14/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 15/0",
+        "clip": "Motion elapsed 3/0",
+        "loop": false,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      },
+      {
+        "state": "Clock 15/1",
+        "clip": "Motion elapsed 3/1",
+        "loop": true,
+        "loopBlend": false,
+        "wrapMode": "Default",
+        "speedParameter": "MF6_M3_Rate",
+        "speedParameterActive": true,
+        "path": "(MA WorldFixedRoot)/WorldFrame/AnchorPose/ContentLeveling/ContentScale/ProtocolCenter/Pool0/Store",
+        "property": "material._MF_M3_Elapsed",
+        "keys": [
+          {
+            "time": 0.0,
+            "value": 0.0,
+            "inTangent": 0.0,
+            "outTangent": 1.0
+          },
+          {
+            "time": 1.0,
+            "value": 1.0,
+            "inTangent": 1.0,
+            "outTangent": 0.0
+          }
+        ]
+      }
+    ],
+    "trees": [
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 78
+      },
+      {
+        "name": "Latch MF6_M1_B0_C04",
+        "normalized": true,
+        "children": 12
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 75
+      },
+      {
+        "name": "Latch MF6_M1_B0_C16",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      },
+      {
+        "name": "Latch MF6_M1_B0_C34",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      },
+      {
+        "name": "Latch MF6_M1_B0_C52",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      },
+      {
+        "name": "Latch MF6_M1_B0_C70",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      },
+      {
+        "name": "Latch MF6_M1_B1_C04",
+        "normalized": true,
+        "children": 12
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 75
+      },
+      {
+        "name": "Latch MF6_M1_B1_C16",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      },
+      {
+        "name": "Latch MF6_M1_B1_C34",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      },
+      {
+        "name": "Latch MF6_M1_B1_C52",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      },
+      {
+        "name": "Latch MF6_M1_B1_C70",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      },
+      {
+        "name": "Motion bank 1/0",
+        "normalized": false,
+        "children": 72
+      },
+      {
+        "name": "Motion bank 1/1",
+        "normalized": false,
+        "children": 72
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 78
+      },
+      {
+        "name": "Latch MF6_M2_B0_C04",
+        "normalized": true,
+        "children": 12
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 75
+      },
+      {
+        "name": "Latch MF6_M2_B0_C16",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      },
+      {
+        "name": "Latch MF6_M2_B0_C34",
+        "normalized": true,
+        "children": 36
+      },
+      {
+        "name": "Retain motion words",
+        "normalized": false,
+        "children": 69
+      }
+    ]
+  },
+  "scene": "Assets/MorphForge/Validation/WaterfallSdk20261024/Baseline.unity",
+  "syncedBits": 254,
+  "scope": "Actual SDK preprocessing of an owned scene copy; no source assets or online Avatar modified."
+}

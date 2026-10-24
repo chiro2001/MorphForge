@@ -60,7 +60,7 @@ try {
   await sleep(500);
   await wait(() => js('return !!window.__morphforge?.ready&&!window.__publishAuditRequests'));
   const initial = await api('state');
-  check('isolated 0.26.0 project with OSC disabled', initial.project.id === session.projectId && initial.software.version === '0.26.0' && !initial.connection.enabled);
+  check('isolated 0.26.1 project with OSC disabled', initial.project.id === session.projectId && initial.software.version === '0.26.1' && !initial.connection.enabled);
   const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
   const sha256 = data => createHash('sha256').update(data).digest('hex');
   const embedded = await Promise.all(['studio.html', 'studio.js', 'creative-ui.js'].map(async name =>
@@ -80,6 +80,17 @@ try {
   for (const id of ['spin', 'second']) {
     const creative = await api('creative');
     await api('creative/animation', { action: 'save', id, baseCreativeRevision: creative.revision, clip: { ...clip, name: id === 'spin' ? clip.name : '第二个片段' } });
+    if (id === 'spin') {
+      await wait(() => js('return publishAnimationClip.value==="spin"&&window.__morphforge.creative.data.revision===1'));
+      check('single saved clip is selected without opening animation panel', await js('return motionPanel.hidden&&motionClip.value==="spin"&&!motionExport.hidden'));
+      await click('[data-tab="sync"]');
+      await click('#publish');
+      await wait(async () => (await api('state')).connection.motion.clipId === 'spin' && await js('return !publish.disabled'));
+      check('default main publication starts the only animation', (await api('state')).connection.motion.state === 1);
+      await cdp('Page.reload'); await sleep(500);
+      await wait(() => js('return !!window.__morphforge?.ready&&publishAnimationClip.value==="spin"'));
+      check('reopening keeps single animation ready without manual selection', await js('return motionPanel.hidden&&motionClip.value==="spin"'));
+    }
   }
   const fixture = await api('state');
   await wait(() => js(`return document.querySelectorAll('#publishAnimationClip option').length===3&&window.__morphforge.state.revision===${fixture.revision}&&window.__morphforge.creative.data.revision===${fixture.creativeRevision}`));
@@ -123,7 +134,7 @@ try {
   await js('publishAnimationClip.value="";publishAnimationClip.dispatchEvent(new Event("change"));');
   await click('#publish');
   await wait(() => js('return window.__publishAuditRequests.length===4&&!publish.disabled'));
-  check('no animation selection still publishes geometry', await js('return !window.__publishAuditRequests.at(-1).body.animation&&window.__publishAuditRequests.at(-1).status===200'));
+  check('explicit static choice still publishes geometry', await js('return window.__publishAuditRequests.at(-1).body.animation===null&&window.__publishAuditRequests.at(-1).status===200'));
   check('no unhandled browser errors or OSC sends', await js('return window.__publishAuditErrors.length===0') && !(await api('state')).connection.enabled && (await api('state')).connection.sentCommands === 0);
   report = { success: true, checks, scope: 'Actual main publish buttons in isolated Chromium/WebView2; OSC disabled, no VRChat, microphone or model API calls.' };
 } catch (e) {

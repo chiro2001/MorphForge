@@ -14,11 +14,11 @@ fn number(tree: &Value, name: &str) -> Result<u32> {
 }
 pub fn parse(tree: &Value) -> Result<Value> {
     let version = number(tree, "MF_InfoVersion")?;
-    if !matches!(version, 7 | 8) {
+    if !matches!(version, 7 | 8 | 9) {
         bail!("UNSUPPORTED_AVATAR：当前Avatar未提供受支持的能力声明，协议版本{version}")
     }
     let flags = number(tree, "MF_InfoFeatures")?;
-    if flags & !(if version == 8 { 255 } else { 127 }) != 0 {
+    if flags & !(if version >= 8 { 255 } else { 127 }) != 0 {
         bail!("UNSUPPORTED_AVATAR：能力位包含未知扩展")
     }
     let build = number(tree, "MF_InfoBuild0")?
@@ -33,7 +33,7 @@ pub fn parse(tree: &Value) -> Result<Value> {
         .map(|b| format!("{b:02x}"))
         .collect::<String>();
     Ok(
-        json!({"protocol":"mf6","version":version,"region8":flags&1!=0,"surfaceMasks":flags&2!=0,"virtualLight":flags&4!=0,"layeredOnly":flags&8!=0,"textPanels":flags&16!=0,"placementControlsSeparated":flags&32!=0,"motion4":flags&64!=0,"motionSession":version>=8&&flags&64!=0,"drawing":flags&128!=0,"catalogHash":fingerprint,"build":build,"signature":format!("{version}:{flags}:{build}:{fingerprint}"),"executionAck":false}),
+        json!({"protocol":"mf6","version":version,"region8":flags&1!=0,"surfaceMasks":flags&2!=0,"virtualLight":flags&4!=0,"layeredOnly":flags&8!=0,"textPanels":flags&16!=0,"placementControlsSeparated":flags&32!=0,"motion4":flags&64!=0,"motionSession":version>=8&&flags&64!=0,"motionCache":version>=9&&flags&64!=0,"drawing":flags&128!=0,"catalogHash":fingerprint,"build":build,"signature":format!("{version}:{flags}:{build}:{fingerprint}"),"executionAck":false}),
     )
 }
 pub fn native_ports() -> Result<Vec<u16>> {

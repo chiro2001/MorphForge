@@ -1,0 +1,81 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "backup is outside the installation and data",
+      "passed": true
+    },
+    {
+      "name": "installer exists",
+      "passed": true
+    },
+    {
+      "name": "main installation is closed before backup and replacement",
+      "passed": true
+    },
+    {
+      "name": "main installation remains closed after backup",
+      "passed": true
+    },
+    {
+      "name": "official installer exits successfully",
+      "passed": true
+    },
+    {
+      "name": "installed core reports expected version",
+      "passed": true
+    },
+    {
+      "name": "installed core matches verified release payload",
+      "passed": true
+    },
+    {
+      "name": "installed shell matches verified release payload",
+      "passed": true
+    },
+    {
+      "name": "original data files are byte-for-byte unchanged by installation",
+      "passed": true
+    },
+    {
+      "name": "Windows installed-app registration reports expected version",
+      "passed": true
+    },
+    {
+      "name": "main entry exists: C:\\Users\\Chiro\\OneDrive\\Desktop\\MorphForge Desktop.lnk",
+      "passed": true
+    },
+    {
+      "name": "main entry targets installed shell: C:\\Users\\Chiro\\OneDrive\\Desktop\\MorphForge Desktop.lnk",
+      "passed": true
+    },
+    {
+      "name": "main entry exists: C:\\Users\\Chiro\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\MorphForge Desktop.lnk",
+      "passed": true
+    },
+    {
+      "name": "main entry targets installed shell: C:\\Users\\Chiro\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\MorphForge Desktop.lnk",
+      "passed": true
+    }
+  ],
+  "installRoot": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge Desktop",
+  "dataDir": "C:\\Users\\Chiro\\AppData\\Local\\MorphForge",
+  "backupRoot": "E:\\tmp\\morphforge\\main-backup-v0261-default-motion",
+  "error": null,
+  "installerSha256": "473f90851e29ea13475e021b57971a1931da4baa321472888a73aa617ace5bd9",
+  "dataBefore": {
+    "sha256": "733680f5b2336476155d1001c6107826d15e6ace119668a8730f399b731ec250",
+    "bytes": 3077804197,
+    "files": 13806
+  },
+  "installerExitCode": 0,
+  "dataAfter": {
+    "sha256": "733680f5b2336476155d1001c6107826d15e6ace119668a8730f399b731ec250",
+    "bytes": 3077804197,
+    "files": 13806
+  },
+  "version": "0.26.1",
+  "coreSha256": "c845295b8dca8ac1182212f6052c7ac67a7277933edd391aff7fa88d310c6736",
+  "shellSha256": "129a567b86a8a581436b27d64c7703032fe52acd7085edf102a81a8467c3aec0",
+  "finishedAt": "2026-10-24T04:55:18.1776814+00:00"
+}

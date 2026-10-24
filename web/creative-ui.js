@@ -78,6 +78,8 @@ export function setupCreativeUi({
     comparisonSeq = 0,
     clip = { name: "新动画", duration: 4, looping: true, tracks: [] },
     playing = false,
+    selectionExplicit = false,
+    clipDirty = false,
     playStart = 0,
     playOffset = 0;
   const bound = () => ({
@@ -123,6 +125,11 @@ export function setupCreativeUi({
       Object.entries(next.clips).map(([id, c]) => [id, c.name]),
       "不选择新动画",
     );
+    const ids = Object.keys(next.clips);
+    if (!$("motionClip").value && ids.length === 1 && !selectionExplicit && !clipDirty && !clip.tracks.length) {
+      $("motionClip").value = ids[0];
+      pickClip();
+    }
     updatePublicationHint();
   };
   async function mutate(domain, args) {
@@ -415,6 +422,7 @@ export function setupCreativeUi({
     return Number($("motionTime").value);
   }
   const dirty = () => {
+    clipDirty = true;
     $("motionExport").hidden = true;
     updatePublicationHint();
   };
@@ -431,7 +439,7 @@ export function setupCreativeUi({
     const id = $("motionClip").value;
     if (!id) {
       if (clip.tracks.length) throw Error("动画尚未保存，请先保存并选择要发布的片段");
-      return {};
+      return { animation: null };
     }
     if (!data.clips[id] || $("motionExport").hidden)
       throw Error("所选动画有未保存修改，请先保存后发布");
@@ -521,6 +529,7 @@ export function setupCreativeUi({
     stop();
     renderer.clearAnimationPose();
     const found = data.clips[$("motionClip").value];
+    clipDirty = false;
     clip = found ? structuredClone(found) : { name: "新动画", duration: 4, looping: true, tracks: [] };
     updateClipFields();
     $("motionExport").hidden = !found;
@@ -536,8 +545,9 @@ export function setupCreativeUi({
     $("motionPanel").hidden = false;
     renderer.resize();
   });
-  $("motionClip").onchange = pickClip;
+  $("motionClip").onchange = () => { selectionExplicit = true; pickClip(); };
   if ($("publishAnimationClip")) $("publishAnimationClip").onchange = () => {
+    selectionExplicit = true;
     $("motionClip").value = $("publishAnimationClip").value;
     pickClip();
   };
@@ -559,6 +569,8 @@ export function setupCreativeUi({
       "已返回静态作品，可以继续编辑；动画轨道保留。";
   };
   $("motionNew").onclick = () => {
+    selectionExplicit = true;
+    clipDirty = false;
     stop();
     renderer.clearAnimationPose();
     clip = { name: "新动画", duration: 4, looping: true, tracks: [] };
@@ -657,6 +669,7 @@ export function setupCreativeUi({
     $("motionExport").href =
       "/api/creative/animation/" + encodeURIComponent(id) + "/export";
     $("motionExport").hidden = false;
+    clipDirty = false;
     updatePublicationHint();
     toast("动画已保存，可导出GLB；静态作品保持原状");
   });
@@ -755,6 +768,8 @@ export function setupCreativeUi({
     if (!state || !getScene()) return;
     const changed = projectId !== state.project.id;
     if (changed) {
+      selectionExplicit = false;
+      clipDirty = false;
       projectId = state.project.id;
       creativeRevision = -1;
       stop();

@@ -26,8 +26,10 @@ async fn query_identifies_full_hash_and_applies_only_known_catalog_without_udp()
     let c =
         AvatarCatalog::from_bytes(include_bytes!("../../../materials/mf6/catalog.json")).unwrap();
     let expected = c.identity_hash();
-    assert!(avatar_discovery::lookup(root.path(), &expected).unwrap().is_none());
-    app.workspace.lock().unwrap().library_root=root.path().join("isolated-shared");
+    assert!(avatar_discovery::lookup(root.path(), &expected)
+        .unwrap()
+        .is_none());
+    app.workspace.lock().unwrap().library_root = root.path().join("isolated-shared");
     let response = tree(&c);
     let router = Router::new()
         .route(
@@ -238,4 +240,60 @@ fn texture_build_options_participate_in_identity_and_survive_cache() {
             .identity_hash(),
         compact.identity_hash()
     );
+}
+
+#[test]
+fn version_nine_identifies_the_motion_cache_receiver_without_new_feature_bits() {
+    let catalog =
+        AvatarCatalog::from_bytes(include_bytes!("../../../materials/mf6/catalog.json")).unwrap();
+    let mut values = tree(&catalog);
+    values["CONTENTS"]["MF_InfoFeatures"]["VALUE"][0] = json!(255);
+    for version in [8, 9] {
+        values["CONTENTS"]["MF_InfoVersion"]["VALUE"][0] = json!(version);
+        let info = avatar_discovery::parse(&values).unwrap();
+        assert_eq!(info["motionCache"], version == 9);
+        assert_eq!(info["motionSession"], true);
+        assert_eq!(info["drawing"], true);
+    }
+    values["CONTENTS"]["MF_InfoVersion"]["VALUE"][0] = json!(10);
+    assert!(avatar_discovery::parse(&values).is_err());
+}
+
+#[tokio::test]
+async fn real_avatar_motion_requires_the_updated_receiver_but_never_enables_udp() {
+    let root = tempfile::tempdir().unwrap();
+    let app = App::open(root.path().into(), Some(root.path().join("no-key"))).unwrap();
+    let mut catalog =
+        AvatarCatalog::from_bytes(include_bytes!("../../../materials/mf6/catalog.json")).unwrap();
+    catalog
+        .capabilities
+        .push(morphforge_app::avatar_motion::CAPABILITY.into());
+    {
+        let mut s = app.transport.inner.lock().unwrap();
+        s.avatar_catalog = Some(catalog);
+        s.config.port = 9000;
+        s.discovery = json!({"info":{"motion4":true,"motionSession":true,"motionCache":false}});
+    }
+    let mut scene = morphforge_core::Scene::default();
+    scene.revision = 1;
+    let mut cube = morphforge_core::Box3::new([-2, 24, -2], [4; 3], 1);
+    cube.group = "flow".into();
+    scene.boxes.push(cube);
+    let clip = serde_json::from_value(json!({"name":"flow","duration":2,"looping":true,"tracks":[{"group":"flow","pivot":[0,26,0],"interpolation":"linear","keys":[{"time":0,"translation":[0,0,0],"rotation":[0,0,0],"scale":[1,1,1]},{"time":2,"translation":[0,-8,0],"rotation":[0,0,0],"scale":[1,1,1]}]}]})).unwrap();
+    let materials = morphforge_core::materials::builtins();
+    let error = app
+        .transport
+        .publish_motion(&scene, &materials, &clip, "flow", 1., 0., true)
+        .unwrap_err();
+    assert!(error.to_string().contains("RECEIVER_UPDATE_REQUIRED"));
+    assert_eq!(app.transport.state()["motion"]["attached"], false);
+    app.transport.inner.lock().unwrap().discovery["info"]["motionCache"] = json!(true);
+    let result = app
+        .transport
+        .publish_motion(&scene, &materials, &clip, "flow", 1., 0., true)
+        .unwrap();
+    assert_eq!(result["motion"]["clipId"], "flow");
+    assert_eq!(result["enabled"], false);
+    assert_eq!(result["sentCommands"], 0);
+    app.transport.inner.lock().unwrap().stop = true;
 }

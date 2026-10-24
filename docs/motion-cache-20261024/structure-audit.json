@@ -1,0 +1,17 @@
+{
+  "success": true,
+  "before": {
+    "parameters": 462,
+    "receiveStates": 123,
+    "directReceiveStatesWriteDefaultsOff": 120,
+    "cachedWords": 234,
+    "wordsWrittenByMultipleLayers": 234
+  },
+  "after": {
+    "parameters": 462,
+    "receiveStates": 123,
+    "directReceiveStatesWriteDefaultsOff": 0,
+    "cachedWords": 234,
+    "wordsWrittenByMultipleLayers": 0
+  }
+}

@@ -155,10 +155,27 @@ async fn main() {
         let bank = (index % 2) as u8;
         stages.push(json!({"name":format!("{} bank{bank} generation{index}",clip.name),"packets":packets,"expectedUniforms":uniforms(&clip,bank,index as u8,&scene),"motion":app.transport.state()["motion"]}));
     }
+    let mut playback = vec![];
+    let start = Instant::now();
+    for action in ["seek", "resume"] {
+        app.transport.motion_control(action, Some(0.)).unwrap();
+        loop {
+            while let Ok(n) = receiver.recv(&mut bytes) {
+                playback.push(
+                    json!({"time":start.elapsed().as_secs_f64(),"packet":bytes[..n].to_vec()}),
+                );
+            }
+            if app.transport.state()["pending"] == 0 {
+                break;
+            }
+            assert!(start.elapsed() < Duration::from_secs(15));
+            tokio::time::sleep(Duration::from_millis(5)).await;
+        }
+    }
     app.transport.inner.lock().unwrap().stop = true;
     std::fs::write(
         std::env::args().nth(1).expect("output"),
-        serde_json::to_vec_pretty(&json!({"stages":stages})).unwrap(),
+        serde_json::to_vec_pretty(&json!({"stages":stages,"playback":playback})).unwrap(),
     )
     .unwrap();
 }

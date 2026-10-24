@@ -1,0 +1,8 @@
+{
+  "package": "E:\\tmp\\morphforge\\model-motion-v0261-nsis-payload",
+  "shellHash": "129A567B86A8A581436B27D64C7703032FE52ACD7085EDF102A81A8467C3AEC0",
+  "version": "0.26.1",
+  "coreHash": "C845295B8DCA8AC1182212F6052C7AC67A7277933EDD391AFF7FA88D310C6736",
+  "installer": "D:\\Projects\\VRChatProjects2\\MorphForge\\desktop\\target\\x86_64-pc-windows-msvc\\release\\bundle\\nsis\\MorphForge Desktop_0.26.1_x64-setup.exe",
+  "installerHash": "473F90851E29EA13475E021B57971A1931DA4BAA321472888A73AA617ACE5BD9"
+}

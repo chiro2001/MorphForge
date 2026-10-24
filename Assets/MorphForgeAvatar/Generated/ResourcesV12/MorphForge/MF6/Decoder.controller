@@ -417865,7 +417865,7 @@ AnimatorController:
   - m_Name: MF_InfoVersion
     m_Type: 3
     m_DefaultFloat: 0
-    m_DefaultInt: 8
+    m_DefaultInt: 9
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
   - m_Name: MF_InfoFeatures
@@ -417877,19 +417877,19 @@ AnimatorController:
   - m_Name: MF_InfoBuild0
     m_Type: 3
     m_DefaultFloat: 0
-    m_DefaultInt: 83
+    m_DefaultInt: 157
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
   - m_Name: MF_InfoBuild1
     m_Type: 3
     m_DefaultFloat: 0
-    m_DefaultInt: 104
+    m_DefaultInt: 245
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
   - m_Name: MF_InfoBuild2
     m_Type: 3
     m_DefaultFloat: 0
-    m_DefaultInt: 36
+    m_DefaultInt: 111
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
   - m_Name: MF_Catalog00
