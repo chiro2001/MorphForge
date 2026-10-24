@@ -1,0 +1,180 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "preparation is explicitly unpublished and review pending",
+      "passed": true
+    },
+    {
+      "name": "price and product terms remain publisher decisions",
+      "passed": true
+    },
+    {
+      "name": "publisher manifest covers exactly the delivery files",
+      "passed": true
+    },
+    {
+      "name": "every publisher file matches SHA256",
+      "passed": true
+    },
+    {
+      "name": "buyer ZIP matches reported hash and size",
+      "passed": true
+    },
+    {
+      "name": "ZIP CRC is valid",
+      "passed": true
+    },
+    {
+      "name": "all archive paths are safe and unique",
+      "passed": true
+    },
+    {
+      "name": "buyer checksums cover every payload file",
+      "passed": true
+    },
+    {
+      "name": "all buyer payload files match checksums",
+      "passed": true
+    },
+    {
+      "name": "validated desktop installer is unchanged",
+      "passed": true
+    },
+    {
+      "name": "validated public Unity package is unchanged",
+      "passed": true
+    },
+    {
+      "name": "public catalog is the matching original file",
+      "passed": true
+    },
+    {
+      "name": "buyer ZIP excludes private and publisher-only files",
+      "passed": true
+    },
+    {
+      "name": "ja guide has current versions and synchronization limit",
+      "passed": true
+    },
+    {
+      "name": "ja product page and guide exist",
+      "passed": true
+    },
+    {
+      "name": "zh-CN guide has current versions and synchronization limit",
+      "passed": true
+    },
+    {
+      "name": "zh-CN product page and guide exist",
+      "passed": true
+    },
+    {
+      "name": "en guide has current versions and synchronization limit",
+      "passed": true
+    },
+    {
+      "name": "en product page and guide exist",
+      "passed": true
+    },
+    {
+      "name": "separate font and noncommercial reference licenses are preserved",
+      "passed": true
+    },
+    {
+      "name": "three.js original MIT notice is included",
+      "passed": true
+    },
+    {
+      "name": "public text has no avatar binding or credential-shaped values",
+      "passed": true
+    },
+    {
+      "name": "dependency notice archive CRC is valid",
+      "passed": true
+    },
+    {
+      "name": "all locked registry packages have recorded terms",
+      "passed": true
+    },
+    {
+      "name": "dependency index contains no workstation paths",
+      "passed": true
+    },
+    {
+      "name": "unmodified source archives supplied for all MPL packages",
+      "passed": true
+    },
+    {
+      "name": "supplied source archives match locked registry checksums",
+      "passed": true
+    },
+    {
+      "name": "public plugin source equality and private binding audit passed",
+      "passed": true
+    },
+    {
+      "name": "clean-import status is disclosed accurately",
+      "passed": true
+    },
+    {
+      "name": "review page uses local files only",
+      "passed": true
+    },
+    {
+      "name": "every offline review link resolves",
+      "passed": true
+    },
+    {
+      "name": "seven image origins and hashes are recorded",
+      "passed": true
+    },
+    {
+      "name": "01-cover-ja.png is valid and matches capture manifest",
+      "passed": true
+    },
+    {
+      "name": "01-cover-zh-CN.png is valid and matches capture manifest",
+      "passed": true
+    },
+    {
+      "name": "01-cover-en.png is valid and matches capture manifest",
+      "passed": true
+    },
+    {
+      "name": "02-workbench.png is valid and matches capture manifest",
+      "passed": true
+    },
+    {
+      "name": "03-points-lines.png is valid and matches capture manifest",
+      "passed": true
+    },
+    {
+      "name": "04-requirements.png is valid and matches capture manifest",
+      "passed": true
+    },
+    {
+      "name": "05-setup.png is valid and matches capture manifest",
+      "passed": true
+    },
+    {
+      "name": "complete publisher kit CRC is valid",
+      "passed": true
+    },
+    {
+      "name": "complete publisher kit contains identical files",
+      "passed": true
+    }
+  ],
+  "checkCount": 41,
+  "buyerZipSha256": "43cc0e7f7c87cc386f86b7a5cdb0593af30480462dbd67a5982bc7b5ff663162",
+  "pending": [
+    "确认最终售价（当前0円仅为草案）",
+    "确认最终商品使用条款；保留所有素材与依赖的原许可",
+    "填写支持联系方式",
+    "隔离工程原包重新导入验证尚未通过，详见Checks/clean-import.json",
+    "公开前按指南人工复验目标Avatar、VR环境与其他客户端；1.4.0未作完整多人实机验收"
+  ],
+  "scope": "Packaging integrity and public-source/notice checks. Does not upgrade a blocked clean-import or replace VRChat multiplayer acceptance.",
+  "publisherKitSha256": "3ea35aa21841ad066a93eaacff8380729b5e6ae6b9e8880b0964dd6491ff281e"
+}

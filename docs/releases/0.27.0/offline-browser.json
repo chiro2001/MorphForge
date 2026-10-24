@@ -1,0 +1,26 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "offline review opens from local file",
+      "passed": true
+    },
+    {
+      "name": "all three descriptions available",
+      "passed": true
+    },
+    {
+      "name": "review status and pending items are visible",
+      "passed": true
+    },
+    {
+      "name": "all five default product images render offline",
+      "passed": true
+    },
+    {
+      "name": "no browser script or resource errors",
+      "passed": true
+    }
+  ],
+  "scope": "Real Chromium opening local index.html with no web server or remote assets."
+}

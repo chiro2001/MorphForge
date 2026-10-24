@@ -1,0 +1,96 @@
+{
+  "images": [
+    {
+      "file": "01-cover-ja.png",
+      "bytes": 276217,
+      "sha256": "f2a994f529768c1919cbad50db5831461c5ea26d0b0ee7fd1cc88cfd0212cd98",
+      "size": [
+        1600,
+        1000
+      ],
+      "sources": [
+        "media/leviathan-lantern-editor.png"
+      ],
+      "layout": "Pillow; actual product captures only; no generated artwork"
+    },
+    {
+      "file": "01-cover-zh-CN.png",
+      "bytes": 275612,
+      "sha256": "f4e85ead603c517437638ea459b7b82d559885602e2abd43504409e0a336eef6",
+      "size": [
+        1600,
+        1000
+      ],
+      "sources": [
+        "media/leviathan-lantern-editor.png"
+      ],
+      "layout": "Pillow; actual product captures only; no generated artwork"
+    },
+    {
+      "file": "01-cover-en.png",
+      "bytes": 269985,
+      "sha256": "6c22b2a931b93302b269c907de941e301ed61eb6da727feccaa2443f0c869d7f",
+      "size": [
+        1600,
+        1000
+      ],
+      "sources": [
+        "media/leviathan-lantern-editor.png"
+      ],
+      "layout": "Pillow; actual product captures only; no generated artwork"
+    },
+    {
+      "file": "02-workbench.png",
+      "bytes": 456725,
+      "sha256": "9bfccea2bbcb3b12e4ecb1967464b3096626ed5ac8d45caaa297818e165a8277",
+      "size": [
+        1600,
+        1000
+      ],
+      "sources": [
+        "media/workbench-ja.png"
+      ],
+      "layout": "Pillow; actual product captures only; no generated artwork"
+    },
+    {
+      "file": "03-points-lines.png",
+      "bytes": 213889,
+      "sha256": "13efa0ac5f22743f5e2a1aae0a79488da9e83274ce00e3a1735d6fd6f2160151",
+      "size": [
+        1600,
+        1000
+      ],
+      "sources": [
+        "media/drawing-controls-en.png"
+      ],
+      "layout": "Pillow; actual product captures only; no generated artwork"
+    },
+    {
+      "file": "04-requirements.png",
+      "bytes": 113217,
+      "sha256": "0b23a22c0a07fc91dbaaa6272e4292719553d71ffaec17296abedd911947e01c",
+      "size": [
+        1600,
+        1000
+      ],
+      "sources": [
+        "Quickstart.ja.md"
+      ],
+      "layout": "Pillow; actual product captures only; no generated artwork"
+    },
+    {
+      "file": "05-setup.png",
+      "bytes": 109353,
+      "sha256": "24d1d2fa10d5ecf57d1d914a46c6c832dc82d6ec243aa18d74c7afb38e9404f2",
+      "size": [
+        1600,
+        1000
+      ],
+      "sources": [
+        "Quickstart.ja.md"
+      ],
+      "layout": "Pillow; actual product captures only; no generated artwork"
+    }
+  ],
+  "disclosure": "Actual Desktop captures and typography; no VRChat client image or third-party shop artwork."
+}

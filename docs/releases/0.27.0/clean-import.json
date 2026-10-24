@@ -1,0 +1,18 @@
+{
+  "success": false,
+  "status": "BLOCKED_EDITOR_STARTUP",
+  "date": "2026-10-25",
+  "package": "MorphForgeAvatar-1.4.0.unitypackage",
+  "sha256": "7e60412f16cbc3e9858e7c85c7d02ec9c16d15af94f6c37805190b59c5a39264",
+  "scope": "Additional clean-project re-import for BOOTH preparation; separate from the 30 successful development-project Unity/SDK localization checks.",
+  "attempts": [
+    "Unity CLI opened the isolated fixture path but no Pipeline instance became available.",
+    "Interactive scheduled launch did not expose a Pipeline instance.",
+    "A launch using the existing licensing IPC channel also did not expose a Pipeline instance."
+  ],
+  "observedDiagnostic": "The workstation Editor log reported a LicenseClient connection refusal and a 60-second licensing timeout. The extra validation Editor did not become available to Pipeline.",
+  "assetImportAttempted": false,
+  "developmentProjectChecksPassed": 30,
+  "existingEvidence": "docs/localization-20261025/unity-validation.json",
+  "action": "Retry the original unitypackage in a working isolated Unity2022.3.22f1 Avatar project after resolving the workstation licensing/startup issue. Do not describe this extra check as passed."
+}

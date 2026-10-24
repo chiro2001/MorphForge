@@ -50,3 +50,7 @@ provider-model-limits.json
 # Speech cloud credentials and local recordings never enter source control.
 speech-credentials.json
 speech-settings.json
+
+# Generated publisher kits contain installers and must stay out of Git.
+/Releases/
+/dist/licenses/

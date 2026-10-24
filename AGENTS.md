@@ -13,6 +13,8 @@
 
 ## 本轮已授权范围
 
+- 2026-10-25 用户要求参考 TestlaRoadster 准备 BOOTH 发布包。已使用原始 Desktop0.27.0 / Avatar1.4.0 文件整理三语指南、三语商品文案、7张实际编辑器素材排版图、独立许可与可重建发布脚本。买家ZIP约36.9MiB，整套PublisherKit约75.4MiB；41项包装与5项离线Chromium检查通过，Windows复制后55文件逐项核对。目录为Releases/MorphForge-0.27.0，结果见docs/releases/0.27.0/。额外隔离Unity导入因授权连接/启动阶段未就绪而未执行，不能当作通过；保留原30项开发工程Unity/SDK记录，临时Editor/任务已清理。售价0円仅草案，最终商品条款、联系方式和人工实机复验待确认。未上传BOOTH、未更新在线Avatar、未推送或创建GitHub Release。
+
 - 2026-10-25 用户要求 Desktop 与 Unity 安装插件支持简体中文、日文、英文。Desktop 界面默认跟随系统，可即时切换并保存在独立 ui-settings.json，与提示词、识别及字幕翻译语言独立；主窗口/Mini 同步。Unity 所选语言用于插件界面与 Avatar 菜单，已有模块可直接更新菜单；每个安装实例使用独立菜单资产，不修改公共模板或其他 Avatar。Desktop 0.27.0 / Avatar 插件 1.4.0；320 项 Rust、67 项前端、24 项 Chromium、19 项 Windows 原生、3 项原生重启和 30 项 Unity/SDK 验证通过。主安装已升级启动，14 项安装与 8 项主程序检查通过，14,025 个数据文件安装前后摘要一致；备份在 E:\tmp\morphforge\main-backup-v0270-localization-final。见 docs/localization-20261025/RESULTS.md。本轮未上传头像、不推送或创建 Release。
 
 - 2026-10-24用户要求将本人预览放入MorphForge子菜单、修正正面取景，并自主进行性能消融；允许参考VRCX/头像选择API切换当前头像及读取实机帧率。Avatar1.3.2已更新同一私人头像v13/file11，三项服务端分析通过；SDK152层、1926参数、254bit。本人预览位于MorphForge子菜单、默认+Z正视；普通空闲状态使用稀疏Clip，完整Direct输出保留WD On，材质绑定3132→1656。交互式Editor空载6.54→5.46ms、三组动画11.28→9.04ms；492值/24位置和106次连续GPU对比通过，文字15项、点线、动画、本人预览及公共安装验证通过。通过OSC/avatar/change实机换装并恢复原作品/flow-loop；未重启串流。实际FPS对照仍待确认可读的性能显示；SteamVR新客户端握手失败，用户尚未授权重启VRChat。见docs/performance-preview-20261024/RESULTS.md。Desktop保持0.26.1，未推送/建Release。

@@ -1,0 +1,102 @@
+{
+  "version": "0.27.0",
+  "noOscOrModelCalls": true,
+  "images": [
+    {
+      "file": "leviathan-lantern-editor.png",
+      "source": "builtin:leviathan-lantern",
+      "kind": "actual Desktop editor render, not VRChat",
+      "license": "MIT",
+      "camera": {
+        "coordinateSpace": "render-world",
+        "fov": 42,
+        "position": [
+          47.87224457827713,
+          49.046318548019336,
+          62.931325861858724
+        ],
+        "projection": "perspective",
+        "target": [
+          0.14250000000000007,
+          13.68,
+          3.9899999999999984
+        ]
+      },
+      "rendering": {
+        "hiddenFaces": 66,
+        "mode": "art",
+        "renderHeight": 1200,
+        "renderWidth": 1600,
+        "supersampling": 1,
+        "surfaceCulling": true,
+        "textureWarnings": [],
+        "voxelGrid": false
+      },
+      "sha256": "4e9e7a120de7cc8864f3374f90ab7f9127def64497421d955edf7246f6431fe8"
+    },
+    {
+      "file": "workbench-ja.png",
+      "source": "builtin:leviathan-lantern",
+      "kind": "actual Desktop workbench screenshot",
+      "language": "ja",
+      "license": "MIT",
+      "sha256": "d6a2c30ab96602a25a481879e32bdc55981d8510f66ac0ff26001ab55366ba33"
+    },
+    {
+      "file": "workbench-zh-CN.png",
+      "source": "builtin:leviathan-lantern",
+      "kind": "actual Desktop workbench screenshot",
+      "language": "zh-CN",
+      "license": "MIT",
+      "sha256": "a1f4efe308bba0f88b2d46add30fe3844b9fe1fd461daaf230623c4d5525e2ad"
+    },
+    {
+      "file": "workbench-en.png",
+      "source": "builtin:leviathan-lantern",
+      "kind": "actual Desktop workbench screenshot",
+      "language": "en",
+      "license": "MIT",
+      "sha256": "512ff2dc0c3a71b0d74d037e9f3ef117dda0b96964754f572c34d9c346c2dd3c"
+    },
+    {
+      "file": "kinetic-windmill-editor.png",
+      "source": "builtin:kinetic-windmill",
+      "kind": "actual Desktop editor render, not VRChat",
+      "license": "MIT",
+      "camera": {
+        "coordinateSpace": "render-world",
+        "fov": 42,
+        "position": [
+          9.776696475286792,
+          11.119240775796152,
+          12.323214677637923
+        ],
+        "projection": "perspective",
+        "target": [
+          0,
+          3.875,
+          0.25
+        ]
+      },
+      "rendering": {
+        "hiddenFaces": 0,
+        "mode": "art",
+        "renderHeight": 1200,
+        "renderWidth": 1600,
+        "supersampling": 1,
+        "surfaceCulling": true,
+        "textureWarnings": [],
+        "voxelGrid": false
+      },
+      "sha256": "06233fe5dfb88740a59f92960cd29fece1d7b2a38615db096a55f1afb209e602"
+    },
+    {
+      "file": "drawing-controls-en.png",
+      "source": "built-in drawing demo",
+      "kind": "actual Desktop drawing dialog",
+      "license": "MIT",
+      "sha256": "36a7a762a410ef28a68543bf41e3c2085a046e52558725098f070264eaaf69de",
+      "language": "en"
+    }
+  ]
+}

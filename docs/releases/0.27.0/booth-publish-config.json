@@ -1,0 +1,15 @@
+{
+  "name": "MorphForge",
+  "desktopVersion": "0.27.0",
+  "avatarVersion": "1.4.0",
+  "date": "2026-10-25",
+  "priceJpy": 0,
+  "priceConfirmed": false,
+  "edition": "free-draft",
+  "licenseFinalized": false,
+  "published": false,
+  "supportContact": null,
+  "publicTrialAvatarUrl": null,
+  "sourceRepository": "https://github.com/chiro2001/MorphForge",
+  "aiAssistance": "Implementation, sample creation and documentation used AI assistance, with human direction and review. Promotional artwork uses actual product captures and code-based layout."
+}
