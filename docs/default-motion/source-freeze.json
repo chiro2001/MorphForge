@@ -1,6 +1,6 @@
 {
   "format": "MorphForgeBuildInputs/1",
-  "gitCommit": "4725acad887e3dc6606683487656dafcefb1a1fd",
+  "gitCommit": "00a9e021343ad2ce115988888d6954a42bc55cf2",
   "sha256": "e75ed8e435f20c97c51097768e3222fd8a93e44189518c6b7594b49e2d0616c5",
   "files": {
     ".cargo/config.toml": "a953562c1db95e088c8e43b40cae88748474829db1d47f835fb9bba79bebeddd",
