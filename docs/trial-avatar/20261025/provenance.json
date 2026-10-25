@@ -1,0 +1,36 @@
+{
+  "model": "256Hedgehog",
+  "modelVersion": "1.2.0",
+  "author": "メシエナンバー / 塩トローチ (messier_num / Saltroche)",
+  "source": "https://booth.pm/en/items/2064264",
+  "license": "CC0 1.0 Universal, declared in the original author Readme",
+  "originalArchive": "256Hedgehog_Ver.1.2.0.zip",
+  "archiveSha256": "6dc2ebd8594c0a1ea89d24f5f20e7d4a0f6ffe26b2b4ff727cba249fa0b16942",
+  "modelPackageSha256": "9b31eb126014f85584a776b39d5bc33bb3d6755c7d8c43055fc979f4b1d12afb",
+  "morphforgeAvatarVersion": "1.4.0",
+  "morphforgePackageSha256": "7e60412f16cbc3e9858e7c85c7d02ec9c16d15af94f6c37805190b59c5a39264",
+  "desktopVersionTested": "0.27.0",
+  "project": "D:/Projects/VRChatProjects2/MorphForgeHedgehogDemo_1_4_0",
+  "defaultLanguage": "ja",
+  "installerLanguages": [
+    "zh-CN",
+    "ja",
+    "en"
+  ],
+  "localValidation": "passed",
+  "nativeSdkCheckCount": 8,
+  "readinessCheckCount": 15,
+  "syncedBits": 255,
+  "directGeometryBits": 240,
+  "unchangedAuthorFileAssets": 24,
+  "omittedLegacyParameters": [
+    "VRCEmote",
+    "VRCFaceBlendH",
+    "VRCFaceBlendV"
+  ],
+  "localBundleBytes": 2595751,
+  "uploaded": false,
+  "publicTrialAvatarUrl": null,
+  "remaining": "SDK login and user confirmation to upload the new public trial, followed by server checks, VRChat acceptance and BOOTH link integration.",
+  "scope": "Fresh project created through Unity CLI. Only original CC0 hedgehog and public MorphForge packages imported; no Roadster, ABT, Nemesis or private avatar binding copied."
+}

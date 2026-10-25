@@ -1,0 +1,35 @@
+{
+  "project": "D:\\Projects\\VRChatProjects2\\MorphForgeHedgehogDemo_1_4_0",
+  "files": [
+    {
+      "name": "MorphForge-Hedgehog-Trial-local.vrca",
+      "bytes": 2595751,
+      "sha256": "6fcd41e30244310bb859c3dbcd44de035ee29cbb11f180d00bd9377290967644"
+    },
+    {
+      "name": "hedgehog-thumbnail.png",
+      "bytes": 141572,
+      "sha256": "1d9efefbf862e7f8ffe1c33a2f203cea8552a892adb650a9a9c5e22446f99ca9"
+    },
+    {
+      "name": "hedgehog-guide.png",
+      "bytes": 167134,
+      "sha256": "52b7fd73577cbb3d4f9c13b9991d032ddbbaac3552ed3b3027a6bc76ba1f9e0d"
+    },
+    {
+      "name": "validation.json",
+      "bytes": 22824,
+      "sha256": "f4360588904323ecdba1c53a2342f5c11a466dbb8747455f42d281750e779946"
+    },
+    {
+      "name": "readiness.json",
+      "bytes": 3274,
+      "sha256": "f49ac5295ebfb74655b4eeb65cc5bd3a56f42fcd1a0c23ffa9f57c1d24f4dc67"
+    },
+    {
+      "name": "upload-metadata.json",
+      "bytes": 517,
+      "sha256": "cfa7b6e69c146f38bd1010c53e7697a630810cfd0cb954474ccac1cc348750bf"
+    }
+  ]
+}

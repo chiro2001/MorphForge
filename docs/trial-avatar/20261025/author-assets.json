@@ -1,0 +1,151 @@
+{
+  "source": "SourcePackages/256Hedgehog.unitypackage",
+  "allUnchanged": true,
+  "assetCount": 24,
+  "assets": [
+    {
+      "path": "Assets/Saltroche/256Hedgehog/ExMenu/256Heg_Icon_ColorCinnicot.png",
+      "expected": "4ce58753072bc65d2b1ef36b95abd96fc97196c138e69d2c981a2f779c9e9852",
+      "actual": "4ce58753072bc65d2b1ef36b95abd96fc97196c138e69d2c981a2f779c9e9852",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/Animation/256Hed_SittingIdle.anim",
+      "expected": "978d79ac104fd79c0bbf4a16df1c40f68b51adccb6a04f5589e2c107fb2f0754",
+      "actual": "978d79ac104fd79c0bbf4a16df1c40f68b51adccb6a04f5589e2c107fb2f0754",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/ExMenu/256Hed_ExpressionsMenu.asset",
+      "expected": "d63a5f77a10a55f160656b723b5829b273133961461cac94379566bca7ed7841",
+      "actual": "d63a5f77a10a55f160656b723b5829b273133961461cac94379566bca7ed7841",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/Animation/256Hed_V3FXLayer.controller",
+      "expected": "19dc2bf7d2fac81436276c1a04202836c26ea0fc166559f55f639d51f9da73b6",
+      "actual": "19dc2bf7d2fac81436276c1a04202836c26ea0fc166559f55f639d51f9da73b6",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/Materials/256Hedgehog_Standard.mat",
+      "expected": "af4c101c0aa393c07aef7b51e2dd0926f608bcf4117190dc8ba95f915a936fb5",
+      "actual": "af4c101c0aa393c07aef7b51e2dd0926f608bcf4117190dc8ba95f915a936fb5",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/ExMenu/256Heg_Icon_ColorStandard.png",
+      "expected": "b67757149f347d02389233125f347dcd8809285f4117a440902f4714f0212f19",
+      "actual": "b67757149f347d02389233125f347dcd8809285f4117a440902f4714f0212f19",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/FBX/256Hedgehog.fbx",
+      "expected": "5f7fc9f2bc0918cac4d484efc6c7fd97c165eac660c8fe0ac422c70b01567415",
+      "actual": "5f7fc9f2bc0918cac4d484efc6c7fd97c165eac660c8fe0ac422c70b01567415",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/ExMenu/256Hed_VRCEmote.asset",
+      "expected": "585e942a694adf199278ced2b84a15dcbcb289c8d38f5e5324530005785e8a43",
+      "actual": "585e942a694adf199278ced2b84a15dcbcb289c8d38f5e5324530005785e8a43",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/Texture/256HedgehogAlbino.png",
+      "expected": "ceb16986a9e8d1c7caee07d0d3fe4494e2419714839ead67db0467ccff9757f1",
+      "actual": "ceb16986a9e8d1c7caee07d0d3fe4494e2419714839ead67db0467ccff9757f1",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/Materials/256Hedgehog_Cinnicot.mat",
+      "expected": "d7cd5c6e2a1a7a62879fbabf44587a2aa7de53e1bcfa31dbf3b4023a3b1c56be",
+      "actual": "d7cd5c6e2a1a7a62879fbabf44587a2aa7de53e1bcfa31dbf3b4023a3b1c56be",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/Materials/256Hedgehog_Brown.mat",
+      "expected": "22d8712d920b208c6731cc1af3c9a2b2254eed6bde5890a91642888fb587bde9",
+      "actual": "22d8712d920b208c6731cc1af3c9a2b2254eed6bde5890a91642888fb587bde9",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/Texture/256HedgehogStandard.png",
+      "expected": "46684c6c8eca5fe0d306a25d15151df4a471f4925de7b9d2c917adc717f5ca81",
+      "actual": "46684c6c8eca5fe0d306a25d15151df4a471f4925de7b9d2c917adc717f5ca81",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/ExMenu/256Heg_Icon_ColorBrown.png",
+      "expected": "df0d31fd16b56350d9caab43c7bddeb623e87cf649a7b33ec93e77244325906b",
+      "actual": "df0d31fd16b56350d9caab43c7bddeb623e87cf649a7b33ec93e77244325906b",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/Animation/256Hed_AvatarV3SittingLayer.controller",
+      "expected": "ba5b61a0dc2685c106a1285d2ac565ee1be589321937e9ac7edfda4efd455200",
+      "actual": "ba5b61a0dc2685c106a1285d2ac565ee1be589321937e9ac7edfda4efd455200",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/ExMenu/256Heg_Icon_ColorAlbino.png",
+      "expected": "f917aeba74525886eb3f7ca0d5c9f2a262a6ab056755685f54ced8b196da886b",
+      "actual": "f917aeba74525886eb3f7ca0d5c9f2a262a6ab056755685f54ced8b196da886b",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/Animation/Color/256Hed_ColorBrown.anim",
+      "expected": "552b57152535cdd9938c2fad515407c4616d50c3b686cf450e388f8e6466c605",
+      "actual": "552b57152535cdd9938c2fad515407c4616d50c3b686cf450e388f8e6466c605",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/256Hedgehog.prefab",
+      "expected": "3f81ee1a548e8b27c9dc4442f242b4ff99b91a5a8954fd75ff4fe517ef841de0",
+      "actual": "3f81ee1a548e8b27c9dc4442f242b4ff99b91a5a8954fd75ff4fe517ef841de0",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/Texture/256HedgehogBrown.png",
+      "expected": "a0d901c38e2a34bbb9c7c8deca09a012978cd57047d3338409d2c55cd13f681c",
+      "actual": "a0d901c38e2a34bbb9c7c8deca09a012978cd57047d3338409d2c55cd13f681c",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/Animation/Color/256Hed_ColorStandard.anim",
+      "expected": "b930375772c8fda6ead825c05cb85e16949ee7f60ec7459711c497da02fed3ea",
+      "actual": "b930375772c8fda6ead825c05cb85e16949ee7f60ec7459711c497da02fed3ea",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/ExMenu/256Hed_Parameters.asset",
+      "expected": "4bb01b5c16d86627045b1582a2187c3e05f47a02ff62fec06dfe7b4745fb9b0d",
+      "actual": "4bb01b5c16d86627045b1582a2187c3e05f47a02ff62fec06dfe7b4745fb9b0d",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/Materials/256Hedgehog_Albino.mat",
+      "expected": "71bb6cc1b2a94a24b9ecf5ae07330f899987044385f71e35bd4268c43716d2b9",
+      "actual": "71bb6cc1b2a94a24b9ecf5ae07330f899987044385f71e35bd4268c43716d2b9",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/Animation/Color/256Hed_ColorCinnicot.anim",
+      "expected": "fc53e81885f51f74d4859fd9fc11cdbb10ed7824edc53e2d7f451940d7189f78",
+      "actual": "fc53e81885f51f74d4859fd9fc11cdbb10ed7824edc53e2d7f451940d7189f78",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/Animation/Color/256Hed_ColorAlbino.anim",
+      "expected": "440e4c54180f58dfd341dd2b427818a63ba4262fe7c2603bf781cf5a51020d1e",
+      "actual": "440e4c54180f58dfd341dd2b427818a63ba4262fe7c2603bf781cf5a51020d1e",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Saltroche/256Hedgehog/Texture/256HedgehogCinnicot.png",
+      "expected": "f05a922b1e999b7347d88ca7193cd8387bf4192ec5f178ebffa46ba393236ae2",
+      "actual": "f05a922b1e999b7347d88ca7193cd8387bf4192ec5f178ebffa46ba393236ae2",
+      "unchanged": true
+    }
+  ]
+}

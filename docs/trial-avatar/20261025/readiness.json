@@ -1,0 +1,109 @@
+{
+  "checkedUtc": "2026-10-25T08:49:36.6544915Z",
+  "allPassed": true,
+  "checks": {
+    "nativeSdkValidationPassed": true,
+    "savedPrefabMatchesReview": true,
+    "savedSceneMatchesReview": true,
+    "authorSourceHasNoOnlineId": true,
+    "trialHasNoOnlineId": true,
+    "threeInstallerLanguagesAvailable": true,
+    "installerAndInstalledMenusUseJapanese": true,
+    "actualModuleMenusContainJapanesePlacementAndPreview": true,
+    "setupMenusFitEightControls": true,
+    "fourOriginalPaletteControlsRetained": true,
+    "guideUsesLocalBool": true,
+    "sixteenEmissionOnlyPumpsHaveRenderingDisabled": true,
+    "allDisplayMaterialsAndShadersResolve": true,
+    "nativeAnimationControllersRetained": true,
+    "nativeLipSyncRetained": true
+  },
+  "installedModuleMenuLabels": [
+    "MorphForge",
+    "ワールドに固定",
+    "アンカーを表示",
+    "拡大縮小",
+    "連続拡大縮小",
+    "1%",
+    "10%",
+    "100%（標準）",
+    "1000%",
+    "目の前に移動",
+    "配置設定",
+    "左手に追従",
+    "右手に追従",
+    "水平を維持",
+    "本人のつかみ操作を許可",
+    "本人プレビュー",
+    "プレビューを表示",
+    "位置",
+    "左側",
+    "右側",
+    "左上",
+    "右上",
+    "左下",
+    "右下",
+    "パネルサイズ",
+    "表示ズーム",
+    "斜め視点"
+  ],
+  "materialCount": 9,
+  "materials": [
+    {
+      "name": "256Hedgehog_Standard",
+      "asset": "Assets/Saltroche/256Hedgehog/Materials/256Hedgehog_Standard.mat",
+      "shader": "VRChat/Mobile/Toon Standard",
+      "supported": true
+    },
+    {
+      "name": "Gold translucent placement handle",
+      "asset": "Assets/MorphForgeAvatar/Generated/ResourcesV12/MorphForge/Stage3/Handle.mat",
+      "shader": "MorphForge/AnchorHandle",
+      "supported": true
+    },
+    {
+      "name": "ParticleBoxCatalog",
+      "asset": "Assets/MorphForgeAvatar/Generated/Catalog/ParticleBoxCatalog.mat",
+      "shader": "MorphForgeAvatar/ParticleBoxCatalogMetadataGrid",
+      "supported": true
+    },
+    {
+      "name": "Panel0",
+      "asset": "Assets/MorphForgeAvatar/Generated/Text/Panel0.mat",
+      "shader": "MorphForgeAvatar/PixelText16",
+      "supported": true
+    },
+    {
+      "name": "Panel1",
+      "asset": "Assets/MorphForgeAvatar/Generated/Text/Panel1.mat",
+      "shader": "MorphForgeAvatar/PixelText16",
+      "supported": true
+    },
+    {
+      "name": "Panel2",
+      "asset": "Assets/MorphForgeAvatar/Generated/Text/Panel2.mat",
+      "shader": "MorphForgeAvatar/PixelText16",
+      "supported": true
+    },
+    {
+      "name": "Panel3",
+      "asset": "Assets/MorphForgeAvatar/Generated/Text/Panel3.mat",
+      "shader": "MorphForgeAvatar/PixelText16",
+      "supported": true
+    },
+    {
+      "name": "Screen",
+      "asset": "Assets/MorphForgeAvatar/Generated/LocalPreview/Screen.mat",
+      "shader": "MorphForgeAvatar/LocalPreview",
+      "supported": true
+    },
+    {
+      "name": "Guide",
+      "asset": "Assets/MorphForgeHedgehogTrial/Guide/Guide.mat",
+      "shader": "MorphForge/TrialGuide",
+      "supported": true
+    }
+  ],
+  "unresolvedDisplayRendererSlots": [],
+  "uploaded": false
+}

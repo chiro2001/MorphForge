@@ -51,3 +51,7 @@ docs/subtitle-translation/windows-build.txt whitespace=-blank-at-eof,cr-at-eol
 # Preserve verbatim Windows bilingual-caption evidence.
 docs/bilingual-captions/**/*.json whitespace=cr-at-eol
 docs/bilingual-captions/windows-build.txt whitespace=-blank-at-eof,cr-at-eol
+
+# Preserve the author's original Readme and Windows trial-avatar evidence.
+docs/trial-avatar/**/*.json whitespace=cr-at-eol
+docs/trial-avatar/**/256Hedgehog-Readme.txt whitespace=cr-at-eol
