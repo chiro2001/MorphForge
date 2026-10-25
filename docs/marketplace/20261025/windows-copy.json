@@ -1,0 +1,323 @@
+{
+  "root": "D:\\Movies\\Projects\\MorphForge-Marketplace-20261025",
+  "manifestSha256": "3784283b83fca53606536474252dc5515c7fcc912798744a2796f9a6ee94e2eb",
+  "checkedFiles": 52,
+  "actualFiles": 53,
+  "passed": true,
+  "files": [
+    {
+      "path": "BOOTH/Description.ja.txt",
+      "bytes": 4207,
+      "sha256": "333c6fdc292a45ab165e1088a8f2c078b46af591bd66811f708cadf9a5a0a2d6",
+      "passed": true
+    },
+    {
+      "path": "BOOTH/Description.zh-CN.txt",
+      "bytes": 2482,
+      "sha256": "38147389f6b9533cee0e5dd6828945201cb8a337f8d0f7419c81ed226185dcc0",
+      "passed": true
+    },
+    {
+      "path": "BOOTH/Fields.json",
+      "bytes": 1480,
+      "sha256": "3f78e527d17cd3e01758ca14eb4e3e1069f09d6e11a0a7eb8cbcad8c68071123",
+      "passed": true
+    },
+    {
+      "path": "BOOTH/Fields.zh-CN.md",
+      "bytes": 1068,
+      "sha256": "61e043e50640a8b54d1fe184f4bf7e9be8de296edb68849ab681a4e4edbc3984",
+      "passed": true
+    },
+    {
+      "path": "BOOTH/Images/01-cover-ja.jpg",
+      "bytes": 247558,
+      "sha256": "854714c7c87e4ce9a2fdceb1132da67a1e7a29aaec9b7e456b7c0838fa0d9bd1",
+      "passed": true
+    },
+    {
+      "path": "BOOTH/Images/02-workflow-ja.jpg",
+      "bytes": 532384,
+      "sha256": "7af4fc0670ac9b4da67146a3d7e55f8aff60154c176c7fb690b75ebdf741607c",
+      "passed": true
+    },
+    {
+      "path": "BOOTH/Images/03-works-ja.jpg",
+      "bytes": 196082,
+      "sha256": "ea4d4ce2fd041e5714cfcdb8ca93f493005db28bbf851bb899407fd411e5a082",
+      "passed": true
+    },
+    {
+      "path": "BOOTH/Images/04-features-ja.jpg",
+      "bytes": 382626,
+      "sha256": "9deaf4c5a36e6258213bc22025bbb5c0891322af61a11c90fc4017b4e0b2a296",
+      "passed": true
+    },
+    {
+      "path": "BOOTH/Images/05-requirements-ja.jpg",
+      "bytes": 142484,
+      "sha256": "d11f5100252750b73242f2255e1c6692fc12acceb296d4f639e8a2b4a2928139",
+      "passed": true
+    },
+    {
+      "path": "BOOTH/Images/06-interface-ja.jpg",
+      "bytes": 256713,
+      "sha256": "87834ce187c406d33a1f03f54f0c10ea5660cc7f2c63bcc66b54c44ec2be7aa0",
+      "passed": true
+    },
+    {
+      "path": "BOOTH/Title.ja.txt",
+      "bytes": 83,
+      "sha256": "99c2d463fd5fba3b87b9573ddbe8ae15c08f736ae9b79f8d40b27cd2efa94c57",
+      "passed": true
+    },
+    {
+      "path": "BOOTH/Video/EMBED-GUIDE.zh-CN.md",
+      "bytes": 804,
+      "sha256": "b7a315f6e02ef873d1fd31a8617d61e4a1902cccc57bfaf0a6ac2ed3df70b380",
+      "passed": true
+    },
+    {
+      "path": "BOOTH/Video/MorphForge-Promo-ja-1080p60.mp4",
+      "bytes": 93448599,
+      "sha256": "3fe79f94bf5f436baaf69511764391370c3dc18725c5bbff5ca9a7adae67c6b1",
+      "passed": true
+    },
+    {
+      "path": "BOOTH/Video/YouTube-description.ja.txt",
+      "bytes": 4536,
+      "sha256": "7cb1b07b3760e43b20b1118ec8560858ca24402260edbc828be5867ca9f3bc0e",
+      "passed": true
+    },
+    {
+      "path": "BOOTH/Video/YouTube-title.ja.txt",
+      "bytes": 82,
+      "sha256": "20aae9fccc2abcfc01bbde79a51af71424dfde100b41eb98d123570e5fe94848",
+      "passed": true
+    },
+    {
+      "path": "Checks/PLATFORM-NOTES.zh-CN.md",
+      "bytes": 2563,
+      "sha256": "1d336ed33d8577371a81c6177a27fb379f18251bbfbd378c843548c99fd77ddb",
+      "passed": true
+    },
+    {
+      "path": "Checks/booth-form-reference.json",
+      "bytes": 1084,
+      "sha256": "218eaba9277b1a36bffdc9eae723193fba396c2a2ece0ba0b1a9725f0d7189f1",
+      "passed": true
+    },
+    {
+      "path": "Checks/image-sources.json",
+      "bytes": 5011,
+      "sha256": "14c1078041472e6c8099edda075ab0685f299f819f11ad89090fef9af2738b4c",
+      "passed": true
+    },
+    {
+      "path": "Checks/offline-browser.json",
+      "bytes": 1193,
+      "sha256": "1e86b73050c0dc9f53848404ad08b6bcfc4ddb8d97976325674a59fd4be55b49",
+      "passed": true
+    },
+    {
+      "path": "Checks/offline-preview.png",
+      "bytes": 226368,
+      "sha256": "7df527015df0a52c3c672ceb2e6e445ca7d33a23067105fe3630d0bccf45ad5f",
+      "passed": true
+    },
+    {
+      "path": "Checks/product-images-review.jpg",
+      "bytes": 333833,
+      "sha256": "78e8f5ce7c8d7af20aafc32cb6d66c72a333c508b7a3e60f0dcf40a8d1aed019",
+      "passed": true
+    },
+    {
+      "path": "Checks/promo-verification.json",
+      "bytes": 5579,
+      "sha256": "0bb22e31ac8fc3cfc5a0d58953be40f5aaa4e2a0b8aae42f6cf1edcdb8936697",
+      "passed": true
+    },
+    {
+      "path": "Checks/source-repository.json",
+      "bytes": 372,
+      "sha256": "c2bac0daa2bdd3636b3274db5fedc734c805e8e8988c5921b497d246746eaef3",
+      "passed": true
+    },
+    {
+      "path": "Checks/sources.json",
+      "bytes": 1550,
+      "sha256": "6d24090a626a5111d816c7b99d07f4f0bccfe62f29a15730b9c34f35a3f05d3e",
+      "passed": true
+    },
+    {
+      "path": "Checks/verification.json",
+      "bytes": 3881,
+      "sha256": "ed9a6e00445524cfbac0362031cb2948d74997837f3beea4cea4b26805db142a",
+      "passed": true
+    },
+    {
+      "path": "Checks/visual-review.json",
+      "bytes": 796,
+      "sha256": "d5379b82436cb3b286819aa9b5b73cbffa822971e9d9ad17006006eb97e97025",
+      "passed": true
+    },
+    {
+      "path": "Download/MorphForge_Desktop0.27.0_Avatar1.4.0.zip",
+      "bytes": 38702748,
+      "sha256": "28cf3df5b993a8ae3375d039ea3d6df556e792bd9ed11c69b9d28d8cc7d82b09",
+      "passed": true
+    },
+    {
+      "path": "Shared/MUSIC-CREDIT.txt",
+      "bytes": 312,
+      "sha256": "d1a23681769a54b4f914605c9372a7d01bf188a4aede7d1ee74a017e619f0187",
+      "passed": true
+    },
+    {
+      "path": "Shared/Subtitles/MorphForge-Promo.en.ass",
+      "bytes": 1569,
+      "sha256": "6e74b39fc4de8174730a9d0a4ec03c816d63c9fb0f74e77acc68c7514954b470",
+      "passed": true
+    },
+    {
+      "path": "Shared/Subtitles/MorphForge-Promo.en.srt",
+      "bytes": 784,
+      "sha256": "4719844359c3afa7bc0c73c016b2c310c3dfdbc47256064756ab9de6536c5be2",
+      "passed": true
+    },
+    {
+      "path": "Shared/Subtitles/MorphForge-Promo.ja.ass",
+      "bytes": 1652,
+      "sha256": "301313e3236b660383ecd6cc66b2189badbf8f3f84b12c1c57f890280cd59b6a",
+      "passed": true
+    },
+    {
+      "path": "Shared/Subtitles/MorphForge-Promo.ja.srt",
+      "bytes": 867,
+      "sha256": "f3b858f881c5d588a974b8ddc9b9a0798ea4e8429203a3f94e941b961e012689",
+      "passed": true
+    },
+    {
+      "path": "Shared/Subtitles/MorphForge-Promo.zh-CN.ass",
+      "bytes": 1492,
+      "sha256": "03189d1e58e571286ce19664a254bff064e184be005492a7c577de133db04667",
+      "passed": true
+    },
+    {
+      "path": "Shared/Subtitles/MorphForge-Promo.zh-CN.srt",
+      "bytes": 707,
+      "sha256": "485a81abc2315951b1406572888b4073223a53894d0dbcdd8c259a1c87053e78",
+      "passed": true
+    },
+    {
+      "path": "Xianyu/Description.zh-CN.txt",
+      "bytes": 1469,
+      "sha256": "929d5504049827224d9c1dd02815cb2a6d45e9bc0ce5ed5384c3a201fbf3a612",
+      "passed": true
+    },
+    {
+      "path": "Xianyu/Fields.zh-CN.md",
+      "bytes": 933,
+      "sha256": "8cc1565c99b3881a85deb8cde1712d21acc0b5c7d3675f0ba67d4b02edf8e2ba",
+      "passed": true
+    },
+    {
+      "path": "Xianyu/Images/01-cover-zh-CN.jpg",
+      "bytes": 252409,
+      "sha256": "014d29835866bca43cb6704a7164240cdf3a6d0a89242db64e4e150685da7270",
+      "passed": true
+    },
+    {
+      "path": "Xianyu/Images/02-workflow-zh-CN.jpg",
+      "bytes": 532782,
+      "sha256": "b58f3981fc645d6d89b4fcd9bdcd78822fa21da7f6e842488da345cdc534c66b",
+      "passed": true
+    },
+    {
+      "path": "Xianyu/Images/03-works-zh-CN.jpg",
+      "bytes": 199809,
+      "sha256": "7c967d88ff43950ad1aec7eb45e17d0e752d4c541a6b89bb0bb4ff3eb689c40d",
+      "passed": true
+    },
+    {
+      "path": "Xianyu/Images/04-features-zh-CN.jpg",
+      "bytes": 385510,
+      "sha256": "7cd9f6ce5793cc297c685b4956f1f0eb60c6ad136d01b04808d1ac21461092b9",
+      "passed": true
+    },
+    {
+      "path": "Xianyu/Images/05-requirements-zh-CN.jpg",
+      "bytes": 144613,
+      "sha256": "b2ad2ca9e21a398ea24c0b047ff08092fad187c271d4e38a85a5a5266c4a799f",
+      "passed": true
+    },
+    {
+      "path": "Xianyu/Images/06-interface-zh-CN.jpg",
+      "bytes": 248315,
+      "sha256": "6032159885cffbb7aa9d1d4edbbae496ac1f696c1673899aa9cb28fda8a407aa",
+      "passed": true
+    },
+    {
+      "path": "Xianyu/Source-link.txt",
+      "bytes": 40,
+      "sha256": "6d63e69f842ef07b0baa6cfec22126881c5bce8b8a38fc3fe578f2e23369af62",
+      "passed": true
+    },
+    {
+      "path": "Xianyu/Title.zh-CN.txt",
+      "bytes": 59,
+      "sha256": "d711f82f3c0623bc9c04cff5e979326df00f94f8e84dbb1237e6e65c67b04c53",
+      "passed": true
+    },
+    {
+      "path": "Xianyu/Video/MorphForge-Promo-zh-CN-1080p30-light.mp4",
+      "bytes": 42251003,
+      "sha256": "443e92091f957b541ba37fa30f2c5141de2f27404f02d9fe0371d620c00b3486",
+      "passed": true
+    },
+    {
+      "path": "Xianyu/Video/MorphForge-Promo-zh-CN-1080p60.mp4",
+      "bytes": 93445169,
+      "sha256": "5f1c02d2123761207bef72558efc12039bebe9c85e8011a5a6facbf4aa1ba6a6",
+      "passed": true
+    },
+    {
+      "path": "Xianyu/Video/Video-description.zh-CN.txt",
+      "bytes": 490,
+      "sha256": "03512178933676bdb3c612779f96598a81bb5024e86e805b968f2f46cc74e4c4",
+      "passed": true
+    },
+    {
+      "path": "index.html",
+      "bytes": 9084,
+      "sha256": "6a0b1bff9bff1499598f4dcac2fde734d42f9e359fb61b308817c01946b318ad",
+      "passed": true
+    },
+    {
+      "path": "light-encode.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "passed": true
+    },
+    {
+      "path": "marketplace-preparation.json",
+      "bytes": 963,
+      "sha256": "726a35208b8c733cdaaa705d318a4620d60c85104936367c88eae6f2ddc47dea",
+      "passed": true
+    },
+    {
+      "path": "publish-config.json",
+      "bytes": 1290,
+      "sha256": "5cd7eacc61aefb61aeda2b4fd124998167cc3441b7518fe3993afa591ec0cd19",
+      "passed": true
+    },
+    {
+      "path": "先看这里.md",
+      "bytes": 921,
+      "sha256": "e928b5b5020e68e71136a44366f01916ee074fb33870115c0082e1e7324b7cc1",
+      "passed": true
+    }
+  ],
+  "status": "passed",
+  "localManifestSha256": "3784283b83fca53606536474252dc5515c7fcc912798744a2796f9a6ee94e2eb"
+}

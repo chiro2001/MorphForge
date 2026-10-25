@@ -1,0 +1,35 @@
+{
+  "reference": "Edit Item - BOOTH.html",
+  "sha256": "1c1ed506e5f04ea5d2af957c335be176962cd4ea72c8b483e0663dd6eb15197c",
+  "bytes": 181939,
+  "snapshotDate": "2026-10-25",
+  "itemTypeObserved": "Digital",
+  "adultObserved": "All Age",
+  "fields": [
+    "Name",
+    "Item image",
+    "Category",
+    "Adult",
+    "Description",
+    "Tag",
+    "Event",
+    "Price",
+    "Add/Edit Files",
+    "Sell out of Japan",
+    "Advanced options",
+    "Save as a draft",
+    "Save to publish"
+  ],
+  "categories": {
+    "3D Tools & Systems": 215,
+    "Software": 201
+  },
+  "videoHint": "Description placeholder says to use Embedded Widget for videos; nearby visible help names YouTube videos.",
+  "fileLimitObserved": "Maximum file size: 1.2GB per file",
+  "descriptionFormats": [
+    "段落",
+    "埋め込みコンテンツ"
+  ],
+  "priceObserved": "100 (snapshot value only; user subsequently confirmed free 0 JPY plus optional 100 JPY support)",
+  "privacy": "Only relevant visible field names/help copied. Original HTML and account/hidden/session state excluded from public delivery."
+}

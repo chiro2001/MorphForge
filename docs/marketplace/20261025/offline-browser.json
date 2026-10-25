@@ -1,0 +1,50 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "All twelve product images actually load in Chromium",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Both language video players load the complete reviewed films",
+      "passed": true,
+      "detail": [
+        {
+          "duration": 111.2,
+          "error": null,
+          "height": 1080,
+          "width": 1920
+        },
+        {
+          "duration": 111.2,
+          "error": null,
+          "height": 1080,
+          "width": 1920
+        }
+      ]
+    },
+    {
+      "name": "Preview displays free and support pricing with source link",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Desktop preview has no horizontal overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Phone-width preview has no horizontal overflow",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No browser page or media errors",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "checkCount": 6,
+  "scope": "Disposable local Chromium session, original saved BOOTH account page never executed. No seller account or network publication accessed."
+}

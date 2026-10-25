@@ -1,0 +1,17 @@
+{
+  "status": "reviewed",
+  "images": 12,
+  "fonts": {
+    "zh-CN": "Noto Sans CJK SC",
+    "ja": "Noto Sans CJK JP"
+  },
+  "findings": [
+    "All twelve finished marketing images reviewed as contact sheet; six representative originals also inspected.",
+    "Source workflow shows real GUI and VRChat building, with actual24x/32x labels retained.",
+    "Gallery explicitly labeled editor preview; feature panels explicitly labeled actual VRChat footage.",
+    "No added text clipping found in inspected images.",
+    "Requirements explicitly retain253bit, Very Poor, PC/PCVR and own AI API.",
+    "Full promo videos copied unchanged; new lighter video retains complete111.2-second edit."
+  ],
+  "scope": "Sampled visual review; playback metadata and full light-video decode tested separately."
+}

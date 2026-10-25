@@ -1,0 +1,37 @@
+{
+  "checkedOn": "2026-10-25",
+  "sources": [
+    {
+      "source": "User saved BOOTH editor",
+      "record": "booth-form-reference.json",
+      "use": "Actual visible field labels, Digital type, category215, description video widget and observed file limit"
+    },
+    {
+      "url": "https://github.com/chiro2001/MorphForge",
+      "type": "Official project repository",
+      "verified": "Read-only page content retrieved. Returned README mentions older versions; public main/local0.27.0 alignment unverified."
+    },
+    {
+      "url": "https://terms.alicdn.com/legal-agreement/terms/platform_service/20220929192826912/20220929192826912.html",
+      "type": "Official Xianyu seller agreement",
+      "versionObserved": "2025-09-17",
+      "use": "Accurate product information and original rights; not used to assert an unverified video duration or allowed category."
+    },
+    {
+      "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "type": "Official license deed",
+      "use": "Retain existing Attribution, NonCommercial and ShareAlike conditions; no new commercial-use approval inferred."
+    },
+    {
+      "url": "https://booth.pixiv.help/hc/ja/sections/115000543454",
+      "type": "Official BOOTH help center",
+      "use": "General product registration reference. Exact editor mapping comes from saved page."
+    }
+  ],
+  "notVerified": [
+    "Current Xianyu0-yuan acceptance and seller-category eligibility",
+    "Current Xianyu video hard limits",
+    "A real hosted video URL",
+    "Public trial avatar URL"
+  ]
+}

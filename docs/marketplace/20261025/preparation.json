@@ -1,0 +1,24 @@
+{
+  "generatedBy": "tools/build_marketplace_publish.py",
+  "status": "PREPARED_NOT_PUBLISHED",
+  "published": false,
+  "priceConfirmed": true,
+  "boothPricesJpy": [
+    0,
+    100
+  ],
+  "xianyuPriceCny": 0,
+  "sameBuyerFileForFreeAndSupport": true,
+  "buyerFile": "Download/MorphForge_Desktop0.27.0_Avatar1.4.0.zip",
+  "buyerSha256": "28cf3df5b993a8ae3375d039ea3d6df556e792bd9ed11c69b9d28d8cc7d82b09",
+  "buyerBytes": 38702748,
+  "validatedBinariesUnchanged": true,
+  "sourceRepository": "https://github.com/chiro2001/MorphForge",
+  "sourcePagePrivateHtmlExcluded": true,
+  "pending": [
+    "Upload the Japanese video to a supported host and insert its real embed code.",
+    "Review optional-support distribution against the retained third-party noncommercial terms.",
+    "Verify current Xianyu category/zero-price/video acceptance in the seller UI.",
+    "Source link included; public main/local0.27.0 alignment unverified. No push or Release created."
+  ]
+}

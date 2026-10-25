@@ -1,0 +1,151 @@
+{
+  "success": true,
+  "checks": [
+    {
+      "name": "Preparation remains unpublished",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "User-confirmed free and support prices",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Both BOOTH variations use exactly the same buyer download",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "BOOTH fields follow saved Digital / 3D Tools / All Age form",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "GitHub source appears in all product descriptions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Buyer ZIP hash and size match preparation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Buyer ZIP CRC and paths valid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "All buyer payload files covered by correct SHA256",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Validated desktop and Unity binaries unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Public material catalog unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Buyer metadata reflects free plus voluntary identical support",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Three guides and original third-party terms retained",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Confirmed prices replace stale buyer price-pending text",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Buyer ZIP contains no private project or publisher account HTML",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Twelve product images have correct regional fonts and matching origins",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "All product images decode and fit planned dimensions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "BOOTH full video byte-identical to reviewed master",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Xianyu full video byte-identical to reviewed master",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Light video retains full 111.2 seconds at 1080p30 H.264",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Light video has compatible stereo AAC and no subtitle track",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "New light video completely decodes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Light video audio loudness and peak acceptable",
+      "passed": true,
+      "detail": {
+        "input_i": "-18.03",
+        "input_tp": "-2.12",
+        "input_lra": "9.80",
+        "input_thresh": "-28.19",
+        "output_i": "-15.97",
+        "output_tp": "-1.50",
+        "output_lra": "6.30",
+        "output_thresh": "-26.03",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.03"
+      }
+    },
+    {
+      "name": "Offline preview links and media resolve locally",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Both video upload descriptions retain music attribution",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Public materials exclude session state, credentials and private avatar IDs",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Original saved BOOTH account page excluded",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "checkCount": 26,
+  "buyerSha256": "28cf3df5b993a8ae3375d039ea3d6df556e792bd9ed11c69b9d28d8cc7d82b09",
+  "buyerBytes": 38702748,
+  "lightVideoBytes": 42251003,
+  "scope": "Offline publication material and packaging validation. Not a platform publication or account/category acceptance claim."
+}

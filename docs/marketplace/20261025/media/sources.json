@@ -1,0 +1,195 @@
+{
+  "images": [
+    {
+      "file": "01-cover-zh-CN.jpg",
+      "language": "zh-CN",
+      "size": [
+        1600,
+        1600
+      ],
+      "bytes": 252409,
+      "sha256": "014d29835866bca43cb6704a7164240cdf3a6d0a89242db64e4e150685da7270",
+      "sources": [
+        "docs/promo-video/20261025/cn-jp/master-sword-cover.jpg"
+      ],
+      "fontFamily": "Noto Sans CJK SC"
+    },
+    {
+      "file": "02-workflow-zh-CN.jpg",
+      "language": "zh-CN",
+      "size": [
+        1600,
+        2000
+      ],
+      "bytes": 532782,
+      "sha256": "b58f3981fc645d6d89b4fcd9bdcd78822fa21da7f6e842488da345cdc534c66b",
+      "sources": [
+        "promo-zh-CN@23s",
+        "promo-zh-CN@49s"
+      ],
+      "fontFamily": "Noto Sans CJK SC"
+    },
+    {
+      "file": "03-works-zh-CN.jpg",
+      "language": "zh-CN",
+      "size": [
+        1600,
+        1600
+      ],
+      "bytes": 199809,
+      "sha256": "7c967d88ff43950ad1aec7eb45e17d0e752d4c541a6b89bb0bb4ff3eb689c40d",
+      "sources": [
+        "docs/media/showcase/sports-car.webp",
+        "docs/media/showcase/ramen.webp",
+        "docs/media/showcase/night-heron.webp",
+        "docs/media/showcase/maple.webp",
+        "docs/media/showcase/village-house.webp",
+        "docs/media/showcase/hangover.webp"
+      ],
+      "fontFamily": "Noto Sans CJK SC"
+    },
+    {
+      "file": "04-features-zh-CN.jpg",
+      "language": "zh-CN",
+      "size": [
+        1600,
+        1600
+      ],
+      "bytes": 385510,
+      "sha256": "7cd9f6ce5793cc297c685b4956f1f0eb60c6ad136d01b04808d1ac21461092b9",
+      "sources": [
+        "promo-zh-CN@77s",
+        "promo-zh-CN@69s",
+        "promo-zh-CN@100s",
+        "promo-zh-CN@87s"
+      ],
+      "fontFamily": "Noto Sans CJK SC"
+    },
+    {
+      "file": "05-requirements-zh-CN.jpg",
+      "language": "zh-CN",
+      "size": [
+        1600,
+        1600
+      ],
+      "bytes": 144613,
+      "sha256": "b2ad2ca9e21a398ea24c0b047ff08092fad187c271d4e38a85a5a5266c4a799f",
+      "sources": [
+        "docs/releases/0.27.0/Quickstart.zh-CN.md"
+      ],
+      "fontFamily": "Noto Sans CJK SC"
+    },
+    {
+      "file": "06-interface-zh-CN.jpg",
+      "language": "zh-CN",
+      "size": [
+        1600,
+        1600
+      ],
+      "bytes": 248315,
+      "sha256": "6032159885cffbb7aa9d1d4edbbae496ac1f696c1673899aa9cb28fda8a407aa",
+      "sources": [
+        "docs/releases/0.27.0/media/workbench-zh-CN.png"
+      ],
+      "fontFamily": "Noto Sans CJK SC"
+    },
+    {
+      "file": "01-cover-ja.jpg",
+      "language": "ja",
+      "size": [
+        1600,
+        1600
+      ],
+      "bytes": 247558,
+      "sha256": "854714c7c87e4ce9a2fdceb1132da67a1e7a29aaec9b7e456b7c0838fa0d9bd1",
+      "sources": [
+        "docs/promo-video/20261025/cn-jp/master-sword-cover.jpg"
+      ],
+      "fontFamily": "Noto Sans CJK JP"
+    },
+    {
+      "file": "02-workflow-ja.jpg",
+      "language": "ja",
+      "size": [
+        1600,
+        2000
+      ],
+      "bytes": 532384,
+      "sha256": "7af4fc0670ac9b4da67146a3d7e55f8aff60154c176c7fb690b75ebdf741607c",
+      "sources": [
+        "promo-ja@23s",
+        "promo-ja@49s"
+      ],
+      "fontFamily": "Noto Sans CJK JP"
+    },
+    {
+      "file": "03-works-ja.jpg",
+      "language": "ja",
+      "size": [
+        1600,
+        1600
+      ],
+      "bytes": 196082,
+      "sha256": "ea4d4ce2fd041e5714cfcdb8ca93f493005db28bbf851bb899407fd411e5a082",
+      "sources": [
+        "docs/media/showcase/sports-car.webp",
+        "docs/media/showcase/ramen.webp",
+        "docs/media/showcase/night-heron.webp",
+        "docs/media/showcase/maple.webp",
+        "docs/media/showcase/village-house.webp",
+        "docs/media/showcase/hangover.webp"
+      ],
+      "fontFamily": "Noto Sans CJK JP"
+    },
+    {
+      "file": "04-features-ja.jpg",
+      "language": "ja",
+      "size": [
+        1600,
+        1600
+      ],
+      "bytes": 382626,
+      "sha256": "9deaf4c5a36e6258213bc22025bbb5c0891322af61a11c90fc4017b4e0b2a296",
+      "sources": [
+        "promo-ja@77s",
+        "promo-ja@69s",
+        "promo-ja@100s",
+        "promo-ja@87s"
+      ],
+      "fontFamily": "Noto Sans CJK JP"
+    },
+    {
+      "file": "05-requirements-ja.jpg",
+      "language": "ja",
+      "size": [
+        1600,
+        1600
+      ],
+      "bytes": 142484,
+      "sha256": "d11f5100252750b73242f2255e1c6692fc12acceb296d4f639e8a2b4a2928139",
+      "sources": [
+        "docs/releases/0.27.0/Quickstart.ja.md"
+      ],
+      "fontFamily": "Noto Sans CJK JP"
+    },
+    {
+      "file": "06-interface-ja.jpg",
+      "language": "ja",
+      "size": [
+        1600,
+        1600
+      ],
+      "bytes": 256713,
+      "sha256": "87834ce187c406d33a1f03f54f0c10ea5660cc7f2c63bcc66b54c44ec2be7aa0",
+      "sources": [
+        "docs/releases/0.27.0/media/workbench-ja.png"
+      ],
+      "fontFamily": "Noto Sans CJK JP"
+    }
+  ],
+  "fonts": {
+    "zh-CN": "Noto Sans CJK SC",
+    "ja": "Noto Sans CJK JP"
+  },
+  "method": "Actual captures and saved artwork; Pillow composition. No generated product image."
+}

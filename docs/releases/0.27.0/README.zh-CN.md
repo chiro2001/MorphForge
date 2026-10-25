@@ -1,5 +1,7 @@
 # MorphForge BOOTH 发布准备（2026-10-25）
 
+最新的BOOTH／闲鱼双平台发布资料见 [2026-10-25发布资料](../../marketplace/20261025/RESULTS.md)。用户现已确认免费0日元＋自愿支持100日元（同内容），新包同步更新买家文字说明；本页以下保留首次准备记录。
+
 参考相邻 `tesla-roadster-avatar` 的 TeslaRoadsterMA 1.2.0 发布组织方式，使用本项目素材和原始发行文件。Desktop **0.27.0**，Avatar 插件 **1.4.0**。本轮只准备材料，没有上传 BOOTH、推送 Git 或创建 GitHub Release，也没有更新在线 Avatar。
 
 ## 交付入口

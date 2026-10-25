@@ -1,0 +1,38 @@
+{
+  "name": "MorphForge",
+  "desktopVersion": "0.27.0",
+  "avatarVersion": "1.4.0",
+  "date": "2026-10-25",
+  "published": false,
+  "sourceRepository": "https://github.com/chiro2001/MorphForge",
+  "priceConfirmed": true,
+  "booth": {
+    "categoryId": 215,
+    "categoryLabel": "3D Tools & Systems",
+    "adult": false,
+    "event": null,
+    "variants": [
+      {
+        "nameJa": "無料版",
+        "nameZh": "免费版",
+        "priceJpy": 0
+      },
+      {
+        "nameJa": "応援版（内容は無料版と同じ）",
+        "nameZh": "支持版（内容与免费版相同）",
+        "priceJpy": 100
+      }
+    ],
+    "sameDownloadForAllVariants": true,
+    "contact": "BOOTH内メッセージ"
+  },
+  "xianyu": {
+    "priceCny": 0,
+    "contact": "闲鱼站内消息",
+    "sourceUrlIncluded": true,
+    "platformZeroPriceAcceptance": "Not checked in the current seller UI; do not substitute a positive price without the user."
+  },
+  "priceSource": "Explicit user instruction: 定价0（包含我们的开源链接），然后有100日元的支持价格",
+  "licensePolicy": "Original component licenses retained. No statement that all bundled assets allow commercial use; optional support does not relicense noncommercial assets.",
+  "livePublicationAuthorized": false
+}
