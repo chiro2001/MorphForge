@@ -1,0 +1,74 @@
+[
+  {
+    "FullName": "D:\\Movies\\VRChat\\可能需要加一下防抖。.mp4",
+    "Name": "可能需要加一下防抖。.mp4",
+    "Length": 28596172,
+    "LastWriteTime": "2026-10-25T18:16:57.9957604+08:00",
+    "localFile": "stabilize.mp4",
+    "sha256": "81be01084a7f14d06836551ed01037fc90cc45963938de1ac8e4156ea9941bb8",
+    "usedInThisEdition": false
+  },
+  {
+    "FullName": "D:\\Movies\\VRChat\\需要加速。.mp4",
+    "Name": "需要加速。.mp4",
+    "Length": 60595697,
+    "LastWriteTime": "2026-10-25T18:01:03.4464006+08:00",
+    "localFile": "speed-up.mp4",
+    "sha256": "99993842722a40054cdaaf963b9eac2ac6c8056a4003c6a5b13d1ad3cebc4428",
+    "usedInThisEdition": true
+  },
+  {
+    "FullName": "D:\\Movies\\VRChat\\需要挑几种有用的。.mp4",
+    "Name": "需要挑几种有用的。.mp4",
+    "Length": 317775925,
+    "LastWriteTime": "2026-10-25T17:57:23.1646538+08:00",
+    "localFile": "showcase-options.mp4",
+    "sha256": "9052fd1872a63ac0a3486bc46ac2c461dff0f439db1f55d7b32e52789df5b241",
+    "usedInThisEdition": true
+  },
+  {
+    "FullName": "D:\\Movies\\VRChat\\只要风车和材质展示部分.mp4",
+    "Name": "只要风车和材质展示部分.mp4",
+    "Length": 365672874,
+    "LastWriteTime": "2026-10-25T17:41:37.6986731+08:00",
+    "localFile": "windmill-materials.mp4",
+    "sha256": "8352185941b0555449a894114c587b5a7df05143e925d8f3e280fedf8f3da52c",
+    "usedInThisEdition": true
+  },
+  {
+    "FullName": "D:\\Movies\\VRChat\\字幕演示需要加速或者减掉一些不必要的，并且需要检查一下翻译的正确性。.mp4",
+    "Name": "字幕演示需要加速或者减掉一些不必要的，并且需要检查一下翻译的正确性。.mp4",
+    "Length": 68011606,
+    "LastWriteTime": "2026-10-25T17:45:23.844608+08:00",
+    "localFile": "live-captions.mp4",
+    "sha256": "3d5cbf7adb812e7fb38effb4888bcfed9b798a67911af921532ba32a4217c459",
+    "usedInThisEdition": true
+  },
+  {
+    "Name": "构建录屏：大师剑.mp4",
+    "FullName": "D:\\Movies\\VRChat\\构建录屏：大师剑.mp4",
+    "Length": 691866300,
+    "LastWriteTime": "2026-10-25T20:08:47.2676141+08:00",
+    "localFile": "ai-master-sword.mp4",
+    "sha256": "215566d58a1f602fc0156c52132c0c5de9bc453d695a44604d4ac6c6e80e7bae",
+    "usedInThisEdition": true
+  },
+  {
+    "Name": "神经网络演示.mp4",
+    "FullName": "D:\\Movies\\VRChat\\神经网络演示.mp4",
+    "Length": 85948210,
+    "LastWriteTime": "2026-10-25T20:37:52.5986708+08:00",
+    "localFile": "neural-network.mp4",
+    "sha256": "4ac32d9d2ef92bca0d750c67473c4b62213460b59f8989a86166d066270724fe",
+    "usedInThisEdition": true
+  },
+  {
+    "Name": "在vrchat中搭建大师剑.mp4",
+    "FullName": "D:\\Movies\\VRChat\\在vrchat中搭建大师剑.mp4",
+    "Length": 518664175,
+    "LastWriteTime": "2026-10-25T20:27:22.7593924+08:00",
+    "localFile": "vrc-master-sword.mp4",
+    "sha256": "e10af3566c250694696f3bdf6997c13a47c62401a0c34a80b8159cbdb2a455a8",
+    "usedInThisEdition": true
+  }
+]

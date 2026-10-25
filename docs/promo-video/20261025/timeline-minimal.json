@@ -1,0 +1,228 @@
+{
+  "name": "MorphForge 功能与玩法宣传片",
+  "date": "2026-10-25",
+  "width": 1920,
+  "height": 1080,
+  "fps": 60,
+  "duration": 96.0,
+  "primaryLanguage": "zh-CN",
+  "subtitleLanguages": [
+    "zh-CN",
+    "ja",
+    "en"
+  ],
+  "music": {
+    "title": "Cipher",
+    "artist": "Kevin MacLeod",
+    "bpm": 150,
+    "start": 0,
+    "file": "Cipher.mp3",
+    "license": "CC BY 4.0"
+  },
+  "originalAudio": "muted",
+  "sourceDirectory": "D:/Movies/VRChat",
+  "sources": {
+    "windmill-materials.mp4": "只要风车和材质展示部分.mp4",
+    "showcase-options.mp4": "需要挑几种有用的。.mp4",
+    "speed-up.mp4": "需要加速。.mp4",
+    "stabilize.mp4": "可能需要加一下防抖。.mp4",
+    "live-captions.mp4": "字幕演示需要加速或者减掉一些不必要的，并且需要检查一下翻译的正确性。.mp4"
+  },
+  "shots": [
+    {
+      "id": "01-hook-windmill",
+      "duration": 1.6,
+      "kind": "video",
+      "file": "windmill-materials.mp4",
+      "start": 31.0,
+      "title": "",
+      "ja": "",
+      "en": "",
+      "headingSeconds": 2.2
+    },
+    {
+      "id": "02-hook-props",
+      "duration": 1.6,
+      "kind": "video",
+      "file": "showcase-options.mp4",
+      "start": 192.0,
+      "title": "",
+      "ja": "",
+      "en": "",
+      "headingSeconds": 2.2
+    },
+    {
+      "id": "03-brand",
+      "duration": 3.2,
+      "kind": "brand",
+      "file": "windmill-materials.mp4",
+      "start": 108.0,
+      "title": "MorphForge",
+      "ja": "",
+      "en": "",
+      "headingSeconds": 2.2
+    },
+    {
+      "id": "04-workbench",
+      "duration": 6.4,
+      "kind": "workbench",
+      "title": "AI 创作",
+      "ja": "AIで創作",
+      "en": "Create with AI",
+      "headingSeconds": 2.2
+    },
+    {
+      "id": "05-publish",
+      "duration": 6.4,
+      "kind": "publish",
+      "file": "windmill-materials.mp4",
+      "start": 45.0,
+      "title": "模型 + 动画",
+      "ja": "モデルとアニメを一緒に送信",
+      "en": "Publish model + animation",
+      "headingSeconds": 2.2
+    },
+    {
+      "id": "06-animation",
+      "duration": 6.4,
+      "kind": "video",
+      "file": "windmill-materials.mp4",
+      "start": 34.5,
+      "title": "",
+      "ja": "",
+      "en": "",
+      "headingSeconds": 2.2
+    },
+    {
+      "id": "07-materials",
+      "duration": 6.4,
+      "kind": "video",
+      "file": "windmill-materials.mp4",
+      "start": 105.5,
+      "title": "材质",
+      "ja": "マテリアル",
+      "en": "Materials",
+      "headingSeconds": 2.2
+    },
+    {
+      "id": "08-props",
+      "duration": 6.4,
+      "kind": "video",
+      "file": "showcase-options.mp4",
+      "start": 192.0,
+      "title": "随身道具",
+      "ja": "持ち歩ける小物",
+      "en": "Props to carry",
+      "headingSeconds": 2.2
+    },
+    {
+      "id": "09-scale",
+      "duration": 6.4,
+      "kind": "video",
+      "file": "showcase-options.mp4",
+      "start": 106.0,
+      "speed": 4.0,
+      "title": "抓握 · 缩放",
+      "ja": "つかむ・拡大縮小（4倍速）",
+      "en": "Grab & resize · 4× speed",
+      "headingSeconds": 2.2,
+      "speedLabel": "4倍速"
+    },
+    {
+      "id": "10-space",
+      "duration": 6.4,
+      "kind": "video",
+      "file": "stabilize.mp4",
+      "start": 6.4,
+      "stabilize": true,
+      "title": "空间摆放",
+      "ja": "空間に配置",
+      "en": "Place it in VR",
+      "headingSeconds": 2.2
+    },
+    {
+      "id": "11-pixel-send",
+      "duration": 6.4,
+      "kind": "video",
+      "file": "speed-up.mp4",
+      "start": 1.0,
+      "speed": 10.5,
+      "title": "像素画",
+      "ja": "ピクセルアート（10.5倍速）",
+      "en": "Pixel art · 10.5× speed",
+      "headingSeconds": 2.2,
+      "speedLabel": "10.5倍速"
+    },
+    {
+      "id": "12-pixel-result",
+      "duration": 6.4,
+      "kind": "video",
+      "file": "speed-up.mp4",
+      "start": 69.0,
+      "title": "",
+      "ja": "",
+      "en": "",
+      "headingSeconds": 2.2
+    },
+    {
+      "id": "13-drawing",
+      "duration": 6.4,
+      "kind": "drawing",
+      "title": "点与线",
+      "ja": "点と線・Unityプレビュー",
+      "en": "Points & lines · Unity preview",
+      "headingSeconds": 2.2,
+      "sourceLabel": "Unity 预览"
+    },
+    {
+      "id": "14-captions",
+      "duration": 6.4,
+      "kind": "video",
+      "file": "live-captions.mp4",
+      "start": 39.0,
+      "title": "",
+      "ja": "",
+      "en": "",
+      "headingSeconds": 2.2
+    },
+    {
+      "id": "15-translation",
+      "duration": 6.4,
+      "kind": "video",
+      "file": "live-captions.mp4",
+      "start": 80.5,
+      "title": "实时翻译",
+      "ja": "リアルタイム翻訳",
+      "en": "Live translation",
+      "headingSeconds": 2.2
+    },
+    {
+      "id": "16-languages",
+      "duration": 6.4,
+      "kind": "languages",
+      "title": "",
+      "ja": "3言語対応",
+      "en": "Three languages",
+      "headingSeconds": 2.2,
+      "captionZh": "三语界面"
+    },
+    {
+      "id": "17-end",
+      "duration": 6.4,
+      "kind": "end",
+      "title": "开始创作",
+      "ja": "作ってみよう",
+      "en": "Start creating",
+      "headingSeconds": 2.2
+    }
+  ],
+  "edition": "minimal-text",
+  "textPolicy": {
+    "headingSeconds": 2.2,
+    "subtitleSeconds": 2.4,
+    "persistentBrand": false,
+    "detailParagraphs": false,
+    "progressBar": false,
+    "chapterNumbers": false
+  }
+}

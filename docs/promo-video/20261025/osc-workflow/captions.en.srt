@@ -1,0 +1,47 @@
+1
+00:00:00,150 --> 00:00:02,950
+Your own voxel / low-poly models
+
+2
+00:00:03,350 --> 00:00:06,150
+Display them dynamically in VRChat via OSC
+
+3
+00:00:09,750 --> 00:00:12,150
+AI modeling: Master Sword
+
+4
+00:00:16,150 --> 00:00:19,550
+Generate & refine · 24× speed
+
+5
+00:00:30,550 --> 00:00:33,950
+Actual OSC build · 32× speed
+
+6
+00:00:56,950 --> 00:00:59,350
+Build animated demonstrations too
+
+7
+00:01:09,750 --> 00:01:12,150
+Models + animation
+
+8
+00:01:16,150 --> 00:01:18,550
+Materials
+
+9
+00:01:19,350 --> 00:01:21,750
+Grab & resize · 4× speed
+
+10
+00:01:25,750 --> 00:01:28,150
+Pixel art · 10.5× speed
+
+11
+00:01:32,150 --> 00:01:34,550
+Live captions & translation
+
+12
+00:01:38,550 --> 00:01:42,550
+Bring your creations into VRChat

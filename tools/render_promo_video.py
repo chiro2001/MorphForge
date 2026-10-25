@@ -109,7 +109,7 @@ def header(image, shot):
     if shot.get("title"):
         width = int(draw.textlength(shot["title"], font=font(42, True))) + 48
         draw.rounded_rectangle((62, 48, 62 + width, 127), radius=12, fill=(*BG, 205))
-        text(draw, (86, 61), shot["title"], 42, WHITE, True, max_width=700)
+        text(draw, (86, 61), shot["title"], 42, WHITE, True, max_width=1600)
     return draw
 
 
@@ -189,7 +189,7 @@ def write_subtitles(plan, out):
         position = 0.0
         for shot in plan["shots"]:
             start = position + .15
-            end = position + min(shot["duration"] - .15, 2.55)
+            end = position + min(shot["duration"] - .15, .15 + shot.get("captionSeconds", 2.4))
             position += shot["duration"]
             message = shot.get("captionZh", shot.get("title", "")) if language == "zh-CN" else shot[language]
             if not message or shot["kind"] == "brand":
@@ -258,7 +258,12 @@ def render_shot(shot, index, total, args, work):
             transform = work / "tree.trf"
             run(["ffmpeg", "-hide_banner", "-loglevel", "warning", "-y", "-threads", "4", "-ss", str(shot["start"]), "-t", str(duration * speed), "-i", str(source), "-vf", f"vidstabdetect=shakiness=6:accuracy=12:stepsize=8:fileformat=ascii:result='{filter_path(transform)}'", "-an", "-f", "null", "-"], work / "logs/stabilize-detect.log")
             effect = f"vidstabtransform=input='{filter_path(transform)}':smoothing=24:optzoom=1:zoom=2:interpol=bicubic,"
-        effect += f"setpts=(PTS-STARTPTS)/{speed},fps=60,scale=1920:1080,setsar=1"
+        effect += f"setpts=(PTS-STARTPTS)/{speed},fps=60,"
+        if shot.get("crop"):
+            x, y, width, height = shot["crop"]
+            effect += f"crop={width}:{height}:{x}:{y},"
+        # Preserve the source's geometry when focusing on part of a real GUI.
+        effect += "scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=0x070d15,setsar=1"
         command += ["-ss", str(shot["start"]), "-t", str(duration * speed), "-i", str(source)]
         if shot["kind"] == "publish":
             image = work / "graphics" / (shot["id"] + "-panel.png")
@@ -323,6 +328,10 @@ def main():
             source = args.sources / plan["sources"][shot["file"]]
         info = probe(source)
         assert shot["start"] >= 0 and shot["start"] + shot["duration"] * shot.get("speed", 1) <= float(info["format"]["duration"]), shot["id"]
+        if shot.get("crop"):
+            stream = next(s for s in info["streams"] if s["codec_type"] == "video")
+            x, y, width, height = shot["crop"]
+            assert min(x, y) >= 0 and min(width, height) > 0 and x + width <= stream["width"] and y + height <= stream["height"], shot["id"]
     segments = []
     for index, shot in enumerate(plan["shots"]):
         if args.only and args.only != shot["id"]:
@@ -357,7 +366,12 @@ def main():
             shutil.copy2(source, target)
     assets = args.out / "assets"
     assets.mkdir(exist_ok=True)
-    for relative in ["docs/releases/0.27.0/media/leviathan-lantern-editor.png", "docs/releases/0.27.0/media/workbench-zh-CN.png", "docs/releases/0.27.0/media/workbench-ja.png", "docs/releases/0.27.0/media/workbench-en.png", "docs/optimization-20261023/drawing-thin.png", "docs/optimization-20261023/drawing-thick.png", "docs/default-motion/native/main-publish-with-motion.png", "fonts/NotoSansSC-Regular.otf", "fonts/OFL-NotoSansSC.txt"]:
+    still_assets = {
+        "workbench": ["docs/releases/0.27.0/media/leviathan-lantern-editor.png"],
+        "drawing": ["docs/optimization-20261023/drawing-thin.png", "docs/optimization-20261023/drawing-thick.png"],
+        "publish": ["docs/default-motion/native/main-publish-with-motion.png"],
+    }
+    for relative in sorted({path for shot in plan["shots"] for path in still_assets.get(shot["kind"], [])}):
         source = asset(relative)
         if source.resolve() != (assets / source.name).resolve():
             shutil.copy2(source, assets / source.name)

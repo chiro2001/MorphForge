@@ -1,0 +1,140 @@
+{
+  "status": "passed",
+  "reviewer": "Codex visual inspection of extracted frames",
+  "scope": [
+    "16-shot storyboard and actual-footage cover",
+    "Full-film frames every 3 seconds",
+    "OSC build every second, including empty scene and completed model",
+    "All 12 Japanese subtitle cues at full resolution and contact sheet",
+    "AI generation changes sampled through the full selected interval"
+  ],
+  "frames": {
+    "full-film": [
+      0.0,
+      3.0,
+      6.0,
+      9.0,
+      12.0,
+      15.0,
+      18.0,
+      21.0,
+      24.0,
+      27.0,
+      30.0,
+      33.0,
+      36.0,
+      39.0,
+      42.0,
+      45.0,
+      48.0,
+      51.0,
+      54.0,
+      57.0,
+      60.0,
+      63.0,
+      66.0,
+      69.0,
+      72.0,
+      75.0,
+      78.0,
+      81.0,
+      84.0,
+      87.0,
+      90.0,
+      93.0,
+      96.0,
+      99.0,
+      102.0
+    ],
+    "osc-build": [
+      30.4,
+      31.4,
+      32.4,
+      33.4,
+      34.4,
+      35.4,
+      36.4,
+      37.4,
+      38.4,
+      39.4,
+      40.4,
+      41.4,
+      42.4,
+      43.4,
+      44.4,
+      45.4,
+      46.4,
+      47.4,
+      48.4,
+      49.4,
+      50.4
+    ],
+    "japanese": [
+      1,
+      4.2,
+      10.6,
+      17,
+      31.4,
+      57.8,
+      70.6,
+      77,
+      80.2,
+      86.6,
+      93,
+      100
+    ]
+  },
+  "typography": {
+    "zh-CN": {
+      "regular": {
+        "file": "NotoSansCJK-Regular.ttc",
+        "faceIndex": 2,
+        "family": "Noto Sans CJK SC",
+        "style": "Regular"
+      },
+      "bold": {
+        "file": "NotoSansCJK-Bold.ttc",
+        "faceIndex": 2,
+        "family": "Noto Sans CJK SC",
+        "style": "Bold"
+      }
+    },
+    "ja": {
+      "regular": {
+        "file": "NotoSansCJK-Regular.ttc",
+        "faceIndex": 0,
+        "family": "Noto Sans CJK JP",
+        "style": "Regular"
+      },
+      "bold": {
+        "file": "NotoSansCJK-Bold.ttc",
+        "faceIndex": 0,
+        "family": "Noto Sans CJK JP",
+        "style": "Bold"
+      }
+    },
+    "en": {
+      "regular": {
+        "file": "NotoSansCJK-Regular.ttc",
+        "faceIndex": 2,
+        "family": "Noto Sans CJK SC",
+        "style": "Regular"
+      },
+      "bold": {
+        "file": "NotoSansCJK-Bold.ttc",
+        "faceIndex": 2,
+        "family": "Noto Sans CJK SC",
+        "style": "Bold"
+      }
+    }
+  },
+  "findings": [
+    "SC Chinese overlays and JP Japanese subtitles use distinct explicit regional faces.",
+    "GUI shows real submission, tree/terrain generation, sword and subsequent changes. No synthetic GUI or credential dialog included.",
+    "OSC sequence starts empty, shows sequential geometry accumulation and cuts to a normal-speed result.",
+    "Accelerated shots retain numeric speed labels; ordinary title cards fade after 2.2 seconds, core claims after 3.2 seconds.",
+    "Neural network shows an animated illustration; no claim of actual model training.",
+    "No clipped added text, missing glyphs or unintended black gaps found in reviewed samples."
+  ],
+  "limitation": "Sampled visual inspection plus complete automated decoding; not a claim of continuous subjective human viewing/listening."
+}

@@ -1,0 +1,56 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "name": "可能需要加一下防抖。.mp4",
+      "passed": true,
+      "bytes": 28596172,
+      "sha256": "81be01084a7f14d06836551ed01037fc90cc45963938de1ac8e4156ea9941bb8"
+    },
+    {
+      "name": "需要加速。.mp4",
+      "passed": true,
+      "bytes": 60595697,
+      "sha256": "99993842722a40054cdaaf963b9eac2ac6c8056a4003c6a5b13d1ad3cebc4428"
+    },
+    {
+      "name": "需要挑几种有用的。.mp4",
+      "passed": true,
+      "bytes": 317775925,
+      "sha256": "9052fd1872a63ac0a3486bc46ac2c461dff0f439db1f55d7b32e52789df5b241"
+    },
+    {
+      "name": "只要风车和材质展示部分.mp4",
+      "passed": true,
+      "bytes": 365672874,
+      "sha256": "8352185941b0555449a894114c587b5a7df05143e925d8f3e280fedf8f3da52c"
+    },
+    {
+      "name": "字幕演示需要加速或者减掉一些不必要的，并且需要检查一下翻译的正确性。.mp4",
+      "passed": true,
+      "bytes": 68011606,
+      "sha256": "3d5cbf7adb812e7fb38effb4888bcfed9b798a67911af921532ba32a4217c459"
+    },
+    {
+      "name": "构建录屏：大师剑.mp4",
+      "passed": true,
+      "bytes": 691866300,
+      "sha256": "215566d58a1f602fc0156c52132c0c5de9bc453d695a44604d4ac6c6e80e7bae"
+    },
+    {
+      "name": "神经网络演示.mp4",
+      "passed": true,
+      "bytes": 85948210,
+      "sha256": "4ac32d9d2ef92bca0d750c67473c4b62213460b59f8989a86166d066270724fe"
+    },
+    {
+      "name": "在vrchat中搭建大师剑.mp4",
+      "passed": true,
+      "bytes": 518664175,
+      "sha256": "e10af3566c250694696f3bdf6997c13a47c62401a0c34a80b8159cbdb2a455a8"
+    }
+  ],
+  "checkedFiles": 8,
+  "sourceDirectory": "D:\\Movies\\VRChat",
+  "operation": "Read-only metadata and SHA256; original files unchanged."
+}

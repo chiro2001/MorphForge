@@ -1,0 +1,167 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "name": "Timeline frame counts equal declared duration",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "zh-CN: 1080p60 H.264, exact frame count",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "zh-CN: exact timeline duration",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "zh-CN: 48 kHz stereo AAC",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ja: 1080p60 H.264, exact frame count",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ja: exact timeline duration",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ja: 48 kHz stereo AAC",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Multisub: 1080p60 H.264, exact frame count",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Multisub: exact timeline duration",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Multisub: 48 kHz stereo AAC",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Chinese and Japanese masters contain only picture and sound",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Companion contains Japanese and English mov_text tracks",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "zh-CN: subtitle text and times match timeline",
+      "passed": true,
+      "detail": {
+        "cues": 12
+      }
+    },
+    {
+      "name": "zh-CN: captions are ordered and within picture",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ja: subtitle text and times match timeline",
+      "passed": true,
+      "detail": {
+        "cues": 12
+      }
+    },
+    {
+      "name": "ja: captions are ordered and within picture",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "en: subtitle text and times match timeline",
+      "passed": true,
+      "detail": {
+        "cues": 12
+      }
+    },
+    {
+      "name": "en: captions are ordered and within picture",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ja: embedded subtitles preserve text and millisecond timing",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "en: embedded subtitles preserve text and millisecond timing",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "zh-CN: explicit regional family in regular/bold fonts and ASS",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ja: explicit regional family in regular/bold fonts and ASS",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Japanese burned subtitles resolve to JP glyphs without missing-glyph warnings",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Selectable subtitles retain SC/JP font family names",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "zh-CN: full picture and sound decode",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ja: full picture and sound decode",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Music integrated loudness and true peak within range",
+      "passed": true,
+      "detail": {
+        "input_i": "-17.64",
+        "input_tp": "-2.30",
+        "input_lra": "9.20",
+        "input_thresh": "-27.78",
+        "output_i": "-15.62",
+        "output_tp": "-1.50",
+        "output_lra": "5.90",
+        "output_thresh": "-25.68",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.38"
+      }
+    }
+  ],
+  "durationSeconds": 104.8,
+  "frames": 6288,
+  "shotCount": 16,
+  "bytes": {
+    "zh-CN": 85815638,
+    "ja": 80023714,
+    "Multisub": 85818150
+  },
+  "sourceAudio": "muted",
+  "note": "Full automated decode and sampled visual review; no claim of a human watching/listening to the whole film."
+}
