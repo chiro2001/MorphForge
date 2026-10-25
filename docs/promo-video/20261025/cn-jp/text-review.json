@@ -1,0 +1,228 @@
+{
+  "status": "reviewed",
+  "policy": {
+    "headingSeconds": 2.2,
+    "subtitleSeconds": 2.4,
+    "persistentBrand": false,
+    "detailParagraphs": false,
+    "progressBar": false,
+    "chapterNumbers": false,
+    "coreClaimSeconds": 3.2
+  },
+  "shots": [
+    {
+      "id": "01-custom-models",
+      "start": 0,
+      "end": 3.2,
+      "kind": "video",
+      "chinese": "自定义体素 / 低多边形模型",
+      "japanese": "自作ボクセル・ローポリモデル",
+      "sourceLabelZh": "",
+      "sourceLabelJa": "",
+      "speedLabel": ""
+    },
+    {
+      "id": "02-osc-world",
+      "start": 3.2,
+      "end": 6.4,
+      "kind": "video",
+      "chinese": "通过 OSC，动态呈现于 VRChat",
+      "japanese": "OSCでVRChatの空間に表示",
+      "sourceLabelZh": "",
+      "sourceLabelJa": "",
+      "speedLabel": ""
+    },
+    {
+      "id": "03-brand",
+      "start": 6.4,
+      "end": 9.6,
+      "kind": "brand",
+      "chinese": "",
+      "japanese": "",
+      "sourceLabelZh": "",
+      "sourceLabelJa": "",
+      "speedLabel": ""
+    },
+    {
+      "id": "04-real-ai-gui",
+      "start": 9.6,
+      "end": 16.0,
+      "kind": "video",
+      "chinese": "AI 建模：大师剑",
+      "japanese": "AIモデリング：マスターソード",
+      "sourceLabelZh": "",
+      "sourceLabelJa": "",
+      "speedLabel": ""
+    },
+    {
+      "id": "05-ai-iterations",
+      "start": 16.0,
+      "end": 25.6,
+      "kind": "video",
+      "chinese": "生成与迭代",
+      "japanese": "生成と調整",
+      "sourceLabelZh": "",
+      "sourceLabelJa": "",
+      "speedLabel": "24×"
+    },
+    {
+      "id": "06-ai-result",
+      "start": 25.6,
+      "end": 30.4,
+      "kind": "video",
+      "chinese": "",
+      "japanese": "",
+      "sourceLabelZh": "",
+      "sourceLabelJa": "",
+      "speedLabel": ""
+    },
+    {
+      "id": "07-osc-build",
+      "start": 30.4,
+      "end": 50.4,
+      "kind": "video",
+      "chinese": "OSC 实际搭建",
+      "japanese": "OSCで実際に構築",
+      "sourceLabelZh": "",
+      "sourceLabelJa": "",
+      "speedLabel": "32×"
+    },
+    {
+      "id": "08-sword-in-vr",
+      "start": 50.4,
+      "end": 56.8,
+      "kind": "video",
+      "chinese": "",
+      "japanese": "",
+      "sourceLabelZh": "",
+      "sourceLabelJa": "",
+      "speedLabel": ""
+    },
+    {
+      "id": "09-gallery-objects",
+      "start": 56.8,
+      "end": 60.0,
+      "kind": "gallery",
+      "chinese": "",
+      "japanese": "",
+      "sourceLabelZh": "作品预览",
+      "sourceLabelJa": "作品プレビュー",
+      "speedLabel": ""
+    },
+    {
+      "id": "10-gallery-nature",
+      "start": 60.0,
+      "end": 63.2,
+      "kind": "gallery",
+      "chinese": "",
+      "japanese": "",
+      "sourceLabelZh": "作品预览",
+      "sourceLabelJa": "作品プレビュー",
+      "speedLabel": ""
+    },
+    {
+      "id": "11-gallery-scenes",
+      "start": 63.2,
+      "end": 66.4,
+      "kind": "gallery",
+      "chinese": "",
+      "japanese": "",
+      "sourceLabelZh": "作品预览",
+      "sourceLabelJa": "作品プレビュー",
+      "speedLabel": ""
+    },
+    {
+      "id": "12-low-poly-tree",
+      "start": 66.4,
+      "end": 72.8,
+      "kind": "video",
+      "chinese": "低多边形，也可以",
+      "japanese": "ローポリの作品も",
+      "sourceLabelZh": "",
+      "sourceLabelJa": "",
+      "speedLabel": ""
+    },
+    {
+      "id": "13-mlp-example",
+      "start": 72.8,
+      "end": 76.0,
+      "kind": "video",
+      "chinese": "点 · 线 · 文字",
+      "japanese": "点・線・テキスト",
+      "sourceLabelZh": "",
+      "sourceLabelJa": "",
+      "speedLabel": ""
+    },
+    {
+      "id": "14-animation",
+      "start": 76.0,
+      "end": 82.4,
+      "kind": "video",
+      "chinese": "模型 + 动画",
+      "japanese": "モデル＋アニメーション",
+      "sourceLabelZh": "",
+      "sourceLabelJa": "",
+      "speedLabel": ""
+    },
+    {
+      "id": "15-materials",
+      "start": 82.4,
+      "end": 85.6,
+      "kind": "video",
+      "chinese": "材质",
+      "japanese": "マテリアル",
+      "sourceLabelZh": "",
+      "sourceLabelJa": "",
+      "speedLabel": ""
+    },
+    {
+      "id": "16-grab-scale",
+      "start": 85.6,
+      "end": 92.0,
+      "kind": "video",
+      "chinese": "抓握 · 缩放",
+      "japanese": "つかむ・拡大縮小",
+      "sourceLabelZh": "",
+      "sourceLabelJa": "",
+      "speedLabel": "4×"
+    },
+    {
+      "id": "17-pixel-art",
+      "start": 92.0,
+      "end": 98.4,
+      "kind": "video",
+      "chinese": "像素画",
+      "japanese": "ピクセルアート",
+      "sourceLabelZh": "",
+      "sourceLabelJa": "",
+      "speedLabel": "10.5×"
+    },
+    {
+      "id": "18-live-translation",
+      "start": 98.4,
+      "end": 104.8,
+      "kind": "video",
+      "chinese": "实时字幕与翻译",
+      "japanese": "リアルタイム字幕・翻訳",
+      "sourceLabelZh": "",
+      "sourceLabelJa": "",
+      "speedLabel": ""
+    },
+    {
+      "id": "19-end",
+      "start": 104.8,
+      "end": 111.2,
+      "kind": "end",
+      "chinese": "把你的创作带进 VRChat",
+      "japanese": "あなたの作品をVRChatへ",
+      "sourceLabelZh": "",
+      "sourceLabelJa": "",
+      "speedLabel": ""
+    }
+  ],
+  "editions": [
+    "zh-CN",
+    "ja"
+  ],
+  "note": "Every added promotional title, source label, end card and cover rendered separately in the target language. Original GUI and world lettering kept authentic."
+}

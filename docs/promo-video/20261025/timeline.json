@@ -1,10 +1,10 @@
 {
-  "name": "MorphForge：自定义模型、AI建模与OSC动态搭建",
+  "name": "MorphForge：作品展示与OSC建模流程（中日独立版）",
   "date": "2026-10-25",
   "width": 1920,
   "height": 1080,
   "fps": 60,
-  "duration": 104.8,
+  "duration": 111.2,
   "primaryLanguage": "zh-CN",
   "subtitleLanguages": [
     "zh-CN",
@@ -42,7 +42,8 @@
       "headingSeconds": 3.2,
       "file": "vrc-master-sword.mp4",
       "start": 642,
-      "captionSeconds": 2.8
+      "captionSeconds": 2.8,
+      "titleJa": "自作ボクセル・ローポリモデル"
     },
     {
       "id": "02-osc-world",
@@ -52,9 +53,10 @@
       "ja": "OSCでVRChatの空間に動的に表示",
       "en": "Display them dynamically in VRChat via OSC",
       "headingSeconds": 3.2,
-      "file": "neural-network.mp4",
-      "start": 300,
-      "captionSeconds": 2.8
+      "file": "windmill-materials.mp4",
+      "start": 36.5,
+      "captionSeconds": 2.8,
+      "titleJa": "OSCでVRChatの空間に表示"
     },
     {
       "id": "03-brand",
@@ -76,7 +78,8 @@
       "en": "AI modeling: Master Sword",
       "headingSeconds": 2.2,
       "file": "ai-master-sword.mp4",
-      "start": 0
+      "start": 0,
+      "titleJa": "AIモデリング：マスターソード"
     },
     {
       "id": "05-ai-iterations",
@@ -90,7 +93,8 @@
       "start": 190,
       "speed": 24,
       "speedLabel": "24×",
-      "captionSeconds": 3.4
+      "captionSeconds": 3.4,
+      "titleJa": "生成と調整"
     },
     {
       "id": "06-ai-result",
@@ -121,7 +125,8 @@
       "start": 0,
       "speed": 32,
       "speedLabel": "32×",
-      "captionSeconds": 3.4
+      "captionSeconds": 3.4,
+      "titleJa": "OSCで実際に構築"
     },
     {
       "id": "08-sword-in-vr",
@@ -135,35 +140,78 @@
       "start": 640
     },
     {
-      "id": "09-network-gui",
+      "id": "09-gallery-objects",
       "duration": 3.2,
-      "kind": "video",
-      "title": "也可以是动态演示",
-      "ja": "動くデモにも",
-      "en": "Build animated demonstrations too",
-      "headingSeconds": 2.2,
-      "file": "neural-network.mp4",
-      "start": 210,
-      "crop": [
-        0,
-        48,
-        1496,
-        1000
-      ]
-    },
-    {
-      "id": "10-network-in-vr",
-      "duration": 9.6,
-      "kind": "video",
+      "kind": "gallery",
       "title": "",
+      "titleJa": "",
       "ja": "",
       "en": "",
-      "headingSeconds": 2.2,
-      "file": "neural-network.mp4",
-      "start": 386
+      "images": [
+        "docs/media/showcase/sports-car.webp",
+        "docs/media/showcase/ramen.webp"
+      ],
+      "sourceLabel": "作品预览",
+      "sourceLabelJa": "作品プレビュー"
     },
     {
-      "id": "11-animation",
+      "id": "10-gallery-nature",
+      "duration": 3.2,
+      "kind": "gallery",
+      "title": "",
+      "titleJa": "",
+      "ja": "",
+      "en": "",
+      "images": [
+        "docs/media/showcase/night-heron.webp",
+        "docs/media/showcase/maple.webp"
+      ],
+      "sourceLabel": "作品预览",
+      "sourceLabelJa": "作品プレビュー"
+    },
+    {
+      "id": "11-gallery-scenes",
+      "duration": 3.2,
+      "kind": "gallery",
+      "title": "",
+      "titleJa": "",
+      "ja": "",
+      "en": "",
+      "images": [
+        "docs/media/showcase/village-house.webp",
+        "docs/media/showcase/hangover.webp"
+      ],
+      "sourceLabel": "作品预览",
+      "sourceLabelJa": "作品プレビュー"
+    },
+    {
+      "id": "12-low-poly-tree",
+      "duration": 6.4,
+      "kind": "video",
+      "file": "stabilize.mp4",
+      "start": 6.4,
+      "stabilize": false,
+      "title": "低多边形，也可以",
+      "titleJa": "ローポリの作品も",
+      "ja": "ローポリの作品も",
+      "en": "Low-poly creations too",
+      "headingSeconds": 2.2,
+      "stabilizationNote": "Original camera motion retained after reported tearing in the earlier stabilized edit; no post stabilization, warping or temporal interpolation."
+    },
+    {
+      "id": "13-mlp-example",
+      "duration": 3.2,
+      "kind": "video",
+      "title": "点 · 线 · 文字",
+      "ja": "点・線・テキスト",
+      "en": "Points, lines & text",
+      "headingSeconds": 2.2,
+      "file": "neural-network.mp4",
+      "start": 386,
+      "titleJa": "点・線・テキスト"
+    },
+    {
+      "id": "14-animation",
       "duration": 6.4,
       "kind": "video",
       "title": "模型 + 动画",
@@ -171,10 +219,11 @@
       "en": "Models + animation",
       "headingSeconds": 2.2,
       "file": "windmill-materials.mp4",
-      "start": 34.5
+      "start": 34.5,
+      "titleJa": "モデル＋アニメーション"
     },
     {
-      "id": "12-materials",
+      "id": "15-materials",
       "duration": 3.2,
       "kind": "video",
       "title": "材质",
@@ -182,10 +231,11 @@
       "en": "Materials",
       "headingSeconds": 2.2,
       "file": "windmill-materials.mp4",
-      "start": 105.5
+      "start": 105.5,
+      "titleJa": "マテリアル"
     },
     {
-      "id": "13-grab-scale",
+      "id": "16-grab-scale",
       "duration": 6.4,
       "kind": "video",
       "title": "抓握 · 缩放",
@@ -195,10 +245,11 @@
       "file": "showcase-options.mp4",
       "start": 106,
       "speed": 4,
-      "speedLabel": "4×"
+      "speedLabel": "4×",
+      "titleJa": "つかむ・拡大縮小"
     },
     {
-      "id": "14-pixel-art",
+      "id": "17-pixel-art",
       "duration": 6.4,
       "kind": "video",
       "title": "像素画",
@@ -208,10 +259,11 @@
       "file": "speed-up.mp4",
       "start": 1,
       "speed": 10.5,
-      "speedLabel": "10.5×"
+      "speedLabel": "10.5×",
+      "titleJa": "ピクセルアート"
     },
     {
-      "id": "15-live-translation",
+      "id": "18-live-translation",
       "duration": 6.4,
       "kind": "video",
       "title": "实时字幕与翻译",
@@ -219,20 +271,22 @@
       "en": "Live captions & translation",
       "headingSeconds": 2.2,
       "file": "live-captions.mp4",
-      "start": 80.5
+      "start": 80.5,
+      "titleJa": "リアルタイム字幕・翻訳"
     },
     {
-      "id": "16-end",
+      "id": "19-end",
       "duration": 6.4,
       "kind": "end",
       "title": "把你的创作带进 VRChat",
       "ja": "あなたの作品をVRChatへ",
       "en": "Bring your creations into VRChat",
       "headingSeconds": 2.2,
-      "captionSeconds": 4
+      "captionSeconds": 4,
+      "titleJa": "あなたの作品をVRChatへ"
     }
   ],
-  "edition": "osc-ai-workflow",
+  "edition": "cn-jp-gallery",
   "textPolicy": {
     "headingSeconds": 2.2,
     "subtitleSeconds": 2.4,
@@ -241,5 +295,26 @@
     "progressBar": false,
     "chapterNumbers": false,
     "coreClaimSeconds": 3.2
+  },
+  "editions": [
+    "zh-CN",
+    "ja"
+  ],
+  "cover": {
+    "image": "docs/promo-video/20261025/cn-jp/master-sword-cover.jpg",
+    "crop": [
+      400,
+      0,
+      1480,
+      1080
+    ],
+    "zh-CN": {
+      "workflow": "AI 建模 → OSC → VRChat",
+      "models": "自定义体素 / 低多边形模型"
+    },
+    "ja": {
+      "workflow": "AIモデリング → OSC → VRChat",
+      "models": "自作ボクセル・ローポリモデル"
+    }
   }
 }

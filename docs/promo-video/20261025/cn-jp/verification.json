@@ -1,0 +1,213 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "name": "Two independent Chinese and Japanese picture editions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Timeline frame counts equal declared duration",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "MLP reduced to one 3.2-second example",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Six saved artworks in three image pairs",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Low-poly tree uses original camera motion without stabilization",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "zh-CN: 1080p60 H.264 and exact frame count",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "zh-CN: exact picture and container duration",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "zh-CN: picture and 48 kHz stereo AAC without subtitle tracks",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "zh-CN: video language metadata",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "zh-CN: correct regular and bold regional font faces",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "zh-CN: all graphic titles and source labels localized",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "zh-CN: localized cover and storyboard exist",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ja: 1080p60 H.264 and exact frame count",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ja: exact picture and container duration",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ja: picture and 48 kHz stereo AAC without subtitle tracks",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ja: video language metadata",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ja: correct regular and bold regional font faces",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ja: all graphic titles and source labels localized",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ja: localized cover and storyboard exist",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Localized title, gallery-label and end-card graphics differ between editions",
+      "passed": true,
+      "detail": {
+        "localizedGraphics": 16
+      }
+    },
+    {
+      "name": "Chinese and Japanese covers are separate artwork",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Six bundled artwork images retain recorded SHA256",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "zh-CN: optional sidecar text and timing match timeline",
+      "passed": true,
+      "detail": {
+        "cues": 13
+      }
+    },
+    {
+      "name": "ja: optional sidecar text and timing match timeline",
+      "passed": true,
+      "detail": {
+        "cues": 13
+      }
+    },
+    {
+      "name": "en: optional sidecar text and timing match timeline",
+      "passed": true,
+      "detail": {
+        "cues": 13
+      }
+    },
+    {
+      "name": "zh-CN: complete picture and sound decode",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ja: complete picture and sound decode",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "zh-CN: entire tree sequence matches original geometry",
+      "passed": true,
+      "detail": {
+        "comparedFrames": 384,
+        "averageSsim": 0.9914608072916667,
+        "minimumSsim": 0.987058,
+        "region": "1920x900 below title area",
+        "method": "Every delivered tree frame compared to the corresponding source frame; no spatial transformation or interpolation expected."
+      }
+    },
+    {
+      "name": "ja: entire tree sequence matches original geometry",
+      "passed": true,
+      "detail": {
+        "comparedFrames": 384,
+        "averageSsim": 0.9914625286458333,
+        "minimumSsim": 0.987058,
+        "region": "1920x900 below title area",
+        "method": "Every delivered tree frame compared to the corresponding source frame; no spatial transformation or interpolation expected."
+      }
+    },
+    {
+      "name": "zh-CN: music loudness and true peak within range",
+      "passed": true,
+      "detail": {
+        "input_i": "-17.57",
+        "input_tp": "-2.17",
+        "input_lra": "9.80",
+        "input_thresh": "-27.74",
+        "output_i": "-15.83",
+        "output_tp": "-1.50",
+        "output_lra": "6.10",
+        "output_thresh": "-25.89",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.17"
+      }
+    },
+    {
+      "name": "ja: music loudness and true peak within range",
+      "passed": true,
+      "detail": {
+        "input_i": "-17.57",
+        "input_tp": "-2.17",
+        "input_lra": "9.80",
+        "input_thresh": "-27.74",
+        "output_i": "-15.83",
+        "output_tp": "-1.50",
+        "output_lra": "6.10",
+        "output_thresh": "-25.89",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.17"
+      }
+    }
+  ],
+  "durationSeconds": 111.2,
+  "frames": 6672,
+  "shotCount": 19,
+  "bytes": {
+    "zh-CN": 93445169,
+    "ja": 93448599
+  },
+  "mlpSeconds": 3.2,
+  "gallerySeconds": 9.600000000000001,
+  "sourceAudio": "muted",
+  "note": "Independent localized graphic layers; source GUI/world lettering remains authentic. Automated full decode and sampled visual review do not imply a human viewing/listening to the entire film."
+}

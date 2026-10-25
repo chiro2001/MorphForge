@@ -1,0 +1,19 @@
+{
+  "durationSeconds": 111.2,
+  "frames": 6672,
+  "shots": 19,
+  "editions": [
+    "zh-CN",
+    "ja"
+  ],
+  "mlpSeconds": 3.2,
+  "artworkGallerySeconds": 9.6,
+  "lowPolyTreeSeconds": 6.4,
+  "stabilization": false,
+  "mediaMiB": {
+    "zh-CN": 89.12,
+    "ja": 89.12
+  },
+  "checksPassed": 31,
+  "windowsDirectory": "D:/Movies/Projects/MorphForge-Promo-20261025-CN-JP"
+}

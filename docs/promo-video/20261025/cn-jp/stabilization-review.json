@@ -1,0 +1,35 @@
+{
+  "status": "passed",
+  "action": "Remove post stabilization for tree footage and retain original camera motion.",
+  "source": "可能需要加一下防抖。.mp4",
+  "sourceStartSeconds": 6.4,
+  "durationSeconds": 6.4,
+  "outputStartSeconds": 66.4,
+  "spatialWarp": false,
+  "temporalInterpolation": false,
+  "checks": [
+    {
+      "name": "zh-CN: entire tree sequence matches original geometry",
+      "passed": true,
+      "detail": {
+        "comparedFrames": 384,
+        "averageSsim": 0.9914608072916667,
+        "minimumSsim": 0.987058,
+        "region": "1920x900 below title area",
+        "method": "Every delivered tree frame compared to the corresponding source frame; no spatial transformation or interpolation expected."
+      }
+    },
+    {
+      "name": "ja: entire tree sequence matches original geometry",
+      "passed": true,
+      "detail": {
+        "comparedFrames": 384,
+        "averageSsim": 0.9914625286458333,
+        "minimumSsim": 0.987058,
+        "region": "1920x900 below title area",
+        "method": "Every delivered tree frame compared to the corresponding source frame; no spatial transformation or interpolation expected."
+      }
+    }
+  ],
+  "note": "The previous stabilized tree clip is excluded. Comparisons cover every frame below the title area. This verifies preservation of source geometry, not absence of every possible defect in the original recording or a proven cause of the previously reported tearing."
+}

@@ -9,6 +9,7 @@ import hashlib
 import json
 import shutil
 import subprocess
+from copy import deepcopy
 from functools import lru_cache
 from pathlib import Path
 
@@ -106,10 +107,11 @@ def canvas():
 
 def header(image, shot):
     draw = ImageDraw.Draw(image)
+    language = shot.get("language", "zh-CN")
     if shot.get("title"):
-        width = int(draw.textlength(shot["title"], font=font(42, True))) + 48
+        width = int(draw.textlength(shot["title"], font=font(42, True, language))) + 48
         draw.rounded_rectangle((62, 48, 62 + width, 127), radius=12, fill=(*BG, 205))
-        text(draw, (86, 61), shot["title"], 42, WHITE, True, max_width=1600)
+        text(draw, (86, 61), shot["title"], 42, WHITE, True, max_width=1600, language=language)
     return draw
 
 
@@ -138,9 +140,10 @@ def necessary_overlay(shot):
     label = shot.get("speedLabel") or shot.get("sourceLabel")
     if label:
         draw = ImageDraw.Draw(image)
-        width = int(draw.textlength(label, font=font(27))) + 34
+        language = shot.get("language", "zh-CN")
+        width = int(draw.textlength(label, font=font(27, language=language))) + 34
         draw.rounded_rectangle((W - width - 62, 59, W - 62, 112), radius=8, fill=(*BG, 205))
-        text(draw, (W - width - 45, 66), label, 27, WHITE)
+        text(draw, (W - width - 45, 66), label, 27, WHITE, language=language)
     return image
 
 
@@ -148,7 +151,13 @@ def still_card(shot):
     image = canvas()
     draw = ImageDraw.Draw(image)
     media = "docs/releases/0.27.0/media/"
-    if shot["kind"] == "workbench":
+    language = shot.get("language", "zh-CN")
+    if shot["kind"] == "gallery":
+        if len(shot["images"]) != 2:
+            raise ValueError("Gallery shots require exactly two artwork images")
+        for i, source in enumerate(shot["images"]):
+            card(image, asset(source), (65 + i * 945, 160, 845, 790))
+    elif shot["kind"] == "workbench":
         card(image, asset(media + "leviathan-lantern-editor.png"), (170, 130, 1580, 850), crop=(430, 220, 1200, 1090))
     elif shot["kind"] == "drawing":
         thin = asset("docs/optimization-20261023/drawing-thin.png")
@@ -168,9 +177,9 @@ def still_card(shot):
         card(image, source, (1370, 370, 480, 100), crop=(1290, 500, 1771, 576))
         card(image, source, (1420, 570, 380, 85), crop=(1290, 584, 1526, 627))
     elif shot["kind"] == "end":
-        text(draw, (115, 180), "MorphForge", 125, WHITE, True)
+        text(draw, (115, 180), "MorphForge", 125, WHITE, True, language=language)
         draw.rectangle((122, 374, 280, 380), fill=GOLD)
-        text(draw, (123, 430), shot["title"], 60, WHITE, True, 1720)
+        text(draw, (123, 430), shot["title"], 60, WHITE, True, 1720, language=language)
         text(draw, (123, 850), "Music: Cipher — Kevin MacLeod (incompetech.com) · CC BY 4.0", 25, MUTED, max_width=1680)
         text(draw, (123, 903), "creativecommons.org/licenses/by/4.0/ · edited excerpt", 24, MUTED)
     else:
@@ -239,7 +248,7 @@ def render_shot(shot, index, total, args, work):
     command = ["ffmpeg", "-hide_banner", "-loglevel", "warning", "-y", "-filter_complex_threads", "2", "-filter_threads", "2", "-threads", "4"]
     filters = []
     cursor = 1
-    if shot["kind"] in {"workbench", "drawing", "languages", "end"}:
+    if shot["kind"] in {"workbench", "drawing", "languages", "gallery", "end"}:
         image = work / "graphics" / (shot["id"] + ".png")
         still_card(shot).save(image)
         frames = round(duration * 60)
@@ -281,7 +290,7 @@ def render_shot(shot, index, total, args, work):
             overlay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
             draw = ImageDraw.Draw(overlay)
             draw.rounded_rectangle((65, 755, 1005, 970), radius=20, fill=(*BG, 210))
-            text(draw, (105, 775), "MorphForge", 120, WHITE, True)
+            text(draw, (105, 775), "MorphForge", 120, WHITE, True, language=shot.get("language", "zh-CN"))
         image = work / "graphics" / (shot["id"] + "-heading.png")
         overlay.save(image)
         command += ["-loop", "1", "-framerate", "60", "-i", str(image)]
@@ -303,6 +312,128 @@ def render_shot(shot, index, total, args, work):
     run(command, work / "logs" / (shot["id"] + ".log"))
     stamp.write_text(signature)
     return destination
+
+
+def localize_shot(shot, language):
+    localized = deepcopy(shot)
+    localized["language"] = language
+    if language == "ja":
+        if shot.get("title") and "titleJa" not in shot:
+            raise ValueError(f"Missing Japanese graphic title: {shot['id']}")
+        localized["title"] = shot.get("titleJa", "")
+        if shot.get("sourceLabel"):
+            localized["sourceLabel"] = shot["sourceLabelJa"]
+    return localized
+
+
+def copy_bundle_assets(args, plan):
+    for source, target in [(args.plan, args.out / "timeline.json"), (Path(__file__), args.out / "render_promo_video.py")]:
+        if source.resolve() != target.resolve():
+            shutil.copy2(source, target)
+    assets = args.out / "assets"
+    assets.mkdir(exist_ok=True)
+    still_assets = {
+        "workbench": ["docs/releases/0.27.0/media/leviathan-lantern-editor.png"],
+        "drawing": ["docs/optimization-20261023/drawing-thin.png", "docs/optimization-20261023/drawing-thick.png"],
+        "publish": ["docs/default-motion/native/main-publish-with-motion.png"],
+    }
+    image_assets = {path for shot in plan["shots"] for path in still_assets.get(shot["kind"], [])}
+    image_assets.update(path for shot in plan["shots"] for path in shot.get("images", []))
+    if plan.get("cover"):
+        image_assets.add(plan["cover"]["image"])
+    for relative in sorted(image_assets):
+        source = asset(relative)
+        if source.resolve() != (assets / source.name).resolve():
+            shutil.copy2(source, assets / source.name)
+    if args.music.resolve() != (assets / "Cipher.mp3").resolve():
+        shutil.copy2(args.music, assets / "Cipher.mp3")
+    for name in ["NotoSansCJK-Regular.ttc", "NotoSansCJK-Bold.ttc"]:
+        source = ROOT / "assets" / name
+        if not source.exists():
+            source = Path("/usr/share/fonts/noto-cjk") / name
+        if source.exists() and source.resolve() != (assets / name).resolve():
+            shutil.copy2(source, assets / name)
+    font_license = ROOT / "assets/OFL-NotoSansCJK.txt"
+    if not font_license.exists():
+        font_license = Path("/usr/share/licenses/noto-fonts-cjk/LICENSE")
+    if font_license.exists() and font_license.resolve() != (assets / "OFL-NotoSansCJK.txt").resolve():
+        shutil.copy2(font_license, assets / "OFL-NotoSansCJK.txt")
+    typography = {code: {weight: {"file": Path(font_face(code, weight == "bold")[0]).name, "faceIndex": font_face(code, weight == "bold")[1], "family": font_face(code, weight == "bold")[2], "style": font_face(code, weight == "bold")[3]} for weight in ["regular", "bold"]} for code in ["zh-CN", "ja", "en"]}
+    (args.out / "typography.json").write_text(json.dumps(typography, ensure_ascii=False, indent=2) + "\n")
+
+
+def render_edition_graphics(plan, language, shots, segments, out, work):
+    cover = canvas()
+    draw = ImageDraw.Draw(cover)
+    photo = Image.open(asset(plan["cover"]["image"])).convert("RGB")
+    photo = ImageOps.fit(photo.crop(tuple(plan["cover"]["crop"])), (910, 910), method=Image.Resampling.LANCZOS)
+    cover.paste(photo, (950, 85))
+    text(draw, (75, 240), "MorphForge", 105, WHITE, True, max_width=850, language=language)
+    copy = plan["cover"][language]
+    text(draw, (80, 410), copy["workflow"], 47, WHITE, True, max_width=850, language=language)
+    text(draw, (83, 515), copy["models"], 35, MINT, max_width=850, language=language)
+    cover.save(out / f"Cover-{language}.jpg", quality=95)
+    rows = (len(shots) + 3) // 4
+    storyboard = Image.new("RGB", (1920, rows * 330), BG)
+    draw = ImageDraw.Draw(storyboard)
+    position = 0
+    for index, (shot, segment) in enumerate(zip(shots, segments)):
+        sample = work / "graphics" / (shot["id"] + "-story.jpg")
+        run(["ffmpeg", "-v", "error", "-y", "-ss", str(min(1, shot["duration"] / 2)), "-i", str(segment), "-frames:v", "1", "-q:v", "2", str(sample)], work / "logs" / (shot["id"] + "-story.log"))
+        x, y = index % 4 * 480, index // 4 * 330
+        storyboard.paste(Image.open(sample).resize((480, 270)), (x, y))
+        text(draw, (x + 10, y + 274), f"{index+1:02}  {position:05.1f}–{position+shot['duration']:05.1f}s", 21, MINT, language=language)
+        if shot["title"]:
+            text(draw, (x + 10, y + 302), shot["title"], 20, WHITE, max_width=460, language=language)
+        position += shot["duration"]
+    storyboard.save(out / f"Storyboard-{language}.jpg", quality=94)
+
+
+def render_localized_editions(args, plan):
+    # Each edition renders its own graphic layers. There is no Chinese picture
+    # master underneath Japanese subtitle text.
+    languages = plan["editions"]
+    if languages != ["zh-CN", "ja"]:
+        raise ValueError("Localized editions must be Chinese and Japanese")
+    copy_bundle_assets(args, plan)
+    write_subtitles(plan, args.out)
+    music = args.work / "music.wav"
+    measure = args.work / "logs/loudness-measure.log"
+    run(["ffmpeg", "-hide_banner", "-y", "-ss", str(plan["music"]["start"]), "-t", str(plan["duration"]), "-i", str(args.music), "-af", "loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json", "-f", "null", "-"], measure)
+    log = measure.read_text(errors="replace")
+    measured = json.loads(log[log.rfind("{"):log.rfind("}") + 1])
+    normalization = "loudnorm=I=-16:TP=-1.5:LRA=11:linear=true:" + ":".join(f"{target}={measured[source]}" for target, source in [("measured_I", "input_i"), ("measured_LRA", "input_lra"), ("measured_TP", "input_tp"), ("measured_thresh", "input_thresh"), ("offset", "target_offset")])
+    run(["ffmpeg", "-v", "error", "-y", "-ss", str(plan["music"]["start"]), "-t", str(plan["duration"]), "-i", str(args.music), "-af", normalization + f",afade=t=in:d=0.4,afade=t=out:st={plan['duration']-2.8}:d=2.8", "-ar", "48000", "-ac", "2", "-c:a", "pcm_s24le", str(music)], args.work / "logs/music.log")
+    localization = {}
+    for language in languages:
+        work = args.work / language
+        for folder in [work / "segments", work / "graphics", work / "logs"]:
+            folder.mkdir(parents=True, exist_ok=True)
+        shots = [localize_shot(shot, language) for shot in plan["shots"]]
+        segments = []
+        for index, shot in enumerate(shots):
+            if args.only and args.only != shot["id"]:
+                continue
+            segments.append(render_shot(shot, index, len(shots), args, work))
+        if args.only:
+            continue
+        concat = work / "concat.txt"
+        concat.write_text("".join("file '" + p.resolve().as_posix().replace("'", "'\\''") + "'\n" for p in segments))
+        picture = work / "picture.mp4"
+        run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(concat), "-an", "-c:v", "copy", str(picture)], work / "logs/concat.log")
+        output = args.out / f"MorphForge-Promo-{language}-1080p60.mp4"
+        tag = "jpn" if language == "ja" else "zho"
+        title = "MorphForge — あなたの作品をVRChatへ" if language == "ja" else "MorphForge — 把你的创作带进VRChat"
+        run(["ffmpeg", "-v", "error", "-y", "-i", str(picture), "-i", str(music), "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy", "-c:a", "aac", "-b:a", "224k", "-sn", "-metadata", f"title={title}", "-metadata:s:v:0", f"language={tag}", "-metadata", "comment=Music: Cipher by Kevin MacLeod (incompetech.com), CC BY 4.0. Edited excerpt.", "-t", str(plan["duration"]), "-movflags", "+faststart", str(output)], work / "logs/final-mux.log")
+        localized_plan = deepcopy(plan)
+        localized_plan.update(primaryLanguage=language, shots=shots)
+        (args.out / f"render-plan.{language}.json").write_text(json.dumps(localized_plan, ensure_ascii=False, indent=2) + "\n")
+        (args.out / f"output-probe.{language}.json").write_text(json.dumps(probe(output), ensure_ascii=False, indent=2) + "\n")
+        render_edition_graphics(plan, language, shots, segments, args.out, work)
+        localization[language] = {"fontFamily": font_face(language)[2], "output": output.name, "cover": f"Cover-{language}.jpg", "shots": [{key: s.get(key, "") for key in ["id", "kind", "title", "sourceLabel", "speedLabel", "language"]} for s in shots]}
+        print(output, flush=True)
+    if not args.only:
+        (args.out / "localization.json").write_text(json.dumps(localization, ensure_ascii=False, indent=2) + "\n")
 
 
 def main():
@@ -332,6 +463,9 @@ def main():
             stream = next(s for s in info["streams"] if s["codec_type"] == "video")
             x, y, width, height = shot["crop"]
             assert min(x, y) >= 0 and min(width, height) > 0 and x + width <= stream["width"] and y + height <= stream["height"], shot["id"]
+    if plan.get("editions"):
+        render_localized_editions(args, plan)
+        return
     segments = []
     for index, shot in enumerate(plan["shots"]):
         if args.only and args.only != shot["id"]:
@@ -361,35 +495,8 @@ def main():
     # MP4 may enable its first subtitle even when every subtitle disposition was
     # cleared. Preserve a plain Chinese master for predictable upload/playback.
     run(["ffmpeg", "-hide_banner", "-loglevel", "warning", "-y", "-i", str(multilingual), "-map", "0:v:0", "-map", "0:a:0", "-c", "copy", "-sn", "-movflags", "+faststart", str(output)], args.work / "logs/plain-master.log")
-    for source, target in [(args.plan, args.out / "timeline.json"), (Path(__file__), args.out / "render_promo_video.py")]:
-        if source.resolve() != target.resolve():
-            shutil.copy2(source, target)
+    copy_bundle_assets(args, plan)
     assets = args.out / "assets"
-    assets.mkdir(exist_ok=True)
-    still_assets = {
-        "workbench": ["docs/releases/0.27.0/media/leviathan-lantern-editor.png"],
-        "drawing": ["docs/optimization-20261023/drawing-thin.png", "docs/optimization-20261023/drawing-thick.png"],
-        "publish": ["docs/default-motion/native/main-publish-with-motion.png"],
-    }
-    for relative in sorted({path for shot in plan["shots"] for path in still_assets.get(shot["kind"], [])}):
-        source = asset(relative)
-        if source.resolve() != (assets / source.name).resolve():
-            shutil.copy2(source, assets / source.name)
-    if args.music.resolve() != (assets / "Cipher.mp3").resolve():
-        shutil.copy2(args.music, assets / "Cipher.mp3")
-    for name in ["NotoSansCJK-Regular.ttc", "NotoSansCJK-Bold.ttc"]:
-        source = ROOT / "assets" / name
-        if not source.exists():
-            source = Path("/usr/share/fonts/noto-cjk") / name
-        if source.exists() and source.resolve() != (assets / name).resolve():
-            shutil.copy2(source, assets / name)
-    font_license = ROOT / "assets/OFL-NotoSansCJK.txt"
-    if not font_license.exists():
-        font_license = Path("/usr/share/licenses/noto-fonts-cjk/LICENSE")
-    if font_license.exists() and font_license.resolve() != (assets / "OFL-NotoSansCJK.txt").resolve():
-        shutil.copy2(font_license, assets / "OFL-NotoSansCJK.txt")
-    typography = {code: {weight: {"file": Path(font_face(code, weight == "bold")[0]).name, "faceIndex": font_face(code, weight == "bold")[1], "family": font_face(code, weight == "bold")[2], "style": font_face(code, weight == "bold")[3]} for weight in ["regular", "bold"]} for code in ["zh-CN", "ja", "en"]}
-    (args.out / "typography.json").write_text(json.dumps(typography, ensure_ascii=False, indent=2) + "\n")
     japanese = args.out / "MorphForge-Promo-ja-1080p60.mp4"
     subtitle_filter = f"subtitles=filename='{filter_path(args.out / 'MorphForge-Promo.ja.ass')}':fontsdir='{filter_path(assets)}'"
     run(["ffmpeg", "-hide_banner", "-loglevel", "info", "-y", "-filter_threads", "2", "-threads", "4", "-i", str(output), "-map", "0:v:0", "-map", "0:a:0", "-vf", subtitle_filter, "-c:v", "libx264", "-preset", "fast", "-crf", "18", "-threads", "4", "-pix_fmt", "yuv420p", "-r", "60", "-c:a", "copy", "-sn", "-movflags", "+faststart", str(japanese)], args.work / "logs/japanese-font-burn.log")

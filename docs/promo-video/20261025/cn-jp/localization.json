@@ -1,0 +1,320 @@
+{
+  "zh-CN": {
+    "fontFamily": "Noto Sans CJK SC",
+    "output": "MorphForge-Promo-zh-CN-1080p60.mp4",
+    "cover": "Cover-zh-CN.jpg",
+    "shots": [
+      {
+        "id": "01-custom-models",
+        "kind": "video",
+        "title": "自定义体素 / 低多边形模型",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "zh-CN"
+      },
+      {
+        "id": "02-osc-world",
+        "kind": "video",
+        "title": "通过 OSC，动态呈现于 VRChat",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "zh-CN"
+      },
+      {
+        "id": "03-brand",
+        "kind": "brand",
+        "title": "",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "zh-CN"
+      },
+      {
+        "id": "04-real-ai-gui",
+        "kind": "video",
+        "title": "AI 建模：大师剑",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "zh-CN"
+      },
+      {
+        "id": "05-ai-iterations",
+        "kind": "video",
+        "title": "生成与迭代",
+        "sourceLabel": "",
+        "speedLabel": "24×",
+        "language": "zh-CN"
+      },
+      {
+        "id": "06-ai-result",
+        "kind": "video",
+        "title": "",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "zh-CN"
+      },
+      {
+        "id": "07-osc-build",
+        "kind": "video",
+        "title": "OSC 实际搭建",
+        "sourceLabel": "",
+        "speedLabel": "32×",
+        "language": "zh-CN"
+      },
+      {
+        "id": "08-sword-in-vr",
+        "kind": "video",
+        "title": "",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "zh-CN"
+      },
+      {
+        "id": "09-gallery-objects",
+        "kind": "gallery",
+        "title": "",
+        "sourceLabel": "作品预览",
+        "speedLabel": "",
+        "language": "zh-CN"
+      },
+      {
+        "id": "10-gallery-nature",
+        "kind": "gallery",
+        "title": "",
+        "sourceLabel": "作品预览",
+        "speedLabel": "",
+        "language": "zh-CN"
+      },
+      {
+        "id": "11-gallery-scenes",
+        "kind": "gallery",
+        "title": "",
+        "sourceLabel": "作品预览",
+        "speedLabel": "",
+        "language": "zh-CN"
+      },
+      {
+        "id": "12-low-poly-tree",
+        "kind": "video",
+        "title": "低多边形，也可以",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "zh-CN"
+      },
+      {
+        "id": "13-mlp-example",
+        "kind": "video",
+        "title": "点 · 线 · 文字",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "zh-CN"
+      },
+      {
+        "id": "14-animation",
+        "kind": "video",
+        "title": "模型 + 动画",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "zh-CN"
+      },
+      {
+        "id": "15-materials",
+        "kind": "video",
+        "title": "材质",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "zh-CN"
+      },
+      {
+        "id": "16-grab-scale",
+        "kind": "video",
+        "title": "抓握 · 缩放",
+        "sourceLabel": "",
+        "speedLabel": "4×",
+        "language": "zh-CN"
+      },
+      {
+        "id": "17-pixel-art",
+        "kind": "video",
+        "title": "像素画",
+        "sourceLabel": "",
+        "speedLabel": "10.5×",
+        "language": "zh-CN"
+      },
+      {
+        "id": "18-live-translation",
+        "kind": "video",
+        "title": "实时字幕与翻译",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "zh-CN"
+      },
+      {
+        "id": "19-end",
+        "kind": "end",
+        "title": "把你的创作带进 VRChat",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "zh-CN"
+      }
+    ]
+  },
+  "ja": {
+    "fontFamily": "Noto Sans CJK JP",
+    "output": "MorphForge-Promo-ja-1080p60.mp4",
+    "cover": "Cover-ja.jpg",
+    "shots": [
+      {
+        "id": "01-custom-models",
+        "kind": "video",
+        "title": "自作ボクセル・ローポリモデル",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "ja"
+      },
+      {
+        "id": "02-osc-world",
+        "kind": "video",
+        "title": "OSCでVRChatの空間に表示",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "ja"
+      },
+      {
+        "id": "03-brand",
+        "kind": "brand",
+        "title": "",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "ja"
+      },
+      {
+        "id": "04-real-ai-gui",
+        "kind": "video",
+        "title": "AIモデリング：マスターソード",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "ja"
+      },
+      {
+        "id": "05-ai-iterations",
+        "kind": "video",
+        "title": "生成と調整",
+        "sourceLabel": "",
+        "speedLabel": "24×",
+        "language": "ja"
+      },
+      {
+        "id": "06-ai-result",
+        "kind": "video",
+        "title": "",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "ja"
+      },
+      {
+        "id": "07-osc-build",
+        "kind": "video",
+        "title": "OSCで実際に構築",
+        "sourceLabel": "",
+        "speedLabel": "32×",
+        "language": "ja"
+      },
+      {
+        "id": "08-sword-in-vr",
+        "kind": "video",
+        "title": "",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "ja"
+      },
+      {
+        "id": "09-gallery-objects",
+        "kind": "gallery",
+        "title": "",
+        "sourceLabel": "作品プレビュー",
+        "speedLabel": "",
+        "language": "ja"
+      },
+      {
+        "id": "10-gallery-nature",
+        "kind": "gallery",
+        "title": "",
+        "sourceLabel": "作品プレビュー",
+        "speedLabel": "",
+        "language": "ja"
+      },
+      {
+        "id": "11-gallery-scenes",
+        "kind": "gallery",
+        "title": "",
+        "sourceLabel": "作品プレビュー",
+        "speedLabel": "",
+        "language": "ja"
+      },
+      {
+        "id": "12-low-poly-tree",
+        "kind": "video",
+        "title": "ローポリの作品も",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "ja"
+      },
+      {
+        "id": "13-mlp-example",
+        "kind": "video",
+        "title": "点・線・テキスト",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "ja"
+      },
+      {
+        "id": "14-animation",
+        "kind": "video",
+        "title": "モデル＋アニメーション",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "ja"
+      },
+      {
+        "id": "15-materials",
+        "kind": "video",
+        "title": "マテリアル",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "ja"
+      },
+      {
+        "id": "16-grab-scale",
+        "kind": "video",
+        "title": "つかむ・拡大縮小",
+        "sourceLabel": "",
+        "speedLabel": "4×",
+        "language": "ja"
+      },
+      {
+        "id": "17-pixel-art",
+        "kind": "video",
+        "title": "ピクセルアート",
+        "sourceLabel": "",
+        "speedLabel": "10.5×",
+        "language": "ja"
+      },
+      {
+        "id": "18-live-translation",
+        "kind": "video",
+        "title": "リアルタイム字幕・翻訳",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "ja"
+      },
+      {
+        "id": "19-end",
+        "kind": "end",
+        "title": "あなたの作品をVRChatへ",
+        "sourceLabel": "",
+        "speedLabel": "",
+        "language": "ja"
+      }
+    ]
+  }
+}

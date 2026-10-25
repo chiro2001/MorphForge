@@ -1,0 +1,371 @@
+{
+  "root": "D:\\Movies\\Projects\\MorphForge-Promo-20261025-CN-JP",
+  "manifestSha256": "019cb58a3089e00e0bec3630972a9da680e03865f0c4f3f1a0108f163a5b9b03",
+  "checkedFiles": 60,
+  "actualFiles": 61,
+  "passed": true,
+  "files": [
+    {
+      "path": "Cover-ja.jpg",
+      "bytes": 256392,
+      "sha256": "6e7fdc2c34e64c220a4358eed474d87243868ceb4db12f58b4e032b2ec3f6365",
+      "passed": true
+    },
+    {
+      "path": "Cover-zh-CN.jpg",
+      "bytes": 257299,
+      "sha256": "e124df0c8c6441d6f0f5967f43aeaa2d15220f484f866156e217027c1b137e8e",
+      "passed": true
+    },
+    {
+      "path": "EDIT-NOTES.zh-CN.md",
+      "bytes": 2516,
+      "sha256": "fa7856504b0071e028075f8c8cb1dd570fa164207fc16adc5667d13b567d8cf3",
+      "passed": true
+    },
+    {
+      "path": "MUSIC-CREDIT.txt",
+      "bytes": 312,
+      "sha256": "d1a23681769a54b4f914605c9372a7d01bf188a4aede7d1ee74a017e619f0187",
+      "passed": true
+    },
+    {
+      "path": "MorphForge-Promo-ja-1080p60.mp4",
+      "bytes": 93448599,
+      "sha256": "3fe79f94bf5f436baaf69511764391370c3dc18725c5bbff5ca9a7adae67c6b1",
+      "passed": true
+    },
+    {
+      "path": "MorphForge-Promo-zh-CN-1080p60.mp4",
+      "bytes": 93445169,
+      "sha256": "5f1c02d2123761207bef72558efc12039bebe9c85e8011a5a6facbf4aa1ba6a6",
+      "passed": true
+    },
+    {
+      "path": "MorphForge-Promo.en.ass",
+      "bytes": 1569,
+      "sha256": "6e74b39fc4de8174730a9d0a4ec03c816d63c9fb0f74e77acc68c7514954b470",
+      "passed": true
+    },
+    {
+      "path": "MorphForge-Promo.en.srt",
+      "bytes": 784,
+      "sha256": "4719844359c3afa7bc0c73c016b2c310c3dfdbc47256064756ab9de6536c5be2",
+      "passed": true
+    },
+    {
+      "path": "MorphForge-Promo.ja.ass",
+      "bytes": 1652,
+      "sha256": "301313e3236b660383ecd6cc66b2189badbf8f3f84b12c1c57f890280cd59b6a",
+      "passed": true
+    },
+    {
+      "path": "MorphForge-Promo.ja.srt",
+      "bytes": 867,
+      "sha256": "f3b858f881c5d588a974b8ddc9b9a0798ea4e8429203a3f94e941b961e012689",
+      "passed": true
+    },
+    {
+      "path": "MorphForge-Promo.zh-CN.ass",
+      "bytes": 1492,
+      "sha256": "03189d1e58e571286ce19664a254bff064e184be005492a7c577de133db04667",
+      "passed": true
+    },
+    {
+      "path": "MorphForge-Promo.zh-CN.srt",
+      "bytes": 707,
+      "sha256": "485a81abc2315951b1406572888b4073223a53894d0dbcdd8c259a1c87053e78",
+      "passed": true
+    },
+    {
+      "path": "PUBLISH-DESCRIPTION.ja.txt",
+      "bytes": 1805,
+      "sha256": "95c6f564a94bb67324f20b28896bd7e646de75a091b000086bf4dbb2814c5efb",
+      "passed": true
+    },
+    {
+      "path": "PUBLISH-DESCRIPTION.zh-CN.txt",
+      "bytes": 1287,
+      "sha256": "a5be7b43dc6b66b3a35adf36ee825a1b4dcd2570e08b965ce815b1c1cb533443",
+      "passed": true
+    },
+    {
+      "path": "README.ja.md",
+      "bytes": 808,
+      "sha256": "dd0c53778a35c5388dfca07c5b866d615f52a3b64e0727b70115c67eac31c055",
+      "passed": true
+    },
+    {
+      "path": "README.zh-CN.md",
+      "bytes": 1623,
+      "sha256": "8af396b3cff35cbac41e5d36423205e69fc9e9ff80044f6ea6ad1baa4dfc1320",
+      "passed": true
+    },
+    {
+      "path": "Storyboard-ja.jpg",
+      "bytes": 766790,
+      "sha256": "627283549555fee2cc3b6a47c4452d0b27b73baa80ce515818b6987deeb60046",
+      "passed": true
+    },
+    {
+      "path": "Storyboard-zh-CN.jpg",
+      "bytes": 758157,
+      "sha256": "6efcfab51754a0ef14d0f024967e6701c4c8296761ea4c145ea00ff86f89e219",
+      "passed": true
+    },
+    {
+      "path": "TEXT-REVIEW.zh-CN.md",
+      "bytes": 931,
+      "sha256": "ab4d278470bc1be8c5fc727f617e40593015b5b54048bc8dad1e6335d621d25e",
+      "passed": true
+    },
+    {
+      "path": "artwork-sources.json",
+      "bytes": 4265,
+      "sha256": "12ac1bd248c3098377c71f1df211520cb3b1b53211c962bd698025a466973535",
+      "passed": true
+    },
+    {
+      "path": "assets/Cipher.mp3",
+      "bytes": 9252699,
+      "sha256": "d3d0614535a61d748e2fd8d5117fc4d781022a7624794802a2462d8af3fdd522",
+      "passed": true
+    },
+    {
+      "path": "assets/NotoSansCJK-Bold.ttc",
+      "bytes": 20050760,
+      "sha256": "faa5f3656a78b2e2d450d27fe8382c778bc2b6bb5ea29c986664a6a435056ceb",
+      "passed": true
+    },
+    {
+      "path": "assets/NotoSansCJK-Regular.ttc",
+      "bytes": 19484784,
+      "sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+      "passed": true
+    },
+    {
+      "path": "assets/OFL-NotoSansCJK.txt",
+      "bytes": 4301,
+      "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+      "passed": true
+    },
+    {
+      "path": "assets/hangover.webp",
+      "bytes": 24116,
+      "sha256": "4059c11d478cbf2524668178227f9b270814575b4359805354a96005832e01bd",
+      "passed": true
+    },
+    {
+      "path": "assets/maple.webp",
+      "bytes": 29718,
+      "sha256": "9c58abe8543ee7082b20110a1de53cbda186ace0994d59adaf295fa5fd790ca7",
+      "passed": true
+    },
+    {
+      "path": "assets/master-sword-cover.jpg",
+      "bytes": 124428,
+      "sha256": "a88eaac3a7015d68b9ea8d64dcfa5f813778b279e30140b6b72a80545684ff6c",
+      "passed": true
+    },
+    {
+      "path": "assets/music-license-evidence/license-cc-by-4.html",
+      "bytes": 31950,
+      "sha256": "8dda1ccec4be91fc80821d4e4fd5c568072b9a3a74b2fdc07c249a27e920ef01",
+      "passed": true
+    },
+    {
+      "path": "assets/music-license-evidence/music-faq.html",
+      "bytes": 12064,
+      "sha256": "f5fb799a8c719568be80dab1edb201dbe6e91309c786b2d100e9cce3fe171ba6",
+      "passed": true
+    },
+    {
+      "path": "assets/music-license-evidence/track-metadata.json",
+      "bytes": 578,
+      "sha256": "ff7d72f28f7fc37db50ca9a02f70013c303e16c37c6dcda593aa548144e92410",
+      "passed": true
+    },
+    {
+      "path": "assets/music-license-evidence/track-page.html",
+      "bytes": 26876,
+      "sha256": "26b23fb906fcc7bf0765bbc7ab6e65e8be41316f0d064b0cd3bb5accffc223d9",
+      "passed": true
+    },
+    {
+      "path": "assets/night-heron.webp",
+      "bytes": 40420,
+      "sha256": "b3a392dbc61b7ca06aefb573eeedb6aed664c73ddf1c10d393de232f6db9d760",
+      "passed": true
+    },
+    {
+      "path": "assets/ramen.webp",
+      "bytes": 18580,
+      "sha256": "34f5401e115f13565da00111a1583fd97492c7f7189c6a58f206ff54f89245d3",
+      "passed": true
+    },
+    {
+      "path": "assets/sports-car.webp",
+      "bytes": 27032,
+      "sha256": "d5b8b8c90cace1531502e6457cd474cc1a2a84a14e38f60ad4b0139c266f824c",
+      "passed": true
+    },
+    {
+      "path": "assets/village-house.webp",
+      "bytes": 76412,
+      "sha256": "b3b523ef2560e95df90be30f6b41101311f13bc8eacae363565c2e43cf7c7bc2",
+      "passed": true
+    },
+    {
+      "path": "build-environment.json",
+      "bytes": 425,
+      "sha256": "6b8cefe2b9c04c6c5ea53cde29fb6c8496f09e6110ad64fa636b61271802e4b2",
+      "passed": true
+    },
+    {
+      "path": "delivery-summary.json",
+      "bytes": 370,
+      "sha256": "4cc9b70f89032800dee8d2f882ed6676c369501c0c7a179b9673ed673f3e8993",
+      "passed": true
+    },
+    {
+      "path": "localization.json",
+      "bytes": 7689,
+      "sha256": "cc301827ecfb72ce9108fbbd8d77fb1477ca3814d238e2623125b9ed910ed9b9",
+      "passed": true
+    },
+    {
+      "path": "music-license.json",
+      "bytes": 986,
+      "sha256": "e9adab965eb54584f16895453a77c4cf653fbd9278a187034aacd9ccea4cc3f9",
+      "passed": true
+    },
+    {
+      "path": "music-track-metadata.json",
+      "bytes": 578,
+      "sha256": "ff7d72f28f7fc37db50ca9a02f70013c303e16c37c6dcda593aa548144e92410",
+      "passed": true
+    },
+    {
+      "path": "original-preservation.json",
+      "bytes": 1752,
+      "sha256": "b0e5e5e343941712bfa967fe2b938ffa79493090ef68b029ccae61d00ff8f7c5",
+      "passed": true
+    },
+    {
+      "path": "output-probe.ja.json",
+      "bytes": 3852,
+      "sha256": "184bcdc9cd43a41d782832208274414f43834a1388cf26fbb84a36901015b251",
+      "passed": true
+    },
+    {
+      "path": "output-probe.zh-CN.json",
+      "bytes": 3852,
+      "sha256": "40e411da210ef4b18a24ceaf44e7e690861f3a54c783db779c471e37d682cfaa",
+      "passed": true
+    },
+    {
+      "path": "render-plan.ja.json",
+      "bytes": 9238,
+      "sha256": "f932be8763f751d10edaaac94b3aed6728fba06224b4940c709421baef53c0d1",
+      "passed": true
+    },
+    {
+      "path": "render-plan.zh-CN.json",
+      "bytes": 9180,
+      "sha256": "3eb7bbb2cbdb40fb8b2dd768b9cc80c09c1a8d10028421adcc2d38b902d02edd",
+      "passed": true
+    },
+    {
+      "path": "render_promo_video.py",
+      "bytes": 29118,
+      "sha256": "7e215fe2d41f187fcdba1ce2e30943e459c033c3db7e07fe3565d0f730ba5e3b",
+      "passed": true
+    },
+    {
+      "path": "review/full-ja.jpg",
+      "bytes": 1371578,
+      "sha256": "7285ca150288115d36e14a2d7c86a72ed6cb9d5323a7d9e6426f45fff45b8402",
+      "passed": true
+    },
+    {
+      "path": "review/full-zh-CN.jpg",
+      "bytes": 1392620,
+      "sha256": "3618f2bfc16b39244b09b31cd64434d5a88480e0a3bfe30608cba62f6ffba2fb",
+      "passed": true
+    },
+    {
+      "path": "review/graphics-ja.jpg",
+      "bytes": 579429,
+      "sha256": "dea28ed4274aab2d513d74980c9633efd5eab945482860139c7bb4a484ff37c1",
+      "passed": true
+    },
+    {
+      "path": "review/graphics-zh-CN.jpg",
+      "bytes": 586635,
+      "sha256": "077613144e8b4c2056d6d99e0affd1fb680c3e059d93da7030d826b0c5d8bd38",
+      "passed": true
+    },
+    {
+      "path": "review/tree-ja.jpg",
+      "bytes": 406682,
+      "sha256": "2cdeaa20fbbf4e578764c6465aba6fcc427e0338ab6794108ed1a6db5ddcf5cc",
+      "passed": true
+    },
+    {
+      "path": "review/tree-zh-CN.jpg",
+      "bytes": 411679,
+      "sha256": "4ec377ebfe268ddf38bf0a8da3eda02ad0be27176e01719687e32838f2e3f034",
+      "passed": true
+    },
+    {
+      "path": "source-inventory.json",
+      "bytes": 3003,
+      "sha256": "e21b455994954930fd3d248947c7fc8f7bdd421ed36a8e862aefaa676b316671",
+      "passed": true
+    },
+    {
+      "path": "stabilization-review.json",
+      "bytes": 1462,
+      "sha256": "6de6b7cb4639d9700eba061895e288a167dd9476053a3e50db127da1dfd6c208",
+      "passed": true
+    },
+    {
+      "path": "text-review.json",
+      "bytes": 5492,
+      "sha256": "7dc882469edc57d0d9adae6c0aaedff7508bcd95cd2d208704303e6b5bcdf0a7",
+      "passed": true
+    },
+    {
+      "path": "timeline.json",
+      "bytes": 8667,
+      "sha256": "abfa9ed7f0e11b58f46bc18f1c020874ee538a143f523359cf547daaa428e524",
+      "passed": true
+    },
+    {
+      "path": "typography.json",
+      "bytes": 909,
+      "sha256": "45a43663e1c8891a006ae48f63cd255cc5f40bc4e27ffadb10b832a7ae351156",
+      "passed": true
+    },
+    {
+      "path": "verification.json",
+      "bytes": 5579,
+      "sha256": "0bb22e31ac8fc3cfc5a0d58953be40f5aaa4e2a0b8aae42f6cf1edcdb8936697",
+      "passed": true
+    },
+    {
+      "path": "verify_promo_video.py",
+      "bytes": 15916,
+      "sha256": "01a9d5db844417ed864eb5a626da88f77f91de28f28c84a800c22627d7885b46",
+      "passed": true
+    },
+    {
+      "path": "visual-review.json",
+      "bytes": 2579,
+      "sha256": "dc5515da5bd7ded304f048aeef4510c27f363b6e0407584787dc6a2a69081489",
+      "passed": true
+    }
+  ],
+  "status": "passed",
+  "localManifestSha256": "019cb58a3089e00e0bec3630972a9da680e03865f0c4f3f1a0108f163a5b9b03"
+}

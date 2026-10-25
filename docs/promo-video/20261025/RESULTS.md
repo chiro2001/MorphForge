@@ -1,6 +1,6 @@
 # MorphForge 宣传片交付
 
-当前请使用 [OSC / AI 建模新版](osc-workflow/RESULTS.md)：`D:\Movies\Projects\MorphForge-Promo-20261025-OSC`。104.8秒，主线已改为“自定义模型 → AI真实建模 → OSC实机逐步搭建”，附神经网络动态演示；保留精简文字与SC／JP字体。27项检查通过，旧版保留。以下为首次交付历史。
+当前请使用 [中文／日文独立版](cn-jp/RESULTS.md)：`D:\Movies\Projects\MorphForge-Promo-20261025-CN-JP`。两版均111.2秒，分别制作全部新增设计文案、封面和片尾；MLP缩为3.2秒，加入六件作品拼贴与低多边形树实机，树镜头取消旧防抖。31项检查通过。以下为首次交付历史。
 
 已完成并复制到 `D:\Movies\Projects\MorphForge-Promo-20261025`。40个交付文件逐项核对大小与SHA256一致，额外的清单文件为 `MANIFEST.json`。Linux副本在 `Releases/MorphForge-Promo-20261025/`，大体积视频和用户原片不纳入Git。
 

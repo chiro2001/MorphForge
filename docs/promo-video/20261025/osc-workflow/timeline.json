@@ -1,0 +1,245 @@
+{
+  "name": "MorphForge：自定义模型、AI建模与OSC动态搭建",
+  "date": "2026-10-25",
+  "width": 1920,
+  "height": 1080,
+  "fps": 60,
+  "duration": 104.8,
+  "primaryLanguage": "zh-CN",
+  "subtitleLanguages": [
+    "zh-CN",
+    "ja",
+    "en"
+  ],
+  "music": {
+    "title": "Cipher",
+    "artist": "Kevin MacLeod",
+    "bpm": 150,
+    "start": 0,
+    "file": "Cipher.mp3",
+    "license": "CC BY 4.0"
+  },
+  "originalAudio": "muted",
+  "sourceDirectory": "D:/Movies/VRChat",
+  "sources": {
+    "windmill-materials.mp4": "只要风车和材质展示部分.mp4",
+    "showcase-options.mp4": "需要挑几种有用的。.mp4",
+    "speed-up.mp4": "需要加速。.mp4",
+    "stabilize.mp4": "可能需要加一下防抖。.mp4",
+    "live-captions.mp4": "字幕演示需要加速或者减掉一些不必要的，并且需要检查一下翻译的正确性。.mp4",
+    "ai-master-sword.mp4": "构建录屏：大师剑.mp4",
+    "vrc-master-sword.mp4": "在vrchat中搭建大师剑.mp4",
+    "neural-network.mp4": "神经网络演示.mp4"
+  },
+  "shots": [
+    {
+      "id": "01-custom-models",
+      "duration": 3.2,
+      "kind": "video",
+      "title": "自定义体素 / 低多边形模型",
+      "ja": "自作ボクセル・ローポリモデル",
+      "en": "Your own voxel / low-poly models",
+      "headingSeconds": 3.2,
+      "file": "vrc-master-sword.mp4",
+      "start": 642,
+      "captionSeconds": 2.8
+    },
+    {
+      "id": "02-osc-world",
+      "duration": 3.2,
+      "kind": "video",
+      "title": "通过 OSC，动态呈现于 VRChat",
+      "ja": "OSCでVRChatの空間に動的に表示",
+      "en": "Display them dynamically in VRChat via OSC",
+      "headingSeconds": 3.2,
+      "file": "neural-network.mp4",
+      "start": 300,
+      "captionSeconds": 2.8
+    },
+    {
+      "id": "03-brand",
+      "duration": 3.2,
+      "kind": "brand",
+      "title": "",
+      "ja": "",
+      "en": "",
+      "headingSeconds": 2.2,
+      "file": "vrc-master-sword.mp4",
+      "start": 662
+    },
+    {
+      "id": "04-real-ai-gui",
+      "duration": 6.4,
+      "kind": "video",
+      "title": "AI 建模：大师剑",
+      "ja": "AIでモデリング：マスターソード",
+      "en": "AI modeling: Master Sword",
+      "headingSeconds": 2.2,
+      "file": "ai-master-sword.mp4",
+      "start": 0
+    },
+    {
+      "id": "05-ai-iterations",
+      "duration": 9.6,
+      "kind": "video",
+      "title": "生成与迭代",
+      "ja": "生成と調整（24倍速）",
+      "en": "Generate & refine · 24× speed",
+      "headingSeconds": 2.2,
+      "file": "ai-master-sword.mp4",
+      "start": 190,
+      "speed": 24,
+      "speedLabel": "24×",
+      "captionSeconds": 3.4
+    },
+    {
+      "id": "06-ai-result",
+      "duration": 4.8,
+      "kind": "video",
+      "title": "",
+      "ja": "",
+      "en": "",
+      "headingSeconds": 2.2,
+      "file": "ai-master-sword.mp4",
+      "start": 748,
+      "crop": [
+        0,
+        48,
+        1496,
+        1000
+      ]
+    },
+    {
+      "id": "07-osc-build",
+      "duration": 20,
+      "kind": "video",
+      "title": "OSC 实际搭建",
+      "ja": "OSCで実際に構築（32倍速）",
+      "en": "Actual OSC build · 32× speed",
+      "headingSeconds": 2.2,
+      "file": "vrc-master-sword.mp4",
+      "start": 0,
+      "speed": 32,
+      "speedLabel": "32×",
+      "captionSeconds": 3.4
+    },
+    {
+      "id": "08-sword-in-vr",
+      "duration": 6.4,
+      "kind": "video",
+      "title": "",
+      "ja": "",
+      "en": "",
+      "headingSeconds": 2.2,
+      "file": "vrc-master-sword.mp4",
+      "start": 640
+    },
+    {
+      "id": "09-network-gui",
+      "duration": 3.2,
+      "kind": "video",
+      "title": "也可以是动态演示",
+      "ja": "動くデモにも",
+      "en": "Build animated demonstrations too",
+      "headingSeconds": 2.2,
+      "file": "neural-network.mp4",
+      "start": 210,
+      "crop": [
+        0,
+        48,
+        1496,
+        1000
+      ]
+    },
+    {
+      "id": "10-network-in-vr",
+      "duration": 9.6,
+      "kind": "video",
+      "title": "",
+      "ja": "",
+      "en": "",
+      "headingSeconds": 2.2,
+      "file": "neural-network.mp4",
+      "start": 386
+    },
+    {
+      "id": "11-animation",
+      "duration": 6.4,
+      "kind": "video",
+      "title": "模型 + 动画",
+      "ja": "モデルとアニメーション",
+      "en": "Models + animation",
+      "headingSeconds": 2.2,
+      "file": "windmill-materials.mp4",
+      "start": 34.5
+    },
+    {
+      "id": "12-materials",
+      "duration": 3.2,
+      "kind": "video",
+      "title": "材质",
+      "ja": "マテリアル",
+      "en": "Materials",
+      "headingSeconds": 2.2,
+      "file": "windmill-materials.mp4",
+      "start": 105.5
+    },
+    {
+      "id": "13-grab-scale",
+      "duration": 6.4,
+      "kind": "video",
+      "title": "抓握 · 缩放",
+      "ja": "つかむ・拡大縮小（4倍速）",
+      "en": "Grab & resize · 4× speed",
+      "headingSeconds": 2.2,
+      "file": "showcase-options.mp4",
+      "start": 106,
+      "speed": 4,
+      "speedLabel": "4×"
+    },
+    {
+      "id": "14-pixel-art",
+      "duration": 6.4,
+      "kind": "video",
+      "title": "像素画",
+      "ja": "ピクセルアート（10.5倍速）",
+      "en": "Pixel art · 10.5× speed",
+      "headingSeconds": 2.2,
+      "file": "speed-up.mp4",
+      "start": 1,
+      "speed": 10.5,
+      "speedLabel": "10.5×"
+    },
+    {
+      "id": "15-live-translation",
+      "duration": 6.4,
+      "kind": "video",
+      "title": "实时字幕与翻译",
+      "ja": "リアルタイム字幕・翻訳",
+      "en": "Live captions & translation",
+      "headingSeconds": 2.2,
+      "file": "live-captions.mp4",
+      "start": 80.5
+    },
+    {
+      "id": "16-end",
+      "duration": 6.4,
+      "kind": "end",
+      "title": "把你的创作带进 VRChat",
+      "ja": "あなたの作品をVRChatへ",
+      "en": "Bring your creations into VRChat",
+      "headingSeconds": 2.2,
+      "captionSeconds": 4
+    }
+  ],
+  "edition": "osc-ai-workflow",
+  "textPolicy": {
+    "headingSeconds": 2.2,
+    "subtitleSeconds": 2.4,
+    "persistentBrand": false,
+    "detailParagraphs": false,
+    "progressBar": false,
+    "chapterNumbers": false,
+    "coreClaimSeconds": 3.2
+  }
+}
