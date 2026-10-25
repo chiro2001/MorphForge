@@ -172,9 +172,9 @@
     "确认最终售价（当前0円仅为草案）",
     "确认最终商品使用条款；保留所有素材与依赖的原许可",
     "填写支持联系方式",
-    "隔离工程原包重新导入验证尚未通过，详见Checks/clean-import.json",
+    "隔离工程原包重新导入验证尚未执行：验证Editor未就绪，根因待查，详见Checks/clean-import.json",
     "公开前按指南人工复验目标Avatar、VR环境与其他客户端；1.4.0未作完整多人实机验收"
   ],
   "scope": "Packaging integrity and public-source/notice checks. Does not upgrade a blocked clean-import or replace VRChat multiplayer acceptance.",
-  "publisherKitSha256": "3ea35aa21841ad066a93eaacff8380729b5e6ae6b9e8880b0964dd6491ff281e"
+  "publisherKitSha256": "0ecd8166f990d8c3296a935ebe696e473d6c8d15585d4d8eeec38524520912d2"
 }

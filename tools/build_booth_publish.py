@@ -188,7 +188,7 @@ AlternativeCovers/内为中英文替代封面，不必重复上传三张相同�
         if not config['licenseFinalized']:pending.append('确认最终商品使用条款；保留所有素材与依赖的原许可')
         if not config['supportContact']:pending.append('填写支持联系方式')
         clean=json.loads((DOCS/'clean-import.json').read_text())if(DOCS/'clean-import.json').exists()else{'success':False,'status':'not-recorded'}
-        if not clean.get('success'):pending.append('隔离工程原包重新导入验证尚未通过，详见Checks/clean-import.json')
+        if not clean.get('success'):pending.append('隔离工程原包重新导入验证尚未执行：验证Editor未就绪，根因待查，详见Checks/clean-import.json')
         pending.append('公开前按指南人工复验目标Avatar、VR环境与其他客户端；1.4.0未作完整多人实机验收')
         report={'generatedBy':'tools/build_booth_publish.py','status':'PREPARED_FOR_REVIEW','desktopVersion':VERSION,'avatarVersion':'1.4.0','download':download.relative_to(built).as_posix(),'zipBytes':download.stat().st_size,'zipSha256':sha(download),'verifiedUnchangedValidatedBinaries':True,'catalogMatchesPublicPlugin':True,'zipCrcValid':True,'allZipBytesMatchStaging':True,'fileCount':sum(f.is_file()for f in buyer.rglob('*')),'dependencyLicenseCollection':license_audit,'cleanImport':clean.get('success',False),'pending':pending,'published':False}
         jsave(built/'publish-preparation.json',report);jsave(built/'booth-publish-config.json',config)

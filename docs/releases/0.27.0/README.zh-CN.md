@@ -22,7 +22,7 @@ Unity 原包 SHA256：`7e60412f16cbc3e9858e7c85c7d02ec9c16d15af94f6c37805190b59c
 
 本轮没有重新构建运行时。此前0.27.0/1.4.0的开发工程测试保持有效：320项Rust、67项前端、24项Chromium、19项Windows原生、3项原生重启、30项Unity/SDK检查。包装检查结果见 `verification.json`；离线审阅页的5项实际Chromium检查见 `offline-browser.json`。
 
-**额外干净导入未完成**：独立 Unity 验证 Editor 在授权连接/启动阶段未暴露 Pipeline。没有执行原包导入，也没有接触原开发工程资产。详见 `clean-import.json`。本次创建的临时启动任务和未就绪 Editor 已清理，原来运行的两个 Editor 保留。不能将开发工程通过的30项等同于这次额外导入通过；也不能将包装检查等同于多人实机验收。
+**额外干净导入未执行**：独立 Unity 验证 Editor 未暴露可用的 Pipeline，指定的专用日志也未生成，根因尚未确认。先前引用的 LicenseClient 连接拒绝、60秒超时和退出码199来自2026-10-24 23:54的旧Editor日志，不能当作2026-10-25这次启动失败的已确认原因。没有执行原包导入，也没有接触原开发工程资产。详见 `clean-import.json`。本次创建的临时启动任务和未就绪 Editor 已清理，原来运行的两个 Editor 保留。不能将开发工程通过的30项等同于这次额外导入通过；也不能将包装检查等同于多人实机验收。
 
 商品图来自隔离0.27.0工作台、项目自制MIT样例和Pillow排版。`media/sources.json` 保留原始截图摘要，`marketing/sources.json` 保留成品图来源。截图由Chromium打开相同内嵌工作台采集，不是Windows原生窗口或VRChat实机截图。没有调用付费模型、真实录音或OSC。临时浏览器和隔离服务均在采集结束后关闭。
 

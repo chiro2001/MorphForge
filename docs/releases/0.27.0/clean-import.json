@@ -10,9 +10,22 @@
     "Interactive scheduled launch did not expose a Pipeline instance.",
     "A launch using the existing licensing IPC channel also did not expose a Pipeline instance."
   ],
-  "observedDiagnostic": "The workstation Editor log reported a LicenseClient connection refusal and a 60-second licensing timeout. The extra validation Editor did not become available to Pipeline.",
+  "observedDiagnostic": "The validation Editor did not expose a Pipeline instance, and its requested dedicated log file was not created. The root cause of this attempt is unconfirmed.",
+  "confirmedRootCause": null,
+  "dedicatedAttemptLogCreated": false,
+  "historicalLicensingDiagnostic": {
+    "log": "%LOCALAPPDATA%/Unity/Editor/Editor.log",
+    "lastWriteTime": "2026-10-24T23:54:31.3243678+08:00",
+    "messages": [
+      "LicenseClient connection refused, code 0x8000000a.",
+      "Timed out after 60 seconds waiting for the licensing IPC channel.",
+      "Application exits with return code 199."
+    ],
+    "attributionToThisAttemptConfirmed": false,
+    "correction": "This log predates the 2026-10-25 BOOTH validation launches and must not be treated as their confirmed root cause."
+  },
   "assetImportAttempted": false,
   "developmentProjectChecksPassed": 30,
   "existingEvidence": "docs/localization-20261025/unity-validation.json",
-  "action": "Retry the original unitypackage in a working isolated Unity2022.3.22f1 Avatar project after resolving the workstation licensing/startup issue. Do not describe this extra check as passed."
+  "action": "Retry startup with process-specific diagnostics and a working Pipeline connection, then import the original package in the isolated Unity2022.3.22f1 Avatar project. Do not describe this check as executed or passed until it actually runs."
 }
