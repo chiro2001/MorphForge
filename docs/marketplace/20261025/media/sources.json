@@ -36,8 +36,8 @@
         1600,
         1600
       ],
-      "bytes": 199809,
-      "sha256": "7c967d88ff43950ad1aec7eb45e17d0e752d4c541a6b89bb0bb4ff3eb689c40d",
+      "bytes": 199781,
+      "sha256": "1e414d83c9e8ebb3107557e0a72cdb8eab8b189a12cce65387a6fbe4f30e9a71",
       "sources": [
         "docs/media/showcase/sports-car.webp",
         "docs/media/showcase/ramen.webp",
@@ -72,8 +72,8 @@
         1600,
         1600
       ],
-      "bytes": 144613,
-      "sha256": "b2ad2ca9e21a398ea24c0b047ff08092fad187c271d4e38a85a5a5266c4a799f",
+      "bytes": 154748,
+      "sha256": "4413c6e9944ba4d78eed01b625c6ba5acc25961f0bad4841f75455d3c0577a43",
       "sources": [
         "docs/releases/0.27.0/Quickstart.zh-CN.md"
       ],
@@ -165,8 +165,8 @@
         1600,
         1600
       ],
-      "bytes": 142484,
-      "sha256": "d11f5100252750b73242f2255e1c6692fc12acceb296d4f639e8a2b4a2928139",
+      "bytes": 151396,
+      "sha256": "9130d37efd062d61a1040a81f143825506868c27e9c5980701272688cca36898",
       "sources": [
         "docs/releases/0.27.0/Quickstart.ja.md"
       ],

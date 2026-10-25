@@ -1,5 +1,7 @@
 # BOOTH／闲鱼发布资料
 
+最新文案按用户反馈改为能力与玩法导向：先介绍可创作的模型、OSC展示、抓握摆放、动画、图示和字幕，再集中给出规格与许可。BOOTH中日正文、闲鱼正文、YouTube介绍和3张商品图已同步，Windows入口保持原路径；文案审查见 `copy-review.json`。
+
 Windows目录：`D:\Movies\Projects\MorphForge-Marketplace-20261025`，先打开 `index.html` 离线审阅。
 Linux副本：`Releases/MorphForge-Marketplace-20261025/`。本轮没有在线发布或上传视频。
 
@@ -14,7 +16,7 @@ Linux副本：`Releases/MorphForge-Marketplace-20261025/`。本轮没有在线�
 - `Download/MorphForge_Desktop0.27.0_Avatar1.4.0.zip`：两平台共用买家文件，38,702,748字节，约36.91MiB。免费与支持档都使用这一份。
 - `Shared/`：三语可选字幕与必须保留的配乐署名；`Checks/`：表单来源、图像来源、离线与媒体校验及发布事项。
 
-商品图突出自定义模型、真实AI→OSC流程、6件作品、VRChat玩法、安装前要求及实际多语言界面。编辑器预览与VRChat实机来源分别标注；原始GUI内容保留，新增中文用SC、日文用JP。未生成或伪造软件画面。
+商品图突出自定义模型、真实AI→OSC流程、6件作品、VRChat玩法、制作与展示能力及实际多语言界面。编辑器预览与VRChat实机来源分别标注；原始GUI内容保留，新增中文用SC、日文用JP。未生成或伪造软件画面。
 
 买家ZIP在原验收包基础上只更新Readme、价格／源码和许可索引等文字及摘要。Desktop0.27.0安装器SHA256仍为 `7d763ea397bf853c920f0005878e521c2b8f90607672f0e629dac511234e9979`，Avatar1.4.0仍为 `7e60412f16cbc3e9858e7c85c7d02ec9c16d15af94f6c37805190b59c5a39264`。配套材质目录和原始依赖许可保持不变。新ZIP SHA256：`28cf3df5b993a8ae3375d039ea3d6df556e792bd9ed11c69b9d28d8cc7d82b09`。
 

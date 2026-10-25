@@ -1,20 +1,22 @@
 {
   "root": "D:\\Movies\\Projects\\MorphForge-Marketplace-20261025",
-  "manifestSha256": "3784283b83fca53606536474252dc5515c7fcc912798744a2796f9a6ee94e2eb",
+  "manifestSha256": "54fde3eae7b8ba770452fa79e5da32cc324eeaabe66249a67c8a1d4d11e2fc14",
+  "changedFiles": 12,
+  "backupDirectory": "E:\\tmp\\morphforge\\marketplace-benefits-7fcc63b99b\\before",
   "checkedFiles": 52,
   "actualFiles": 53,
   "passed": true,
   "files": [
     {
       "path": "BOOTH/Description.ja.txt",
-      "bytes": 4207,
-      "sha256": "333c6fdc292a45ab165e1088a8f2c078b46af591bd66811f708cadf9a5a0a2d6",
+      "bytes": 3803,
+      "sha256": "fb98efe65cebe80a4cfea555586a80d3645ca21c413c9adfdcf9f99413af172a",
       "passed": true
     },
     {
       "path": "BOOTH/Description.zh-CN.txt",
-      "bytes": 2482,
-      "sha256": "38147389f6b9533cee0e5dd6828945201cb8a337f8d0f7419c81ed226185dcc0",
+      "bytes": 2873,
+      "sha256": "4cc336bf2d747da94fedca145115c2dccd7668a81e1061e56e60caed470aed3e",
       "passed": true
     },
     {
@@ -55,8 +57,8 @@
     },
     {
       "path": "BOOTH/Images/05-requirements-ja.jpg",
-      "bytes": 142484,
-      "sha256": "d11f5100252750b73242f2255e1c6692fc12acceb296d4f639e8a2b4a2928139",
+      "bytes": 151396,
+      "sha256": "9130d37efd062d61a1040a81f143825506868c27e9c5980701272688cca36898",
       "passed": true
     },
     {
@@ -85,8 +87,8 @@
     },
     {
       "path": "BOOTH/Video/YouTube-description.ja.txt",
-      "bytes": 4536,
-      "sha256": "7cb1b07b3760e43b20b1118ec8560858ca24402260edbc828be5867ca9f3bc0e",
+      "bytes": 4132,
+      "sha256": "69d9ed74dd19d0281c510c47a4d95a30e9ed75ca5bbeb9f7632939f252cbf18d",
       "passed": true
     },
     {
@@ -110,7 +112,7 @@
     {
       "path": "Checks/image-sources.json",
       "bytes": 5011,
-      "sha256": "14c1078041472e6c8099edda075ab0685f299f819f11ad89090fef9af2738b4c",
+      "sha256": "ac044c2b313fa717bc0ac1f5b1a63e07184e6a24f29583c2431ec90d03b2236b",
       "passed": true
     },
     {
@@ -122,13 +124,13 @@
     {
       "path": "Checks/offline-preview.png",
       "bytes": 226368,
-      "sha256": "7df527015df0a52c3c672ceb2e6e445ca7d33a23067105fe3630d0bccf45ad5f",
+      "sha256": "c71f4f590ebaa40341c67855198945da42508721023e50f1f3707670505d48fd",
       "passed": true
     },
     {
       "path": "Checks/product-images-review.jpg",
-      "bytes": 333833,
-      "sha256": "78e8f5ce7c8d7af20aafc32cb6d66c72a333c508b7a3e60f0dcf40a8d1aed019",
+      "bytes": 336674,
+      "sha256": "1cc56aa84c80cd90d9ea100be0661d12b61417e8be80353a16aa1f9bb578fc6a",
       "passed": true
     },
     {
@@ -157,8 +159,8 @@
     },
     {
       "path": "Checks/visual-review.json",
-      "bytes": 796,
-      "sha256": "d5379b82436cb3b286819aa9b5b73cbffa822971e9d9ad17006006eb97e97025",
+      "bytes": 935,
+      "sha256": "05b1ac0c3d20aba4875c759f55bda8591bb988dff8cacc01193cd6ddf64c2e14",
       "passed": true
     },
     {
@@ -211,8 +213,8 @@
     },
     {
       "path": "Xianyu/Description.zh-CN.txt",
-      "bytes": 1469,
-      "sha256": "929d5504049827224d9c1dd02815cb2a6d45e9bc0ce5ed5384c3a201fbf3a612",
+      "bytes": 1619,
+      "sha256": "e4c9c806bbd15e58f88a1ccfa9a9f565ffd9683bb28a81e879a2206e1ef2f181",
       "passed": true
     },
     {
@@ -235,8 +237,8 @@
     },
     {
       "path": "Xianyu/Images/03-works-zh-CN.jpg",
-      "bytes": 199809,
-      "sha256": "7c967d88ff43950ad1aec7eb45e17d0e752d4c541a6b89bb0bb4ff3eb689c40d",
+      "bytes": 199781,
+      "sha256": "1e414d83c9e8ebb3107557e0a72cdb8eab8b189a12cce65387a6fbe4f30e9a71",
       "passed": true
     },
     {
@@ -247,8 +249,8 @@
     },
     {
       "path": "Xianyu/Images/05-requirements-zh-CN.jpg",
-      "bytes": 144613,
-      "sha256": "b2ad2ca9e21a398ea24c0b047ff08092fad187c271d4e38a85a5a5266c4a799f",
+      "bytes": 154748,
+      "sha256": "4413c6e9944ba4d78eed01b625c6ba5acc25961f0bad4841f75455d3c0577a43",
       "passed": true
     },
     {
@@ -289,8 +291,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 9084,
-      "sha256": "6a0b1bff9bff1499598f4dcac2fde734d42f9e359fb61b308817c01946b318ad",
+      "bytes": 8830,
+      "sha256": "28d7305db92893e5c5aca15121816454b462eb6fa02d8590f1e6c525a351ecc8",
       "passed": true
     },
     {
@@ -319,5 +321,5 @@
     }
   ],
   "status": "passed",
-  "localManifestSha256": "3784283b83fca53606536474252dc5515c7fcc912798744a2796f9a6ee94e2eb"
+  "localManifestSha256": "54fde3eae7b8ba770452fa79e5da32cc324eeaabe66249a67c8a1d4d11e2fc14"
 }

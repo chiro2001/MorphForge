@@ -6,12 +6,13 @@
     "ja": "Noto Sans CJK JP"
   },
   "findings": [
-    "All twelve finished marketing images reviewed as contact sheet; six representative originals also inspected.",
-    "Source workflow shows real GUI and VRChat building, with actual24x/32x labels retained.",
-    "Gallery explicitly labeled editor preview; feature panels explicitly labeled actual VRChat footage.",
+    "CN/JP listing copy leads with creation outcomes and VRChat activities: AI modeling, custom OSC display, grabbing, animation, diagrams and bilingual captions.",
+    "Chinese works card and both setup cards now describe creations and capabilities. PC/PCVR,253bit and Very Poor facts remain in concise setup information.",
+    "Source licensing and source-repository link are retained in the product footer.",
+    "All twelve images reviewed as a contact sheet; changed CN/JP setup graphics inspected at full resolution.",
     "No added text clipping found in inspected images.",
-    "Requirements explicitly retain253bit, Very Poor, PC/PCVR and own AI API.",
-    "Full promo videos copied unchanged; new lighter video retains complete111.2-second edit."
+    "Chinese uses SC and Japanese uses JP."
   ],
-  "scope": "Sampled visual review; playback metadata and full light-video decode tested separately."
+  "scope": "Sampled visual review; playback metadata and full light-video decode tested separately.",
+  "copyRevision": "Capability-led copy requested by the user"
 }

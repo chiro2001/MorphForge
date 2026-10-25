@@ -26,7 +26,7 @@ def main():
   for y,t,label in [(240,23,'制作画面' if ja else '在工作台创作'),(1110,49,'VRChatで構築' if ja else '在VRChat中搭建')]:
    r.text(d,(74,y-55),label,34,r.MINT,language=lang);fit(im,capture(lang,t),(80,y,1440,810))
   r.text(d,(74,1940),'実録の抜粋。待ち時間の省略・倍速あり。' if ja else '真实录制节选，包含倍速与等待删减。',27,r.MUTED,language=lang);save(im,f'02-workflow-{lang}.jpg',lang,[f'promo-{lang}@23s',f'promo-{lang}@49s'])
-  im,d=base('自分の作品をつくる' if ja else '不限内置模型，自己创作',lang)
+  im,d=base('自分の作品をつくる' if ja else '自定义模型，自己的创作',lang)
   names=['sports-car.webp','ramen.webp','night-heron.webp','maple.webp','village-house.webp','hangover.webp']
   for i,name in enumerate(names):fit(im,ROOT/'docs/media/showcase'/name,(55+i%3*510,285+i//3*590,470,545))
   r.text(d,(73,1520),'保存済み作品のエディタープレビュー' if ja else '个人作品库保存的编辑器预览',28,r.MUTED,language=lang);save(im,f'03-works-{lang}.jpg',lang,['docs/media/showcase/'+n for n in names])
@@ -35,11 +35,11 @@ def main():
   for i,(t,label) in enumerate(features):
    x=65+i%2*770;y=280+i//2*610;r.text(d,(x,y-25),label,34,r.MINT,language=lang);fit(im,capture(lang,t),(x,y+50,705,485))
   r.text(d,(72,1530),'VRChat実機映像からの抜粋' if ja else '截取自VRChat实机录制',27,r.MUTED,language=lang);save(im,f'04-features-{lang}.jpg',lang,[f'promo-{lang}@{t}s' for t,_ in features])
-  im,d=base('導入前に確認' if ja else '使用前，先确认这些',lang)
-  cards=[('PC / PCVR','Windows x64','Quest単体は未検証' if ja else 'Quest独立运行未验证'),('253 bit','Avatar同期パラメーター' if ja else 'Avatar同步参数','衣装・面捕と容量を共有' if ja else '与衣服、面捕等共享预算'),('Very Poor','性能ランクの想定' if ja else '预期性能等级','FPSの保証はありません' if ja else '不承诺具体帧率'),('AI API','AI制作・翻訳は別途設定' if ja else 'AI建模与翻译另行配置','手動編集はAPI不要' if ja else '手动编辑无需API')]
+  im,d=base('作品をVRChatで楽しむ' if ja else '连接你的创作与VRChat',lang)
+  cards=[('PC / PCVR','Windows x64','制作アプリ＋Avatar表示' if ja else '桌面创作＋Avatar展示'),('OSC','作品をAvatarの周囲に表示' if ja else '让作品出现在Avatar周围','つかむ・拡大縮小・空間配置' if ja else '抓握、缩放与空间摆放'),('アニメーション' if ja else '模型动画','移動・回転・一様拡縮' if ja else '平移、旋转与等比缩放','モデルと動きを一緒に送信' if ja else '模型和动作一起发布'),('AI API','AIモデリング・翻訳に対応' if ja else '接入AI建模与字幕翻译','好みのモデルAPIを接続' if ja else '连接你选择的模型服务')]
   for i,(big,one,two) in enumerate(cards):
    x=70+i%2*760;y=310+i//2*475;d.rounded_rectangle((x,y,x+700,y+405),radius=18,fill=(17,31,43));r.text(d,(x+26,y+35),big,58,r.MINT,True,language=lang);r.text(d,(x+26,y+175),one,31,r.WHITE,True,650,language=lang);r.text(d,(x+26,y+270),two,29,r.MUTED,max_width=650,language=lang)
-  r.text(d,(75,1370),'自分のAvatarへUnityで導入・アップロード' if ja else '在Unity为自己的Avatar安装模块并上传',34,r.WHITE,True,language=lang);r.text(d,(75,1480),'人物Avatar / SDK / API利用枠は別途用意' if ja else '人物Avatar、SDK及API服务额度需自备',29,r.MUTED,language=lang);save(im,f'05-requirements-{lang}.jpg',lang,['docs/releases/0.27.0/Quickstart.'+lang+'.md'])
+  r.text(d,(75,1370),'自分のAvatarへUnityで導入・アップロード' if ja else '在Unity为自己的Avatar安装模块并上传',34,r.WHITE,True,language=lang);r.text(d,(75,1480),'導入ガイド・材質カタログ / 253bit / Very Poor' if ja else '导入指南与材质目录 / 标准253bit / Very Poor',29,r.MUTED,language=lang);save(im,f'05-requirements-{lang}.jpg',lang,['docs/releases/0.27.0/Quickstart.'+lang+'.md'])
   im,d=base('表示言語を切り替え' if ja else '中日英界面，随时切换',lang);source=ROOT/'docs/releases/0.27.0/media'/f'workbench-{lang}.png';fit(im,source,(65,330,1470,1020));r.text(d,(75,1440),'Desktop 0.27.0 / Avatar 1.4.0',31,r.MINT,language=lang);r.text(d,(75,1510),'実際のDesktop表示画面' if ja else '真实Desktop界面截图',28,r.MUTED,language=lang);save(im,f'06-interface-{lang}.jpg',lang,[source.relative_to(ROOT).as_posix()])
  (a.out/'sources.json').write_text(json.dumps(dict(images=records,fonts={c:r.font_face(c)[2] for c in ['zh-CN','ja']},method='Actual captures and saved artwork; Pillow composition. No generated product image.'),ensure_ascii=False,indent=2)+'\n');print('Created',len(records),'localized product images')
 if __name__=='__main__':main()

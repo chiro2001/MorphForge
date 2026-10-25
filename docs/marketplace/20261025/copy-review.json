@@ -1,0 +1,33 @@
+{
+  "status": "reviewed",
+  "copyFiles": [
+    "BOOTH/Description.ja.txt",
+    "BOOTH/Description.zh-CN.txt",
+    "Xianyu/Description.zh-CN.txt",
+    "BOOTH/Video/YouTube-description.ja.txt"
+  ],
+  "changedDeliveryFiles": [
+    "BOOTH/Description.ja.txt",
+    "BOOTH/Description.zh-CN.txt",
+    "BOOTH/Images/05-requirements-ja.jpg",
+    "BOOTH/Video/YouTube-description.ja.txt",
+    "Checks/image-sources.json",
+    "Checks/offline-preview.png",
+    "Checks/product-images-review.jpg",
+    "Checks/visual-review.json",
+    "Xianyu/Description.zh-CN.txt",
+    "Xianyu/Images/03-works-zh-CN.jpg",
+    "Xianyu/Images/05-requirements-zh-CN.jpg",
+    "index.html"
+  ],
+  "pricingJpy": [
+    0,
+    100
+  ],
+  "buyerAndVideoHashesMatchPriorDelivery": true,
+  "checks": {
+    "packagingAndMedia": 26,
+    "browser": 6
+  },
+  "direction": "Describe capabilities, creative outcomes and ways to play. Keep concise setup facts and original licensing."
+}
