@@ -9,6 +9,7 @@ import hashlib
 import json
 import shutil
 import subprocess
+from functools import lru_cache
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps
@@ -46,25 +47,52 @@ def probe(path):
     return json.loads(subprocess.check_output(["ffprobe", "-v", "error", "-show_streams", "-show_format", "-of", "json", str(path)]))
 
 
-def font(size, bold=False):
-    candidates = (["/usr/share/fonts/noto-cjk/NotoSansCJK-Bold.ttc", str(ROOT / "assets/NotoSansCJK-Bold.ttc")] if bold else []) + [
-        "/usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc",
-        str(ROOT / "assets/NotoSansCJK-Regular.ttc"),
-        str(ROOT / "fonts/NotoSansSC-Regular.otf"),
-        str(ROOT / "assets/NotoSansSC-Regular.otf"),
-        "C:/Windows/Fonts/msyh.ttc",
-    ]
-    for p in candidates:
-        if Path(p).exists():
-            return ImageFont.truetype(p, size)
-    raise RuntimeError("A CJK font is required")
+@lru_cache(maxsize=8)
+def font_face(language="zh-CN", bold=False):
+    # A TTC contains several regional faces. Index 0 in Noto CJK is Japanese;
+    # selecting the file alone silently gives Chinese text Japanese glyphs.
+    if language not in {"zh-CN", "ja", "en"}:
+        raise ValueError(f"Unsupported typography language: {language}")
+    expected = "Noto Sans CJK JP" if language == "ja" else "Noto Sans CJK SC"
+    weight = "Bold" if bold else "Regular"
+    filename = f"NotoSansCJK-{weight}.ttc"
+    for path in [ROOT / "assets" / filename, Path("/usr/share/fonts/noto-cjk") / filename]:
+        if not path.exists():
+            continue
+        for index in range(10):
+            try:
+                face = ImageFont.truetype(str(path), 24, index=index)
+            except OSError:
+                break
+            if face.getname() == (expected, weight):
+                return str(path), index, expected, weight
+    raise RuntimeError(f"Required regional font face missing: {expected} {weight}")
 
 
-def text(draw, xy, content, size=38, fill=WHITE, bold=False, max_width=None):
-    face = font(size, bold)
-    if max_width and draw.textlength(content, font=face) > max_width:
+@lru_cache(maxsize=128)
+def font(size, bold=False, language="zh-CN"):
+    path, index, _, _ = font_face(language, bold)
+    return ImageFont.truetype(path, size, index=index)
+
+
+def text(draw, xy, content, size=38, fill=WHITE, bold=False, max_width=None, language="zh-CN"):
+    runs = [(language, content)]
+    # This explicit Japanese language name also occurs within Chinese copy.
+    if language == "zh-CN" and "日本語" in content:
+        pieces = content.split("日本語")
+        runs = []
+        for index, piece in enumerate(pieces):
+            if index:
+                runs.append(("ja", "日本語"))
+            runs.append(("zh-CN", piece))
+    width = sum(draw.textlength(value, font=font(size, bold, code)) for code, value in runs)
+    if max_width and width > max_width:
         raise ValueError(f"Text exceeds its safe area: {content}")
-    draw.text(xy, content, font=face, fill=fill, stroke_width=0)
+    x, y = xy
+    for code, value in runs:
+        face = font(size, bold, code)
+        draw.text((x, y), value, font=face, fill=fill, stroke_width=0)
+        x += draw.textlength(value, font=face)
 
 
 def canvas():
@@ -86,7 +114,7 @@ def header(image, shot, opaque=True):
     return draw
 
 
-def card(image, path, box, crop=None, label=None, cover=False):
+def card(image, path, box, crop=None, label=None, cover=False, label_language="zh-CN"):
     draw = ImageDraw.Draw(image)
     x, y, width, height = box
     source = Image.open(path).convert("RGB")
@@ -97,7 +125,7 @@ def card(image, path, box, crop=None, label=None, cover=False):
     draw.rectangle((x, y, x + width, y + height), fill=(5, 10, 17))
     image.paste(source, (x + (width - source.width) // 2, y + (height - source.height) // 2))
     if label:
-        text(draw, (x + 13, y - 44), label, 26, MINT)
+        text(draw, (x + 13, y - 44), label, 26, MINT, language=label_language)
 
 
 def video_overlay(shot, index, total):
@@ -142,7 +170,7 @@ def still_card(shot):
     elif shot["kind"] == "languages":
         for i, (code, label) in enumerate([("zh-CN", "简体中文"), ("ja", "日本語"), ("en", "English")]):
             x = 62 + i * 620
-            card(image, asset(media + f"workbench-{code}.png"), (x, 350, 560, 380), label=label)
+            card(image, asset(media + f"workbench-{code}.png"), (x, 350, 560, 380), label=label, label_language=code)
         text(draw, (132, 836), "Desktop 可即时切换", 36, WHITE, True)
         text(draw, (1030, 836), "Unity 所选语言用于安装菜单", 36, WHITE, True, 800)
         text(draw, (132, 904), "语言选择独立于字幕翻译设置", 27, MUTED)
@@ -185,6 +213,32 @@ def write_subtitles(plan, out):
             blocks.append(f"{len(blocks)+1}\n{timestamp(start)} --> {timestamp(end)}\n{message}\n")
             position += shot["duration"]
         (out / f"MorphForge-Promo.{language}.srt").write_text("\n".join(blocks), encoding="utf-8")
+        # SRT has no font information. ASS carries an explicit regional family;
+        # the same style is passed into the MP4 subtitle encoder and libass.
+        family = font_face(language)[2]
+        header = f"""[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,{family},42,&H00FFFFFF,&H000000FF,&H0010151D,&H80000000,0,0,0,0,100,100,0,0,1,2.4,0.5,2,70,70,30,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+"""
+        events = []
+        for block in blocks:
+            lines = block.splitlines()
+            start, end = lines[1].split(" --> ")
+            def ass_time(value):
+                return value[1:].replace(",", ".")[:-1]
+            message = r"\N".join(lines[2:]).replace("{", r"\{").replace("}", r"\}")
+            events.append(f"Dialogue: 0,{ass_time(start)},{ass_time(end)},Default,,0,0,0,,{message}\n")
+        (out / f"MorphForge-Promo.{language}.ass").write_text(header + "".join(events), encoding="utf-8")
 
 
 def encode_args():
@@ -298,7 +352,7 @@ def main():
     multilingual = args.out / "MorphForge-Promo-Multisub-1080p60.mp4"
     command = ["ffmpeg", "-hide_banner", "-loglevel", "warning", "-y", "-i", str(picture), "-i", str(music)]
     for language in ["ja", "en"]:
-        command += ["-i", str(args.out / f"MorphForge-Promo.{language}.srt")]
+        command += ["-i", str(args.out / f"MorphForge-Promo.{language}.ass")]
     command += ["-map", "0:v:0", "-map", "1:a:0", "-map", "2:s:0", "-map", "3:s:0", "-c:v", "copy", "-c:a", "aac", "-b:a", "224k", "-c:s", "mov_text", "-metadata:s:s:0", "language=jpn", "-metadata:s:s:0", "title=日本語", "-metadata:s:s:1", "language=eng", "-metadata:s:s:1", "title=English", "-disposition:s:0", "0", "-disposition:s:1", "0", "-metadata", "title=MorphForge — 把想法带进 VRChat", "-metadata", "comment=Music: Cipher by Kevin MacLeod (incompetech.com), CC BY 4.0. Edited excerpt.", "-t", str(plan["duration"]), "-movflags", "+faststart", str(multilingual)]
     run(command, args.work / "logs/final-mux.log")
     # MP4 may enable its first subtitle even when every subtitle disposition was
@@ -326,8 +380,14 @@ def main():
         font_license = Path("/usr/share/licenses/noto-fonts-cjk/LICENSE")
     if font_license.exists() and font_license.resolve() != (assets / "OFL-NotoSansCJK.txt").resolve():
         shutil.copy2(font_license, assets / "OFL-NotoSansCJK.txt")
+    typography = {code: {weight: {"file": Path(font_face(code, weight == "bold")[0]).name, "faceIndex": font_face(code, weight == "bold")[1], "family": font_face(code, weight == "bold")[2], "style": font_face(code, weight == "bold")[3]} for weight in ["regular", "bold"]} for code in ["zh-CN", "ja", "en"]}
+    (args.out / "typography.json").write_text(json.dumps(typography, ensure_ascii=False, indent=2) + "\n")
+    japanese = args.out / "MorphForge-Promo-ja-1080p60.mp4"
+    subtitle_filter = f"subtitles=filename='{filter_path(args.out / 'MorphForge-Promo.ja.ass')}':fontsdir='{filter_path(assets)}'"
+    run(["ffmpeg", "-hide_banner", "-loglevel", "info", "-y", "-filter_threads", "2", "-threads", "4", "-i", str(output), "-map", "0:v:0", "-map", "0:a:0", "-vf", subtitle_filter, "-c:v", "libx264", "-preset", "fast", "-crf", "18", "-threads", "4", "-pix_fmt", "yuv420p", "-r", "60", "-c:a", "copy", "-sn", "-movflags", "+faststart", str(japanese)], args.work / "logs/japanese-font-burn.log")
     (args.out / "output-probe.json").write_text(json.dumps(probe(output), ensure_ascii=False, indent=2) + "\n")
     (args.out / "multisub-probe.json").write_text(json.dumps(probe(multilingual), ensure_ascii=False, indent=2) + "\n")
+    (args.out / "japanese-probe.json").write_text(json.dumps(probe(japanese), ensure_ascii=False, indent=2) + "\n")
     print(output, flush=True)
 
 

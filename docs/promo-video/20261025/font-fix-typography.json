@@ -1,0 +1,63 @@
+{
+  "status": "passed",
+  "previousChineseFamily": "Noto Sans CJK JP (default TTC face 0)",
+  "current": {
+    "zh-CN": {
+      "regular": {
+        "file": "NotoSansCJK-Regular.ttc",
+        "faceIndex": 2,
+        "family": "Noto Sans CJK SC",
+        "style": "Regular"
+      },
+      "bold": {
+        "file": "NotoSansCJK-Bold.ttc",
+        "faceIndex": 2,
+        "family": "Noto Sans CJK SC",
+        "style": "Bold"
+      }
+    },
+    "ja": {
+      "regular": {
+        "file": "NotoSansCJK-Regular.ttc",
+        "faceIndex": 0,
+        "family": "Noto Sans CJK JP",
+        "style": "Regular"
+      },
+      "bold": {
+        "file": "NotoSansCJK-Bold.ttc",
+        "faceIndex": 0,
+        "family": "Noto Sans CJK JP",
+        "style": "Bold"
+      }
+    },
+    "en": {
+      "regular": {
+        "file": "NotoSansCJK-Regular.ttc",
+        "faceIndex": 2,
+        "family": "Noto Sans CJK SC",
+        "style": "Regular"
+      },
+      "bold": {
+        "file": "NotoSansCJK-Bold.ttc",
+        "faceIndex": 2,
+        "family": "Noto Sans CJK SC",
+        "style": "Bold"
+      }
+    }
+  },
+  "checks": {
+    "zh-CN_regular_correct_family": true,
+    "zh-CN_bold_correct_family": true,
+    "ja_regular_correct_family": true,
+    "ja_bold_correct_family": true,
+    "Chinese_and_Japanese_regional_glyphs_are_distinct": true,
+    "zh-CN_subtitle_text_and_timing_preserved": true,
+    "zh-CN_ASS_declares_regional_family": true,
+    "ja_subtitle_text_and_timing_preserved": true,
+    "ja_ASS_declares_regional_family": true,
+    "en_subtitle_text_and_timing_preserved": true,
+    "en_ASS_declares_regional_family": true,
+    "Multilingual_MP4_font_table_declares_Japanese_and_Chinese_families": true
+  },
+  "scope": "Newly rendered titles, labels, mixed-language runs, cover, and styled subtitle output. Original recorded video and product screenshots are preserved."
+}

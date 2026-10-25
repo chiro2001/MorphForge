@@ -1,0 +1,81 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "name": "1080p60 H.264 with 5760 frames",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "96-second picture and container",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Chinese main version has no extra subtitle overlay track",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "48 kHz stereo AAC",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Companion MP4 has Japanese and English selectable subtitles",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "zh-CN: 16 valid non-overlapping caption cues",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ja: 16 valid non-overlapping caption cues",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "en: 16 valid non-overlapping caption cues",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ja: embedded text matches delivered SRT",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "en: embedded text matches delivered SRT",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Embedded subtitle timestamps preserved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Full video and audio decode without errors",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Music loudness and true peak are in range",
+      "passed": true,
+      "detail": {
+        "integratedLufs": -17.67,
+        "truePeakDbtp": -2.3,
+        "lra": 8.5
+      }
+    }
+  ],
+  "durationSeconds": 96.0,
+  "frames": 5760,
+  "bytes": 60105473,
+  "multilingualBytes": 60110421,
+  "sourceAudio": "muted",
+  "music": "Cipher / Kevin MacLeod",
+  "fullPlaybackNote": "Complete decode, frame samples and subtitle checks; not a claim of subjective viewing/listening by a human."
+}

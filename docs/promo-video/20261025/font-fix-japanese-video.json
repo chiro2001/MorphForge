@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "checks": {
+    "fixed_Japanese_subtitle_video_is_1080p60_96_seconds": true,
+    "libass_selected_Japanese_regional_family": true,
+    "no_missing_glyph_warnings": true,
+    "Japanese_video_fully_decodes": true
+  },
+  "fontSelection": "Noto Sans CJK JP / NotoSansCJKjp-Regular / face 0",
+  "file": "MorphForge-Promo-ja-1080p60.mp4",
+  "bytes": 57596094
+}

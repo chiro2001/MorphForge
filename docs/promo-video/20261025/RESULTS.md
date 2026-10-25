@@ -1,5 +1,7 @@
 # MorphForge 宣传片交付
 
+当前请使用[中日文字体修正版](FONT-FIX.zh-CN.md)，Windows目录为 `D:\Movies\Projects\MorphForge-Promo-20261025-FontFix`。以下保留首次交付记录。
+
 已完成并复制到 `D:\Movies\Projects\MorphForge-Promo-20261025`。40个交付文件逐项核对大小与SHA256一致，额外的清单文件为 `MANIFEST.json`。Linux副本在 `Releases/MorphForge-Promo-20261025/`，大体积视频和用户原片不纳入Git。
 
 - `MorphForge-Promo-zh-CN-1080p60.mp4`：中文主片，96秒／1920×1080／60fps，约57.31MiB。

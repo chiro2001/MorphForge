@@ -1,6 +1,7 @@
 # MorphForge 协作说明
 
 - 使用简体中文回复用户。
+- 图片和视频排版按文本语言选择字体：中文使用简体中文SC字形，日文使用JP字形；使用TTC时必须核对实际字体族和字体面，不能直接使用默认索引。字幕需要固定字体时使用带字体样式的ASS或烧录版，不能声称SRT本身指定了字体。
 - Unity 工程位于 `192.168.101.5` 的 `D:\Projects\VRChatProjects2\MorphForge`；本目录保存访问工具、源脚本与验证记录。
 - 操作前阅读 [UNITY-GUIDE.md](UNITY-GUIDE.md)，使用 [.agents/skills/unity-pipeline/SKILL.md](.agents/skills/unity-pipeline/SKILL.md)。
 - `python3 tools/unity_remote.py <命令>` 始终显式选择 MorphForge；不要省略项目路径去操作其他 Editor。
@@ -12,6 +13,8 @@
 - 不自动上传 Avatar、启动真实 VRChat 客户端或改动其他项目场景。
 
 ## 本轮已授权范围
+
+- 2026-10-25 用户发现宣传片中文可能用了日文字体。确认原TTC默认字体面为JP，现渲染脚本按实际字体族选SC／JP，中文常规和粗体均为SC，日文标签与字幕为JP；生成ASS字体样式、校验MP4字体表，并新增固定JP字体的日文字幕烧录版。中文主片／字幕版／封面／分镜已重导，13项媒体＋12项字体／字幕＋4项日文版检查通过。交付目录MorphForge-Promo-20261025-FontFix，详情docs/promo-video/20261025/FONT-FIX.zh-CN.md；原版和原片保留，不上传平台／推送／建Release。
 
 - 2026-10-25 用户要求使用D盘录制素材自主规划并剪辑MorphForge宣传视频，自选BGM，确定中文主版附日／英字幕。实际素材在D:\Movies\VRChat，5份中文说明MP4均已保留原样并复核摘要。96秒1080p60主片、另一个内嵌日／英字幕的版本、三语SRT、封面、分镜与可重建剪辑资料已完成；13项成片检查通过。遵循原片文件名的挑选／加速／防抖要求，字幕原片中不完整日语译文段落已排除，未修饰实机板中文字。BGM为官网取得的Kevin MacLeod《Cipher》CC BY4.0，片尾和发布文案含署名，许可证据随包。见docs/promo-video/20261025/；输出Releases/MorphForge-Promo-20261025，交付至D:\Movies\Projects\MorphForge-Promo-20261025，不上传视频平台／商品页，不操作主程序或VRChat，不推送／建Release。
 
