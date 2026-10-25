@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "checks": {
+    "Chinese_regular_and_bold_use_SC": true,
+    "Japanese_regular_and_bold_use_JP": true,
+    "Japanese_burned_subtitles_use_JP": true,
+    "No_missing_glyph_warnings": true,
+    "Japanese_version_fully_decodes": true
+  },
+  "subtitleCueCount": 11,
+  "visualReview": "All 17 shots sampled; additional samples after heading fade-out show no heading, persistent branding, chapter labels or progress line. Original game-world text is retained."
+}

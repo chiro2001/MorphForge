@@ -2,6 +2,7 @@
 
 - 使用简体中文回复用户。
 - 图片和视频排版按文本语言选择字体：中文使用简体中文SC字形，日文使用JP字形；使用TTC时必须核对实际字体族和字体面，不能直接使用默认索引。字幕需要固定字体时使用带字体样式的ASS或烧录版，不能声称SRT本身指定了字体。
+- 宣传视频以画面为主，逐项审查新增文字的必要性；优先短标题短暂出现，删除重复说明、常驻品牌／章节／状态标签和不相关界面文字。保留必要倍速提示、来源限定和授权署名；日英字幕也要同步精简。
 - Unity 工程位于 `192.168.101.5` 的 `D:\Projects\VRChatProjects2\MorphForge`；本目录保存访问工具、源脚本与验证记录。
 - 操作前阅读 [UNITY-GUIDE.md](UNITY-GUIDE.md)，使用 [.agents/skills/unity-pipeline/SKILL.md](.agents/skills/unity-pipeline/SKILL.md)。
 - `python3 tools/unity_remote.py <命令>` 始终显式选择 MorphForge；不要省略项目路径去操作其他 Editor。
@@ -13,6 +14,8 @@
 - 不自动上传 Avatar、启动真实 VRChat 客户端或改动其他项目场景。
 
 ## 本轮已授权范围
+
+- 2026-10-25 用户要求宣传片文字尽量简洁，并审查每一处是否必要。已逐项审查17镜头，去掉常驻品牌／章节／进度线、长标题解释、状态标签、截图无关控件；短标题约2.2秒退场，多个效果镜头无新增文字，三语字幕同步缩为11条短语。仅保留必要倍速、Unity来源、语言名称和音乐署名；SC／JP字体及日文烧录版继续提供。精简版96秒1080p60，交付MorphForge-Promo-20261025-Minimal，审查记录docs/promo-video/20261025/TEXT-REVIEW.zh-CN.md及text-review.json，不上传平台／推送／建Release。
 
 - 2026-10-25 用户发现宣传片中文可能用了日文字体。确认原TTC默认字体面为JP，现渲染脚本按实际字体族选SC／JP，中文常规和粗体均为SC，日文标签与字幕为JP；生成ASS字体样式、校验MP4字体表，并新增固定JP字体的日文字幕烧录版。中文主片／字幕版／封面／分镜已重导，13项媒体＋12项字体／字幕＋4项日文版检查通过。交付目录MorphForge-Promo-20261025-FontFix，详情docs/promo-video/20261025/FONT-FIX.zh-CN.md；原版和原片保留，不上传平台／推送／建Release。
 

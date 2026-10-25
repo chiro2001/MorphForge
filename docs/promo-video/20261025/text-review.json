@@ -1,0 +1,471 @@
+{
+  "policy": {
+    "headingSeconds": 2.2,
+    "subtitleSeconds": 2.4,
+    "persistentBrand": false,
+    "detailParagraphs": false,
+    "progressBar": false,
+    "chapterNumbers": false
+  },
+  "globalRemoved": [
+    "常驻M/MorphForge标识",
+    "章节编号",
+    "全程进度线",
+    "逐镜解释段落",
+    "原速/实机/已防抖标签",
+    "界面调试、模型版本和参数统计",
+    "片尾功能清单与安装步骤"
+  ],
+  "necessaryPersistent": [
+    "两处倍速提示",
+    "Unity预览来源说明",
+    "中文/日本語/English三个语言名称",
+    "片尾音乐署名和许可"
+  ],
+  "shots": [
+    {
+      "shot": "01-hook-windmill",
+      "retainedTitle": "",
+      "retainedSpeed": null,
+      "sourceQualifier": null,
+      "removed": [
+        {
+          "text": "把想法，带进 VRChat",
+          "reason": "改为短标题或由画面自行说明"
+        },
+        {
+          "text": "模型 · 文字 · 动画 · 随身玩法",
+          "reason": "与画面重复的解释，移至发布文案"
+        },
+        {
+          "text": "VRChat 实机录制",
+          "reason": "重复来源、原速或剪辑处理信息，无需常驻"
+        },
+        {
+          "text": "创作 / CREATE",
+          "reason": "章节编号不帮助理解功能"
+        }
+      ],
+      "promotionalTitleOnlyEarlySeconds": 2.2,
+      "originalVisibleText": "实机背景文字属于原始场景；软件截图仅保留本镜头相关控件"
+    },
+    {
+      "shot": "02-hook-props",
+      "retainedTitle": "",
+      "retainedSpeed": null,
+      "sourceQualifier": null,
+      "removed": [
+        {
+          "text": "把想法，带进 VRChat",
+          "reason": "改为短标题或由画面自行说明"
+        },
+        {
+          "text": "模型 · 文字 · 动画 · 随身玩法",
+          "reason": "与画面重复的解释，移至发布文案"
+        },
+        {
+          "text": "VRChat 实机录制",
+          "reason": "重复来源、原速或剪辑处理信息，无需常驻"
+        },
+        {
+          "text": "创作 / CREATE",
+          "reason": "章节编号不帮助理解功能"
+        }
+      ],
+      "promotionalTitleOnlyEarlySeconds": 2.2,
+      "originalVisibleText": "实机背景文字属于原始场景；软件截图仅保留本镜头相关控件"
+    },
+    {
+      "shot": "03-brand",
+      "retainedTitle": "MorphForge",
+      "retainedSpeed": null,
+      "sourceQualifier": null,
+      "removed": [
+        {
+          "text": "让你的 Avatar，成为一间创作工坊。",
+          "reason": "与画面重复的解释，移至发布文案"
+        },
+        {
+          "text": "Desktop + Avatar + OSC",
+          "reason": "重复来源、原速或剪辑处理信息，无需常驻"
+        },
+        {
+          "text": "MorphForge",
+          "reason": "章节编号不帮助理解功能"
+        }
+      ],
+      "promotionalTitleOnlyEarlySeconds": 2.2,
+      "originalVisibleText": "实机背景文字属于原始场景；软件截图仅保留本镜头相关控件"
+    },
+    {
+      "shot": "04-workbench",
+      "retainedTitle": "AI 创作",
+      "retainedSpeed": null,
+      "sourceQualifier": null,
+      "removed": [
+        {
+          "text": "从一句话，到一件作品",
+          "reason": "改为短标题或由画面自行说明"
+        },
+        {
+          "text": "AI 辅助建模，再用编辑器预览与调整",
+          "reason": "与画面重复的解释，移至发布文案"
+        },
+        {
+          "text": "真实软件界面",
+          "reason": "重复来源、原速或剪辑处理信息，无需常驻"
+        },
+        {
+          "text": "01 / 创作",
+          "reason": "章节编号不帮助理解功能"
+        }
+      ],
+      "promotionalTitleOnlyEarlySeconds": 2.2,
+      "originalVisibleText": "实机背景文字属于原始场景；软件截图仅保留本镜头相关控件"
+    },
+    {
+      "shot": "05-publish",
+      "retainedTitle": "模型 + 动画",
+      "retainedSpeed": null,
+      "sourceQualifier": null,
+      "removed": [
+        {
+          "text": "选好动画，随模型一起发布",
+          "reason": "改为短标题或由画面自行说明"
+        },
+        {
+          "text": "Desktop 中选择片段，再发布当前版本",
+          "reason": "与画面重复的解释，移至发布文案"
+        },
+        {
+          "text": "实机 + 发布面板截图",
+          "reason": "重复来源、原速或剪辑处理信息，无需常驻"
+        },
+        {
+          "text": "02 / 发布",
+          "reason": "章节编号不帮助理解功能"
+        }
+      ],
+      "promotionalTitleOnlyEarlySeconds": 2.2,
+      "originalVisibleText": "实机背景文字属于原始场景；软件截图仅保留本镜头相关控件"
+    },
+    {
+      "shot": "06-animation",
+      "retainedTitle": "",
+      "retainedSpeed": null,
+      "sourceQualifier": null,
+      "removed": [
+        {
+          "text": "让作品动起来",
+          "reason": "改为短标题或由画面自行说明"
+        },
+        {
+          "text": "风车、旋转道具、循环展示……",
+          "reason": "与画面重复的解释，移至发布文案"
+        },
+        {
+          "text": "原速 · VRChat 实机录制",
+          "reason": "重复来源、原速或剪辑处理信息，无需常驻"
+        },
+        {
+          "text": "03 / 动画",
+          "reason": "章节编号不帮助理解功能"
+        }
+      ],
+      "promotionalTitleOnlyEarlySeconds": 2.2,
+      "originalVisibleText": "实机背景文字属于原始场景；软件截图仅保留本镜头相关控件"
+    },
+    {
+      "shot": "07-materials",
+      "retainedTitle": "材质",
+      "retainedSpeed": null,
+      "sourceQualifier": null,
+      "removed": [
+        {
+          "text": "不止一种质感",
+          "reason": "改为短标题或由画面自行说明"
+        },
+        {
+          "text": "体素、三角面、透明与发光材质",
+          "reason": "与画面重复的解释，移至发布文案"
+        },
+        {
+          "text": "VRChat 实机录制",
+          "reason": "重复来源、原速或剪辑处理信息，无需常驻"
+        },
+        {
+          "text": "04 / 材质",
+          "reason": "章节编号不帮助理解功能"
+        }
+      ],
+      "promotionalTitleOnlyEarlySeconds": 2.2,
+      "originalVisibleText": "实机背景文字属于原始场景；软件截图仅保留本镜头相关控件"
+    },
+    {
+      "shot": "08-props",
+      "retainedTitle": "随身道具",
+      "retainedSpeed": null,
+      "sourceQualifier": null,
+      "removed": [
+        {
+          "text": "把想象，做成随身道具",
+          "reason": "改为短标题或由画面自行说明"
+        },
+        {
+          "text": "摆一桌饮料，做一件展示物，拍一张合影",
+          "reason": "与画面重复的解释，移至发布文案"
+        },
+        {
+          "text": "VRChat 实机录制",
+          "reason": "重复来源、原速或剪辑处理信息，无需常驻"
+        },
+        {
+          "text": "05 / 玩法",
+          "reason": "章节编号不帮助理解功能"
+        }
+      ],
+      "promotionalTitleOnlyEarlySeconds": 2.2,
+      "originalVisibleText": "实机背景文字属于原始场景；软件截图仅保留本镜头相关控件"
+    },
+    {
+      "shot": "09-scale",
+      "retainedTitle": "抓握 · 缩放",
+      "retainedSpeed": "4倍速",
+      "sourceQualifier": null,
+      "removed": [
+        {
+          "text": "拿起、缩放、随手摆放",
+          "reason": "改为短标题或由画面自行说明"
+        },
+        {
+          "text": "用同一件作品，尝试不同大小与位置",
+          "reason": "与画面重复的解释，移至发布文案"
+        },
+        {
+          "text": "动作演示加速 ×4",
+          "reason": "重复来源、原速或剪辑处理信息，无需常驻"
+        },
+        {
+          "text": "05 / 玩法",
+          "reason": "章节编号不帮助理解功能"
+        }
+      ],
+      "promotionalTitleOnlyEarlySeconds": 2.2,
+      "originalVisibleText": "实机背景文字属于原始场景；软件截图仅保留本镜头相关控件"
+    },
+    {
+      "shot": "10-space",
+      "retainedTitle": "空间摆放",
+      "retainedSpeed": null,
+      "sourceQualifier": null,
+      "removed": [
+        {
+          "text": "让作品进入身边的空间",
+          "reason": "改为短标题或由画面自行说明"
+        },
+        {
+          "text": "小景观、展示物，也可以成为聊天的话题",
+          "reason": "与画面重复的解释，移至发布文案"
+        },
+        {
+          "text": "VRChat 实机录制 · 已防抖",
+          "reason": "重复来源、原速或剪辑处理信息，无需常驻"
+        },
+        {
+          "text": "05 / 玩法",
+          "reason": "章节编号不帮助理解功能"
+        }
+      ],
+      "promotionalTitleOnlyEarlySeconds": 2.2,
+      "originalVisibleText": "实机背景文字属于原始场景；软件截图仅保留本镜头相关控件"
+    },
+    {
+      "shot": "11-pixel-send",
+      "retainedTitle": "像素画",
+      "retainedSpeed": "10.5倍速",
+      "sourceQualifier": null,
+      "removed": [
+        {
+          "text": "把图像，变成空间里的像素画",
+          "reason": "改为短标题或由画面自行说明"
+        },
+        {
+          "text": "从逐步发送，到完整展示",
+          "reason": "与画面重复的解释，移至发布文案"
+        },
+        {
+          "text": "发送过程加速 ×10.5",
+          "reason": "重复来源、原速或剪辑处理信息，无需常驻"
+        },
+        {
+          "text": "06 / 像素画",
+          "reason": "章节编号不帮助理解功能"
+        }
+      ],
+      "promotionalTitleOnlyEarlySeconds": 2.2,
+      "originalVisibleText": "实机背景文字属于原始场景；软件截图仅保留本镜头相关控件"
+    },
+    {
+      "shot": "12-pixel-result",
+      "retainedTitle": "",
+      "retainedSpeed": null,
+      "sourceQualifier": null,
+      "removed": [
+        {
+          "text": "把喜欢的画，带在身边",
+          "reason": "改为短标题或由画面自行说明"
+        },
+        {
+          "text": "像素画、展示牌、合影背景",
+          "reason": "与画面重复的解释，移至发布文案"
+        },
+        {
+          "text": "原速 · VRChat 实机录制",
+          "reason": "重复来源、原速或剪辑处理信息，无需常驻"
+        },
+        {
+          "text": "06 / 像素画",
+          "reason": "章节编号不帮助理解功能"
+        }
+      ],
+      "promotionalTitleOnlyEarlySeconds": 2.2,
+      "originalVisibleText": "实机背景文字属于原始场景；软件截图仅保留本镜头相关控件"
+    },
+    {
+      "shot": "13-drawing",
+      "retainedTitle": "点与线",
+      "retainedSpeed": null,
+      "sourceQualifier": "Unity 预览",
+      "removed": [
+        {
+          "text": "用点和线，快速讲清一个想法",
+          "reason": "改为短标题或由画面自行说明"
+        },
+        {
+          "text": "点、线段、箭头、坐标轴 · 大小与粗细可调",
+          "reason": "与画面重复的解释，移至发布文案"
+        },
+        {
+          "text": "软件界面 + Unity 渲染验收图",
+          "reason": "重复来源、原速或剪辑处理信息，无需常驻"
+        },
+        {
+          "text": "07 / 快速演示",
+          "reason": "章节编号不帮助理解功能"
+        }
+      ],
+      "promotionalTitleOnlyEarlySeconds": 2.2,
+      "originalVisibleText": "实机背景文字属于原始场景；软件截图仅保留本镜头相关控件"
+    },
+    {
+      "shot": "14-captions",
+      "retainedTitle": "",
+      "retainedSpeed": null,
+      "sourceQualifier": null,
+      "removed": [
+        {
+          "text": "把说的话，显示出来",
+          "reason": "改为短标题或由画面自行说明"
+        },
+        {
+          "text": "实时字幕可以和你制作的展示牌一起使用",
+          "reason": "与画面重复的解释，移至发布文案"
+        },
+        {
+          "text": "VRChat 实机 · 实时字幕",
+          "reason": "重复来源、原速或剪辑处理信息，无需常驻"
+        },
+        {
+          "text": "08 / 字幕",
+          "reason": "章节编号不帮助理解功能"
+        }
+      ],
+      "promotionalTitleOnlyEarlySeconds": 2.2,
+      "originalVisibleText": "字幕牌上的中日词对是该功能的展示对象，保留；不再叠加解释"
+    },
+    {
+      "shot": "15-translation",
+      "retainedTitle": "实时翻译",
+      "retainedSpeed": null,
+      "sourceQualifier": null,
+      "removed": [
+        {
+          "text": "保留原文，也能自动翻译",
+          "reason": "改为短标题或由画面自行说明"
+        },
+        {
+          "text": "翻译目标可选：中文 / 日本語 / English",
+          "reason": "与画面重复的解释，移至发布文案"
+        },
+        {
+          "text": "VRChat 实机 · 中文 + 日文",
+          "reason": "重复来源、原速或剪辑处理信息，无需常驻"
+        },
+        {
+          "text": "08 / 字幕",
+          "reason": "章节编号不帮助理解功能"
+        }
+      ],
+      "promotionalTitleOnlyEarlySeconds": 2.2,
+      "originalVisibleText": "字幕牌上的中日词对是该功能的展示对象，保留；不再叠加解释"
+    },
+    {
+      "shot": "16-languages",
+      "retainedTitle": "",
+      "retainedSpeed": null,
+      "sourceQualifier": null,
+      "removed": [
+        {
+          "text": "用熟悉的语言，开始创作",
+          "reason": "改为短标题或由画面自行说明"
+        },
+        {
+          "text": "软件界面与 Unity 安装菜单支持中、日、英三语",
+          "reason": "与画面重复的解释，移至发布文案"
+        },
+        {
+          "text": "真实软件界面",
+          "reason": "重复来源、原速或剪辑处理信息，无需常驻"
+        },
+        {
+          "text": "09 / 三语支持",
+          "reason": "章节编号不帮助理解功能"
+        }
+      ],
+      "promotionalTitleOnlyEarlySeconds": 2.2,
+      "originalVisibleText": "实机背景文字属于原始场景；软件截图仅保留本镜头相关控件"
+    },
+    {
+      "shot": "17-end",
+      "retainedTitle": "开始创作",
+      "retainedSpeed": null,
+      "sourceQualifier": null,
+      "removed": [
+        {
+          "text": "你的下一个作品，会是什么？",
+          "reason": "改为短标题或由画面自行说明"
+        },
+        {
+          "text": "安装 Avatar 插件 → 开启 OSC → Desktop 连接并发布",
+          "reason": "与画面重复的解释，移至发布文案"
+        },
+        {
+          "text": "Windows · PC / PCVR",
+          "reason": "重复来源、原速或剪辑处理信息，无需常驻"
+        },
+        {
+          "text": "MorphForge",
+          "reason": "章节编号不帮助理解功能"
+        }
+      ],
+      "promotionalTitleOnlyEarlySeconds": 2.2,
+      "originalVisibleText": "实机背景文字属于原始场景；软件截图仅保留本镜头相关控件"
+    }
+  ],
+  "croppedInterface": {
+    "publish": "仅保留动画选择框和发布当前版本按钮，删除其他发布选项、状态、版本和调试统计",
+    "workbench": "改用真实编辑器模型渲染，去掉AI面板说明和上下文统计",
+    "languages": "只保留三个语言名称，重复的菜单文字和整页界面截图均移除",
+    "drawing": "用真实Unity点线粗细对照代替设置面板长说明"
+  }
+}

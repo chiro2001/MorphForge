@@ -1,0 +1,200 @@
+{
+  "target": "D:\\Movies\\Projects\\MorphForge-Promo-20261025-Minimal",
+  "verifiedFiles": 48,
+  "allMatched": true,
+  "extraFileCount": 0,
+  "files": [
+    {
+      "file": "Cover.jpg",
+      "matched": true
+    },
+    {
+      "file": "MUSIC-CREDIT.txt",
+      "matched": true
+    },
+    {
+      "file": "MorphForge-Promo-Multisub-1080p60.mp4",
+      "matched": true
+    },
+    {
+      "file": "MorphForge-Promo-ja-1080p60.mp4",
+      "matched": true
+    },
+    {
+      "file": "MorphForge-Promo-zh-CN-1080p60.mp4",
+      "matched": true
+    },
+    {
+      "file": "MorphForge-Promo.en.ass",
+      "matched": true
+    },
+    {
+      "file": "MorphForge-Promo.en.srt",
+      "matched": true
+    },
+    {
+      "file": "MorphForge-Promo.ja.ass",
+      "matched": true
+    },
+    {
+      "file": "MorphForge-Promo.ja.srt",
+      "matched": true
+    },
+    {
+      "file": "MorphForge-Promo.zh-CN.ass",
+      "matched": true
+    },
+    {
+      "file": "MorphForge-Promo.zh-CN.srt",
+      "matched": true
+    },
+    {
+      "file": "PUBLISH-DESCRIPTION.en.txt",
+      "matched": true
+    },
+    {
+      "file": "PUBLISH-DESCRIPTION.ja.txt",
+      "matched": true
+    },
+    {
+      "file": "PUBLISH-DESCRIPTION.zh-CN.txt",
+      "matched": true
+    },
+    {
+      "file": "README.zh-CN.md",
+      "matched": true
+    },
+    {
+      "file": "Storyboard.jpg",
+      "matched": true
+    },
+    {
+      "file": "TEXT-REVIEW.zh-CN.md",
+      "matched": true
+    },
+    {
+      "file": "assets/Cipher.mp3",
+      "matched": true
+    },
+    {
+      "file": "assets/NotoSansCJK-Bold.ttc",
+      "matched": true
+    },
+    {
+      "file": "assets/NotoSansCJK-Regular.ttc",
+      "matched": true
+    },
+    {
+      "file": "assets/NotoSansSC-Regular.otf",
+      "matched": true
+    },
+    {
+      "file": "assets/OFL-NotoSansCJK.txt",
+      "matched": true
+    },
+    {
+      "file": "assets/OFL-NotoSansSC.txt",
+      "matched": true
+    },
+    {
+      "file": "assets/drawing-thick.png",
+      "matched": true
+    },
+    {
+      "file": "assets/drawing-thin.png",
+      "matched": true
+    },
+    {
+      "file": "assets/leviathan-lantern-editor.png",
+      "matched": true
+    },
+    {
+      "file": "assets/main-publish-with-motion.png",
+      "matched": true
+    },
+    {
+      "file": "assets/music-license-evidence/license-cc-by-4.html",
+      "matched": true
+    },
+    {
+      "file": "assets/music-license-evidence/music-faq.html",
+      "matched": true
+    },
+    {
+      "file": "assets/music-license-evidence/track-metadata.json",
+      "matched": true
+    },
+    {
+      "file": "assets/music-license-evidence/track-page.html",
+      "matched": true
+    },
+    {
+      "file": "assets/workbench-en.png",
+      "matched": true
+    },
+    {
+      "file": "assets/workbench-ja.png",
+      "matched": true
+    },
+    {
+      "file": "assets/workbench-zh-CN.png",
+      "matched": true
+    },
+    {
+      "file": "build-environment.json",
+      "matched": true
+    },
+    {
+      "file": "font-and-visual-review.json",
+      "matched": true
+    },
+    {
+      "file": "japanese-probe.json",
+      "matched": true
+    },
+    {
+      "file": "multisub-probe.json",
+      "matched": true
+    },
+    {
+      "file": "music-license.json",
+      "matched": true
+    },
+    {
+      "file": "music-track-metadata.json",
+      "matched": true
+    },
+    {
+      "file": "original-preservation.json",
+      "matched": true
+    },
+    {
+      "file": "output-probe.json",
+      "matched": true
+    },
+    {
+      "file": "render_promo_video.py",
+      "matched": true
+    },
+    {
+      "file": "source-inventory.json",
+      "matched": true
+    },
+    {
+      "file": "text-review.json",
+      "matched": true
+    },
+    {
+      "file": "timeline.json",
+      "matched": true
+    },
+    {
+      "file": "typography.json",
+      "matched": true
+    },
+    {
+      "file": "verification.json",
+      "matched": true
+    }
+  ]
+}

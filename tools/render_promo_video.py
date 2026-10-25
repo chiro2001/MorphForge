@@ -104,13 +104,12 @@ def canvas():
     return image
 
 
-def header(image, shot, opaque=True):
+def header(image, shot):
     draw = ImageDraw.Draw(image)
-    text(draw, (68, 35), "M", 34, GOLD, True)
-    text(draw, (111, 43), "MorphForge", 26, WHITE)
-    text(draw, (68, 97), shot["title"], 58, WHITE, True, max_width=1750)
-    text(draw, (71, 183), shot["detail"], 32, MUTED, max_width=1750)
-    text(draw, (1540, 45), shot["chapter"], 24, GOLD, max_width=320)
+    if shot.get("title"):
+        width = int(draw.textlength(shot["title"], font=font(42, True))) + 48
+        draw.rounded_rectangle((62, 48, 62 + width, 127), radius=12, fill=(*BG, 205))
+        text(draw, (86, 61), shot["title"], 42, WHITE, True, max_width=700)
     return draw
 
 
@@ -130,63 +129,50 @@ def card(image, path, box, crop=None, label=None, cover=False, label_language="z
 
 def video_overlay(shot, index, total):
     image = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(image)
-    # Keep the model unobstructed in the middle; leave the bottom subtitle zone free.
-    for y in range(310):
-        alpha = int(212 * max(0, 1 - y / 310) ** 1.5)
-        draw.line((0, y, W, y), fill=(*BG, alpha))
-    header(image, shot, False)
-    face = font(25)
-    label = shot["badge"]
-    length = int(draw.textlength(label, font=face)) + 34
-    draw.rounded_rectangle((W - length - 60, 884, W - 60, 936), radius=9, fill=(*BG, 215))
-    text(draw, (W - length - 43, 892), label, 25, WHITE)
-    draw.rectangle((68, 995, 1852, 998), fill=(43, 60, 73, 185))
-    draw.rectangle((68, 995, 68 + int(1784 * (index + 1) / total), 998), fill=(*GOLD, 230))
+    header(image, shot)
+    return image
+
+
+def necessary_overlay(shot):
+    image = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    label = shot.get("speedLabel") or shot.get("sourceLabel")
+    if label:
+        draw = ImageDraw.Draw(image)
+        width = int(draw.textlength(label, font=font(27))) + 34
+        draw.rounded_rectangle((W - width - 62, 59, W - 62, 112), radius=8, fill=(*BG, 205))
+        text(draw, (W - width - 45, 66), label, 27, WHITE)
     return image
 
 
 def still_card(shot):
     image = canvas()
-    draw = header(image, shot)
+    draw = ImageDraw.Draw(image)
     media = "docs/releases/0.27.0/media/"
     if shot["kind"] == "workbench":
-        card(image, asset(media + "workbench-zh-CN.png"), (66, 285, 1300, 650), label="MorphForge Desktop · 中文界面")
-        for i, (title, detail) in enumerate([("说出想法", "文字 / 图片参考"), ("预览与调整", "模型 / 材质 / 文字"), ("发布到 Avatar", "选择动画后一起发送")]):
-            y = 320 + i * 185
-            text(draw, (1422, y), f"0{i+1}", 25, GOLD)
-            text(draw, (1422, y + 40), title, 39, WHITE, True, 420)
-            text(draw, (1422, y + 101), detail, 25, MUTED, max_width=420)
-        text(draw, (73, 962), "AI 功能需自行配置兼容的大模型 API", 23, MUTED)
+        card(image, asset(media + "leviathan-lantern-editor.png"), (170, 130, 1580, 850), crop=(430, 220, 1200, 1090))
     elif shot["kind"] == "drawing":
-        card(image, asset("docs/optimization-20261023/drawing-browser/drawing-preview.png"), (65, 302, 1115, 605), label="原生点线 · 真实软件面板", crop=(245, 90, 1255, 770))
         thin = asset("docs/optimization-20261023/drawing-thin.png")
         thick = asset("docs/optimization-20261023/drawing-thick.png")
-        card(image, thin, (1265, 330, 255, 255), label="细")
-        card(image, thick, (1570, 330, 255, 255), label="粗")
-        text(draw, (1265, 635), "原生点 / 线粗细对比", 33, WHITE, True, 575)
-        text(draw, (1265, 698), "Avatar 内渲染 · Unity 验收图", 25, MUTED, max_width=575)
-        text(draw, (1265, 755), "直接指定端点，再调整大小", 29, MINT, max_width=575)
+        card(image, thin, (170, 250, 650, 650))
+        card(image, thick, (1100, 250, 650, 650))
+        draw.line((900, 575, 1018, 575), fill=MINT, width=8)
+        draw.polygon([(1018, 575), (991, 556), (991, 594)], fill=MINT)
     elif shot["kind"] == "languages":
-        for i, (code, label) in enumerate([("zh-CN", "简体中文"), ("ja", "日本語"), ("en", "English")]):
-            x = 62 + i * 620
-            card(image, asset(media + f"workbench-{code}.png"), (x, 350, 560, 380), label=label, label_language=code)
-        text(draw, (132, 836), "Desktop 可即时切换", 36, WHITE, True)
-        text(draw, (1030, 836), "Unity 所选语言用于安装菜单", 36, WHITE, True, 800)
-        text(draw, (132, 904), "语言选择独立于字幕翻译设置", 27, MUTED)
-        text(draw, (1030, 904), "安装后更新 VRChat 菜单需要重新上传 Avatar", 25, MUTED, max_width=800)
+        for i, (code, label) in enumerate([("zh-CN", "中文"), ("ja", "日本語"), ("en", "English")]):
+            x = 70 + i * 620
+            draw.rounded_rectangle((x, 340, x + 540, 710), radius=24, fill=(13, 25, 35), outline=(41, 62, 74), width=2)
+            width = draw.textlength(label, font=font(68, True, code))
+            text(draw, (x + (540 - width) / 2, 465), label, 68, WHITE, True, language=code)
+    elif shot["kind"] == "publish":
+        source = asset("docs/default-motion/native/main-publish-with-motion.png")
+        card(image, source, (1370, 370, 480, 100), crop=(1290, 500, 1771, 576))
+        card(image, source, (1420, 570, 380, 85), crop=(1290, 584, 1526, 627))
     elif shot["kind"] == "end":
-        image = canvas()
-        draw = ImageDraw.Draw(image)
-        text(draw, (107, 120), "MorphForge", 135, WHITE, True)
-        draw.rectangle((114, 319, 272, 325), fill=GOLD)
-        text(draw, (111, 370), shot["title"], 68, WHITE, True, 1720)
-        text(draw, (117, 496), "模型 / 动画 / 像素画 / 实时字幕 / 快速演示", 37, MINT, max_width=1680)
-        text(draw, (117, 604), shot["detail"], 34, MUTED, max_width=1680)
-        text(draw, (117, 701), "Windows · PC / PCVR · Avatar + OSC", 29, MUTED)
-        text(draw, (117, 808), 'Music: “Cipher” — Kevin MacLeod (incompetech.com)', 29, WHITE)
-        text(draw, (117, 860), "Creative Commons: By Attribution 4.0 · edited excerpt", 27, MUTED)
-        text(draw, (117, 909), "https://creativecommons.org/licenses/by/4.0/", 26, MUTED)
+        text(draw, (115, 180), "MorphForge", 125, WHITE, True)
+        draw.rectangle((122, 374, 280, 380), fill=GOLD)
+        text(draw, (123, 430), shot["title"], 60, WHITE, True, 1720)
+        text(draw, (123, 850), "Music: Cipher — Kevin MacLeod (incompetech.com) · CC BY 4.0", 25, MUTED, max_width=1680)
+        text(draw, (123, 903), "creativecommons.org/licenses/by/4.0/ · edited excerpt", 24, MUTED)
     else:
         raise ValueError(shot["kind"])
     return image
@@ -202,16 +188,13 @@ def write_subtitles(plan, out):
         blocks = []
         position = 0.0
         for shot in plan["shots"]:
-            message = shot["title"] + "\n" + shot["detail"] if language == "zh-CN" else shot[language]
-            start, end = position + .08, position + shot["duration"] - .08
-            # Treat the two rapid opening shots as one readable caption.
-            if shot["id"] == "01-hook-windmill":
-                end = 3.12
-            elif shot["id"] == "02-hook-props":
-                position += shot["duration"]
+            start = position + .15
+            end = position + min(shot["duration"] - .15, 2.55)
+            position += shot["duration"]
+            message = shot.get("captionZh", shot.get("title", "")) if language == "zh-CN" else shot[language]
+            if not message or shot["kind"] == "brand":
                 continue
             blocks.append(f"{len(blocks)+1}\n{timestamp(start)} --> {timestamp(end)}\n{message}\n")
-            position += shot["duration"]
         (out / f"MorphForge-Promo.{language}.srt").write_text("\n".join(blocks), encoding="utf-8")
         # SRT has no font information. ASS carries an explicit regional family;
         # the same style is passed into the MP4 subtitle encoder and libass.
@@ -254,52 +237,63 @@ def render_shot(shot, index, total, args, work):
         return destination
     duration = shot["duration"]
     command = ["ffmpeg", "-hide_banner", "-loglevel", "warning", "-y", "-filter_complex_threads", "2", "-filter_threads", "2", "-threads", "4"]
+    filters = []
+    cursor = 1
     if shot["kind"] in {"workbench", "drawing", "languages", "end"}:
         image = work / "graphics" / (shot["id"] + ".png")
         still_card(shot).save(image)
         frames = round(duration * 60)
-        command += ["-i", str(image), "-vf", f"zoompan=z='1+0.012*on/{frames}':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d={frames}:s=1920x1080:fps=60,setsar=1"]
+        command += ["-i", str(image)]
+        effect = f"zoompan=z='1+0.012*on/{frames}':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d={frames}:s=1920x1080:fps=60,setsar=1"
         if shot["kind"] == "end":
-            command[-1] += f",fade=t=out:st={duration-.4}:d=0.4"
+            effect += f",fade=t=out:st={duration-.4}:d=0.4"
+        filters.append(f"[0:v]{effect}[base]")
     else:
         source = args.sources / shot["file"]
         if not source.exists():
             source = args.sources / args.plan_data["sources"][shot["file"]]
         speed = shot.get("speed", 1)
-        vf = ""
+        effect = ""
         if shot.get("stabilize"):
             transform = work / "tree.trf"
-            detect = ["ffmpeg", "-hide_banner", "-loglevel", "warning", "-y", "-threads", "4", "-ss", str(shot["start"]), "-t", str(duration * speed), "-i", str(source), "-vf", f"vidstabdetect=shakiness=6:accuracy=12:stepsize=8:fileformat=ascii:result='{filter_path(transform)}'", "-an", "-f", "null", "-"]
-            run(detect, work / "logs" / "stabilize-detect.log")
-            vf = f"vidstabtransform=input='{filter_path(transform)}':smoothing=24:optzoom=1:zoom=2:interpol=bicubic,"
-        vf += f"setpts=(PTS-STARTPTS)/{speed},fps=60,scale=1920:1080,setsar=1"
+            run(["ffmpeg", "-hide_banner", "-loglevel", "warning", "-y", "-threads", "4", "-ss", str(shot["start"]), "-t", str(duration * speed), "-i", str(source), "-vf", f"vidstabdetect=shakiness=6:accuracy=12:stepsize=8:fileformat=ascii:result='{filter_path(transform)}'", "-an", "-f", "null", "-"], work / "logs/stabilize-detect.log")
+            effect = f"vidstabtransform=input='{filter_path(transform)}':smoothing=24:optzoom=1:zoom=2:interpol=bicubic,"
+        effect += f"setpts=(PTS-STARTPTS)/{speed},fps=60,scale=1920:1080,setsar=1"
         command += ["-ss", str(shot["start"]), "-t", str(duration * speed), "-i", str(source)]
         if shot["kind"] == "publish":
-            background = canvas()
-            draw = header(background, shot)
-            card(background, asset("docs/default-motion/native/main-publish-with-motion.png"), (1295, 395, 550, 415), crop=(1282, 476, 1778, 702), label="真实发布面板截图")
-            text(draw, (1306, 849), "模型 + 所选动画", 38, WHITE, True, 550)
-            text(draw, (1306, 909), "一起发送到 Avatar", 30, MINT, max_width=550)
-            text(draw, (84, 265), "VRChat 实机", 27, MINT)
-            image = work / "graphics" / (shot["id"] + ".png")
-            background.save(image)
-            command += ["-loop", "1", "-framerate", "60", "-i", str(image), "-filter_complex", f"[0:v]{vf},scale=1160:652[v];[1:v][v]overlay=70:317:shortest=1[out]", "-map", "[out]"]
+            image = work / "graphics" / (shot["id"] + "-panel.png")
+            still_card(shot).save(image)
+            command += ["-loop", "1", "-framerate", "60", "-i", str(image)]
+            cursor += 1
+            filters.append(f"[0:v]{effect},scale=1260:708[scene]")
+            filters.append("[1:v][scene]overlay=55:195:shortest=1[base]")
         else:
-            overlay = video_overlay(shot, index, total)
-            if shot["kind"] == "brand":
-                overlay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-                draw = ImageDraw.Draw(overlay)
-                for x in range(W):
-                    alpha = int(235 * max(0, 1 - x / 1750) ** .35)
-                    draw.line((x, 0, x, H), fill=(*BG, alpha))
-                text(draw, (106, 280), "MorphForge", 136, WHITE, True)
-                draw.rectangle((114, 493, 300, 500), fill=(*GOLD, 255))
-                text(draw, (113, 557), shot["detail"], 58, WHITE, True, 1750)
-                text(draw, (118, 689), "Desktop + Avatar + OSC", 37, MINT)
-            image = work / "graphics" / (shot["id"] + ".png")
-            overlay.save(image)
-            command += ["-loop", "1", "-framerate", "60", "-i", str(image), "-filter_complex", f"[0:v]{vf}[v];[v][1:v]overlay=0:0:shortest=1[out]", "-map", "[out]"]
-    command += ["-t", str(duration), *encode_args(), str(destination)]
+            filters.append(f"[0:v]{effect}[base]")
+    current = "base"
+    if shot["kind"] == "brand" or (shot.get("title") and shot["kind"] != "end"):
+        overlay = video_overlay(shot, index, total)
+        if shot["kind"] == "brand":
+            overlay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+            draw = ImageDraw.Draw(overlay)
+            draw.rounded_rectangle((65, 755, 1005, 970), radius=20, fill=(*BG, 210))
+            text(draw, (105, 775), "MorphForge", 120, WHITE, True)
+        image = work / "graphics" / (shot["id"] + "-heading.png")
+        overlay.save(image)
+        command += ["-loop", "1", "-framerate", "60", "-i", str(image)]
+        fade = "fade=t=in:st=0:d=0.12:alpha=1"
+        if shot["kind"] != "brand":
+            fade += f",fade=t=out:st={min(shot.get('headingSeconds',2.2),duration)-.25}:d=0.25:alpha=1"
+        filters.append(f"[{cursor}:v]{fade}[heading]")
+        filters.append(f"[{current}][heading]overlay=0:0:shortest=1[titled]")
+        current = "titled"
+        cursor += 1
+    if shot.get("speedLabel") or shot.get("sourceLabel"):
+        image = work / "graphics" / (shot["id"] + "-necessary.png")
+        necessary_overlay(shot).save(image)
+        command += ["-loop", "1", "-framerate", "60", "-i", str(image)]
+        filters.append(f"[{current}][{cursor}:v]overlay=0:0:shortest=1[qualified]")
+        current = "qualified"
+    command += ["-filter_complex", ";".join(filters), "-map", f"[{current}]", "-t", str(duration), *encode_args(), str(destination)]
     print("Render", shot["id"], flush=True)
     run(command, work / "logs" / (shot["id"] + ".log"))
     stamp.write_text(signature)
@@ -363,7 +357,7 @@ def main():
             shutil.copy2(source, target)
     assets = args.out / "assets"
     assets.mkdir(exist_ok=True)
-    for relative in ["docs/releases/0.27.0/media/workbench-zh-CN.png", "docs/releases/0.27.0/media/workbench-ja.png", "docs/releases/0.27.0/media/workbench-en.png", "docs/optimization-20261023/drawing-browser/drawing-preview.png", "docs/optimization-20261023/drawing-thin.png", "docs/optimization-20261023/drawing-thick.png", "docs/default-motion/native/main-publish-with-motion.png", "fonts/NotoSansSC-Regular.otf", "fonts/OFL-NotoSansSC.txt"]:
+    for relative in ["docs/releases/0.27.0/media/leviathan-lantern-editor.png", "docs/releases/0.27.0/media/workbench-zh-CN.png", "docs/releases/0.27.0/media/workbench-ja.png", "docs/releases/0.27.0/media/workbench-en.png", "docs/optimization-20261023/drawing-thin.png", "docs/optimization-20261023/drawing-thick.png", "docs/default-motion/native/main-publish-with-motion.png", "fonts/NotoSansSC-Regular.otf", "fonts/OFL-NotoSansSC.txt"]:
         source = asset(relative)
         if source.resolve() != (assets / source.name).resolve():
             shutil.copy2(source, assets / source.name)
