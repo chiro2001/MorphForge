@@ -13,6 +13,8 @@
 
 ## 本轮已授权范围
 
+- 2026-10-25 用户要求使用D盘录制素材自主规划并剪辑MorphForge宣传视频，自选BGM，确定中文主版附日／英字幕。实际素材在D:\Movies\VRChat，5份中文说明MP4均已保留原样并复核摘要。96秒1080p60主片、另一个内嵌日／英字幕的版本、三语SRT、封面、分镜与可重建剪辑资料已完成；13项成片检查通过。遵循原片文件名的挑选／加速／防抖要求，字幕原片中不完整日语译文段落已排除，未修饰实机板中文字。BGM为官网取得的Kevin MacLeod《Cipher》CC BY4.0，片尾和发布文案含署名，许可证据随包。见docs/promo-video/20261025/；输出Releases/MorphForge-Promo-20261025，交付至D:\Movies\Projects\MorphForge-Promo-20261025，不上传视频平台／商品页，不操作主程序或VRChat，不推送／建Release。
+
 - 2026-10-25 用户要求参考TeslaRoadster，用CC0的256Hedgehog制作MorphForge试用Avatar，默认日文，安装器保留中／日／英选择。独立工程MorphForgeHedgehogDemo_1_4_0已通过原包导入、场景制作、8项SDK／本地构建和15项准备检查，最终255/256bit、240bit几何直接同步；试用副本去掉旧Emote菜单及两个旧面部参数，保留四套换色、原生控制器、手势和口型。原作者24个文件资产SHA一致，本地vrca为2,595,751字节；源Avatar无在线ID。用户关闭预算提示后验证完成，SDK窗口已打开但检查时未登录。预览、来源、摘要与结果见docs/trial-avatar/20261025/；公开上传待用户确认和SDK登录，BOOTH试用链接仍为空，未改现有私人头像或主安装，不推送／建Release。
 
 - 2026-10-25 用户要求参考 TestlaRoadster 准备 BOOTH 发布包。已使用原始 Desktop0.27.0 / Avatar1.4.0 文件整理三语指南、三语商品文案、7张实际编辑器素材排版图、独立许可与可重建发布脚本。用户打开隔离CleanProject后，旧插件经AssetDatabase备份移除，再导入买家原包；162项文件与GUID匹配，174项依赖无插件外的工程资产，52项隔离Unity检查通过。三语SDK前处理各253bit，8个服装Bool加VRCFury场景256bit，几何仍直接同步。导入25条资源命名警告；SDK请求有一次60秒RPC超时，但后台实际完成并独立核对报告，原公共资产未改写。隔离工程恢复空白编辑场景并保留运行；本轮未操作原开发工程。买家ZIP约36.9MiB，PublisherKit约75.4MiB；44项包装与5项离线Chromium检查通过，Windows复制后57文件逐项核对。结果见docs/releases/0.27.0/，自动启动未就绪的根因仍未确认，旧授权日志仅作历史记录。售价0円为草案，最终商品条款、联系方式和多人实机复验待确认。未上传BOOTH、未更新在线Avatar、未推送或创建GitHub Release。

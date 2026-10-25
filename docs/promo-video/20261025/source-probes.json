@@ -1,0 +1,102 @@
+[
+  {
+    "file": "live-captions.mp4",
+    "duration": "87.433333",
+    "video": [
+      {
+        "codec_name": "h264",
+        "width": 1920,
+        "height": 1080,
+        "r_frame_rate": "60/1",
+        "avg_frame_rate": "60/1"
+      }
+    ],
+    "audio": [
+      {
+        "codec_name": "aac",
+        "channels": 2,
+        "sample_rate": "48000"
+      }
+    ]
+  },
+  {
+    "file": "showcase-options.mp4",
+    "duration": "398.783333",
+    "video": [
+      {
+        "codec_name": "h264",
+        "width": 1920,
+        "height": 1080,
+        "r_frame_rate": "60/1",
+        "avg_frame_rate": "60/1"
+      }
+    ],
+    "audio": [
+      {
+        "codec_name": "aac",
+        "channels": 2,
+        "sample_rate": "48000"
+      }
+    ]
+  },
+  {
+    "file": "speed-up.mp4",
+    "duration": "75.850000",
+    "video": [
+      {
+        "codec_name": "h264",
+        "width": 1920,
+        "height": 1080,
+        "r_frame_rate": "60/1",
+        "avg_frame_rate": "60/1"
+      }
+    ],
+    "audio": [
+      {
+        "codec_name": "aac",
+        "channels": 2,
+        "sample_rate": "48000"
+      }
+    ]
+  },
+  {
+    "file": "stabilize.mp4",
+    "duration": "35.816667",
+    "video": [
+      {
+        "codec_name": "h264",
+        "width": 1920,
+        "height": 1080,
+        "r_frame_rate": "60/1",
+        "avg_frame_rate": "60/1"
+      }
+    ],
+    "audio": [
+      {
+        "codec_name": "aac",
+        "channels": 2,
+        "sample_rate": "48000"
+      }
+    ]
+  },
+  {
+    "file": "windmill-materials.mp4",
+    "duration": "458.883333",
+    "video": [
+      {
+        "codec_name": "h264",
+        "width": 1920,
+        "height": 1080,
+        "r_frame_rate": "60/1",
+        "avg_frame_rate": "60/1"
+      }
+    ],
+    "audio": [
+      {
+        "codec_name": "aac",
+        "channels": 2,
+        "sample_rate": "48000"
+      }
+    ]
+  }
+]

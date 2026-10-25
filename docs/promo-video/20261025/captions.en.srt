@@ -1,0 +1,79 @@
+1
+00:00:00,080 --> 00:00:03,120
+Bring your ideas into VRChat.
+Create with models, text and animation.
+
+2
+00:00:03,280 --> 00:00:06,320
+MorphForge.
+Turn your Avatar into a creative workshop.
+
+3
+00:00:06,480 --> 00:00:12,720
+From a prompt to a creation.
+Build with AI, then preview and refine in the editor.
+
+4
+00:00:12,880 --> 00:00:19,120
+Choose an animation and publish it with your model.
+Send the current version from Desktop.
+
+5
+00:00:19,280 --> 00:00:25,520
+Bring your creations to life.
+Windmills, rotating props and looping displays.
+
+6
+00:00:25,680 --> 00:00:31,920
+Explore more than one look.
+Voxels, triangles, transparent and emissive materials.
+
+7
+00:00:32,080 --> 00:00:38,320
+Turn ideas into props you can carry.
+Set out drinks, display a creation or take a photo.
+
+8
+00:00:38,480 --> 00:00:44,720
+Pick it up, resize it and place it.
+Try the same creation at different scales. [4× speed]
+
+9
+00:00:44,880 --> 00:00:51,120
+Make your creations part of the space around you.
+Small scenes and displays can spark a conversation.
+
+10
+00:00:51,280 --> 00:00:57,520
+Turn images into pixel art you can display in VR.
+From transmission to the finished piece. [10.5× speed]
+
+11
+00:00:57,680 --> 00:01:03,920
+Keep a favorite picture by your side.
+Use it as pixel art, a display board or a photo backdrop.
+
+12
+00:01:04,080 --> 00:01:10,320
+Explain an idea quickly with points and lines.
+Points, segments, arrows and axes—with adjustable sizes.
+
+13
+00:01:10,480 --> 00:01:16,720
+Make your speech visible.
+Combine live captions with a display board you create.
+
+14
+00:01:16,880 --> 00:01:23,120
+Keep the original text alongside an automatic translation.
+Choose Chinese, Japanese or English as the target language.
+
+15
+00:01:23,280 --> 00:01:29,520
+Create in a language you know.
+The app and Unity installer support Chinese, Japanese and English.
+
+16
+00:01:29,680 --> 00:01:35,920
+What will you create next?
+Install on your Avatar → enable OSC → connect and publish.
