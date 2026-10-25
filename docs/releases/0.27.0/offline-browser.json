@@ -10,7 +10,7 @@
       "passed": true
     },
     {
-      "name": "review status and pending items are visible",
+      "name": "current review decisions visible and resolved startup blocker removed",
       "passed": true
     },
     {
@@ -22,5 +22,5 @@
       "passed": true
     }
   ],
-  "scope": "Real Chromium opening local index.html with no web server or remote assets."
+  "scope": "Real Chromium opening final local index.html after clean-import success; no remote assets."
 }

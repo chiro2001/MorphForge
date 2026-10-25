@@ -181,7 +181,7 @@ AlternativeCovers/内为中英文替代封面，不必重复上传三张相同�
 不要把私人在线头像ID、API Key、云凭据或用户工程上传到商品文件。
 ''')
         checks=built/'Checks';checks.mkdir()
-        for source in (audit,DOCS/'clean-import.json',DOCS/'offline-browser.json',notices.with_suffix('.json'),ROOT/'docs/localization-20261025/automated-tests.json',ROOT/'docs/localization-20261025/unity-validation.json',ROOT/'docs/localization-20261025/browser/validation.json',ROOT/'docs/localization-20261025/windows-payload.json'):
+        for source in (audit,DOCS/'clean-import.json',DOCS/'clean-import-validation.json',DOCS/'clean-import-console.json',DOCS/'offline-browser.json',notices.with_suffix('.json'),ROOT/'docs/localization-20261025/automated-tests.json',ROOT/'docs/localization-20261025/unity-validation.json',ROOT/'docs/localization-20261025/browser/validation.json',ROOT/'docs/localization-20261025/windows-payload.json'):
             if source.is_file():copy(source,checks/('localization-browser.json'if source.parent.name=='browser'else source.name))
         pending=[]
         if not config['priceConfirmed']:pending.append('确认最终售价（当前0円仅为草案）')

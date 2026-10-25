@@ -2,10 +2,10 @@
   "success": true,
   "destination": "D:\\Projects\\VRChatProjects2\\MorphForge\\Releases\\MorphForge-0.27.0\\BOOTH-Publish",
   "entryPoint": "D:\\Projects\\VRChatProjects2\\MorphForge\\Releases\\MorphForge-0.27.0\\BOOTH-Publish\\index.html",
-  "publisherKitSha256": "0ecd8166f990d8c3296a935ebe696e473d6c8d15585d4d8eeec38524520912d2",
-  "verifiedFiles": 54,
-  "fileCount": 55,
-  "buyerZipSha256": "43cc0e7f7c87cc386f86b7a5cdb0593af30480462dbd67a5982bc7b5ff663162",
+  "publisherKitSha256": "adc2760169497aaf661a325c977cfcc514859ba4a1d6ba9b3ff0da44af3ae98f",
+  "verifiedFiles": 56,
+  "fileCount": 57,
+  "buyerZipSha256": "5b6ed57ca4a009d62a3d0bee9c38cca83e4e1eb04f09535a1e45d36a6baae5d8",
   "assetsOrInstalledProgramModified": false,
   "publishedToBooth": false
 }

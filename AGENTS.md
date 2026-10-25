@@ -13,7 +13,7 @@
 
 ## 本轮已授权范围
 
-- 2026-10-25 用户要求参考 TestlaRoadster 准备 BOOTH 发布包。已使用原始 Desktop0.27.0 / Avatar1.4.0 文件整理三语指南、三语商品文案、7张实际编辑器素材排版图、独立许可与可重建发布脚本。买家ZIP约36.9MiB，整套PublisherKit约75.4MiB；41项包装与5项离线Chromium检查通过，Windows复制后55文件逐项核对。目录为Releases/MorphForge-0.27.0，结果见docs/releases/0.27.0/。额外隔离Unity导入因验证Editor未就绪而未执行，根因未确认；先前引用的许可证连接错误来自10月24日23:54旧日志，不能当作本次启动失败原因。保留原30项开发工程Unity/SDK记录，临时Editor/任务已清理。售价0円仅草案，最终商品条款、联系方式和人工实机复验待确认。未上传BOOTH、未更新在线Avatar、未推送或创建GitHub Release。
+- 2026-10-25 用户要求参考 TestlaRoadster 准备 BOOTH 发布包。已使用原始 Desktop0.27.0 / Avatar1.4.0 文件整理三语指南、三语商品文案、7张实际编辑器素材排版图、独立许可与可重建发布脚本。用户打开隔离CleanProject后，旧插件经AssetDatabase备份移除，再导入买家原包；162项文件与GUID匹配，174项依赖无插件外的工程资产，52项隔离Unity检查通过。三语SDK前处理各253bit，8个服装Bool加VRCFury场景256bit，几何仍直接同步。导入25条资源命名警告；SDK请求有一次60秒RPC超时，但后台实际完成并独立核对报告，原公共资产未改写。隔离工程恢复空白编辑场景并保留运行；本轮未操作原开发工程。买家ZIP约36.9MiB，PublisherKit约75.4MiB；44项包装与5项离线Chromium检查通过，Windows复制后57文件逐项核对。结果见docs/releases/0.27.0/，自动启动未就绪的根因仍未确认，旧授权日志仅作历史记录。售价0円为草案，最终商品条款、联系方式和多人实机复验待确认。未上传BOOTH、未更新在线Avatar、未推送或创建GitHub Release。
 
 - 2026-10-25 用户要求 Desktop 与 Unity 安装插件支持简体中文、日文、英文。Desktop 界面默认跟随系统，可即时切换并保存在独立 ui-settings.json，与提示词、识别及字幕翻译语言独立；主窗口/Mini 同步。Unity 所选语言用于插件界面与 Avatar 菜单，已有模块可直接更新菜单；每个安装实例使用独立菜单资产，不修改公共模板或其他 Avatar。Desktop 0.27.0 / Avatar 插件 1.4.0；320 项 Rust、67 项前端、24 项 Chromium、19 项 Windows 原生、3 项原生重启和 30 项 Unity/SDK 验证通过。主安装已升级启动，14 项安装与 8 项主程序检查通过，14,025 个数据文件安装前后摘要一致；备份在 E:\tmp\morphforge\main-backup-v0270-localization-final。见 docs/localization-20261025/RESULTS.md。本轮未上传头像、不推送或创建 Release。
 

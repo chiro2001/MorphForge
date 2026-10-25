@@ -118,6 +118,18 @@
       "passed": true
     },
     {
+      "name": "clean import actually ran after old plugin removal",
+      "passed": true
+    },
+    {
+      "name": "all clean-project checks and four SDK fixtures passed",
+      "passed": true
+    },
+    {
+      "name": "clean-project compilation and warning record are included",
+      "passed": true
+    },
+    {
       "name": "review page uses local files only",
       "passed": true
     },
@@ -166,15 +178,14 @@
       "passed": true
     }
   ],
-  "checkCount": 41,
-  "buyerZipSha256": "43cc0e7f7c87cc386f86b7a5cdb0593af30480462dbd67a5982bc7b5ff663162",
+  "checkCount": 44,
+  "buyerZipSha256": "5b6ed57ca4a009d62a3d0bee9c38cca83e4e1eb04f09535a1e45d36a6baae5d8",
   "pending": [
     "确认最终售价（当前0円仅为草案）",
     "确认最终商品使用条款；保留所有素材与依赖的原许可",
     "填写支持联系方式",
-    "隔离工程原包重新导入验证尚未执行：验证Editor未就绪，根因待查，详见Checks/clean-import.json",
     "公开前按指南人工复验目标Avatar、VR环境与其他客户端；1.4.0未作完整多人实机验收"
   ],
-  "scope": "Packaging integrity and public-source/notice checks. Does not upgrade a blocked clean-import or replace VRChat multiplayer acceptance.",
-  "publisherKitSha256": "0ecd8166f990d8c3296a935ebe696e473d6c8d15585d4d8eeec38524520912d2"
+  "scope": "Packaging integrity and public-source/notice checks. Unity clean-import acceptance is independently recorded; real VRChat multiplayer acceptance remains separate.",
+  "publisherKitSha256": "adc2760169497aaf661a325c977cfcc514859ba4a1d6ba9b3ff0da44af3ae98f"
 }

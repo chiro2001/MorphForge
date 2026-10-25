@@ -1,0 +1,128 @@
+{
+  "success": true,
+  "importAssetNameWarningCount": 25,
+  "compilerErrors": 0,
+  "compilationFailed": false,
+  "warnings": [
+    {
+      "message": "Main Object Name 'Gold translucent placement handle' does not match filename 'Handle'",
+      "timestampUtc": "2026-10-25T04:57:26.7434192Z"
+    },
+    {
+      "message": "Main Object Name 'MorphForge' does not match filename 'RootMenu'",
+      "timestampUtc": "2026-10-25T04:57:28.241718Z"
+    },
+    {
+      "message": "Main Object Name 'MorphForge placement(Clone)' does not match filename 'PlacementMenu'",
+      "timestampUtc": "2026-10-25T04:57:28.2448243Z"
+    },
+    {
+      "message": "Main Object Name 'MF6 cube / triangle carrier' does not match filename 'Carrier'",
+      "timestampUtc": "2026-10-25T04:57:28.2473948Z"
+    },
+    {
+      "message": "Main Object Name 'MF6 cube / triangle carrier' does not match filename 'Carrier'",
+      "timestampUtc": "2026-10-25T04:57:28.2534952Z"
+    },
+    {
+      "message": "Main Object Name 'MF5 Scale' does not match filename 'ScaleMenu'",
+      "timestampUtc": "2026-10-25T04:57:28.2580438Z"
+    },
+    {
+      "message": "Main Object Name 'MF6 cube / triangle carrier' does not match filename 'Carrier'",
+      "timestampUtc": "2026-10-25T04:57:28.2606296Z"
+    },
+    {
+      "message": "Main Object Name 'MF6 bounds corners' does not match filename 'BoundsCorners'",
+      "timestampUtc": "2026-10-25T04:57:28.2627297Z"
+    },
+    {
+      "message": "Main Object Name 'MF6 bounds corners' does not match filename 'BoundsCorners'",
+      "timestampUtc": "2026-10-25T04:57:28.2865698Z"
+    },
+    {
+      "message": "Main Object Name 'MF6 bounds corners' does not match filename 'BoundsCorners'",
+      "timestampUtc": "2026-10-25T04:57:28.2912158Z"
+    },
+    {
+      "message": "Main Object Name 'MF6 cube / triangle carrier' does not match filename 'Carrier'",
+      "timestampUtc": "2026-10-25T04:57:28.2943014Z"
+    },
+    {
+      "message": "Main Object Name 'MF6 bounds corners' does not match filename 'BoundsCorners'",
+      "timestampUtc": "2026-10-25T04:57:28.2964649Z"
+    },
+    {
+      "message": "Main Object Name 'MorphForge preview' does not match filename 'InstallMenu'",
+      "timestampUtc": "2026-10-25T04:57:28.3013689Z"
+    },
+    {
+      "message": "Main Object Name 'MF6 bounds corners' does not match filename 'BoundsCorners'",
+      "timestampUtc": "2026-10-25T04:57:28.3029295Z"
+    },
+    {
+      "message": "Main Object Name 'CatalogLayers0' does not match filename 'CatalogLayers'",
+      "timestampUtc": "2026-10-25T04:57:28.3085473Z"
+    },
+    {
+      "message": "Main Object Name '本人预览' does not match filename 'Menu'",
+      "timestampUtc": "2026-10-25T04:57:28.3159821Z"
+    },
+    {
+      "message": "Main Object Name '定位设置' does not match filename 'PlacementOptions'",
+      "timestampUtc": "2026-10-25T04:57:28.3340775Z"
+    },
+    {
+      "message": "Main Object Name 'MF6 bounds corners' does not match filename 'BoundsCorners'",
+      "timestampUtc": "2026-10-25T04:57:28.3366815Z"
+    },
+    {
+      "message": "Main Object Name 'MF6 bounds corners' does not match filename 'BoundsCorners'",
+      "timestampUtc": "2026-10-25T04:57:28.3392462Z"
+    },
+    {
+      "message": "Main Object Name 'MF6 cube / triangle carrier' does not match filename 'Carrier'",
+      "timestampUtc": "2026-10-25T04:57:28.3589498Z"
+    },
+    {
+      "message": "Main Object Name 'MF6 bounds corners' does not match filename 'BoundsCorners'",
+      "timestampUtc": "2026-10-25T04:57:28.3637107Z"
+    },
+    {
+      "message": "Main Object Name 'MF6 cube / triangle carrier' does not match filename 'Carrier'",
+      "timestampUtc": "2026-10-25T04:57:28.3684775Z"
+    },
+    {
+      "message": "Main Object Name '预览位置' does not match filename 'Corners'",
+      "timestampUtc": "2026-10-25T04:57:28.3695317Z"
+    },
+    {
+      "message": "Main Object Name 'MF6 cube / triangle carrier' does not match filename 'Carrier'",
+      "timestampUtc": "2026-10-25T04:57:28.3721019Z"
+    },
+    {
+      "message": "Main Object Name 'MF6 cube / triangle carrier' does not match filename 'Carrier'",
+      "timestampUtc": "2026-10-25T04:57:28.3751682Z"
+    }
+  ],
+  "scope": "Post-import Editor console; only plugin asset-name warnings included. Unrelated workstation/device messages omitted.",
+  "postAcceptance": {
+    "compilationFailed": false,
+    "consoleErrorCount": 1,
+    "automationTimeoutOnly": true,
+    "errors": [
+      {
+        "message": "Failed to handle /api/exec request: Main thread operation timed out after 60000ms",
+        "timestampUtc": "2026-10-25T05:02:26.6778692Z"
+      }
+    ],
+    "consoleWarningCount": 78,
+    "warningCategories": {
+      "asset main-object name differs from filename": 75,
+      "Removing layer AllParts from Gesture because it doesn't do anything": 1,
+      "Removing layer Base Layer from FX because it doesn't do anything": 1,
+      "Removing layer Modular Avatar: MMD Dummy from FX because it doesn't do anything": 1
+    },
+    "note": "The single Pipeline RPC timed out while SDK work continued; completion is independently recorded by the acceptance report. No SDK fixture failed."
+  }
+}

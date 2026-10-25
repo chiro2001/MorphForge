@@ -65,7 +65,14 @@ def main():
             check('supplied source archives match locked registry checksums',all(r['sourceArchiveMatchesRegistryChecksum']for r in meta['packages']if r.get('sourceArchive')))
     audit=json.loads((base/'Checks/package-audit.json').read_text())
     check('public plugin source equality and private binding audit passed',audit['success']and audit['sourceMatches']==162 and not audit['privateAvatarBinding']and not audit['includesUserVariants'])
-    check('clean-import status is disclosed accurately',report['cleanImport']==json.loads((base/'Checks/clean-import.json').read_text())['success'])
+    clean=json.loads((base/'Checks/clean-import.json').read_text())
+    check('clean-import status is disclosed accurately',report['cleanImport']==clean['success'])
+    if clean['success']:
+        detail=json.loads((base/'Checks/clean-import-validation.json').read_text())
+        console=json.loads((base/'Checks/clean-import-console.json').read_text())
+        check('clean import actually ran after old plugin removal',clean['assetImportAttempted']and clean['oldPluginAbsentBeforeImport']and detail['importedFileCount']==162)
+        check('all clean-project checks and four SDK fixtures passed',detail['success']and all(c['passed']for c in detail['checks'])and len(detail['builds'])==4 and all(b['success']and b['bits']<=256 for b in detail['builds']))
+        check('clean-project compilation and warning record are included',console['success']and console['compilerErrors']==0 and not console['compilationFailed'])
     page=(base/'index.html').read_text();links=Links();links.feed(page)
     check('review page uses local files only',all(not urlparse(link).scheme and not link.startswith('//')for link in links.links))
     check('every offline review link resolves',all((base/unquote(urlparse(link).path)).is_file()for link in links.links))
@@ -80,7 +87,7 @@ def main():
     with zipfile.ZipFile(kit)as z:
         check('complete publisher kit CRC is valid',z.testzip()is None)
         check('complete publisher kit contains identical files',set(z.namelist())=={f.relative_to(base).as_posix()for f in base.rglob('*')if f.is_file()}and all(digest(z.read(n))==digest((base/n).read_bytes())for n in z.namelist()))
-    result={'success':True,'checks':checks,'checkCount':len(checks),'buyerZipSha256':report['zipSha256'],'pending':report['pending'],'scope':'Packaging integrity and public-source/notice checks. Does not upgrade a blocked clean-import or replace VRChat multiplayer acceptance.'}
+    result={'success':True,'checks':checks,'checkCount':len(checks),'buyerZipSha256':report['zipSha256'],'pending':report['pending'],'scope':'Packaging integrity and public-source/notice checks. Unity clean-import acceptance is independently recorded; real VRChat multiplayer acceptance remains separate.'}
     if a.seal:
         from build_booth_publish import archive, jsave, write
         jsave(base/'Checks/packaging-verification.json',result)

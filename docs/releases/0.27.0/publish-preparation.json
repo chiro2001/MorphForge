@@ -4,8 +4,8 @@
   "desktopVersion": "0.27.0",
   "avatarVersion": "1.4.0",
   "download": "Download/MorphForge_Ver.0.27.0.zip",
-  "zipBytes": 38702386,
-  "zipSha256": "43cc0e7f7c87cc386f86b7a5cdb0593af30480462dbd67a5982bc7b5ff663162",
+  "zipBytes": 38702788,
+  "zipSha256": "5b6ed57ca4a009d62a3d0bee9c38cca83e4e1eb04f09535a1e45d36a6baae5d8",
   "verifiedUnchangedValidatedBinaries": true,
   "catalogMatchesPublicPlugin": true,
   "zipCrcValid": true,
@@ -18,12 +18,11 @@
     "sha256": "e776253b259609e8be866db4eeb018c4ae9093be430d249cb967d313574b53e0",
     "bytes": 9158545
   },
-  "cleanImport": false,
+  "cleanImport": true,
   "pending": [
     "确认最终售价（当前0円仅为草案）",
     "确认最终商品使用条款；保留所有素材与依赖的原许可",
     "填写支持联系方式",
-    "隔离工程原包重新导入验证尚未执行：验证Editor未就绪，根因待查，详见Checks/clean-import.json",
     "公开前按指南人工复验目标Avatar、VR环境与其他客户端；1.4.0未作完整多人实机验收"
   ],
   "published": false

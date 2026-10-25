@@ -27,6 +27,8 @@ MorphForge 是 Windows 体素/几何创作工作台，可手动编辑、运行 R
 5. 语言选择同时控制插件界面和该 Avatar 菜单；已装模块也可直接应用所选语言。**重新上传 Avatar 后，VRChat 菜单语言才会改变。**
 6. 如 Desktop 未识别到对应的 544 项公共材质，导入 `Unity/MorphForge-public-catalog.zip`，然后重新识别 Avatar。此目录只适用于本包公共模块；私人纹理变体须导出自己的匹配目录。
 
+已知导入提示：在已验证的 Unity 环境中，原包有25条“Main Object Name ... does not match filename”资源命名警告。该环境下无编译错误，安装、三语菜单和 SDK 构建前处理检查均通过。
+
 ## 首次发布与动画验证
 
 1. 在 VRChat 换上已上传的 Avatar，开启 OSC。在 Desktop 连接页识别 Avatar，确认能力版本 **9** 和匹配材质目录。连接失败时检查本机 OSC 端口、防火墙及是否仍在使用旧头像缓存。

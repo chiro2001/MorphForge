@@ -27,6 +27,8 @@ MorphForge is a Windows voxel and geometry workbench with manual editing, Recipe
 5. The language controls both the plugin interface and this avatar's menu. Existing modules can also receive the selected language. **Re-upload the avatar to change its menu language in VRChat.**
 6. If Desktop does not recognize the matching 544-material public catalog, import `Unity/MorphForge-public-catalog.zip` and detect the avatar again. This catalog matches the standard module; custom texture variants need their own matching export.
 
+Known import notices: the tested Unity environment reported 25 “Main Object Name ... does not match filename” asset-naming warnings. There were no compilation errors, and installation, three-language menus and SDK preprocessing checks passed.
+
 ## First publication and animation
 
 1. Wear the uploaded avatar in VRChat and enable OSC. Detect it from Desktop's connection page; check capability version **9** and the material catalog. If detection fails, check OSC ports, firewall rules and stale avatar caches.

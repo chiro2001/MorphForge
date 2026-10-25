@@ -1,0 +1,249 @@
+{
+  "success": true,
+  "unityVersion": "2022.3.22f1",
+  "packageSha256": "7e60412f16cbc3e9858e7c85c7d02ec9c16d15af94f6c37805190b59c5a39264",
+  "importedFileCount": 162,
+  "checks": [
+    {
+      "name": "original buyer package import recorded",
+      "passed": true
+    },
+    {
+      "name": "old plugin absent before import",
+      "passed": true
+    },
+    {
+      "name": "imported assets exactly match original 162-file inventory",
+      "passed": true
+    },
+    {
+      "name": "all 162 imported files and GUIDs match buyer package",
+      "passed": true
+    },
+    {
+      "name": "public prefab is version 1.4.0",
+      "passed": true
+    },
+    {
+      "name": "prefab has no missing scripts",
+      "passed": true
+    },
+    {
+      "name": "16 emission-only pumps have rendering disabled and valid sub-emitters",
+      "passed": true
+    },
+    {
+      "name": "all display renderer materials and shaders resolve",
+      "passed": true
+    },
+    {
+      "name": "imported shaders have no compiler errors",
+      "passed": true
+    },
+    {
+      "name": "required Modular Avatar dependency resolves",
+      "passed": true
+    },
+    {
+      "name": "optional VRCFury fixture dependency resolves",
+      "passed": true
+    },
+    {
+      "name": "public catalog has 544 materials",
+      "passed": true
+    },
+    {
+      "name": "zh-CN installation records language",
+      "passed": true
+    },
+    {
+      "name": "zh-CN all menus are independent persistent assets",
+      "passed": true
+    },
+    {
+      "name": "zh-CN localized owner-preview label",
+      "passed": true
+    },
+    {
+      "name": "zh-CN menu capacity",
+      "passed": true
+    },
+    {
+      "name": "zh-CN duplicate installation rejected",
+      "passed": true
+    },
+    {
+      "name": "ja installation records language",
+      "passed": true
+    },
+    {
+      "name": "ja all menus are independent persistent assets",
+      "passed": true
+    },
+    {
+      "name": "ja localized owner-preview label",
+      "passed": true
+    },
+    {
+      "name": "ja menu capacity",
+      "passed": true
+    },
+    {
+      "name": "ja duplicate installation rejected",
+      "passed": true
+    },
+    {
+      "name": "en installation records language",
+      "passed": true
+    },
+    {
+      "name": "en all menus are independent persistent assets",
+      "passed": true
+    },
+    {
+      "name": "en localized owner-preview label",
+      "passed": true
+    },
+    {
+      "name": "en menu capacity",
+      "passed": true
+    },
+    {
+      "name": "en duplicate installation rejected",
+      "passed": true
+    },
+    {
+      "name": "three avatars never share localized menu assets",
+      "passed": true
+    },
+    {
+      "name": "language switching preserves custom control",
+      "passed": true
+    },
+    {
+      "name": "language switching leaves other avatar unchanged",
+      "passed": true
+    },
+    {
+      "name": "language persists after scene reload",
+      "passed": true
+    },
+    {
+      "name": "en actual SDK preprocessing",
+      "passed": true
+    },
+    {
+      "name": "en final parameter budget",
+      "passed": true
+    },
+    {
+      "name": "en 30 geometry Ints remain directly synced",
+      "passed": true
+    },
+    {
+      "name": "en merged owner-preview menu is localized",
+      "passed": true
+    },
+    {
+      "name": "fury-ja actual SDK preprocessing",
+      "passed": true
+    },
+    {
+      "name": "fury-ja final parameter budget",
+      "passed": true
+    },
+    {
+      "name": "fury-ja 30 geometry Ints remain directly synced",
+      "passed": true
+    },
+    {
+      "name": "fury-ja merged owner-preview menu is localized",
+      "passed": true
+    },
+    {
+      "name": "fury-ja existing clothing parameters retained",
+      "passed": true
+    },
+    {
+      "name": "ja actual SDK preprocessing",
+      "passed": true
+    },
+    {
+      "name": "ja final parameter budget",
+      "passed": true
+    },
+    {
+      "name": "ja 30 geometry Ints remain directly synced",
+      "passed": true
+    },
+    {
+      "name": "ja merged owner-preview menu is localized",
+      "passed": true
+    },
+    {
+      "name": "zh-CN actual SDK preprocessing",
+      "passed": true
+    },
+    {
+      "name": "zh-CN final parameter budget",
+      "passed": true
+    },
+    {
+      "name": "zh-CN 30 geometry Ints remain directly synced",
+      "passed": true
+    },
+    {
+      "name": "zh-CN merged owner-preview menu is localized",
+      "passed": true
+    },
+    {
+      "name": "over-budget face tracking rejected without disabling sync",
+      "passed": true
+    },
+    {
+      "name": "compressed geometry rejected despite fitting budget",
+      "passed": true
+    },
+    {
+      "name": "all original public assets remain unchanged after install and SDK",
+      "passed": true
+    },
+    {
+      "name": "all package dependencies stay inside plugin or separately installed packages",
+      "passed": true
+    }
+  ],
+  "checkCount": 52,
+  "builds": [
+    {
+      "name": "en",
+      "success": true,
+      "error": null,
+      "bits": 253
+    },
+    {
+      "name": "fury-ja",
+      "success": true,
+      "error": null,
+      "bits": 256
+    },
+    {
+      "name": "ja",
+      "success": true,
+      "error": null,
+      "bits": 253
+    },
+    {
+      "name": "zh-CN",
+      "success": true,
+      "error": null,
+      "bits": 253
+    }
+  ],
+  "fixtureScene": "Assets/BoothAcceptance20261025/Installed.unity",
+  "scope": "Original buyer package imported after AssetDatabase removal of previous plugin; synthetic humanoids, three languages, actual SDK preprocessing with MA/NDMF and optional VRCFury. No upload or real VRChat session.",
+  "dependencyClosure": {
+    "dependencyCount": 174,
+    "externalProjectDependencies": []
+  }
+}
